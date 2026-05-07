@@ -1,0 +1,25 @@
+{
+  "name": "@chukit/tokens",
+  "version": "0.0.1",
+  "description": "ChuKit UI 设计 token —— CSS 变量与可选 Tailwind preset",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./tokens.css": "./src/tokens.css",
+    "./tailwind": {
+      "types": "./src/tailwind-preset.ts",
+      "import": "./src/tailwind-preset.ts"
+    }
+  },
+  "scripts": {
+    "dev": "echo 'tokens: nothing to compile, source is consumed directly'",
+    "build": "echo 'tokens: source-only package'"
+  }
+}

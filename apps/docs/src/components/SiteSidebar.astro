@@ -1,0 +1,31 @@
+---
+import { sidebar } from '~/config/site';
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+function isActive(href: string) {
+  const norm = href.replace(/\/$/, '') || '/';
+  return norm === currentPath;
+}
+---
+
+<aside class="site-sidebar">
+  <nav>
+    {sidebar.map((group) => (
+      <div class="site-sidebar__group">
+        <h3 class="site-sidebar__title">{group.label}</h3>
+        <ul class="site-sidebar__list">
+          {group.items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={['site-sidebar__link', isActive(item.href) && 'is-active']}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </nav>
+</aside>

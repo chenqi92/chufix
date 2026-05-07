@@ -1,0 +1,121 @@
+---
+import { Code } from 'astro:components';
+
+interface Props {
+  vueCode?: string;
+  reactCode?: string;
+  cliCode?: string;
+}
+const { vueCode, reactCode, cliCode } = Astro.props;
+const hasVueSlot = Astro.slots.has('vue');
+const hasReactSlot = Astro.slots.has('react');
+---
+
+<div class="ck-demo" data-demo-frame>
+  <div class="ck-demo__tabs" role="tablist">
+    <button class="ck-demo__tab" role="tab" data-target="preview" aria-selected="true">预览</button>
+    {vueCode && (
+      <button class="ck-demo__tab" role="tab" data-target="vue" aria-selected="false">Vue</button>
+    )}
+    {reactCode && (
+      <button class="ck-demo__tab" role="tab" data-target="react" aria-selected="false">React</button>
+    )}
+    {cliCode && (
+      <button class="ck-demo__tab" role="tab" data-target="cli" aria-selected="false">CLI</button>
+    )}
+  </div>
+
+  <div class="ck-demo__panel ck-demo__preview" data-panel="preview" data-active="true">
+    {hasVueSlot && (
+      <section class="ck-demo__pane">
+        <span class="ck-demo__fw ck-demo__fw--vue">
+          <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M2 4l10 16L22 4h-4l-6 9.6L6 4z"/></svg>
+          Vue
+        </span>
+        <div class="ck-demo__pane-content">
+          <slot name="vue" />
+        </div>
+      </section>
+    )}
+    {hasVueSlot && hasReactSlot && <div class="ck-demo__divider" aria-hidden="true" />}
+    {hasReactSlot && (
+      <section class="ck-demo__pane">
+        <span class="ck-demo__fw ck-demo__fw--react">
+          <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><circle cx="12" cy="12" r="2" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="1.4"><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></g></svg>
+          React
+        </span>
+        <div class="ck-demo__pane-content">
+          <slot name="react" />
+        </div>
+      </section>
+    )}
+    {!hasVueSlot && !hasReactSlot && (
+      <div class="ck-demo__pane-content ck-demo__pane-content--solo">
+        <slot />
+      </div>
+    )}
+  </div>
+
+  {vueCode && (
+    <div class="ck-demo__panel" data-panel="vue" data-active="false">
+      <div class="ck-demo__code">
+        <button class="ck-demo__copy" data-copy={vueCode}>复制</button>
+        <Code code={vueCode} lang="vue" theme="github-dark" />
+      </div>
+    </div>
+  )}
+
+  {reactCode && (
+    <div class="ck-demo__panel" data-panel="react" data-active="false">
+      <div class="ck-demo__code">
+        <button class="ck-demo__copy" data-copy={reactCode}>复制</button>
+        <Code code={reactCode} lang="tsx" theme="github-dark" />
+      </div>
+    </div>
+  )}
+
+  {cliCode && (
+    <div class="ck-demo__panel" data-panel="cli" data-active="false">
+      <div class="ck-demo__code">
+        <button class="ck-demo__copy" data-copy={cliCode}>复制</button>
+        <Code code={cliCode} lang="bash" theme="github-dark" />
+      </div>
+    </div>
+  )}
+</div>
+
+<script>
+  function bind(root: HTMLElement) {
+    const tabs = root.querySelectorAll<HTMLButtonElement>('.ck-demo__tab');
+    const panels = root.querySelectorAll<HTMLElement>('.ck-demo__panel');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.target;
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        panels.forEach((p) => {
+          p.dataset.active = String(p.dataset.panel === target);
+        });
+      });
+    });
+    root.querySelectorAll<HTMLButtonElement>('.ck-demo__copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copy ?? '';
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          /* clipboard blocked — ignore */
+        }
+        const original = btn.textContent;
+        btn.dataset.copied = 'true';
+        btn.textContent = '已复制';
+        setTimeout(() => {
+          btn.dataset.copied = 'false';
+          btn.textContent = original;
+        }, 1400);
+      });
+    });
+  }
+  document
+    .querySelectorAll<HTMLElement>('[data-demo-frame]')
+    .forEach((el) => bind(el));
+</script>

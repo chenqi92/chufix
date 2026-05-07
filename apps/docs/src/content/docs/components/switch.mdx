@@ -1,0 +1,65 @@
+---
+title: Switch 开关
+description: ChuKit 的开关组件 —— 三尺寸、loading 与 disabled 态，原生 checkbox 语义保留。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/switch/BasicVue.vue';
+import BasicReact from '~/components/demos/switch/BasicReact.tsx';
+
+## 基础用法
+
+底层是真实的 `<input type="checkbox" role="switch">`，键盘 / 表单 / 屏幕阅读器全部直接可用。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Switch } from '@chukit/vue';
+
+const wifi = ref(true);
+const dnd = ref(false);
+const sync = ref(false);
+</script>
+
+<template>
+  <Switch v-model="wifi">Wi-Fi {{ wifi ? '已开启' : '已关闭' }}</Switch>
+  <Switch v-model="dnd" size="sm">勿扰模式（sm）</Switch>
+  <Switch v-model="sync" size="lg">大尺寸（lg）</Switch>
+  <Switch :model-value="true" disabled>禁用 · 已开</Switch>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Switch } from '@chukit/react';
+
+export default function Demo() {
+  const [wifi, setWifi] = useState(true);
+  const [dnd, setDnd] = useState(false);
+
+  return (
+    <>
+      <Switch checked={wifi} onChange={(e) => setWifi(e.target.checked)}>
+        Wi-Fi {wifi ? '已开启' : '已关闭'}
+      </Switch>
+      <Switch size="sm" checked={dnd} onChange={(e) => setDnd(e.target.checked)}>
+        勿扰模式（sm）
+      </Switch>
+      <Switch checked disabled>禁用 · 已开</Switch>
+    </>
+  );
+}`}
+>
+  <BasicVue slot="vue" client:load />
+  <BasicReact slot="react" client:load />
+</DemoFrame>
+
+## Props
+
+| 名称       | 类型                       | 默认值   | 说明                              |
+| ---------- | -------------------------- | -------- | --------------------------------- |
+| `size`     | `'sm' \| 'md' \| 'lg'`     | `'md'`   | 整体尺寸                          |
+| `disabled` | `boolean`                  | `false`  | 禁用                              |
+| `loading`  | `boolean`                  | `false`  | 显示 spinner，并暂时阻止切换      |
+
+## 双向绑定
+
+- **Vue**：`v-model` 绑定到 `boolean`；`@change` 拿到 `boolean` 值（不是 event）。
+- **React**：受控就传 `checked` + `onChange`；非受控就传 `defaultChecked`。`onChange` 是原生 ChangeEvent，`e.target.checked` 拿到值。

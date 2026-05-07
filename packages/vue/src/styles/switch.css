@@ -1,0 +1,87 @@
+/* ChuKit Switch — visually-hidden checkbox + custom track/thumb. Native
+ * checkbox keeps form semantics, keyboard, and screen-reader support. */
+.ck-switch {
+  --_w: 2.25rem;
+  --_h: 1.25rem;
+  --_thumb: 0.95rem;
+  --_pad: 0.15rem;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--ck-font-sans);
+  font-size: 0.875rem;
+  color: hsl(var(--ck-fg));
+  cursor: pointer;
+  user-select: none;
+}
+.ck-switch.is-disabled { cursor: not-allowed; opacity: 0.55; }
+
+/* sizes */
+.ck-switch--sm { --_w: 1.75rem; --_h: 1rem;     --_thumb: 0.75rem; }
+.ck-switch--md { --_w: 2.25rem; --_h: 1.25rem;  --_thumb: 0.95rem; }
+.ck-switch--lg { --_w: 2.75rem; --_h: 1.55rem;  --_thumb: 1.25rem; }
+
+.ck-switch__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ck-switch__track {
+  position: relative;
+  width: var(--_w);
+  height: var(--_h);
+  background: hsl(var(--ck-muted));
+  border-radius: 9999px;
+  transition:
+    background-color var(--ck-duration) var(--ck-easing),
+    box-shadow var(--ck-duration) var(--ck-easing);
+  flex: none;
+}
+
+.ck-switch__thumb {
+  position: absolute;
+  top: var(--_pad);
+  left: var(--_pad);
+  width: var(--_thumb);
+  height: var(--_thumb);
+  background: hsl(var(--ck-bg));
+  border-radius: 50%;
+  box-shadow: var(--ck-shadow-sm);
+  transition:
+    transform var(--ck-duration) var(--ck-easing),
+    background-color var(--ck-duration) var(--ck-easing);
+}
+
+.ck-switch__input:checked + .ck-switch__track {
+  background: hsl(var(--ck-primary));
+}
+.ck-switch__input:checked + .ck-switch__track .ck-switch__thumb {
+  transform: translateX(calc(var(--_w) - var(--_thumb) - var(--_pad) * 2));
+}
+
+.ck-switch__input:focus-visible + .ck-switch__track {
+  box-shadow: 0 0 0 3px hsl(var(--ck-ring) / 0.35);
+}
+
+/* loading spinner inside thumb */
+.ck-switch.is-loading .ck-switch__thumb::after {
+  content: '';
+  position: absolute;
+  inset: 18%;
+  border: 2px solid hsl(var(--ck-muted-fg) / 0.4);
+  border-top-color: hsl(var(--ck-primary));
+  border-radius: 50%;
+  animation: ck-switch-spin 0.7s linear infinite;
+}
+@keyframes ck-switch-spin {
+  to { transform: rotate(360deg); }
+}

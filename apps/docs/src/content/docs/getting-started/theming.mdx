@@ -1,0 +1,45 @@
+---
+title: 主题与 Tokens
+description: 用 CSS 变量切换 ChuKit UI 的主色、暗色模式、圆角等设计 token。
+order: 2
+---
+
+ChuKit UI 所有视觉表现都从 CSS 变量里读，集中定义在 `@chukit/tokens/tokens.css`。
+
+## 切换暗色模式
+
+```html
+<html data-theme="dark">...</html>
+```
+
+或运行时切换：
+
+```ts
+document.documentElement.dataset.theme =
+  document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+```
+
+## 自定义主色
+
+```css
+:root {
+  --ck-primary: 280 78% 56%;        /* HSL 三通道，无 hsl() 包裹 */
+  --ck-primary-hover: 280 78% 50%;
+  --ck-primary-active: 280 78% 44%;
+  --ck-primary-soft: 280 78% 96%;
+}
+```
+
+token 用 HSL 通道格式而不是 `#hex` 是为了 `hsl(var(--ck-primary) / 0.5)` 能直接在样式里加透明度。
+
+## 完整 token 清单
+
+颜色：`--ck-bg` `--ck-fg` `--ck-muted` `--ck-muted-fg` `--ck-border` `--ck-ring` `--ck-primary*` `--ck-danger*` `--ck-success` `--ck-warning`
+
+形状：`--ck-radius-sm` `--ck-radius` `--ck-radius-lg` `--ck-radius-pill`
+
+字体：`--ck-font-sans`
+
+阴影：`--ck-shadow-sm` `--ck-shadow` `--ck-shadow-lg`
+
+动画：`--ck-duration-fast` `--ck-duration` `--ck-easing`

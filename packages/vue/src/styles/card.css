@@ -1,0 +1,75 @@
+/* ChuKit Card — wrapper + 3 sub-slots. Pure layout, no business logic. */
+.ck-card {
+  --_bg: hsl(var(--ck-bg));
+  --_border: hsl(var(--ck-border));
+  --_shadow: var(--ck-shadow-sm);
+
+  display: flex;
+  flex-direction: column;
+  background: var(--_bg);
+  border: 1px solid var(--_border);
+  border-radius: var(--ck-radius-lg);
+  box-shadow: var(--_shadow);
+  overflow: hidden;
+  font-family: var(--ck-font-sans);
+  color: hsl(var(--ck-fg));
+  transition:
+    box-shadow var(--ck-duration) var(--ck-easing),
+    transform var(--ck-duration) var(--ck-easing),
+    border-color var(--ck-duration) var(--ck-easing);
+}
+
+/* variants */
+.ck-card--elevated { --_shadow: var(--ck-shadow); --_border: transparent; }
+.ck-card--outlined { --_shadow: none; }
+.ck-card--filled {
+  --_bg: hsl(var(--ck-muted) / 0.5);
+  --_border: transparent;
+  --_shadow: none;
+}
+
+/* interactive */
+.ck-card.is-interactive {
+  cursor: pointer;
+}
+.ck-card.is-interactive:hover {
+  box-shadow: var(--ck-shadow-lg);
+  transform: translateY(-2px);
+}
+.ck-card.is-interactive:focus-visible {
+  outline: 2px solid hsl(var(--ck-ring) / 0.6);
+  outline-offset: 2px;
+}
+
+/* sub-slots */
+.ck-card__header,
+.ck-card__body,
+.ck-card__footer {
+  padding: 1rem 1.25rem;
+}
+.ck-card__header {
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid hsl(var(--ck-border));
+}
+.ck-card__body {
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  color: hsl(var(--ck-muted-fg));
+  line-height: 1.6;
+}
+.ck-card__footer {
+  border-top: 1px solid hsl(var(--ck-border));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  background: hsl(var(--ck-muted) / 0.3);
+}
+
+/* when filled or single-slot use, suppress dividers */
+.ck-card--filled .ck-card__header,
+.ck-card--filled .ck-card__footer {
+  border-color: transparent;
+  background: transparent;
+}

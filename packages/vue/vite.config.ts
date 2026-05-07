@@ -1,0 +1,26 @@
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { fileURLToPath, URL } from 'node:url';
+
+export default defineConfig({
+  plugins: [vue()],
+  build: {
+    lib: {
+      entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+      name: 'ChuKitVue',
+      fileName: 'index',
+      formats: ['es'],
+    },
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: { vue: 'Vue' },
+        assetFileNames: (info) =>
+          info.name === 'style.css' ? 'style.css' : info.name ?? '[name][extname]',
+      },
+    },
+    cssCodeSplit: false,
+    sourcemap: true,
+    emptyOutDir: true,
+  },
+});

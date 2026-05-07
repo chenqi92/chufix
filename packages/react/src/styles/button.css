@@ -1,0 +1,143 @@
+/* ChuKit Button — class-based, framework-agnostic. */
+.ck-btn {
+  --_h: 2.25rem;
+  --_px: 1rem;
+  --_fs: 0.875rem;
+  --_bg: hsl(var(--ck-primary));
+  --_bg-hover: hsl(var(--ck-primary-hover));
+  --_bg-active: hsl(var(--ck-primary-active));
+  --_fg: hsl(var(--ck-primary-fg));
+  --_border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: var(--_h);
+  padding: 0 var(--_px);
+  font-size: var(--_fs);
+  font-family: var(--ck-font-sans);
+  font-weight: 500;
+  line-height: 1;
+  border-radius: var(--ck-radius);
+  border: 1px solid var(--_border);
+  background: var(--_bg);
+  color: var(--_fg);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--ck-duration) var(--ck-easing),
+    color var(--ck-duration) var(--ck-easing),
+    border-color var(--ck-duration) var(--ck-easing),
+    box-shadow var(--ck-duration) var(--ck-easing),
+    transform var(--ck-duration-fast) var(--ck-easing);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ck-btn:hover:not(:disabled) {
+  background: var(--_bg-hover);
+}
+.ck-btn:active:not(:disabled) {
+  background: var(--_bg-active);
+  transform: translateY(1px);
+}
+.ck-btn:focus-visible {
+  outline: 2px solid hsl(var(--ck-ring) / 0.6);
+  outline-offset: 2px;
+}
+.ck-btn:disabled,
+.ck-btn[aria-busy='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* sizes */
+.ck-btn--sm { --_h: 1.75rem; --_px: 0.75rem; --_fs: 0.8125rem; }
+.ck-btn--md { --_h: 2.25rem; --_px: 1rem;    --_fs: 0.875rem; }
+.ck-btn--lg { --_h: 2.75rem; --_px: 1.25rem; --_fs: 0.9375rem; }
+
+/* shapes */
+.ck-btn--pill   { border-radius: var(--ck-radius-pill); }
+.ck-btn--square { width: var(--_h); padding: 0; }
+
+/* block */
+.ck-btn--block { display: flex; width: 100%; }
+
+/* tones — primary is default; danger overrides token vars */
+.ck-btn--danger {
+  --_bg: hsl(var(--ck-danger));
+  --_bg-hover: hsl(var(--ck-danger-hover));
+  --_bg-active: hsl(var(--ck-danger-hover));
+  --_fg: hsl(var(--ck-danger-fg));
+}
+
+/* variants */
+.ck-btn--soft {
+  --_bg: hsl(var(--ck-primary-soft));
+  --_bg-hover: hsl(var(--ck-primary-soft) / 0.7);
+  --_bg-active: hsl(var(--ck-primary-soft) / 0.6);
+  --_fg: hsl(var(--ck-primary));
+}
+.ck-btn--soft.ck-btn--danger {
+  --_bg: hsl(var(--ck-danger-soft));
+  --_bg-hover: hsl(var(--ck-danger-soft) / 0.7);
+  --_bg-active: hsl(var(--ck-danger-soft) / 0.6);
+  --_fg: hsl(var(--ck-danger));
+}
+
+.ck-btn--outline {
+  --_bg: transparent;
+  --_bg-hover: hsl(var(--ck-primary) / 0.08);
+  --_bg-active: hsl(var(--ck-primary) / 0.14);
+  --_fg: hsl(var(--ck-primary));
+  --_border: hsl(var(--ck-border));
+}
+.ck-btn--outline.ck-btn--danger {
+  --_bg-hover: hsl(var(--ck-danger) / 0.08);
+  --_bg-active: hsl(var(--ck-danger) / 0.14);
+  --_fg: hsl(var(--ck-danger));
+}
+
+.ck-btn--ghost {
+  --_bg: transparent;
+  --_bg-hover: hsl(var(--ck-muted));
+  --_bg-active: hsl(var(--ck-muted) / 0.8);
+  --_fg: hsl(var(--ck-fg));
+  --_border: transparent;
+}
+.ck-btn--ghost.ck-btn--danger { --_fg: hsl(var(--ck-danger)); }
+
+.ck-btn--link {
+  --_bg: transparent;
+  --_bg-hover: transparent;
+  --_bg-active: transparent;
+  --_fg: hsl(var(--ck-primary));
+  --_border: transparent;
+  height: auto;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ck-btn--link:hover:not(:disabled) { text-decoration-thickness: 2px; }
+
+/* slots */
+.ck-btn__leading,
+.ck-btn__trailing {
+  display: inline-flex;
+  align-items: center;
+}
+.ck-btn__label { display: inline-flex; align-items: center; }
+
+/* loading spinner */
+.ck-btn__spinner {
+  width: 0.95em;
+  height: 0.95em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: ck-btn-spin 0.7s linear infinite;
+}
+@keyframes ck-btn-spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,71 @@
+---
+title: 安装
+description: 在 Vue 3 或 React 项目里安装并使用 ChuKit UI。
+order: 1
+---
+
+## Vue 3
+
+```bash
+npm i @chukit/vue
+```
+
+```ts
+// main.ts
+import { createApp } from 'vue';
+import App from './App.vue';
+import '@chukit/vue/style.css';
+
+createApp(App).mount('#app');
+```
+
+```vue
+<script setup lang="ts">
+import { Button } from '@chukit/vue';
+</script>
+
+<template>
+  <Button>Hello ChuKit</Button>
+</template>
+```
+
+## React
+
+```bash
+npm i @chukit/react
+```
+
+```ts
+// main.tsx
+import '@chukit/react/style.css';
+```
+
+```tsx
+import { Button } from '@chukit/react';
+
+export default () => <Button>Hello ChuKit</Button>;
+```
+
+## shadcn 风格（源码拷贝）
+
+如果你想完全控制组件源码：
+
+```bash
+npx chukit add button
+```
+
+执行后 ChuKit 会把 `button/Button.vue`（或 `Button.tsx`）+ 对应的 `button.css` 直接放进你项目里指定的目录，之后改成什么样都随你。
+
+## Tailwind CSS（可选）
+
+```ts
+// tailwind.config.ts
+import preset from '@chukit/tokens/tailwind';
+
+export default {
+  presets: [preset],
+  content: ['./src/**/*.{vue,tsx,ts,html}'],
+};
+```
+
+之后即可 `<div class="bg-chukit-primary text-chukit-primary-fg" />` 这样使用。
