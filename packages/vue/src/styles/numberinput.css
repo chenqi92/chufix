@@ -1,0 +1,74 @@
+/* NumberInput · 输入数字 + 上下步进，清晰的 min/max boundary。 */
+
+.cf-number {
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--control-h);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  background: var(--bg-inset);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  overflow: hidden;
+  width: 120px;
+}
+.cf-number:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
+}
+.cf-number[data-disabled] {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+.cf-number__native {
+  appearance: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 8px;
+  font: inherit;
+  color: inherit;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cf-number__native::placeholder { color: var(--fg-3); text-align: left; }
+
+.cf-number__steppers {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line-1);
+  flex: 0 0 auto;
+}
+.cf-number__step {
+  appearance: none;
+  border: 0;
+  background: var(--bg-2);
+  color: var(--fg-2);
+  font-size: 9px;
+  line-height: 1;
+  width: 22px;
+  flex: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-instant) linear,
+              color var(--dur-instant) linear;
+}
+.cf-number__step + .cf-number__step { border-top: 1px solid var(--line-1); }
+.cf-number__step:hover:not(:disabled) { background: var(--bg-3); color: var(--fg-1); }
+.cf-number__step:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* sizes */
+.cf-number--sm { height: var(--control-h-sm); font-size: var(--t-12); width: 100px; }
+.cf-number--sm .cf-number__step { width: 18px; }
+.cf-number--lg { height: var(--control-h-lg); font-size: var(--t-14); width: 140px; }
+.cf-number--lg .cf-number__step { width: 26px; }

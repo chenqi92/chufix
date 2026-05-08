@@ -21,6 +21,11 @@ import './styles/empty.css';
 import './styles/progress.css';
 import './styles/breadcrumb.css';
 import './styles/pagination.css';
+import './styles/spinner.css';
+import './styles/searchinput.css';
+import './styles/numberinput.css';
+import './styles/accordion.css';
+import './styles/slider.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -149,3 +154,23 @@ export type { BreadcrumbProps, BreadcrumbItem } from './breadcrumb/variants';
 
 export { Pagination as CfPagination } from './pagination/Pagination';
 export type { PaginationProps, PaginationSize } from './pagination/variants';
+
+export { Spinner as CfSpinner } from './spinner/Spinner';
+export type { SpinnerProps, SpinnerSize, SpinnerTone } from './spinner/variants';
+
+export { SearchInput as CfSearchInput } from './searchinput/SearchInput';
+export type { SearchInputProps, SearchInputSize } from './searchinput/variants';
+
+export { NumberInput as CfNumberInput } from './numberinput/NumberInput';
+export type { NumberInputProps, NumberInputSize } from './numberinput/variants';
+
+export { Accordion as CfAccordion } from './accordion/Accordion';
+export type {
+  AccordionProps,
+  AccordionItem,
+  AccordionMode,
+  AccordionVariant,
+} from './accordion/variants';
+
+export { Slider as CfSlider } from './slider/Slider';
+export type { SliderProps, SliderSize, SliderTone } from './slider/variants';

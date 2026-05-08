@@ -54,6 +54,11 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Progress 进度', href: '/components/progress/' },
       { label: 'Breadcrumb 面包屑', href: '/components/breadcrumb/' },
       { label: 'Pagination 分页', href: '/components/pagination/' },
+      { label: 'Spinner 加载', href: '/components/spinner/' },
+      { label: 'SearchInput 搜索框', href: '/components/searchinput/' },
+      { label: 'NumberInput 数字输入', href: '/components/numberinput/' },
+      { label: 'Accordion 折叠面板', href: '/components/accordion/' },
+      { label: 'Slider 滑块', href: '/components/slider/' },
     ],
   },
 ];

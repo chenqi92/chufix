@@ -1,0 +1,58 @@
+---
+title: Accordion 折叠面板
+description: 单展开 / 多展开两种模式，3 种边框样式（bordered / flush / separated）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/accordion/BasicVue.vue';
+
+## 基础用法
+
+`items` 每项 `{ value, title, content?, disabled? }`。`mode="single"` 同时只能开一个；`"multiple"` 多开。
+`variant`：`bordered` 外框 + 分隔线，`flush` 仅分隔线，`separated` 每项独立卡片。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfAccordion } from '@chufix/vue';
+
+const items = [
+  { value: 'q1', title: '问题一', content: '答案一…' },
+  { value: 'q2', title: '问题二', content: '答案二…' },
+  { value: 'q3', title: '问题三', content: '答案三…' },
+];
+</script>
+
+<template>
+  <CfAccordion :items="items" mode="single" variant="bordered" />
+
+  <CfAccordion
+    :items="items"
+    mode="multiple"
+    variant="separated"
+    :default-open="['q1', 'q3']"
+  />
+</template>`}
+  reactCode={`import { CfAccordion } from '@chufix/react';
+
+const items = [
+  { value: 'q1', title: '问题一', content: '答案一…' },
+  { value: 'q2', title: '问题二', content: '答案二…' },
+  { value: 'q3', title: '问题三', content: '答案三…' },
+];
+
+<CfAccordion items={items} mode="single" variant="bordered" />
+
+<CfAccordion items={items} mode="multiple" variant="separated" defaultValue={['q1', 'q3']} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop                                  | 类型                                            | 默认值       | 说明                            |
+| ------------------------------------- | ----------------------------------------------- | ------------ | ------------------------------- |
+| `items`                               | `Array<{ value, title, content?, disabled? }>`  | `[]`         | 面板列表                        |
+| `mode`                                | `'single' \| 'multiple'`                        | `'single'`   | 同时只能开一个 / 可多开          |
+| `variant`                             | `'bordered' \| 'flush' \| 'separated'`          | `'bordered'` | 边框样式                        |
+| `modelValue` (Vue) / `value` (React)  | `string \| string[]`                            | —            | 受控当前展开（单：string；多：string[]） |
+| `defaultOpen` (Vue) / `defaultValue` (React) | `string \| string[]`                     | —            | 非受控初始展开                   |

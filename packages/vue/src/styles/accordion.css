@@ -1,0 +1,77 @@
+/* Accordion · 折叠面板，单开 / 多开 / 三种边框样式。 */
+
+.cf-accordion {
+  display: flex;
+  flex-direction: column;
+}
+.cf-accordion__item {
+  border-bottom: 1px solid var(--line-1);
+}
+.cf-accordion__item:last-child { border-bottom: 0; }
+
+.cf-accordion__trigger {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: transparent;
+  border: 0;
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-14);
+  font-weight: var(--w-medium);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cf-accordion__trigger:hover { background: var(--bg-2); }
+.cf-accordion__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.cf-accordion__trigger:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+.cf-accordion__title { flex: 1; min-width: 0; }
+.cf-accordion__chevron {
+  flex: 0 0 auto;
+  color: var(--fg-3);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-accordion__item.is-open .cf-accordion__chevron {
+  transform: rotate(180deg);
+  color: var(--accent-1);
+}
+
+.cf-accordion__panel {
+  overflow: hidden;
+}
+.cf-accordion__panel-inner {
+  padding: 0 14px 14px;
+  font-size: var(--t-13);
+  line-height: 1.6;
+  color: var(--fg-2);
+}
+
+/* variant: bordered (default) — outer border + dividers */
+.cf-accordion--bordered {
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}
+
+/* variant: flush — no outer border, just internal dividers */
+.cf-accordion--flush { border: 0; }
+
+/* variant: separated — each item is its own card with gap */
+.cf-accordion--separated { gap: 8px; }
+.cf-accordion--separated .cf-accordion__item {
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}

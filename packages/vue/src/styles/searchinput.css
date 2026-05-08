@@ -1,0 +1,80 @@
+/* SearchInput · 预设 search 图标 + 清空 + 快捷键提示。 */
+
+.cf-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--control-h);
+  padding: 0 8px 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  background: var(--bg-inset);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  width: 100%;
+  max-width: 320px;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+.cf-search:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
+}
+.cf-search__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  flex: 0 0 auto;
+}
+.cf-search__icon svg { width: 14px; height: 14px; }
+
+.cf-search__native {
+  appearance: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  font: inherit;
+  color: inherit;
+}
+.cf-search__native::placeholder { color: var(--fg-3); }
+.cf-search__native::-webkit-search-cancel-button { display: none; }
+.cf-search__native::-webkit-search-decoration { display: none; }
+
+.cf-search__clear {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--fg-3);
+  cursor: pointer;
+  border-radius: var(--r-3);
+  flex: 0 0 auto;
+}
+.cf-search__clear:hover { background: var(--bg-2); color: var(--fg-1); }
+.cf-search__clear svg { width: 11px; height: 11px; }
+
+.cf-search__shortcut {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-bottom-width: 2px;
+  border-radius: var(--r-3);
+  padding: 1px 5px;
+  flex: 0 0 auto;
+}
+
+/* sizes */
+.cf-search--sm { height: var(--control-h-sm); font-size: var(--t-12); padding: 0 6px 0 8px; }
+.cf-search--lg { height: var(--control-h-lg); font-size: var(--t-14); padding: 0 10px 0 12px; }
+.cf-search--lg .cf-search__icon svg { width: 16px; height: 16px; }

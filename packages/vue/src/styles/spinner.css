@@ -1,0 +1,39 @@
+/* Spinner · 旋转环加载指示器，3 档尺寸 × 6 种 tone。 */
+
+.cf-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-1);
+  font-size: var(--t-13);
+  vertical-align: middle;
+}
+.cf-spinner__ring {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: cf-spinner-rotate 0.7s linear infinite;
+}
+@keyframes cf-spinner-rotate {
+  to { transform: rotate(360deg); }
+}
+
+.cf-spinner--sm { font-size: var(--t-12); }
+.cf-spinner--sm .cf-spinner__ring { width: 14px; height: 14px; border-width: 2px; }
+.cf-spinner--md .cf-spinner__ring { width: 18px; height: 18px; border-width: 2px; }
+.cf-spinner--lg .cf-spinner__ring { width: 28px; height: 28px; border-width: 3px; }
+
+.cf-spinner--primary { color: var(--accent-1); }
+.cf-spinner--success { color: var(--status-success); }
+.cf-spinner--warning { color: var(--status-warning); }
+.cf-spinner--danger  { color: var(--status-error); }
+.cf-spinner--info    { color: var(--status-info); }
+.cf-spinner--neutral { color: var(--fg-2); }
+
+.cf-spinner__label {
+  color: var(--fg-2);
+  font-size: var(--t-13);
+}

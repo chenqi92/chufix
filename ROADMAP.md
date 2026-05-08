@@ -7,9 +7,9 @@
 
 ---
 
-## 已发布 · 22 / 70+
+## 已发布 · 27 / 70+
 
-### 表单 · Form (7)
+### 表单 · Form (10)
 
 - [x] Button (atoms · B.1.1)
 - [x] Input (atoms · B.1.3)
@@ -18,6 +18,9 @@
 - [x] Switch (atoms · B.1.8)
 - [x] Checkbox (atoms · B.1.9)
 - [x] Radio · RadioGroup (atoms · B.1.10)
+- [x] SearchInput (base2 · SearchInput)
+- [x] NumberInput (base2 · NumberInput)
+- [x] Slider (atoms · #slider)
 
 ### 容器 · Container (1)
 
@@ -43,11 +46,13 @@
 - [x] Breadcrumb (base · B.14)
 - [x] Pagination (base · B.14 / data · #pagination)
 
-### 布局与状态 · Layout (3)
+### 布局与状态 · Layout (5)
 
 - [x] Divider (atoms · B.2.9)
 - [x] Empty (base2 · EmptyState)
 - [x] Progress (atoms · B.2.7)
+- [x] Spinner (base2 · Spinner · Loader)
+- [x] Accordion (base · B.09 揭示模式)
 
 ---
 
@@ -55,14 +60,14 @@
 
 这一批先做完，扔出去就能解决 90% 的常见后台/管理界面需求。
 
-- [ ] **Spinner / Loader** (base2 · Spinner · Loader) —— 单独的转圈加载，独立于 Skeleton
+- [x] **Spinner / Loader** (base2 · Spinner · Loader) —— 单独的转圈加载，独立于 Skeleton
 - [ ] **Drawer** (overlays · #drawer / navigation) —— Modal 的边缘变体（top/right/bottom/left 滑入）；走 Teleport，demo `client:only="vue"`
 - [ ] **Popover** (overlays · #popover) —— Tooltip 的可点击/可交互变体，支持表单内容；Teleport
 - [ ] **Dropdown / DropdownMenu** (overlays · #menu) —— Popover + 列表 + 键盘导航；Teleport
-- [ ] **Accordion / Collapsible** (base · B.09 揭示模式) —— 单/多展开
-- [ ] **NumberInput** (base2 · NumberInput) —— 带 +/− 步进按钮、键盘上下、min/max/step
-- [ ] **SearchInput** (base2 · SearchInput) —— Input 的预设变体，左 search 图标 + 右 clear
-- [ ] **Slider** (atoms · #slider) —— 单值滑块，支持 min/max/step、刻度、tooltip 显示当前值
+- [x] **Accordion / Collapsible** (base · B.09 揭示模式) —— 单/多展开
+- [x] **NumberInput** (base2 · NumberInput) —— 带 +/− 步进按钮、键盘上下、min/max/step
+- [x] **SearchInput** (base2 · SearchInput) —— Input 的预设变体，左 search 图标 + 右 clear
+- [x] **Slider** (atoms · #slider) —— 单值滑块，支持 min/max/step、刻度、tooltip 显示当前值
 
 ## 路线图 · 优先级 P1（高价值，工作量中）· 8
 

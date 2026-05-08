@@ -1,0 +1,46 @@
+---
+title: Slider 滑块
+description: 单值范围滑块，3 档尺寸 × 4 种 tone，支持 step、刻度、当前值气泡。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/slider/BasicVue.vue';
+
+## 基础用法
+
+支持鼠标拖拽和键盘（`←→↑↓` 步进、`Home/End` 跳极值、`PgUp/PgDn` 10 倍步）。`ticks` 渲染刻度（仅当 step 数量 ≤ 50 时）。
+
+<DemoFrame
+  vueCode={`<CfSlider v-model="a" show-value />
+<CfSlider v-model="b" tone="success" :step="5" show-value />
+<CfSlider v-model="c" :min="0" :max="5" :step="1" ticks tone="warning" />
+
+<CfSlider v-model="a" size="sm" />
+<CfSlider v-model="a" size="lg" tone="danger" />
+
+<CfSlider :model-value="50" disabled />`}
+  reactCode={`<CfSlider value={a} onChange={setA} showValue />
+<CfSlider value={b} onChange={setB} tone="success" step={5} showValue />
+<CfSlider value={c} onChange={setC} min={0} max={5} step={1} ticks tone="warning" />
+
+<CfSlider value={a} onChange={setA} size="sm" />
+<CfSlider value={a} onChange={setA} size="lg" tone="danger" />
+
+<CfSlider value={50} disabled />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop                                  | 类型                                              | 默认值      | 说明                       |
+| ------------------------------------- | ------------------------------------------------- | ----------- | -------------------------- |
+| `modelValue` (Vue) / `value` (React)  | `number`                                          | `0`         | 当前值                     |
+| `min`                                 | `number`                                          | `0`         | 最小值                     |
+| `max`                                 | `number`                                          | `100`       | 最大值                     |
+| `step`                                | `number`                                          | `1`         | 步进                       |
+| `size`                                | `'sm' \| 'md' \| 'lg'`                            | `'md'`      | 滑块/轨道粗细              |
+| `tone`                                | `'primary' \| 'success' \| 'warning' \| 'danger'` | `'primary'` | 填充色                     |
+| `showValue`                           | `boolean`                                         | `false`     | thumb 上显示当前值气泡      |
+| `ticks`                               | `boolean`                                         | `false`     | 渲染刻度（步数过多自动忽略） |
+| `disabled`                            | `boolean`                                         | `false`     | 禁用                       |

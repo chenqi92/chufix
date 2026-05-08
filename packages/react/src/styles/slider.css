@@ -1,0 +1,98 @@
+/* Slider · 范围 0..N 的拖拽选择器，3 档尺寸 × 4 种 tone。 */
+
+.cf-slider {
+  --cf-slider-thumb: 16px;
+  --cf-slider-rail: 4px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+  user-select: none;
+  touch-action: none;
+}
+.cf-slider[data-disabled] {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+.cf-slider__track {
+  position: relative;
+  flex: 1;
+  height: var(--cf-slider-thumb, 16px);
+  cursor: pointer;
+}
+.cf-slider[data-disabled] .cf-slider__track { cursor: not-allowed; }
+
+.cf-slider__rail {
+  position: absolute;
+  inset: 50% 0 auto 0;
+  transform: translateY(-50%);
+  height: var(--cf-slider-rail, 4px);
+  background: var(--bg-2);
+  border-radius: var(--r-pill);
+}
+.cf-slider__fill {
+  position: absolute;
+  inset: 50% auto auto 0;
+  transform: translateY(-50%);
+  height: var(--cf-slider-rail, 4px);
+  background: var(--accent-1);
+  border-radius: var(--r-pill);
+  transition: width var(--dur-instant) linear;
+}
+.cf-slider--success .cf-slider__fill { background: var(--status-success); }
+.cf-slider--warning .cf-slider__fill { background: var(--status-warning); }
+.cf-slider--danger  .cf-slider__fill { background: var(--status-error); }
+
+.cf-slider__tick {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: var(--cf-slider-rail, 4px);
+  background: var(--line-2);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 1px;
+}
+
+.cf-slider__thumb {
+  position: absolute;
+  top: 50%;
+  width: var(--cf-slider-thumb, 16px);
+  height: var(--cf-slider-thumb, 16px);
+  transform: translate(-50%, -50%);
+  background: var(--bg-1);
+  border: 2px solid var(--accent-1);
+  border-radius: 50%;
+  cursor: grab;
+  outline: none;
+  transition: transform var(--dur-instant) linear,
+              box-shadow var(--dur-fast) linear;
+}
+.cf-slider__thumb:hover { transform: translate(-50%, -50%) scale(1.08); }
+.cf-slider__thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.12); }
+.cf-slider__thumb:focus-visible { box-shadow: var(--focus-ring); }
+.cf-slider--success .cf-slider__thumb { border-color: var(--status-success); }
+.cf-slider--warning .cf-slider__thumb { border-color: var(--status-warning); }
+.cf-slider--danger  .cf-slider__thumb { border-color: var(--status-error); }
+
+.cf-slider__bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  padding: 2px 6px;
+  font-size: var(--t-11);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* sizes */
+.cf-slider--sm { --cf-slider-thumb: 12px; --cf-slider-rail: 3px; }
+.cf-slider--md { --cf-slider-thumb: 16px; --cf-slider-rail: 4px; }
+.cf-slider--lg { --cf-slider-thumb: 20px; --cf-slider-rail: 6px; }
