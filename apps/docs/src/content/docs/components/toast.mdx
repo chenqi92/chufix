@@ -36,7 +36,7 @@ export default function Demo() {
   );
 }`}
 >
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## 五种语义
@@ -55,7 +55,7 @@ toast.error('保存失败');
 toast.warning('磁盘空间不足');
 toast.info('已复制到剪贴板');`}
 >
-  <TypesVue client:load />
+  <TypesVue client:only="vue" />
 </DemoFrame>
 
 ## 6 个位置
@@ -68,7 +68,7 @@ toast.info('已复制到剪贴板');`}
   reactCode={`<Toaster position="top-right" />
 <Toaster position="bottom-center" />`}
 >
-  <PositionVue client:load />
+  <PositionVue client:only="vue" />
 </DemoFrame>
 
 ## API

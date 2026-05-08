@@ -55,7 +55,7 @@ export default function Demo() {
   );
 }`}
 >
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## 尺寸
@@ -73,7 +73,7 @@ export default function Demo() {
 …
 <Modal open={open} onOpenChange={setOpen} size="full">…</Modal>`}
 >
-  <SizesVue client:load />
+  <SizesVue client:only="vue" />
 </DemoFrame>
 
 ## 关闭行为
@@ -91,7 +91,7 @@ export default function Demo() {
   reactCode={`<Modal open={a} onOpenChange={setA} closeOnOverlay={false}>…</Modal>
 <Modal open={b} onOpenChange={setB} showClose={false}>…</Modal>`}
 >
-  <BehaviorVue client:load />
+  <BehaviorVue client:only="vue" />
 </DemoFrame>
 
 ## API

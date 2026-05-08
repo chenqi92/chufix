@@ -32,7 +32,7 @@ export default function Demo() {
   );
 }`}
 >
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## 4 种方向
@@ -49,7 +49,7 @@ export default function Demo() {
 <Tooltip content="左侧" placement="left"><Button>Left</Button></Tooltip>
 <Tooltip content="右侧" placement="right"><Button>Right</Button></Tooltip>`}
 >
-  <PlacementsVue client:load />
+  <PlacementsVue client:only="vue" />
 </DemoFrame>
 
 ## 延迟与长文本
@@ -80,7 +80,7 @@ export default function Demo() {
   <Button>长文本</Button>
 </Tooltip>`}
 >
-  <AdvancedVue client:load />
+  <AdvancedVue client:only="vue" />
 </DemoFrame>
 
 ## API

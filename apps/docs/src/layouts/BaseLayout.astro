@@ -2,7 +2,10 @@
 import '~/styles/global.css';
 import { site } from '~/config/site';
 import SiteNav from '~/components/SiteNav.astro';
-import Toaster from '@chufix/vue/src/toast/Toaster.vue';
+/* MUST be the barrel import; deep import (@chufix/vue/src/toast/Toaster.vue)
+ * loads a different copy of the toast store than the dist-bundled one used
+ * by `import { toast } from '@chufix/vue'` in demos, breaking pub/sub. */
+import { Toaster } from '@chufix/vue';
 
 interface Props {
   title?: string;
@@ -27,6 +30,6 @@ const fullTitle = title ? `${title} · ${site.title}` : `${site.title} · ${site
   <body>
     <SiteNav />
     <slot />
-    <Toaster client:load position="top-right" />
+    <Toaster client:only="vue" position="top-right" />
   </body>
 </html>
