@@ -4,11 +4,7 @@
  * @chufix/react, so the docs site is itself a live demo of the design system. */
 
 @import '@chufix/tokens/tokens.css';
-@import '@chufix/vue/src/styles/button.css';
-@import '@chufix/vue/src/styles/input.css';
-@import '@chufix/vue/src/styles/card.css';
-@import '@chufix/vue/src/styles/switch.css';
-@import '@chufix/vue/src/styles/modal.css';
+@import '@chufix/vue/style.css';
 
 * {
   box-sizing: border-box;
