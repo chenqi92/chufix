@@ -107,6 +107,31 @@ for (const { name, dirs } of pkgs) {
   );
 }
 
+/* ── 4b. sanity-check deploy repo's .gitignore so vendor dist isn't silently
+ *      dropped on commit. The deploy repo originally inherited Astro's
+ *      ".gitignore = dist" which matched every directory called dist anywhere,
+ *      including vendor/{vue,react}/dist/. Result: dist files were never
+ *      pushed and Cloudflare's build crashed with "Failed to resolve entry
+ *      for package @chufix/vue". Catch the regression here. */
+{
+  const giPath = join(deployRoot, '.gitignore');
+  if (existsSync(giPath)) {
+    const gi = readFileSync(giPath, 'utf8');
+    const lines = gi.split(/\r?\n/);
+    const offending = lines.find(
+      (l) => l.trim() === 'dist' || l.trim() === '**/dist'
+    );
+    if (offending) {
+      console.warn(
+        `\n⚠ deploy repo .gitignore has bare "${offending.trim()}" — that ignores vendor/*/dist/ too.`
+      );
+      console.warn(
+        '  fix: change to "/dist" so only repo-root Astro output is ignored, not vendored builds.'
+      );
+    }
+  }
+}
+
 /* ── 5. rewrite chukit-docs/package.json deps to file:./vendor/* ── */
 const deployPkgPath = join(deployRoot, 'package.json');
 const deployPkg = JSON.parse(readFileSync(deployPkgPath, 'utf8'));
