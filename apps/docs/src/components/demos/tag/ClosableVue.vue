@@ -20,7 +20,7 @@ function reset() {
       </Tag>
       <button
         v-if="!tags.length"
-        class="cf-btn cf-btn--soft cf-btn--sm"
+        class="ck-btn ck-btn--soft ck-btn--sm"
         @click="reset"
       >全部清空，点这里恢复</button>
     </div>

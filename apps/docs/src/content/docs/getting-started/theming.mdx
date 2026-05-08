@@ -1,45 +1,80 @@
 ---
 title: 主题与 Tokens
-description: 用 CSS 变量切换 ChuFix UI 的主色、暗色模式、圆角等设计 token。
+description: 用 CSS 变量切换 ChuFix UI 的主题、密度、主色等设计 token。
 order: 2
 ---
 
 ChuFix UI 所有视觉表现都从 CSS 变量里读，集中定义在 `@chufix/tokens/tokens.css`。
+颜色采用 OKLCH 色彩空间，从不直写 `#hex`。
 
-## 切换暗色模式
+## 切换主题
+
+三套主题：`dark-cool`（默认）、`dark-warm`、`light`。
 
 ```html
-<html data-theme="dark">...</html>
+<html data-theme="dark-cool">...</html>
+<html data-theme="dark-warm">...</html>
+<html data-theme="light">...</html>
 ```
 
-或运行时切换：
+`<html data-theme="dark">` 是 `dark-cool` 的别名。运行时切换：
 
 ```ts
-document.documentElement.dataset.theme =
-  document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+document.documentElement.dataset.theme = 'light';
 ```
+
+## 切换密度
+
+两种密度：`comfortable`（默认，控件 32px）、`compact`（控件 28px）。
+
+```html
+<html data-density="compact">...</html>
+```
+
+密度只影响 `--control-h / --pad-x / --row-h` 等几何 token，颜色与主题正交。
 
 ## 自定义主色
 
+主色由 OKLCH 单点定义，hover / active / soft 由其衍生：
+
 ```css
 :root {
-  --cf-primary: 280 78% 56%;        /* HSL 三通道，无 hsl() 包裹 */
-  --cf-primary-hover: 280 78% 50%;
-  --cf-primary-active: 280 78% 44%;
-  --cf-primary-soft: 280 78% 96%;
+  --accent-1: oklch(64% 0.16 263);            /* 默认填充 */
+  --accent-2: oklch(70% 0.16 263);            /* hover */
+  --accent-3: oklch(58% 0.15 263);            /* active */
+  --accent-soft: oklch(64% 0.16 263 / 0.16);  /* 浅色背景 */
 }
 ```
 
-token 用 HSL 通道格式而不是 `#hex` 是为了 `hsl(var(--cf-primary) / 0.5)` 能直接在样式里加透明度。
+只改色相 H 即可换品牌色（如 `H 12` 偏红、`H 152` 偏绿、`H 263` 偏蓝紫）。
+若需在样式里手动加透明度，OKLCH 直接支持斜杠语法：`oklch(64% 0.16 263 / 0.4)`。
 
 ## 完整 token 清单
 
-颜色：`--cf-bg` `--cf-fg` `--cf-muted` `--cf-muted-fg` `--cf-border` `--cf-ring` `--cf-primary*` `--cf-danger*` `--cf-success` `--cf-warning`
+**色面**：`--bg-0` `--bg-1` `--bg-2` `--bg-3` `--bg-inset`
 
-形状：`--cf-radius-sm` `--cf-radius` `--cf-radius-lg` `--cf-radius-pill`
+**前景**：`--fg-1` `--fg-2` `--fg-3` `--fg-on-accent`
 
-字体：`--cf-font-sans`
+**线条**：`--line-1` `--line-2`
 
-阴影：`--cf-shadow-sm` `--cf-shadow` `--cf-shadow-lg`
+**主色**：`--accent-1` `--accent-2` `--accent-3` `--accent-soft`
 
-动画：`--cf-duration-fast` `--cf-duration` `--cf-easing`
+**状态**：`--status-success` `--status-warning` `--status-error` `--status-info`，
+各自配 `-soft` 浅色变体。
+
+**圆角**：`--r-2` `--r-3` `--r-4` `--r-6` `--r-8` `--r-pill`
+
+**间距**（4px 步进）：`--s-1` … `--s-12`
+
+**字号**：`--t-11` `--t-12` `--t-13` `--t-14` `--t-16` `--t-18` `--t-22` `--t-28`，
+配套 `--lh-*` 行高。
+
+**字体**：`--font-sans`（Inter）、`--font-mono`（JetBrains Mono）
+
+**阴影**：`--shadow-1`（细描边）`--shadow-2`（卡片）`--shadow-3`（弹层）`--shadow-4`（模态）
+
+**时长**：`--dur-instant` `--dur-fast` `--dur-base` `--dur-slow`
+
+**缓动**：`--ease-out` `--ease-in-out` `--ease-spring`
+
+**层级**：`--z-sticky` `--z-dropdown` `--z-popover` `--z-tooltip` `--z-drawer` `--z-modal` `--z-toast`

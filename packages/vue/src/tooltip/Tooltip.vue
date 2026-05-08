@@ -63,7 +63,7 @@ const tipStyle = computed(() => ({
 }));
 
 const tipClass = computed(
-  () => `cf-tooltip cf-tooltip--${pos.value.placement}`,
+  () => `ck-tooltip ck-tooltip--${pos.value.placement}`,
 );
 
 onBeforeUnmount(clearTimers);
@@ -72,7 +72,7 @@ onBeforeUnmount(clearTimers);
 <template>
   <span
     ref="triggerRef"
-    class="cf-tooltip-trigger"
+    class="ck-tooltip-trigger"
     @mouseenter="show"
     @mouseleave="hide"
     @focusin="show"
@@ -81,7 +81,7 @@ onBeforeUnmount(clearTimers);
     <slot />
   </span>
   <Teleport to="body">
-    <Transition name="cf-tooltip-fade">
+    <Transition name="ck-tooltip-fade">
       <div
         v-if="visible"
         ref="tipRef"
@@ -90,7 +90,7 @@ onBeforeUnmount(clearTimers);
         :style="tipStyle"
       >
         <slot name="content">{{ content }}</slot>
-        <span class="cf-tooltip__arrow" />
+        <span class="ck-tooltip__arrow" />
       </div>
     </Transition>
   </Teleport>

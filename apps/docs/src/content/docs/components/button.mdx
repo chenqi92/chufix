@@ -1,17 +1,17 @@
 ---
 title: Button 按钮
-description: 5 种 variant、3 种尺寸、3 种形状、2 种语义色、loading 与 disabled 态。
+description: 5 种 variant、3 种尺寸、3 种形状、loading 与 disabled 态。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/button/BasicVue.vue';
-import TonesVue from '~/components/demos/button/TonesVue.vue';
 import SizesVue from '~/components/demos/button/SizesVue.vue';
 import StatesVue from '~/components/demos/button/StatesVue.vue';
 
 ## 基础用法
 
-5 种视觉变体覆盖从主操作到次操作的全部层级。`solid` 是默认的实心按钮，`link` 退化成纯文字链接。
+5 种视觉变体覆盖从主操作到次操作的全部层级，按视觉权重从重到轻排列。
+`primary` 是页面唯一的主操作，`danger` 用于删除等不可逆操作。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
@@ -19,50 +19,27 @@ import { Button } from '@chufix/vue';
 </script>
 
 <template>
-  <Button>Solid</Button>
-  <Button variant="soft">Soft</Button>
-  <Button variant="outline">Outline</Button>
+  <Button variant="primary">Primary</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="tertiary">Tertiary</Button>
   <Button variant="ghost">Ghost</Button>
-  <Button variant="link">Link</Button>
+  <Button variant="danger">Danger</Button>
 </template>`}
   reactCode={`import { Button } from '@chufix/react';
 
 export default function Demo() {
   return (
     <>
-      <Button>Solid</Button>
-      <Button variant="soft">Soft</Button>
-      <Button variant="outline">Outline</Button>
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="tertiary">Tertiary</Button>
       <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
+      <Button variant="danger">Danger</Button>
     </>
   );
 }`}
 >
   <BasicVue client:load />
-</DemoFrame>
-
-## 语义色
-
-`tone` 控制颜色语义。`primary` 是默认值，`danger` 用于删除等不可逆操作。所有 variant 都支持。
-
-<DemoFrame
-  vueCode={`<Button tone="primary">Primary</Button>
-<Button tone="primary" variant="soft">Soft</Button>
-<Button tone="primary" variant="outline">Outline</Button>
-
-<Button tone="danger">Danger</Button>
-<Button tone="danger" variant="soft">Soft</Button>
-<Button tone="danger" variant="outline">Outline</Button>`}
-  reactCode={`<Button tone="primary">Primary</Button>
-<Button tone="primary" variant="soft">Soft</Button>
-<Button tone="primary" variant="outline">Outline</Button>
-
-<Button tone="danger">Danger</Button>
-<Button tone="danger" variant="soft">Soft</Button>
-<Button tone="danger" variant="outline">Outline</Button>`}
->
-  <TonesVue client:load />
 </DemoFrame>
 
 ## 尺寸与形状
@@ -139,15 +116,14 @@ export default function Demo() {
 
 ## API
 
-| Prop       | 类型                                                       | 默认值       | 说明                                |
-| ---------- | ---------------------------------------------------------- | ------------ | ----------------------------------- |
-| `variant`  | `'solid' \| 'soft' \| 'outline' \| 'ghost' \| 'link'`      | `'solid'`    | 视觉变体                            |
-| `size`     | `'sm' \| 'md' \| 'lg'`                                     | `'md'`       | 高度与字号                          |
-| `shape`    | `'default' \| 'pill' \| 'square'`                          | `'default'`  | 圆角形状                            |
-| `tone`     | `'primary' \| 'danger'`                                    | `'primary'`  | 语义色                              |
-| `loading`  | `boolean`                                                  | `false`      | 显示 spinner 并阻止点击             |
-| `block`    | `boolean`                                                  | `false`      | 撑满父容器宽度                      |
-| `disabled` | `boolean`                                                  | `false`      | 禁用                                |
+| Prop       | 类型                                                                | 默认值       | 说明                       |
+| ---------- | ------------------------------------------------------------------- | ------------ | -------------------------- |
+| `variant`  | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'danger'`     | `'primary'`  | 视觉变体（按权重从重到轻） |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                              | `'md'`       | 高度与字号                 |
+| `shape`    | `'default' \| 'pill' \| 'square'`                                   | `'default'`  | 圆角形状                   |
+| `loading`  | `boolean`                                                           | `false`      | 显示 spinner 并阻止点击    |
+| `block`    | `boolean`                                                           | `false`      | 撑满父容器宽度             |
+| `disabled` | `boolean`                                                           | `false`      | 禁用                       |
 
 ### 插槽 / Children
 

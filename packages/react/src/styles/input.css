@@ -1,129 +1,108 @@
-/* ChuFix Input — wrapper + native input. Wrapper handles border/focus ring/
- * affixes, native input stays transparent so prefix/suffix can sit on the
- * same baseline. */
-.cf-input {
-  --_h: 2.25rem;
-  --_px: 0.75rem;
-  --_fs: 0.875rem;
-  --_bg: hsl(var(--cf-bg));
-  --_border: hsl(var(--cf-border));
-  --_border-hover: hsl(var(--cf-fg) / 0.25);
-  --_border-focus: hsl(var(--cf-primary));
-  --_ring: hsl(var(--cf-primary) / 0.18);
-  --_fg: hsl(var(--cf-fg));
-  --_placeholder: hsl(var(--cf-muted-fg));
+/* ChuKit Input — wrapper + native input. */
 
+.ck-input {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  height: var(--_h);
-  padding: 0 var(--_px);
-  font-size: var(--_fs);
-  font-family: var(--cf-font-sans);
-  color: var(--_fg);
-  background: var(--_bg);
-  border: 1px solid var(--_border);
-  border-radius: var(--cf-radius);
+  gap: 6px;
+  height: var(--control-h);
+  padding: 0 var(--pad-x);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
   width: 100%;
-  max-width: 20rem;
+  max-width: 320px;
   cursor: text;
-  transition:
-    border-color var(--cf-duration) var(--cf-easing),
-    box-shadow var(--cf-duration) var(--cf-easing),
-    background-color var(--cf-duration) var(--cf-easing);
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
 }
 
-.cf-input:hover:not(.is-disabled):not(.is-focused) {
-  border-color: var(--_border-hover);
+.ck-input:hover:not(.is-disabled):not(.is-focused) {
+  border-color: var(--fg-3);
 }
 
-.cf-input.is-focused {
-  border-color: var(--_border-focus);
-  box-shadow: 0 0 0 3px var(--_ring);
+.ck-input.is-focused {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
 }
 
-.cf-input.is-error {
-  --_border: hsl(var(--cf-danger));
-  --_border-focus: hsl(var(--cf-danger));
-  --_ring: hsl(var(--cf-danger) / 0.18);
+.ck-input.is-error {
+  border-color: var(--status-error);
+}
+.ck-input.is-error.is-focused {
+  box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
 }
 
-.cf-input.is-disabled {
-  --_bg: hsl(var(--cf-muted) / 0.5);
+.ck-input.is-disabled {
+  background: var(--bg-2);
+  color: var(--fg-3);
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: var(--disabled-opacity);
 }
 
 /* sizes */
-.cf-input--sm { --_h: 1.75rem; --_px: 0.6rem; --_fs: 0.8125rem; }
-.cf-input--md { --_h: 2.25rem; --_px: 0.75rem; --_fs: 0.875rem; }
-.cf-input--lg { --_h: 2.75rem; --_px: 0.9rem; --_fs: 0.9375rem; }
+.ck-input--sm { height: var(--control-h-sm); padding: 0 8px;  font-size: var(--t-12); }
+.ck-input--md { height: var(--control-h);    padding: 0 var(--pad-x); font-size: var(--t-13); }
+.ck-input--lg { height: var(--control-h-lg); padding: 0 14px; font-size: var(--t-14); }
 
 /* variants */
-.cf-input--filled {
-  --_bg: hsl(var(--cf-muted));
-  --_border: transparent;
+.ck-input--outline {
+  /* default - already styled */
 }
-.cf-input--filled.is-focused { --_bg: hsl(var(--cf-bg)); }
+.ck-input--filled {
+  background: var(--bg-2);
+  border-color: transparent;
+}
+.ck-input--filled.is-focused {
+  background: var(--bg-inset);
+  border-color: var(--accent-1);
+}
+.ck-input--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+.ck-input--ghost.is-focused {
+  background: var(--bg-inset);
+  border-color: var(--accent-1);
+}
 
-.cf-input--ghost {
-  --_bg: transparent;
-  --_border: transparent;
-  border-bottom: 1px solid var(--_border);
-  border-radius: 0;
-  padding-left: 0;
-  padding-right: 0;
-}
-.cf-input--ghost.is-focused {
-  border-bottom-color: var(--_border-focus);
-  box-shadow: none;
-}
-
-/* native element resets */
-.cf-input__native {
-  flex: 1 1 auto;
+.ck-input__native {
+  flex: 1;
   min-width: 0;
-  height: 100%;
-  padding: 0;
-  margin: 0;
+  background: transparent;
   border: 0;
   outline: none;
-  background: transparent;
   color: inherit;
   font: inherit;
+  padding: 0;
 }
-.cf-input__native::placeholder { color: var(--_placeholder); }
-.cf-input__native:disabled { cursor: not-allowed; }
+.ck-input__native::placeholder { color: var(--fg-3); }
+.ck-input__native:disabled { cursor: not-allowed; }
 
-/* affixes */
-.cf-input__prefix,
-.cf-input__suffix {
+.ck-input__prefix,
+.ck-input__suffix {
   display: inline-flex;
   align-items: center;
-  color: hsl(var(--cf-muted-fg));
-  font-size: 0.95em;
+  color: var(--fg-3);
+  flex: none;
 }
 
-.cf-input__clear {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: hsl(var(--cf-muted-fg));
-  cursor: pointer;
-  padding: 0;
-  width: 1em;
-  height: 1em;
+.ck-input__clear {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
-  transition: background-color 120ms, color 120ms;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex: none;
 }
-.cf-input__clear:hover {
-  background: hsl(var(--cf-muted));
-  color: hsl(var(--cf-fg));
-}
-.cf-input__clear svg {
-  width: 0.85em;
-  height: 0.85em;
-}
+.ck-input__clear:hover { background: var(--bg-3); color: var(--fg-1); }
+.ck-input__clear svg { width: 10px; height: 10px; }

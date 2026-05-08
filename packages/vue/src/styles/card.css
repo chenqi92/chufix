@@ -1,75 +1,70 @@
-/* ChuFix Card — wrapper + 3 sub-slots. Pure layout, no business logic. */
-.cf-card {
-  --_bg: hsl(var(--cf-bg));
-  --_border: hsl(var(--cf-border));
-  --_shadow: var(--cf-shadow-sm);
+/* ChuKit Card — wrapper + 3 sub-slots. */
 
+.ck-card {
   display: flex;
   flex-direction: column;
-  background: var(--_bg);
-  border: 1px solid var(--_border);
-  border-radius: var(--cf-radius-lg);
-  box-shadow: var(--_shadow);
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-8);
   overflow: hidden;
-  font-family: var(--cf-font-sans);
-  color: hsl(var(--cf-fg));
-  transition:
-    box-shadow var(--cf-duration) var(--cf-easing),
-    transform var(--cf-duration) var(--cf-easing),
-    border-color var(--cf-duration) var(--cf-easing);
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  transition: box-shadow var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
 }
 
-/* variants */
-.cf-card--elevated { --_shadow: var(--cf-shadow); --_border: transparent; }
-.cf-card--outlined { --_shadow: none; }
-.cf-card--filled {
-  --_bg: hsl(var(--cf-muted) / 0.5);
-  --_border: transparent;
-  --_shadow: none;
+.ck-card--outlined {
+  /* default */
+}
+.ck-card--elevated {
+  border-color: transparent;
+  box-shadow: var(--shadow-2);
+}
+.ck-card--filled {
+  background: var(--bg-2);
+  border-color: transparent;
 }
 
-/* interactive */
-.cf-card.is-interactive {
+.ck-card--interactive {
   cursor: pointer;
 }
-.cf-card.is-interactive:hover {
-  box-shadow: var(--cf-shadow-lg);
-  transform: translateY(-2px);
+.ck-card--interactive:hover {
+  border-color: var(--line-2);
+  background: var(--bg-2);
 }
-.cf-card.is-interactive:focus-visible {
-  outline: 2px solid hsl(var(--cf-ring) / 0.6);
-  outline-offset: 2px;
+.ck-card--interactive.ck-card--elevated:hover {
+  box-shadow: var(--shadow-3);
+}
+.ck-card--interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
-/* sub-slots */
-.cf-card__header,
-.cf-card__body,
-.cf-card__footer {
-  padding: 1rem 1.25rem;
+.ck-card__header {
+  padding: 12px 14px;
+  font-weight: var(--w-semibold);
+  font-size: var(--t-14);
+  border-bottom: 1px solid var(--line-1);
 }
-.cf-card__header {
-  font-weight: 600;
-  font-size: 0.95rem;
-  border-bottom: 1px solid hsl(var(--cf-border));
-}
-.cf-card__body {
-  flex: 1 1 auto;
-  font-size: 0.875rem;
-  color: hsl(var(--cf-muted-fg));
+.ck-card__body {
+  padding: 14px;
+  font-size: var(--t-13);
   line-height: 1.6;
+  flex: 1;
 }
-.cf-card__footer {
-  border-top: 1px solid hsl(var(--cf-border));
+.ck-card__footer {
+  padding: 10px 14px;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 0.5rem;
-  background: hsl(var(--cf-muted) / 0.3);
+  gap: 8px;
+  border-top: 1px solid var(--line-1);
+  background: var(--bg-2);
 }
 
-/* when filled or single-slot use, suppress dividers */
-.cf-card--filled .cf-card__header,
-.cf-card--filled .cf-card__footer {
-  border-color: transparent;
-  background: transparent;
+/* link card variant — used in MDX feature grids */
+.ck-card--link {
+  text-decoration: none;
+  color: inherit;
 }
+.ck-card--link:hover { text-decoration: none; }

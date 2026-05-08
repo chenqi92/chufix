@@ -1,93 +1,78 @@
-/* ChuFix Textarea — wrapper + native textarea, mirrors Input visual language. */
-.cf-textarea {
-  --_px: 0.75rem;
-  --_py: 0.6rem;
-  --_fs: 0.875rem;
-  --_bg: hsl(var(--cf-bg));
-  --_border: hsl(var(--cf-border));
-  --_border-hover: hsl(var(--cf-fg) / 0.25);
-  --_border-focus: hsl(var(--cf-primary));
-  --_ring: hsl(var(--cf-primary) / 0.18);
-  --_fg: hsl(var(--cf-fg));
-  --_placeholder: hsl(var(--cf-muted-fg));
+/* ChuKit Textarea — wrapper + native textarea, mirrors Input. */
 
+.ck-textarea {
   position: relative;
   display: block;
   width: 100%;
-  font-family: var(--cf-font-sans);
-  background: var(--_bg);
-  border: 1px solid var(--_border);
-  border-radius: var(--cf-radius);
-  transition:
-    border-color var(--cf-duration) var(--cf-easing),
-    box-shadow var(--cf-duration) var(--cf-easing),
-    background-color var(--cf-duration) var(--cf-easing);
+  font-family: var(--font-sans);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
 }
-
-.cf-textarea:hover:not(.is-disabled):not(.is-focused) {
-  border-color: var(--_border-hover);
+.ck-textarea:hover:not(.is-disabled):not(.is-focused) { border-color: var(--fg-3); }
+.ck-textarea.is-focused {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
 }
-.cf-textarea.is-focused {
-  border-color: var(--_border-focus);
-  box-shadow: 0 0 0 3px var(--_ring);
+.ck-textarea.is-error { border-color: var(--status-error); }
+.ck-textarea.is-error.is-focused {
+  box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
 }
-.cf-textarea.is-error {
-  --_border: hsl(var(--cf-danger));
-  --_border-focus: hsl(var(--cf-danger));
-  --_ring: hsl(var(--cf-danger) / 0.18);
-}
-.cf-textarea.is-disabled {
-  background: hsl(var(--cf-muted));
+.ck-textarea.is-disabled {
+  background: var(--bg-2);
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: var(--disabled-opacity);
 }
 
 /* variants */
-.cf-textarea--filled {
-  --_bg: hsl(var(--cf-muted));
-  --_border: transparent;
+.ck-textarea--filled {
+  background: var(--bg-2);
+  border-color: transparent;
 }
-.cf-textarea--filled.is-focused {
-  --_bg: hsl(var(--cf-bg));
+.ck-textarea--filled.is-focused {
+  background: var(--bg-inset);
+  border-color: var(--accent-1);
 }
-.cf-textarea--ghost {
-  --_bg: transparent;
-  --_border: transparent;
+.ck-textarea--ghost {
+  background: transparent;
+  border-color: transparent;
 }
-.cf-textarea--ghost.is-focused {
-  --_border: hsl(var(--cf-primary));
-  background: hsl(var(--cf-bg));
+.ck-textarea--ghost.is-focused {
+  background: var(--bg-inset);
+  border-color: var(--accent-1);
 }
 
-/* sizes */
-.cf-textarea--sm { --_px: 0.625rem; --_py: 0.5rem;  --_fs: 0.8125rem; }
-.cf-textarea--md { --_px: 0.75rem;  --_py: 0.6rem;  --_fs: 0.875rem; }
-.cf-textarea--lg { --_px: 0.875rem; --_py: 0.75rem; --_fs: 0.95rem; }
+/* sizes — affect padding/font, height is row-driven */
+.ck-textarea--sm .ck-textarea__el { padding: 6px 10px; font-size: var(--t-12); }
+.ck-textarea--md .ck-textarea__el { padding: 8px 12px; font-size: var(--t-13); }
+.ck-textarea--lg .ck-textarea__el { padding: 10px 14px; font-size: var(--t-14); }
 
-.cf-textarea__el {
+.ck-textarea__el {
   display: block;
   width: 100%;
-  padding: var(--_py) var(--_px);
   font: inherit;
-  font-size: var(--_fs);
+  font-size: var(--t-13);
   line-height: 1.5;
-  color: var(--_fg);
+  color: var(--fg-1);
   background: transparent;
   border: 0;
   outline: none;
   border-radius: inherit;
-  min-height: calc(var(--_fs) * 1.5 * 3 + var(--_py) * 2);
+  padding: 8px 12px;
 }
-.cf-textarea__el::placeholder { color: var(--_placeholder); }
-.cf-textarea__el:disabled { cursor: not-allowed; }
+.ck-textarea__el::placeholder { color: var(--fg-3); }
+.ck-textarea__el:disabled { cursor: not-allowed; }
 
-.cf-textarea__count {
+.ck-textarea__count {
   position: absolute;
-  right: 0.65rem;
-  bottom: 0.45rem;
-  font-size: 0.75rem;
-  color: hsl(var(--cf-muted-fg));
+  right: 10px;
+  bottom: 6px;
+  font-size: var(--t-11);
+  color: var(--fg-3);
   pointer-events: none;
   user-select: none;
 }
-.cf-textarea__count.is-over { color: hsl(var(--cf-danger)); }
+.ck-textarea__count.is-over { color: var(--status-error); }

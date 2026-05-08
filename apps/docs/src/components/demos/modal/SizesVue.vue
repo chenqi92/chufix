@@ -11,11 +11,11 @@ const full = ref(false);
 
 <template>
   <div class="demo-row">
-    <Button variant="outline" @click="sm = true">sm · 360px</Button>
-    <Button variant="outline" @click="md = true">md · 480px</Button>
-    <Button variant="outline" @click="lg = true">lg · 640px</Button>
-    <Button variant="outline" @click="xl = true">xl · 800px</Button>
-    <Button variant="outline" @click="full = true">full · 几乎铺满</Button>
+    <Button variant="tertiary" @click="sm = true">sm · 360px</Button>
+    <Button variant="tertiary" @click="md = true">md · 480px</Button>
+    <Button variant="tertiary" @click="lg = true">lg · 640px</Button>
+    <Button variant="tertiary" @click="xl = true">xl · 800px</Button>
+    <Button variant="tertiary" @click="full = true">full · 几乎铺满</Button>
   </div>
 
   <Modal v-model:open="sm" size="sm" title="size = sm">

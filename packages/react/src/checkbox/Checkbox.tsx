@@ -46,18 +46,18 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         <input
           ref={inputRef}
           type="checkbox"
-          className="cf-checkbox__input"
+          className="ck-checkbox__input"
           checked={current}
           disabled={disabled}
           aria-checked={indeterminate ? 'mixed' : current}
           onChange={handleChange}
           {...rest}
         />
-        <span className="cf-checkbox__box" aria-hidden="true">
+        <span className="ck-checkbox__box" aria-hidden="true">
           {indeterminate ? (
-            <span className="cf-checkbox__dash" />
+            <span className="ck-checkbox__dash" />
           ) : (
-            <svg className="cf-checkbox__check" viewBox="0 0 16 16" fill="none">
+            <svg className="ck-checkbox__check" viewBox="0 0 16 16" fill="none">
               <path
                 d="M3 8.5l3.2 3.2L13 5"
                 stroke="currentColor"
@@ -68,7 +68,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             </svg>
           )}
         </span>
-        {children ? <span className="cf-checkbox__label">{children}</span> : null}
+        {children ? <span className="ck-checkbox__label">{children}</span> : null}
       </label>
     );
   },

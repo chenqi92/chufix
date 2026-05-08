@@ -1,122 +1,119 @@
-/* ChuFix Modal — overlay (full-screen backdrop) + dialog (centered). Animations
- * are scoped to enter/leave classes both Vue's <Transition> and React's
- * delayed-unmount can map onto. */
+/* ChuKit Modal — overlay + centered dialog. */
 
-.cf-modal__overlay {
+.ck-modal__overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
-  background: hsl(222 47% 11% / 0.55);
+  padding: 24px;
+  background: oklch(0% 0 0 / 0.55);
   backdrop-filter: blur(4px);
-  font-family: var(--cf-font-sans);
+  font-family: var(--font-sans);
   opacity: 1;
-  transition: opacity var(--cf-duration) var(--cf-easing);
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 
-.cf-modal__dialog {
+.ck-modal__dialog {
   position: relative;
   width: 100%;
   max-width: 480px;
-  max-height: calc(100vh - 3rem);
-  background: hsl(var(--cf-bg));
-  color: hsl(var(--cf-fg));
-  border-radius: var(--cf-radius-lg);
-  box-shadow: var(--cf-shadow-lg);
+  max-height: calc(100vh - 48px);
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-8);
+  box-shadow: var(--shadow-4);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition:
-    transform var(--cf-duration) var(--cf-easing),
-    opacity var(--cf-duration) var(--cf-easing);
+  transition: transform var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
   outline: none;
 }
 
 /* sizes */
-.cf-modal__dialog--sm   { max-width: 360px; }
-.cf-modal__dialog--md   { max-width: 480px; }
-.cf-modal__dialog--lg   { max-width: 640px; }
-.cf-modal__dialog--xl   { max-width: 800px; }
-.cf-modal__dialog--full { max-width: calc(100vw - 3rem); max-height: calc(100vh - 3rem); }
+.ck-modal__dialog--sm   { max-width: 360px; }
+.ck-modal__dialog--md   { max-width: 480px; }
+.ck-modal__dialog--lg   { max-width: 640px; }
+.ck-modal__dialog--xl   { max-width: 800px; }
+.ck-modal__dialog--full { max-width: calc(100vw - 48px); max-height: calc(100vh - 48px); }
 
-.cf-modal__header {
-  padding: 1rem 1.25rem;
-  font-weight: 600;
-  font-size: 1rem;
-  border-bottom: 1px solid hsl(var(--cf-border));
-  padding-right: 2.75rem;
+.ck-modal__header {
+  padding: 14px 16px;
+  font-weight: var(--w-semibold);
+  font-size: var(--t-14);
+  border-bottom: 1px solid var(--line-1);
+  padding-right: 44px;
 }
 
-.cf-modal__body {
-  padding: 1rem 1.25rem;
-  font-size: 0.9rem;
-  color: hsl(var(--cf-fg));
+.ck-modal__body {
+  padding: 14px 16px;
+  font-size: var(--t-13);
+  color: var(--fg-1);
   line-height: 1.6;
   overflow-y: auto;
 }
 
-.cf-modal__footer {
-  padding: 0.85rem 1.25rem;
+.ck-modal__footer {
+  padding: 10px 16px;
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
-  border-top: 1px solid hsl(var(--cf-border));
-  background: hsl(var(--cf-muted) / 0.3);
+  gap: 8px;
+  border-top: 1px solid var(--line-1);
+  background: var(--bg-2);
 }
 
-.cf-modal__close {
+.ck-modal__close {
   position: absolute;
-  top: 0.65rem;
-  right: 0.7rem;
+  top: 8px;
+  right: 8px;
   appearance: none;
   border: 0;
   background: transparent;
-  color: hsl(var(--cf-muted-fg));
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: var(--cf-radius-sm);
+  color: var(--fg-3);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-4);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 120ms, color 120ms;
+  transition: background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
-.cf-modal__close:hover {
-  background: hsl(var(--cf-muted));
-  color: hsl(var(--cf-fg));
+.ck-modal__close:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
 }
-.cf-modal__close svg { width: 1rem; height: 1rem; }
+.ck-modal__close svg { width: 14px; height: 14px; }
 
-/* enter/leave — used by both Vue <Transition name="cf-modal"> and React class toggling */
-.cf-modal-enter-from,
-.cf-modal-leave-to {
+/* enter/leave — Vue <Transition name="ck-modal"> + React data-state="open|closed" */
+.ck-modal-enter-from,
+.ck-modal-leave-to {
   opacity: 0;
 }
-.cf-modal-enter-from .cf-modal__dialog,
-.cf-modal-leave-to .cf-modal__dialog {
+.ck-modal-enter-from .ck-modal__dialog,
+.ck-modal-leave-to .ck-modal__dialog {
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }
-.cf-modal-enter-active,
-.cf-modal-leave-active {
-  transition: opacity var(--cf-duration) var(--cf-easing);
+.ck-modal-enter-active,
+.ck-modal-leave-active {
+  transition: opacity var(--dur-base) var(--ease-out);
 }
-.cf-modal-enter-active .cf-modal__dialog,
-.cf-modal-leave-active .cf-modal__dialog {
-  transition:
-    transform var(--cf-duration) var(--cf-easing),
-    opacity var(--cf-duration) var(--cf-easing);
+.ck-modal-enter-active .ck-modal__dialog,
+.ck-modal-leave-active .ck-modal__dialog {
+  transition: transform var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
 }
 
-/* React-friendly: data-state="open" / "closed" toggles the same transitions */
-[data-cf-modal][data-state='closed'] {
+[data-ck-modal][data-state='closed'] {
   opacity: 0;
   pointer-events: none;
 }
-[data-cf-modal][data-state='closed'] .cf-modal__dialog {
+[data-ck-modal][data-state='closed'] .ck-modal__dialog {
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }

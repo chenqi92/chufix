@@ -14,7 +14,7 @@ export function avatarClass(p: {
   size: AvatarSize;
   shape: AvatarShape;
 }): string {
-  return ['cf-avatar', `cf-avatar--${p.size}`, `cf-avatar--${p.shape}`].join(' ');
+  return ['ck-avatar', `ck-avatar--${p.size}`, `ck-avatar--${p.shape}`].join(' ');
 }
 
 export function initialsFromName(name?: string, fallback?: string): string {

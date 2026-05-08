@@ -25,9 +25,9 @@ export function inputClass(p: {
   className?: string;
 }): string {
   return [
-    'cf-input',
-    `cf-input--${p.variant}`,
-    `cf-input--${p.size}`,
+    'ck-input',
+    `ck-input--${p.variant}`,
+    `ck-input--${p.size}`,
     p.focused && 'is-focused',
     p.disabled && 'is-disabled',
     p.error && 'is-error',

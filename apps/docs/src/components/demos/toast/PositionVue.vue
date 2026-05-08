@@ -13,12 +13,12 @@ function show(p: Pos) {
 <template>
   <div class="demo-stack">
     <div class="demo-row">
-      <Button variant="outline" @click="show('top-left')">top-left</Button>
-      <Button variant="outline" @click="show('top-center')">top-center</Button>
-      <Button variant="outline" @click="show('top-right')">top-right</Button>
-      <Button variant="outline" @click="show('bottom-left')">bottom-left</Button>
-      <Button variant="outline" @click="show('bottom-center')">bottom-center</Button>
-      <Button variant="outline" @click="show('bottom-right')">bottom-right</Button>
+      <Button variant="tertiary" @click="show('top-left')">top-left</Button>
+      <Button variant="tertiary" @click="show('top-center')">top-center</Button>
+      <Button variant="tertiary" @click="show('top-right')">top-right</Button>
+      <Button variant="tertiary" @click="show('bottom-left')">bottom-left</Button>
+      <Button variant="tertiary" @click="show('bottom-center')">bottom-center</Button>
+      <Button variant="tertiary" @click="show('bottom-right')">bottom-right</Button>
     </div>
     <p class="demo-hint">提示：本站只挂了一个 <code>Toaster</code> 在 <code>top-right</code>，按钮全部都会从这个位置弹出。在你自己的应用里把 <code>&lt;Toaster position="..."/&gt;</code> 改成对应值即可。</p>
   </div>

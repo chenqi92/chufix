@@ -8,8 +8,8 @@ export interface CardProps {
 
 export function cardClass(p: { variant: CardVariant; interactive: boolean }): string {
   return [
-    'cf-card',
-    `cf-card--${p.variant}`,
+    'ck-card',
+    `ck-card--${p.variant}`,
     p.interactive && 'is-interactive',
   ]
     .filter(Boolean)

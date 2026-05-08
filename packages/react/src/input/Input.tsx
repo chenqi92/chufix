@@ -77,10 +77,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         }
       }}
     >
-      {prefix ? <span className="cf-input__prefix">{prefix}</span> : null}
+      {prefix ? <span className="ck-input__prefix">{prefix}</span> : null}
       <input
         ref={innerRef}
-        className="cf-input__native"
+        className="ck-input__native"
         value={current}
         disabled={disabled}
         readOnly={readOnly}
@@ -101,7 +101,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {showClear ? (
         <button
           type="button"
-          className="cf-input__clear"
+          className="ck-input__clear"
           tabIndex={-1}
           aria-label="清空"
           onMouseDown={(e) => e.preventDefault()}
@@ -112,7 +112,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           </svg>
         </button>
       ) : suffix ? (
-        <span className="cf-input__suffix">{suffix}</span>
+        <span className="ck-input__suffix">{suffix}</span>
       ) : null}
     </label>
   );

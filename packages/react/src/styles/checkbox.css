@@ -1,26 +1,28 @@
-/* ChuFix Checkbox — visually-hidden native input + custom box. */
-.cf-checkbox {
-  --_size: 1.05rem;
-  --_radius: 0.3rem;
+/* ChuKit Checkbox — visually-hidden native input + custom box. */
 
+.ck-checkbox {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-family: var(--cf-font-sans);
-  font-size: 0.875rem;
-  color: hsl(var(--cf-fg));
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   line-height: 1.4;
 }
-.cf-checkbox.is-disabled { cursor: not-allowed; opacity: 0.55; }
+.ck-checkbox.is-disabled {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity);
+}
 
-.cf-checkbox--sm { --_size: 0.9rem;  --_radius: 0.25rem; font-size: 0.8125rem; }
-.cf-checkbox--md { --_size: 1.05rem; --_radius: 0.3rem;  font-size: 0.875rem; }
-.cf-checkbox--lg { --_size: 1.25rem; --_radius: 0.35rem; font-size: 0.95rem; }
+.ck-checkbox--sm { font-size: var(--t-12); }
+.ck-checkbox--md { font-size: var(--t-13); }
+.ck-checkbox--lg { font-size: var(--t-14); }
 
-.cf-checkbox__input {
+.ck-checkbox__input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -32,58 +34,62 @@
   border: 0;
 }
 
-.cf-checkbox__box {
+.ck-checkbox__box {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--_size);
-  height: var(--_size);
-  background: hsl(var(--cf-bg));
-  border: 1px solid hsl(var(--cf-border));
-  border-radius: var(--_radius);
-  color: hsl(var(--cf-primary-fg));
+  width: 16px;
+  height: 16px;
+  background: var(--bg-inset);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-3);
+  color: var(--fg-on-accent);
   flex: none;
-  transition:
-    background-color var(--cf-duration) var(--cf-easing),
-    border-color var(--cf-duration) var(--cf-easing),
-    box-shadow var(--cf-duration) var(--cf-easing);
+  transition: background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
 }
+.ck-checkbox--sm .ck-checkbox__box { width: 14px; height: 14px; }
+.ck-checkbox--lg .ck-checkbox__box { width: 18px; height: 18px; }
 
-.cf-checkbox__check {
-  width: 80%;
-  height: 80%;
+.ck-checkbox__check {
+  width: 12px;
+  height: 12px;
   opacity: 0;
-  transform: scale(0.6);
-  transition:
-    opacity var(--cf-duration) var(--cf-easing),
-    transform var(--cf-duration) var(--cf-easing);
+  transform: scale(0.5);
+  transition: opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
 
-.cf-checkbox__dash {
+.ck-checkbox__dash {
   display: block;
-  width: 60%;
+  width: 8px;
   height: 2px;
   border-radius: 1px;
-  background: hsl(var(--cf-primary-fg));
+  background: var(--fg-on-accent);
 }
 
-.cf-checkbox__input:checked + .cf-checkbox__box,
-.cf-checkbox.is-indeterminate .cf-checkbox__box {
-  background: hsl(var(--cf-primary));
-  border-color: hsl(var(--cf-primary));
+.ck-checkbox__input:checked + .ck-checkbox__box,
+.ck-checkbox.is-indeterminate .ck-checkbox__box {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
 }
 
-.cf-checkbox__input:checked + .cf-checkbox__box .cf-checkbox__check {
+.ck-checkbox__input:checked + .ck-checkbox__box .ck-checkbox__check {
   opacity: 1;
   transform: scale(1);
 }
 
-.cf-checkbox__input:focus-visible + .cf-checkbox__box {
-  box-shadow: 0 0 0 3px hsl(var(--cf-ring) / 0.35);
+.ck-checkbox__input:focus-visible + .ck-checkbox__box {
+  box-shadow: var(--focus-ring);
 }
 
-.cf-checkbox:hover:not(.is-disabled) .cf-checkbox__box {
-  border-color: hsl(var(--cf-primary));
+.ck-checkbox:hover:not(.is-disabled) .ck-checkbox__box {
+  border-color: var(--accent-1);
 }
-.cf-checkbox__label { display: inline-block; }
+
+.ck-checkbox__label {
+  display: inline-block;
+  color: var(--fg-1);
+}

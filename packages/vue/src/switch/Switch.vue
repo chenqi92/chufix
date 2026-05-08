@@ -35,7 +35,7 @@ function onChange(e: Event) {
 <template>
   <label :class="cls">
     <input
-      class="cf-switch__input"
+      class="ck-switch__input"
       type="checkbox"
       :checked="modelValue"
       :disabled="isInactive"
@@ -45,8 +45,8 @@ function onChange(e: Event) {
       :aria-checked="modelValue"
       @change="onChange"
     />
-    <span class="cf-switch__track">
-      <span class="cf-switch__thumb" />
+    <span class="ck-switch__track">
+      <span class="ck-switch__thumb" />
     </span>
     <span v-if="$slots.default"><slot /></span>
   </label>

@@ -1,143 +1,111 @@
-/* ChuFix Button — class-based, framework-agnostic. */
-.cf-btn {
-  --_h: 2.25rem;
-  --_px: 1rem;
-  --_fs: 0.875rem;
-  --_bg: hsl(var(--cf-primary));
-  --_bg-hover: hsl(var(--cf-primary-hover));
-  --_bg-active: hsl(var(--cf-primary-active));
-  --_fg: hsl(var(--cf-primary-fg));
-  --_border: transparent;
+/* ChuKit Button — primary (default) / secondary / tertiary / ghost / danger.
+ * Sizes follow density (control-h / -sm / -lg). Icon-only is a square. */
 
+.ck-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  height: var(--_h);
-  padding: 0 var(--_px);
-  font-size: var(--_fs);
-  font-family: var(--cf-font-sans);
-  font-weight: 500;
+  gap: 6px;
+  height: var(--control-h);
+  padding: 0 14px;
+  border-radius: var(--r-6);
+  border: 1px solid transparent;
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  font: inherit;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  font-weight: var(--w-medium);
   line-height: 1;
-  border-radius: var(--cf-radius);
-  border: 1px solid var(--_border);
-  background: var(--_bg);
-  color: var(--_fg);
   cursor: pointer;
+  transition: background var(--dur-instant) linear,
+    border-color var(--dur-instant) linear,
+    color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+  -webkit-user-select: none;
   user-select: none;
   white-space: nowrap;
-  transition:
-    background-color var(--cf-duration) var(--cf-easing),
-    color var(--cf-duration) var(--cf-easing),
-    border-color var(--cf-duration) var(--cf-easing),
-    box-shadow var(--cf-duration) var(--cf-easing),
-    transform var(--cf-duration-fast) var(--cf-easing);
-  -webkit-tap-highlight-color: transparent;
 }
-
-.cf-btn:hover:not(:disabled) {
-  background: var(--_bg-hover);
+.ck-btn:hover { background: var(--accent-2); }
+.ck-btn:active { background: var(--accent-3); }
+.ck-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
-.cf-btn:active:not(:disabled) {
-  background: var(--_bg-active);
-  transform: translateY(1px);
-}
-.cf-btn:focus-visible {
-  outline: 2px solid hsl(var(--cf-ring) / 0.6);
-  outline-offset: 2px;
-}
-.cf-btn:disabled,
-.cf-btn[aria-busy='true'] {
+.ck-btn:disabled,
+.ck-btn[aria-disabled='true'] {
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
-  opacity: 0.55;
+  pointer-events: none;
 }
 
 /* sizes */
-.cf-btn--sm { --_h: 1.75rem; --_px: 0.75rem; --_fs: 0.8125rem; }
-.cf-btn--md { --_h: 2.25rem; --_px: 1rem;    --_fs: 0.875rem; }
-.cf-btn--lg { --_h: 2.75rem; --_px: 1.25rem; --_fs: 0.9375rem; }
+.ck-btn--sm { height: var(--control-h-sm); padding: 0 10px; font-size: var(--t-12); }
+.ck-btn--md { height: var(--control-h);    padding: 0 14px; font-size: var(--t-13); }
+.ck-btn--lg { height: var(--control-h-lg); padding: 0 18px; font-size: var(--t-14); }
 
-/* shapes */
-.cf-btn--pill   { border-radius: var(--cf-radius-pill); }
-.cf-btn--square { width: var(--_h); padding: 0; }
-
-/* block */
-.cf-btn--block { display: flex; width: 100%; }
-
-/* tones — primary is default; danger overrides token vars */
-.cf-btn--danger {
-  --_bg: hsl(var(--cf-danger));
-  --_bg-hover: hsl(var(--cf-danger-hover));
-  --_bg-active: hsl(var(--cf-danger-hover));
-  --_fg: hsl(var(--cf-danger-fg));
-}
+/* shape */
+.ck-btn--pill   { border-radius: var(--r-pill); }
+.ck-btn--square { width: var(--control-h); padding: 0; }
+.ck-btn--square.ck-btn--sm { width: var(--control-h-sm); }
+.ck-btn--square.ck-btn--lg { width: var(--control-h-lg); }
 
 /* variants */
-.cf-btn--soft {
-  --_bg: hsl(var(--cf-primary-soft));
-  --_bg-hover: hsl(var(--cf-primary-soft) / 0.7);
-  --_bg-active: hsl(var(--cf-primary-soft) / 0.6);
-  --_fg: hsl(var(--cf-primary));
-}
-.cf-btn--soft.cf-btn--danger {
-  --_bg: hsl(var(--cf-danger-soft));
-  --_bg-hover: hsl(var(--cf-danger-soft) / 0.7);
-  --_bg-active: hsl(var(--cf-danger-soft) / 0.6);
-  --_fg: hsl(var(--cf-danger));
+.ck-btn--primary {
+  /* default — already styled above */
 }
 
-.cf-btn--outline {
-  --_bg: transparent;
-  --_bg-hover: hsl(var(--cf-primary) / 0.08);
-  --_bg-active: hsl(var(--cf-primary) / 0.14);
-  --_fg: hsl(var(--cf-primary));
-  --_border: hsl(var(--cf-border));
+.ck-btn--secondary {
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border-color: var(--line-2);
 }
-.cf-btn--outline.cf-btn--danger {
-  --_bg-hover: hsl(var(--cf-danger) / 0.08);
-  --_bg-active: hsl(var(--cf-danger) / 0.14);
-  --_fg: hsl(var(--cf-danger));
-}
+.ck-btn--secondary:hover { background: var(--bg-3); }
+.ck-btn--secondary:active { background: var(--bg-3); border-color: var(--accent-1); }
 
-.cf-btn--ghost {
-  --_bg: transparent;
-  --_bg-hover: hsl(var(--cf-muted));
-  --_bg-active: hsl(var(--cf-muted) / 0.8);
-  --_fg: hsl(var(--cf-fg));
-  --_border: transparent;
+.ck-btn--tertiary {
+  background: transparent;
+  color: var(--fg-1);
+  border-color: var(--line-2);
 }
-.cf-btn--ghost.cf-btn--danger { --_fg: hsl(var(--cf-danger)); }
+.ck-btn--tertiary:hover { background: var(--bg-2); }
+.ck-btn--tertiary:active { background: var(--bg-3); }
 
-.cf-btn--link {
-  --_bg: transparent;
-  --_bg-hover: transparent;
-  --_bg-active: transparent;
-  --_fg: hsl(var(--cf-primary));
-  --_border: transparent;
-  height: auto;
-  padding: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.ck-btn--ghost {
+  background: transparent;
+  color: var(--fg-2);
+  border-color: transparent;
 }
-.cf-btn--link:hover:not(:disabled) { text-decoration-thickness: 2px; }
+.ck-btn--ghost:hover { background: var(--bg-2); color: var(--fg-1); }
+.ck-btn--ghost:active { background: var(--bg-3); }
 
-/* slots */
-.cf-btn__leading,
-.cf-btn__trailing {
-  display: inline-flex;
-  align-items: center;
+.ck-btn--danger {
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  border-color: transparent;
 }
-.cf-btn__label { display: inline-flex; align-items: center; }
+.ck-btn--danger:hover { filter: brightness(1.08); }
+.ck-btn--danger:active { filter: brightness(0.92); }
 
-/* loading spinner */
-.cf-btn__spinner {
-  width: 0.95em;
-  height: 0.95em;
+/* loading */
+.ck-btn.is-loading { color: transparent !important; position: relative; pointer-events: none; }
+.ck-btn.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
   border: 2px solid currentColor;
   border-top-color: transparent;
-  border-radius: 50%;
-  animation: cf-btn-spin 0.7s linear infinite;
+  animation: ck-btn-spin 0.7s linear infinite;
+  color: var(--fg-on-accent);
 }
-@keyframes cf-btn-spin {
-  to { transform: rotate(360deg); }
-}
+.ck-btn--secondary.is-loading::after,
+.ck-btn--tertiary.is-loading::after,
+.ck-btn--ghost.is-loading::after { color: var(--fg-1); }
+@keyframes ck-btn-spin { to { transform: rotate(360deg); } }
+
+/* block */
+.ck-btn--block { display: flex; width: 100%; }

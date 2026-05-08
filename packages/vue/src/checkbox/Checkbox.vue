@@ -43,7 +43,7 @@ function onChange(e: Event) {
   <label :class="cls">
     <input
       ref="inputRef"
-      class="cf-checkbox__input"
+      class="ck-checkbox__input"
       type="checkbox"
       :checked="modelValue"
       :disabled="disabled"
@@ -53,10 +53,10 @@ function onChange(e: Event) {
       :aria-checked="indeterminate ? 'mixed' : modelValue"
       @change="onChange"
     />
-    <span class="cf-checkbox__box" aria-hidden="true">
+    <span class="ck-checkbox__box" aria-hidden="true">
       <svg
         v-if="!indeterminate"
-        class="cf-checkbox__check"
+        class="ck-checkbox__check"
         viewBox="0 0 16 16"
         fill="none"
       >
@@ -68,8 +68,8 @@ function onChange(e: Event) {
           stroke-linejoin="round"
         />
       </svg>
-      <span v-else class="cf-checkbox__dash" />
+      <span v-else class="ck-checkbox__dash" />
     </span>
-    <span v-if="$slots.default" class="cf-checkbox__label"><slot /></span>
+    <span v-if="$slots.default" class="ck-checkbox__label"><slot /></span>
   </label>
 </template>

@@ -30,7 +30,7 @@ function emit() {
 
 function nextId(): string {
   counter += 1;
-  return `cf-toast-${Date.now().toString(36)}-${counter}`;
+  return `ck-toast-${Date.now().toString(36)}-${counter}`;
 }
 
 function publish(input: ToastInput | string): string {

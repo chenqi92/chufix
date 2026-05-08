@@ -26,12 +26,12 @@ const cls = computed(() =>
 
 <template>
   <span :class="cls">
-    <span v-if="$slots.leading" class="cf-tag__leading"><slot name="leading" /></span>
+    <span v-if="$slots.leading" class="ck-tag__leading"><slot name="leading" /></span>
     <slot />
     <button
       v-if="closable"
       type="button"
-      class="cf-tag__close"
+      class="ck-tag__close"
       aria-label="关闭"
       @click="(e) => emit('close', e)"
     >×</button>

@@ -29,12 +29,12 @@ const initials = computed(() => initialsFromName(props.name, props.fallback));
   <span :class="cls" role="img" :aria-label="alt || name">
     <img
       v-if="showImage"
-      class="cf-avatar__img"
+      class="ck-avatar__img"
       :src="src"
       :alt="alt || name || ''"
       @error="failed = true"
     />
-    <span v-else-if="$slots.default" class="cf-avatar__icon"><slot /></span>
-    <span v-else class="cf-avatar__initials">{{ initials }}</span>
+    <span v-else-if="$slots.default" class="ck-avatar__icon"><slot /></span>
+    <span v-else class="ck-avatar__initials">{{ initials }}</span>
   </span>
 </template>

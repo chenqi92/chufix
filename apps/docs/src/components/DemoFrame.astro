@@ -14,33 +14,33 @@ if (reactCode) codeTabs.push({ key: 'react', label: 'React', code: reactCode, la
 if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bash' });
 ---
 
-<div class="cf-demo" data-demo-frame>
-  <div class="cf-demo__preview">
-    <div class="cf-demo__pane-content">
+<div class="ck-demo" data-demo-frame>
+  <div class="ck-demo__preview">
+    <div class="ck-demo__pane-content">
       <slot />
     </div>
   </div>
 
   {codeTabs.length > 0 && (
-    <div class="cf-demo__code-section" data-collapsed="true">
+    <div class="ck-demo__code-section" data-collapsed="true">
       <button
-        class="cf-demo__toggle"
+        class="ck-demo__toggle"
         type="button"
         aria-expanded="false"
         data-demo-toggle
       >
-        <svg class="cf-demo__toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+        <svg class="ck-demo__toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        <span class="cf-demo__toggle-label">查看代码</span>
+        <span class="ck-demo__toggle-label">查看代码</span>
       </button>
 
-      <div class="cf-demo__code-body">
-        <div class="cf-demo__code-bar">
-          <div class="cf-demo__tabs" role="tablist">
+      <div class="ck-demo__code-body">
+        <div class="ck-demo__code-bar">
+          <div class="ck-demo__tabs" role="tablist">
             {codeTabs.map((t, i) => (
               <button
-                class="cf-demo__tab"
+                class="ck-demo__tab"
                 role="tab"
                 data-target={t.key}
                 aria-selected={i === 0 ? 'true' : 'false'}
@@ -51,9 +51,9 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
           </div>
         </div>
         {codeTabs.map((t, i) => (
-          <div class="cf-demo__panel" data-panel={t.key} data-active={i === 0 ? 'true' : 'false'}>
-            <div class="cf-demo__code">
-              <button class="cf-demo__copy" data-copy={t.code}>复制</button>
+          <div class="ck-demo__panel" data-panel={t.key} data-active={i === 0 ? 'true' : 'false'}>
+            <div class="ck-demo__code">
+              <button class="ck-demo__copy" data-copy={t.code}>复制</button>
               <Code code={t.code} lang={t.lang as any} theme="github-dark" />
             </div>
           </div>
@@ -66,16 +66,16 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
 <script>
   function bind(root: HTMLElement) {
     const toggle = root.querySelector<HTMLButtonElement>('[data-demo-toggle]');
-    const section = root.querySelector<HTMLElement>('.cf-demo__code-section');
-    const tabs = root.querySelectorAll<HTMLButtonElement>('.cf-demo__tab');
-    const panels = root.querySelectorAll<HTMLElement>('.cf-demo__panel');
+    const section = root.querySelector<HTMLElement>('.ck-demo__code-section');
+    const tabs = root.querySelectorAll<HTMLButtonElement>('.ck-demo__tab');
+    const panels = root.querySelectorAll<HTMLElement>('.ck-demo__panel');
 
     if (toggle && section) {
       toggle.addEventListener('click', () => {
         const collapsed = section.dataset.collapsed === 'true';
         section.dataset.collapsed = String(!collapsed);
         toggle.setAttribute('aria-expanded', String(collapsed));
-        const label = toggle.querySelector<HTMLElement>('.cf-demo__toggle-label');
+        const label = toggle.querySelector<HTMLElement>('.ck-demo__toggle-label');
         if (label) label.textContent = collapsed ? '收起代码' : '查看代码';
       });
     }
@@ -90,7 +90,7 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
       });
     });
 
-    root.querySelectorAll<HTMLButtonElement>('.cf-demo__copy').forEach((btn) => {
+    root.querySelectorAll<HTMLButtonElement>('.ck-demo__copy').forEach((btn) => {
       btn.addEventListener('click', async () => {
         const text = btn.dataset.copy ?? '';
         try {

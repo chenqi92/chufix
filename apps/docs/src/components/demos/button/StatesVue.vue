@@ -15,7 +15,7 @@ async function load() {
     <div class="demo-row">
       <Button :loading="loading" @click="load">{{ loading ? '加载中…' : '点击加载' }}</Button>
       <Button disabled>Disabled</Button>
-      <Button variant="outline" disabled>Outline Disabled</Button>
+      <Button variant="tertiary" disabled>Outline Disabled</Button>
     </div>
     <Button block>整行铺满（block）</Button>
   </div>

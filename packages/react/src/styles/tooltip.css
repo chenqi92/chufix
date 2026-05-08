@@ -1,48 +1,51 @@
-/* ChuFix Tooltip — portal'd floating bubble with edge-flip + arrow. */
-.cf-tooltip-trigger {
+/* ChuKit Tooltip — portal'd floating bubble with edge-flip + arrow. */
+
+.ck-tooltip-trigger {
   display: inline-flex;
   outline: none;
 }
 
-.cf-tooltip {
+.ck-tooltip {
   position: fixed;
-  z-index: 1000;
-  padding: 0.4rem 0.65rem;
-  font-family: var(--cf-font-sans);
-  font-size: 0.8125rem;
+  z-index: var(--z-tooltip);
+  padding: 6px 10px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
   line-height: 1.4;
-  color: hsl(var(--cf-bg));
-  background: hsl(var(--cf-fg));
-  border-radius: calc(var(--cf-radius) - 2px);
-  box-shadow: var(--cf-shadow-md);
+  color: var(--fg-1);
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
   pointer-events: none;
-  max-width: 18rem;
+  max-width: 280px;
   word-break: break-word;
 }
 
-.cf-tooltip__arrow {
+.ck-tooltip__arrow {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: inherit;
+  background: var(--bg-3);
+  border-right: 1px solid var(--line-1);
+  border-bottom: 1px solid var(--line-1);
   transform: rotate(45deg);
 }
 
-.cf-tooltip--top    .cf-tooltip__arrow { bottom: -4px; left: 50%; margin-left: -4px; }
-.cf-tooltip--bottom .cf-tooltip__arrow { top:    -4px; left: 50%; margin-left: -4px; }
-.cf-tooltip--left   .cf-tooltip__arrow { right:  -4px; top:  50%; margin-top: -4px; }
-.cf-tooltip--right  .cf-tooltip__arrow { left:   -4px; top:  50%; margin-top: -4px; }
+.ck-tooltip--top    .ck-tooltip__arrow { bottom: -5px; left: 50%; margin-left: -4px; }
+.ck-tooltip--bottom .ck-tooltip__arrow { top: -5px;    left: 50%; margin-left: -4px; transform: rotate(225deg); }
+.ck-tooltip--left   .ck-tooltip__arrow { right: -5px;  top: 50%;  margin-top: -4px; transform: rotate(-45deg); }
+.ck-tooltip--right  .ck-tooltip__arrow { left: -5px;   top: 50%;  margin-top: -4px; transform: rotate(135deg); }
 
-.cf-tooltip-fade-enter-from,
-.cf-tooltip-fade-leave-to,
-.cf-tooltip[data-state='closed'] {
+.ck-tooltip-fade-enter-from,
+.ck-tooltip-fade-leave-to,
+.ck-tooltip[data-state='closed'] {
   opacity: 0;
   transform: scale(0.95);
 }
-.cf-tooltip-fade-enter-active,
-.cf-tooltip-fade-leave-active,
-.cf-tooltip[data-state='open'] {
-  transition:
-    opacity var(--cf-duration) var(--cf-easing),
-    transform var(--cf-duration) var(--cf-easing);
+.ck-tooltip-fade-enter-active,
+.ck-tooltip-fade-leave-active,
+.ck-tooltip[data-state='open'] {
+  transition: opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }

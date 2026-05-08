@@ -23,13 +23,13 @@ const cls = computed(() =>
     :role="interactive ? 'button' : undefined"
     @click="(e: MouseEvent) => $emit('click', e)"
   >
-    <div v-if="$slots.header" class="cf-card__header">
+    <div v-if="$slots.header" class="ck-card__header">
       <slot name="header" />
     </div>
-    <div v-if="$slots.default" class="cf-card__body">
+    <div v-if="$slots.default" class="ck-card__body">
       <slot />
     </div>
-    <div v-if="$slots.footer" class="cf-card__footer">
+    <div v-if="$slots.footer" class="ck-card__footer">
       <slot name="footer" />
     </div>
   </component>

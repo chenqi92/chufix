@@ -4,10 +4,10 @@ import { Button } from '@chufix/vue';
 
 <template>
   <div class="demo-row">
-    <Button>Solid</Button>
-    <Button variant="soft">Soft</Button>
-    <Button variant="outline">Outline</Button>
+    <Button variant="primary">Primary</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="tertiary">Tertiary</Button>
     <Button variant="ghost">Ghost</Button>
-    <Button variant="link">Link</Button>
+    <Button variant="danger">Danger</Button>
   </div>
 </template>

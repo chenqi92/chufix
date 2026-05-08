@@ -5,7 +5,7 @@ import { Avatar, Badge, Button } from '@chufix/vue';
 <template>
   <div class="demo-row" style="gap: 1.5rem;">
     <Badge :content="5">
-      <Button variant="outline">收件箱</Button>
+      <Button variant="tertiary">收件箱</Button>
     </Badge>
     <Badge dot tone="success">
       <Avatar name="Chen Qi" />
@@ -14,7 +14,7 @@ import { Avatar, Badge, Button } from '@chufix/vue';
       <Avatar name="Anna Lee" />
     </Badge>
     <Badge content="Pro" tone="info" placement="top-left">
-      <Button variant="outline">账户</Button>
+      <Button variant="tertiary">账户</Button>
     </Badge>
   </div>
 </template>

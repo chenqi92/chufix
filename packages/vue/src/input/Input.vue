@@ -69,12 +69,12 @@ function focusInput() {
 
 <template>
   <label :class="cls" @click="focusInput">
-    <span v-if="$slots.prefix" class="cf-input__prefix">
+    <span v-if="$slots.prefix" class="ck-input__prefix">
       <slot name="prefix" />
     </span>
     <input
       ref="nativeRef"
-      class="cf-input__native"
+      class="ck-input__native"
       :type="type"
       :value="modelValue ?? ''"
       :placeholder="placeholder"
@@ -91,7 +91,7 @@ function focusInput() {
     <button
       v-if="showClear"
       type="button"
-      class="cf-input__clear"
+      class="ck-input__clear"
       tabindex="-1"
       aria-label="清空"
       @click.stop="onClear"
@@ -100,7 +100,7 @@ function focusInput() {
         <path d="M4 4l8 8M12 4l-8 8" />
       </svg>
     </button>
-    <span v-else-if="$slots.suffix" class="cf-input__suffix">
+    <span v-else-if="$slots.suffix" class="ck-input__suffix">
       <slot name="suffix" />
     </span>
   </label>

@@ -16,8 +16,8 @@ export function checkboxClass(p: {
   indeterminate: boolean;
 }): string {
   return [
-    'cf-checkbox',
-    `cf-checkbox--${p.size}`,
+    'ck-checkbox',
+    `ck-checkbox--${p.size}`,
     p.disabled && 'is-disabled',
     p.indeterminate && 'is-indeterminate',
   ]

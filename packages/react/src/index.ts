@@ -20,7 +20,6 @@ export type {
   ButtonVariant,
   ButtonSize,
   ButtonShape,
-  ButtonTone,
 } from './button/variants';
 
 export { Input } from './input/Input';

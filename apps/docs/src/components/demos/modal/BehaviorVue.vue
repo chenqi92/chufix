@@ -8,8 +8,8 @@ const b = ref(false);
 
 <template>
   <div class="demo-row">
-    <Button variant="outline" @click="a = true">禁用遮罩关闭</Button>
-    <Button variant="outline" @click="b = true">隐藏 × 按钮</Button>
+    <Button variant="tertiary" @click="a = true">禁用遮罩关闭</Button>
+    <Button variant="tertiary" @click="b = true">隐藏 × 按钮</Button>
   </div>
 
   <Modal v-model:open="a" title="只能从底部关闭" :close-on-overlay="false">

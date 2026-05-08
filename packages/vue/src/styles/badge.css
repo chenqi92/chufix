@@ -1,57 +1,58 @@
-/* ChuFix Badge — standalone pill or absolutely-placed corner indicator. */
-.cf-badge-inline {
+/* ChuKit Badge — standalone pill or absolutely-placed corner indicator. */
+
+.ck-badge-inline {
   display: inline-flex;
   align-items: center;
 }
-.cf-badge-wrap {
+.ck-badge-wrap {
   position: relative;
   display: inline-flex;
   vertical-align: middle;
 }
 
-.cf-badge {
+.ck-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.1rem;
-  height: 1.1rem;
-  padding: 0 0.4rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  font-family: var(--cf-font-sans);
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  font-family: var(--font-sans);
+  font-size: var(--t-11);
+  font-weight: var(--w-semibold);
   line-height: 1;
-  color: #fff;
-  border-radius: var(--cf-radius-pill);
-  background: hsl(var(--cf-danger));
+  color: var(--fg-on-accent);
+  border-radius: var(--r-pill);
+  background: var(--status-error);
   white-space: nowrap;
   user-select: none;
 }
-.cf-badge--dot {
-  width: 0.55rem;
-  height: 0.55rem;
+.ck-badge--dot {
+  width: 8px;
+  height: 8px;
   min-width: 0;
   padding: 0;
   border-radius: 50%;
 }
 
 /* tone fills */
-.cf-badge--neutral { background: hsl(var(--cf-fg));      color: hsl(var(--cf-bg)); }
-.cf-badge--primary { background: hsl(var(--cf-primary)); color: hsl(var(--cf-primary-fg)); }
-.cf-badge--success { background: hsl(var(--cf-success)); color: #fff; }
-.cf-badge--warning { background: hsl(var(--cf-warning)); color: hsl(35 90% 12%); }
-.cf-badge--danger  { background: hsl(var(--cf-danger));  color: #fff; }
-.cf-badge--info    { background: hsl(199 89% 48%);       color: #fff; }
+.ck-badge--neutral { background: var(--fg-1);            color: var(--bg-0); }
+.ck-badge--primary { background: var(--accent-1);        color: var(--fg-on-accent); }
+.ck-badge--success { background: var(--status-success);  color: var(--bg-0); }
+.ck-badge--warning { background: var(--status-warning);  color: var(--bg-0); }
+.ck-badge--danger  { background: var(--status-error);    color: var(--fg-on-accent); }
+.ck-badge--info    { background: var(--status-info);     color: var(--bg-0); }
 
 /* placed corner mode */
-.cf-badge--placed {
+.ck-badge--placed {
   position: absolute;
   z-index: 1;
-  border: 2px solid hsl(var(--cf-bg));
+  border: 2px solid var(--bg-1);
   box-sizing: content-box;
 }
-.cf-badge--placed.cf-badge--dot { border-width: 1.5px; }
+.ck-badge--placed.ck-badge--dot { border-width: 1.5px; }
 
-.cf-badge--top-right    { top: 0; right: 0; transform: translate(50%, -50%); }
-.cf-badge--top-left     { top: 0; left:  0; transform: translate(-50%, -50%); }
-.cf-badge--bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
-.cf-badge--bottom-left  { bottom: 0; left:  0; transform: translate(-50%, 50%); }
+.ck-badge--top-right    { top: 0; right: 0; transform: translate(50%, -50%); }
+.ck-badge--top-left     { top: 0; left: 0;  transform: translate(-50%, -50%); }
+.ck-badge--bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
+.ck-badge--bottom-left  { bottom: 0; left: 0;  transform: translate(-50%, 50%); }

@@ -9,7 +9,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     variant = buttonDefaults.variant,
     size = buttonDefaults.size,
     shape = buttonDefaults.shape,
-    tone = buttonDefaults.tone,
     loading = false,
     block = false,
     disabled,
@@ -23,7 +22,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   } = props;
 
   const isInactive = disabled || loading;
-  const cls = buttonClass({ variant, size, shape, tone, loading, block, className });
+  const cls = buttonClass({ variant, size, shape, loading, block, className });
 
   return (
     <button
@@ -38,13 +37,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       }}
       {...rest}
     >
-      {loading ? (
-        <span className="cf-btn__spinner" aria-hidden />
-      ) : leading ? (
-        <span className="cf-btn__leading">{leading}</span>
-      ) : null}
-      <span className="cf-btn__label">{children}</span>
-      {trailing ? <span className="cf-btn__trailing">{trailing}</span> : null}
+      {leading ? <span className="ck-btn__leading">{leading}</span> : null}
+      <span className="ck-btn__label">{children}</span>
+      {trailing ? <span className="ck-btn__trailing">{trailing}</span> : null}
     </button>
   );
 });

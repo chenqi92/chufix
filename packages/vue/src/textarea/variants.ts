@@ -27,9 +27,9 @@ export function textareaClass(p: {
   error: boolean;
 }): string {
   return [
-    'cf-textarea',
-    `cf-textarea--${p.variant}`,
-    `cf-textarea--${p.size}`,
+    'ck-textarea',
+    `ck-textarea--${p.variant}`,
+    `ck-textarea--${p.size}`,
     p.focused && 'is-focused',
     p.disabled && 'is-disabled',
     p.error && 'is-error',

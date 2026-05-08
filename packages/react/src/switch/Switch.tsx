@@ -33,7 +33,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
       <input
         ref={ref}
         type="checkbox"
-        className="cf-switch__input"
+        className="ck-switch__input"
         checked={current}
         disabled={isInactive}
         role="switch"
@@ -41,8 +41,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
         onChange={handleChange}
         {...rest}
       />
-      <span className="cf-switch__track">
-        <span className="cf-switch__thumb" />
+      <span className="ck-switch__track">
+        <span className="ck-switch__thumb" />
       </span>
       {children ? <span>{children}</span> : null}
     </label>
