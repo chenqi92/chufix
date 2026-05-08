@@ -41,6 +41,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Modal 弹窗', href: '/components/modal/' },
       { label: 'Tooltip 提示', href: '/components/tooltip/' },
       { label: 'Toast 通知', href: '/components/toast/' },
+      { label: 'Tag 标签', href: '/components/tag/' },
+      { label: 'Badge 徽标', href: '/components/badge/' },
+      { label: 'Avatar 头像', href: '/components/avatar/' },
     ],
   },
 ];

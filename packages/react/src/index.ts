@@ -9,6 +9,9 @@ import './styles/textarea.css';
 import './styles/select.css';
 import './styles/tooltip.css';
 import './styles/toast.css';
+import './styles/tag.css';
+import './styles/badge.css';
+import './styles/avatar.css';
 import './styles/modal.css';
 
 export { Button } from './button/Button';
@@ -65,6 +68,25 @@ export { Toaster } from './toast/Toaster';
 export type { ToasterProps } from './toast/Toaster';
 export { toast, toastStore } from './toast/store';
 export type { ToastItem, ToastInput, ToastType } from './toast/store';
+
+export { Tag } from './tag/Tag';
+export type { TagProps, TagVariant, TagSize, TagTone } from './tag/variants';
+
+export { Badge } from './badge/Badge';
+export type {
+  BadgeProps,
+  BadgeTone,
+  BadgePlacement,
+} from './badge/variants';
+
+export { Avatar } from './avatar/Avatar';
+export { AvatarGroup } from './avatar/AvatarGroup';
+export type {
+  AvatarProps,
+  AvatarGroupProps,
+  AvatarSize,
+  AvatarShape,
+} from './avatar/variants';
 
 export { Modal } from './modal/Modal';
 export type { ModalProps, ModalSize } from './modal/variants';

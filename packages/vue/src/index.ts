@@ -9,6 +9,9 @@ import './styles/textarea.css';
 import './styles/select.css';
 import './styles/tooltip.css';
 import './styles/toast.css';
+import './styles/tag.css';
+import './styles/badge.css';
+import './styles/avatar.css';
 import './styles/modal.css';
 
 export { default as Button } from './button/Button.vue';
@@ -58,6 +61,25 @@ export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
 export { default as Toaster } from './toast/Toaster.vue';
 export { toast, toastStore } from './toast/store';
 export type { ToastItem, ToastInput, ToastType } from './toast/store';
+
+export { default as Tag } from './tag/Tag.vue';
+export type { TagProps, TagVariant, TagSize, TagTone } from './tag/variants';
+
+export { default as Badge } from './badge/Badge.vue';
+export type {
+  BadgeProps,
+  BadgeTone,
+  BadgePlacement,
+} from './badge/variants';
+
+export { default as Avatar } from './avatar/Avatar.vue';
+export { default as AvatarGroup } from './avatar/AvatarGroup.vue';
+export type {
+  AvatarProps,
+  AvatarGroupProps,
+  AvatarSize,
+  AvatarShape,
+} from './avatar/variants';
 
 export { default as Modal } from './modal/Modal.vue';
 export type { ModalProps, ModalSize } from './modal/variants';

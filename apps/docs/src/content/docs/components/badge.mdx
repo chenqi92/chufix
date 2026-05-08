@@ -1,0 +1,72 @@
+---
+title: Badge 徽标
+description: ChuKit 的徽标 —— 独立 pill 或贴在子元素角落，dot/count 两种形态。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/badge/BasicVue.vue';
+import BasicReact from '~/components/demos/badge/BasicReact.tsx';
+
+## 基础用法
+
+不传 children 时，Badge 是一个独立的 pill；传了 children 就把它绝对定位到子元素的角上（默认 `top-right`）。`dot` 模式不显示数字、只画一个小圆点。`max` 控制溢出文案，例如 `max=99` 会把 `120` 渲染成 `99+`。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { Avatar, Badge, Button } from '@chukit/vue';
+</script>
+
+<template>
+  <Badge content="New" tone="primary" />
+  <Badge content="3" tone="danger" />
+  <Badge content="99+" tone="warning" />
+  <Badge dot tone="info" />
+
+  <Badge :content="5">
+    <Button variant="outline">收件箱</Button>
+  </Badge>
+  <Badge :content="120" :max="99" tone="primary">
+    <Button variant="outline">通知</Button>
+  </Badge>
+  <Badge dot tone="success">
+    <Avatar name="Chen Qi" />
+  </Badge>
+</template>`}
+  reactCode={`import { Avatar, Badge, Button } from '@chukit/react';
+
+export default function Demo() {
+  return (
+    <>
+      <Badge content="New" tone="primary" />
+      <Badge content="3" tone="danger" />
+      <Badge content="99+" tone="warning" />
+      <Badge dot tone="info" />
+
+      <Badge content={5}>
+        <Button variant="outline">收件箱</Button>
+      </Badge>
+      <Badge content={120} max={99} tone="primary">
+        <Button variant="outline">通知</Button>
+      </Badge>
+      <Badge dot tone="success">
+        <Avatar name="Chen Qi" />
+      </Badge>
+    </>
+  );
+}`}
+>
+  <BasicVue slot="vue" client:load />
+  <BasicReact slot="react" client:load />
+</DemoFrame>
+
+## Props
+
+| 名称        | 类型                                                                   | 默认值        | 说明                                       |
+| ----------- | ---------------------------------------------------------------------- | ------------- | ------------------------------------------ |
+| `content`   | `string \| number`                                                     | —             | 显示内容；空时 + 非 dot 不渲染             |
+| `dot`       | `boolean`                                                              | `false`       | 圆点模式（忽略 content）                   |
+| `tone`      | `'neutral' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `'danger'`    | 语义色                                     |
+| `max`       | `number`                                                               | `99`          | 数字上限，超出渲染为 `${max}+`              |
+| `showZero`  | `boolean`                                                              | `false`       | 数字 `0` 默认隐藏，开启后显示              |
+| `placement` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'`         | `'top-right'` | wrap 模式下角落位置                        |
+| `offset`    | `[number, number]`                                                     | —             | 在 placement 之上叠加 `[x, y]` 像素偏移    |

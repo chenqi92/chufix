@@ -1,0 +1,21 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+import type { AvatarGroupProps } from './variants';
+
+const props = withDefaults(defineProps<AvatarGroupProps>(), {
+  size: 'md',
+  shape: 'circle',
+  max: 0,
+  spacing: -8,
+});
+
+const groupStyle = computed(() => ({
+  '--ck-avatar-spacing': `${props.spacing}px`,
+}));
+</script>
+
+<template>
+  <span class="ck-avatar-group" :style="groupStyle">
+    <slot />
+  </span>
+</template>

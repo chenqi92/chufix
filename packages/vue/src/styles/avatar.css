@@ -1,0 +1,67 @@
+/* ChuKit Avatar — image / initials / icon, plus AvatarGroup overlap. */
+.ck-avatar {
+  --_size: 2.25rem;
+  --_fs: 0.85rem;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_size);
+  height: var(--_size);
+  font-family: var(--ck-font-sans);
+  font-size: var(--_fs);
+  font-weight: 600;
+  color: hsl(var(--ck-fg));
+  background: hsl(var(--ck-muted));
+  overflow: hidden;
+  user-select: none;
+  flex: none;
+  vertical-align: middle;
+}
+
+.ck-avatar--circle { border-radius: 50%; }
+.ck-avatar--square { border-radius: var(--ck-radius); }
+
+.ck-avatar--xs { --_size: 1.25rem; --_fs: 0.65rem; }
+.ck-avatar--sm { --_size: 1.75rem; --_fs: 0.75rem; }
+.ck-avatar--md { --_size: 2.25rem; --_fs: 0.85rem; }
+.ck-avatar--lg { --_size: 2.75rem; --_fs: 0.95rem; }
+.ck-avatar--xl { --_size: 3.5rem;  --_fs: 1.1rem; }
+
+.ck-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ck-avatar__initials {
+  letter-spacing: 0.02em;
+}
+
+.ck-avatar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 60%;
+  color: hsl(var(--ck-muted-fg));
+}
+
+/* group */
+.ck-avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+.ck-avatar-group > .ck-avatar:not(:first-child) {
+  margin-left: var(--ck-avatar-spacing, -0.5rem);
+  border: 2px solid hsl(var(--ck-bg));
+  box-sizing: content-box;
+  width: var(--_size);
+  height: var(--_size);
+}
+.ck-avatar-group > .ck-avatar:first-child {
+  border: 2px solid hsl(var(--ck-bg));
+  box-sizing: content-box;
+}

@@ -1,0 +1,83 @@
+---
+title: Avatar 头像
+description: ChuKit 的头像 —— 图片 / 缩写 / 图标三态自动 fallback，5 尺寸 + 圆形/方形 + AvatarGroup 重叠。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/avatar/BasicVue.vue';
+import BasicReact from '~/components/demos/avatar/BasicReact.tsx';
+
+## 基础用法
+
+优先级：`src` 加载成功 → 显示图片；加载失败或没传 src → `fallback` / `name` 缩写；都没有就显示 `?`。也可以塞自定义图标（默认插槽 / `children`）。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { Avatar, AvatarGroup } from '@chukit/vue';
+</script>
+
+<template>
+  <Avatar size="sm" name="Chen Qi" />
+  <Avatar size="md" name="Chen Qi" />
+  <Avatar size="lg" name="Chen Qi" />
+
+  <Avatar shape="square" name="Bob Smith" />
+  <Avatar src="https://i.pravatar.cc/80?img=12" alt="头像" />
+  <Avatar src="/__broken__.png" name="Fallback" />
+
+  <AvatarGroup>
+    <Avatar name="Chen Qi" />
+    <Avatar name="Anna Lee" />
+    <Avatar name="Bob Smith" />
+    <Avatar fallback="+5" />
+  </AvatarGroup>
+</template>`}
+  reactCode={`import { Avatar, AvatarGroup } from '@chukit/react';
+
+export default function Demo() {
+  return (
+    <>
+      <Avatar size="sm" name="Chen Qi" />
+      <Avatar size="md" name="Chen Qi" />
+      <Avatar size="lg" name="Chen Qi" />
+
+      <Avatar shape="square" name="Bob Smith" />
+      <Avatar src="https://i.pravatar.cc/80?img=12" alt="头像" />
+      <Avatar src="/__broken__.png" name="Fallback" />
+
+      <AvatarGroup>
+        <Avatar name="Chen Qi" />
+        <Avatar name="Anna Lee" />
+        <Avatar name="Bob Smith" />
+        <Avatar fallback="+5" />
+      </AvatarGroup>
+    </>
+  );
+}`}
+>
+  <BasicVue slot="vue" client:load />
+  <BasicReact slot="react" client:load />
+</DemoFrame>
+
+## Avatar Props
+
+| 名称       | 类型                                       | 默认值     | 说明                                          |
+| ---------- | ------------------------------------------ | ---------- | --------------------------------------------- |
+| `src`      | `string`                                   | —          | 图片地址；加载失败自动回退                    |
+| `alt`      | `string`                                   | —          | 图片 alt；未传时回退到 `name`                 |
+| `name`     | `string`                                   | —          | 用于生成首字母缩写（取首尾两个词的首字母）    |
+| `fallback` | `string`                                   | —          | 直接指定缩写文本，覆盖 `name` 计算结果        |
+| `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`     | `'md'`     | 尺寸                                          |
+| `shape`    | `'circle' \| 'square'`                     | `'circle'` | 形状                                          |
+
+### 自定义图标
+
+默认插槽（Vue）/ `children`（React）会替换缩写显示，常见用法是放一个 SVG 图标。
+
+## AvatarGroup Props
+
+| 名称      | 类型     | 默认值 | 说明                                       |
+| --------- | -------- | ------ | ------------------------------------------ |
+| `spacing` | `number` | `-8`   | 子项之间的水平间距，负值产生重叠效果       |
+
+> AvatarGroup 只负责排版（重叠间距 + 描边），子项各自的 size/shape 仍由它们自己的 props 决定。

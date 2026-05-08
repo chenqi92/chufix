@@ -1,0 +1,85 @@
+/* ChuKit Tag — colored chip with variant + tone matrix. */
+.ck-tag {
+  --_h: 1.5rem;
+  --_px: 0.55rem;
+  --_fs: 0.78rem;
+  --_radius: var(--ck-radius-sm);
+  --_bg: hsl(var(--ck-muted));
+  --_fg: hsl(var(--ck-fg));
+  --_border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  height: var(--_h);
+  padding: 0 var(--_px);
+  font-size: var(--_fs);
+  font-family: var(--ck-font-sans);
+  line-height: 1;
+  color: var(--_fg);
+  background: var(--_bg);
+  border: 1px solid var(--_border);
+  border-radius: var(--_radius);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* sizes */
+.ck-tag--sm { --_h: 1.25rem; --_px: 0.45rem; --_fs: 0.72rem; }
+.ck-tag--md { --_h: 1.5rem;  --_px: 0.55rem; --_fs: 0.78rem; }
+.ck-tag--lg { --_h: 1.75rem; --_px: 0.7rem;  --_fs: 0.85rem; }
+
+.ck-tag--rounded { --_radius: var(--ck-radius-pill); }
+
+.ck-tag__leading {
+  display: inline-flex;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+}
+
+.ck-tag__close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0.65;
+  cursor: pointer;
+  font-size: 1.05em;
+  line-height: 1;
+  padding: 0;
+  margin: 0 -0.15rem 0 0.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+}
+.ck-tag__close:hover { opacity: 1; background: hsl(0 0% 0% / 0.08); }
+
+/* tone tokens — variant-aware */
+.ck-tag--neutral { --_tone-fg: hsl(var(--ck-fg));        --_tone-bg: hsl(var(--ck-muted));        --_tone-border: hsl(var(--ck-border)); }
+.ck-tag--primary { --_tone-fg: hsl(var(--ck-primary));   --_tone-bg: hsl(var(--ck-primary) / 0.12); --_tone-border: hsl(var(--ck-primary) / 0.4); }
+.ck-tag--success { --_tone-fg: hsl(var(--ck-success));   --_tone-bg: hsl(var(--ck-success) / 0.13); --_tone-border: hsl(var(--ck-success) / 0.4); }
+.ck-tag--warning { --_tone-fg: hsl(var(--ck-warning));   --_tone-bg: hsl(var(--ck-warning) / 0.16); --_tone-border: hsl(var(--ck-warning) / 0.45); }
+.ck-tag--danger  { --_tone-fg: hsl(var(--ck-danger));    --_tone-bg: hsl(var(--ck-danger) / 0.12);  --_tone-border: hsl(var(--ck-danger) / 0.4); }
+.ck-tag--info    { --_tone-fg: hsl(var(--ck-info, 199 89% 48%)); --_tone-bg: hsl(199 89% 48% / 0.12); --_tone-border: hsl(199 89% 48% / 0.4); }
+
+/* variant — solid */
+.ck-tag--solid.ck-tag--neutral { --_bg: hsl(var(--ck-fg));      --_fg: hsl(var(--ck-bg)); }
+.ck-tag--solid.ck-tag--primary { --_bg: hsl(var(--ck-primary)); --_fg: hsl(var(--ck-primary-fg)); }
+.ck-tag--solid.ck-tag--success { --_bg: hsl(var(--ck-success)); --_fg: #fff; }
+.ck-tag--solid.ck-tag--warning { --_bg: hsl(var(--ck-warning)); --_fg: hsl(35 90% 12%); }
+.ck-tag--solid.ck-tag--danger  { --_bg: hsl(var(--ck-danger));  --_fg: #fff; }
+.ck-tag--solid.ck-tag--info    { --_bg: hsl(199 89% 48%);       --_fg: #fff; }
+
+/* variant — soft (default) */
+.ck-tag--soft { --_bg: var(--_tone-bg); --_fg: var(--_tone-fg); }
+
+/* variant — outline */
+.ck-tag--outline {
+  --_bg: transparent;
+  --_fg: var(--_tone-fg);
+  --_border: var(--_tone-border);
+}
