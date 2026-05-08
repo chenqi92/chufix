@@ -52,6 +52,14 @@ description: ChuKit UI 当前提供的所有组件清单与状态。
     <div class="ck-card__header">Modal 弹窗</div>
     <div class="ck-card__body">内置 portal、focus trap、滚动锁、ESC/遮罩关闭、进出动画。</div>
   </a>
+  <a href="/components/tooltip/" class="ck-card ck-card--outlined ck-card--link">
+    <div class="ck-card__header">Tooltip 提示</div>
+    <div class="ck-card__body">4 种 placement、自动避让边缘、hover 与 focus 双触发，不阻塞鼠标。</div>
+  </a>
+  <a href="/components/toast/" class="ck-card ck-card--outlined ck-card--link">
+    <div class="ck-card__header">Toast 通知</div>
+    <div class="ck-card__body">imperative API + 一次挂载的 Toaster，5 种语义、6 个位置、自动关闭。</div>
+  </a>
 </div>
 
 ## 路线图
@@ -59,8 +67,7 @@ description: ChuKit UI 当前提供的所有组件清单与状态。
 下面这些组件正在排期：
 
 - **Tabs** —— uncontrolled / controlled 双模 + roving tabindex 键盘导航
-- **Tooltip / Popover** —— 引入 floating-ui 处理定位与避让
+- **Popover** —— Tooltip 的可交互变体，支持 click 触发 + 表单内容
 - **Dropdown** —— 复用 Modal 的 portal + focus trap 基础设施
 - **Drawer** —— Modal 的边缘变体
-- **Toast / Notification** —— 基于 portal 的全局通知队列
 - **Form / FormField** —— 表单封装层，统一错误信息与 label

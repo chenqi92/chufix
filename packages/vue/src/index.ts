@@ -7,6 +7,8 @@ import './styles/checkbox.css';
 import './styles/radio.css';
 import './styles/textarea.css';
 import './styles/select.css';
+import './styles/tooltip.css';
+import './styles/toast.css';
 import './styles/modal.css';
 
 export { default as Button } from './button/Button.vue';
@@ -49,6 +51,13 @@ export type {
   SelectSize,
   SelectValue,
 } from './select/variants';
+
+export { default as Tooltip } from './tooltip/Tooltip.vue';
+export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
+
+export { default as Toaster } from './toast/Toaster.vue';
+export { toast, toastStore } from './toast/store';
+export type { ToastItem, ToastInput, ToastType } from './toast/store';
 
 export { default as Modal } from './modal/Modal.vue';
 export type { ModalProps, ModalSize } from './modal/variants';

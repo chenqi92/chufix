@@ -1,0 +1,97 @@
+<script setup lang="ts">
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
+import {
+  computeTooltipPosition,
+  type TooltipPlacement,
+  type TooltipProps,
+} from './variants';
+
+const props = withDefaults(defineProps<TooltipProps>(), {
+  content: '',
+  placement: 'top',
+  delay: 100,
+  hideDelay: 80,
+  disabled: false,
+  offset: 8,
+});
+
+const triggerRef = ref<HTMLSpanElement | null>(null);
+const tipRef = ref<HTMLDivElement | null>(null);
+const visible = ref(false);
+const pos = ref({ top: 0, left: 0, placement: props.placement as TooltipPlacement });
+
+let openTimer: ReturnType<typeof setTimeout> | null = null;
+let closeTimer: ReturnType<typeof setTimeout> | null = null;
+
+function clearTimers() {
+  if (openTimer) clearTimeout(openTimer);
+  if (closeTimer) clearTimeout(closeTimer);
+  openTimer = null;
+  closeTimer = null;
+}
+
+async function reposition() {
+  if (!triggerRef.value || !tipRef.value) return;
+  const tRect = triggerRef.value.getBoundingClientRect();
+  const tw = tipRef.value.offsetWidth;
+  const th = tipRef.value.offsetHeight;
+  pos.value = computeTooltipPosition(tRect, tw, th, props.placement, props.offset);
+}
+
+function show() {
+  if (props.disabled || !props.content) return;
+  clearTimers();
+  openTimer = setTimeout(async () => {
+    visible.value = true;
+    await nextTick();
+    reposition();
+  }, props.delay);
+}
+
+function hide() {
+  clearTimers();
+  closeTimer = setTimeout(() => {
+    visible.value = false;
+  }, props.hideDelay);
+}
+
+const tipStyle = computed(() => ({
+  top: `${pos.value.top}px`,
+  left: `${pos.value.left}px`,
+  maxWidth:
+    typeof props.maxWidth === 'number' ? `${props.maxWidth}px` : props.maxWidth,
+}));
+
+const tipClass = computed(
+  () => `ck-tooltip ck-tooltip--${pos.value.placement}`,
+);
+
+onBeforeUnmount(clearTimers);
+</script>
+
+<template>
+  <span
+    ref="triggerRef"
+    class="ck-tooltip-trigger"
+    @mouseenter="show"
+    @mouseleave="hide"
+    @focusin="show"
+    @focusout="hide"
+  >
+    <slot />
+  </span>
+  <Teleport to="body">
+    <Transition name="ck-tooltip-fade">
+      <div
+        v-if="visible"
+        ref="tipRef"
+        :class="tipClass"
+        role="tooltip"
+        :style="tipStyle"
+      >
+        <slot name="content">{{ content }}</slot>
+        <span class="ck-tooltip__arrow" />
+      </div>
+    </Transition>
+  </Teleport>
+</template>

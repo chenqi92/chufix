@@ -39,6 +39,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Textarea 多行', href: '/components/textarea/' },
       { label: 'Select 选择器', href: '/components/select/' },
       { label: 'Modal 弹窗', href: '/components/modal/' },
+      { label: 'Tooltip 提示', href: '/components/tooltip/' },
+      { label: 'Toast 通知', href: '/components/toast/' },
     ],
   },
 ];

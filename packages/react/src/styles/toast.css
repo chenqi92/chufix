@@ -1,0 +1,104 @@
+/* ChuKit Toaster — portal'd notification stack. */
+.ck-toaster {
+  position: fixed;
+  z-index: 1100;
+  pointer-events: none;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.ck-toaster__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 22rem;
+  max-width: calc(100vw - 2rem);
+}
+
+.ck-toaster--top-right    { top: 0; right: 0; align-items: flex-end; }
+.ck-toaster--top-left     { top: 0; left: 0;  align-items: flex-start; }
+.ck-toaster--top-center   { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+.ck-toaster--bottom-right { bottom: 0; right: 0; align-items: flex-end; flex-direction: column-reverse; }
+.ck-toaster--bottom-left  { bottom: 0; left: 0;  align-items: flex-start; flex-direction: column-reverse; }
+.ck-toaster--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse; }
+
+.ck-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  font-family: var(--ck-font-sans);
+  color: hsl(var(--ck-fg));
+  background: hsl(var(--ck-bg));
+  border: 1px solid hsl(var(--ck-border));
+  border-radius: var(--ck-radius);
+  box-shadow: var(--ck-shadow-md);
+  width: 100%;
+}
+
+.ck-toast__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  margin-top: 0.15rem;
+  flex: none;
+}
+.ck-toast__icon svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.ck-toast--success .ck-toast__icon { background: hsl(151 78% 90%); color: hsl(151 78% 30%); }
+.ck-toast--error   .ck-toast__icon { background: hsl(0 84% 92%);   color: hsl(0 72% 42%); }
+.ck-toast--warning .ck-toast__icon { background: hsl(38 92% 90%);  color: hsl(32 95% 35%); }
+.ck-toast--info    .ck-toast__icon { background: hsl(199 89% 92%); color: hsl(199 89% 38%); }
+.ck-toast--default .ck-toast__icon { display: none; }
+
+.ck-toast__body { flex: 1; min-width: 0; line-height: 1.45; }
+.ck-toast__title { font-size: 0.875rem; font-weight: 600; }
+.ck-toast__desc  { font-size: 0.8125rem; color: hsl(var(--ck-muted-fg)); margin-top: 0.15rem; }
+
+.ck-toast__close {
+  flex: none;
+  margin-left: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  color: hsl(var(--ck-muted-fg));
+  cursor: pointer;
+}
+.ck-toast__close:hover { background: hsl(var(--ck-muted)); color: hsl(var(--ck-fg)); }
+
+/* Vue TransitionGroup classes */
+.ck-toast-enter-from {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+}
+.ck-toast-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.ck-toast-enter-active,
+.ck-toast-leave-active {
+  transition:
+    opacity var(--ck-duration) var(--ck-easing),
+    transform var(--ck-duration) var(--ck-easing);
+}
+.ck-toast-leave-active { position: absolute; }
+
+.ck-toaster--bottom-right .ck-toast-enter-from,
+.ck-toaster--bottom-left .ck-toast-enter-from,
+.ck-toaster--bottom-center .ck-toast-enter-from {
+  transform: translateY(8px) scale(0.97);
+}

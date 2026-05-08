@@ -1,0 +1,74 @@
+---
+title: Tooltip 文字提示
+description: ChuKit 的轻量浮层提示 —— 4 种 placement、自动避让边缘、hover/focus 双触发。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tooltip/BasicVue.vue';
+import BasicReact from '~/components/demos/tooltip/BasicReact.tsx';
+
+## 基础用法
+
+包裹任意触发元素，鼠标悬停或键盘聚焦时显示。Tooltip 通过 Teleport / Portal 渲染到 `<body>`，不受父容器 `overflow` 影响。当首选方向放不下时，会自动翻到对侧。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { Button, Tooltip } from '@chukit/vue';
+</script>
+
+<template>
+  <Tooltip content="顶部 Tooltip · 默认 placement">
+    <Button variant="outline">Top</Button>
+  </Tooltip>
+  <Tooltip content="底部 Tooltip" placement="bottom">
+    <Button variant="outline">Bottom</Button>
+  </Tooltip>
+  <Tooltip content="左侧 Tooltip" placement="left">
+    <Button variant="outline">Left</Button>
+  </Tooltip>
+  <Tooltip content="右侧 Tooltip" placement="right">
+    <Button variant="outline">Right</Button>
+  </Tooltip>
+</template>`}
+  reactCode={`import { Button, Tooltip } from '@chukit/react';
+
+export default function Demo() {
+  return (
+    <>
+      <Tooltip content="顶部 Tooltip · 默认 placement">
+        <Button variant="outline">Top</Button>
+      </Tooltip>
+      <Tooltip content="底部 Tooltip" placement="bottom">
+        <Button variant="outline">Bottom</Button>
+      </Tooltip>
+      <Tooltip content="左侧 Tooltip" placement="left">
+        <Button variant="outline">Left</Button>
+      </Tooltip>
+      <Tooltip content="右侧 Tooltip" placement="right">
+        <Button variant="outline">Right</Button>
+      </Tooltip>
+    </>
+  );
+}`}
+>
+  <BasicVue slot="vue" client:load />
+  <BasicReact slot="react" client:load />
+</DemoFrame>
+
+## Props
+
+| 名称        | 类型                                       | 默认值  | 说明                                |
+| ----------- | ------------------------------------------ | ------- | ----------------------------------- |
+| `content`   | `string`（Vue）/ `ReactNode`（React）      | —       | 浮层内容；Vue 还可用 `#content` 插槽 |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'`   | `'top'` | 首选方向，溢出时自动翻转到对侧      |
+| `delay`     | `number`                                   | `100`   | 显示前延迟（毫秒）                  |
+| `hideDelay` | `number`                                   | `80`    | 隐藏前延迟，避免抖动                |
+| `disabled`  | `boolean`                                  | `false` | 完全不显示                          |
+| `offset`    | `number`                                   | `8`     | 触发器与浮层之间的间距（像素）      |
+| `maxWidth`  | `number \| string`                         | —       | 限制最大宽度，超出换行              |
+
+## 实现要点
+
+- **触发器包裹**：组件渲染一个 `<span>` 包住 children，监听 `mouseenter` / `mouseleave` / `focusin` / `focusout`。
+- **位置计算**：`getBoundingClientRect()` 拿触发器位置，再读浮层尺寸，按 placement 算 `top/left`，最后用视口边界做 clamp + 翻转。
+- **不阻塞鼠标**：浮层 `pointer-events: none`，鼠标可以穿透继续操作下方元素。

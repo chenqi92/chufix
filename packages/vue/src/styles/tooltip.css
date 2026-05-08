@@ -1,0 +1,48 @@
+/* ChuKit Tooltip — portal'd floating bubble with edge-flip + arrow. */
+.ck-tooltip-trigger {
+  display: inline-flex;
+  outline: none;
+}
+
+.ck-tooltip {
+  position: fixed;
+  z-index: 1000;
+  padding: 0.4rem 0.65rem;
+  font-family: var(--ck-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: hsl(var(--ck-bg));
+  background: hsl(var(--ck-fg));
+  border-radius: calc(var(--ck-radius) - 2px);
+  box-shadow: var(--ck-shadow-md);
+  pointer-events: none;
+  max-width: 18rem;
+  word-break: break-word;
+}
+
+.ck-tooltip__arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.ck-tooltip--top    .ck-tooltip__arrow { bottom: -4px; left: 50%; margin-left: -4px; }
+.ck-tooltip--bottom .ck-tooltip__arrow { top:    -4px; left: 50%; margin-left: -4px; }
+.ck-tooltip--left   .ck-tooltip__arrow { right:  -4px; top:  50%; margin-top: -4px; }
+.ck-tooltip--right  .ck-tooltip__arrow { left:   -4px; top:  50%; margin-top: -4px; }
+
+.ck-tooltip-fade-enter-from,
+.ck-tooltip-fade-leave-to,
+.ck-tooltip[data-state='closed'] {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.ck-tooltip-fade-enter-active,
+.ck-tooltip-fade-leave-active,
+.ck-tooltip[data-state='open'] {
+  transition:
+    opacity var(--ck-duration) var(--ck-easing),
+    transform var(--ck-duration) var(--ck-easing);
+}
