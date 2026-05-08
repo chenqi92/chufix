@@ -15,7 +15,7 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   font-size: var(--t-14);
-  line-height: var(--lh-14);
+  line-height: 1.6;
   background: var(--bg-0);
   color: var(--fg-1);
   -webkit-font-smoothing: antialiased;
@@ -96,10 +96,11 @@ kbd {
 }
 .site-nav__brand:hover { text-decoration: none; }
 .site-nav__logo {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--r-8);
+  width: 32px;
+  height: 32px;
+  border-radius: 22%;
   box-shadow: var(--shadow-1);
+  object-fit: cover;
 }
 .site-nav__title { letter-spacing: -0.01em; }
 .site-nav__version {
@@ -111,7 +112,7 @@ kbd {
   border-radius: var(--r-3);
 }
 .site-nav__search {
-  max-width: 480px;
+  max-width: 640px;
   width: 100%;
   justify-self: center;
 }
@@ -372,17 +373,20 @@ kbd {
   margin: 0 auto;
 }
 .hero__logo {
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 1.25rem;
-  border-radius: var(--r-8);
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 1.5rem;
+  border-radius: 24%;
   box-shadow: var(--shadow-3);
+  object-fit: cover;
 }
 .hero__title {
   font-size: 3rem;
+  line-height: 1.15;
   font-weight: var(--w-bold);
   letter-spacing: -0.03em;
   margin: 0 0 0.5rem;
+  padding: 0.1em 0;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   -webkit-background-clip: text;
   background-clip: text;
@@ -390,6 +394,7 @@ kbd {
 }
 .hero__tagline {
   font-size: 1.35rem;
+  line-height: 1.4;
   font-weight: var(--w-medium);
   color: var(--fg-1);
   margin: 0 0 0.5rem;
@@ -398,7 +403,7 @@ kbd {
   color: var(--fg-2);
   margin: 0 0 2rem;
   font-size: var(--t-16);
-  line-height: var(--lh-16);
+  line-height: 1.6;
 }
 .hero__cta {
   display: inline-flex;
