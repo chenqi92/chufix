@@ -29,6 +29,9 @@ import './styles/slider.css';
 import './styles/drawer.css';
 import './styles/popover.css';
 import './styles/dropdown.css';
+import './styles/inputgroup.css';
+import './styles/otp.css';
+import './styles/form.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -189,3 +192,22 @@ export type {
   DropdownPlacement,
   DropdownItem,
 } from './dropdown/variants';
+
+export { default as CfInputGroup } from './inputgroup/InputGroup.vue';
+export type {
+  InputGroupProps,
+  InputGroupOrientation,
+  InputGroupSize,
+} from './inputgroup/variants';
+
+export { default as CfOtpInput } from './otp/OtpInput.vue';
+export type { OtpInputProps, OtpInputSize, OtpInputType } from './otp/variants';
+
+export { default as CfForm } from './form/Form.vue';
+export { default as CfFormField } from './form/FormField.vue';
+export type {
+  FormProps,
+  FormFieldProps,
+  FormLayout,
+  FormSize,
+} from './form/variants';

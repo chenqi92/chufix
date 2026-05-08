@@ -1,0 +1,90 @@
+---
+title: Form 表单
+description: 表单封装层，统一 label / 错误信息 / 校验流。把所有现有 input 接进来。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/form/BasicVue.vue';
+
+## 基础用法
+
+`<CfForm>` 提供布局上下文（`layout` / `size` / `labelWidth`），`<CfFormField>` 包裹每一个表单项，统一渲染 label、必填星号、提示文案、错误文案。校验逻辑由用户自行实现，本组件只负责把 `error` 显示出来并标红控件边框。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfForm, CfFormField, CfInput, CfTextarea, CfSelect, CfButton } from '@chufix/vue';
+
+const name = ref('');
+const email = ref('');
+const role = ref('user');
+const errors = ref<Record<string, string>>({});
+
+function submit() {
+  errors.value = {};
+  if (!name.value) errors.value.name = '姓名不能为空';
+  if (!email.value.includes('@')) errors.value.email = '邮箱格式不正确';
+}
+</script>
+
+<template>
+  <CfForm layout="vertical">
+    <CfFormField label="姓名" required :error="errors.name">
+      <CfInput v-model="name" />
+    </CfFormField>
+    <CfFormField label="邮箱" required hint="用于登录" :error="errors.email">
+      <CfInput v-model="email" type="email" />
+    </CfFormField>
+    <CfButton @click="submit">提交</CfButton>
+  </CfForm>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfForm, CfFormField, CfInput, CfButton } from '@chufix/react';
+
+export default function Demo() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  function submit() {
+    const next: Record<string, string> = {};
+    if (!name) next.name = '姓名不能为空';
+    if (!email.includes('@')) next.email = '邮箱格式不正确';
+    setErrors(next);
+  }
+
+  return (
+    <CfForm layout="vertical">
+      <CfFormField label="姓名" required error={errors.name}>
+        <CfInput value={name} onChange={(e) => setName(e.target.value)} />
+      </CfFormField>
+      <CfFormField label="邮箱" required hint="用于登录" error={errors.email}>
+        <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
+      </CfFormField>
+      <CfButton onClick={submit}>提交</CfButton>
+    </CfForm>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API · Form Props
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `layout` | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` | 整体布局 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 默认尺寸（暂为视觉占位，未与控件 size 联动） |
+| `labelWidth` | `number \| string` | `—` | 仅 horizontal 布局生效，固定 label 宽度 |
+| `disabled` | `boolean` | `false` | 全局禁用（暂未与控件 disabled 联动，需要手动透传） |
+
+## API · FormField Props
+
+| 属性 | 类型 | 说明 |
+|---|---|---|
+| `label` | `string \| ReactNode` | 标签文案 |
+| `required` | `boolean` | 显示必填星号 |
+| `hint` | `string \| ReactNode` | 控件下方提示文案 |
+| `error` | `string \| ReactNode` | 错误文案；非空时控件边框变红 |
+| `for` (Vue) / `htmlFor` (React) | `string` | 自定义 input id；省略则自动生成 |
+| `layout` | `FormLayout` | 覆盖父级 Form 布局（单字段调整） |

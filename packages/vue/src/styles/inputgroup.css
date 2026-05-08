@@ -1,0 +1,68 @@
+/* ChuFix InputGroup — compose Inputs/Buttons sharing a single border. */
+
+.cf-input-group {
+  display: inline-flex;
+  align-items: stretch;
+  position: relative;
+}
+
+.cf-input-group--horizontal { flex-direction: row; }
+.cf-input-group--vertical   { flex-direction: column; align-items: stretch; }
+
+.cf-input-group--stretch { display: flex; width: 100%; }
+.cf-input-group--stretch > * { flex: 1 1 0; min-width: 0; }
+
+/* Drop interior border-radius; children share one outer rounded shape. */
+.cf-input-group--horizontal > :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon) {
+  border-radius: 0;
+}
+.cf-input-group--horizontal > :first-child :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon),
+.cf-input-group--horizontal > :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon):first-child {
+  border-top-left-radius: var(--r-4);
+  border-bottom-left-radius: var(--r-4);
+}
+.cf-input-group--horizontal > :last-child :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon),
+.cf-input-group--horizontal > :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon):last-child {
+  border-top-right-radius: var(--r-4);
+  border-bottom-right-radius: var(--r-4);
+}
+
+.cf-input-group--vertical > :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon) {
+  border-radius: 0;
+}
+.cf-input-group--vertical > :first-child :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon),
+.cf-input-group--vertical > :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon):first-child {
+  border-top-left-radius: var(--r-4);
+  border-top-right-radius: var(--r-4);
+}
+.cf-input-group--vertical > :last-child :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon),
+.cf-input-group--vertical > :where(.cf-input, .cf-btn, .cf-select, .cf-input-group__addon):last-child {
+  border-bottom-left-radius: var(--r-4);
+  border-bottom-right-radius: var(--r-4);
+}
+
+/* Collapse adjacent borders on the seam axis. */
+.cf-input-group--horizontal > * + * { margin-left: -1px; }
+.cf-input-group--vertical   > * + * { margin-top: -1px; }
+
+/* Lift focused/hovered children so their full border shows above the seam. */
+.cf-input-group > *:focus-within,
+.cf-input-group > *:hover {
+  z-index: 1;
+}
+
+/* Static inline label — visually paired with adjacent input. */
+.cf-input-group__addon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  background: var(--bg-2);
+  color: var(--fg-2);
+  border: 1px solid var(--line-1);
+  font-size: var(--t-13);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.cf-input-group--sm .cf-input-group__addon { padding: 0 0.625rem; font-size: var(--t-12); }
+.cf-input-group--lg .cf-input-group__addon { padding: 0 0.875rem; font-size: var(--t-14); }

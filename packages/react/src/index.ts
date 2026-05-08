@@ -29,6 +29,9 @@ import './styles/slider.css';
 import './styles/drawer.css';
 import './styles/popover.css';
 import './styles/dropdown.css';
+import './styles/inputgroup.css';
+import './styles/otp.css';
+import './styles/form.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -198,3 +201,23 @@ export type {
   DropdownPlacement,
   DropdownItem,
 } from './dropdown/variants';
+
+export { InputGroup as CfInputGroup } from './inputgroup/InputGroup';
+export type {
+  InputGroupProps,
+  InputGroupOrientation,
+  InputGroupSize,
+} from './inputgroup/variants';
+
+export { OtpInput as CfOtpInput } from './otp/OtpInput';
+export type { OtpInputProps, OtpInputSize, OtpInputType } from './otp/variants';
+
+export { Form as CfForm } from './form/Form';
+export { FormField as CfFormField } from './form/FormField';
+export { FormContext } from './form/variants';
+export type {
+  FormProps,
+  FormFieldProps,
+  FormLayout,
+  FormSize,
+} from './form/variants';

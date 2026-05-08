@@ -1,0 +1,71 @@
+---
+title: OtpInput 一次性密码
+description: 一次性密码输入格子，自动跳转下一格、Backspace 退格、整段粘贴自动分配。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/otp/BasicVue.vue';
+
+## 基础用法
+
+`length` 设定格子数；输入后自动聚焦下一格，`Backspace` 在空格回退到上一格，`←/→` 切换焦点，整段数字粘贴时按位填入剩余格子。`type='numeric'` 限制只能数字。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfOtpInput } from '@chufix/vue';
+
+const code = ref('');
+const filled = ref('');
+</script>
+
+<template>
+  <CfOtpInput
+    v-model="code"
+    :length="6"
+    auto-focus
+    @complete="filled = $event"
+  />
+  <p>当前值：{{ code }}</p>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfOtpInput } from '@chufix/react';
+
+export default function Demo() {
+  const [code, setCode] = useState('');
+  const [filled, setFilled] = useState('');
+  return (
+    <>
+      <CfOtpInput
+        value={code}
+        onChange={setCode}
+        onComplete={setFilled}
+        length={6}
+        autoFocus
+      />
+      <p>当前值：{code}</p>
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API · Props
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `''` | 当前值 |
+| `length` | `number` | `6` | 格子数 |
+| `type` | `'numeric' \| 'alphanumeric'` | `'numeric'` | 允许字符集 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 格子尺寸 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `autoFocus` | `boolean` | `false` | 自动聚焦第一格 |
+| `separatorAt` | `number` | `—` | 在第 N 个格子后插入分隔符（如 `3` 在 3 后） |
+
+## API · Events
+
+| 事件 | 参数 | 说明 |
+|---|---|---|
+| `update:modelValue` (Vue) / `onChange` (React) | `(value: string)` | 任意一格变化时触发 |
+| `complete` (Vue) / `onComplete` (React) | `(value: string)` | 全部格子填满时触发 |

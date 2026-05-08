@@ -12,6 +12,7 @@
     "build": "pnpm -r --filter=./packages/* run build && pnpm --filter=docs build",
     "build:packages": "pnpm -r --filter=./packages/* run build",
     "build:docs": "pnpm --filter=docs build",
+    "icons:sync": "pnpm --filter @chufix/icons sync",
     "tokens:check": "node scripts/check-tokens.mjs",
     "sync:docs": "node scripts/sync-docs.mjs",
     "smoke": "pnpm --filter @chufix/example-vite-vue dev",

@@ -8,6 +8,7 @@
 chufix/
 ├── packages/
 │   ├── tokens/      @chufix/tokens   设计 token（CSS 变量 + 可选 Tailwind preset）
+│   ├── icons/       @chufix/icons    SVG sprite + 类型化图标名
 │   ├── vue/         @chufix/vue      Vue 3 组件包
 │   └── react/       @chufix/react    React 组件包
 └── apps/
@@ -28,6 +29,12 @@ pnpm dev:docs
 ```
 
 访问 http://localhost:4321 即可看到首页和组件页，Vue / React 两个实例都是真实组件，能交互。
+
+同步图标包：
+
+```bash
+pnpm icons:sync
+```
 
 ## 开发联调
 

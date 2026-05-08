@@ -83,6 +83,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.12(typescript@5.9.3)
 
+  packages/icons: {}
+
   packages/react:
     dependencies:
       '@chufix/tokens':

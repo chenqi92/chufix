@@ -1,0 +1,47 @@
+/* ChuFix OtpInput — fixed-cell digit input. */
+
+.cf-otp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, var(--font-sans));
+}
+
+.cf-otp__cell {
+  appearance: none;
+  border: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border-radius: var(--r-4);
+  text-align: center;
+  font-size: var(--t-16);
+  font-weight: var(--w-semibold);
+  font-family: inherit;
+  width: 2.25rem;
+  height: 2.5rem;
+  padding: 0;
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+  caret-color: var(--accent-1);
+}
+.cf-otp__cell:hover { border-color: var(--line-2); }
+.cf-otp__cell:focus-visible {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.cf-otp__cell:disabled {
+  background: var(--bg-2);
+  color: var(--fg-3);
+  cursor: not-allowed;
+}
+
+.cf-otp--sm .cf-otp__cell { width: 1.875rem; height: 2.125rem; font-size: var(--t-14); }
+.cf-otp--lg .cf-otp__cell { width: 2.625rem; height: 2.875rem; font-size: var(--t-18); }
+
+.cf-otp__separator {
+  color: var(--fg-3);
+  font-weight: var(--w-semibold);
+  user-select: none;
+}

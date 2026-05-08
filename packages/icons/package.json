@@ -1,0 +1,27 @@
+{
+  "name": "@chufix/icons",
+  "version": "0.0.1",
+  "description": "ChuFix UI 图标库 —— 16x16 SVG sprite 与类型化图标名",
+  "type": "module",
+  "files": [
+    "src",
+    "scripts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./icons.svg": "./src/icons.svg",
+    "./sprite.svg": "./src/icons.svg",
+    "./names": {
+      "types": "./src/names.ts",
+      "import": "./src/names.ts"
+    }
+  },
+  "scripts": {
+    "dev": "node scripts/generate-icons.mjs",
+    "build": "node scripts/generate-icons.mjs",
+    "sync": "node scripts/generate-icons.mjs"
+  }
+}

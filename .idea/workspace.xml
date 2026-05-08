@@ -2,23 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bc428be-606e-4be9-80a3-97f4fc1ae725" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/button.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/button.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/card.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/card.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/checkbox.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/checkbox.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/input.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/input.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/radio.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/radio.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/select.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/select.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/switch.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/switch.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/react/src/styles/textarea.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/react/src/styles/textarea.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/tokens/src/tokens.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/tokens/src/tokens.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/button.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/button.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/card.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/card.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/checkbox.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/checkbox.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/input.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/input.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/radio.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/radio.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/select.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/select.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/switch.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/switch.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/vue/src/styles/textarea.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/styles/textarea.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/docs/src/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/docs/src/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/vue/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/vue/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,41 +13,41 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "chenqi92"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;chenqi92&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/chenqi92/chufix.git",
-    "accountId": "bebd6622-15bb-4733-afe7-8bc33df782a2"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/chenqi92/chufix.git&quot;,
+    &quot;accountId&quot;: &quot;bebd6622-15bb-4733-afe7-8bc33df782a2&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5,
-  "fromUser": false
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3DQRp30lxkX155QQMDLKV8zefGp" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "E:/workspace-freq/base-compoent/chukit",
-    "nodejs_package_manager_path": "pnpm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/workspace-freq/base-compoent/chukit&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -78,6 +63,7 @@
       <option name="presentableId" value="Default" />
       <updated>1778212488792</updated>
       <workItem from="1778212489935" duration="1516000" />
+      <workItem from="1778232752546" duration="1319000" />
     </task>
     <servers />
   </component>

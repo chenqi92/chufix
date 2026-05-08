@@ -159,8 +159,18 @@ kbd {
   top: 76px;
   max-height: calc(100vh - 96px);
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
   padding-right: 0.5rem;
 }
+.site-sidebar::-webkit-scrollbar { width: 6px; }
+.site-sidebar::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: var(--r-4);
+}
+.site-sidebar::-webkit-scrollbar-thumb:hover { background: var(--fg-3); }
+.site-sidebar::-webkit-scrollbar-track { background: transparent; }
 .site-sidebar__group { margin-bottom: 1.5rem; }
 .site-sidebar__title {
   margin: 0 0 0.5rem;
@@ -206,9 +216,19 @@ kbd {
   top: 76px;
   max-height: calc(100vh - 96px);
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
   padding-left: 0.5rem;
   border-left: 1px solid var(--line-1);
 }
+.site-toc::-webkit-scrollbar { width: 6px; }
+.site-toc::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: var(--r-4);
+}
+.site-toc::-webkit-scrollbar-thumb:hover { background: var(--fg-3); }
+.site-toc::-webkit-scrollbar-track { background: transparent; }
 .site-toc__title {
   margin: 0 0 0.5rem;
   font-size: var(--t-12);

@@ -62,6 +62,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Drawer 抽屉', href: '/components/drawer/' },
       { label: 'Popover 弹出层', href: '/components/popover/' },
       { label: 'Dropdown 下拉菜单', href: '/components/dropdown/' },
+      { label: 'InputGroup 输入组合', href: '/components/inputgroup/' },
+      { label: 'OtpInput 一次性密码', href: '/components/otp/' },
+      { label: 'Form 表单', href: '/components/form/' },
     ],
   },
 ];
