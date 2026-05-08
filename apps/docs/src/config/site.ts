@@ -1,7 +1,8 @@
 export const site = {
   title: 'ChuFix UI',
+  nameZh: '础件',
   tagline: '初见即用的基础组件库',
-  description: 'Vue 3 与 React 双框架同源的基础组件库，可装包也可拷源码。',
+  description: '础件 ChuFix UI · 初见即用的基础组件库，Vue 3 与 React 双框架同源，纯 HTML/JS 项目也能直接用 CSS 类名。',
   github: 'https://github.com/chenqi92/chufix',
   docsRepo: 'https://github.com/chenqi92/chufix-docs',
   version: '0.0.1',
@@ -23,6 +24,7 @@ export const sidebar: SidebarGroup[] = [
     items: [
       { label: '介绍', href: '/' },
       { label: '安装', href: '/getting-started/installation/' },
+      { label: '纯 HTML / JS 用法', href: '/getting-started/vanilla/' },
       { label: '主题与 Tokens', href: '/getting-started/theming/' },
     ],
   },

@@ -1,0 +1,279 @@
+---
+title: 纯 HTML / JS 用法
+description: 没有构建工具、没有 Vue、没有 React 的传统 HTML+JS 项目，也能直接套用础件的 CSS 类拿到 90% 的视觉。
+order: 3
+---
+
+础件的设计是 **CSS 优先**：所有视觉表现都来自一份 stylesheet 和 `ck-*` 类名，组件源码只是把这些 class 拼好的薄壳。**框架是可选的**——你可以只引入一份 CSS 文件，在传统 jQuery / Bootstrap 时代的 HTML 项目里用 `<button class="ck-btn ck-btn--primary">` 直接拿到所有样式。
+
+## 引入 CSS
+
+只需要两个文件：
+
+```html
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 1. design tokens（颜色、间距、字号、阴影、密度） -->
+    <link rel="stylesheet" href="https://unpkg.com/@chufix/tokens/src/tokens.css" />
+    <!-- 2. 所有组件的 class 样式（聚合包） -->
+    <link rel="stylesheet" href="https://unpkg.com/@chufix/vue/dist/style.css" />
+    <title>础件 demo</title>
+  </head>
+  <body>
+    …
+  </body>
+</html>
+```
+
+> 没发布 npm 之前，你也可以把 `@chufix/tokens/src/tokens.css` 和 `@chufix/vue/dist/style.css`（构建后的）拷到自己项目里直接 link。
+
+切主题：把 `<html>` 上的 `data-theme` 改成 `dark-cool` / `dark-warm` / `light` 任意一个就行。
+切密度：再加 `data-density="compact"`。
+
+## 直接能用的组件（CSS-only · 不需要 JS）
+
+下面这些组件不带交互逻辑，纯靠 class 描述外观，写好 HTML 就有效果：
+
+### Button 按钮
+
+```html
+<button class="ck-btn ck-btn--primary">主要</button>
+<button class="ck-btn ck-btn--secondary">次要</button>
+<button class="ck-btn ck-btn--tertiary">三级</button>
+<button class="ck-btn ck-btn--ghost">幽灵</button>
+<button class="ck-btn ck-btn--danger">危险</button>
+<button class="ck-btn ck-btn--primary ck-btn--lg">大号</button>
+<button class="ck-btn ck-btn--primary" disabled>禁用</button>
+<button class="ck-btn ck-btn--primary is-loading">加载中</button>
+```
+
+### Input 输入框
+
+`ck-input` 是包裹 label，`ck-input__native` 是真正的 `<input>`：
+
+```html
+<label class="ck-input ck-input--outline ck-input--md">
+  <input class="ck-input__native" type="text" placeholder="请输入" />
+</label>
+
+<label class="ck-input ck-input--filled ck-input--md">
+  <span class="ck-input__prefix">@</span>
+  <input class="ck-input__native" type="email" placeholder="邮箱" />
+</label>
+```
+
+### Card 卡片
+
+```html
+<article class="ck-card ck-card--elevated">
+  <div class="ck-card__header">标题</div>
+  <div class="ck-card__body">这里是卡片正文。</div>
+  <div class="ck-card__footer">
+    <button class="ck-btn ck-btn--primary ck-btn--sm">确认</button>
+  </div>
+</article>
+```
+
+`ck-card--outlined` / `ck-card--elevated` / `ck-card--filled` 三种变体。
+
+### Tag / Badge / Avatar
+
+```html
+<span class="ck-tag ck-tag--soft ck-tag--primary">标签</span>
+<span class="ck-tag ck-tag--solid ck-tag--success">成功</span>
+<span class="ck-tag ck-tag--outline ck-tag--danger">危险</span>
+
+<span class="ck-badge ck-badge--danger">5</span>
+<span class="ck-badge ck-badge--dot ck-badge--success"></span>
+
+<span class="ck-avatar ck-avatar--md">CQ</span>
+<span class="ck-avatar ck-avatar--lg ck-avatar--circle">
+  <img src="/me.jpg" alt="" />
+</span>
+```
+
+### Alert 警示
+
+```html
+<div class="ck-alert ck-alert--info ck-alert--soft">
+  <div class="ck-alert__body">
+    <div class="ck-alert__title">一条信息</div>
+    <div class="ck-alert__content">这是一段补充说明。</div>
+  </div>
+</div>
+
+<div class="ck-alert ck-alert--success ck-alert--solid">
+  <div class="ck-alert__body">保存成功</div>
+</div>
+```
+
+### Skeleton 骨架屏
+
+```html
+<span class="ck-skeleton ck-skeleton--text" style="width: 200px;"></span>
+<span class="ck-skeleton ck-skeleton--circle"></span>
+<span class="ck-skeleton ck-skeleton--rect" style="width: 100%; height: 80px;"></span>
+```
+
+### Checkbox / Radio / Switch（HTML 原生 + class）
+
+```html
+<label class="ck-checkbox ck-checkbox--md">
+  <input type="checkbox" class="ck-checkbox__input" />
+  <span class="ck-checkbox__box"></span>
+  <span class="ck-checkbox__label">同意条款</span>
+</label>
+
+<label class="ck-radio ck-radio--md">
+  <input type="radio" name="r" class="ck-radio__input" />
+  <span class="ck-radio__dot"></span>
+  <span class="ck-radio__label">选项 A</span>
+</label>
+
+<label class="ck-switch ck-switch--md">
+  <input type="checkbox" class="ck-switch__input" />
+  <span class="ck-switch__track"></span>
+</label>
+```
+
+## 需要 JS 的组件
+
+下面这些组件包含状态切换或位置计算，纯 CSS 不够用。**两条路**：
+
+### 路径 A：用 Vue 3 的 ESM CDN 引一下
+
+如果项目本身没构建工具但你又能接受加一行 `<script type="module">`，用 importmap 引 Vue 3 + `@chufix/vue`，跟用 jQuery 没区别：
+
+```html
+<script type="importmap">
+{
+  "imports": {
+    "vue": "https://esm.sh/vue@3",
+    "@chufix/vue": "https://esm.sh/@chufix/vue@latest"
+  }
+}
+</script>
+
+<div id="app">
+  <ck-button @click="show">点击</ck-button>
+  <ck-modal v-model:open="open" title="Hello"><p>来自础件</p></ck-modal>
+</div>
+
+<script type="module">
+  import { createApp, ref } from 'vue';
+  import { Button, Modal } from '@chufix/vue';
+
+  createApp({
+    components: { CkButton: Button, CkModal: Modal },
+    setup() {
+      const open = ref(false);
+      return { open, show: () => (open.value = true) };
+    },
+  }).mount('#app');
+</script>
+```
+
+> 注意：`@chufix/vue` 包发布到 npm 后这条 esm.sh 链接才能用，未发布前先把 `dist/index.js` 自己 host 一份。
+
+### 路径 B：自己写一段最小 vanilla JS 兜底
+
+Modal / Tooltip / Toast 这种组件的 CSS 已经把视觉做好，行为只需要几行 JS 控制 class 切换：
+
+```html
+<button id="open" class="ck-btn ck-btn--primary">打开</button>
+<div id="modal" class="ck-modal" data-state="closed">
+  <div class="ck-modal__backdrop"></div>
+  <div class="ck-modal__panel ck-modal__panel--md">
+    <header class="ck-modal__header">
+      <h2 class="ck-modal__title">标题</h2>
+      <button class="ck-modal__close" data-close>×</button>
+    </header>
+    <div class="ck-modal__body">正文。</div>
+  </div>
+</div>
+
+<script>
+  const m = document.getElementById('modal');
+  document.getElementById('open').onclick = () => m.dataset.state = 'open';
+  m.querySelectorAll('[data-close], .ck-modal__backdrop').forEach((el) =>
+    el.addEventListener('click', () => (m.dataset.state = 'closed'))
+  );
+</script>
+```
+
+CSS 里 `.ck-modal[data-state='open']` 已经处理了显示/隐藏与动画，只要把 `data-state` 在 `'open'` 与 `'closed'` 之间切换就行。Tooltip 同理：JS 控制 `display: block`，位置可以用 `getBoundingClientRect()` 算。
+
+## 不带 build 工具的最小可运行示例
+
+把上面的全部组合到一个 `index.html`，浏览器双击就能开：
+
+```html
+<!doctype html>
+<html lang="zh-CN" data-theme="dark-cool">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix/tokens/src/tokens.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix/vue/dist/style.css" />
+    <title>础件 vanilla demo</title>
+    <style>
+      body { padding: 32px; max-width: 720px; margin: 0 auto; }
+      .row { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>础件 · 纯 HTML 演示</h1>
+
+    <h2>按钮</h2>
+    <div class="row">
+      <button class="ck-btn ck-btn--primary">主要</button>
+      <button class="ck-btn ck-btn--secondary">次要</button>
+      <button class="ck-btn ck-btn--tertiary">三级</button>
+      <button class="ck-btn ck-btn--ghost">幽灵</button>
+      <button class="ck-btn ck-btn--danger">危险</button>
+    </div>
+
+    <h2>表单</h2>
+    <label class="ck-input ck-input--outline">
+      <input class="ck-input__native" type="text" placeholder="昵称" />
+    </label>
+
+    <h2>卡片</h2>
+    <article class="ck-card ck-card--elevated">
+      <div class="ck-card__header">项目设置</div>
+      <div class="ck-card__body">础件可以零依赖跑在传统 HTML 项目里。</div>
+      <div class="ck-card__footer">
+        <button class="ck-btn ck-btn--primary ck-btn--sm">保存</button>
+      </div>
+    </article>
+
+    <h2>状态条</h2>
+    <div class="ck-alert ck-alert--success ck-alert--soft">
+      <div class="ck-alert__body">
+        <div class="ck-alert__title">已就绪</div>
+        <div class="ck-alert__content">不需要 npm，不需要 webpack。</div>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+## class 速查表
+
+| 组件 | 容器 class | 关键修饰 |
+|------|------------|----------|
+| Button | `ck-btn` | `--primary` / `--secondary` / `--tertiary` / `--ghost` / `--danger`；`--sm` / `--lg`；`--pill` / `--square` |
+| Input  | `ck-input` + 内部 `ck-input__native` | `--outline` / `--filled` / `--ghost`；`--sm` / `--lg` |
+| Textarea | `ck-textarea` + 内部 `ck-textarea__native` | 同上 |
+| Card   | `ck-card` | `--outlined` / `--elevated` / `--filled` |
+| Tag    | `ck-tag`  | `--solid` / `--soft` / `--outline` × `--primary/success/warning/danger/info/neutral` |
+| Badge  | `ck-badge` | `--danger`/`--success` 等 tone；`--dot` |
+| Avatar | `ck-avatar` | `--sm/md/lg/xl`；`--circle`/`--square` |
+| Alert  | `ck-alert` | `--info/success/warning/error` × `--soft/outline/solid` |
+| Skeleton | `ck-skeleton` | `--text/circle/rect` |
+| Checkbox | `ck-checkbox` + 内部 `ck-checkbox__input` + `ck-checkbox__box` | `--sm/md/lg` |
+| Radio  | `ck-radio` + 内部 `ck-radio__input` + `ck-radio__dot` | `--sm/md/lg` |
+| Switch | `ck-switch` + 内部 `ck-switch__input` + `ck-switch__track` | `--sm/md/lg` |
+| Tabs   | `ck-tabs` + `ck-tabs__list` + `ck-tabs__tab` | `--line/segmented/pill`；激活项加 `is-active` |

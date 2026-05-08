@@ -11,11 +11,12 @@ import logo from '~/assets/chufix.png';
   <section class="hero">
     <div class="hero__inner">
       <Image src={logo} alt="" class="hero__logo" widths={[160, 220]} sizes="220px" />
-      <h1 class="hero__title">{site.title}</h1>
+      <h1 class="hero__title">{site.nameZh}</h1>
       <p class="hero__tagline">{site.tagline}</p>
-      <p class="hero__sub">Vue 3 与 React 双框架同源 · CSS 变量主题 · 可装包也可拷源码</p>
+      <p class="hero__brand">{site.title} · 双框架同源 · CSS 变量主题 · 可装包也可拷源码 · 纯 HTML/JS 也能用</p>
       <div class="hero__cta">
         <a href="/getting-started/installation/" class="ck-btn ck-btn--lg">快速开始</a>
+        <a href="/getting-started/vanilla/" class="ck-btn ck-btn--secondary ck-btn--lg">纯 HTML 用法</a>
         <a href="/components/" class="ck-btn ck-btn--tertiary ck-btn--lg">浏览组件</a>
         <a href={site.github} target="_blank" rel="noopener" class="ck-btn ck-btn--ghost ck-btn--lg">GitHub →</a>
       </div>
@@ -23,7 +24,7 @@ import logo from '~/assets/chufix.png';
   </section>
 
   <section class="splash-section">
-    <h2 class="splash-section__title">为什么是 ChuFix</h2>
+    <h2 class="splash-section__title">为什么是础件</h2>
     <div class="ck-feature-grid">
       <article class="ck-card ck-card--elevated">
         <div class="ck-card__header">双框架同源</div>

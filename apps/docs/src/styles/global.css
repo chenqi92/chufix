@@ -381,11 +381,11 @@ kbd {
   object-fit: cover;
 }
 .hero__title {
-  font-size: 3rem;
+  font-size: 4.5rem;
   line-height: 1.15;
   font-weight: var(--w-bold);
-  letter-spacing: -0.03em;
-  margin: 0 0 0.5rem;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.75rem;
   padding: 0.1em 0;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   -webkit-background-clip: text;
@@ -398,6 +398,23 @@ kbd {
   font-weight: var(--w-medium);
   color: var(--fg-1);
   margin: 0 0 0.5rem;
+}
+.hero__brand {
+  color: var(--fg-2);
+  margin: 0 0 2rem;
+  font-size: var(--t-14);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+.hero__brand::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--line-2);
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-bottom: 3px;
 }
 .hero__sub {
   color: var(--fg-2);
