@@ -1,0 +1,85 @@
+---
+title: Select 选择器
+description: ChuKit 的下拉选择 —— options 数组式 API，支持 clearable、键盘导航、disabled item。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/select/BasicVue.vue';
+import BasicReact from '~/components/demos/select/BasicReact.tsx';
+
+## 基础用法
+
+通过 `options` 数组传入选项，每项至少包含 `value` 与 `label`。键盘 `↑` / `↓` / `Enter` / `Esc` 全部可用，触发器获得焦点后可以纯键盘操作。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Select, type SelectOption } from '@chukit/vue';
+
+const options: SelectOption[] = [
+  { value: 'beijing', label: '北京' },
+  { value: 'shanghai', label: '上海' },
+  { value: 'guangzhou', label: '广州' },
+  { value: 'shenzhen', label: '深圳' },
+  { value: 'chengdu', label: '成都（暂不可选）', disabled: true },
+];
+
+const city = ref<string | null>('shanghai');
+</script>
+
+<template>
+  <Select v-model="city" :options="options" placeholder="选一个城市" clearable />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Select, type SelectOption } from '@chukit/react';
+
+const options: SelectOption[] = [
+  { value: 'beijing', label: '北京' },
+  { value: 'shanghai', label: '上海' },
+  { value: 'guangzhou', label: '广州' },
+  { value: 'shenzhen', label: '深圳' },
+  { value: 'chengdu', label: '成都（暂不可选）', disabled: true },
+];
+
+export default function Demo() {
+  const [city, setCity] = useState<string | null>('shanghai');
+
+  return (
+    <Select
+      value={city}
+      options={options}
+      placeholder="选一个城市"
+      clearable
+      onChange={(v) => setCity(v as string | null)}
+    />
+  );
+}`}
+>
+  <BasicVue slot="vue" client:load />
+  <BasicReact slot="react" client:load />
+</DemoFrame>
+
+## Props
+
+| 名称          | 类型                               | 默认值       | 说明                                   |
+| ------------- | ---------------------------------- | ------------ | -------------------------------------- |
+| `options`     | `SelectOption[]`                   | `[]`         | 选项数组，`{ value, label, disabled? }` |
+| `placeholder` | `string`                           | `'请选择'`   | 未选中时显示                            |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'` | `'outline'`  | 视觉变体                                |
+| `size`        | `'sm' \| 'md' \| 'lg'`             | `'md'`       | 整体尺寸                                |
+| `clearable`   | `boolean`                          | `false`      | 已选中时显示清除按钮                    |
+| `disabled`    | `boolean`                          | `false`      | 整体禁用                                |
+| `error`       | `boolean`                          | `false`      | 错误态                                  |
+
+## 键盘交互
+
+| 按键           | 行为                                |
+| -------------- | ----------------------------------- |
+| `↓` / `↑`      | 打开菜单 / 在选项之间移动 active    |
+| `Enter` / `空格` | 打开菜单 / 选中当前 active 项       |
+| `Esc`          | 关闭菜单                            |
+| `Tab`          | 关闭菜单并把焦点交还浏览器          |
+
+## 备注
+
+当前实现使用 `position: absolute` 浮层；如果需要跨容器溢出（例如 `overflow: hidden` 的父级裁掉了菜单），后续会扩展 Portal 版本。

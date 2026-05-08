@@ -1,0 +1,81 @@
+---
+title: Textarea 多行输入
+description: ChuKit 的多行输入 —— 与 Input 同色系，支持 autoResize、字符计数、resize 控制。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/textarea/BasicVue.vue';
+import BasicReact from '~/components/demos/textarea/BasicReact.tsx';
+
+## 基础用法
+
+第一个示例展示 `maxlength` + `show-count` 组合，第二个示例展示 `auto-resize`：内容增加时自动撑高。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Textarea } from '@chukit/vue';
+
+const note = ref('');
+const bio = ref('一个简短的自我介绍。');
+</script>
+
+<template>
+  <Textarea
+    v-model="note"
+    placeholder="说点什么…"
+    :rows="3"
+    :maxlength="120"
+    show-count
+  />
+  <Textarea
+    v-model="bio"
+    variant="filled"
+    auto-resize
+    placeholder="自动撑高的多行输入"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Textarea } from '@chukit/react';
+
+export default function Demo() {
+  const [note, setNote] = useState('');
+  const [bio, setBio] = useState('一个简短的自我介绍。');
+
+  return (
+    <>
+      <Textarea
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        placeholder="说点什么…"
+        rows={3}
+        maxLength={120}
+        showCount
+      />
+      <Textarea
+        value={bio}
+        onChange={(e) => setBio(e.target.value)}
+        variant="filled"
+        autoResize
+        placeholder="自动撑高的多行输入"
+      />
+    </>
+  );
+}`}
+>
+  <BasicVue slot="vue" client:load />
+  <BasicReact slot="react" client:load />
+</DemoFrame>
+
+## Props
+
+| 名称         | 类型                                            | 默认值       | 说明                                      |
+| ------------ | ----------------------------------------------- | ------------ | ----------------------------------------- |
+| `variant`    | `'outline' \| 'filled' \| 'ghost'`              | `'outline'`  | 视觉变体，与 Input 一致                   |
+| `size`       | `'sm' \| 'md' \| 'lg'`                          | `'md'`       | 字号 / 内边距                             |
+| `rows`       | `number`                                        | `3`          | 初始行数                                  |
+| `resize`     | `'none' \| 'vertical' \| 'horizontal' \| 'both'`| `'vertical'` | 用户拖拽 resize 行为                      |
+| `autoResize` | `boolean`                                       | `false`      | 内容增减时自动调整高度（覆盖 `resize`）   |
+| `error`      | `boolean`                                       | `false`      | 错误状态边框 / 焦点环                      |
+| `maxlength`  | `number`                                        | —            | 字符上限（属性名 React 端为 `maxLength`） |
+| `showCount`  | `boolean`                                       | `false`      | 右下角显示字符计数                        |

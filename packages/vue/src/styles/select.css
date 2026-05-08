@@ -1,0 +1,162 @@
+/* ChuKit Select — trigger + absolute-positioned listbox menu. */
+.ck-select {
+  --_h: 2.25rem;
+  --_px: 0.75rem;
+  --_fs: 0.875rem;
+  --_bg: hsl(var(--ck-bg));
+  --_border: hsl(var(--ck-border));
+  --_border-hover: hsl(var(--ck-fg) / 0.25);
+  --_border-focus: hsl(var(--ck-primary));
+  --_ring: hsl(var(--ck-primary) / 0.18);
+  --_fg: hsl(var(--ck-fg));
+
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 16rem;
+  font-family: var(--ck-font-sans);
+  font-size: var(--_fs);
+}
+
+.ck-select--sm { --_h: 1.85rem; --_px: 0.625rem; --_fs: 0.8125rem; }
+.ck-select--md { --_h: 2.25rem; --_px: 0.75rem;  --_fs: 0.875rem; }
+.ck-select--lg { --_h: 2.65rem; --_px: 0.875rem; --_fs: 0.95rem; }
+
+.ck-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: var(--_h);
+  padding: 0 var(--_px);
+  font: inherit;
+  text-align: left;
+  color: var(--_fg);
+  background: var(--_bg);
+  border: 1px solid var(--_border);
+  border-radius: var(--ck-radius);
+  cursor: pointer;
+  transition:
+    border-color var(--ck-duration) var(--ck-easing),
+    box-shadow var(--ck-duration) var(--ck-easing),
+    background-color var(--ck-duration) var(--ck-easing);
+}
+.ck-select__trigger:hover:not(:disabled) {
+  border-color: var(--_border-hover);
+}
+.ck-select__trigger:focus-visible,
+.ck-select.is-open .ck-select__trigger {
+  outline: none;
+  border-color: var(--_border-focus);
+  box-shadow: 0 0 0 3px var(--_ring);
+}
+.ck-select__trigger:disabled {
+  cursor: not-allowed;
+  background: hsl(var(--ck-muted));
+  opacity: 0.7;
+}
+
+.ck-select.is-error {
+  --_border: hsl(var(--ck-danger));
+  --_border-focus: hsl(var(--ck-danger));
+  --_ring: hsl(var(--ck-danger) / 0.18);
+}
+
+.ck-select--filled .ck-select__trigger {
+  background: hsl(var(--ck-muted));
+  border-color: transparent;
+}
+.ck-select--filled.is-open .ck-select__trigger {
+  background: var(--_bg);
+}
+.ck-select--ghost .ck-select__trigger {
+  background: transparent;
+  border-color: transparent;
+}
+
+.ck-select__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ck-select__placeholder { color: hsl(var(--ck-muted-fg)); }
+
+.ck-select__caret {
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5rem;
+  color: hsl(var(--ck-muted-fg));
+  transition: transform var(--ck-duration) var(--ck-easing);
+  flex: none;
+}
+.ck-select.is-open .ck-select__caret { transform: rotate(180deg); }
+
+.ck-select__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  margin-left: 0.35rem;
+  border-radius: 50%;
+  font-size: 1.05em;
+  line-height: 1;
+  color: hsl(var(--ck-muted-fg));
+  background: transparent;
+  cursor: pointer;
+}
+.ck-select__clear:hover {
+  background: hsl(var(--ck-muted));
+  color: hsl(var(--ck-fg));
+}
+
+.ck-select__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  max-height: 16rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: hsl(var(--ck-bg));
+  border: 1px solid hsl(var(--ck-border));
+  border-radius: var(--ck-radius);
+  box-shadow: var(--ck-shadow-md);
+}
+
+.ck-select__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: calc(var(--ck-radius) - 2px);
+  cursor: pointer;
+  color: hsl(var(--ck-fg));
+}
+.ck-select__option.is-active:not(.is-disabled) {
+  background: hsl(var(--ck-muted));
+}
+.ck-select__option.is-selected {
+  color: hsl(var(--ck-primary));
+  font-weight: 500;
+}
+.ck-select__option.is-disabled {
+  color: hsl(var(--ck-muted-fg));
+  cursor: not-allowed;
+}
+.ck-select__check {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+.ck-select__empty {
+  padding: 0.5rem 0.6rem;
+  color: hsl(var(--ck-muted-fg));
+  font-size: 0.875rem;
+  text-align: center;
+}
