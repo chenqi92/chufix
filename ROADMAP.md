@@ -7,7 +7,7 @@
 
 ---
 
-## 已发布 · 27 / 70+
+## 已发布 · 30 / 70+
 
 ### 表单 · Form (10)
 
@@ -32,19 +32,22 @@
 - [x] Badge (atoms · B.2.1)
 - [x] Avatar · AvatarGroup (atoms · B.2.5)
 
-### 反馈与覆盖层 · Feedback / Overlay (5)
+### 反馈与覆盖层 · Feedback / Overlay (7)
 
 - [x] Modal (overlays · #modal)
 - [x] Tooltip (overlays · #tooltip)
 - [x] Toast (overlays · #toast)
 - [x] Alert (base · B.10)
 - [x] Skeleton (atoms · B.2.8)
+- [x] Drawer (overlays · #drawer)
+- [x] Popover (overlays · #popover)
 
-### 导航 · Navigation (3)
+### 导航 · Navigation (4)
 
 - [x] Tabs (base · B.09)
 - [x] Breadcrumb (base · B.14)
 - [x] Pagination (base · B.14 / data · #pagination)
+- [x] Dropdown / DropdownMenu (overlays · #menu)
 
 ### 布局与状态 · Layout (5)
 
@@ -61,9 +64,9 @@
 这一批先做完，扔出去就能解决 90% 的常见后台/管理界面需求。
 
 - [x] **Spinner / Loader** (base2 · Spinner · Loader) —— 单独的转圈加载，独立于 Skeleton
-- [ ] **Drawer** (overlays · #drawer / navigation) —— Modal 的边缘变体（top/right/bottom/left 滑入）；走 Teleport，demo `client:only="vue"`
-- [ ] **Popover** (overlays · #popover) —— Tooltip 的可点击/可交互变体，支持表单内容；Teleport
-- [ ] **Dropdown / DropdownMenu** (overlays · #menu) —— Popover + 列表 + 键盘导航；Teleport
+- [x] **Drawer** (overlays · #drawer / navigation) —— Modal 的边缘变体（top/right/bottom/left 滑入）；走 Teleport，demo `client:only="vue"`
+- [x] **Popover** (overlays · #popover) —— Tooltip 的可点击/可交互变体，支持表单内容；Teleport
+- [x] **Dropdown / DropdownMenu** (overlays · #menu) —— Popover + 列表 + 键盘导航；Teleport
 - [x] **Accordion / Collapsible** (base · B.09 揭示模式) —— 单/多展开
 - [x] **NumberInput** (base2 · NumberInput) —— 带 +/− 步进按钮、键盘上下、min/max/step
 - [x] **SearchInput** (base2 · SearchInput) —— Input 的预设变体，左 search 图标 + 右 clear

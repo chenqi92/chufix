@@ -1,0 +1,96 @@
+/* ChuFix Dropdown — portal'd menu list with keyboard nav. */
+
+.cf-dropdown-trigger {
+  display: inline-flex;
+  outline: none;
+}
+
+.cf-dropdown {
+  position: fixed;
+  z-index: var(--z-dropdown);
+  min-width: 160px;
+  padding: 4px;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cf-dropdown__item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-1);
+  padding: 6px 10px;
+  border-radius: var(--r-4);
+  text-align: left;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: inherit;
+  line-height: 1.4;
+  transition: background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.cf-dropdown__item:hover,
+.cf-dropdown__item--active {
+  background: var(--bg-2);
+}
+.cf-dropdown__item:disabled,
+.cf-dropdown__item[aria-disabled='true'] {
+  color: var(--fg-3);
+  cursor: not-allowed;
+  background: transparent;
+}
+.cf-dropdown__item--danger { color: var(--status-error); }
+.cf-dropdown__item--danger:hover,
+.cf-dropdown__item--danger.cf-dropdown__item--active {
+  background: oklch(from var(--status-error) l c h / 0.12);
+}
+
+.cf-dropdown__icon {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-2);
+  flex-shrink: 0;
+}
+
+.cf-dropdown__label { flex: 1; }
+
+.cf-dropdown__divider {
+  height: 1px;
+  background: var(--line-1);
+  margin: 4px 2px;
+}
+
+.cf-dropdown__header {
+  padding: 6px 10px 4px;
+  font-size: var(--t-11);
+  font-weight: var(--w-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-3);
+}
+
+.cf-dropdown-fade-enter-from,
+.cf-dropdown-fade-leave-to,
+.cf-dropdown[data-state='closed'] {
+  opacity: 0;
+  transform: scale(0.96);
+}
+.cf-dropdown-fade-enter-active,
+.cf-dropdown-fade-leave-active,
+.cf-dropdown[data-state='open'] {
+  transition: opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}

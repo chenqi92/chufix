@@ -89,6 +89,10 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
     <div class="cf-card__header">Pagination 分页</div>
     <div class="cf-card__body">数字按钮 + 上下页 + 跳转输入，自动算省略号。</div>
   </a>
+  <a href="/components/dropdown/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Dropdown 下拉菜单</div>
+    <div class="cf-card__body">items 数组式 API，键盘 ↑↓ Enter Esc 全支持，可分组与危险操作。</div>
+  </a>
 </div>
 
 ## 布局与状态
@@ -139,15 +143,23 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
     <div class="cf-card__header">Skeleton 骨架屏</div>
     <div class="cf-card__body">text / circle / rect 三种形状，shimmer 动画，多行文本占位辅助。</div>
   </a>
+  <a href="/components/drawer/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Drawer 抽屉</div>
+    <div class="cf-card__body">Modal 的边缘变体，上下左右滑入；共用 portal / focus trap / 滚动锁。</div>
+  </a>
+  <a href="/components/popover/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Popover 弹出层</div>
+    <div class="cf-card__body">Tooltip 的可交互变体，内部支持任意富内容、表单、按钮。</div>
+  </a>
 </div>
 
 ## 路线图
 
 下面这些组件正在排期：
 
-- **Popover** —— Tooltip 的可交互变体，支持 click 触发 + 表单内容
-- **Dropdown** —— 复用 Modal 的 portal + focus trap 基础设施
-- **Drawer** —— Modal 的边缘变体
 - **Form / FormField** —— 表单封装层，统一错误信息与 label
-- **Pagination** —— 分页器
-- **Breadcrumb** —— 面包屑
+- **Combobox / TagInput** —— Select + 输入过滤、多标签输入
+- **FileDropzone / Upload** —— 拖拽 + 点击 + 进度
+- **DatePicker / DateRangePicker** —— 日期与日期范围
+- **ColorPicker** —— 颜色选择
+- **Table / DataGrid** —— 轻量与重量级表格

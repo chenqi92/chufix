@@ -26,6 +26,9 @@ import './styles/searchinput.css';
 import './styles/numberinput.css';
 import './styles/accordion.css';
 import './styles/slider.css';
+import './styles/drawer.css';
+import './styles/popover.css';
+import './styles/dropdown.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -165,3 +168,24 @@ export type {
   SliderSize,
   SliderTone,
 } from './slider/variants';
+
+export { default as CfDrawer } from './drawer/Drawer.vue';
+export type {
+  DrawerProps,
+  DrawerPlacement,
+  DrawerSize,
+} from './drawer/variants';
+
+export { default as CfPopover } from './popover/Popover.vue';
+export type {
+  PopoverProps,
+  PopoverPlacement,
+  PopoverTrigger,
+} from './popover/variants';
+
+export { default as CfDropdown } from './dropdown/Dropdown.vue';
+export type {
+  DropdownProps,
+  DropdownPlacement,
+  DropdownItem,
+} from './dropdown/variants';

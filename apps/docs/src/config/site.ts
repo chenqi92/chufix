@@ -59,6 +59,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'NumberInput 数字输入', href: '/components/numberinput/' },
       { label: 'Accordion 折叠面板', href: '/components/accordion/' },
       { label: 'Slider 滑块', href: '/components/slider/' },
+      { label: 'Drawer 抽屉', href: '/components/drawer/' },
+      { label: 'Popover 弹出层', href: '/components/popover/' },
+      { label: 'Dropdown 下拉菜单', href: '/components/dropdown/' },
     ],
   },
 ];

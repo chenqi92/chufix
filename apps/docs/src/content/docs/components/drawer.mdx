@@ -1,0 +1,88 @@
+---
+title: Drawer 抽屉
+description: 抽屉 —— Modal 的边缘变体，从上下左右滑入，自带 portal / focus trap / 滚动锁 / Esc 关闭。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/drawer/BasicVue.vue';
+
+## 基础用法
+
+`v-model:open` 双向绑定，`placement` 控制滑入方向。Drawer 共用 Modal 的 portal / focus trap / body 滚动锁 / Esc 关闭基础设施。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfButton, CfDrawer } from '@chufix/vue';
+
+const right = ref(false);
+const left = ref(false);
+const top = ref(false);
+const bottom = ref(false);
+</script>
+
+<template>
+  <CfButton @click="right = true">右侧</CfButton>
+  <CfButton variant="secondary" @click="left = true">左侧</CfButton>
+  <CfButton variant="secondary" @click="top = true">顶部</CfButton>
+  <CfButton variant="secondary" @click="bottom = true">底部</CfButton>
+
+  <CfDrawer v-model:open="right" title="右侧抽屉" placement="right">
+    <p>从右侧滑入，按 Esc 或点击遮罩关闭。</p>
+    <template #footer>
+      <CfButton variant="ghost" @click="right = false">取消</CfButton>
+      <CfButton @click="right = false">确定</CfButton>
+    </template>
+  </CfDrawer>
+  <CfDrawer v-model:open="left" title="左侧抽屉" placement="left" />
+  <CfDrawer v-model:open="top" title="顶部抽屉" placement="top" />
+  <CfDrawer v-model:open="bottom" title="底部抽屉" placement="bottom" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfButton, CfDrawer } from '@chufix/react';
+
+export default function Demo() {
+  const [right, setRight] = useState(false);
+  return (
+    <>
+      <CfButton onClick={() => setRight(true)}>右侧</CfButton>
+      <CfDrawer
+        open={right}
+        onOpenChange={setRight}
+        title="右侧抽屉"
+        placement="right"
+        footer={
+          <>
+            <CfButton variant="ghost" onClick={() => setRight(false)}>取消</CfButton>
+            <CfButton onClick={() => setRight(false)}>确定</CfButton>
+          </>
+        }
+      >
+        <p>从右侧滑入。</p>
+      </CfDrawer>
+    </>
+  );
+}`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API · Props
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `open` | `boolean` | `false` | 是否展开。Vue 用 `v-model:open`，React 用 `open + onOpenChange` |
+| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | 滑入方向 |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | 左右控制宽度，上下控制高度 |
+| `title` | `string` | `—` | 标题文案，等价于具名 slot `header` |
+| `closeOnOverlay` | `boolean` | `true` | 点击遮罩关闭 |
+| `closeOnEsc` | `boolean` | `true` | Esc 关闭 |
+| `showClose` | `boolean` | `true` | 右上角关闭按钮 |
+
+## API · Slots / 子节点
+
+| 名称 | 说明 |
+|---|---|
+| `default` | 抽屉主体内容 |
+| `header` | 自定义标题区，覆盖 `title` |
+| `footer` | 底部操作区，通常放 取消 / 确定 按钮 |
