@@ -49,6 +49,11 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Tabs 标签页', href: '/components/tabs/' },
       { label: 'Alert 警示', href: '/components/alert/' },
       { label: 'Skeleton 骨架屏', href: '/components/skeleton/' },
+      { label: 'Divider 分割线', href: '/components/divider/' },
+      { label: 'Empty 空状态', href: '/components/empty/' },
+      { label: 'Progress 进度', href: '/components/progress/' },
+      { label: 'Breadcrumb 面包屑', href: '/components/breadcrumb/' },
+      { label: 'Pagination 分页', href: '/components/pagination/' },
     ],
   },
 ];

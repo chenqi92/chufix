@@ -1,0 +1,71 @@
+---
+title: Pagination 分页
+description: 数字按钮 + 上下页 + 跳转输入框，自动计算页码省略。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pagination/BasicVue.vue';
+
+## 基础用法
+
+传 `total` 和 `pageSize`，组件自动算页数。`siblingCount` 控制中间显示几个相邻页码（默认 1）。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfPagination } from '@chufix/vue';
+
+const page = ref(1);
+</script>
+
+<template>
+  <CfPagination v-model="page" :total="80" :page-size="10" />
+
+  <CfPagination
+    v-model="page"
+    :total="200"
+    :page-size="10"
+    show-total
+    show-jumper
+  />
+
+  <CfPagination v-model="page" :total="500" :page-size="10" :sibling-count="2" size="sm" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfPagination } from '@chufix/react';
+
+const [page, setPage] = useState(1);
+
+<CfPagination value={page} onChange={setPage} total={80} pageSize={10} />
+
+<CfPagination
+  value={page}
+  onChange={setPage}
+  total={200}
+  pageSize={10}
+  showTotal
+  showJumper
+/>
+
+<CfPagination value={page} onChange={setPage} total={500} pageSize={10} siblingCount={2} size="sm" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop                                  | 类型                | 默认值   | 说明                                    |
+| ------------------------------------- | ------------------- | -------- | --------------------------------------- |
+| `modelValue` (Vue) / `value` (React)  | `number`            | `1`      | 当前页（1-based）                       |
+| `total`                               | `number`            | `0`      | 总条数                                  |
+| `pageSize`                            | `number`            | `10`     | 每页条数                                |
+| `siblingCount`                        | `number`            | `1`      | 当前页两侧显示几个相邻页码              |
+| `size`                                | `'sm' \| 'md' \| 'lg'` | `'md'` | 按钮高度                                |
+| `showNav`                             | `boolean`           | `true`   | 显示上一页 / 下一页箭头                 |
+| `showJumper`                          | `boolean`           | `false`  | 显示「跳至 N 页」输入框                 |
+| `showTotal`                           | `boolean`           | `false`  | 显示「共 N 条」文案                     |
+
+### 事件
+
+- Vue：`@update:modelValue` —— `v-model` 自动监听
+- React：`onChange(page: number)`

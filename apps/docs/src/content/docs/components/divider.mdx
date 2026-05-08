@@ -1,0 +1,34 @@
+---
+title: Divider 分割线
+description: 横/竖分割线，支持实线 / 虚线 / 点线，可带标签和位置控制。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/divider/BasicVue.vue';
+
+## 基础用法
+
+`orientation` 控制方向，`variant` 控制线型，默认插槽是中部标签。
+
+<DemoFrame
+  vueCode={`<CfDivider />
+<CfDivider variant="dashed">分组 A</CfDivider>
+<CfDivider variant="dotted" align="start">日志</CfDivider>
+
+<span>文本 <CfDivider orientation="vertical" /> 中间</span>`}
+  reactCode={`<CfDivider />
+<CfDivider variant="dashed">分组 A</CfDivider>
+<CfDivider variant="dotted" align="start">日志</CfDivider>
+
+<span>文本 <CfDivider orientation="vertical" /> 中间</span>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | 类型                              | 默认值          | 说明                       |
+| ------------- | --------------------------------- | --------------- | -------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`      | `'horizontal'`  | 方向                       |
+| `variant`     | `'solid' \| 'dashed' \| 'dotted'` | `'solid'`       | 线型                       |
+| `align`       | `'start' \| 'center' \| 'end'`    | `'center'`      | 标签位置（仅 horizontal）  |

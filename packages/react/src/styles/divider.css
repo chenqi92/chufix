@@ -1,0 +1,46 @@
+/* Divider · 横/竖分割线，可带标签。 */
+
+.cf-divider {
+  border: 0;
+  margin: 0;
+}
+
+.cf-divider--horizontal {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 12px 0;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+.cf-divider--horizontal::before,
+.cf-divider--horizontal::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--line-1);
+  height: 0;
+}
+.cf-divider--horizontal.cf-divider--dashed::before,
+.cf-divider--horizontal.cf-divider--dashed::after { border-top-style: dashed; }
+.cf-divider--horizontal.cf-divider--dotted::before,
+.cf-divider--horizontal.cf-divider--dotted::after { border-top-style: dotted; }
+
+.cf-divider--horizontal:not(.cf-divider--has-label)::after { display: none; }
+.cf-divider__label {
+  padding: 0 12px;
+  white-space: nowrap;
+  color: var(--fg-2);
+}
+.cf-divider--align-start::before  { flex: 0 0 24px; }
+.cf-divider--align-end::after     { flex: 0 0 24px; }
+
+.cf-divider--vertical {
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  vertical-align: middle;
+  margin: 0 8px;
+  border-left: 1px solid var(--line-1);
+}
+.cf-divider--vertical.cf-divider--dashed { border-left-style: dashed; }
+.cf-divider--vertical.cf-divider--dotted { border-left-style: dotted; }

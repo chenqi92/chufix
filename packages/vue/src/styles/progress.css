@@ -1,0 +1,86 @@
+/* Progress · 线性 / 圆形，5 种 tone × 3 档尺寸，支持不确定状态。 */
+
+/* ---- LINE ---- */
+.cf-progress--line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.cf-progress__track {
+  flex: 1;
+  background: var(--bg-2);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  height: 8px;
+  position: relative;
+}
+.cf-progress--line.cf-progress--sm .cf-progress__track { height: 4px; }
+.cf-progress--line.cf-progress--md .cf-progress__track { height: 8px; }
+.cf-progress--line.cf-progress--lg .cf-progress__track { height: 12px; }
+
+.cf-progress__fill {
+  height: 100%;
+  background: var(--accent-1);
+  border-radius: var(--r-pill);
+  transition: width var(--dur-base) var(--ease-out);
+}
+.cf-progress--success .cf-progress__fill { background: var(--status-success); }
+.cf-progress--warning .cf-progress__fill { background: var(--status-warning); }
+.cf-progress--danger  .cf-progress__fill { background: var(--status-error); }
+.cf-progress--info    .cf-progress__fill { background: var(--status-info); }
+
+.cf-progress__label {
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* indeterminate · sliding bar */
+.cf-progress.is-indeterminate.cf-progress--line .cf-progress__fill {
+  width: 40%;
+  animation: cf-progress-slide 1.4s var(--ease-in-out) infinite;
+}
+@keyframes cf-progress-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+/* ---- CIRCLE ---- */
+.cf-progress--circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cf-progress__circle-track {
+  stroke: var(--bg-2);
+}
+.cf-progress__circle-fill {
+  stroke: var(--accent-1);
+  transition: stroke-dashoffset var(--dur-base) var(--ease-out);
+}
+.cf-progress--success .cf-progress__circle-fill { stroke: var(--status-success); }
+.cf-progress--warning .cf-progress__circle-fill { stroke: var(--status-warning); }
+.cf-progress--danger  .cf-progress__circle-fill { stroke: var(--status-error); }
+.cf-progress--info    .cf-progress__circle-fill { stroke: var(--status-info); }
+
+.cf-progress__circle-label {
+  position: absolute;
+  font-size: var(--t-13);
+  font-weight: var(--w-semibold);
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+}
+.cf-progress--circle.cf-progress--sm .cf-progress__circle-label { font-size: var(--t-11); }
+.cf-progress--circle.cf-progress--lg .cf-progress__circle-label { font-size: var(--t-16); }
+
+.cf-progress.is-indeterminate.cf-progress--circle svg {
+  animation: cf-progress-spin 1.2s linear infinite;
+}
+@keyframes cf-progress-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

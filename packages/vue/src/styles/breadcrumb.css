@@ -1,0 +1,42 @@
+/* Breadcrumb · 当前层级链接列表，最后一项不可点。 */
+
+.cf-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+}
+.cf-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--fg-2);
+}
+.cf-breadcrumb__link {
+  color: var(--fg-2);
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: var(--r-3);
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.cf-breadcrumb__link:hover {
+  color: var(--accent-1);
+  background: var(--accent-soft);
+  text-decoration: none;
+}
+.cf-breadcrumb__current {
+  color: var(--fg-1);
+  font-weight: var(--w-medium);
+  padding: 2px 4px;
+}
+.cf-breadcrumb__sep {
+  color: var(--fg-3);
+  user-select: none;
+  margin: 0 2px;
+}

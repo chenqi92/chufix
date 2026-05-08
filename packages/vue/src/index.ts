@@ -16,6 +16,11 @@ import './styles/modal.css';
 import './styles/tabs.css';
 import './styles/alert.css';
 import './styles/skeleton.css';
+import './styles/divider.css';
+import './styles/empty.css';
+import './styles/progress.css';
+import './styles/breadcrumb.css';
+import './styles/pagination.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -107,3 +112,27 @@ export type { AlertProps, AlertTone, AlertVariant } from './alert/variants';
 
 export { default as CfSkeleton } from './skeleton/Skeleton.vue';
 export type { SkeletonProps, SkeletonShape } from './skeleton/variants';
+
+export { default as CfDivider } from './divider/Divider.vue';
+export type {
+  DividerProps,
+  DividerOrientation,
+  DividerVariant,
+} from './divider/variants';
+
+export { default as CfEmpty } from './empty/Empty.vue';
+export type { EmptyProps, EmptySize } from './empty/variants';
+
+export { default as CfProgress } from './progress/Progress.vue';
+export type {
+  ProgressProps,
+  ProgressVariant,
+  ProgressTone,
+  ProgressSize,
+} from './progress/variants';
+
+export { default as CfBreadcrumb } from './breadcrumb/Breadcrumb.vue';
+export type { BreadcrumbProps, BreadcrumbItem } from './breadcrumb/variants';
+
+export { default as CfPagination } from './pagination/Pagination.vue';
+export type { PaginationProps, PaginationSize } from './pagination/variants';

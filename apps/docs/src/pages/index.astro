@@ -45,9 +45,10 @@ import logo from '~/assets/chufix.png';
         </div>
       </article>
       <article class="cf-card cf-card--elevated">
-        <div class="cf-card__header">Tailwind 友好</div>
+        <div class="cf-card__header">纯 HTML 也能用</div>
         <div class="cf-card__body">
-          可选 preset 把 token 映射成 Tailwind utility。不用 Tailwind 也完全能跑，组件不强依赖。
+          所有视觉走 <code>cf-*</code> CSS 类名，不写任何 Vue/React 也能拿到 90% 的视觉。
+          一个 <code>&lt;link&gt;</code> 标签搞定。
         </div>
       </article>
     </div>
@@ -64,21 +65,21 @@ import { CfButton } from '@chufix/vue';
 </script>
 
 <template>
-  <button variant="primary">主要</button>
-  <button variant="secondary">次要</button>
-  <button variant="tertiary">三级</button>
-  <button variant="ghost">幽灵</button>
-  <button variant="danger">危险</button>
+  <CfButton variant="primary">主要</CfButton>
+  <CfButton variant="secondary">次要</CfButton>
+  <CfButton variant="tertiary">三级</CfButton>
+  <CfButton variant="ghost">幽灵</CfButton>
+  <CfButton variant="danger">危险</CfButton>
 </template>`}
       reactCode={`import { CfButton } from '@chufix/react';
 
 export default () => (
   <>
-    <button variant="primary">主要</button>
-    <button variant="secondary">次要</button>
-    <button variant="tertiary">三级</button>
-    <button variant="ghost">幽灵</button>
-    <button variant="danger">危险</button>
+    <CfButton variant="primary">主要</CfButton>
+    <CfButton variant="secondary">次要</CfButton>
+    <CfButton variant="tertiary">三级</CfButton>
+    <CfButton variant="ghost">幽灵</CfButton>
+    <CfButton variant="danger">危险</CfButton>
   </>
 );`}
       cliCode={`# 任选其一
@@ -94,7 +95,7 @@ npx chufix add button`}
 
   <section class="splash-section">
     <h2 class="splash-section__title">现在已经有什么</h2>
-    <p class="splash-section__lede">16 个组件，覆盖表单、容器、反馈、数据展示、导航五类高频场景。</p>
+    <p class="splash-section__lede">21 个组件，覆盖表单、容器、反馈、数据展示、导航、布局六类高频场景。</p>
     <div class="splash-pills">
       <a href="/components/button/" class="cf-btn cf-btn--secondary">Button</a>
       <a href="/components/input/" class="cf-btn cf-btn--secondary">Input</a>
@@ -113,6 +114,11 @@ npx chufix add button`}
       <a href="/components/tabs/" class="cf-btn cf-btn--secondary">Tabs</a>
       <a href="/components/alert/" class="cf-btn cf-btn--secondary">Alert</a>
       <a href="/components/skeleton/" class="cf-btn cf-btn--secondary">Skeleton</a>
+      <a href="/components/divider/" class="cf-btn cf-btn--secondary">Divider</a>
+      <a href="/components/empty/" class="cf-btn cf-btn--secondary">Empty</a>
+      <a href="/components/progress/" class="cf-btn cf-btn--secondary">Progress</a>
+      <a href="/components/breadcrumb/" class="cf-btn cf-btn--secondary">Breadcrumb</a>
+      <a href="/components/pagination/" class="cf-btn cf-btn--secondary">Pagination</a>
       <a href="/components/" class="cf-btn cf-btn--tertiary">完整清单 →</a>
     </div>
   </section>
