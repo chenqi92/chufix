@@ -13,6 +13,7 @@
     "build:packages": "pnpm -r --filter=./packages/* run build",
     "build:docs": "pnpm --filter=docs build",
     "tokens:check": "node scripts/check-tokens.mjs",
+    "sync:docs": "node scripts/sync-docs.mjs",
     "smoke": "pnpm --filter @chufix/example-vite-vue dev",
     "smoke:build": "pnpm --filter @chufix/example-vite-vue build",
     "clean": "pnpm -r exec rimraf dist .astro node_modules"
