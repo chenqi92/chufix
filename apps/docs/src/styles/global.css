@@ -499,19 +499,39 @@ a.ck-card .ck-card__header,
   margin: 1.75rem 0;
   background: hsl(var(--ck-bg));
 }
+
+.ck-demo__code-section {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid hsl(var(--ck-border));
+}
+.ck-demo__code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  background: hsl(var(--ck-muted) / 0.4);
+  border-bottom: 1px solid hsl(var(--ck-border));
+}
+.ck-demo__code-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: hsl(var(--ck-muted-fg));
+  text-transform: uppercase;
+  padding-left: 0.25rem;
+}
 .ck-demo__tabs {
   display: flex;
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid hsl(var(--ck-border));
-  background: hsl(var(--ck-muted) / 0.4);
+  gap: 0.2rem;
 }
 .ck-demo__tab {
   appearance: none;
   border: 0;
   background: transparent;
-  padding: 0.4rem 0.85rem;
-  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
   font-family: var(--ck-font-sans);
   color: hsl(var(--ck-muted-fg));
   border-radius: var(--ck-radius-sm);

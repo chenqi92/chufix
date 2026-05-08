@@ -9,23 +9,15 @@ interface Props {
 const { vueCode, reactCode, cliCode } = Astro.props;
 const hasVueSlot = Astro.slots.has('vue');
 const hasReactSlot = Astro.slots.has('react');
+
+const codeTabs: Array<{ key: 'vue' | 'react' | 'cli'; label: string; code: string; lang: string }> = [];
+if (vueCode) codeTabs.push({ key: 'vue', label: 'Vue', code: vueCode, lang: 'vue' });
+if (reactCode) codeTabs.push({ key: 'react', label: 'React', code: reactCode, lang: 'tsx' });
+if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bash' });
 ---
 
 <div class="ck-demo" data-demo-frame>
-  <div class="ck-demo__tabs" role="tablist">
-    <button class="ck-demo__tab" role="tab" data-target="preview" aria-selected="true">预览</button>
-    {vueCode && (
-      <button class="ck-demo__tab" role="tab" data-target="vue" aria-selected="false">Vue</button>
-    )}
-    {reactCode && (
-      <button class="ck-demo__tab" role="tab" data-target="react" aria-selected="false">React</button>
-    )}
-    {cliCode && (
-      <button class="ck-demo__tab" role="tab" data-target="cli" aria-selected="false">CLI</button>
-    )}
-  </div>
-
-  <div class="ck-demo__panel ck-demo__preview" data-panel="preview" data-active="true">
+  <div class="ck-demo__preview">
     {hasVueSlot && (
       <section class="ck-demo__pane">
         <span class="ck-demo__fw ck-demo__fw--vue">
@@ -56,30 +48,31 @@ const hasReactSlot = Astro.slots.has('react');
     )}
   </div>
 
-  {vueCode && (
-    <div class="ck-demo__panel" data-panel="vue" data-active="false">
-      <div class="ck-demo__code">
-        <button class="ck-demo__copy" data-copy={vueCode}>复制</button>
-        <Code code={vueCode} lang="vue" theme="github-dark" />
+  {codeTabs.length > 0 && (
+    <div class="ck-demo__code-section">
+      <div class="ck-demo__code-bar">
+        <span class="ck-demo__code-label">代码</span>
+        <div class="ck-demo__tabs" role="tablist">
+          {codeTabs.map((t, i) => (
+            <button
+              class="ck-demo__tab"
+              role="tab"
+              data-target={t.key}
+              aria-selected={i === 0 ? 'true' : 'false'}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
-  )}
-
-  {reactCode && (
-    <div class="ck-demo__panel" data-panel="react" data-active="false">
-      <div class="ck-demo__code">
-        <button class="ck-demo__copy" data-copy={reactCode}>复制</button>
-        <Code code={reactCode} lang="tsx" theme="github-dark" />
-      </div>
-    </div>
-  )}
-
-  {cliCode && (
-    <div class="ck-demo__panel" data-panel="cli" data-active="false">
-      <div class="ck-demo__code">
-        <button class="ck-demo__copy" data-copy={cliCode}>复制</button>
-        <Code code={cliCode} lang="bash" theme="github-dark" />
-      </div>
+      {codeTabs.map((t, i) => (
+        <div class="ck-demo__panel" data-panel={t.key} data-active={i === 0 ? 'true' : 'false'}>
+          <div class="ck-demo__code">
+            <button class="ck-demo__copy" data-copy={t.code}>复制</button>
+            <Code code={t.code} lang={t.lang as any} theme="github-dark" />
+          </div>
+        </div>
+      ))}
     </div>
   )}
 </div>
