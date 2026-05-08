@@ -44,6 +44,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Tag 标签', href: '/components/tag/' },
       { label: 'Badge 徽标', href: '/components/badge/' },
       { label: 'Avatar 头像', href: '/components/avatar/' },
+      { label: 'Tabs 标签页', href: '/components/tabs/' },
+      { label: 'Alert 警示', href: '/components/alert/' },
+      { label: 'Skeleton 骨架屏', href: '/components/skeleton/' },
     ],
   },
 ];

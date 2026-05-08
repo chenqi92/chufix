@@ -13,6 +13,9 @@ import './styles/tag.css';
 import './styles/badge.css';
 import './styles/avatar.css';
 import './styles/modal.css';
+import './styles/tabs.css';
+import './styles/alert.css';
+import './styles/skeleton.css';
 
 export { Button } from './button/Button';
 export type {
@@ -89,3 +92,18 @@ export type {
 
 export { Modal } from './modal/Modal';
 export type { ModalProps, ModalSize } from './modal/variants';
+
+export { Tabs, TabPanel } from './tabs/Tabs';
+export type {
+  TabsProps,
+  TabsItem,
+  TabsVariant,
+  TabsSize,
+  TabsAlign,
+} from './tabs/variants';
+
+export { Alert } from './alert/Alert';
+export type { AlertProps, AlertTone, AlertVariant } from './alert/variants';
+
+export { Skeleton } from './skeleton/Skeleton';
+export type { SkeletonProps, SkeletonShape } from './skeleton/variants';

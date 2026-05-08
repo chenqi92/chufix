@@ -1,0 +1,55 @@
+---
+title: Skeleton 骨架屏
+description: 数据加载中的占位元素 —— 三种形状、shimmer 动画、多行文本辅助。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/skeleton/BasicVue.vue';
+import TextVue from '~/components/demos/skeleton/TextVue.vue';
+
+## 基础用法
+
+`shape` 控制基础形态：`text`（一根细线）、`circle`（圆形，默认 32×32）、`rect`（矩形块）。
+`width` / `height` 接受像素数字或带单位字符串（`'80%'`、`'2rem'`）。
+
+<DemoFrame
+  vueCode={`<div style="display: flex; gap: 12px; align-items: center;">
+  <Skeleton shape="circle" :width="40" :height="40" />
+  <div style="flex: 1;">
+    <Skeleton shape="text" :width="120" />
+    <Skeleton shape="text" :width="200" />
+  </div>
+</div>
+<Skeleton shape="rect" :height="80" />`}
+  reactCode={`<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+  <Skeleton shape="circle" width={40} height={40} />
+  <div style={{ flex: 1 }}>
+    <Skeleton shape="text" width={120} />
+    <Skeleton shape="text" width={200} />
+  </div>
+</div>
+<Skeleton shape="rect" height={80} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 多行文本
+
+`lines > 1` 时 `shape="text"` 自动渲染多行，最后一行宽度 60% 模拟段尾。
+
+<DemoFrame
+  vueCode={`<Skeleton shape="text" :lines="4" />`}
+  reactCode={`<Skeleton shape="text" lines={4} />`}
+>
+  <TextVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop      | 类型                              | 默认值    | 说明                                               |
+| --------- | --------------------------------- | --------- | -------------------------------------------------- |
+| `shape`   | `'text' \| 'circle' \| 'rect'`    | `'rect'`  | 基础形态                                           |
+| `width`   | `string \| number`                | —         | 宽度，数字按 px、字符串原样写入 CSS                |
+| `height`  | `string \| number`                | —         | 高度，同上                                         |
+| `lines`   | `number`                          | `1`       | shape=text 时的行数，最后一行 60% 宽               |
+| `static`  | `boolean`                         | `false`   | 关闭 shimmer 动画，仅渲染纯色块（首次绘制更省 CPU）|

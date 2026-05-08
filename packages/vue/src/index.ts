@@ -13,6 +13,9 @@ import './styles/tag.css';
 import './styles/badge.css';
 import './styles/avatar.css';
 import './styles/modal.css';
+import './styles/tabs.css';
+import './styles/alert.css';
+import './styles/skeleton.css';
 
 export { default as Button } from './button/Button.vue';
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape } from './button/variants';
@@ -83,3 +86,19 @@ export type {
 
 export { default as Modal } from './modal/Modal.vue';
 export type { ModalProps, ModalSize } from './modal/variants';
+
+export { default as Tabs } from './tabs/Tabs.vue';
+export { default as TabPanel } from './tabs/TabPanel.vue';
+export type {
+  TabsProps,
+  TabsItem,
+  TabsVariant,
+  TabsSize,
+  TabsAlign,
+} from './tabs/variants';
+
+export { default as Alert } from './alert/Alert.vue';
+export type { AlertProps, AlertTone, AlertVariant } from './alert/variants';
+
+export { default as Skeleton } from './skeleton/Skeleton.vue';
+export type { SkeletonProps, SkeletonShape } from './skeleton/variants';

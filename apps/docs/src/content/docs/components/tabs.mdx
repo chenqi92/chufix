@@ -1,0 +1,110 @@
+---
+title: Tabs 标签页
+description: 三种视觉变体的 tabs，支持受控与非受控、items 数组式 API、对齐方式可控。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tabs/BasicVue.vue';
+import VariantsVue from '~/components/demos/tabs/VariantsVue.vue';
+import SizesVue from '~/components/demos/tabs/SizesVue.vue';
+
+## 基础用法
+
+`items` 数组定义 tab 列表，`v-model` 绑定当前激活值。默认 `variant="line"`，激活项底部带 accent 色横线。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Tabs } from '@chufix/vue';
+
+const tab = ref('account');
+const items = [
+  { value: 'account', label: '账户' },
+  { value: 'security', label: '安全' },
+  { value: 'notifications', label: '通知' },
+  { value: 'billing', label: '账单', disabled: true },
+];
+</script>
+
+<template>
+  <Tabs v-model="tab" :items="items">
+    <template #default="{ active }">
+      <div v-if="active === 'account'">在「账户」页面…</div>
+      <div v-if="active === 'security'">在「安全」页面…</div>
+      <div v-if="active === 'notifications'">在「通知」页面…</div>
+    </template>
+  </Tabs>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Tabs, TabPanel } from '@chufix/react';
+
+const items = [
+  { value: 'account', label: '账户' },
+  { value: 'security', label: '安全' },
+  { value: 'notifications', label: '通知' },
+  { value: 'billing', label: '账单', disabled: true },
+];
+
+export default function Demo() {
+  const [tab, setTab] = useState('account');
+  return (
+    <Tabs value={tab} onChange={setTab} items={items}>
+      {({ active }) => (
+        <>
+          <TabPanel value="account" active={active}>在「账户」页面…</TabPanel>
+          <TabPanel value="security" active={active}>在「安全」页面…</TabPanel>
+          <TabPanel value="notifications" active={active}>在「通知」页面…</TabPanel>
+        </>
+      )}
+    </Tabs>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 视觉变体
+
+`line` 是默认下划线样式；`segmented` 是按钮组式分段控件；`pill` 是胶囊形单选式。
+
+<DemoFrame
+  vueCode={`<Tabs v-model="a" :items="items" variant="line" />
+<Tabs v-model="b" :items="items" variant="segmented" />
+<Tabs v-model="c" :items="items" variant="pill" />`}
+  reactCode={`<Tabs value={a} onChange={setA} items={items} variant="line" />
+<Tabs value={b} onChange={setB} items={items} variant="segmented" />
+<Tabs value={c} onChange={setC} items={items} variant="pill" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 尺寸
+
+3 档尺寸跟随密度系统 `--control-h-sm/md/lg`。
+
+<DemoFrame
+  vueCode={`<Tabs v-model="sm" :items="items" size="sm" />
+<Tabs v-model="md" :items="items" size="md" />
+<Tabs v-model="lg" :items="items" size="lg" />`}
+  reactCode={`<Tabs items={items} size="sm" defaultValue="one" />
+<Tabs items={items} size="md" defaultValue="one" />
+<Tabs items={items} size="lg" defaultValue="one" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | 类型                                            | 默认值      | 说明                                |
+| ------------- | ----------------------------------------------- | ----------- | ----------------------------------- |
+| `modelValue` (Vue) / `value` (React) | `string`                  | —           | 当前激活 tab 的 value（受控）       |
+| `defaultValue` (React)               | `string`                  | —           | 初始激活 tab 的 value（非受控）     |
+| `items`       | `TabsItem[]`                                    | `[]`        | tab 列表，每项 `{value, label, disabled?}` |
+| `variant`     | `'line' \| 'segmented' \| 'pill'`               | `'line'`    | 视觉变体                            |
+| `size`        | `'sm' \| 'md' \| 'lg'`                          | `'md'`      | 高度与字号                          |
+| `align`       | `'start' \| 'center' \| 'end' \| 'stretch'`     | `'start'`   | tab 列表对齐方式                    |
+
+### 默认插槽
+
+Vue 默认插槽接收作用域参数 `{ active }`，根据 active 渲染对应内容。
+React 通过 `children` 接受函数 `({ active }) => ReactNode` 并配合 `<TabPanel>` 守卫。

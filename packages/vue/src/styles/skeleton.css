@@ -1,0 +1,20 @@
+/* Skeleton — shimmer block placeholders. Uses base .ck-skeleton class
+ * already declared in @chufix/tokens (linear-gradient + animation).
+ * Here we add shape modifiers and a stacked-text helper. */
+
+.ck-skeleton { display: block; }
+.ck-skeleton--rect   { width: 100%; height: 16px; border-radius: var(--r-4); }
+.ck-skeleton--text   { width: 100%; height: 12px; border-radius: var(--r-3); }
+.ck-skeleton--circle { width: 32px; height: 32px; border-radius: 50%; }
+
+.ck-skeleton--static {
+  animation: none;
+  background: var(--skeleton-bg);
+}
+
+.ck-skeleton-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
