@@ -1,27 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Button, Toaster, toast } from '@chufix/vue';
+import { Button, toast } from '@chufix/vue';
 
 type Pos =
   | 'top-right' | 'top-left' | 'top-center'
   | 'bottom-right' | 'bottom-left' | 'bottom-center';
 
-const position = ref<Pos>('top-right');
-
 function show(p: Pos) {
-  position.value = p;
-  toast(`这条 Toast 出现在 ${p}`);
+  toast({ title: `Toast at ${p}`, description: '本站全局 Toaster 固定 top-right；改 position 需要在你自己的应用里配置。' });
 }
 </script>
 
 <template>
-  <div class="demo-row">
-    <Button variant="outline" @click="show('top-left')">top-left</Button>
-    <Button variant="outline" @click="show('top-center')">top-center</Button>
-    <Button variant="outline" @click="show('top-right')">top-right</Button>
-    <Button variant="outline" @click="show('bottom-left')">bottom-left</Button>
-    <Button variant="outline" @click="show('bottom-center')">bottom-center</Button>
-    <Button variant="outline" @click="show('bottom-right')">bottom-right</Button>
+  <div class="demo-stack">
+    <div class="demo-row">
+      <Button variant="outline" @click="show('top-left')">top-left</Button>
+      <Button variant="outline" @click="show('top-center')">top-center</Button>
+      <Button variant="outline" @click="show('top-right')">top-right</Button>
+      <Button variant="outline" @click="show('bottom-left')">bottom-left</Button>
+      <Button variant="outline" @click="show('bottom-center')">bottom-center</Button>
+      <Button variant="outline" @click="show('bottom-right')">bottom-right</Button>
+    </div>
+    <p class="demo-hint">提示：本站只挂了一个 <code>Toaster</code> 在 <code>top-right</code>，按钮全部都会从这个位置弹出。在你自己的应用里把 <code>&lt;Toaster position="..."/&gt;</code> 改成对应值即可。</p>
   </div>
-  <Toaster :position="position" />
 </template>

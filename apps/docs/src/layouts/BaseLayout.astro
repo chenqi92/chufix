@@ -2,6 +2,7 @@
 import '~/styles/global.css';
 import { site } from '~/config/site';
 import SiteNav from '~/components/SiteNav.astro';
+import Toaster from '@chufix/vue/src/toast/Toaster.vue';
 
 interface Props {
   title?: string;
@@ -24,5 +25,6 @@ const fullTitle = title ? `${title} · ${site.title}` : `${site.title} · ${site
   <body>
     <SiteNav />
     <slot />
+    <Toaster client:load position="top-right" />
   </body>
 </html>

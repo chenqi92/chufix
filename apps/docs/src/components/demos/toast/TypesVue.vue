@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Toaster, toast } from '@chufix/vue';
+import { Button, toast } from '@chufix/vue';
 </script>
 
 <template>
@@ -10,5 +10,4 @@ import { Button, Toaster, toast } from '@chufix/vue';
     <Button variant="outline" @click="toast.warning('磁盘空间不足 10%')">warning</Button>
     <Button variant="ghost" @click="toast.info('已复制到剪贴板')">info</Button>
   </div>
-  <Toaster />
 </template>
