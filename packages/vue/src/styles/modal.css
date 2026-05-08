@@ -1,6 +1,6 @@
 /* ChuKit Modal — overlay + centered dialog. */
 
-.ck-modal__overlay {
+.cf-modal__overlay {
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
@@ -15,7 +15,7 @@
   transition: opacity var(--dur-base) var(--ease-out);
 }
 
-.ck-modal__dialog {
+.cf-modal__dialog {
   position: relative;
   width: 100%;
   max-width: 480px;
@@ -34,13 +34,13 @@
 }
 
 /* sizes */
-.ck-modal__dialog--sm   { max-width: 360px; }
-.ck-modal__dialog--md   { max-width: 480px; }
-.ck-modal__dialog--lg   { max-width: 640px; }
-.ck-modal__dialog--xl   { max-width: 800px; }
-.ck-modal__dialog--full { max-width: calc(100vw - 48px); max-height: calc(100vh - 48px); }
+.cf-modal__dialog--sm   { max-width: 360px; }
+.cf-modal__dialog--md   { max-width: 480px; }
+.cf-modal__dialog--lg   { max-width: 640px; }
+.cf-modal__dialog--xl   { max-width: 800px; }
+.cf-modal__dialog--full { max-width: calc(100vw - 48px); max-height: calc(100vh - 48px); }
 
-.ck-modal__header {
+.cf-modal__header {
   padding: 14px 16px;
   font-weight: var(--w-semibold);
   font-size: var(--t-14);
@@ -48,7 +48,7 @@
   padding-right: 44px;
 }
 
-.ck-modal__body {
+.cf-modal__body {
   padding: 14px 16px;
   font-size: var(--t-13);
   color: var(--fg-1);
@@ -56,7 +56,7 @@
   overflow-y: auto;
 }
 
-.ck-modal__footer {
+.cf-modal__footer {
   padding: 10px 16px;
   display: flex;
   justify-content: flex-end;
@@ -65,7 +65,7 @@
   background: var(--bg-2);
 }
 
-.ck-modal__close {
+.cf-modal__close {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -83,37 +83,37 @@
   transition: background-color var(--dur-fast) var(--ease-out),
     color var(--dur-fast) var(--ease-out);
 }
-.ck-modal__close:hover {
+.cf-modal__close:hover {
   background: var(--bg-2);
   color: var(--fg-1);
 }
-.ck-modal__close svg { width: 14px; height: 14px; }
+.cf-modal__close svg { width: 14px; height: 14px; }
 
-/* enter/leave — Vue <Transition name="ck-modal"> + React data-state="open|closed" */
-.ck-modal-enter-from,
-.ck-modal-leave-to {
+/* enter/leave — Vue <Transition name="cf-modal"> + React data-state="open|closed" */
+.cf-modal-enter-from,
+.cf-modal-leave-to {
   opacity: 0;
 }
-.ck-modal-enter-from .ck-modal__dialog,
-.ck-modal-leave-to .ck-modal__dialog {
+.cf-modal-enter-from .cf-modal__dialog,
+.cf-modal-leave-to .cf-modal__dialog {
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }
-.ck-modal-enter-active,
-.ck-modal-leave-active {
+.cf-modal-enter-active,
+.cf-modal-leave-active {
   transition: opacity var(--dur-base) var(--ease-out);
 }
-.ck-modal-enter-active .ck-modal__dialog,
-.ck-modal-leave-active .ck-modal__dialog {
+.cf-modal-enter-active .cf-modal__dialog,
+.cf-modal-leave-active .cf-modal__dialog {
   transition: transform var(--dur-base) var(--ease-out),
     opacity var(--dur-base) var(--ease-out);
 }
 
-[data-ck-modal][data-state='closed'] {
+[data-cf-modal][data-state='closed'] {
   opacity: 0;
   pointer-events: none;
 }
-[data-ck-modal][data-state='closed'] .ck-modal__dialog {
+[data-cf-modal][data-state='closed'] .cf-modal__dialog {
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }

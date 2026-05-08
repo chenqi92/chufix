@@ -15,8 +15,8 @@ export function switchClass(p: {
   loading: boolean;
 }): string {
   return [
-    'ck-switch',
-    `ck-switch--${p.size}`,
+    'cf-switch',
+    `cf-switch--${p.size}`,
     p.disabled && 'is-disabled',
     p.loading && 'is-loading',
   ]

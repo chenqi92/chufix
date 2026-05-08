@@ -8,7 +8,7 @@ defineProps<{ value: string; label?: string; disabled?: boolean }>();
 </script>
 
 <template>
-  <div class="ck-tabs__panel" role="tabpanel">
+  <div class="cf-tabs__panel" role="tabpanel">
     <slot />
   </div>
 </template>

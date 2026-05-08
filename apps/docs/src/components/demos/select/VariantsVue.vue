@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Select, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix/vue';
 
 const options: SelectOption[] = [
   { value: 'a', label: '选项 A' },
@@ -15,8 +15,8 @@ const v3 = ref<string | null>('c');
 
 <template>
   <div class="demo-stack">
-    <Select v-model="v1" :options="options" variant="outline" />
-    <Select v-model="v2" :options="options" variant="filled" />
-    <Select v-model="v3" :options="options" variant="ghost" />
+    <CfSelect v-model="v1" :options="options" variant="outline" />
+    <CfSelect v-model="v2" :options="options" variant="filled" />
+    <CfSelect v-model="v3" :options="options" variant="ghost" />
   </div>
 </template>

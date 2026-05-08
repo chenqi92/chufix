@@ -63,15 +63,15 @@ function dismiss(id: string) {
 
 <template>
   <Teleport to="body">
-    <div :class="`ck-toaster ck-toaster--${props.position}`" role="region" aria-label="通知">
-      <TransitionGroup name="ck-toast" tag="div" class="ck-toaster__list">
+    <div :class="`cf-toaster cf-toaster--${props.position}`" role="region" aria-label="通知">
+      <TransitionGroup name="cf-toast" tag="div" class="cf-toaster__list">
         <div
           v-for="item in items"
           :key="item.id"
-          :class="['ck-toast', `ck-toast--${item.type}`]"
+          :class="['cf-toast', `cf-toast--${item.type}`]"
           role="status"
         >
-          <span class="ck-toast__icon" aria-hidden="true">
+          <span class="cf-toast__icon" aria-hidden="true">
             <svg v-if="item.type === 'success'" viewBox="0 0 16 16" fill="none">
               <path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -85,14 +85,14 @@ function dismiss(id: string) {
               <path d="M8 7v5M8 4.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
             </svg>
           </span>
-          <div class="ck-toast__body">
-            <div v-if="item.title" class="ck-toast__title">{{ item.title }}</div>
-            <div v-if="item.description" class="ck-toast__desc">{{ item.description }}</div>
+          <div class="cf-toast__body">
+            <div v-if="item.title" class="cf-toast__title">{{ item.title }}</div>
+            <div v-if="item.description" class="cf-toast__desc">{{ item.description }}</div>
           </div>
           <button
             v-if="item.dismissible"
             type="button"
-            class="ck-toast__close"
+            class="cf-toast__close"
             aria-label="关闭"
             @click="dismiss(item.id)"
           >×</button>

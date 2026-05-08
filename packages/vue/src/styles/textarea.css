@@ -1,6 +1,6 @@
 /* ChuKit Textarea — wrapper + native textarea, mirrors Input. */
 
-.ck-textarea {
+.cf-textarea {
   position: relative;
   display: block;
   width: 100%;
@@ -12,45 +12,45 @@
     box-shadow var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out);
 }
-.ck-textarea:hover:not(.is-disabled):not(.is-focused) { border-color: var(--fg-3); }
-.ck-textarea.is-focused {
+.cf-textarea:hover:not(.is-disabled):not(.is-focused) { border-color: var(--fg-3); }
+.cf-textarea.is-focused {
   border-color: var(--accent-1);
   box-shadow: var(--focus-ring);
 }
-.ck-textarea.is-error { border-color: var(--status-error); }
-.ck-textarea.is-error.is-focused {
+.cf-textarea.is-error { border-color: var(--status-error); }
+.cf-textarea.is-error.is-focused {
   box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
 }
-.ck-textarea.is-disabled {
+.cf-textarea.is-disabled {
   background: var(--bg-2);
   cursor: not-allowed;
   opacity: var(--disabled-opacity);
 }
 
 /* variants */
-.ck-textarea--filled {
+.cf-textarea--filled {
   background: var(--bg-2);
   border-color: transparent;
 }
-.ck-textarea--filled.is-focused {
+.cf-textarea--filled.is-focused {
   background: var(--bg-inset);
   border-color: var(--accent-1);
 }
-.ck-textarea--ghost {
+.cf-textarea--ghost {
   background: transparent;
   border-color: transparent;
 }
-.ck-textarea--ghost.is-focused {
+.cf-textarea--ghost.is-focused {
   background: var(--bg-inset);
   border-color: var(--accent-1);
 }
 
 /* sizes — affect padding/font, height is row-driven */
-.ck-textarea--sm .ck-textarea__el { padding: 6px 10px; font-size: var(--t-12); }
-.ck-textarea--md .ck-textarea__el { padding: 8px 12px; font-size: var(--t-13); }
-.ck-textarea--lg .ck-textarea__el { padding: 10px 14px; font-size: var(--t-14); }
+.cf-textarea--sm .cf-textarea__el { padding: 6px 10px; font-size: var(--t-12); }
+.cf-textarea--md .cf-textarea__el { padding: 8px 12px; font-size: var(--t-13); }
+.cf-textarea--lg .cf-textarea__el { padding: 10px 14px; font-size: var(--t-14); }
 
-.ck-textarea__el {
+.cf-textarea__el {
   display: block;
   width: 100%;
   font: inherit;
@@ -63,10 +63,10 @@
   border-radius: inherit;
   padding: 8px 12px;
 }
-.ck-textarea__el::placeholder { color: var(--fg-3); }
-.ck-textarea__el:disabled { cursor: not-allowed; }
+.cf-textarea__el::placeholder { color: var(--fg-3); }
+.cf-textarea__el:disabled { cursor: not-allowed; }
 
-.ck-textarea__count {
+.cf-textarea__count {
   position: absolute;
   right: 10px;
   bottom: 6px;
@@ -75,4 +75,4 @@
   pointer-events: none;
   user-select: none;
 }
-.ck-textarea__count.is-over { color: var(--status-error); }
+.cf-textarea__count.is-over { color: var(--status-error); }

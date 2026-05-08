@@ -17,23 +17,28 @@ import './styles/tabs.css';
 import './styles/alert.css';
 import './styles/skeleton.css';
 
-export { default as Button } from './button/Button.vue';
+/* All component exports use the Cf prefix (matching the CSS `cf-` class
+ * prefix; `cf` from chufix) so consumers can keep the imported name in
+ * their template and disambiguate against other UI libraries. Want short
+ * names? Alias on import: `import { CfButton as Button } from '@chufix/vue'`. */
+
+export { default as CfButton } from './button/Button.vue';
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape } from './button/variants';
 
-export { default as Input } from './input/Input.vue';
+export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
 
-export { default as Card } from './card/Card.vue';
+export { default as CfCard } from './card/Card.vue';
 export type { CardProps, CardVariant } from './card/variants';
 
-export { default as Switch } from './switch/Switch.vue';
+export { default as CfSwitch } from './switch/Switch.vue';
 export type { SwitchProps, SwitchSize } from './switch/variants';
 
-export { default as Checkbox } from './checkbox/Checkbox.vue';
+export { default as CfCheckbox } from './checkbox/Checkbox.vue';
 export type { CheckboxProps, CheckboxSize } from './checkbox/variants';
 
-export { default as Radio } from './radio/Radio.vue';
-export { default as RadioGroup } from './radio/RadioGroup.vue';
+export { default as CfRadio } from './radio/Radio.vue';
+export { default as CfRadioGroup } from './radio/RadioGroup.vue';
 export type {
   RadioProps,
   RadioGroupProps,
@@ -41,7 +46,7 @@ export type {
   RadioValue,
 } from './radio/variants';
 
-export { default as Textarea } from './textarea/Textarea.vue';
+export { default as CfTextarea } from './textarea/Textarea.vue';
 export type {
   TextareaProps,
   TextareaVariant,
@@ -49,7 +54,7 @@ export type {
   TextareaResize,
 } from './textarea/variants';
 
-export { default as Select } from './select/Select.vue';
+export { default as CfSelect } from './select/Select.vue';
 export type {
   SelectProps,
   SelectOption,
@@ -58,25 +63,25 @@ export type {
   SelectValue,
 } from './select/variants';
 
-export { default as Tooltip } from './tooltip/Tooltip.vue';
+export { default as CfTooltip } from './tooltip/Tooltip.vue';
 export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
 
-export { default as Toaster } from './toast/Toaster.vue';
+export { default as CfToaster } from './toast/Toaster.vue';
 export { toast, toastStore } from './toast/store';
 export type { ToastItem, ToastInput, ToastType } from './toast/store';
 
-export { default as Tag } from './tag/Tag.vue';
+export { default as CfTag } from './tag/Tag.vue';
 export type { TagProps, TagVariant, TagSize, TagTone } from './tag/variants';
 
-export { default as Badge } from './badge/Badge.vue';
+export { default as CfBadge } from './badge/Badge.vue';
 export type {
   BadgeProps,
   BadgeTone,
   BadgePlacement,
 } from './badge/variants';
 
-export { default as Avatar } from './avatar/Avatar.vue';
-export { default as AvatarGroup } from './avatar/AvatarGroup.vue';
+export { default as CfAvatar } from './avatar/Avatar.vue';
+export { default as CfAvatarGroup } from './avatar/AvatarGroup.vue';
 export type {
   AvatarProps,
   AvatarGroupProps,
@@ -84,11 +89,11 @@ export type {
   AvatarShape,
 } from './avatar/variants';
 
-export { default as Modal } from './modal/Modal.vue';
+export { default as CfModal } from './modal/Modal.vue';
 export type { ModalProps, ModalSize } from './modal/variants';
 
-export { default as Tabs } from './tabs/Tabs.vue';
-export { default as TabPanel } from './tabs/TabPanel.vue';
+export { default as CfTabs } from './tabs/Tabs.vue';
+export { default as CfTabPanel } from './tabs/TabPanel.vue';
 export type {
   TabsProps,
   TabsItem,
@@ -97,8 +102,8 @@ export type {
   TabsAlign,
 } from './tabs/variants';
 
-export { default as Alert } from './alert/Alert.vue';
+export { default as CfAlert } from './alert/Alert.vue';
 export type { AlertProps, AlertTone, AlertVariant } from './alert/variants';
 
-export { default as Skeleton } from './skeleton/Skeleton.vue';
+export { default as CfSkeleton } from './skeleton/Skeleton.vue';
 export type { SkeletonProps, SkeletonShape } from './skeleton/variants';

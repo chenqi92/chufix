@@ -45,7 +45,7 @@ function onChange() {
 <template>
   <label :class="cls">
     <input
-      class="ck-radio__input"
+      class="cf-radio__input"
       type="radio"
       :checked="checked"
       :disabled="disabled"
@@ -53,7 +53,7 @@ function onChange() {
       :id="id"
       @change="onChange"
     />
-    <span class="ck-radio__dot" aria-hidden="true" />
-    <span v-if="$slots.default" class="ck-radio__label"><slot /></span>
+    <span class="cf-radio__dot" aria-hidden="true" />
+    <span v-if="$slots.default" class="cf-radio__label"><slot /></span>
   </label>
 </template>

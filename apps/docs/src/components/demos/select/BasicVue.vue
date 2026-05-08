@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Select, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix/vue';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -14,7 +14,7 @@ const city = ref<string | null>('shanghai');
 
 <template>
   <div class="demo-stack">
-    <Select v-model="city" :options="options" placeholder="选一个城市" />
+    <CfSelect v-model="city" :options="options" placeholder="选一个城市" />
     <p class="demo-hint">已选：<code>{{ city ?? 'null' }}</code></p>
   </div>
 </template>

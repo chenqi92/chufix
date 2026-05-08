@@ -15,29 +15,29 @@ import SizesVue from '~/components/demos/radio/SizesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Radio, RadioGroup } from '@chufix/vue';
+import { CfRadio, CfRadioGroup } from '@chufix/vue';
 
 const plan = ref<'free' | 'pro' | 'team'>('pro');
 </script>
 
 <template>
-  <RadioGroup v-model="plan" name="plan">
-    <Radio value="free">Free</Radio>
-    <Radio value="pro">Pro</Radio>
-    <Radio value="team">Team</Radio>
-  </RadioGroup>
+  <CfRadioGroup v-model="plan" name="plan">
+    <CfRadio value="free">Free</CfRadio>
+    <CfRadio value="pro">Pro</CfRadio>
+    <CfRadio value="team">Team</CfRadio>
+  </CfRadioGroup>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Radio, RadioGroup } from '@chufix/react';
+import { CfRadio, CfRadioGroup } from '@chufix/react';
 
 export default function Demo() {
   const [plan, setPlan] = useState<'free' | 'pro' | 'team'>('pro');
   return (
-    <RadioGroup value={plan} name="plan" onChange={(v) => setPlan(v as any)}>
-      <Radio value="free">Free</Radio>
-      <Radio value="pro">Pro</Radio>
-      <Radio value="team">Team</Radio>
-    </RadioGroup>
+    <CfRadioGroup value={plan} name="plan" onChange={(v) => setPlan(v as any)}>
+      <CfRadio value="free">Free</CfRadio>
+      <CfRadio value="pro">Pro</CfRadio>
+      <CfRadio value="team">Team</CfRadio>
+    </CfRadioGroup>
   );
 }`}
 >
@@ -49,18 +49,18 @@ export default function Demo() {
 `direction="column"` 把选项垂直排开。在选项较多或文案较长时使用。
 
 <DemoFrame
-  vueCode={`<RadioGroup v-model="flavor" direction="column">
-  <Radio value="vanilla">香草</Radio>
-  <Radio value="chocolate">巧克力</Radio>
-  <Radio value="strawberry" disabled>草莓（缺货）</Radio>
-  <Radio value="matcha">抹茶</Radio>
-</RadioGroup>`}
-  reactCode={`<RadioGroup value={flavor} direction="column" onChange={setFlavor}>
-  <Radio value="vanilla">香草</Radio>
-  <Radio value="chocolate">巧克力</Radio>
-  <Radio value="strawberry" disabled>草莓（缺货）</Radio>
-  <Radio value="matcha">抹茶</Radio>
-</RadioGroup>`}
+  vueCode={`<CfRadioGroup v-model="flavor" direction="column">
+  <CfRadio value="vanilla">香草</CfRadio>
+  <CfRadio value="chocolate">巧克力</CfRadio>
+  <CfRadio value="strawberry" disabled>草莓（缺货）</CfRadio>
+  <CfRadio value="matcha">抹茶</CfRadio>
+</CfRadioGroup>`}
+  reactCode={`<CfRadioGroup value={flavor} direction="column" onChange={setFlavor}>
+  <CfRadio value="vanilla">香草</CfRadio>
+  <CfRadio value="chocolate">巧克力</CfRadio>
+  <CfRadio value="strawberry" disabled>草莓（缺货）</CfRadio>
+  <CfRadio value="matcha">抹茶</CfRadio>
+</CfRadioGroup>`}
 >
   <DirectionVue client:load />
 </DemoFrame>
@@ -70,16 +70,16 @@ export default function Demo() {
 `size` 设在 `RadioGroup` 上，注入给所有子项。
 
 <DemoFrame
-  vueCode={`<RadioGroup size="sm" v-model="a">
-  <Radio value="s">Small</Radio>
-  <Radio value="t">Tiny</Radio>
-</RadioGroup>
-<RadioGroup size="md" v-model="b">…</RadioGroup>
-<RadioGroup size="lg" v-model="c">…</RadioGroup>`}
-  reactCode={`<RadioGroup size="sm" value={a} onChange={setA}>
-  <Radio value="s">Small</Radio>
-  <Radio value="t">Tiny</Radio>
-</RadioGroup>`}
+  vueCode={`<CfRadioGroup size="sm" v-model="a">
+  <CfRadio value="s">Small</CfRadio>
+  <CfRadio value="t">Tiny</CfRadio>
+</CfRadioGroup>
+<CfRadioGroup size="md" v-model="b">…</CfRadioGroup>
+<CfRadioGroup size="lg" v-model="c">…</CfRadioGroup>`}
+  reactCode={`<CfRadioGroup size="sm" value={a} onChange={setA}>
+  <CfRadio value="s">Small</CfRadio>
+  <CfRadio value="t">Tiny</CfRadio>
+</CfRadioGroup>`}
 >
   <SizesVue client:load />
 </DemoFrame>

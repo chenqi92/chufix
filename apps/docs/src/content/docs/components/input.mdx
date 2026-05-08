@@ -17,21 +17,21 @@ import AffixVue from '~/components/demos/input/AffixVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@chufix/vue';
+import { CfInput } from '@chufix/vue';
 
 const name = ref('');
 </script>
 
 <template>
-  <Input v-model="name" placeholder="请输入用户名" />
+  <CfInput v-model="name" placeholder="请输入用户名" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Input } from '@chufix/react';
+import { CfInput } from '@chufix/react';
 
 export default function Demo() {
   const [name, setName] = useState('');
   return (
-    <Input
+    <CfInput
       value={name}
       onChange={(e) => setName(e.target.value)}
       placeholder="请输入用户名"
@@ -47,12 +47,12 @@ export default function Demo() {
 3 种 variant 提供不同的边框 / 背景强度。`filled` 适合表单密集的场景，`ghost` 在已有容器边框时使用，避免双重边框。
 
 <DemoFrame
-  vueCode={`<Input variant="outline" placeholder="outline · 默认" />
-<Input variant="filled" placeholder="filled · 灰色填充" />
-<Input variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
-  reactCode={`<Input variant="outline" placeholder="outline · 默认" />
-<Input variant="filled" placeholder="filled · 灰色填充" />
-<Input variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
+  vueCode={`<CfInput variant="outline" placeholder="outline · 默认" />
+<CfInput variant="filled" placeholder="filled · 灰色填充" />
+<CfInput variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
+  reactCode={`<CfInput variant="outline" placeholder="outline · 默认" />
+<CfInput variant="filled" placeholder="filled · 灰色填充" />
+<CfInput variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
 >
   <VariantsVue client:load />
 </DemoFrame>
@@ -60,12 +60,12 @@ export default function Demo() {
 ## 尺寸
 
 <DemoFrame
-  vueCode={`<Input size="sm" placeholder="Small" />
-<Input size="md" placeholder="Medium" />
-<Input size="lg" placeholder="Large" />`}
-  reactCode={`<Input size="sm" placeholder="Small" />
-<Input size="md" placeholder="Medium" />
-<Input size="lg" placeholder="Large" />`}
+  vueCode={`<CfInput size="sm" placeholder="Small" />
+<CfInput size="md" placeholder="Medium" />
+<CfInput size="lg" placeholder="Large" />`}
+  reactCode={`<CfInput size="sm" placeholder="Small" />
+<CfInput size="md" placeholder="Medium" />
+<CfInput size="lg" placeholder="Large" />`}
 >
   <SizesVue client:load />
 </DemoFrame>
@@ -77,24 +77,24 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@chufix/vue';
+import { CfInput } from '@chufix/vue';
 
 const email = ref('not-an-email');
 const valid = (s: string) => /.+@.+\\..+/.test(s);
 </script>
 
 <template>
-  <Input v-model="search" clearable placeholder="可清空（输入后出现 ×）" />
-  <Input
+  <CfInput v-model="search" clearable placeholder="可清空（输入后出现 ×）" />
+  <CfInput
     v-model="email"
     :error="!valid(email)"
     placeholder="错误状态：邮箱格式不对"
   />
-  <Input placeholder="禁用" disabled />
-  <Input placeholder="只读" readonly model-value="readonly content" />
+  <CfInput placeholder="禁用" disabled />
+  <CfInput placeholder="只读" readonly model-value="readonly content" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Input } from '@chufix/react';
+import { CfInput } from '@chufix/react';
 
 export default function Demo() {
   const [email, setEmail] = useState('not-an-email');
@@ -102,15 +102,15 @@ export default function Demo() {
 
   return (
     <>
-      <Input clearable placeholder="可清空（输入后出现 ×）" />
-      <Input
+      <CfInput clearable placeholder="可清空（输入后出现 ×）" />
+      <CfInput
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         error={!valid}
         placeholder="错误状态：邮箱格式不对"
       />
-      <Input placeholder="禁用" disabled />
-      <Input placeholder="只读" readOnly defaultValue="readonly content" />
+      <CfInput placeholder="禁用" disabled />
+      <CfInput placeholder="只读" readOnly defaultValue="readonly content" />
     </>
   );
 }`}
@@ -123,17 +123,17 @@ export default function Demo() {
 通过具名插槽（Vue）/ `prefix` & `suffix` props（React）放置图标或固定文本。`clearable` 和 `suffix` 互斥（有内容时显示清除按钮）。
 
 <DemoFrame
-  vueCode={`<Input v-model="url" placeholder="example">
+  vueCode={`<CfInput v-model="url" placeholder="example">
   <template #prefix>https://</template>
   <template #suffix>.com</template>
-</Input>
+</CfInput>
 
-<Input v-model="search" clearable placeholder="搜索…">
+<CfInput v-model="search" clearable placeholder="搜索…">
   <template #prefix>
     <SearchIcon />
   </template>
-</Input>`}
-  reactCode={`<Input
+</CfInput>`}
+  reactCode={`<CfInput
   value={url}
   onChange={(e) => setUrl(e.target.value)}
   placeholder="example"
@@ -141,7 +141,7 @@ export default function Demo() {
   suffix={<>.com</>}
 />
 
-<Input
+<CfInput
   value={search}
   onChange={(e) => setSearch(e.target.value)}
   clearable

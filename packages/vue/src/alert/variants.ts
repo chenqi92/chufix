@@ -10,5 +10,5 @@ export interface AlertProps {
 }
 
 export function alertClass(p: { tone: AlertTone; variant: AlertVariant }): string {
-  return ['ck-alert', `ck-alert--${p.tone}`, `ck-alert--${p.variant}`].join(' ');
+  return ['cf-alert', `cf-alert--${p.tone}`, `cf-alert--${p.variant}`].join(' ');
 }

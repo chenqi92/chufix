@@ -14,21 +14,21 @@ import TextVue from '~/components/demos/skeleton/TextVue.vue';
 
 <DemoFrame
   vueCode={`<div style="display: flex; gap: 12px; align-items: center;">
-  <Skeleton shape="circle" :width="40" :height="40" />
+  <CfSkeleton shape="circle" :width="40" :height="40" />
   <div style="flex: 1;">
-    <Skeleton shape="text" :width="120" />
-    <Skeleton shape="text" :width="200" />
+    <CfSkeleton shape="text" :width="120" />
+    <CfSkeleton shape="text" :width="200" />
   </div>
 </div>
-<Skeleton shape="rect" :height="80" />`}
+<CfSkeleton shape="rect" :height="80" />`}
   reactCode={`<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-  <Skeleton shape="circle" width={40} height={40} />
+  <CfSkeleton shape="circle" width={40} height={40} />
   <div style={{ flex: 1 }}>
-    <Skeleton shape="text" width={120} />
-    <Skeleton shape="text" width={200} />
+    <CfSkeleton shape="text" width={120} />
+    <CfSkeleton shape="text" width={200} />
   </div>
 </div>
-<Skeleton shape="rect" height={80} />`}
+<CfSkeleton shape="rect" height={80} />`}
 >
   <BasicVue client:load />
 </DemoFrame>
@@ -38,8 +38,8 @@ import TextVue from '~/components/demos/skeleton/TextVue.vue';
 `lines > 1` 时 `shape="text"` 自动渲染多行，最后一行宽度 60% 模拟段尾。
 
 <DemoFrame
-  vueCode={`<Skeleton shape="text" :lines="4" />`}
-  reactCode={`<Skeleton shape="text" lines={4} />`}
+  vueCode={`<CfSkeleton shape="text" :lines="4" />`}
+  reactCode={`<CfSkeleton shape="text" lines={4} />`}
 >
   <TextVue client:load />
 </DemoFrame>

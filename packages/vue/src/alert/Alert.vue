@@ -32,23 +32,23 @@ const iconPath = computed(() => {
 
 <template>
   <div v-if="open" :class="rootClass" role="alert">
-    <span v-if="icon" class="ck-alert__icon" aria-hidden="true">
+    <span v-if="icon" class="cf-alert__icon" aria-hidden="true">
       <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path :d="iconPath" />
       </svg>
     </span>
-    <div class="ck-alert__body">
-      <div v-if="title || $slots.title" class="ck-alert__title">
+    <div class="cf-alert__body">
+      <div v-if="title || $slots.title" class="cf-alert__title">
         <slot name="title">{{ title }}</slot>
       </div>
-      <div class="ck-alert__content">
+      <div class="cf-alert__content">
         <slot />
       </div>
     </div>
     <button
       v-if="closable"
       type="button"
-      class="ck-alert__close"
+      class="cf-alert__close"
       aria-label="close"
       @click="close"
     >

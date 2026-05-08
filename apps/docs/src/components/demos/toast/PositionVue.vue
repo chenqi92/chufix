@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, toast } from '@chufix/vue';
+import { CfButton, toast } from '@chufix/vue';
 
 type Pos =
   | 'top-right' | 'top-left' | 'top-center'
@@ -13,12 +13,12 @@ function show(p: Pos) {
 <template>
   <div class="demo-stack">
     <div class="demo-row">
-      <Button variant="tertiary" @click="show('top-left')">top-left</Button>
-      <Button variant="tertiary" @click="show('top-center')">top-center</Button>
-      <Button variant="tertiary" @click="show('top-right')">top-right</Button>
-      <Button variant="tertiary" @click="show('bottom-left')">bottom-left</Button>
-      <Button variant="tertiary" @click="show('bottom-center')">bottom-center</Button>
-      <Button variant="tertiary" @click="show('bottom-right')">bottom-right</Button>
+      <CfButton variant="tertiary" @click="show('top-left')">top-left</CfButton>
+      <CfButton variant="tertiary" @click="show('top-center')">top-center</CfButton>
+      <CfButton variant="tertiary" @click="show('top-right')">top-right</CfButton>
+      <CfButton variant="tertiary" @click="show('bottom-left')">bottom-left</CfButton>
+      <CfButton variant="tertiary" @click="show('bottom-center')">bottom-center</CfButton>
+      <CfButton variant="tertiary" @click="show('bottom-right')">bottom-right</CfButton>
     </div>
     <p class="demo-hint">提示：本站只挂了一个 <code>Toaster</code> 在 <code>top-right</code>，按钮全部都会从这个位置弹出。在你自己的应用里把 <code>&lt;Toaster position="..."/&gt;</code> 改成对应值即可。</p>
   </div>

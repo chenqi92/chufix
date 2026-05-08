@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Tabs } from '@chufix/vue';
+import { CfTabs } from '@chufix/vue';
 
 const sm = ref('one');
 const md = ref('one');
@@ -14,8 +14,8 @@ const items = [
 
 <template>
   <div class="demo-stack">
-    <Tabs v-model="sm" :items="items" size="sm" />
-    <Tabs v-model="md" :items="items" size="md" />
-    <Tabs v-model="lg" :items="items" size="lg" />
+    <CfTabs v-model="sm" :items="items" size="sm" />
+    <CfTabs v-model="md" :items="items" size="md" />
+    <CfTabs v-model="lg" :items="items" size="lg" />
   </div>
 </template>

@@ -83,7 +83,7 @@ export function Tooltip(props: TooltipProps) {
     <>
       <span
         ref={triggerRef}
-        className="ck-tooltip-trigger"
+        className="cf-tooltip-trigger"
         onMouseEnter={show}
         onMouseLeave={hide}
         onFocus={show}
@@ -95,13 +95,13 @@ export function Tooltip(props: TooltipProps) {
         ? createPortal(
             <div
               ref={tipRef}
-              className={`ck-tooltip ck-tooltip--${pos.placement}`}
+              className={`cf-tooltip cf-tooltip--${pos.placement}`}
               data-state={open ? 'open' : 'closed'}
               role="tooltip"
               style={tipStyle}
             >
               {content}
-              <span className="ck-tooltip__arrow" />
+              <span className="cf-tooltip__arrow" />
             </div>,
             document.body,
           )

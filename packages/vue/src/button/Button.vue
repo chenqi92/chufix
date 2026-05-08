@@ -26,11 +26,11 @@ const ariaDisabled = computed(() => props.disabled || props.loading);
     :aria-busy="loading || undefined"
     @click="(e) => !ariaDisabled && $emit('click', e)"
   >
-    <span v-if="$slots.leading" class="ck-btn__leading">
+    <span v-if="$slots.leading" class="cf-btn__leading">
       <slot name="leading" />
     </span>
-    <span class="ck-btn__label"><slot /></span>
-    <span v-if="$slots.trailing" class="ck-btn__trailing">
+    <span class="cf-btn__label"><slot /></span>
+    <span v-if="$slots.trailing" class="cf-btn__trailing">
       <slot name="trailing" />
     </span>
   </button>

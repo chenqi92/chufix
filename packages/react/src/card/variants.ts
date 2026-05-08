@@ -16,8 +16,8 @@ export function cardClass(p: {
   className?: string;
 }): string {
   return [
-    'ck-card',
-    `ck-card--${p.variant}`,
+    'cf-card',
+    `cf-card--${p.variant}`,
     p.interactive && 'is-interactive',
     p.className,
   ]

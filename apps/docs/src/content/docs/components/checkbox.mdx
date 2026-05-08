@@ -10,28 +10,28 @@ import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
 
 ## 基础用法
 
-底层是真实的 `<input type="checkbox">`，键盘 / 表单 / 屏幕阅读器全部直接可用。
+底层是真实的 `<CfInput type="checkbox">`，键盘 / 表单 / 屏幕阅读器全部直接可用。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Checkbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix/vue';
 
 const agree = ref(false);
 </script>
 
 <template>
-  <Checkbox v-model="agree">我同意服务协议</Checkbox>
+  <CfCheckbox v-model="agree">我同意服务协议</CfCheckbox>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Checkbox } from '@chufix/react';
+import { CfCheckbox } from '@chufix/react';
 
 export default function Demo() {
   const [agree, setAgree] = useState(false);
   return (
-    <Checkbox checked={agree} onChange={(e) => setAgree(e.target.checked)}>
+    <CfCheckbox checked={agree} onChange={(e) => setAgree(e.target.checked)}>
       我同意服务协议
-    </Checkbox>
+    </CfCheckbox>
   );
 }`}
 >
@@ -41,16 +41,16 @@ export default function Demo() {
 ## 尺寸与禁用
 
 <DemoFrame
-  vueCode={`<Checkbox size="sm" :model-value="true">sm 已选</Checkbox>
-<Checkbox size="md" :model-value="true">md 已选</Checkbox>
-<Checkbox size="lg" :model-value="true">lg 已选</Checkbox>
-<Checkbox disabled>禁用</Checkbox>
-<Checkbox disabled :model-value="true">禁用已选</Checkbox>`}
-  reactCode={`<Checkbox size="sm" defaultChecked>sm 已选</Checkbox>
-<Checkbox size="md" defaultChecked>md 已选</Checkbox>
-<Checkbox size="lg" defaultChecked>lg 已选</Checkbox>
-<Checkbox disabled>禁用</Checkbox>
-<Checkbox disabled defaultChecked>禁用已选</Checkbox>`}
+  vueCode={`<CfCheckbox size="sm" :model-value="true">sm 已选</CfCheckbox>
+<CfCheckbox size="md" :model-value="true">md 已选</CfCheckbox>
+<CfCheckbox size="lg" :model-value="true">lg 已选</CfCheckbox>
+<CfCheckbox disabled>禁用</CfCheckbox>
+<CfCheckbox disabled :model-value="true">禁用已选</CfCheckbox>`}
+  reactCode={`<CfCheckbox size="sm" defaultChecked>sm 已选</CfCheckbox>
+<CfCheckbox size="md" defaultChecked>md 已选</CfCheckbox>
+<CfCheckbox size="lg" defaultChecked>lg 已选</CfCheckbox>
+<CfCheckbox disabled>禁用</CfCheckbox>
+<CfCheckbox disabled defaultChecked>禁用已选</CfCheckbox>`}
 >
   <SizesVue client:load />
 </DemoFrame>
@@ -62,7 +62,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Checkbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix/vue';
 
 const apple = ref(true);
 const banana = ref(false);
@@ -79,13 +79,13 @@ const indeterminate = computed(() => count.value > 0 && count.value < 3);
 </script>
 
 <template>
-  <Checkbox v-model="all" :indeterminate="indeterminate">全选</Checkbox>
-  <Checkbox v-model="apple">苹果</Checkbox>
-  <Checkbox v-model="banana">香蕉</Checkbox>
-  <Checkbox v-model="cherry">樱桃</Checkbox>
+  <CfCheckbox v-model="all" :indeterminate="indeterminate">全选</CfCheckbox>
+  <CfCheckbox v-model="apple">苹果</CfCheckbox>
+  <CfCheckbox v-model="banana">香蕉</CfCheckbox>
+  <CfCheckbox v-model="cherry">樱桃</CfCheckbox>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Checkbox } from '@chufix/react';
+import { CfCheckbox } from '@chufix/react';
 
 export default function Demo() {
   const [apple, setApple] = useState(true);
@@ -95,17 +95,17 @@ export default function Demo() {
 
   return (
     <>
-      <Checkbox
+      <CfCheckbox
         checked={count === 3}
         indeterminate={count > 0 && count < 3}
         onChange={(e) => {
           const v = e.target.checked;
           setApple(v); setBanana(v); setCherry(v);
         }}
-      >全选</Checkbox>
-      <Checkbox checked={apple} onChange={(e) => setApple(e.target.checked)}>苹果</Checkbox>
-      <Checkbox checked={banana} onChange={(e) => setBanana(e.target.checked)}>香蕉</Checkbox>
-      <Checkbox checked={cherry} onChange={(e) => setCherry(e.target.checked)}>樱桃</Checkbox>
+      >全选</CfCheckbox>
+      <CfCheckbox checked={apple} onChange={(e) => setApple(e.target.checked)}>苹果</CfCheckbox>
+      <CfCheckbox checked={banana} onChange={(e) => setBanana(e.target.checked)}>香蕉</CfCheckbox>
+      <CfCheckbox checked={cherry} onChange={(e) => setCherry(e.target.checked)}>樱桃</CfCheckbox>
     </>
   );
 }`}

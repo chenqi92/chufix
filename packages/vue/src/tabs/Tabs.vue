@@ -64,13 +64,13 @@ const rootClass = computed(() =>
 
 <template>
   <div :class="rootClass">
-    <div class="ck-tabs__list" role="tablist">
+    <div class="cf-tabs__list" role="tablist">
       <button
         v-for="t in fallback"
         :key="t.value"
         type="button"
         role="tab"
-        class="ck-tabs__tab"
+        class="cf-tabs__tab"
         :class="{ 'is-active': inner === t.value, 'is-disabled': t.disabled }"
         :aria-selected="inner === t.value"
         :disabled="t.disabled || undefined"
@@ -79,7 +79,7 @@ const rootClass = computed(() =>
         {{ t.label }}
       </button>
     </div>
-    <div class="ck-tabs__panels">
+    <div class="cf-tabs__panels">
       <slot :active="inner" />
     </div>
   </div>

@@ -15,26 +15,26 @@ import StatesVue from '~/components/demos/button/StatesVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Button } from '@chufix/vue';
+import { CfButton } from '@chufix/vue';
 </script>
 
 <template>
-  <Button variant="primary">Primary</Button>
-  <Button variant="secondary">Secondary</Button>
-  <Button variant="tertiary">Tertiary</Button>
-  <Button variant="ghost">Ghost</Button>
-  <Button variant="danger">Danger</Button>
+  <CfButton variant="primary">Primary</CfButton>
+  <CfButton variant="secondary">Secondary</CfButton>
+  <CfButton variant="tertiary">Tertiary</CfButton>
+  <CfButton variant="ghost">Ghost</CfButton>
+  <CfButton variant="danger">Danger</CfButton>
 </template>`}
-  reactCode={`import { Button } from '@chufix/react';
+  reactCode={`import { CfButton } from '@chufix/react';
 
 export default function Demo() {
   return (
     <>
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="tertiary">Tertiary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="danger">Danger</Button>
+      <CfButton variant="primary">Primary</CfButton>
+      <CfButton variant="secondary">Secondary</CfButton>
+      <CfButton variant="tertiary">Tertiary</CfButton>
+      <CfButton variant="ghost">Ghost</CfButton>
+      <CfButton variant="danger">Danger</CfButton>
     </>
   );
 }`}
@@ -47,20 +47,20 @@ export default function Demo() {
 3 档尺寸（`sm` / `md` / `lg`）适配不同信息密度；3 种形状中 `pill` 是胶囊形，`square` 是正方形（icon-only 时常用）。
 
 <DemoFrame
-  vueCode={`<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
+  vueCode={`<CfButton size="sm">Small</CfButton>
+<CfButton size="md">Medium</CfButton>
+<CfButton size="lg">Large</CfButton>
 
-<Button shape="default">默认圆角</Button>
-<Button shape="pill">Pill</Button>
-<Button shape="square" aria-label="设置">⚙</Button>`}
-  reactCode={`<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
+<CfButton shape="default">默认圆角</CfButton>
+<CfButton shape="pill">Pill</CfButton>
+<CfButton shape="square" aria-label="设置">⚙</CfButton>`}
+  reactCode={`<CfButton size="sm">Small</CfButton>
+<CfButton size="md">Medium</CfButton>
+<CfButton size="lg">Large</CfButton>
 
-<Button shape="default">默认圆角</Button>
-<Button shape="pill">Pill</Button>
-<Button shape="square" aria-label="设置">⚙</Button>`}
+<CfButton shape="default">默认圆角</CfButton>
+<CfButton shape="pill">Pill</CfButton>
+<CfButton shape="square" aria-label="设置">⚙</CfButton>`}
 >
   <SizesVue client:load />
 </DemoFrame>
@@ -72,7 +72,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Button } from '@chufix/vue';
+import { CfButton } from '@chufix/vue';
 
 const loading = ref(false);
 async function load() {
@@ -83,14 +83,14 @@ async function load() {
 </script>
 
 <template>
-  <Button :loading="loading" @click="load">
+  <CfButton :loading="loading" @click="load">
     {{ loading ? '加载中…' : '点击加载' }}
-  </Button>
-  <Button disabled>Disabled</Button>
-  <Button block>整行铺满（block）</Button>
+  </CfButton>
+  <CfButton disabled>Disabled</CfButton>
+  <CfButton block>整行铺满（block）</CfButton>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Button } from '@chufix/react';
+import { CfButton } from '@chufix/react';
 
 export default function Demo() {
   const [loading, setLoading] = useState(false);
@@ -102,11 +102,11 @@ export default function Demo() {
 
   return (
     <>
-      <Button loading={loading} onClick={load}>
+      <CfButton loading={loading} onClick={load}>
         {loading ? '加载中…' : '点击加载'}
-      </Button>
-      <Button disabled>Disabled</Button>
-      <Button block>整行铺满（block）</Button>
+      </CfButton>
+      <CfButton disabled>Disabled</CfButton>
+      <CfButton block>整行铺满（block）</CfButton>
     </>
   );
 }`}

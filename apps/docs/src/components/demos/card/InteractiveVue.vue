@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Card } from '@chufix/vue';
+import { CfCard } from '@chufix/vue';
 
 const clicked = ref(0);
 </script>
 
 <template>
-  <Card
+  <CfCard
     variant="outlined"
     interactive
     style="max-width: 22rem;"
@@ -17,5 +17,5 @@ const clicked = ref(0);
     <template #footer>
       已点击 <strong>{{ clicked }}</strong> 次
     </template>
-  </Card>
+  </CfCard>
 </template>

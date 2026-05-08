@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Input } from '@chufix/vue';
+import { CfInput } from '@chufix/vue';
 </script>
 
 <template>
   <div class="demo-stack">
-    <Input size="sm" placeholder="Small" />
-    <Input size="md" placeholder="Medium（默认）" />
-    <Input size="lg" placeholder="Large" />
+    <CfInput size="sm" placeholder="Small" />
+    <CfInput size="md" placeholder="Medium（默认）" />
+    <CfInput size="lg" placeholder="Large" />
   </div>
 </template>

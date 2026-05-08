@@ -15,42 +15,42 @@ import BehaviorVue from '~/components/demos/modal/BehaviorVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Modal } from '@chufix/vue';
+import { CfButton, CfModal } from '@chufix/vue';
 
 const open = ref(false);
 </script>
 
 <template>
-  <Button @click="open = true">打开 Modal</Button>
-  <Modal v-model:open="open" title="确认操作">
+  <CfButton @click="open = true">打开 Modal</CfButton>
+  <CfModal v-model:open="open" title="确认操作">
     <p>这是一个最简弹窗。</p>
     <template #footer>
-      <Button variant="ghost" @click="open = false">取消</Button>
-      <Button @click="open = false">确定</Button>
+      <CfButton variant="ghost" @click="open = false">取消</CfButton>
+      <CfButton @click="open = false">确定</CfButton>
     </template>
-  </Modal>
+  </CfModal>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Button, Modal } from '@chufix/react';
+import { CfButton, CfModal } from '@chufix/react';
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button onClick={() => setOpen(true)}>打开 Modal</Button>
-      <Modal
+      <CfButton onClick={() => setOpen(true)}>打开 Modal</CfButton>
+      <CfModal
         open={open}
         onOpenChange={setOpen}
         title="确认操作"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>取消</Button>
-            <Button onClick={() => setOpen(false)}>确定</Button>
+            <CfButton variant="ghost" onClick={() => setOpen(false)}>取消</CfButton>
+            <CfButton onClick={() => setOpen(false)}>确定</CfButton>
           </>
         }
       >
         <p>这是一个最简弹窗。</p>
-      </Modal>
+      </CfModal>
     </>
   );
 }`}
@@ -63,15 +63,15 @@ export default function Demo() {
 `size` 控制弹窗最大宽度。`full` 几乎铺满视口（仍保留外边距），适合表单较多的设置面板。
 
 <DemoFrame
-  vueCode={`<Modal v-model:open="open" size="sm">…</Modal>
-<Modal v-model:open="open" size="md">…</Modal>
-<Modal v-model:open="open" size="lg">…</Modal>
-<Modal v-model:open="open" size="xl">…</Modal>
-<Modal v-model:open="open" size="full">…</Modal>`}
-  reactCode={`<Modal open={open} onOpenChange={setOpen} size="sm">…</Modal>
-<Modal open={open} onOpenChange={setOpen} size="md">…</Modal>
+  vueCode={`<CfModal v-model:open="open" size="sm">…</CfModal>
+<CfModal v-model:open="open" size="md">…</CfModal>
+<CfModal v-model:open="open" size="lg">…</CfModal>
+<CfModal v-model:open="open" size="xl">…</CfModal>
+<CfModal v-model:open="open" size="full">…</CfModal>`}
+  reactCode={`<CfModal open={open} onOpenChange={setOpen} size="sm">…</CfModal>
+<CfModal open={open} onOpenChange={setOpen} size="md">…</CfModal>
 …
-<Modal open={open} onOpenChange={setOpen} size="full">…</Modal>`}
+<CfModal open={open} onOpenChange={setOpen} size="full">…</CfModal>`}
 >
   <SizesVue client:only="vue" />
 </DemoFrame>
@@ -81,15 +81,15 @@ export default function Demo() {
 默认任何操作都能关闭：遮罩点击、Esc、右上角 ×。可以通过 `closeOnOverlay` / `closeOnEsc` / `showClose` 单独禁用。
 
 <DemoFrame
-  vueCode={`<Modal v-model:open="a" :close-on-overlay="false">
+  vueCode={`<CfModal v-model:open="a" :close-on-overlay="false">
   点遮罩不会关闭，只能用 Esc 或 footer 按钮。
-</Modal>
+</CfModal>
 
-<Modal v-model:open="b" :show-close="false">
+<CfModal v-model:open="b" :show-close="false">
   没有右上角 ×。
-</Modal>`}
-  reactCode={`<Modal open={a} onOpenChange={setA} closeOnOverlay={false}>…</Modal>
-<Modal open={b} onOpenChange={setB} showClose={false}>…</Modal>`}
+</CfModal>`}
+  reactCode={`<CfModal open={a} onOpenChange={setA} closeOnOverlay={false}>…</CfModal>
+<CfModal open={b} onOpenChange={setB} showClose={false}>…</CfModal>`}
 >
   <BehaviorVue client:only="vue" />
 </DemoFrame>

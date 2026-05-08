@@ -37,9 +37,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       }}
       {...rest}
     >
-      {leading ? <span className="ck-btn__leading">{leading}</span> : null}
-      <span className="ck-btn__label">{children}</span>
-      {trailing ? <span className="ck-btn__trailing">{trailing}</span> : null}
+      {leading ? <span className="cf-btn__leading">{leading}</span> : null}
+      <span className="cf-btn__label">{children}</span>
+      {trailing ? <span className="cf-btn__trailing">{trailing}</span> : null}
     </button>
   );
 });

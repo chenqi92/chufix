@@ -13,18 +13,18 @@ import VariantsVue from '~/components/demos/alert/VariantsVue.vue';
 `closable` 让条目右侧带一个 × 按钮，点击后元素从 DOM 中移除。
 
 <DemoFrame
-  vueCode={`<Alert tone="info" title="一条信息">这是一段补充说明。</Alert>
-<Alert tone="success" title="保存成功">数据已写入后端。</Alert>
-<Alert tone="warning" title="磁盘空间不足">剩余空间小于 10%。</Alert>
-<Alert tone="error" title="无法连接到服务" closable>
+  vueCode={`<CfAlert tone="info" title="一条信息">这是一段补充说明。</CfAlert>
+<CfAlert tone="success" title="保存成功">数据已写入后端。</CfAlert>
+<CfAlert tone="warning" title="磁盘空间不足">剩余空间小于 10%。</CfAlert>
+<CfAlert tone="error" title="无法连接到服务" closable>
   请检查网络后重试。
-</Alert>`}
-  reactCode={`<Alert tone="info" title="一条信息">这是一段补充说明。</Alert>
-<Alert tone="success" title="保存成功">数据已写入后端。</Alert>
-<Alert tone="warning" title="磁盘空间不足">剩余空间小于 10%。</Alert>
-<Alert tone="error" title="无法连接到服务" closable>
+</CfAlert>`}
+  reactCode={`<CfAlert tone="info" title="一条信息">这是一段补充说明。</CfAlert>
+<CfAlert tone="success" title="保存成功">数据已写入后端。</CfAlert>
+<CfAlert tone="warning" title="磁盘空间不足">剩余空间小于 10%。</CfAlert>
+<CfAlert tone="error" title="无法连接到服务" closable>
   请检查网络后重试。
-</Alert>`}
+</CfAlert>`}
 >
   <BasicVue client:load />
 </DemoFrame>
@@ -34,12 +34,12 @@ import VariantsVue from '~/components/demos/alert/VariantsVue.vue';
 3 种 `variant` 改变背景与边框：`soft`（浅色背景，默认）、`outline`（透明背景 + 边框）、`solid`（满色背景）。
 
 <DemoFrame
-  vueCode={`<Alert tone="success" variant="soft">soft —— 浅色背景</Alert>
-<Alert tone="success" variant="outline">outline —— 透明 + 同色边框</Alert>
-<Alert tone="success" variant="solid">solid —— 满色背景</Alert>`}
-  reactCode={`<Alert tone="success" variant="soft">soft —— 浅色背景</Alert>
-<Alert tone="success" variant="outline">outline —— 透明 + 同色边框</Alert>
-<Alert tone="success" variant="solid">solid —— 满色背景</Alert>`}
+  vueCode={`<CfAlert tone="success" variant="soft">soft —— 浅色背景</CfAlert>
+<CfAlert tone="success" variant="outline">outline —— 透明 + 同色边框</CfAlert>
+<CfAlert tone="success" variant="solid">solid —— 满色背景</CfAlert>`}
+  reactCode={`<CfAlert tone="success" variant="soft">soft —— 浅色背景</CfAlert>
+<CfAlert tone="success" variant="outline">outline —— 透明 + 同色边框</CfAlert>
+<CfAlert tone="success" variant="solid">solid —— 满色背景</CfAlert>`}
 >
   <VariantsVue client:load />
 </DemoFrame>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Tag } from '@chufix/vue';
+import { CfTag } from '@chufix/vue';
 
 const tags = ref(['Vue', 'Astro', 'Tailwind', 'TypeScript']);
 
@@ -15,14 +15,14 @@ function reset() {
 <template>
   <div class="demo-stack">
     <div class="demo-row">
-      <Tag v-for="t in tags" :key="t" tone="primary" closable @close="remove(t)">
+      <CfTag v-for="t in tags" :key="t" tone="primary" closable @close="remove(t)">
         {{ t }}
-      </Tag>
-      <button
+      </CfTag>
+      <CfButton
         v-if="!tags.length"
-        class="ck-btn ck-btn--soft ck-btn--sm"
+        class="cf-btn cf-btn--soft cf-btn--sm"
         @click="reset"
-      >全部清空，点这里恢复</button>
+      >全部清空，点这里恢复</CfButton>
     </div>
   </div>
 </template>

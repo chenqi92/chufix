@@ -15,7 +15,7 @@ import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Select, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix/vue';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -27,10 +27,10 @@ const city = ref<string | null>('shanghai');
 </script>
 
 <template>
-  <Select v-model="city" :options="options" placeholder="选一个城市" />
+  <CfSelect v-model="city" :options="options" placeholder="选一个城市" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Select, type SelectOption } from '@chufix/react';
+import { CfSelect, type SelectOption } from '@chufix/react';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -41,7 +41,7 @@ const options: SelectOption[] = [
 export default function Demo() {
   const [city, setCity] = useState<string | null>('shanghai');
   return (
-    <Select
+    <CfSelect
       value={city}
       options={options}
       placeholder="选一个城市"
@@ -58,12 +58,12 @@ export default function Demo() {
 3 种 variant 与 Input 一致：`outline`（默认）/ `filled` / `ghost`。
 
 <DemoFrame
-  vueCode={`<Select v-model="v1" :options="options" variant="outline" />
-<Select v-model="v2" :options="options" variant="filled" />
-<Select v-model="v3" :options="options" variant="ghost" />`}
-  reactCode={`<Select value={v1} options={options} variant="outline" onChange={setV1} />
-<Select value={v2} options={options} variant="filled" onChange={setV2} />
-<Select value={v3} options={options} variant="ghost" onChange={setV3} />`}
+  vueCode={`<CfSelect v-model="v1" :options="options" variant="outline" />
+<CfSelect v-model="v2" :options="options" variant="filled" />
+<CfSelect v-model="v3" :options="options" variant="ghost" />`}
+  reactCode={`<CfSelect value={v1} options={options} variant="outline" onChange={setV1} />
+<CfSelect value={v2} options={options} variant="filled" onChange={setV2} />
+<CfSelect value={v3} options={options} variant="ghost" onChange={setV3} />`}
 >
   <VariantsVue client:load />
 </DemoFrame>
@@ -73,12 +73,12 @@ export default function Demo() {
 `clearable` 在已选中时显示 ×；`disabled` 整体禁用；`error` 切到错误色边框。单个 option 可以加 `disabled: true` 跳过。
 
 <DemoFrame
-  vueCode={`<Select v-model="a" :options="options" placeholder="可清空" clearable />
-<Select v-model="b" :options="options" placeholder="禁用" disabled />
-<Select v-model="b" :options="options" placeholder="错误状态" error />`}
-  reactCode={`<Select value={a} options={options} clearable onChange={setA} />
-<Select value={b} options={options} disabled />
-<Select value={b} options={options} error />`}
+  vueCode={`<CfSelect v-model="a" :options="options" placeholder="可清空" clearable />
+<CfSelect v-model="b" :options="options" placeholder="禁用" disabled />
+<CfSelect v-model="b" :options="options" placeholder="错误状态" error />`}
+  reactCode={`<CfSelect value={a} options={options} clearable onChange={setA} />
+<CfSelect value={b} options={options} disabled />
+<CfSelect value={b} options={options} error />`}
 >
   <AdvancedVue client:load />
 </DemoFrame>

@@ -36,11 +36,11 @@ export function buttonClass(
   },
 ): string {
   return [
-    'ck-btn',
-    `ck-btn--${p.variant}`,
-    `ck-btn--${p.size}`,
-    p.shape !== 'default' && `ck-btn--${p.shape}`,
-    p.block && 'ck-btn--block',
+    'cf-btn',
+    `cf-btn--${p.variant}`,
+    `cf-btn--${p.size}`,
+    p.shape !== 'default' && `cf-btn--${p.shape}`,
+    p.block && 'cf-btn--block',
     p.loading && 'is-loading',
     p.className,
   ]

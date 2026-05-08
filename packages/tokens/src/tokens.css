@@ -320,7 +320,7 @@ pre {
 }
 
 /* skeleton · shared */
-@keyframes ck-skeleton {
+@keyframes cf-skeleton {
   0% {
     background-position: -200% 0;
   }
@@ -328,7 +328,7 @@ pre {
     background-position: 200% 0;
   }
 }
-.ck-skeleton {
+.cf-skeleton {
   background: linear-gradient(
     90deg,
     var(--skeleton-bg) 0%,
@@ -336,7 +336,7 @@ pre {
     var(--skeleton-bg) 100%
   );
   background-size: 200% 100%;
-  animation: ck-skeleton 1.6s linear infinite;
+  animation: cf-skeleton 1.6s linear infinite;
   border-radius: var(--r-4);
 }
 

@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
-  Avatar,
-  Badge,
-  Button,
-  Card,
-  Checkbox,
-  Input,
-  Modal,
-  Radio,
-  RadioGroup,
-  Select,
-  Switch,
-  Tag,
-  Textarea,
-  Toaster,
-  Tooltip,
+  CfAvatar,
+  CfBadge,
+  CfButton,
+  CfCard,
+  CfCheckbox,
+  CfInput,
+  CfModal,
+  CfRadio,
+  CfRadioGroup,
+  CfSelect,
+  CfSwitch,
+  CfTag,
+  CfTextarea,
+  CfToaster,
+  CfTooltip,
   toast,
 } from '@chufix/vue';
 
@@ -49,80 +49,80 @@ const opts = [
     <section>
       <h2>Button · 5 variants × 3 sizes</h2>
       <div class="row">
-        <Button variant="primary">Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="tertiary">Tertiary</Button>
-        <Button variant="ghost">Ghost</Button>
-        <Button variant="danger">Danger</Button>
+        <CfButton variant="primary">Primary</CfButton>
+        <CfButton variant="secondary">Secondary</CfButton>
+        <CfButton variant="tertiary">Tertiary</CfButton>
+        <CfButton variant="ghost">Ghost</CfButton>
+        <CfButton variant="danger">Danger</CfButton>
       </div>
       <div class="row">
-        <Button size="sm">sm</Button>
-        <Button size="md">md</Button>
-        <Button size="lg">lg</Button>
-        <Button shape="pill">pill</Button>
-        <Button shape="square" aria-label="x">×</Button>
-        <Button loading>loading</Button>
-        <Button disabled>disabled</Button>
+        <CfButton size="sm">sm</CfButton>
+        <CfButton size="md">md</CfButton>
+        <CfButton size="lg">lg</CfButton>
+        <CfButton shape="pill">pill</CfButton>
+        <CfButton shape="square" aria-label="x">×</CfButton>
+        <CfButton loading>loading</CfButton>
+        <CfButton disabled>disabled</CfButton>
       </div>
     </section>
 
     <section>
       <h2>Form controls</h2>
       <div class="row">
-        <Input v-model="text" placeholder="Input" />
-        <Textarea v-model="text" placeholder="Textarea" rows="2" />
-        <Select v-model="sel" :options="opts" />
+        <CfInput v-model="text" placeholder="Input" />
+        <CfTextarea v-model="text" placeholder="Textarea" rows="2" />
+        <CfSelect v-model="sel" :options="opts" />
       </div>
       <div class="row">
-        <Checkbox v-model="checked" label="Checkbox" />
-        <Switch v-model="checked" />
-        <RadioGroup v-model="radio">
-          <Radio value="a">A</Radio>
-          <Radio value="b">B</Radio>
-          <Radio value="c">C</Radio>
-        </RadioGroup>
+        <CfCheckbox v-model="checked" label="Checkbox" />
+        <CfSwitch v-model="checked" />
+        <CfRadioGroup v-model="radio">
+          <CfRadio value="a">A</CfRadio>
+          <CfRadio value="b">B</CfRadio>
+          <CfRadio value="c">C</CfRadio>
+        </CfRadioGroup>
       </div>
     </section>
 
     <section>
       <h2>Display</h2>
       <div class="row">
-        <Tag tone="primary">Primary</Tag>
-        <Tag tone="success">Success</Tag>
-        <Tag tone="danger" closable>Danger</Tag>
-        <Badge :content="3"><Button variant="tertiary">收件箱</Button></Badge>
-        <Avatar name="Chen Qi" />
-        <Avatar name="A" />
+        <CfTag tone="primary">Primary</CfTag>
+        <CfTag tone="success">Success</CfTag>
+        <CfTag tone="danger" closable>Danger</CfTag>
+        <CfBadge :content="3"><CfButton variant="tertiary">收件箱</CfButton></CfBadge>
+        <CfAvatar name="Chen Qi" />
+        <CfAvatar name="A" />
       </div>
     </section>
 
     <section>
       <h2>Card</h2>
-      <Card variant="elevated" style="max-width: 22rem;">
+      <CfCard variant="elevated" style="max-width: 22rem;">
         <template #header>项目设置</template>
         <p>这里是卡片正文，验证 bg-3 / line-1 / shadow-2 是否生效。</p>
         <template #footer>
-          <Button size="sm" variant="tertiary">取消</Button>
-          <Button size="sm">保存</Button>
+          <CfButton size="sm" variant="tertiary">取消</CfButton>
+          <CfButton size="sm">保存</CfButton>
         </template>
-      </Card>
+      </CfCard>
     </section>
 
     <section>
       <h2>Overlays</h2>
       <div class="row">
-        <Tooltip content="提示文字">
-          <Button variant="tertiary">Hover 我</Button>
-        </Tooltip>
-        <Button @click="open = true">打开 Modal</Button>
-        <Button variant="secondary" @click="toast.success('保存成功')">触发 Toast</Button>
+        <CfTooltip content="提示文字">
+          <CfButton variant="tertiary">Hover 我</CfButton>
+        </CfTooltip>
+        <CfButton @click="open = true">打开 Modal</CfButton>
+        <CfButton variant="secondary" @click="toast.success('保存成功')">触发 Toast</CfButton>
       </div>
-      <Modal v-model:open="open" title="烟囱测试 Modal">
+      <CfModal v-model:open="open" title="烟囱测试 Modal">
         <p>验证 z-modal 层级、shadow-4 阴影、backdrop 半透明。</p>
-      </Modal>
+      </CfModal>
     </section>
 
-    <Toaster />
+    <CfToaster />
   </main>
 </template>
 

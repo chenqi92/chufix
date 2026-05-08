@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Select, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix/vue';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -16,8 +16,8 @@ const b = ref<string | null>(null);
 
 <template>
   <div class="demo-stack">
-    <Select v-model="a" :options="options" placeholder="可清空（输入后出现 ×）" clearable />
-    <Select v-model="b" :options="options" placeholder="禁用" disabled />
-    <Select v-model="b" :options="options" placeholder="错误状态" error />
+    <CfSelect v-model="a" :options="options" placeholder="可清空（输入后出现 ×）" clearable />
+    <CfSelect v-model="b" :options="options" placeholder="禁用" disabled />
+    <CfSelect v-model="b" :options="options" placeholder="错误状态" error />
   </div>
 </template>

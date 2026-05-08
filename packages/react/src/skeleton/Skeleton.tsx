@@ -17,7 +17,7 @@ export function Skeleton(props: SkeletonProps) {
 
   if (shape === 'text' && lines > 1) {
     return (
-      <span className="ck-skeleton-stack">
+      <span className="cf-skeleton-stack">
         {Array.from({ length: lines }).map((_, i) => (
           <span
             key={i}

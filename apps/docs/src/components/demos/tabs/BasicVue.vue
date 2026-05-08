@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Tabs } from '@chufix/vue';
+import { CfTabs } from '@chufix/vue';
 
 const tab = ref('account');
 const items = [
@@ -12,11 +12,11 @@ const items = [
 </script>
 
 <template>
-  <Tabs v-model="tab" :items="items">
+  <CfTabs v-model="tab" :items="items">
     <template #default="{ active }">
       <div v-if="active === 'account'">在「账户」页面，可以修改昵称、头像、邮箱。</div>
       <div v-if="active === 'security'">在「安全」页面，可以重置密码、启用两步验证。</div>
       <div v-if="active === 'notifications'">在「通知」页面，可以选择哪些事件推送邮件。</div>
     </template>
-  </Tabs>
+  </CfTabs>
 </template>

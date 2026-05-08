@@ -47,7 +47,7 @@ export function Select(props: SelectProps) {
   const focusActive = useCallback((idx: number) => {
     requestAnimationFrame(() => {
       const el = listRef.current?.querySelectorAll<HTMLElement>(
-        '.ck-select__option',
+        '.cf-select__option',
       )[idx];
       el?.scrollIntoView({ block: 'nearest' });
     });
@@ -135,23 +135,23 @@ export function Select(props: SelectProps) {
     >
       <button
         type="button"
-        className="ck-select__trigger"
+        className="cf-select__trigger"
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => (open ? closeMenu() : openMenu())}
         onKeyDown={onKeydown}
       >
-        <span className="ck-select__value">
+        <span className="cf-select__value">
           {selected ? (
             selected.label
           ) : (
-            <span className="ck-select__placeholder">{placeholder}</span>
+            <span className="cf-select__placeholder">{placeholder}</span>
           )}
         </span>
         {clearable && selected && !disabled ? (
           <span
-            className="ck-select__clear"
+            className="cf-select__clear"
             role="button"
             tabIndex={-1}
             aria-label="清除"
@@ -160,7 +160,7 @@ export function Select(props: SelectProps) {
             ×
           </span>
         ) : null}
-        <svg className="ck-select__caret" viewBox="0 0 16 16" aria-hidden="true">
+        <svg className="cf-select__caret" viewBox="0 0 16 16" aria-hidden="true">
           <path
             d="M4 6l4 4 4-4"
             stroke="currentColor"
@@ -172,10 +172,10 @@ export function Select(props: SelectProps) {
         </svg>
       </button>
       {open ? (
-        <ul ref={listRef} className="ck-select__menu" role="listbox">
+        <ul ref={listRef} className="cf-select__menu" role="listbox">
           {options.map((opt, i) => {
             const cls = [
-              'ck-select__option',
+              'cf-select__option',
               i === activeIndex && 'is-active',
               opt.value === current && 'is-selected',
               opt.disabled && 'is-disabled',
@@ -197,7 +197,7 @@ export function Select(props: SelectProps) {
                 {opt.label}
                 {opt.value === current ? (
                   <svg
-                    className="ck-select__check"
+                    className="cf-select__check"
                     viewBox="0 0 16 16"
                     fill="none"
                     aria-hidden="true"
@@ -215,7 +215,7 @@ export function Select(props: SelectProps) {
             );
           })}
           {!options.length ? (
-            <li className="ck-select__empty">无选项</li>
+            <li className="cf-select__empty">无选项</li>
           ) : null}
         </ul>
       ) : null}

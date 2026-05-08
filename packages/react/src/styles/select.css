@@ -1,6 +1,6 @@
 /* ChuKit Select — trigger + absolute-positioned listbox menu. */
 
-.ck-select {
+.cf-select {
   position: relative;
   display: inline-block;
   width: 100%;
@@ -9,11 +9,11 @@
   font-size: var(--t-13);
 }
 
-.ck-select--sm { font-size: var(--t-12); }
-.ck-select--md { font-size: var(--t-13); }
-.ck-select--lg { font-size: var(--t-14); }
+.cf-select--sm { font-size: var(--t-12); }
+.cf-select--md { font-size: var(--t-13); }
+.cf-select--lg { font-size: var(--t-14); }
 
-.ck-select__trigger {
+.cf-select__trigger {
   display: inline-flex;
   align-items: center;
   width: 100%;
@@ -30,50 +30,50 @@
     box-shadow var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out);
 }
-.ck-select--sm .ck-select__trigger { height: var(--control-h-sm); padding: 0 8px; }
-.ck-select--lg .ck-select__trigger { height: var(--control-h-lg); padding: 0 14px; }
+.cf-select--sm .cf-select__trigger { height: var(--control-h-sm); padding: 0 8px; }
+.cf-select--lg .cf-select__trigger { height: var(--control-h-lg); padding: 0 14px; }
 
-.ck-select__trigger:hover:not(:disabled) { border-color: var(--fg-3); }
-.ck-select__trigger:focus-visible,
-.ck-select.is-open .ck-select__trigger {
+.cf-select__trigger:hover:not(:disabled) { border-color: var(--fg-3); }
+.cf-select__trigger:focus-visible,
+.cf-select.is-open .cf-select__trigger {
   outline: none;
   border-color: var(--accent-1);
   box-shadow: var(--focus-ring);
 }
-.ck-select__trigger:disabled {
+.cf-select__trigger:disabled {
   cursor: not-allowed;
   background: var(--bg-2);
   opacity: var(--disabled-opacity);
 }
 
-.ck-select.is-error .ck-select__trigger { border-color: var(--status-error); }
-.ck-select.is-error.is-open .ck-select__trigger {
+.cf-select.is-error .cf-select__trigger { border-color: var(--status-error); }
+.cf-select.is-error.is-open .cf-select__trigger {
   box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
 }
 
-.ck-select--filled .ck-select__trigger {
+.cf-select--filled .cf-select__trigger {
   background: var(--bg-2);
   border-color: transparent;
 }
-.ck-select--filled.is-open .ck-select__trigger {
+.cf-select--filled.is-open .cf-select__trigger {
   background: var(--bg-inset);
   border-color: var(--accent-1);
 }
-.ck-select--ghost .ck-select__trigger {
+.cf-select--ghost .cf-select__trigger {
   background: transparent;
   border-color: transparent;
 }
 
-.ck-select__value {
+.cf-select__value {
   flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.ck-select__placeholder { color: var(--fg-3); }
+.cf-select__placeholder { color: var(--fg-3); }
 
-.ck-select__caret {
+.cf-select__caret {
   width: 1em;
   height: 1em;
   margin-left: 6px;
@@ -81,9 +81,9 @@
   transition: transform var(--dur-fast) var(--ease-out);
   flex: none;
 }
-.ck-select.is-open .ck-select__caret { transform: rotate(180deg); }
+.cf-select.is-open .cf-select__caret { transform: rotate(180deg); }
 
-.ck-select__clear {
+.cf-select__clear {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -98,9 +98,9 @@
   cursor: pointer;
   flex: none;
 }
-.ck-select__clear:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-select__clear:hover { background: var(--bg-3); color: var(--fg-1); }
 
-.ck-select__menu {
+.cf-select__menu {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -117,7 +117,7 @@
   box-shadow: var(--shadow-3);
 }
 
-.ck-select__option {
+.cf-select__option {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -127,15 +127,15 @@
   cursor: pointer;
   color: var(--fg-1);
 }
-.ck-select__option.is-active:not(.is-disabled) { background: var(--bg-2); }
-.ck-select__option.is-selected {
+.cf-select__option.is-active:not(.is-disabled) { background: var(--bg-2); }
+.cf-select__option.is-selected {
   color: var(--accent-1);
   font-weight: var(--w-medium);
 }
-.ck-select__option.is-disabled { color: var(--fg-3); cursor: not-allowed; }
-.ck-select__check { width: 1em; height: 1em; flex: none; }
+.cf-select__option.is-disabled { color: var(--fg-3); cursor: not-allowed; }
+.cf-select__check { width: 1em; height: 1em; flex: none; }
 
-.ck-select__empty {
+.cf-select__empty {
   padding: 8px 10px;
   color: var(--fg-3);
   font-size: var(--t-12);

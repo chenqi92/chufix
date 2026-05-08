@@ -76,28 +76,28 @@ export function Toaster(props: ToasterProps) {
   if (typeof document === 'undefined') return null;
 
   return createPortal(
-    <div className={`ck-toaster ck-toaster--${position}`} role="region" aria-label="通知">
-      <div className="ck-toaster__list">
+    <div className={`cf-toaster cf-toaster--${position}`} role="region" aria-label="通知">
+      <div className="cf-toaster__list">
         {items.map((item) => (
           <div
             key={item.id}
-            className={`ck-toast ck-toast--${item.type}`}
+            className={`cf-toast cf-toast--${item.type}`}
             role="status"
             data-state="open"
           >
-            <span className="ck-toast__icon" aria-hidden="true">
+            <span className="cf-toast__icon" aria-hidden="true">
               <ToastIcon type={item.type} />
             </span>
-            <div className="ck-toast__body">
-              {item.title ? <div className="ck-toast__title">{item.title}</div> : null}
+            <div className="cf-toast__body">
+              {item.title ? <div className="cf-toast__title">{item.title}</div> : null}
               {item.description ? (
-                <div className="ck-toast__desc">{item.description}</div>
+                <div className="cf-toast__desc">{item.description}</div>
               ) : null}
             </div>
             {item.dismissible ? (
               <button
                 type="button"
-                className="ck-toast__close"
+                className="cf-toast__close"
                 aria-label="关闭"
                 onClick={() => toastStore.dismiss(item.id)}
               >

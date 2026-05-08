@@ -15,21 +15,21 @@ import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Textarea } from '@chufix/vue';
+import { CfTextarea } from '@chufix/vue';
 
 const note = ref('');
 </script>
 
 <template>
-  <Textarea v-model="note" placeholder="说点什么…" :rows="3" />
+  <CfTextarea v-model="note" placeholder="说点什么…" :rows="3" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Textarea } from '@chufix/react';
+import { CfTextarea } from '@chufix/react';
 
 export default function Demo() {
   const [note, setNote] = useState('');
   return (
-    <Textarea
+    <CfTextarea
       value={note}
       onChange={(e) => setNote(e.target.value)}
       placeholder="说点什么…"
@@ -46,14 +46,14 @@ export default function Demo() {
 `maxlength` 设上限（原生限制），`show-count` 在右下角显示当前字符数。超过上限会变红（虽然 maxlength 会先拦截）。
 
 <DemoFrame
-  vueCode={`<Textarea
+  vueCode={`<CfTextarea
   v-model="bio"
   placeholder="个人简介（最多 50 字）"
   :rows="3"
   :maxlength="50"
   show-count
 />`}
-  reactCode={`<Textarea
+  reactCode={`<CfTextarea
   value={bio}
   onChange={(e) => setBio(e.target.value)}
   placeholder="个人简介（最多 50 字）"
@@ -70,13 +70,13 @@ export default function Demo() {
 `auto-resize` 让框跟随内容增长，自动隐藏 resize 把手。适合不确定行数的场景（如评论、备注）。
 
 <DemoFrame
-  vueCode={`<Textarea
+  vueCode={`<CfTextarea
   v-model="draft"
   variant="filled"
   auto-resize
   placeholder="自动撑高的多行输入"
 />`}
-  reactCode={`<Textarea
+  reactCode={`<CfTextarea
   value={draft}
   onChange={(e) => setDraft(e.target.value)}
   variant="filled"

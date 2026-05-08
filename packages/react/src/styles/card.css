@@ -1,6 +1,6 @@
 /* ChuKit Card — wrapper + 3 sub-slots. */
 
-.ck-card {
+.cf-card {
   display: flex;
   flex-direction: column;
   background: var(--bg-1);
@@ -14,46 +14,46 @@
     background-color var(--dur-fast) var(--ease-out);
 }
 
-.ck-card--outlined {
+.cf-card--outlined {
   /* default */
 }
-.ck-card--elevated {
+.cf-card--elevated {
   border-color: transparent;
   box-shadow: var(--shadow-2);
 }
-.ck-card--filled {
+.cf-card--filled {
   background: var(--bg-2);
   border-color: transparent;
 }
 
-.ck-card--interactive {
+.cf-card--interactive {
   cursor: pointer;
 }
-.ck-card--interactive:hover {
+.cf-card--interactive:hover {
   border-color: var(--line-2);
   background: var(--bg-2);
 }
-.ck-card--interactive.ck-card--elevated:hover {
+.cf-card--interactive.cf-card--elevated:hover {
   box-shadow: var(--shadow-3);
 }
-.ck-card--interactive:focus-visible {
+.cf-card--interactive:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
-.ck-card__header {
+.cf-card__header {
   padding: 12px 14px;
   font-weight: var(--w-semibold);
   font-size: var(--t-14);
   border-bottom: 1px solid var(--line-1);
 }
-.ck-card__body {
+.cf-card__body {
   padding: 14px;
   font-size: var(--t-13);
   line-height: 1.6;
   flex: 1;
 }
-.ck-card__footer {
+.cf-card__footer {
   padding: 10px 14px;
   display: flex;
   justify-content: flex-end;
@@ -63,8 +63,8 @@
 }
 
 /* link card variant — used in MDX feature grids */
-.ck-card--link {
+.cf-card--link {
   text-decoration: none;
   color: inherit;
 }
-.ck-card--link:hover { text-decoration: none; }
+.cf-card--link:hover { text-decoration: none; }

@@ -10,28 +10,28 @@ import StatesVue from '~/components/demos/switch/StatesVue.vue';
 
 ## 基础用法
 
-底层是 `<input type="checkbox" role="switch">`，键盘 / 表单 / 屏幕阅读器全部直接可用。
+底层是 `<CfInput type="checkbox" role="switch">`，键盘 / 表单 / 屏幕阅读器全部直接可用。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Switch } from '@chufix/vue';
+import { CfSwitch } from '@chufix/vue';
 
 const wifi = ref(true);
 </script>
 
 <template>
-  <Switch v-model="wifi">Wi-Fi {{ wifi ? '已开启' : '已关闭' }}</Switch>
+  <CfSwitch v-model="wifi">Wi-Fi {{ wifi ? '已开启' : '已关闭' }}</CfSwitch>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Switch } from '@chufix/react';
+import { CfSwitch } from '@chufix/react';
 
 export default function Demo() {
   const [wifi, setWifi] = useState(true);
   return (
-    <Switch checked={wifi} onChange={(e) => setWifi(e.target.checked)}>
+    <CfSwitch checked={wifi} onChange={(e) => setWifi(e.target.checked)}>
       Wi-Fi {wifi ? '已开启' : '已关闭'}
-    </Switch>
+    </CfSwitch>
   );
 }`}
 >
@@ -41,12 +41,12 @@ export default function Demo() {
 ## 尺寸
 
 <DemoFrame
-  vueCode={`<Switch size="sm">Small</Switch>
-<Switch size="md">Medium</Switch>
-<Switch size="lg">Large</Switch>`}
-  reactCode={`<Switch size="sm">Small</Switch>
-<Switch size="md">Medium</Switch>
-<Switch size="lg">Large</Switch>`}
+  vueCode={`<CfSwitch size="sm">Small</CfSwitch>
+<CfSwitch size="md">Medium</CfSwitch>
+<CfSwitch size="lg">Large</CfSwitch>`}
+  reactCode={`<CfSwitch size="sm">Small</CfSwitch>
+<CfSwitch size="md">Medium</CfSwitch>
+<CfSwitch size="lg">Large</CfSwitch>`}
 >
   <SizesVue client:load />
 </DemoFrame>
@@ -58,7 +58,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Switch } from '@chufix/vue';
+import { CfSwitch } from '@chufix/vue';
 
 const sync = ref(false);
 const loading = ref(false);
@@ -72,13 +72,13 @@ async function toggle(v: boolean) {
 </script>
 
 <template>
-  <Switch :model-value="sync" :loading="loading" @change="toggle">
+  <CfSwitch :model-value="sync" :loading="loading" @change="toggle">
     自动同步（点击触发 1s 异步）
-  </Switch>
-  <Switch :model-value="true" disabled>禁用 · 已开</Switch>
+  </CfSwitch>
+  <CfSwitch :model-value="true" disabled>禁用 · 已开</CfSwitch>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Switch } from '@chufix/react';
+import { CfSwitch } from '@chufix/react';
 
 export default function Demo() {
   const [sync, setSync] = useState(false);
@@ -93,10 +93,10 @@ export default function Demo() {
 
   return (
     <>
-      <Switch checked={sync} loading={loading} onChange={toggle}>
+      <CfSwitch checked={sync} loading={loading} onChange={toggle}>
         自动同步（点击触发 1s 异步）
-      </Switch>
-      <Switch checked disabled>禁用 · 已开</Switch>
+      </CfSwitch>
+      <CfSwitch checked disabled>禁用 · 已开</CfSwitch>
     </>
   );
 }`}

@@ -14,28 +14,28 @@ import ClosableVue from '~/components/demos/tag/ClosableVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Tag } from '@chufix/vue';
+import { CfTag } from '@chufix/vue';
 </script>
 
 <template>
-  <Tag>Default</Tag>
-  <Tag tone="primary">Primary</Tag>
-  <Tag tone="success">Success</Tag>
-  <Tag tone="warning">Warning</Tag>
-  <Tag tone="danger">Danger</Tag>
-  <Tag tone="info">Info</Tag>
+  <CfTag>Default</CfTag>
+  <CfTag tone="primary">Primary</CfTag>
+  <CfTag tone="success">Success</CfTag>
+  <CfTag tone="warning">Warning</CfTag>
+  <CfTag tone="danger">Danger</CfTag>
+  <CfTag tone="info">Info</CfTag>
 </template>`}
-  reactCode={`import { Tag } from '@chufix/react';
+  reactCode={`import { CfTag } from '@chufix/react';
 
 export default function Demo() {
   return (
     <>
-      <Tag>Default</Tag>
-      <Tag tone="primary">Primary</Tag>
-      <Tag tone="success">Success</Tag>
-      <Tag tone="warning">Warning</Tag>
-      <Tag tone="danger">Danger</Tag>
-      <Tag tone="info">Info</Tag>
+      <CfTag>Default</CfTag>
+      <CfTag tone="primary">Primary</CfTag>
+      <CfTag tone="success">Success</CfTag>
+      <CfTag tone="warning">Warning</CfTag>
+      <CfTag tone="danger">Danger</CfTag>
+      <CfTag tone="info">Info</CfTag>
     </>
   );
 }`}
@@ -48,22 +48,22 @@ export default function Demo() {
 `variant` 与 `tone` 正交：solid / soft（默认）/ outline。`rounded` 切换到 pill 圆角。
 
 <DemoFrame
-  vueCode={`<Tag variant="solid" tone="primary">solid</Tag>
-<Tag variant="soft" tone="primary">soft</Tag>
-<Tag variant="outline" tone="primary">outline</Tag>
+  vueCode={`<CfTag variant="solid" tone="primary">solid</CfTag>
+<CfTag variant="soft" tone="primary">soft</CfTag>
+<CfTag variant="outline" tone="primary">outline</CfTag>
 
-<Tag size="sm" tone="success">sm</Tag>
-<Tag size="md" tone="success">md</Tag>
-<Tag size="lg" tone="success">lg</Tag>
-<Tag tone="success" rounded>rounded</Tag>`}
-  reactCode={`<Tag variant="solid" tone="primary">solid</Tag>
-<Tag variant="soft" tone="primary">soft</Tag>
-<Tag variant="outline" tone="primary">outline</Tag>
+<CfTag size="sm" tone="success">sm</CfTag>
+<CfTag size="md" tone="success">md</CfTag>
+<CfTag size="lg" tone="success">lg</CfTag>
+<CfTag tone="success" rounded>rounded</CfTag>`}
+  reactCode={`<CfTag variant="solid" tone="primary">solid</CfTag>
+<CfTag variant="soft" tone="primary">soft</CfTag>
+<CfTag variant="outline" tone="primary">outline</CfTag>
 
-<Tag size="sm" tone="success">sm</Tag>
-<Tag size="md" tone="success">md</Tag>
-<Tag size="lg" tone="success">lg</Tag>
-<Tag tone="success" rounded>rounded</Tag>`}
+<CfTag size="sm" tone="success">sm</CfTag>
+<CfTag size="md" tone="success">md</CfTag>
+<CfTag size="lg" tone="success">lg</CfTag>
+<CfTag tone="success" rounded>rounded</CfTag>`}
 >
   <VariantsVue client:load />
 </DemoFrame>
@@ -73,20 +73,20 @@ export default function Demo() {
 打开 `closable` 显示 × 按钮，点击触发 `close` / `onClose`。
 
 <DemoFrame
-  vueCode={`<Tag
+  vueCode={`<CfTag
   v-for="t in tags"
   :key="t"
   tone="primary"
   closable
   @close="tags = tags.filter(x => x !== t)"
->{{ t }}</Tag>`}
+>{{ t }}</CfTag>`}
   reactCode={`{tags.map((t) => (
-  <Tag
+  <CfTag
     key={t}
     tone="primary"
     closable
     onClose={() => setTags((xs) => xs.filter((x) => x !== t))}
-  >{t}</Tag>
+  >{t}</CfTag>
 ))}`}
 >
   <ClosableVue client:load />

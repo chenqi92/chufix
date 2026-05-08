@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Avatar } from '@chufix/vue';
+import { CfAvatar } from '@chufix/vue';
 </script>
 
 <template>
   <div class="demo-row">
-    <Avatar src="https://i.pravatar.cc/80?img=12" alt="头像" />
-    <Avatar name="Chen Qi" />
-    <Avatar name="Anna Lee" />
-    <Avatar fallback="?" />
+    <CfAvatar src="https://i.pravatar.cc/80?img=12" alt="头像" />
+    <CfAvatar name="Chen Qi" />
+    <CfAvatar name="Anna Lee" />
+    <CfAvatar fallback="?" />
   </div>
 </template>

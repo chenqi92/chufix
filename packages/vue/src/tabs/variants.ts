@@ -22,9 +22,9 @@ export function tabsClass(p: {
   align: TabsAlign;
 }): string {
   return [
-    'ck-tabs',
-    `ck-tabs--${p.variant}`,
-    `ck-tabs--${p.size}`,
-    `ck-tabs--align-${p.align}`,
+    'cf-tabs',
+    `cf-tabs--${p.variant}`,
+    `cf-tabs--${p.size}`,
+    `cf-tabs--align-${p.align}`,
   ].join(' ');
 }

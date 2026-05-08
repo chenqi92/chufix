@@ -15,7 +15,7 @@ import SizesVue from '~/components/demos/tabs/SizesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Tabs } from '@chufix/vue';
+import { CfTabs } from '@chufix/vue';
 
 const tab = ref('account');
 const items = [
@@ -27,16 +27,16 @@ const items = [
 </script>
 
 <template>
-  <Tabs v-model="tab" :items="items">
+  <CfTabs v-model="tab" :items="items">
     <template #default="{ active }">
       <div v-if="active === 'account'">在「账户」页面…</div>
       <div v-if="active === 'security'">在「安全」页面…</div>
       <div v-if="active === 'notifications'">在「通知」页面…</div>
     </template>
-  </Tabs>
+  </CfTabs>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Tabs, TabPanel } from '@chufix/react';
+import { CfTabs, CfTabPanel } from '@chufix/react';
 
 const items = [
   { value: 'account', label: '账户' },
@@ -48,15 +48,15 @@ const items = [
 export default function Demo() {
   const [tab, setTab] = useState('account');
   return (
-    <Tabs value={tab} onChange={setTab} items={items}>
+    <CfTabs value={tab} onChange={setTab} items={items}>
       {({ active }) => (
         <>
-          <TabPanel value="account" active={active}>在「账户」页面…</TabPanel>
-          <TabPanel value="security" active={active}>在「安全」页面…</TabPanel>
-          <TabPanel value="notifications" active={active}>在「通知」页面…</TabPanel>
+          <CfTabPanel value="account" active={active}>在「账户」页面…</CfTabPanel>
+          <CfTabPanel value="security" active={active}>在「安全」页面…</CfTabPanel>
+          <CfTabPanel value="notifications" active={active}>在「通知」页面…</CfTabPanel>
         </>
       )}
-    </Tabs>
+    </CfTabs>
   );
 }`}
 >
@@ -68,12 +68,12 @@ export default function Demo() {
 `line` 是默认下划线样式；`segmented` 是按钮组式分段控件；`pill` 是胶囊形单选式。
 
 <DemoFrame
-  vueCode={`<Tabs v-model="a" :items="items" variant="line" />
-<Tabs v-model="b" :items="items" variant="segmented" />
-<Tabs v-model="c" :items="items" variant="pill" />`}
-  reactCode={`<Tabs value={a} onChange={setA} items={items} variant="line" />
-<Tabs value={b} onChange={setB} items={items} variant="segmented" />
-<Tabs value={c} onChange={setC} items={items} variant="pill" />`}
+  vueCode={`<CfTabs v-model="a" :items="items" variant="line" />
+<CfTabs v-model="b" :items="items" variant="segmented" />
+<CfTabs v-model="c" :items="items" variant="pill" />`}
+  reactCode={`<CfTabs value={a} onChange={setA} items={items} variant="line" />
+<CfTabs value={b} onChange={setB} items={items} variant="segmented" />
+<CfTabs value={c} onChange={setC} items={items} variant="pill" />`}
 >
   <VariantsVue client:load />
 </DemoFrame>
@@ -83,12 +83,12 @@ export default function Demo() {
 3 档尺寸跟随密度系统 `--control-h-sm/md/lg`。
 
 <DemoFrame
-  vueCode={`<Tabs v-model="sm" :items="items" size="sm" />
-<Tabs v-model="md" :items="items" size="md" />
-<Tabs v-model="lg" :items="items" size="lg" />`}
-  reactCode={`<Tabs items={items} size="sm" defaultValue="one" />
-<Tabs items={items} size="md" defaultValue="one" />
-<Tabs items={items} size="lg" defaultValue="one" />`}
+  vueCode={`<CfTabs v-model="sm" :items="items" size="sm" />
+<CfTabs v-model="md" :items="items" size="md" />
+<CfTabs v-model="lg" :items="items" size="lg" />`}
+  reactCode={`<CfTabs items={items} size="sm" defaultValue="one" />
+<CfTabs items={items} size="md" defaultValue="one" />
+<CfTabs items={items} size="lg" defaultValue="one" />`}
 >
   <SizesVue client:load />
 </DemoFrame>
@@ -107,4 +107,4 @@ export default function Demo() {
 ### 默认插槽
 
 Vue 默认插槽接收作用域参数 `{ active }`，根据 active 渲染对应内容。
-React 通过 `children` 接受函数 `({ active }) => ReactNode` 并配合 `<TabPanel>` 守卫。
+React 通过 `children` 接受函数 `({ active }) => ReactNode` 并配合 `<CfTabPanel>` 守卫。

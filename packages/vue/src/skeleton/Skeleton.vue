@@ -28,7 +28,7 @@ const style = computed(() => {
 </script>
 
 <template>
-  <span v-if="shape === 'text' && lines > 1" class="ck-skeleton-stack">
+  <span v-if="shape === 'text' && lines > 1" class="cf-skeleton-stack">
     <span
       v-for="i in lines"
       :key="i"

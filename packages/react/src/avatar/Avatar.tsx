@@ -36,15 +36,15 @@ export function Avatar(props: AvatarProps) {
     >
       {showImage ? (
         <img
-          className="ck-avatar__img"
+          className="cf-avatar__img"
           src={src}
           alt={alt || name || ''}
           onError={() => setFailed(true)}
         />
       ) : children ? (
-        <span className="ck-avatar__icon">{children}</span>
+        <span className="cf-avatar__icon">{children}</span>
       ) : (
-        <span className="ck-avatar__initials">{initials}</span>
+        <span className="cf-avatar__initials">{initials}</span>
       )}
     </span>
   );

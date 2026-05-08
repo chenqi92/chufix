@@ -88,7 +88,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       >
         <textarea
           ref={taRef}
-          className="ck-textarea__el"
+          className="cf-textarea__el"
           rows={rows}
           disabled={disabled}
           maxLength={maxLength}
@@ -102,7 +102,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {showCount ? (
           <div
             className={
-              'ck-textarea__count' + (overLimit ? ' is-over' : '')
+              'cf-textarea__count' + (overLimit ? ' is-over' : '')
             }
           >
             {current.length}

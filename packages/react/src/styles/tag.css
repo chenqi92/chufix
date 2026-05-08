@@ -1,6 +1,6 @@
 /* ChuKit Tag — chip with variant × tone matrix. */
 
-.ck-tag {
+.cf-tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -19,20 +19,20 @@
 }
 
 /* sizes */
-.ck-tag--sm { height: 18px; padding: 0 6px; font-size: var(--t-11); }
-.ck-tag--md { height: 22px; padding: 0 8px; font-size: var(--t-12); }
-.ck-tag--lg { height: 26px; padding: 0 10px; font-size: var(--t-13); }
+.cf-tag--sm { height: 18px; padding: 0 6px; font-size: var(--t-11); }
+.cf-tag--md { height: 22px; padding: 0 8px; font-size: var(--t-12); }
+.cf-tag--lg { height: 26px; padding: 0 10px; font-size: var(--t-13); }
 
-.ck-tag--rounded { border-radius: var(--r-pill); }
+.cf-tag--rounded { border-radius: var(--r-pill); }
 
-.ck-tag__leading {
+.cf-tag__leading {
   display: inline-flex;
   align-items: center;
   width: 1em;
   height: 1em;
 }
 
-.ck-tag__close {
+.cf-tag__close {
   appearance: none;
   border: 0;
   background: transparent;
@@ -50,29 +50,29 @@
   height: 14px;
   border-radius: 50%;
 }
-.ck-tag__close:hover { opacity: 1; background: oklch(0% 0 0 / 0.12); }
+.cf-tag__close:hover { opacity: 1; background: oklch(0% 0 0 / 0.12); }
 
 /* tone × variant matrix */
-.ck-tag--neutral { background: var(--bg-2); color: var(--fg-1); border-color: transparent; }
-.ck-tag--primary { background: var(--accent-soft); color: var(--accent-1); border-color: transparent; }
-.ck-tag--success { background: var(--status-success-soft); color: var(--status-success); border-color: transparent; }
-.ck-tag--warning { background: var(--status-warning-soft); color: var(--status-warning); border-color: transparent; }
-.ck-tag--danger  { background: var(--status-error-soft);   color: var(--status-error);   border-color: transparent; }
-.ck-tag--info    { background: var(--status-info-soft);    color: var(--status-info);    border-color: transparent; }
+.cf-tag--neutral { background: var(--bg-2); color: var(--fg-1); border-color: transparent; }
+.cf-tag--primary { background: var(--accent-soft); color: var(--accent-1); border-color: transparent; }
+.cf-tag--success { background: var(--status-success-soft); color: var(--status-success); border-color: transparent; }
+.cf-tag--warning { background: var(--status-warning-soft); color: var(--status-warning); border-color: transparent; }
+.cf-tag--danger  { background: var(--status-error-soft);   color: var(--status-error);   border-color: transparent; }
+.cf-tag--info    { background: var(--status-info-soft);    color: var(--status-info);    border-color: transparent; }
 
 /* solid variant — fill with the tone color, white-ish text */
-.ck-tag--solid.ck-tag--neutral { background: var(--fg-1);          color: var(--bg-0); }
-.ck-tag--solid.ck-tag--primary { background: var(--accent-1);      color: var(--fg-on-accent); }
-.ck-tag--solid.ck-tag--success { background: var(--status-success); color: var(--bg-0); }
-.ck-tag--solid.ck-tag--warning { background: var(--status-warning); color: var(--bg-0); }
-.ck-tag--solid.ck-tag--danger  { background: var(--status-error);   color: var(--fg-on-accent); }
-.ck-tag--solid.ck-tag--info    { background: var(--status-info);    color: var(--bg-0); }
+.cf-tag--solid.cf-tag--neutral { background: var(--fg-1);          color: var(--bg-0); }
+.cf-tag--solid.cf-tag--primary { background: var(--accent-1);      color: var(--fg-on-accent); }
+.cf-tag--solid.cf-tag--success { background: var(--status-success); color: var(--bg-0); }
+.cf-tag--solid.cf-tag--warning { background: var(--status-warning); color: var(--bg-0); }
+.cf-tag--solid.cf-tag--danger  { background: var(--status-error);   color: var(--fg-on-accent); }
+.cf-tag--solid.cf-tag--info    { background: var(--status-info);    color: var(--bg-0); }
 
 /* outline variant — transparent bg + colored border */
-.ck-tag--outline { background: transparent; }
-.ck-tag--outline.ck-tag--neutral { color: var(--fg-1);            border-color: var(--line-2); }
-.ck-tag--outline.ck-tag--primary { color: var(--accent-1);        border-color: var(--accent-1); }
-.ck-tag--outline.ck-tag--success { color: var(--status-success);  border-color: var(--status-success); }
-.ck-tag--outline.ck-tag--warning { color: var(--status-warning);  border-color: var(--status-warning); }
-.ck-tag--outline.ck-tag--danger  { color: var(--status-error);    border-color: var(--status-error); }
-.ck-tag--outline.ck-tag--info    { color: var(--status-info);     border-color: var(--status-info); }
+.cf-tag--outline { background: transparent; }
+.cf-tag--outline.cf-tag--neutral { color: var(--fg-1);            border-color: var(--line-2); }
+.cf-tag--outline.cf-tag--primary { color: var(--accent-1);        border-color: var(--accent-1); }
+.cf-tag--outline.cf-tag--success { color: var(--status-success);  border-color: var(--status-success); }
+.cf-tag--outline.cf-tag--warning { color: var(--status-warning);  border-color: var(--status-warning); }
+.cf-tag--outline.cf-tag--danger  { color: var(--status-error);    border-color: var(--status-error); }
+.cf-tag--outline.cf-tag--info    { color: var(--status-info);     border-color: var(--status-info); }

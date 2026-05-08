@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { Tag } from '@chufix/vue';
+import { CfTag } from '@chufix/vue';
 </script>
 
 <template>
   <div class="demo-row">
-    <Tag>Default</Tag>
-    <Tag tone="primary">Primary</Tag>
-    <Tag tone="success">Success</Tag>
-    <Tag tone="warning">Warning</Tag>
-    <Tag tone="danger">Danger</Tag>
-    <Tag tone="info">Info</Tag>
+    <CfTag>Default</CfTag>
+    <CfTag tone="primary">Primary</CfTag>
+    <CfTag tone="success">Success</CfTag>
+    <CfTag tone="warning">Warning</CfTag>
+    <CfTag tone="danger">Danger</CfTag>
+    <CfTag tone="info">Info</CfTag>
   </div>
 </template>

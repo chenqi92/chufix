@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { Tag } from '@chufix/vue';
+import { CfTag } from '@chufix/vue';
 </script>
 
 <template>
   <div class="demo-stack">
     <div class="demo-row">
-      <Tag variant="solid" tone="primary">solid</Tag>
-      <Tag variant="soft" tone="primary">soft</Tag>
-      <Tag variant="outline" tone="primary">outline</Tag>
+      <CfTag variant="solid" tone="primary">solid</CfTag>
+      <CfTag variant="soft" tone="primary">soft</CfTag>
+      <CfTag variant="outline" tone="primary">outline</CfTag>
     </div>
     <div class="demo-row">
-      <Tag variant="solid" tone="danger">solid</Tag>
-      <Tag variant="soft" tone="danger">soft</Tag>
-      <Tag variant="outline" tone="danger">outline</Tag>
+      <CfTag variant="solid" tone="danger">solid</CfTag>
+      <CfTag variant="soft" tone="danger">soft</CfTag>
+      <CfTag variant="outline" tone="danger">outline</CfTag>
     </div>
     <div class="demo-row">
-      <Tag size="sm" tone="success">sm</Tag>
-      <Tag size="md" tone="success">md</Tag>
-      <Tag size="lg" tone="success">lg</Tag>
-      <Tag tone="success" rounded>rounded</Tag>
+      <CfTag size="sm" tone="success">sm</CfTag>
+      <CfTag size="md" tone="success">md</CfTag>
+      <CfTag size="lg" tone="success">lg</CfTag>
+      <CfTag tone="success" rounded>rounded</CfTag>
     </div>
   </div>
 </template>

@@ -1,11 +1,11 @@
 /* ChuKit Tooltip — portal'd floating bubble with edge-flip + arrow. */
 
-.ck-tooltip-trigger {
+.cf-tooltip-trigger {
   display: inline-flex;
   outline: none;
 }
 
-.ck-tooltip {
+.cf-tooltip {
   position: fixed;
   z-index: var(--z-tooltip);
   padding: 6px 10px;
@@ -22,7 +22,7 @@
   word-break: break-word;
 }
 
-.ck-tooltip__arrow {
+.cf-tooltip__arrow {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -32,20 +32,20 @@
   transform: rotate(45deg);
 }
 
-.ck-tooltip--top    .ck-tooltip__arrow { bottom: -5px; left: 50%; margin-left: -4px; }
-.ck-tooltip--bottom .ck-tooltip__arrow { top: -5px;    left: 50%; margin-left: -4px; transform: rotate(225deg); }
-.ck-tooltip--left   .ck-tooltip__arrow { right: -5px;  top: 50%;  margin-top: -4px; transform: rotate(-45deg); }
-.ck-tooltip--right  .ck-tooltip__arrow { left: -5px;   top: 50%;  margin-top: -4px; transform: rotate(135deg); }
+.cf-tooltip--top    .cf-tooltip__arrow { bottom: -5px; left: 50%; margin-left: -4px; }
+.cf-tooltip--bottom .cf-tooltip__arrow { top: -5px;    left: 50%; margin-left: -4px; transform: rotate(225deg); }
+.cf-tooltip--left   .cf-tooltip__arrow { right: -5px;  top: 50%;  margin-top: -4px; transform: rotate(-45deg); }
+.cf-tooltip--right  .cf-tooltip__arrow { left: -5px;   top: 50%;  margin-top: -4px; transform: rotate(135deg); }
 
-.ck-tooltip-fade-enter-from,
-.ck-tooltip-fade-leave-to,
-.ck-tooltip[data-state='closed'] {
+.cf-tooltip-fade-enter-from,
+.cf-tooltip-fade-leave-to,
+.cf-tooltip[data-state='closed'] {
   opacity: 0;
   transform: scale(0.95);
 }
-.ck-tooltip-fade-enter-active,
-.ck-tooltip-fade-leave-active,
-.ck-tooltip[data-state='open'] {
+.cf-tooltip-fade-enter-active,
+.cf-tooltip-fade-leave-active,
+.cf-tooltip[data-state='open'] {
   transition: opacity var(--dur-fast) var(--ease-out),
     transform var(--dur-fast) var(--ease-out);
 }

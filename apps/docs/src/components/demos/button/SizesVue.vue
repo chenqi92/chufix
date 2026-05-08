@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { Button } from '@chufix/vue';
+import { CfButton } from '@chufix/vue';
 </script>
 
 <template>
   <div class="demo-stack">
     <div class="demo-row">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
+      <CfButton size="sm">Small</CfButton>
+      <CfButton size="md">Medium</CfButton>
+      <CfButton size="lg">Large</CfButton>
     </div>
     <div class="demo-row">
-      <Button shape="default">默认圆角</Button>
-      <Button shape="pill">Pill</Button>
-      <Button shape="square" aria-label="设置">⚙</Button>
+      <CfButton shape="default">默认圆角</CfButton>
+      <CfButton shape="pill">Pill</CfButton>
+      <CfButton shape="square" aria-label="设置">⚙</CfButton>
     </div>
   </div>
 </template>

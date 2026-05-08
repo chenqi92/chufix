@@ -1,16 +1,16 @@
 /* ChuKit Badge — standalone pill or absolutely-placed corner indicator. */
 
-.ck-badge-inline {
+.cf-badge-inline {
   display: inline-flex;
   align-items: center;
 }
-.ck-badge-wrap {
+.cf-badge-wrap {
   position: relative;
   display: inline-flex;
   vertical-align: middle;
 }
 
-.ck-badge {
+.cf-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +27,7 @@
   white-space: nowrap;
   user-select: none;
 }
-.ck-badge--dot {
+.cf-badge--dot {
   width: 8px;
   height: 8px;
   min-width: 0;
@@ -36,23 +36,23 @@
 }
 
 /* tone fills */
-.ck-badge--neutral { background: var(--fg-1);            color: var(--bg-0); }
-.ck-badge--primary { background: var(--accent-1);        color: var(--fg-on-accent); }
-.ck-badge--success { background: var(--status-success);  color: var(--bg-0); }
-.ck-badge--warning { background: var(--status-warning);  color: var(--bg-0); }
-.ck-badge--danger  { background: var(--status-error);    color: var(--fg-on-accent); }
-.ck-badge--info    { background: var(--status-info);     color: var(--bg-0); }
+.cf-badge--neutral { background: var(--fg-1);            color: var(--bg-0); }
+.cf-badge--primary { background: var(--accent-1);        color: var(--fg-on-accent); }
+.cf-badge--success { background: var(--status-success);  color: var(--bg-0); }
+.cf-badge--warning { background: var(--status-warning);  color: var(--bg-0); }
+.cf-badge--danger  { background: var(--status-error);    color: var(--fg-on-accent); }
+.cf-badge--info    { background: var(--status-info);     color: var(--bg-0); }
 
 /* placed corner mode */
-.ck-badge--placed {
+.cf-badge--placed {
   position: absolute;
   z-index: 1;
   border: 2px solid var(--bg-1);
   box-sizing: content-box;
 }
-.ck-badge--placed.ck-badge--dot { border-width: 1.5px; }
+.cf-badge--placed.cf-badge--dot { border-width: 1.5px; }
 
-.ck-badge--top-right    { top: 0; right: 0; transform: translate(50%, -50%); }
-.ck-badge--top-left     { top: 0; left: 0;  transform: translate(-50%, -50%); }
-.ck-badge--bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
-.ck-badge--bottom-left  { bottom: 0; left: 0;  transform: translate(-50%, 50%); }
+.cf-badge--top-right    { top: 0; right: 0; transform: translate(50%, -50%); }
+.cf-badge--top-left     { top: 0; left: 0;  transform: translate(-50%, -50%); }
+.cf-badge--bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
+.cf-badge--bottom-left  { bottom: 0; left: 0;  transform: translate(-50%, 50%); }

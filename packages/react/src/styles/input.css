@@ -1,6 +1,6 @@
 /* ChuKit Input — wrapper + native input. */
 
-.ck-input {
+.cf-input {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -20,23 +20,23 @@
     background-color var(--dur-fast) var(--ease-out);
 }
 
-.ck-input:hover:not(.is-disabled):not(.is-focused) {
+.cf-input:hover:not(.is-disabled):not(.is-focused) {
   border-color: var(--fg-3);
 }
 
-.ck-input.is-focused {
+.cf-input.is-focused {
   border-color: var(--accent-1);
   box-shadow: var(--focus-ring);
 }
 
-.ck-input.is-error {
+.cf-input.is-error {
   border-color: var(--status-error);
 }
-.ck-input.is-error.is-focused {
+.cf-input.is-error.is-focused {
   box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
 }
 
-.ck-input.is-disabled {
+.cf-input.is-disabled {
   background: var(--bg-2);
   color: var(--fg-3);
   cursor: not-allowed;
@@ -44,32 +44,32 @@
 }
 
 /* sizes */
-.ck-input--sm { height: var(--control-h-sm); padding: 0 8px;  font-size: var(--t-12); }
-.ck-input--md { height: var(--control-h);    padding: 0 var(--pad-x); font-size: var(--t-13); }
-.ck-input--lg { height: var(--control-h-lg); padding: 0 14px; font-size: var(--t-14); }
+.cf-input--sm { height: var(--control-h-sm); padding: 0 8px;  font-size: var(--t-12); }
+.cf-input--md { height: var(--control-h);    padding: 0 var(--pad-x); font-size: var(--t-13); }
+.cf-input--lg { height: var(--control-h-lg); padding: 0 14px; font-size: var(--t-14); }
 
 /* variants */
-.ck-input--outline {
+.cf-input--outline {
   /* default - already styled */
 }
-.ck-input--filled {
+.cf-input--filled {
   background: var(--bg-2);
   border-color: transparent;
 }
-.ck-input--filled.is-focused {
+.cf-input--filled.is-focused {
   background: var(--bg-inset);
   border-color: var(--accent-1);
 }
-.ck-input--ghost {
+.cf-input--ghost {
   background: transparent;
   border-color: transparent;
 }
-.ck-input--ghost.is-focused {
+.cf-input--ghost.is-focused {
   background: var(--bg-inset);
   border-color: var(--accent-1);
 }
 
-.ck-input__native {
+.cf-input__native {
   flex: 1;
   min-width: 0;
   background: transparent;
@@ -79,18 +79,18 @@
   font: inherit;
   padding: 0;
 }
-.ck-input__native::placeholder { color: var(--fg-3); }
-.ck-input__native:disabled { cursor: not-allowed; }
+.cf-input__native::placeholder { color: var(--fg-3); }
+.cf-input__native:disabled { cursor: not-allowed; }
 
-.ck-input__prefix,
-.ck-input__suffix {
+.cf-input__prefix,
+.cf-input__suffix {
   display: inline-flex;
   align-items: center;
   color: var(--fg-3);
   flex: none;
 }
 
-.ck-input__clear {
+.cf-input__clear {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -104,5 +104,5 @@
   cursor: pointer;
   flex: none;
 }
-.ck-input__clear:hover { background: var(--bg-3); color: var(--fg-1); }
-.ck-input__clear svg { width: 10px; height: 10px; }
+.cf-input__clear:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-input__clear svg { width: 10px; height: 10px; }

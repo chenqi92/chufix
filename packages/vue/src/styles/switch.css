@@ -1,6 +1,6 @@
 /* ChuKit Switch — visually-hidden checkbox + custom track/thumb. */
 
-.ck-switch {
+.cf-switch {
   --_w: 32px;
   --_h: 18px;
   --_thumb: 14px;
@@ -17,13 +17,13 @@
   -webkit-user-select: none;
   user-select: none;
 }
-.ck-switch.is-disabled { cursor: not-allowed; opacity: var(--disabled-opacity); }
+.cf-switch.is-disabled { cursor: not-allowed; opacity: var(--disabled-opacity); }
 
-.ck-switch--sm { --_w: 26px; --_h: 14px; --_thumb: 10px; font-size: var(--t-12); }
-.ck-switch--md { --_w: 32px; --_h: 18px; --_thumb: 14px; font-size: var(--t-13); }
-.ck-switch--lg { --_w: 40px; --_h: 22px; --_thumb: 18px; font-size: var(--t-14); }
+.cf-switch--sm { --_w: 26px; --_h: 14px; --_thumb: 10px; font-size: var(--t-12); }
+.cf-switch--md { --_w: 32px; --_h: 18px; --_thumb: 14px; font-size: var(--t-13); }
+.cf-switch--lg { --_w: 40px; --_h: 22px; --_thumb: 18px; font-size: var(--t-14); }
 
-.ck-switch__input {
+.cf-switch__input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -35,7 +35,7 @@
   border: 0;
 }
 
-.ck-switch__track {
+.cf-switch__track {
   position: relative;
   width: var(--_w);
   height: var(--_h);
@@ -46,7 +46,7 @@
   flex: none;
 }
 
-.ck-switch__thumb {
+.cf-switch__thumb {
   position: absolute;
   top: var(--_pad);
   left: var(--_pad);
@@ -58,25 +58,25 @@
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.ck-switch__input:checked + .ck-switch__track {
+.cf-switch__input:checked + .cf-switch__track {
   background: var(--accent-1);
 }
-.ck-switch__input:checked + .ck-switch__track .ck-switch__thumb {
+.cf-switch__input:checked + .cf-switch__track .cf-switch__thumb {
   transform: translateX(calc(var(--_w) - var(--_thumb) - var(--_pad) * 2));
 }
 
-.ck-switch__input:focus-visible + .ck-switch__track {
+.cf-switch__input:focus-visible + .cf-switch__track {
   box-shadow: var(--focus-ring);
 }
 
 /* loading spinner inside thumb */
-.ck-switch.is-loading .ck-switch__thumb::after {
+.cf-switch.is-loading .cf-switch__thumb::after {
   content: '';
   position: absolute;
   inset: 18%;
   border: 2px solid var(--line-2);
   border-top-color: var(--accent-1);
   border-radius: 50%;
-  animation: ck-switch-spin 0.7s linear infinite;
+  animation: cf-switch-spin 0.7s linear infinite;
 }
-@keyframes ck-switch-spin { to { transform: rotate(360deg); } }
+@keyframes cf-switch-spin { to { transform: rotate(360deg); } }

@@ -1,6 +1,6 @@
 /* ChuKit Checkbox — visually-hidden native input + custom box. */
 
-.ck-checkbox {
+.cf-checkbox {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -13,16 +13,16 @@
   user-select: none;
   line-height: 1.4;
 }
-.ck-checkbox.is-disabled {
+.cf-checkbox.is-disabled {
   cursor: not-allowed;
   opacity: var(--disabled-opacity);
 }
 
-.ck-checkbox--sm { font-size: var(--t-12); }
-.ck-checkbox--md { font-size: var(--t-13); }
-.ck-checkbox--lg { font-size: var(--t-14); }
+.cf-checkbox--sm { font-size: var(--t-12); }
+.cf-checkbox--md { font-size: var(--t-13); }
+.cf-checkbox--lg { font-size: var(--t-14); }
 
-.ck-checkbox__input {
+.cf-checkbox__input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -34,7 +34,7 @@
   border: 0;
 }
 
-.ck-checkbox__box {
+.cf-checkbox__box {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -50,10 +50,10 @@
     border-color var(--dur-fast) var(--ease-out),
     box-shadow var(--dur-fast) var(--ease-out);
 }
-.ck-checkbox--sm .ck-checkbox__box { width: 14px; height: 14px; }
-.ck-checkbox--lg .ck-checkbox__box { width: 18px; height: 18px; }
+.cf-checkbox--sm .cf-checkbox__box { width: 14px; height: 14px; }
+.cf-checkbox--lg .cf-checkbox__box { width: 18px; height: 18px; }
 
-.ck-checkbox__check {
+.cf-checkbox__check {
   width: 12px;
   height: 12px;
   opacity: 0;
@@ -62,7 +62,7 @@
     transform var(--dur-fast) var(--ease-out);
 }
 
-.ck-checkbox__dash {
+.cf-checkbox__dash {
   display: block;
   width: 8px;
   height: 2px;
@@ -70,26 +70,26 @@
   background: var(--fg-on-accent);
 }
 
-.ck-checkbox__input:checked + .ck-checkbox__box,
-.ck-checkbox.is-indeterminate .ck-checkbox__box {
+.cf-checkbox__input:checked + .cf-checkbox__box,
+.cf-checkbox.is-indeterminate .cf-checkbox__box {
   background: var(--accent-1);
   border-color: var(--accent-1);
 }
 
-.ck-checkbox__input:checked + .ck-checkbox__box .ck-checkbox__check {
+.cf-checkbox__input:checked + .cf-checkbox__box .cf-checkbox__check {
   opacity: 1;
   transform: scale(1);
 }
 
-.ck-checkbox__input:focus-visible + .ck-checkbox__box {
+.cf-checkbox__input:focus-visible + .cf-checkbox__box {
   box-shadow: var(--focus-ring);
 }
 
-.ck-checkbox:hover:not(.is-disabled) .ck-checkbox__box {
+.cf-checkbox:hover:not(.is-disabled) .cf-checkbox__box {
   border-color: var(--accent-1);
 }
 
-.ck-checkbox__label {
+.cf-checkbox__label {
   display: inline-block;
   color: var(--fg-1);
 }

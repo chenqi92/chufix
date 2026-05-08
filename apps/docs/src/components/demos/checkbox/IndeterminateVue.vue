@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Checkbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix/vue';
 
 const apple = ref(true);
 const banana = ref(false);
@@ -22,11 +22,11 @@ const indeterminate = computed(() => count.value > 0 && count.value < 3);
 
 <template>
   <div class="demo-stack">
-    <Checkbox v-model="all" :indeterminate="indeterminate">全选</Checkbox>
+    <CfCheckbox v-model="all" :indeterminate="indeterminate">全选</CfCheckbox>
     <div class="demo-row" style="padding-left: 1.5rem;">
-      <Checkbox v-model="apple">苹果</Checkbox>
-      <Checkbox v-model="banana">香蕉</Checkbox>
-      <Checkbox v-model="cherry">樱桃</Checkbox>
+      <CfCheckbox v-model="apple">苹果</CfCheckbox>
+      <CfCheckbox v-model="banana">香蕉</CfCheckbox>
+      <CfCheckbox v-model="cherry">樱桃</CfCheckbox>
     </div>
   </div>
 </template>

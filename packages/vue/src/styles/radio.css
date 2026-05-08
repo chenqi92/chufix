@@ -1,14 +1,14 @@
 /* ChuKit Radio + RadioGroup */
 
-.ck-radio-group {
+.cf-radio-group {
   display: inline-flex;
   gap: 14px 20px;
   flex-wrap: wrap;
 }
-.ck-radio-group--row    { flex-direction: row; }
-.ck-radio-group--column { flex-direction: column; }
+.cf-radio-group--row    { flex-direction: row; }
+.cf-radio-group--column { flex-direction: column; }
 
-.ck-radio {
+.cf-radio {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -21,16 +21,16 @@
   user-select: none;
   line-height: 1.4;
 }
-.ck-radio.is-disabled {
+.cf-radio.is-disabled {
   cursor: not-allowed;
   opacity: var(--disabled-opacity);
 }
 
-.ck-radio--sm { font-size: var(--t-12); }
-.ck-radio--md { font-size: var(--t-13); }
-.ck-radio--lg { font-size: var(--t-14); }
+.cf-radio--sm { font-size: var(--t-12); }
+.cf-radio--md { font-size: var(--t-13); }
+.cf-radio--lg { font-size: var(--t-14); }
 
-.ck-radio__input {
+.cf-radio__input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -42,7 +42,7 @@
   border: 0;
 }
 
-.ck-radio__dot {
+.cf-radio__dot {
   position: relative;
   display: inline-block;
   width: 16px;
@@ -55,10 +55,10 @@
     border-color var(--dur-fast) var(--ease-out),
     box-shadow var(--dur-fast) var(--ease-out);
 }
-.ck-radio--sm .ck-radio__dot { width: 14px; height: 14px; }
-.ck-radio--lg .ck-radio__dot { width: 18px; height: 18px; }
+.cf-radio--sm .cf-radio__dot { width: 14px; height: 14px; }
+.cf-radio--lg .cf-radio__dot { width: 18px; height: 18px; }
 
-.ck-radio__dot::after {
+.cf-radio__dot::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -72,21 +72,21 @@
   transition: opacity var(--dur-fast) var(--ease-out),
     transform var(--dur-fast) var(--ease-out);
 }
-.ck-radio--lg .ck-radio__dot::after { width: 8px; height: 8px; }
+.cf-radio--lg .cf-radio__dot::after { width: 8px; height: 8px; }
 
-.ck-radio__input:checked + .ck-radio__dot {
+.cf-radio__input:checked + .cf-radio__dot {
   background: var(--accent-1);
   border-color: var(--accent-1);
 }
-.ck-radio__input:checked + .ck-radio__dot::after {
+.cf-radio__input:checked + .cf-radio__dot::after {
   opacity: 1;
   transform: scale(1);
 }
 
-.ck-radio__input:focus-visible + .ck-radio__dot {
+.cf-radio__input:focus-visible + .cf-radio__dot {
   box-shadow: var(--focus-ring);
 }
-.ck-radio:hover:not(.is-disabled) .ck-radio__dot {
+.cf-radio:hover:not(.is-disabled) .cf-radio__dot {
   border-color: var(--accent-1);
 }
-.ck-radio__label { display: inline-block; }
+.cf-radio__label { display: inline-block; }

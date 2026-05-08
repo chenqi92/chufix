@@ -27,14 +27,14 @@ export function Tabs(props: TabsProps) {
 
   return (
     <div className={tabsClass({ variant, size, align })}>
-      <div className="ck-tabs__list" role="tablist">
+      <div className="cf-tabs__list" role="tablist">
         {items.map((t) => (
           <button
             key={t.value}
             type="button"
             role="tab"
             className={[
-              'ck-tabs__tab',
+              'cf-tabs__tab',
               active === t.value ? 'is-active' : '',
               t.disabled ? 'is-disabled' : '',
             ]
@@ -48,7 +48,7 @@ export function Tabs(props: TabsProps) {
           </button>
         ))}
       </div>
-      <div className="ck-tabs__panels">
+      <div className="cf-tabs__panels">
         {typeof children === 'function'
           ? (children as (a: { active: string }) => React.ReactNode)({ active })
           : children}
@@ -68,7 +68,7 @@ export function TabPanel({
 }) {
   if (value !== active) return null;
   return (
-    <div className="ck-tabs__panel" role="tabpanel">
+    <div className="cf-tabs__panel" role="tabpanel">
       {children}
     </div>
   );

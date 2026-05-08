@@ -18,8 +18,8 @@ export function checkboxClass(p: {
   className?: string;
 }): string {
   return [
-    'ck-checkbox',
-    `ck-checkbox--${p.size}`,
+    'cf-checkbox',
+    `cf-checkbox--${p.size}`,
     p.disabled && 'is-disabled',
     p.indeterminate && 'is-indeterminate',
     p.className,

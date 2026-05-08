@@ -58,15 +58,15 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
       <input
         ref={ref}
         type="radio"
-        className="ck-radio__input"
+        className="cf-radio__input"
         checked={current}
         disabled={finalDisabled}
         name={finalName}
         id={id}
         onChange={handleChange}
       />
-      <span className="ck-radio__dot" aria-hidden="true" />
-      {children ? <span className="ck-radio__label">{children}</span> : null}
+      <span className="cf-radio__dot" aria-hidden="true" />
+      {children ? <span className="cf-radio__label">{children}</span> : null}
     </label>
   );
 });

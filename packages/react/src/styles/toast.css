@@ -1,6 +1,6 @@
 /* ChuKit Toaster — portal'd notification stack. */
 
-.ck-toaster {
+.cf-toaster {
   position: fixed;
   z-index: var(--z-toast);
   pointer-events: none;
@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
 }
-.ck-toaster__list {
+.cf-toaster__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -16,14 +16,14 @@
   max-width: calc(100vw - 32px);
 }
 
-.ck-toaster--top-right    { top: 0; right: 0; align-items: flex-end; }
-.ck-toaster--top-left     { top: 0; left: 0;  align-items: flex-start; }
-.ck-toaster--top-center   { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
-.ck-toaster--bottom-right { bottom: 0; right: 0; align-items: flex-end; flex-direction: column-reverse; }
-.ck-toaster--bottom-left  { bottom: 0; left: 0;  align-items: flex-start; flex-direction: column-reverse; }
-.ck-toaster--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse; }
+.cf-toaster--top-right    { top: 0; right: 0; align-items: flex-end; }
+.cf-toaster--top-left     { top: 0; left: 0;  align-items: flex-start; }
+.cf-toaster--top-center   { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+.cf-toaster--bottom-right { bottom: 0; right: 0; align-items: flex-end; flex-direction: column-reverse; }
+.cf-toaster--bottom-left  { bottom: 0; left: 0;  align-items: flex-start; flex-direction: column-reverse; }
+.cf-toaster--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse; }
 
-.ck-toast {
+.cf-toast {
   pointer-events: auto;
   display: flex;
   align-items: flex-start;
@@ -38,7 +38,7 @@
   width: 100%;
 }
 
-.ck-toast__icon {
+.cf-toast__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -48,19 +48,19 @@
   margin-top: 2px;
   flex: none;
 }
-.ck-toast__icon svg { width: 12px; height: 12px; }
+.cf-toast__icon svg { width: 12px; height: 12px; }
 
-.ck-toast--success .ck-toast__icon { background: var(--status-success-soft); color: var(--status-success); }
-.ck-toast--error   .ck-toast__icon { background: var(--status-error-soft);   color: var(--status-error); }
-.ck-toast--warning .ck-toast__icon { background: var(--status-warning-soft); color: var(--status-warning); }
-.ck-toast--info    .ck-toast__icon { background: var(--status-info-soft);    color: var(--status-info); }
-.ck-toast--default .ck-toast__icon { display: none; }
+.cf-toast--success .cf-toast__icon { background: var(--status-success-soft); color: var(--status-success); }
+.cf-toast--error   .cf-toast__icon { background: var(--status-error-soft);   color: var(--status-error); }
+.cf-toast--warning .cf-toast__icon { background: var(--status-warning-soft); color: var(--status-warning); }
+.cf-toast--info    .cf-toast__icon { background: var(--status-info-soft);    color: var(--status-info); }
+.cf-toast--default .cf-toast__icon { display: none; }
 
-.ck-toast__body { flex: 1; min-width: 0; line-height: 1.45; }
-.ck-toast__title { font-size: var(--t-13); font-weight: var(--w-semibold); }
-.ck-toast__desc  { font-size: var(--t-12); color: var(--fg-2); margin-top: 2px; }
+.cf-toast__body { flex: 1; min-width: 0; line-height: 1.45; }
+.cf-toast__title { font-size: var(--t-13); font-weight: var(--w-semibold); }
+.cf-toast__desc  { font-size: var(--t-12); color: var(--fg-2); margin-top: 2px; }
 
-.ck-toast__close {
+.cf-toast__close {
   flex: none;
   margin-left: 4px;
   width: 20px;
@@ -76,26 +76,26 @@
   color: var(--fg-3);
   cursor: pointer;
 }
-.ck-toast__close:hover { background: var(--bg-2); color: var(--fg-1); }
+.cf-toast__close:hover { background: var(--bg-2); color: var(--fg-1); }
 
 /* TransitionGroup classes */
-.ck-toast-enter-from {
+.cf-toast-enter-from {
   opacity: 0;
   transform: translateY(-8px) scale(0.97);
 }
-.ck-toast-leave-to {
+.cf-toast-leave-to {
   opacity: 0;
   transform: translateX(20px);
 }
-.ck-toast-enter-active,
-.ck-toast-leave-active {
+.cf-toast-enter-active,
+.cf-toast-leave-active {
   transition: opacity var(--dur-fast) var(--ease-out),
     transform var(--dur-fast) var(--ease-out);
 }
-.ck-toast-leave-active { position: absolute; }
+.cf-toast-leave-active { position: absolute; }
 
-.ck-toaster--bottom-right .ck-toast-enter-from,
-.ck-toaster--bottom-left .ck-toast-enter-from,
-.ck-toaster--bottom-center .ck-toast-enter-from {
+.cf-toaster--bottom-right .cf-toast-enter-from,
+.cf-toaster--bottom-left .cf-toast-enter-from,
+.cf-toaster--bottom-center .cf-toast-enter-from {
   transform: translateY(8px) scale(0.97);
 }

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { Avatar } from '@chufix/vue';
+import { CfAvatar } from '@chufix/vue';
 </script>
 
 <template>
   <div class="demo-stack">
     <div class="demo-row" style="align-items: flex-end;">
-      <Avatar size="xs" name="Chen Qi" />
-      <Avatar size="sm" name="Chen Qi" />
-      <Avatar size="md" name="Chen Qi" />
-      <Avatar size="lg" name="Chen Qi" />
-      <Avatar size="xl" name="Chen Qi" />
+      <CfAvatar size="xs" name="Chen Qi" />
+      <CfAvatar size="sm" name="Chen Qi" />
+      <CfAvatar size="md" name="Chen Qi" />
+      <CfAvatar size="lg" name="Chen Qi" />
+      <CfAvatar size="xl" name="Chen Qi" />
     </div>
     <div class="demo-row">
-      <Avatar shape="circle" name="Bob Smith" />
-      <Avatar shape="square" name="Bob Smith" />
+      <CfAvatar shape="circle" name="Bob Smith" />
+      <CfAvatar shape="square" name="Bob Smith" />
     </div>
   </div>
 </template>

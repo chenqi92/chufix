@@ -30,20 +30,20 @@ export function Alert(props: AlertProps) {
   return (
     <div className={alertClass({ tone, variant })} role="alert">
       {icon && (
-        <span className="ck-alert__icon" aria-hidden="true">
+        <span className="cf-alert__icon" aria-hidden="true">
           <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d={ICONS[tone]} />
           </svg>
         </span>
       )}
-      <div className="ck-alert__body">
-        {title != null && <div className="ck-alert__title">{title}</div>}
-        <div className="ck-alert__content">{children}</div>
+      <div className="cf-alert__body">
+        {title != null && <div className="cf-alert__title">{title}</div>}
+        <div className="cf-alert__content">{children}</div>
       </div>
       {closable && (
         <button
           type="button"
-          className="ck-alert__close"
+          className="cf-alert__close"
           aria-label="close"
           onClick={close}
         >

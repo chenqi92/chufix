@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { Button, Tooltip } from '@chufix/vue';
+import { CfButton, CfTooltip } from '@chufix/vue';
 </script>
 
 <template>
   <!-- 3×3 grid: each direction has its own quadrant so auto-flip doesn't fire. -->
   <div class="tt-grid">
     <span></span>
-    <Tooltip content="顶部" placement="top">
-      <Button variant="tertiary">Top</Button>
-    </Tooltip>
+    <CfTooltip content="顶部" placement="top">
+      <CfButton variant="tertiary">Top</CfButton>
+    </CfTooltip>
     <span></span>
 
-    <Tooltip content="左侧" placement="left">
-      <Button variant="tertiary">Left</Button>
-    </Tooltip>
+    <CfTooltip content="左侧" placement="left">
+      <CfButton variant="tertiary">Left</CfButton>
+    </CfTooltip>
     <span></span>
-    <Tooltip content="右侧" placement="right">
-      <Button variant="tertiary">Right</Button>
-    </Tooltip>
+    <CfTooltip content="右侧" placement="right">
+      <CfButton variant="tertiary">Right</CfButton>
+    </CfTooltip>
 
     <span></span>
-    <Tooltip content="底部" placement="bottom">
-      <Button variant="tertiary">Bottom</Button>
-    </Tooltip>
+    <CfTooltip content="底部" placement="bottom">
+      <CfButton variant="tertiary">Bottom</CfButton>
+    </CfTooltip>
     <span></span>
   </div>
 </template>

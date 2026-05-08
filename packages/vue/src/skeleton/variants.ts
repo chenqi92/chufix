@@ -12,9 +12,9 @@ export interface SkeletonProps {
 
 export function skeletonClass(p: { shape: SkeletonShape; isStatic: boolean }): string {
   return [
-    'ck-skeleton',
-    `ck-skeleton--${p.shape}`,
-    p.isStatic && 'ck-skeleton--static',
+    'cf-skeleton',
+    `cf-skeleton--${p.shape}`,
+    p.isStatic && 'cf-skeleton--static',
   ]
     .filter(Boolean)
     .join(' ');

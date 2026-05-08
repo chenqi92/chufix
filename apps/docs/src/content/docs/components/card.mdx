@@ -15,21 +15,21 @@ import InteractiveVue from '~/components/demos/card/InteractiveVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Card } from '@chufix/vue';
+import { CfCard } from '@chufix/vue';
 </script>
 
 <template>
-  <Card>
+  <CfCard>
     <p>最简卡片，只渲染默认插槽。</p>
-  </Card>
+  </CfCard>
 </template>`}
-  reactCode={`import { Card } from '@chufix/react';
+  reactCode={`import { CfCard } from '@chufix/react';
 
 export default function Demo() {
   return (
-    <Card>
+    <CfCard>
       <p>最简卡片，只渲染 children。</p>
-    </Card>
+    </CfCard>
   );
 }`}
 >
@@ -41,12 +41,12 @@ export default function Demo() {
 3 种 variant 在不同信息层级使用：`outlined`（默认描边）/ `elevated`（带阴影）/ `filled`（浅灰填充）。
 
 <DemoFrame
-  vueCode={`<Card variant="outlined">…</Card>
-<Card variant="elevated">…</Card>
-<Card variant="filled">…</Card>`}
-  reactCode={`<Card variant="outlined">…</Card>
-<Card variant="elevated">…</Card>
-<Card variant="filled">…</Card>`}
+  vueCode={`<CfCard variant="outlined">…</CfCard>
+<CfCard variant="elevated">…</CfCard>
+<CfCard variant="filled">…</CfCard>`}
+  reactCode={`<CfCard variant="outlined">…</CfCard>
+<CfCard variant="elevated">…</CfCard>
+<CfCard variant="filled">…</CfCard>`}
 >
   <VariantsVue client:load />
 </DemoFrame>
@@ -56,28 +56,28 @@ export default function Demo() {
 Vue 用具名插槽 `header` / `footer`，React 用子组件 `CardHeader` / `CardBody` / `CardFooter`。任意一段都可省略。
 
 <DemoFrame
-  vueCode={`<Card variant="elevated">
+  vueCode={`<CfCard variant="elevated">
   <template #header>项目设置</template>
   <p>这是一段卡片正文。</p>
   <template #footer>
-    <Button size="sm" variant="tertiary">取消</Button>
-    <Button size="sm">保存</Button>
+    <CfButton size="sm" variant="tertiary">取消</CfButton>
+    <CfButton size="sm">保存</CfButton>
   </template>
-</Card>`}
-  reactCode={`import { Button, Card, CardHeader, CardBody, CardFooter } from '@chufix/react';
+</CfCard>`}
+  reactCode={`import { CfButton, CfCard, CfCardHeader, CfCardBody, CfCardFooter } from '@chufix/react';
 
 export default function Demo() {
   return (
-    <Card variant="elevated">
-      <CardHeader>项目设置</CardHeader>
-      <CardBody>
+    <CfCard variant="elevated">
+      <CfCardHeader>项目设置</CfCardHeader>
+      <CfCardBody>
         <p>这是一段卡片正文。</p>
-      </CardBody>
-      <CardFooter>
-        <Button size="sm" variant="tertiary">取消</Button>
-        <Button size="sm">保存</Button>
-      </CardFooter>
-    </Card>
+      </CfCardBody>
+      <CfCardFooter>
+        <CfButton size="sm" variant="tertiary">取消</CfButton>
+        <CfButton size="sm">保存</CfButton>
+      </CfCardFooter>
+    </CfCard>
   );
 }`}
 >
@@ -89,14 +89,14 @@ export default function Demo() {
 打开 `interactive` 后，整张卡片变成按钮 —— 自动加 `role="button"` + `tabindex="0"`，键盘 Enter 可触发 `click`。
 
 <DemoFrame
-  vueCode={`<Card variant="outlined" interactive @click="clicked++">
+  vueCode={`<CfCard variant="outlined" interactive @click="clicked++">
   <template #header>整卡可点击</template>
   <p>已点击 {{ clicked }} 次</p>
-</Card>`}
-  reactCode={`<Card variant="outlined" interactive onClick={() => setClicked(c => c + 1)}>
-  <CardHeader>整卡可点击</CardHeader>
-  <CardBody>已点击 {clicked} 次</CardBody>
-</Card>`}
+</CfCard>`}
+  reactCode={`<CfCard variant="outlined" interactive onClick={() => setClicked(c => c + 1)}>
+  <CfCardHeader>整卡可点击</CfCardHeader>
+  <CfCardBody>已点击 {clicked} 次</CfCardBody>
+</CfCard>`}
 >
   <InteractiveVue client:load />
 </DemoFrame>

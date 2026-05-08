@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Radio, RadioGroup } from '@chufix/vue';
+import { CfRadio, CfRadioGroup } from '@chufix/vue';
 
 const a = ref('s');
 const b = ref('m');
@@ -9,17 +9,17 @@ const c = ref('l');
 
 <template>
   <div class="demo-stack">
-    <RadioGroup v-model="a" size="sm">
-      <Radio value="s">Small</Radio>
-      <Radio value="t">Tiny</Radio>
-    </RadioGroup>
-    <RadioGroup v-model="b" size="md">
-      <Radio value="m">Medium</Radio>
-      <Radio value="r">Regular</Radio>
-    </RadioGroup>
-    <RadioGroup v-model="c" size="lg">
-      <Radio value="l">Large</Radio>
-      <Radio value="x">Extra Large</Radio>
-    </RadioGroup>
+    <CfRadioGroup v-model="a" size="sm">
+      <CfRadio value="s">Small</CfRadio>
+      <CfRadio value="t">Tiny</CfRadio>
+    </CfRadioGroup>
+    <CfRadioGroup v-model="b" size="md">
+      <CfRadio value="m">Medium</CfRadio>
+      <CfRadio value="r">Regular</CfRadio>
+    </CfRadioGroup>
+    <CfRadioGroup v-model="c" size="lg">
+      <CfRadio value="l">Large</CfRadio>
+      <CfRadio value="x">Extra Large</CfRadio>
+    </CfRadioGroup>
   </div>
 </template>
