@@ -1,8 +1,8 @@
-/* ChuKit Modal — overlay (full-screen backdrop) + dialog (centered). Animations
+/* ChuFix Modal — overlay (full-screen backdrop) + dialog (centered). Animations
  * are scoped to enter/leave classes both Vue's <Transition> and React's
  * delayed-unmount can map onto. */
 
-.ck-modal__overlay {
+.cf-modal__overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -12,111 +12,111 @@
   padding: 1.5rem;
   background: hsl(222 47% 11% / 0.55);
   backdrop-filter: blur(4px);
-  font-family: var(--ck-font-sans);
+  font-family: var(--cf-font-sans);
   opacity: 1;
-  transition: opacity var(--ck-duration) var(--ck-easing);
+  transition: opacity var(--cf-duration) var(--cf-easing);
 }
 
-.ck-modal__dialog {
+.cf-modal__dialog {
   position: relative;
   width: 100%;
   max-width: 480px;
   max-height: calc(100vh - 3rem);
-  background: hsl(var(--ck-bg));
-  color: hsl(var(--ck-fg));
-  border-radius: var(--ck-radius-lg);
-  box-shadow: var(--ck-shadow-lg);
+  background: hsl(var(--cf-bg));
+  color: hsl(var(--cf-fg));
+  border-radius: var(--cf-radius-lg);
+  box-shadow: var(--cf-shadow-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transition:
-    transform var(--ck-duration) var(--ck-easing),
-    opacity var(--ck-duration) var(--ck-easing);
+    transform var(--cf-duration) var(--cf-easing),
+    opacity var(--cf-duration) var(--cf-easing);
   outline: none;
 }
 
 /* sizes */
-.ck-modal__dialog--sm   { max-width: 360px; }
-.ck-modal__dialog--md   { max-width: 480px; }
-.ck-modal__dialog--lg   { max-width: 640px; }
-.ck-modal__dialog--xl   { max-width: 800px; }
-.ck-modal__dialog--full { max-width: calc(100vw - 3rem); max-height: calc(100vh - 3rem); }
+.cf-modal__dialog--sm   { max-width: 360px; }
+.cf-modal__dialog--md   { max-width: 480px; }
+.cf-modal__dialog--lg   { max-width: 640px; }
+.cf-modal__dialog--xl   { max-width: 800px; }
+.cf-modal__dialog--full { max-width: calc(100vw - 3rem); max-height: calc(100vh - 3rem); }
 
-.ck-modal__header {
+.cf-modal__header {
   padding: 1rem 1.25rem;
   font-weight: 600;
   font-size: 1rem;
-  border-bottom: 1px solid hsl(var(--ck-border));
+  border-bottom: 1px solid hsl(var(--cf-border));
   padding-right: 2.75rem;
 }
 
-.ck-modal__body {
+.cf-modal__body {
   padding: 1rem 1.25rem;
   font-size: 0.9rem;
-  color: hsl(var(--ck-fg));
+  color: hsl(var(--cf-fg));
   line-height: 1.6;
   overflow-y: auto;
 }
 
-.ck-modal__footer {
+.cf-modal__footer {
   padding: 0.85rem 1.25rem;
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  border-top: 1px solid hsl(var(--ck-border));
-  background: hsl(var(--ck-muted) / 0.3);
+  border-top: 1px solid hsl(var(--cf-border));
+  background: hsl(var(--cf-muted) / 0.3);
 }
 
-.ck-modal__close {
+.cf-modal__close {
   position: absolute;
   top: 0.65rem;
   right: 0.7rem;
   appearance: none;
   border: 0;
   background: transparent;
-  color: hsl(var(--ck-muted-fg));
+  color: hsl(var(--cf-muted-fg));
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: var(--ck-radius-sm);
+  border-radius: var(--cf-radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background-color 120ms, color 120ms;
 }
-.ck-modal__close:hover {
-  background: hsl(var(--ck-muted));
-  color: hsl(var(--ck-fg));
+.cf-modal__close:hover {
+  background: hsl(var(--cf-muted));
+  color: hsl(var(--cf-fg));
 }
-.ck-modal__close svg { width: 1rem; height: 1rem; }
+.cf-modal__close svg { width: 1rem; height: 1rem; }
 
-/* enter/leave — used by both Vue <Transition name="ck-modal"> and React class toggling */
-.ck-modal-enter-from,
-.ck-modal-leave-to {
+/* enter/leave — used by both Vue <Transition name="cf-modal"> and React class toggling */
+.cf-modal-enter-from,
+.cf-modal-leave-to {
   opacity: 0;
 }
-.ck-modal-enter-from .ck-modal__dialog,
-.ck-modal-leave-to .ck-modal__dialog {
+.cf-modal-enter-from .cf-modal__dialog,
+.cf-modal-leave-to .cf-modal__dialog {
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }
-.ck-modal-enter-active,
-.ck-modal-leave-active {
-  transition: opacity var(--ck-duration) var(--ck-easing);
+.cf-modal-enter-active,
+.cf-modal-leave-active {
+  transition: opacity var(--cf-duration) var(--cf-easing);
 }
-.ck-modal-enter-active .ck-modal__dialog,
-.ck-modal-leave-active .ck-modal__dialog {
+.cf-modal-enter-active .cf-modal__dialog,
+.cf-modal-leave-active .cf-modal__dialog {
   transition:
-    transform var(--ck-duration) var(--ck-easing),
-    opacity var(--ck-duration) var(--ck-easing);
+    transform var(--cf-duration) var(--cf-easing),
+    opacity var(--cf-duration) var(--cf-easing);
 }
 
 /* React-friendly: data-state="open" / "closed" toggles the same transitions */
-[data-ck-modal][data-state='closed'] {
+[data-cf-modal][data-state='closed'] {
   opacity: 0;
   pointer-events: none;
 }
-[data-ck-modal][data-state='closed'] .ck-modal__dialog {
+[data-cf-modal][data-state='closed'] .cf-modal__dialog {
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }

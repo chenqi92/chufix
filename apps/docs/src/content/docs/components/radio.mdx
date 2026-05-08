@@ -1,20 +1,21 @@
 ---
 title: Radio 单选框
-description: ChuKit 的单选框 —— Radio + RadioGroup 组合，单选互斥、键盘可达。
+description: 单选框 —— Radio + RadioGroup 组合，单选互斥、键盘可达。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/radio/BasicVue.vue';
-import BasicReact from '~/components/demos/radio/BasicReact.tsx';
+import DirectionVue from '~/components/demos/radio/DirectionVue.vue';
+import SizesVue from '~/components/demos/radio/SizesVue.vue';
 
 ## 基础用法
 
-`RadioGroup` 通过 `provide` / `Context` 把 `value`、`name`、`size`、`disabled` 注入到子项；任一子项被选中时回调 `update:modelValue` / `onChange`。
+`RadioGroup` 通过 `provide` / `Context` 把 `value`、`name`、`size`、`disabled` 注入到子项。任一子项被选中时回调 `update:modelValue` / `onChange`。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Radio, RadioGroup } from '@chukit/vue';
+import { Radio, RadioGroup } from '@chufix/vue';
 
 const plan = ref<'free' | 'pro' | 'team'>('pro');
 </script>
@@ -25,55 +26,81 @@ const plan = ref<'free' | 'pro' | 'team'>('pro');
     <Radio value="pro">Pro</Radio>
     <Radio value="team">Team</Radio>
   </RadioGroup>
-
-  <RadioGroup v-model="plan" direction="column">
-    <Radio value="free">竖直方向</Radio>
-    <Radio value="pro" disabled>禁用项</Radio>
-  </RadioGroup>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Radio, RadioGroup } from '@chukit/react';
+import { Radio, RadioGroup } from '@chufix/react';
 
 export default function Demo() {
   const [plan, setPlan] = useState<'free' | 'pro' | 'team'>('pro');
-
   return (
-    <>
-      <RadioGroup value={plan} name="plan" onChange={(v) => setPlan(v as any)}>
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
-        <Radio value="team">Team</Radio>
-      </RadioGroup>
-
-      <RadioGroup value={plan} direction="column" onChange={(v) => setPlan(v as any)}>
-        <Radio value="free">竖直方向</Radio>
-        <Radio value="pro" disabled>禁用项</Radio>
-      </RadioGroup>
-    </>
+    <RadioGroup value={plan} name="plan" onChange={(v) => setPlan(v as any)}>
+      <Radio value="free">Free</Radio>
+      <Radio value="pro">Pro</Radio>
+      <Radio value="team">Team</Radio>
+    </RadioGroup>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## RadioGroup Props
+## 排列方向
 
-| 名称        | 类型                                   | 默认值  | 说明                          |
-| ----------- | -------------------------------------- | ------- | ----------------------------- |
-| `value`     | `string \| number \| boolean \| null`  | `null`  | 当前选中值                    |
-| `name`      | `string`                               | —       | 透传给底层 input 用于表单提交 |
-| `size`      | `'sm' \| 'md' \| 'lg'`                 | `'md'`  | 整组尺寸                      |
-| `disabled`  | `boolean`                              | `false` | 整组禁用                      |
-| `direction` | `'row' \| 'column'`                    | `'row'` | 排列方向                      |
+`direction="column"` 把选项垂直排开。在选项较多或文案较长时使用。
 
-## Radio Props
+<DemoFrame
+  vueCode={`<RadioGroup v-model="flavor" direction="column">
+  <Radio value="vanilla">香草</Radio>
+  <Radio value="chocolate">巧克力</Radio>
+  <Radio value="strawberry" disabled>草莓（缺货）</Radio>
+  <Radio value="matcha">抹茶</Radio>
+</RadioGroup>`}
+  reactCode={`<RadioGroup value={flavor} direction="column" onChange={setFlavor}>
+  <Radio value="vanilla">香草</Radio>
+  <Radio value="chocolate">巧克力</Radio>
+  <Radio value="strawberry" disabled>草莓（缺货）</Radio>
+  <Radio value="matcha">抹茶</Radio>
+</RadioGroup>`}
+>
+  <DirectionVue client:load />
+</DemoFrame>
 
-| 名称       | 类型                                  | 默认值  | 说明                                    |
+## 尺寸
+
+`size` 设在 `RadioGroup` 上，注入给所有子项。
+
+<DemoFrame
+  vueCode={`<RadioGroup size="sm" v-model="a">
+  <Radio value="s">Small</Radio>
+  <Radio value="t">Tiny</Radio>
+</RadioGroup>
+<RadioGroup size="md" v-model="b">…</RadioGroup>
+<RadioGroup size="lg" v-model="c">…</RadioGroup>`}
+  reactCode={`<RadioGroup size="sm" value={a} onChange={setA}>
+  <Radio value="s">Small</Radio>
+  <Radio value="t">Tiny</Radio>
+</RadioGroup>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+### RadioGroup
+
+| Prop        | 类型                                  | 默认值  | 说明                          |
+| ----------- | ------------------------------------- | ------- | ----------------------------- |
+| `value`     | `string \| number \| boolean \| null` | `null`  | 当前选中值                    |
+| `name`      | `string`                              | —       | 透传给底层 input 用于表单提交 |
+| `size`      | `'sm' \| 'md' \| 'lg'`                | `'md'`  | 整组尺寸                      |
+| `disabled`  | `boolean`                             | `false` | 整组禁用                      |
+| `direction` | `'row' \| 'column'`                   | `'row'` | 排列方向                      |
+
+### Radio
+
+| Prop       | 类型                                  | 默认值  | 说明                                    |
 | ---------- | ------------------------------------- | ------- | --------------------------------------- |
 | `value`    | `string \| number \| boolean \| null` | —       | 单项的值                                |
 | `disabled` | `boolean`                             | `false` | 单独禁用此项（叠加 RadioGroup.disabled）|
 
-## 独立使用
-
-`Radio` 也可以脱离 `RadioGroup` 独立使用，此时通过 `v-model` / `checked + onChange` 自行管理状态。
+> Radio 也可以脱离 RadioGroup 独立使用，自行管理 `v-model` / `checked + onChange`。

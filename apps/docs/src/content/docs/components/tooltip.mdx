@@ -1,63 +1,91 @@
 ---
 title: Tooltip 文字提示
-description: ChuKit 的轻量浮层提示 —— 4 种 placement、自动避让边缘、hover/focus 双触发。
+description: 轻量浮层提示 —— 4 种 placement、自动避让视口边缘、hover/focus 双触发。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tooltip/BasicVue.vue';
-import BasicReact from '~/components/demos/tooltip/BasicReact.tsx';
+import PlacementsVue from '~/components/demos/tooltip/PlacementsVue.vue';
+import AdvancedVue from '~/components/demos/tooltip/AdvancedVue.vue';
 
 ## 基础用法
 
-包裹任意触发元素，鼠标悬停或键盘聚焦时显示。Tooltip 通过 Teleport / Portal 渲染到 `<body>`，不受父容器 `overflow` 影响。当首选方向放不下时，会自动翻到对侧。
+包裹任意触发元素。鼠标悬停或键盘聚焦时显示，鼠标移出或失焦时隐藏。Tooltip 通过 Teleport / Portal 渲染到 `<body>`，不受父容器 `overflow` 影响。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Button, Tooltip } from '@chukit/vue';
+import { Button, Tooltip } from '@chufix/vue';
 </script>
 
 <template>
-  <Tooltip content="顶部 Tooltip · 默认 placement">
-    <Button variant="outline">Top</Button>
-  </Tooltip>
-  <Tooltip content="底部 Tooltip" placement="bottom">
-    <Button variant="outline">Bottom</Button>
-  </Tooltip>
-  <Tooltip content="左侧 Tooltip" placement="left">
-    <Button variant="outline">Left</Button>
-  </Tooltip>
-  <Tooltip content="右侧 Tooltip" placement="right">
-    <Button variant="outline">Right</Button>
+  <Tooltip content="鼠标悬停或键盘聚焦都会显示">
+    <Button variant="outline">悬停我</Button>
   </Tooltip>
 </template>`}
-  reactCode={`import { Button, Tooltip } from '@chukit/react';
+  reactCode={`import { Button, Tooltip } from '@chufix/react';
 
 export default function Demo() {
   return (
-    <>
-      <Tooltip content="顶部 Tooltip · 默认 placement">
-        <Button variant="outline">Top</Button>
-      </Tooltip>
-      <Tooltip content="底部 Tooltip" placement="bottom">
-        <Button variant="outline">Bottom</Button>
-      </Tooltip>
-      <Tooltip content="左侧 Tooltip" placement="left">
-        <Button variant="outline">Left</Button>
-      </Tooltip>
-      <Tooltip content="右侧 Tooltip" placement="right">
-        <Button variant="outline">Right</Button>
-      </Tooltip>
-    </>
+    <Tooltip content="鼠标悬停或键盘聚焦都会显示">
+      <Button variant="outline">悬停我</Button>
+    </Tooltip>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## Props
+## 4 种方向
 
-| 名称        | 类型                                       | 默认值  | 说明                                |
+`placement` 控制首选方向。当首选方向放不下（贴近视口边缘）时，会自动翻到对侧。
+
+<DemoFrame
+  vueCode={`<Tooltip content="顶部" placement="top"><Button>Top</Button></Tooltip>
+<Tooltip content="底部" placement="bottom"><Button>Bottom</Button></Tooltip>
+<Tooltip content="左侧" placement="left"><Button>Left</Button></Tooltip>
+<Tooltip content="右侧" placement="right"><Button>Right</Button></Tooltip>`}
+  reactCode={`<Tooltip content="顶部" placement="top"><Button>Top</Button></Tooltip>
+<Tooltip content="底部" placement="bottom"><Button>Bottom</Button></Tooltip>
+<Tooltip content="左侧" placement="left"><Button>Left</Button></Tooltip>
+<Tooltip content="右侧" placement="right"><Button>Right</Button></Tooltip>`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
+## 延迟与长文本
+
+`delay` 控制显示前的等待时间（毫秒）。`maxWidth` 限制最大宽度，超出换行。
+
+<DemoFrame
+  vueCode={`<Tooltip content="0 延迟" :delay="0">
+  <Button>无延迟</Button>
+</Tooltip>
+
+<Tooltip content="500ms" :delay="500">
+  <Button>500ms</Button>
+</Tooltip>
+
+<Tooltip content="内容比较长，会自动换行..." :max-width="220">
+  <Button>长文本</Button>
+</Tooltip>`}
+  reactCode={`<Tooltip content="0 延迟" delay={0}>
+  <Button>无延迟</Button>
+</Tooltip>
+
+<Tooltip content="500ms" delay={500}>
+  <Button>500ms</Button>
+</Tooltip>
+
+<Tooltip content="内容比较长，会自动换行..." maxWidth={220}>
+  <Button>长文本</Button>
+</Tooltip>`}
+>
+  <AdvancedVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop        | 类型                                       | 默认值  | 说明                                |
 | ----------- | ------------------------------------------ | ------- | ----------------------------------- |
 | `content`   | `string`（Vue）/ `ReactNode`（React）      | —       | 浮层内容；Vue 还可用 `#content` 插槽 |
 | `placement` | `'top' \| 'bottom' \| 'left' \| 'right'`   | `'top'` | 首选方向，溢出时自动翻转到对侧      |
@@ -66,9 +94,3 @@ export default function Demo() {
 | `disabled`  | `boolean`                                  | `false` | 完全不显示                          |
 | `offset`    | `number`                                   | `8`     | 触发器与浮层之间的间距（像素）      |
 | `maxWidth`  | `number \| string`                         | —       | 限制最大宽度，超出换行              |
-
-## 实现要点
-
-- **触发器包裹**：组件渲染一个 `<span>` 包住 children，监听 `mouseenter` / `mouseleave` / `focusin` / `focusout`。
-- **位置计算**：`getBoundingClientRect()` 拿触发器位置，再读浮层尺寸，按 placement 算 `top/left`，最后用视口边界做 clamp + 翻转。
-- **不阻塞鼠标**：浮层 `pointer-events: none`，鼠标可以穿透继续操作下方元素。

@@ -44,7 +44,7 @@ const selected = computed(() =>
 
 function focusActive() {
   nextTick(() => {
-    const el = listRef.value?.querySelectorAll<HTMLElement>('.ck-select__option')[
+    const el = listRef.value?.querySelectorAll<HTMLElement>('.cf-select__option')[
       activeIndex.value
     ];
     el?.scrollIntoView({ block: 'nearest' });
@@ -136,39 +136,39 @@ onBeforeUnmount(() => {
   <div ref="rootRef" :class="cls">
     <button
       type="button"
-      class="ck-select__trigger"
+      class="cf-select__trigger"
       :disabled="disabled"
       :aria-haspopup="'listbox'"
       :aria-expanded="open"
       @click="open ? closeMenu() : openMenu()"
       @keydown="onKeydown"
     >
-      <span class="ck-select__value">
+      <span class="cf-select__value">
         <template v-if="selected">{{ selected.label }}</template>
-        <span v-else class="ck-select__placeholder">{{ placeholder }}</span>
+        <span v-else class="cf-select__placeholder">{{ placeholder }}</span>
       </span>
       <span
         v-if="clearable && selected && !disabled"
-        class="ck-select__clear"
+        class="cf-select__clear"
         role="button"
         tabindex="-1"
         aria-label="清除"
         @click="clear"
       >×</span>
-      <svg class="ck-select__caret" viewBox="0 0 16 16" aria-hidden="true">
+      <svg class="cf-select__caret" viewBox="0 0 16 16" aria-hidden="true">
         <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </button>
     <ul
       v-if="open"
       ref="listRef"
-      class="ck-select__menu"
+      class="cf-select__menu"
       role="listbox"
     >
       <li
         v-for="(opt, i) in options"
         :key="String(opt.value)"
-        class="ck-select__option"
+        class="cf-select__option"
         :class="{
           'is-active': i === activeIndex,
           'is-selected': opt.value === modelValue,
@@ -182,7 +182,7 @@ onBeforeUnmount(() => {
         {{ opt.label }}
         <svg
           v-if="opt.value === modelValue"
-          class="ck-select__check"
+          class="cf-select__check"
           viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
           <path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </li>
-      <li v-if="!options.length" class="ck-select__empty">无选项</li>
+      <li v-if="!options.length" class="cf-select__empty">无选项</li>
     </ul>
   </div>
 </template>

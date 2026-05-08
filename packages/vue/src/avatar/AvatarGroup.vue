@@ -10,12 +10,12 @@ const props = withDefaults(defineProps<AvatarGroupProps>(), {
 });
 
 const groupStyle = computed(() => ({
-  '--ck-avatar-spacing': `${props.spacing}px`,
+  '--cf-avatar-spacing': `${props.spacing}px`,
 }));
 </script>
 
 <template>
-  <span class="ck-avatar-group" :style="groupStyle">
+  <span class="cf-avatar-group" :style="groupStyle">
     <slot />
   </span>
 </template>

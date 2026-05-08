@@ -31,11 +31,11 @@ export function tagClass(p: {
   className?: string;
 }): string {
   return [
-    'ck-tag',
-    `ck-tag--${p.variant}`,
-    `ck-tag--${p.size}`,
-    `ck-tag--${p.tone}`,
-    p.rounded && 'ck-tag--rounded',
+    'cf-tag',
+    `cf-tag--${p.variant}`,
+    `cf-tag--${p.size}`,
+    `cf-tag--${p.tone}`,
+    p.rounded && 'cf-tag--rounded',
     p.className,
   ]
     .filter(Boolean)

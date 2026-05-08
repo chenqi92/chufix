@@ -71,7 +71,7 @@ const overLimit = computed(() =>
   <div :class="cls">
     <textarea
       ref="taRef"
-      class="ck-textarea__el"
+      class="cf-textarea__el"
       :value="modelValue"
       :rows="rows"
       :placeholder="placeholder"
@@ -86,7 +86,7 @@ const overLimit = computed(() =>
       @focus="(ev) => { focused = true; emit('focus', ev); }"
       @blur="(ev) => { focused = false; emit('blur', ev); }"
     />
-    <div v-if="showCount" class="ck-textarea__count" :class="{ 'is-over': overLimit }">
+    <div v-if="showCount" class="cf-textarea__count" :class="{ 'is-over': overLimit }">
       {{ count }}<template v-if="maxlength != null"> / {{ maxlength }}</template>
     </div>
   </div>

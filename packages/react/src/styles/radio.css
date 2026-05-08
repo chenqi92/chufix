@@ -1,13 +1,13 @@
-/* ChuKit Radio + RadioGroup */
-.ck-radio-group {
+/* ChuFix Radio + RadioGroup */
+.cf-radio-group {
   display: inline-flex;
   gap: 0.85rem 1.25rem;
   flex-wrap: wrap;
 }
-.ck-radio-group--row    { flex-direction: row; }
-.ck-radio-group--column { flex-direction: column; }
+.cf-radio-group--row    { flex-direction: row; }
+.cf-radio-group--column { flex-direction: column; }
 
-.ck-radio {
+.cf-radio {
   --_size: 1.05rem;
   --_dot:  0.5rem;
 
@@ -15,20 +15,20 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--ck-font-sans);
+  font-family: var(--cf-font-sans);
   font-size: 0.875rem;
-  color: hsl(var(--ck-fg));
+  color: hsl(var(--cf-fg));
   cursor: pointer;
   user-select: none;
   line-height: 1.4;
 }
-.ck-radio.is-disabled { cursor: not-allowed; opacity: 0.55; }
+.cf-radio.is-disabled { cursor: not-allowed; opacity: 0.55; }
 
-.ck-radio--sm { --_size: 0.9rem;  --_dot: 0.4rem;  font-size: 0.8125rem; }
-.ck-radio--md { --_size: 1.05rem; --_dot: 0.5rem;  font-size: 0.875rem; }
-.ck-radio--lg { --_size: 1.25rem; --_dot: 0.6rem;  font-size: 0.95rem; }
+.cf-radio--sm { --_size: 0.9rem;  --_dot: 0.4rem;  font-size: 0.8125rem; }
+.cf-radio--md { --_size: 1.05rem; --_dot: 0.5rem;  font-size: 0.875rem; }
+.cf-radio--lg { --_size: 1.25rem; --_dot: 0.6rem;  font-size: 0.95rem; }
 
-.ck-radio__input {
+.cf-radio__input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -40,21 +40,21 @@
   border: 0;
 }
 
-.ck-radio__dot {
+.cf-radio__dot {
   position: relative;
   display: inline-block;
   width: var(--_size);
   height: var(--_size);
-  background: hsl(var(--ck-bg));
-  border: 1px solid hsl(var(--ck-border));
+  background: hsl(var(--cf-bg));
+  border: 1px solid hsl(var(--cf-border));
   border-radius: 50%;
   flex: none;
   transition:
-    background-color var(--ck-duration) var(--ck-easing),
-    border-color var(--ck-duration) var(--ck-easing),
-    box-shadow var(--ck-duration) var(--ck-easing);
+    background-color var(--cf-duration) var(--cf-easing),
+    border-color var(--cf-duration) var(--cf-easing),
+    box-shadow var(--cf-duration) var(--cf-easing);
 }
-.ck-radio__dot::after {
+.cf-radio__dot::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -62,27 +62,27 @@
   width: var(--_dot);
   height: var(--_dot);
   border-radius: 50%;
-  background: hsl(var(--ck-bg));
+  background: hsl(var(--cf-bg));
   opacity: 0;
   transform: scale(0.4);
   transition:
-    opacity var(--ck-duration) var(--ck-easing),
-    transform var(--ck-duration) var(--ck-easing);
+    opacity var(--cf-duration) var(--cf-easing),
+    transform var(--cf-duration) var(--cf-easing);
 }
 
-.ck-radio__input:checked + .ck-radio__dot {
-  background: hsl(var(--ck-primary));
-  border-color: hsl(var(--ck-primary));
+.cf-radio__input:checked + .cf-radio__dot {
+  background: hsl(var(--cf-primary));
+  border-color: hsl(var(--cf-primary));
 }
-.ck-radio__input:checked + .ck-radio__dot::after {
+.cf-radio__input:checked + .cf-radio__dot::after {
   opacity: 1;
   transform: scale(1);
 }
 
-.ck-radio__input:focus-visible + .ck-radio__dot {
-  box-shadow: 0 0 0 3px hsl(var(--ck-ring) / 0.35);
+.cf-radio__input:focus-visible + .cf-radio__dot {
+  box-shadow: 0 0 0 3px hsl(var(--cf-ring) / 0.35);
 }
-.ck-radio:hover:not(.is-disabled) .ck-radio__dot {
-  border-color: hsl(var(--ck-primary));
+.cf-radio:hover:not(.is-disabled) .cf-radio__dot {
+  border-color: hsl(var(--cf-primary));
 }
-.ck-radio__label { display: inline-block; }
+.cf-radio__label { display: inline-block; }

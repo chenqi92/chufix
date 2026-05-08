@@ -26,13 +26,13 @@ importers:
       '@astrojs/vue':
         specifier: ^4.5.3
         version: 4.5.3(@types/node@24.12.2)(astro@4.16.19(@types/node@24.12.2)(rollup@4.60.3)(typescript@5.9.3))(rollup@4.60.3)(vue@3.5.34(typescript@5.9.3))
-      '@chukit/react':
+      '@chufix/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@chukit/tokens':
+      '@chufix/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@chukit/vue':
+      '@chufix/vue':
         specifier: workspace:*
         version: link:../../packages/vue
       astro:
@@ -63,7 +63,7 @@ importers:
 
   packages/react:
     dependencies:
-      '@chukit/tokens':
+      '@chufix/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -90,7 +90,7 @@ importers:
 
   packages/vue:
     dependencies:
-      '@chukit/tokens':
+      '@chufix/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:

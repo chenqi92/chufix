@@ -1,15 +1,15 @@
-/* ChuKit Badge — standalone pill or absolutely-placed corner indicator. */
-.ck-badge-inline {
+/* ChuFix Badge — standalone pill or absolutely-placed corner indicator. */
+.cf-badge-inline {
   display: inline-flex;
   align-items: center;
 }
-.ck-badge-wrap {
+.cf-badge-wrap {
   position: relative;
   display: inline-flex;
   vertical-align: middle;
 }
 
-.ck-badge {
+.cf-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -18,15 +18,15 @@
   padding: 0 0.4rem;
   font-size: 0.7rem;
   font-weight: 600;
-  font-family: var(--ck-font-sans);
+  font-family: var(--cf-font-sans);
   line-height: 1;
   color: #fff;
-  border-radius: var(--ck-radius-pill);
-  background: hsl(var(--ck-danger));
+  border-radius: var(--cf-radius-pill);
+  background: hsl(var(--cf-danger));
   white-space: nowrap;
   user-select: none;
 }
-.ck-badge--dot {
+.cf-badge--dot {
   width: 0.55rem;
   height: 0.55rem;
   min-width: 0;
@@ -35,23 +35,23 @@
 }
 
 /* tone fills */
-.ck-badge--neutral { background: hsl(var(--ck-fg));      color: hsl(var(--ck-bg)); }
-.ck-badge--primary { background: hsl(var(--ck-primary)); color: hsl(var(--ck-primary-fg)); }
-.ck-badge--success { background: hsl(var(--ck-success)); color: #fff; }
-.ck-badge--warning { background: hsl(var(--ck-warning)); color: hsl(35 90% 12%); }
-.ck-badge--danger  { background: hsl(var(--ck-danger));  color: #fff; }
-.ck-badge--info    { background: hsl(199 89% 48%);       color: #fff; }
+.cf-badge--neutral { background: hsl(var(--cf-fg));      color: hsl(var(--cf-bg)); }
+.cf-badge--primary { background: hsl(var(--cf-primary)); color: hsl(var(--cf-primary-fg)); }
+.cf-badge--success { background: hsl(var(--cf-success)); color: #fff; }
+.cf-badge--warning { background: hsl(var(--cf-warning)); color: hsl(35 90% 12%); }
+.cf-badge--danger  { background: hsl(var(--cf-danger));  color: #fff; }
+.cf-badge--info    { background: hsl(199 89% 48%);       color: #fff; }
 
 /* placed corner mode */
-.ck-badge--placed {
+.cf-badge--placed {
   position: absolute;
   z-index: 1;
-  border: 2px solid hsl(var(--ck-bg));
+  border: 2px solid hsl(var(--cf-bg));
   box-sizing: content-box;
 }
-.ck-badge--placed.ck-badge--dot { border-width: 1.5px; }
+.cf-badge--placed.cf-badge--dot { border-width: 1.5px; }
 
-.ck-badge--top-right    { top: 0; right: 0; transform: translate(50%, -50%); }
-.ck-badge--top-left     { top: 0; left:  0; transform: translate(-50%, -50%); }
-.ck-badge--bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
-.ck-badge--bottom-left  { bottom: 0; left:  0; transform: translate(-50%, 50%); }
+.cf-badge--top-right    { top: 0; right: 0; transform: translate(50%, -50%); }
+.cf-badge--top-left     { top: 0; left:  0; transform: translate(-50%, -50%); }
+.cf-badge--bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
+.cf-badge--bottom-left  { bottom: 0; left:  0; transform: translate(-50%, 50%); }

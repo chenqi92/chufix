@@ -1,4 +1,4 @@
-import '@chukit/tokens/tokens.css';
+import '@chufix/tokens/tokens.css';
 import './styles/button.css';
 import './styles/input.css';
 import './styles/card.css';

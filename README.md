@@ -1,15 +1,15 @@
-# ChuKit UI · 础件
+# ChuFix UI · 础件
 
-> 初见即用的基础组件库 —— Vue 3 与 React 同源、CSS 变量可主题、shadcn 风格可复制。
+> 初见即用的基础组件库 —— Vue 3 与 React 同源、CSS 变量可主题、可拷源码到项目。
 
 ## 目录结构
 
 ```
-chukit/
+chufix/
 ├── packages/
-│   ├── tokens/      @chukit/tokens   设计 token（CSS 变量 + 可选 Tailwind preset）
-│   ├── vue/         @chukit/vue      Vue 3 组件包
-│   └── react/       @chukit/react    React 组件包
+│   ├── tokens/      @chufix/tokens   设计 token（CSS 变量 + 可选 Tailwind preset）
+│   ├── vue/         @chufix/vue      Vue 3 组件包
+│   └── react/       @chufix/react    React 组件包
 └── apps/
     └── docs/        Astro + Starlight 文档站（同页面跑 Vue + React 实例）
 ```
@@ -19,7 +19,7 @@ chukit/
 需要 Node 18+ 和 pnpm 9+。
 
 ```bash
-cd chukit
+cd chufix
 pnpm install
 
 # 一键启动：先把组件包打到 dist，再开文档站
@@ -47,11 +47,11 @@ pnpm dev:docs
 通过 `pnpm link` 或 `npm link`：
 
 ```bash
-# 在 chukit/packages/vue 下
+# 在 chufix/packages/vue 下
 pnpm link --global
 
 # 在你的外部 Vue 项目里
-pnpm link --global @chukit/vue
+pnpm link --global @chufix/vue
 ```
 
 或用 `file:` 协议指向 dist：
@@ -60,7 +60,7 @@ pnpm link --global @chukit/vue
 // 你的项目 package.json
 {
   "dependencies": {
-    "@chukit/vue": "file:../base-compoent/chukit/packages/vue"
+    "@chufix/vue": "file:../base-compoent/chufix/packages/vue"
   }
 }
 ```
@@ -69,7 +69,7 @@ pnpm link --global @chukit/vue
 
 - [x] Button（Vue + React + 文档双 demo）
 - [ ] Input / Card / Modal / Switch / Tabs
-- [ ] `npx chukit add <component>` CLI（shadcn 风格源码拷贝）
+- [ ] `npx chufix add <component>` CLI（源码拷贝模式）
 - [ ] 暗色模式切换器
 - [ ] Form / Select / Tooltip / Dropdown
 - [ ] 发布到 npm

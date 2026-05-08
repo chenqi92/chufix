@@ -1,7 +1,7 @@
 {
-  "name": "@chukit/tokens",
+  "name": "@chufix/tokens",
   "version": "0.0.1",
-  "description": "ChuKit UI 设计 token —— CSS 变量与可选 Tailwind preset",
+  "description": "ChuFix UI 设计 token —— CSS 变量与可选 Tailwind preset",
   "type": "module",
   "files": [
     "src",

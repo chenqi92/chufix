@@ -1,81 +1,110 @@
 ---
 title: Card 卡片
-description: ChuKit 的卡片容器 —— 三种 variant、可交互态、Header / Body / Footer 三段式结构。
+description: 卡片容器 —— 3 种 variant、可交互整卡、Header / Body / Footer 三段式结构。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/card/BasicVue.vue';
-import BasicReact from '~/components/demos/card/BasicReact.tsx';
+import VariantsVue from '~/components/demos/card/VariantsVue.vue';
+import SectionsVue from '~/components/demos/card/SectionsVue.vue';
+import InteractiveVue from '~/components/demos/card/InteractiveVue.vue';
 
 ## 基础用法
 
-Vue 用具名插槽 `header` / `footer` + 默认插槽作为 body；React 用 `CardHeader` / `CardBody` / `CardFooter` 子组件组合 —— 两种风格映射到同一套 CSS。
+最简的 Card 只渲染默认插槽（Vue）/ children（React），用于包裹一段内容并加边框。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Card, Button } from '@chukit/vue';
+import { Card } from '@chufix/vue';
 </script>
 
 <template>
-  <Card variant="outlined">
-    <template #header>Outlined</template>
-    默认边框 + 微弱阴影。
-    <template #footer>
-      <Button size="sm" variant="ghost">取消</Button>
-      <Button size="sm">确认</Button>
-    </template>
-  </Card>
-
-  <Card variant="elevated">
-    <template #header>Elevated</template>
-    去掉边框、提升阴影。
-  </Card>
-
-  <Card variant="filled" interactive @click="onClick">
-    <template #header>Filled · 可点击</template>
-    整张卡片作为入口。
+  <Card>
+    <p>最简卡片，只渲染默认插槽。</p>
   </Card>
 </template>`}
-  reactCode={`import { Card, CardHeader, CardBody, CardFooter, Button } from '@chukit/react';
+  reactCode={`import { Card } from '@chufix/react';
 
 export default function Demo() {
   return (
-    <>
-      <Card variant="outlined">
-        <CardHeader>Outlined</CardHeader>
-        <CardBody>默认边框 + 微弱阴影。</CardBody>
-        <CardFooter>
-          <Button size="sm" variant="ghost">取消</Button>
-          <Button size="sm">确认</Button>
-        </CardFooter>
-      </Card>
-
-      <Card variant="elevated">
-        <CardHeader>Elevated</CardHeader>
-        <CardBody>去掉边框、提升阴影。</CardBody>
-      </Card>
-
-      <Card variant="filled" interactive onClick={onClick}>
-        <CardHeader>Filled · 可点击</CardHeader>
-        <CardBody>整张卡片作为入口。</CardBody>
-      </Card>
-    </>
+    <Card>
+      <p>最简卡片，只渲染 children。</p>
+    </Card>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## Props
+## 视觉变体
 
-| 名称          | 类型                                       | 默认值        | 说明                            |
-| ------------- | ------------------------------------------ | ------------- | ------------------------------- |
-| `variant`     | `'elevated' \| 'outlined' \| 'filled'`     | `'outlined'`  | 视觉变体                        |
-| `interactive` | `boolean`                                  | `false`       | 整卡可点击 + hover 上浮 + 焦点态 |
-| `as` *(Vue)*  | `string`                                   | `'div'`       | 渲染为指定标签                  |
+3 种 variant 在不同信息层级使用：`outlined`（默认描边）/ `elevated`（带阴影）/ `filled`（浅灰填充）。
 
-## 组合方式
+<DemoFrame
+  vueCode={`<Card variant="outlined">…</Card>
+<Card variant="elevated">…</Card>
+<Card variant="filled">…</Card>`}
+  reactCode={`<Card variant="outlined">…</Card>
+<Card variant="elevated">…</Card>
+<Card variant="filled">…</Card>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
 
-- **Vue**：`<template #header>` / 默认插槽 / `<template #footer>`，三段都可省略。
-- **React**：`<CardHeader>` / `<CardBody>` / `<CardFooter>` 任意组合，未使用的段落不渲染。
+## 三段式结构
+
+Vue 用具名插槽 `header` / `footer`，React 用子组件 `CardHeader` / `CardBody` / `CardFooter`。任意一段都可省略。
+
+<DemoFrame
+  vueCode={`<Card variant="elevated">
+  <template #header>项目设置</template>
+  <p>这是一段卡片正文。</p>
+  <template #footer>
+    <Button size="sm" variant="outline">取消</Button>
+    <Button size="sm">保存</Button>
+  </template>
+</Card>`}
+  reactCode={`import { Button, Card, CardHeader, CardBody, CardFooter } from '@chufix/react';
+
+export default function Demo() {
+  return (
+    <Card variant="elevated">
+      <CardHeader>项目设置</CardHeader>
+      <CardBody>
+        <p>这是一段卡片正文。</p>
+      </CardBody>
+      <CardFooter>
+        <Button size="sm" variant="outline">取消</Button>
+        <Button size="sm">保存</Button>
+      </CardFooter>
+    </Card>
+  );
+}`}
+>
+  <SectionsVue client:load />
+</DemoFrame>
+
+## 整卡可点击
+
+打开 `interactive` 后，整张卡片变成按钮 —— 自动加 `role="button"` + `tabindex="0"`，键盘 Enter 可触发 `click`。
+
+<DemoFrame
+  vueCode={`<Card variant="outlined" interactive @click="clicked++">
+  <template #header>整卡可点击</template>
+  <p>已点击 {{ clicked }} 次</p>
+</Card>`}
+  reactCode={`<Card variant="outlined" interactive onClick={() => setClicked(c => c + 1)}>
+  <CardHeader>整卡可点击</CardHeader>
+  <CardBody>已点击 {clicked} 次</CardBody>
+</Card>`}
+>
+  <InteractiveVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | 类型                                         | 默认值       | 说明                            |
+| ------------- | -------------------------------------------- | ------------ | ------------------------------- |
+| `variant`     | `'outlined' \| 'elevated' \| 'filled'`       | `'outlined'` | 视觉变体                        |
+| `interactive` | `boolean`                                    | `false`      | 整卡变成按钮（focus / hover）   |
+| `as`          | `string`（Vue）                              | `'div'`      | 渲染的 HTML tag                 |

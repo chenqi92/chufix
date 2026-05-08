@@ -1,93 +1,112 @@
 ---
 title: Modal 弹窗
-description: ChuKit 的弹窗组件 —— 内置 portal、focus trap、滚动锁、ESC/遮罩关闭、进出动画。
+description: 弹窗 —— 内置 portal、focus trap、滚动锁、ESC / 遮罩关闭、进出动画。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/modal/BasicVue.vue';
-import BasicReact from '~/components/demos/modal/BasicReact.tsx';
+import SizesVue from '~/components/demos/modal/SizesVue.vue';
+import BehaviorVue from '~/components/demos/modal/BehaviorVue.vue';
 
 ## 基础用法
 
-打开 Modal 后试试：**Tab / Shift+Tab 焦点环绕在弹窗内**，**ESC 关闭并把焦点送回触发按钮**，**body 滚动被锁住**。
+`v-model:open` / `open + onOpenChange` 双向绑定。组件内部自动处理：portal 到 body、focus trap、body 滚动锁、Esc 关闭、遮罩关闭、进出 fade + scale 动画。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Modal, Input } from '@chukit/vue';
+import { Button, Modal } from '@chufix/vue';
 
 const open = ref(false);
-const name = ref('');
 </script>
 
 <template>
   <Button @click="open = true">打开 Modal</Button>
-
-  <Modal v-model:open="open" title="新建项目">
-    <Input v-model="name" placeholder="项目名" autofocus />
+  <Modal v-model:open="open" title="确认操作">
+    <p>这是一个最简弹窗。</p>
     <template #footer>
       <Button variant="ghost" @click="open = false">取消</Button>
-      <Button @click="open = false">创建</Button>
+      <Button @click="open = false">确定</Button>
     </template>
   </Modal>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Button, Modal, Input } from '@chukit/react';
+import { Button, Modal } from '@chufix/react';
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-
   return (
     <>
       <Button onClick={() => setOpen(true)}>打开 Modal</Button>
-
       <Modal
         open={open}
         onOpenChange={setOpen}
-        title="新建项目"
+        title="确认操作"
         footer={
           <>
             <Button variant="ghost" onClick={() => setOpen(false)}>取消</Button>
-            <Button onClick={() => setOpen(false)}>创建</Button>
+            <Button onClick={() => setOpen(false)}>确定</Button>
           </>
         }
       >
-        <Input value={name} autoFocus
-               placeholder="项目名"
-               onChange={(e) => setName(e.target.value)} />
+        <p>这是一个最简弹窗。</p>
       </Modal>
     </>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## Props
+## 尺寸
 
-| 名称              | Vue                       | React                                  | 默认值   | 说明                              |
-| ----------------- | ------------------------- | -------------------------------------- | -------- | --------------------------------- |
-| open              | `v-model:open`            | `open` + `onOpenChange`                | `false`  | 控制显隐                          |
-| `title`           | `string`                  | `ReactNode`                            | —        | 头部标题（也可用 header 插槽/prop） |
-| `size`            | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | 同左                  | `'md'`   | 最大宽度                          |
-| `closeOnOverlay`  | `boolean`                 | 同左                                   | `true`   | 点击遮罩关闭                      |
-| `closeOnEsc`      | `boolean`                 | 同左                                   | `true`   | ESC 关闭                          |
-| `showClose`       | `boolean`                 | 同左                                   | `true`   | 右上角关闭按钮                    |
-| 容器              | `to` *(Teleport target)*  | `container` *(HTMLElement)*            | `body`   | Portal 目标                       |
+`size` 控制弹窗最大宽度。`full` 几乎铺满视口（仍保留外边距），适合表单较多的设置面板。
 
-## 内置行为
+<DemoFrame
+  vueCode={`<Modal v-model:open="open" size="sm">…</Modal>
+<Modal v-model:open="open" size="md">…</Modal>
+<Modal v-model:open="open" size="lg">…</Modal>
+<Modal v-model:open="open" size="xl">…</Modal>
+<Modal v-model:open="open" size="full">…</Modal>`}
+  reactCode={`<Modal open={open} onOpenChange={setOpen} size="sm">…</Modal>
+<Modal open={open} onOpenChange={setOpen} size="md">…</Modal>
+…
+<Modal open={open} onOpenChange={setOpen} size="full">…</Modal>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
 
-- **Portal**：Vue `<Teleport>` / React `createPortal`，挂到 `document.body` 避免被父级 `overflow: hidden` 截断；
-- **Focus trap**：打开时焦点进入弹窗第一个可聚焦元素，Tab/Shift+Tab 在弹窗内循环，关闭后焦点回到触发器；
-- **Body 滚动锁**：打开时锁定 body 滚动并补偿滚动条宽度，避免页面跳动；多个 Modal 嵌套时引用计数；
-- **进出动画**：Vue 走 `<Transition name="ck-modal">`，React 走 `data-state="open|closed"` + 180ms 延迟卸载，CSS 完全一致。
+## 关闭行为
 
-## 槽位与插槽
+默认任何操作都能关闭：遮罩点击、Esc、右上角 ×。可以通过 `closeOnOverlay` / `closeOnEsc` / `showClose` 单独禁用。
 
-| 位置   | Vue                          | React                |
-| ------ | ---------------------------- | -------------------- |
-| 头部   | `<template #header>` 或 `title` prop | `header` 或 `title` prop |
-| 主体   | 默认插槽                     | `children`           |
-| 底部   | `<template #footer>`         | `footer` prop        |
+<DemoFrame
+  vueCode={`<Modal v-model:open="a" :close-on-overlay="false">
+  点遮罩不会关闭，只能用 Esc 或 footer 按钮。
+</Modal>
+
+<Modal v-model:open="b" :show-close="false">
+  没有右上角 ×。
+</Modal>`}
+  reactCode={`<Modal open={a} onOpenChange={setA} closeOnOverlay={false}>…</Modal>
+<Modal open={b} onOpenChange={setB} showClose={false}>…</Modal>`}
+>
+  <BehaviorVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop             | 类型                                              | 默认值   | 说明                              |
+| ---------------- | ------------------------------------------------- | -------- | --------------------------------- |
+| `open`           | `boolean`                                         | `false`  | 受控开关                          |
+| `size`           | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'`          | `'md'`   | 最大宽度档位                      |
+| `title`          | `string`                                          | —        | 渲染到默认 header（可被 slot 覆盖）|
+| `closeOnOverlay` | `boolean`                                         | `true`   | 点遮罩是否关闭                    |
+| `closeOnEsc`     | `boolean`                                         | `true`   | Esc 是否关闭                      |
+| `showClose`      | `boolean`                                         | `true`   | 右上角 × 按钮                     |
+| `to`             | `string \| Element`                               | `'body'` | Teleport / Portal 目标容器        |
+
+### 插槽 / Children
+
+- **Vue**：`header` / 默认 / `footer` 三个具名插槽。
+- **React**：`title` 或 `header` props + children + `footer` props。

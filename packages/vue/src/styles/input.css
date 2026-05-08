@@ -1,17 +1,17 @@
-/* ChuKit Input — wrapper + native input. Wrapper handles border/focus ring/
+/* ChuFix Input — wrapper + native input. Wrapper handles border/focus ring/
  * affixes, native input stays transparent so prefix/suffix can sit on the
  * same baseline. */
-.ck-input {
+.cf-input {
   --_h: 2.25rem;
   --_px: 0.75rem;
   --_fs: 0.875rem;
-  --_bg: hsl(var(--ck-bg));
-  --_border: hsl(var(--ck-border));
-  --_border-hover: hsl(var(--ck-fg) / 0.25);
-  --_border-focus: hsl(var(--ck-primary));
-  --_ring: hsl(var(--ck-primary) / 0.18);
-  --_fg: hsl(var(--ck-fg));
-  --_placeholder: hsl(var(--ck-muted-fg));
+  --_bg: hsl(var(--cf-bg));
+  --_border: hsl(var(--cf-border));
+  --_border-hover: hsl(var(--cf-fg) / 0.25);
+  --_border-focus: hsl(var(--cf-primary));
+  --_ring: hsl(var(--cf-primary) / 0.18);
+  --_fg: hsl(var(--cf-fg));
+  --_placeholder: hsl(var(--cf-muted-fg));
 
   display: inline-flex;
   align-items: center;
@@ -19,54 +19,54 @@
   height: var(--_h);
   padding: 0 var(--_px);
   font-size: var(--_fs);
-  font-family: var(--ck-font-sans);
+  font-family: var(--cf-font-sans);
   color: var(--_fg);
   background: var(--_bg);
   border: 1px solid var(--_border);
-  border-radius: var(--ck-radius);
+  border-radius: var(--cf-radius);
   width: 100%;
   max-width: 20rem;
   cursor: text;
   transition:
-    border-color var(--ck-duration) var(--ck-easing),
-    box-shadow var(--ck-duration) var(--ck-easing),
-    background-color var(--ck-duration) var(--ck-easing);
+    border-color var(--cf-duration) var(--cf-easing),
+    box-shadow var(--cf-duration) var(--cf-easing),
+    background-color var(--cf-duration) var(--cf-easing);
 }
 
-.ck-input:hover:not(.is-disabled):not(.is-focused) {
+.cf-input:hover:not(.is-disabled):not(.is-focused) {
   border-color: var(--_border-hover);
 }
 
-.ck-input.is-focused {
+.cf-input.is-focused {
   border-color: var(--_border-focus);
   box-shadow: 0 0 0 3px var(--_ring);
 }
 
-.ck-input.is-error {
-  --_border: hsl(var(--ck-danger));
-  --_border-focus: hsl(var(--ck-danger));
-  --_ring: hsl(var(--ck-danger) / 0.18);
+.cf-input.is-error {
+  --_border: hsl(var(--cf-danger));
+  --_border-focus: hsl(var(--cf-danger));
+  --_ring: hsl(var(--cf-danger) / 0.18);
 }
 
-.ck-input.is-disabled {
-  --_bg: hsl(var(--ck-muted) / 0.5);
+.cf-input.is-disabled {
+  --_bg: hsl(var(--cf-muted) / 0.5);
   cursor: not-allowed;
   opacity: 0.7;
 }
 
 /* sizes */
-.ck-input--sm { --_h: 1.75rem; --_px: 0.6rem; --_fs: 0.8125rem; }
-.ck-input--md { --_h: 2.25rem; --_px: 0.75rem; --_fs: 0.875rem; }
-.ck-input--lg { --_h: 2.75rem; --_px: 0.9rem; --_fs: 0.9375rem; }
+.cf-input--sm { --_h: 1.75rem; --_px: 0.6rem; --_fs: 0.8125rem; }
+.cf-input--md { --_h: 2.25rem; --_px: 0.75rem; --_fs: 0.875rem; }
+.cf-input--lg { --_h: 2.75rem; --_px: 0.9rem; --_fs: 0.9375rem; }
 
 /* variants */
-.ck-input--filled {
-  --_bg: hsl(var(--ck-muted));
+.cf-input--filled {
+  --_bg: hsl(var(--cf-muted));
   --_border: transparent;
 }
-.ck-input--filled.is-focused { --_bg: hsl(var(--ck-bg)); }
+.cf-input--filled.is-focused { --_bg: hsl(var(--cf-bg)); }
 
-.ck-input--ghost {
+.cf-input--ghost {
   --_bg: transparent;
   --_border: transparent;
   border-bottom: 1px solid var(--_border);
@@ -74,13 +74,13 @@
   padding-left: 0;
   padding-right: 0;
 }
-.ck-input--ghost.is-focused {
+.cf-input--ghost.is-focused {
   border-bottom-color: var(--_border-focus);
   box-shadow: none;
 }
 
 /* native element resets */
-.ck-input__native {
+.cf-input__native {
   flex: 1 1 auto;
   min-width: 0;
   height: 100%;
@@ -92,23 +92,23 @@
   color: inherit;
   font: inherit;
 }
-.ck-input__native::placeholder { color: var(--_placeholder); }
-.ck-input__native:disabled { cursor: not-allowed; }
+.cf-input__native::placeholder { color: var(--_placeholder); }
+.cf-input__native:disabled { cursor: not-allowed; }
 
 /* affixes */
-.ck-input__prefix,
-.ck-input__suffix {
+.cf-input__prefix,
+.cf-input__suffix {
   display: inline-flex;
   align-items: center;
-  color: hsl(var(--ck-muted-fg));
+  color: hsl(var(--cf-muted-fg));
   font-size: 0.95em;
 }
 
-.ck-input__clear {
+.cf-input__clear {
   appearance: none;
   border: 0;
   background: transparent;
-  color: hsl(var(--ck-muted-fg));
+  color: hsl(var(--cf-muted-fg));
   cursor: pointer;
   padding: 0;
   width: 1em;
@@ -119,11 +119,11 @@
   border-radius: 9999px;
   transition: background-color 120ms, color 120ms;
 }
-.ck-input__clear:hover {
-  background: hsl(var(--ck-muted));
-  color: hsl(var(--ck-fg));
+.cf-input__clear:hover {
+  background: hsl(var(--cf-muted));
+  color: hsl(var(--cf-fg));
 }
-.ck-input__clear svg {
+.cf-input__clear svg {
   width: 0.85em;
   height: 0.85em;
 }

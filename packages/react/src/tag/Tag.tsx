@@ -21,12 +21,12 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref
       className={tagClass({ variant, size, tone, rounded, className })}
       {...rest}
     >
-      {leading ? <span className="ck-tag__leading">{leading}</span> : null}
+      {leading ? <span className="cf-tag__leading">{leading}</span> : null}
       {children}
       {closable ? (
         <button
           type="button"
-          className="ck-tag__close"
+          className="cf-tag__close"
           aria-label="关闭"
           onClick={onClose}
         >

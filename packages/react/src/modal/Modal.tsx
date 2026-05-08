@@ -86,27 +86,27 @@ export function Modal(props: ModalProps) {
 
   const node = (
     <div
-      data-ck-modal=""
+      data-cf-modal=""
       data-state={state}
-      className="ck-modal__overlay"
+      className="cf-modal__overlay"
       role="presentation"
       onClick={onOverlayClick}
       onKeyDown={onKeyDown}
     >
       <div
         ref={dialogRef}
-        className={`ck-modal__dialog ck-modal__dialog--${size}`}
+        className={`cf-modal__dialog cf-modal__dialog--${size}`}
         role="dialog"
         aria-modal="true"
         tabIndex={-1}
       >
         {(title || header) && (
-          <div className="ck-modal__header">{header ?? title}</div>
+          <div className="cf-modal__header">{header ?? title}</div>
         )}
         {showClose && (
           <button
             type="button"
-            className="ck-modal__close"
+            className="cf-modal__close"
             aria-label="关闭"
             onClick={close}
           >
@@ -115,8 +115,8 @@ export function Modal(props: ModalProps) {
             </svg>
           </button>
         )}
-        <div className="ck-modal__body">{children}</div>
-        {footer && <div className="ck-modal__footer">{footer}</div>}
+        <div className="cf-modal__body">{children}</div>
+        {footer && <div className="cf-modal__footer">{footer}</div>}
       </div>
     </div>
   );

@@ -28,12 +28,12 @@ export const defaultButtonProps: Required<Omit<ButtonProps, 'type'>> & { type: '
 export function buttonClass(props: ButtonProps): string {
   const p = { ...defaultButtonProps, ...props };
   return [
-    'ck-btn',
-    `ck-btn--${p.variant}`,
-    `ck-btn--${p.size}`,
-    `ck-btn--${p.tone}`,
-    p.shape !== 'default' && `ck-btn--${p.shape}`,
-    p.block && 'ck-btn--block',
+    'cf-btn',
+    `cf-btn--${p.variant}`,
+    `cf-btn--${p.size}`,
+    `cf-btn--${p.tone}`,
+    p.shape !== 'default' && `cf-btn--${p.shape}`,
+    p.block && 'cf-btn--block',
     p.loading && 'is-loading',
   ]
     .filter(Boolean)

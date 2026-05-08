@@ -28,7 +28,7 @@ export interface RadioGroupContext {
   select(v: RadioValue): void;
 }
 
-export const radioGroupKey: InjectionKey<RadioGroupContext> = Symbol('ck-radio-group');
+export const radioGroupKey: InjectionKey<RadioGroupContext> = Symbol('cf-radio-group');
 
 export function radioClass(p: {
   size: RadioSize;
@@ -36,8 +36,8 @@ export function radioClass(p: {
   checked: boolean;
 }): string {
   return [
-    'ck-radio',
-    `ck-radio--${p.size}`,
+    'cf-radio',
+    `cf-radio--${p.size}`,
     p.disabled && 'is-disabled',
     p.checked && 'is-checked',
   ]
@@ -46,5 +46,5 @@ export function radioClass(p: {
 }
 
 export function radioGroupClass(p: { direction: 'row' | 'column' }): string {
-  return ['ck-radio-group', `ck-radio-group--${p.direction}`].join(' ');
+  return ['cf-radio-group', `cf-radio-group--${p.direction}`].join(' ');
 }

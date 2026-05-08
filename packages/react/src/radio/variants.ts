@@ -35,8 +35,8 @@ export function radioClass(p: {
   className?: string;
 }): string {
   return [
-    'ck-radio',
-    `ck-radio--${p.size}`,
+    'cf-radio',
+    `cf-radio--${p.size}`,
     p.disabled && 'is-disabled',
     p.checked && 'is-checked',
     p.className,
@@ -49,7 +49,7 @@ export function radioGroupClass(p: {
   direction: 'row' | 'column';
   className?: string;
 }): string {
-  return ['ck-radio-group', `ck-radio-group--${p.direction}`, p.className]
+  return ['cf-radio-group', `cf-radio-group--${p.direction}`, p.className]
     .filter(Boolean)
     .join(' ');
 }

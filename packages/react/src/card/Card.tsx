@@ -35,7 +35,7 @@ export const CardHeader = forwardRef<HTMLDivElement, SubProps>(function CardHead
   return (
     <div
       ref={ref}
-      className={['ck-card__header', className].filter(Boolean).join(' ')}
+      className={['cf-card__header', className].filter(Boolean).join(' ')}
       {...rest}
     />
   );
@@ -48,7 +48,7 @@ export const CardBody = forwardRef<HTMLDivElement, SubProps>(function CardBody(
   return (
     <div
       ref={ref}
-      className={['ck-card__body', className].filter(Boolean).join(' ')}
+      className={['cf-card__body', className].filter(Boolean).join(' ')}
       {...rest}
     />
   );
@@ -61,7 +61,7 @@ export const CardFooter = forwardRef<HTMLDivElement, SubProps>(function CardFoot
   return (
     <div
       ref={ref}
-      className={['ck-card__footer', className].filter(Boolean).join(' ')}
+      className={['cf-card__footer', className].filter(Boolean).join(' ')}
       {...rest}
     />
   );

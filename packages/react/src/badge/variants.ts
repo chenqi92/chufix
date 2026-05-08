@@ -28,7 +28,7 @@ export interface BadgeProps {
 }
 
 export function badgeRootClass(p: { wrap: boolean; className?: string }): string {
-  return [p.wrap ? 'ck-badge-wrap' : 'ck-badge-inline', p.className]
+  return [p.wrap ? 'cf-badge-wrap' : 'cf-badge-inline', p.className]
     .filter(Boolean)
     .join(' ');
 }
@@ -40,10 +40,10 @@ export function badgeClass(p: {
   wrap: boolean;
 }): string {
   return [
-    'ck-badge',
-    `ck-badge--${p.tone}`,
-    p.dot && 'ck-badge--dot',
-    p.wrap && `ck-badge--placed ck-badge--${p.placement}`,
+    'cf-badge',
+    `cf-badge--${p.tone}`,
+    p.dot && 'cf-badge--dot',
+    p.wrap && `cf-badge--placed cf-badge--${p.placement}`,
   ]
     .filter(Boolean)
     .join(' ');

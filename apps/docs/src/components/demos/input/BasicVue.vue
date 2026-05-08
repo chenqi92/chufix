@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@chukit/vue';
+import { Input } from '@chufix/vue';
 
 const name = ref('');
-const email = ref('user@chukit.dev');
-const pwd = ref('');
 </script>
 
 <template>
-  <div style="display: grid; gap: 0.75rem; max-width: 22rem;">
-    <Input v-model="name" placeholder="请输入名字" />
-    <Input v-model="email" clearable placeholder="邮箱" />
-    <Input v-model="pwd" type="password" placeholder="密码" />
-    <small style="color: hsl(var(--ck-muted-fg))">name = {{ name || '空' }}</small>
+  <div class="demo-stack">
+    <Input v-model="name" placeholder="请输入用户名" />
+    <p class="demo-hint">已输入：<code>{{ name || '（空）' }}</code></p>
   </div>
 </template>

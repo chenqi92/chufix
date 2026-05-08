@@ -1,82 +1,108 @@
 ---
 title: Tag 标签
-description: ChuKit 的标签 —— 3 种 variant、5 种 tone、3 种尺寸、可关闭与圆角。
+description: 标签 —— 3 种 variant、6 种 tone、3 种尺寸，可关闭、可圆角。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tag/BasicVue.vue';
-import BasicReact from '~/components/demos/tag/BasicReact.tsx';
+import VariantsVue from '~/components/demos/tag/VariantsVue.vue';
+import ClosableVue from '~/components/demos/tag/ClosableVue.vue';
 
 ## 基础用法
 
-`variant`（视觉强度）与 `tone`（语义色）正交组合。`closable` 渲染一个 × 按钮，点击触发 `close` / `onClose`。
+`tone` 控制语义色，默认 `neutral`（灰色）。其他选项：`primary` / `success` / `warning` / `danger` / `info`。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { Tag } from '@chukit/vue';
-
-const tags = ref(['Vue', 'Astro', 'Tailwind']);
+import { Tag } from '@chufix/vue';
 </script>
 
 <template>
+  <Tag>Default</Tag>
   <Tag tone="primary">Primary</Tag>
   <Tag tone="success">Success</Tag>
+  <Tag tone="warning">Warning</Tag>
   <Tag tone="danger">Danger</Tag>
-
-  <Tag variant="solid" tone="primary">Solid</Tag>
-  <Tag variant="outline" tone="primary">Outline</Tag>
-  <Tag tone="success" rounded>圆角</Tag>
-
-  <Tag
-    v-for="t in tags"
-    :key="t"
-    closable
-    @close="tags = tags.filter(x => x !== t)"
-  >{{ t }}</Tag>
+  <Tag tone="info">Info</Tag>
 </template>`}
-  reactCode={`import { useState } from 'react';
-import { Tag } from '@chukit/react';
+  reactCode={`import { Tag } from '@chufix/react';
 
 export default function Demo() {
-  const [tags, setTags] = useState(['Vue', 'Astro', 'Tailwind']);
-
   return (
     <>
+      <Tag>Default</Tag>
       <Tag tone="primary">Primary</Tag>
       <Tag tone="success">Success</Tag>
+      <Tag tone="warning">Warning</Tag>
       <Tag tone="danger">Danger</Tag>
-
-      <Tag variant="solid" tone="primary">Solid</Tag>
-      <Tag variant="outline" tone="primary">Outline</Tag>
-      <Tag tone="success" rounded>圆角</Tag>
-
-      {tags.map((t) => (
-        <Tag
-          key={t}
-          closable
-          onClose={() => setTags((xs) => xs.filter((x) => x !== t))}
-        >{t}</Tag>
-      ))}
+      <Tag tone="info">Info</Tag>
     </>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## Props
+## 变体、尺寸与圆角
 
-| 名称       | 类型                                                          | 默认值      | 说明                          |
-| ---------- | ------------------------------------------------------------- | ----------- | ----------------------------- |
-| `variant`  | `'solid' \| 'soft' \| 'outline'`                              | `'soft'`    | 视觉变体                      |
+`variant` 与 `tone` 正交：solid / soft（默认）/ outline。`rounded` 切换到 pill 圆角。
+
+<DemoFrame
+  vueCode={`<Tag variant="solid" tone="primary">solid</Tag>
+<Tag variant="soft" tone="primary">soft</Tag>
+<Tag variant="outline" tone="primary">outline</Tag>
+
+<Tag size="sm" tone="success">sm</Tag>
+<Tag size="md" tone="success">md</Tag>
+<Tag size="lg" tone="success">lg</Tag>
+<Tag tone="success" rounded>rounded</Tag>`}
+  reactCode={`<Tag variant="solid" tone="primary">solid</Tag>
+<Tag variant="soft" tone="primary">soft</Tag>
+<Tag variant="outline" tone="primary">outline</Tag>
+
+<Tag size="sm" tone="success">sm</Tag>
+<Tag size="md" tone="success">md</Tag>
+<Tag size="lg" tone="success">lg</Tag>
+<Tag tone="success" rounded>rounded</Tag>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 可关闭
+
+打开 `closable` 显示 × 按钮，点击触发 `close` / `onClose`。
+
+<DemoFrame
+  vueCode={`<Tag
+  v-for="t in tags"
+  :key="t"
+  tone="primary"
+  closable
+  @close="tags = tags.filter(x => x !== t)"
+>{{ t }}</Tag>`}
+  reactCode={`{tags.map((t) => (
+  <Tag
+    key={t}
+    tone="primary"
+    closable
+    onClose={() => setTags((xs) => xs.filter((x) => x !== t))}
+  >{t}</Tag>
+))}`}
+>
+  <ClosableVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop       | 类型                                                                     | 默认值      | 说明                          |
+| ---------- | ------------------------------------------------------------------------ | ----------- | ----------------------------- |
+| `variant`  | `'solid' \| 'soft' \| 'outline'`                                         | `'soft'`    | 视觉变体                      |
 | `tone`     | `'neutral' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `'neutral'` | 语义色                        |
-| `size`     | `'sm' \| 'md' \| 'lg'`                                        | `'md'`      | 高度与字号                    |
-| `rounded`  | `boolean`                                                     | `false`     | 圆角到 pill                   |
-| `closable` | `boolean`                                                     | `false`     | 显示 × 关闭按钮               |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                                   | `'md'`      | 高度与字号                    |
+| `rounded`  | `boolean`                                                                | `false`     | 圆角到 pill                   |
+| `closable` | `boolean`                                                                | `false`     | 显示 × 关闭按钮               |
 
-## 插槽 / Children
+### 插槽 / Children
 
 - **Vue**：默认插槽是文本；`leading` 具名插槽放图标。
 - **React**：`children` 是文本；`leading` prop 放图标节点。

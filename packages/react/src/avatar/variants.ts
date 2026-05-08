@@ -29,7 +29,7 @@ export function avatarClass(p: {
   shape: AvatarShape;
   className?: string;
 }): string {
-  return ['ck-avatar', `ck-avatar--${p.size}`, `ck-avatar--${p.shape}`, p.className]
+  return ['cf-avatar', `cf-avatar--${p.size}`, `cf-avatar--${p.shape}`, p.className]
     .filter(Boolean)
     .join(' ');
 }

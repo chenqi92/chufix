@@ -1,66 +1,66 @@
-/* ChuKit UI design tokens
- * Consumed by every @chukit/* package. HSL channels (no `hsl()` wrapper) so
- * users can compose with `hsl(var(--ck-primary) / 0.5)` for opacity.
+/* ChuFix UI design tokens
+ * Consumed by every @chufix/* package. HSL channels (no `hsl()` wrapper) so
+ * users can compose with `hsl(var(--cf-primary) / 0.5)` for opacity.
  */
 :root,
 [data-theme='light'] {
-  --ck-bg: 0 0% 100%;
-  --ck-fg: 222 47% 11%;
-  --ck-muted: 210 40% 96%;
-  --ck-muted-fg: 215 16% 47%;
-  --ck-border: 214 32% 91%;
-  --ck-ring: 222 89% 55%;
+  --cf-bg: 0 0% 100%;
+  --cf-fg: 222 47% 11%;
+  --cf-muted: 210 40% 96%;
+  --cf-muted-fg: 215 16% 47%;
+  --cf-border: 214 32% 91%;
+  --cf-ring: 222 89% 55%;
 
-  --ck-primary: 222 89% 55%;
-  --ck-primary-hover: 222 89% 48%;
-  --ck-primary-active: 222 89% 42%;
-  --ck-primary-fg: 0 0% 100%;
-  --ck-primary-soft: 222 89% 96%;
+  --cf-primary: 222 89% 55%;
+  --cf-primary-hover: 222 89% 48%;
+  --cf-primary-active: 222 89% 42%;
+  --cf-primary-fg: 0 0% 100%;
+  --cf-primary-soft: 222 89% 96%;
 
-  --ck-danger: 0 72% 51%;
-  --ck-danger-hover: 0 72% 45%;
-  --ck-danger-fg: 0 0% 100%;
-  --ck-danger-soft: 0 72% 96%;
+  --cf-danger: 0 72% 51%;
+  --cf-danger-hover: 0 72% 45%;
+  --cf-danger-fg: 0 0% 100%;
+  --cf-danger-soft: 0 72% 96%;
 
-  --ck-success: 142 71% 45%;
-  --ck-warning: 38 92% 50%;
+  --cf-success: 142 71% 45%;
+  --cf-warning: 38 92% 50%;
 
-  --ck-radius-sm: 0.25rem;
-  --ck-radius: 0.5rem;
-  --ck-radius-lg: 0.75rem;
-  --ck-radius-pill: 9999px;
+  --cf-radius-sm: 0.25rem;
+  --cf-radius: 0.5rem;
+  --cf-radius-lg: 0.75rem;
+  --cf-radius-pill: 9999px;
 
-  --ck-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+  --cf-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', sans-serif;
 
-  --ck-shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
-  --ck-shadow: 0 1px 3px 0 hsl(222 47% 11% / 0.1),
+  --cf-shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
+  --cf-shadow: 0 1px 3px 0 hsl(222 47% 11% / 0.1),
     0 1px 2px -1px hsl(222 47% 11% / 0.1);
-  --ck-shadow-lg: 0 10px 15px -3px hsl(222 47% 11% / 0.1),
+  --cf-shadow-lg: 0 10px 15px -3px hsl(222 47% 11% / 0.1),
     0 4px 6px -4px hsl(222 47% 11% / 0.1);
 
-  --ck-duration-fast: 120ms;
-  --ck-duration: 180ms;
-  --ck-easing: cubic-bezier(0.32, 0.72, 0, 1);
+  --cf-duration-fast: 120ms;
+  --cf-duration: 180ms;
+  --cf-easing: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 [data-theme='dark'] {
-  --ck-bg: 222 47% 8%;
-  --ck-fg: 210 40% 98%;
-  --ck-muted: 217 33% 17%;
-  --ck-muted-fg: 215 20% 65%;
-  --ck-border: 217 33% 22%;
-  --ck-ring: 222 89% 65%;
+  --cf-bg: 222 47% 8%;
+  --cf-fg: 210 40% 98%;
+  --cf-muted: 217 33% 17%;
+  --cf-muted-fg: 215 20% 65%;
+  --cf-border: 217 33% 22%;
+  --cf-ring: 222 89% 65%;
 
-  --ck-primary: 222 89% 62%;
-  --ck-primary-hover: 222 89% 70%;
-  --ck-primary-active: 222 89% 75%;
-  --ck-primary-fg: 222 47% 8%;
-  --ck-primary-soft: 222 60% 18%;
+  --cf-primary: 222 89% 62%;
+  --cf-primary-hover: 222 89% 70%;
+  --cf-primary-active: 222 89% 75%;
+  --cf-primary-fg: 222 47% 8%;
+  --cf-primary-soft: 222 60% 18%;
 
-  --ck-danger: 0 72% 60%;
-  --ck-danger-hover: 0 72% 68%;
-  --ck-danger-fg: 0 0% 100%;
-  --ck-danger-soft: 0 50% 18%;
+  --cf-danger: 0 72% 60%;
+  --cf-danger-hover: 0 72% 68%;
+  --cf-danger-fg: 0 0% 100%;
+  --cf-danger-soft: 0 50% 18%;
 }

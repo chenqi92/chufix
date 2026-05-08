@@ -67,28 +67,28 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport :to="to">
-    <Transition name="ck-modal" appear>
+    <Transition name="cf-modal" appear>
       <div
         v-if="open"
-        class="ck-modal__overlay"
+        class="cf-modal__overlay"
         role="presentation"
         @click="onOverlayClick"
         @keydown="onKeyDown"
       >
         <div
           ref="dialogRef"
-          :class="['ck-modal__dialog', `ck-modal__dialog--${size}`]"
+          :class="['cf-modal__dialog', `cf-modal__dialog--${size}`]"
           role="dialog"
           aria-modal="true"
           tabindex="-1"
         >
-          <div v-if="title || $slots.header" class="ck-modal__header">
+          <div v-if="title || $slots.header" class="cf-modal__header">
             <slot name="header">{{ title }}</slot>
           </div>
           <button
             v-if="showClose"
             type="button"
-            class="ck-modal__close"
+            class="cf-modal__close"
             aria-label="关闭"
             @click="close"
           >
@@ -96,10 +96,10 @@ onBeforeUnmount(() => {
               <path d="M4 4l8 8M12 4l-8 8" />
             </svg>
           </button>
-          <div class="ck-modal__body">
+          <div class="cf-modal__body">
             <slot />
           </div>
-          <div v-if="$slots.footer" class="ck-modal__footer">
+          <div v-if="$slots.footer" class="cf-modal__footer">
             <slot name="footer" />
           </div>
         </div>

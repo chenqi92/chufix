@@ -1,55 +1,79 @@
 ---
 title: Toast 通知
-description: ChuKit 的全局通知 —— imperative API + 一次挂载的 Toaster，5 种语义、6 个位置。
+description: 全局通知 —— imperative API + 一次挂载的 Toaster，5 种语义、6 个位置。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toast/BasicVue.vue';
-import BasicReact from '~/components/demos/toast/BasicReact.tsx';
+import TypesVue from '~/components/demos/toast/TypesVue.vue';
+import PositionVue from '~/components/demos/toast/PositionVue.vue';
 
 ## 基础用法
 
-在应用根布局挂一次 `<Toaster />`，然后在任何地方调用 `toast()` / `toast.success()` 即可。底层是一个框架无关的 pub-sub store，组件订阅后渲染队列。
+在应用根布局挂一次 `<Toaster />`，然后在任何地方调用 `toast()` 即可。底层是一个框架无关的 pub-sub store，组件订阅后渲染队列。每条默认 4s 后自动关闭。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Button, Toaster, toast } from '@chukit/vue';
+import { Button, Toaster, toast } from '@chufix/vue';
 </script>
 
 <template>
-  <Button @click="toast({ title: '通用通知', description: '默认样式' })">默认</Button>
-  <Button @click="toast.success('保存成功')">success</Button>
-  <Button @click="toast.error('保存失败')">error</Button>
-  <Button @click="toast.warning('磁盘空间不足')">warning</Button>
-  <Button @click="toast.info('已复制到剪贴板')">info</Button>
-
-  <Toaster position="top-right" />
+  <Button @click="toast({ title: '操作成功', description: '配置已保存。' })">
+    弹一条 Toast
+  </Button>
+  <Toaster />
 </template>`}
-  reactCode={`import { Button, Toaster, toast } from '@chukit/react';
+  reactCode={`import { Button, Toaster, toast } from '@chufix/react';
 
 export default function Demo() {
   return (
     <>
-      <Button onClick={() => toast({ title: '通用通知', description: '默认样式' })}>默认</Button>
-      <Button onClick={() => toast.success('保存成功')}>success</Button>
-      <Button onClick={() => toast.error('保存失败')}>error</Button>
-      <Button onClick={() => toast.warning('磁盘空间不足')}>warning</Button>
-      <Button onClick={() => toast.info('已复制到剪贴板')}>info</Button>
-
-      <Toaster position="top-right" />
+      <Button onClick={() => toast({ title: '操作成功', description: '配置已保存。' })}>
+        弹一条 Toast
+      </Button>
+      <Toaster />
     </>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
+</DemoFrame>
+
+## 五种语义
+
+`toast()` 默认无图标。`success` / `error` / `warning` / `info` 各自带不同颜色的圆形图标。`input` 接收字符串或对象 `{ title, description, duration, dismissible }`。
+
+<DemoFrame
+  vueCode={`toast('默认通知');
+toast.success('保存成功');
+toast.error('保存失败');
+toast.warning('磁盘空间不足');
+toast.info('已复制到剪贴板');`}
+  reactCode={`toast('默认通知');
+toast.success('保存成功');
+toast.error('保存失败');
+toast.warning('磁盘空间不足');
+toast.info('已复制到剪贴板');`}
+>
+  <TypesVue client:load />
+</DemoFrame>
+
+## 6 个位置
+
+`<Toaster position="..." />` 控制堆栈出现的位置。常见的是 `top-right`（默认），手机端推荐 `bottom-center`。
+
+<DemoFrame
+  vueCode={`<Toaster position="top-right" />
+<Toaster position="bottom-center" />`}
+  reactCode={`<Toaster position="top-right" />
+<Toaster position="bottom-center" />`}
+>
+  <PositionVue client:load />
 </DemoFrame>
 
 ## API
 
 ### `toast(input)` 与衍生方法
-
-`input` 既可以是字符串（直接当作 `title`），也可以是对象：
 
 ```ts
 interface ToastInput {
@@ -77,8 +101,4 @@ interface ToastInput {
 | ---------- | ----------------------------------------------------------------------------------------------------- | ------------- | -------- |
 | `position` | `'top-right' \| 'top-left' \| 'top-center' \| 'bottom-right' \| 'bottom-left' \| 'bottom-center'`     | `'top-right'` | 渲染位置 |
 
-## 注意事项
-
-- **Toaster 只挂一次**：放在应用根布局即可，多挂会出现重复显示。
-- **duration ≤ 0**：禁用自动关闭，需要用户手动点 × 或调用 `toast.dismiss(id)`。
-- **store 跨包不共享**：Vue 与 React 各自维护一个 store；如果你在同一个页面同时用两种框架（像本站这样的 Astro 多 island），它们的 toast 是彼此独立的。
+> **Toaster 只挂一次**：放在应用根布局即可，多挂会出现重复显示。

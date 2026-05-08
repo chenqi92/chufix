@@ -3,9 +3,8 @@ import { Image } from 'astro:assets';
 import SplashLayout from '~/layouts/SplashLayout.astro';
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/button/BasicVue.vue';
-import BasicReact from '~/components/demos/button/BasicReact.tsx';
 import { site } from '~/config/site';
-import logo from '~/assets/chukit.png';
+import logo from '~/assets/chufix.png';
 ---
 
 <SplashLayout>
@@ -14,39 +13,39 @@ import logo from '~/assets/chukit.png';
       <Image src={logo} alt="" class="hero__logo" widths={[160, 220]} sizes="220px" />
       <h1 class="hero__title">{site.title}</h1>
       <p class="hero__tagline">{site.tagline}</p>
-      <p class="hero__sub">Vue 3 与 React 双框架同源 · CSS 变量主题 · 类 shadcn 体验</p>
+      <p class="hero__sub">Vue 3 与 React 双框架同源 · CSS 变量主题 · 可装包也可拷源码</p>
       <div class="hero__cta">
-        <a href="/getting-started/installation/" class="ck-btn ck-btn--lg">快速开始</a>
-        <a href="/components/" class="ck-btn ck-btn--outline ck-btn--lg">浏览组件</a>
-        <a href={site.github} target="_blank" rel="noopener" class="ck-btn ck-btn--ghost ck-btn--lg">GitHub →</a>
+        <a href="/getting-started/installation/" class="cf-btn cf-btn--lg">快速开始</a>
+        <a href="/components/" class="cf-btn cf-btn--outline cf-btn--lg">浏览组件</a>
+        <a href={site.github} target="_blank" rel="noopener" class="cf-btn cf-btn--ghost cf-btn--lg">GitHub →</a>
       </div>
     </div>
   </section>
 
   <section class="splash-section">
-    <h2 class="splash-section__title">为什么是 ChuKit</h2>
-    <div class="ck-feature-grid">
-      <article class="ck-card ck-card--elevated">
-        <div class="ck-card__header">双框架同源</div>
-        <div class="ck-card__body">
+    <h2 class="splash-section__title">为什么是 ChuFix</h2>
+    <div class="cf-feature-grid">
+      <article class="cf-card cf-card--elevated">
+        <div class="cf-card__header">双框架同源</div>
+        <div class="cf-card__body">
           Vue 3 与 React 共用同一套 design token、同一套类名、同一套交互行为。从 Vue 项目搬到 React 项目，零负担。
         </div>
       </article>
-      <article class="ck-card ck-card--elevated">
-        <div class="ck-card__header">零运行时主题</div>
-        <div class="ck-card__body">
+      <article class="cf-card cf-card--elevated">
+        <div class="cf-card__header">零运行时主题</div>
+        <div class="cf-card__body">
           所有颜色、半径、阴影都走 CSS 变量。切主题只需改 <code>[data-theme]</code>，没有 JS 主题工厂。
         </div>
       </article>
-      <article class="ck-card ck-card--elevated">
-        <div class="ck-card__header">两种用法</div>
-        <div class="ck-card__body">
-          <code>npm i @chukit/vue</code> 当传统组件库用，或 <code>npx chukit add</code> 把源码直接拷进自己仓库。
+      <article class="cf-card cf-card--elevated">
+        <div class="cf-card__header">两种用法</div>
+        <div class="cf-card__body">
+          <code>npm i @chufix/vue</code> 当传统组件库用，或 <code>npx chufix add</code> 把源码直接拷进自己仓库。
         </div>
       </article>
-      <article class="ck-card ck-card--elevated">
-        <div class="ck-card__header">Tailwind 友好</div>
-        <div class="ck-card__body">
+      <article class="cf-card cf-card--elevated">
+        <div class="cf-card__header">Tailwind 友好</div>
+        <div class="cf-card__body">
           可选 preset 把 token 映射成 Tailwind utility。不用 Tailwind 也完全能跑，组件不强依赖。
         </div>
       </article>
@@ -56,11 +55,11 @@ import logo from '~/assets/chukit.png';
   <section class="splash-section">
     <h2 class="splash-section__title">一眼看到效果</h2>
     <p class="splash-section__lede">
-      下面这块 demo —— <strong>左边是 Vue 实例</strong>、<strong>右边是 React 实例</strong>，跑在同一个页面里；下方代码区可在 Vue / React 之间切换并一键复制。
+      下面是真实可交互的实例，不是截图。代码默认折叠，展开后可在 Vue / React / CLI 三种来源之间切换并一键复制。
     </p>
     <DemoFrame
       vueCode={`<script setup lang="ts">
-import { Button } from '@chukit/vue';
+import { Button } from '@chufix/vue';
 </script>
 
 <template>
@@ -69,7 +68,7 @@ import { Button } from '@chukit/vue';
   <Button variant="outline">描边</Button>
   <Button tone="danger">危险</Button>
 </template>`}
-      reactCode={`import { Button } from '@chukit/react';
+      reactCode={`import { Button } from '@chufix/react';
 
 export default () => (
   <>
@@ -80,31 +79,39 @@ export default () => (
   </>
 );`}
       cliCode={`# 任选其一
-npm i @chukit/vue
-npm i @chukit/react
+npm i @chufix/vue
+npm i @chufix/react
 
-# 或源码复制（shadcn 风格）
-npx chukit add button`}
+# 或源码复制（拷贝到自己仓库）
+npx chufix add button`}
     >
-      <BasicVue slot="vue" client:load />
-      <BasicReact slot="react" client:load />
+      <BasicVue client:load />
     </DemoFrame>
   </section>
 
   <section class="splash-section">
     <h2 class="splash-section__title">现在已经有什么</h2>
-    <p class="splash-section__lede">5 个组件，覆盖了表单、容器、反馈三类高频场景。</p>
+    <p class="splash-section__lede">13 个组件，覆盖表单、容器、反馈、数据展示四类高频场景。</p>
     <div class="splash-pills">
-      <a href="/components/button/" class="ck-btn ck-btn--soft">Button</a>
-      <a href="/components/input/" class="ck-btn ck-btn--soft">Input</a>
-      <a href="/components/card/" class="ck-btn ck-btn--soft">Card</a>
-      <a href="/components/switch/" class="ck-btn ck-btn--soft">Switch</a>
-      <a href="/components/modal/" class="ck-btn ck-btn--soft">Modal</a>
-      <a href="/components/" class="ck-btn ck-btn--outline">完整清单 →</a>
+      <a href="/components/button/" class="cf-btn cf-btn--soft">Button</a>
+      <a href="/components/input/" class="cf-btn cf-btn--soft">Input</a>
+      <a href="/components/textarea/" class="cf-btn cf-btn--soft">Textarea</a>
+      <a href="/components/select/" class="cf-btn cf-btn--soft">Select</a>
+      <a href="/components/checkbox/" class="cf-btn cf-btn--soft">Checkbox</a>
+      <a href="/components/radio/" class="cf-btn cf-btn--soft">Radio</a>
+      <a href="/components/switch/" class="cf-btn cf-btn--soft">Switch</a>
+      <a href="/components/card/" class="cf-btn cf-btn--soft">Card</a>
+      <a href="/components/modal/" class="cf-btn cf-btn--soft">Modal</a>
+      <a href="/components/tooltip/" class="cf-btn cf-btn--soft">Tooltip</a>
+      <a href="/components/toast/" class="cf-btn cf-btn--soft">Toast</a>
+      <a href="/components/tag/" class="cf-btn cf-btn--soft">Tag</a>
+      <a href="/components/badge/" class="cf-btn cf-btn--soft">Badge</a>
+      <a href="/components/avatar/" class="cf-btn cf-btn--soft">Avatar</a>
+      <a href="/components/" class="cf-btn cf-btn--outline">完整清单 →</a>
     </div>
   </section>
 
   <footer class="splash-footer">
-    <p>ChuKit UI · MIT License · v{site.version}</p>
+    <p>ChuFix UI · MIT License · v{site.version}</p>
   </footer>
 </SplashLayout>

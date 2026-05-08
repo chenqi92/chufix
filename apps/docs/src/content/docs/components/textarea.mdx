@@ -1,75 +1,95 @@
 ---
 title: Textarea 多行输入
-description: ChuKit 的多行输入 —— 与 Input 同色系，支持 autoResize、字符计数、resize 控制。
+description: 多行输入 —— 与 Input 同色系，支持自动撑高、字符计数、resize 控制。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/textarea/BasicVue.vue';
-import BasicReact from '~/components/demos/textarea/BasicReact.tsx';
+import CountVue from '~/components/demos/textarea/CountVue.vue';
+import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
 
 ## 基础用法
 
-第一个示例展示 `maxlength` + `show-count` 组合，第二个示例展示 `auto-resize`：内容增加时自动撑高。
+视觉与 Input 共用一套色系。`rows` 控制初始行数，用户可以拖右下角调整高度。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Textarea } from '@chukit/vue';
+import { Textarea } from '@chufix/vue';
 
 const note = ref('');
-const bio = ref('一个简短的自我介绍。');
 </script>
 
 <template>
-  <Textarea
-    v-model="note"
-    placeholder="说点什么…"
-    :rows="3"
-    :maxlength="120"
-    show-count
-  />
-  <Textarea
-    v-model="bio"
-    variant="filled"
-    auto-resize
-    placeholder="自动撑高的多行输入"
-  />
+  <Textarea v-model="note" placeholder="说点什么…" :rows="3" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Textarea } from '@chukit/react';
+import { Textarea } from '@chufix/react';
 
 export default function Demo() {
   const [note, setNote] = useState('');
-  const [bio, setBio] = useState('一个简短的自我介绍。');
-
   return (
-    <>
-      <Textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder="说点什么…"
-        rows={3}
-        maxLength={120}
-        showCount
-      />
-      <Textarea
-        value={bio}
-        onChange={(e) => setBio(e.target.value)}
-        variant="filled"
-        autoResize
-        placeholder="自动撑高的多行输入"
-      />
-    </>
+    <Textarea
+      value={note}
+      onChange={(e) => setNote(e.target.value)}
+      placeholder="说点什么…"
+      rows={3}
+    />
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## Props
+## 字符计数
 
-| 名称         | 类型                                            | 默认值       | 说明                                      |
+`maxlength` 设上限（原生限制），`show-count` 在右下角显示当前字符数。超过上限会变红（虽然 maxlength 会先拦截）。
+
+<DemoFrame
+  vueCode={`<Textarea
+  v-model="bio"
+  placeholder="个人简介（最多 50 字）"
+  :rows="3"
+  :maxlength="50"
+  show-count
+/>`}
+  reactCode={`<Textarea
+  value={bio}
+  onChange={(e) => setBio(e.target.value)}
+  placeholder="个人简介（最多 50 字）"
+  rows={3}
+  maxLength={50}
+  showCount
+/>`}
+>
+  <CountVue client:load />
+</DemoFrame>
+
+## 自动撑高
+
+`auto-resize` 让框跟随内容增长，自动隐藏 resize 把手。适合不确定行数的场景（如评论、备注）。
+
+<DemoFrame
+  vueCode={`<Textarea
+  v-model="draft"
+  variant="filled"
+  auto-resize
+  placeholder="自动撑高的多行输入"
+/>`}
+  reactCode={`<Textarea
+  value={draft}
+  onChange={(e) => setDraft(e.target.value)}
+  variant="filled"
+  autoResize
+  placeholder="自动撑高的多行输入"
+/>`}
+>
+  <AutoResizeVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop         | 类型                                            | 默认值       | 说明                                      |
 | ------------ | ----------------------------------------------- | ------------ | ----------------------------------------- |
 | `variant`    | `'outline' \| 'filled' \| 'ghost'`              | `'outline'`  | 视觉变体，与 Input 一致                   |
 | `size`       | `'sm' \| 'md' \| 'lg'`                          | `'md'`       | 字号 / 内边距                             |

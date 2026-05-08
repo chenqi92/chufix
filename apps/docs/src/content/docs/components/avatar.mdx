@@ -1,67 +1,133 @@
 ---
 title: Avatar 头像
-description: ChuKit 的头像 —— 图片 / 缩写 / 图标三态自动 fallback，5 尺寸 + 圆形/方形 + AvatarGroup 重叠。
+description: 头像 —— 图片 / 缩写 / 图标三态自动 fallback，5 尺寸 + 圆形/方形 + AvatarGroup 重叠。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/avatar/BasicVue.vue';
-import BasicReact from '~/components/demos/avatar/BasicReact.tsx';
+import SizesVue from '~/components/demos/avatar/SizesVue.vue';
+import FallbackVue from '~/components/demos/avatar/FallbackVue.vue';
+import GroupVue from '~/components/demos/avatar/GroupVue.vue';
 
 ## 基础用法
 
-优先级：`src` 加载成功 → 显示图片；加载失败或没传 src → `fallback` / `name` 缩写；都没有就显示 `?`。也可以塞自定义图标（默认插槽 / `children`）。
+优先级：`src` 加载成功 → 显示图片；加载失败或没传 src → `fallback` / `name` 缩写；都没有就显示 `?`。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { Avatar, AvatarGroup } from '@chukit/vue';
+import { Avatar } from '@chufix/vue';
 </script>
 
 <template>
-  <Avatar size="sm" name="Chen Qi" />
-  <Avatar size="md" name="Chen Qi" />
-  <Avatar size="lg" name="Chen Qi" />
-
-  <Avatar shape="square" name="Bob Smith" />
   <Avatar src="https://i.pravatar.cc/80?img=12" alt="头像" />
-  <Avatar src="/__broken__.png" name="Fallback" />
-
-  <AvatarGroup>
-    <Avatar name="Chen Qi" />
-    <Avatar name="Anna Lee" />
-    <Avatar name="Bob Smith" />
-    <Avatar fallback="+5" />
-  </AvatarGroup>
+  <Avatar name="Chen Qi" />
+  <Avatar name="Anna Lee" />
+  <Avatar fallback="?" />
 </template>`}
-  reactCode={`import { Avatar, AvatarGroup } from '@chukit/react';
+  reactCode={`import { Avatar } from '@chufix/react';
 
 export default function Demo() {
   return (
     <>
-      <Avatar size="sm" name="Chen Qi" />
-      <Avatar size="md" name="Chen Qi" />
-      <Avatar size="lg" name="Chen Qi" />
-
-      <Avatar shape="square" name="Bob Smith" />
       <Avatar src="https://i.pravatar.cc/80?img=12" alt="头像" />
-      <Avatar src="/__broken__.png" name="Fallback" />
-
-      <AvatarGroup>
-        <Avatar name="Chen Qi" />
-        <Avatar name="Anna Lee" />
-        <Avatar name="Bob Smith" />
-        <Avatar fallback="+5" />
-      </AvatarGroup>
+      <Avatar name="Chen Qi" />
+      <Avatar name="Anna Lee" />
+      <Avatar fallback="?" />
     </>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
 </DemoFrame>
 
-## Avatar Props
+## 尺寸与形状
 
-| 名称       | 类型                                       | 默认值     | 说明                                          |
+5 档尺寸（`xs` / `sm` / `md` / `lg` / `xl`），2 种形状（`circle` / `square`）。
+
+<DemoFrame
+  vueCode={`<Avatar size="xs" name="Chen Qi" />
+<Avatar size="sm" name="Chen Qi" />
+<Avatar size="md" name="Chen Qi" />
+<Avatar size="lg" name="Chen Qi" />
+<Avatar size="xl" name="Chen Qi" />
+
+<Avatar shape="circle" name="Bob Smith" />
+<Avatar shape="square" name="Bob Smith" />`}
+  reactCode={`<Avatar size="xs" name="Chen Qi" />
+<Avatar size="sm" name="Chen Qi" />
+<Avatar size="md" name="Chen Qi" />
+<Avatar size="lg" name="Chen Qi" />
+<Avatar size="xl" name="Chen Qi" />
+
+<Avatar shape="circle" name="Bob Smith" />
+<Avatar shape="square" name="Bob Smith" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Fallback 优先级
+
+第二个示例传了一个不存在的 `src`，自动回退到 `name` 计算的缩写。最后一个是自定义图标。
+
+<DemoFrame
+  vueCode={`<Avatar src="https://i.pravatar.cc/80?img=22" alt="正常加载" />
+<Avatar src="/__intentionally_404__.png" name="Fallback Test" />  <!-- 加载失败 → "FT" -->
+<Avatar name="Chen Qi" />                                          <!-- "CQ" -->
+<Avatar name="anna lee smith" />                                   <!-- "AS" -->
+<Avatar fallback="🐱" />                                            <!-- 直接指定 -->
+<Avatar>                                                            <!-- 自定义图标 -->
+  <UserSvg />
+</Avatar>`}
+  reactCode={`<Avatar src="https://i.pravatar.cc/80?img=22" alt="正常加载" />
+<Avatar src="/__intentionally_404__.png" name="Fallback Test" />
+<Avatar name="Chen Qi" />
+<Avatar name="anna lee smith" />
+<Avatar fallback="🐱" />
+<Avatar><UserSvg /></Avatar>`}
+>
+  <FallbackVue client:load />
+</DemoFrame>
+
+## AvatarGroup 重叠
+
+`AvatarGroup` 把若干 Avatar 横向重叠排列，常用于 "X 人协作" 的头像列表。`spacing` 控制重叠幅度（负值越大重叠越多）。
+
+<DemoFrame
+  vueCode={`<AvatarGroup>
+  <Avatar src="https://i.pravatar.cc/80?img=1" />
+  <Avatar src="https://i.pravatar.cc/80?img=2" />
+  <Avatar src="https://i.pravatar.cc/80?img=3" />
+  <Avatar fallback="+5" />
+</AvatarGroup>
+
+<AvatarGroup :spacing="-4">
+  <Avatar size="sm" name="Anna" />
+  <Avatar size="sm" name="Bob" />
+  <Avatar size="sm" name="Cici" />
+  <Avatar size="sm" fallback="+12" />
+</AvatarGroup>`}
+  reactCode={`<AvatarGroup>
+  <Avatar src="https://i.pravatar.cc/80?img=1" />
+  <Avatar src="https://i.pravatar.cc/80?img=2" />
+  <Avatar src="https://i.pravatar.cc/80?img=3" />
+  <Avatar fallback="+5" />
+</AvatarGroup>
+
+<AvatarGroup spacing={-4}>
+  <Avatar size="sm" name="Anna" />
+  <Avatar size="sm" name="Bob" />
+  <Avatar size="sm" name="Cici" />
+  <Avatar size="sm" fallback="+12" />
+</AvatarGroup>`}
+>
+  <GroupVue client:load />
+</DemoFrame>
+
+## API
+
+### Avatar
+
+| Prop       | 类型                                       | 默认值     | 说明                                          |
 | ---------- | ------------------------------------------ | ---------- | --------------------------------------------- |
 | `src`      | `string`                                   | —          | 图片地址；加载失败自动回退                    |
 | `alt`      | `string`                                   | —          | 图片 alt；未传时回退到 `name`                 |
@@ -70,14 +136,10 @@ export default function Demo() {
 | `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`     | `'md'`     | 尺寸                                          |
 | `shape`    | `'circle' \| 'square'`                     | `'circle'` | 形状                                          |
 
-### 自定义图标
+默认插槽（Vue）/ children（React）会替换缩写，常见用法是放一个 SVG 图标。
 
-默认插槽（Vue）/ `children`（React）会替换缩写显示，常见用法是放一个 SVG 图标。
+### AvatarGroup
 
-## AvatarGroup Props
-
-| 名称      | 类型     | 默认值 | 说明                                       |
+| Prop      | 类型     | 默认值 | 说明                                       |
 | --------- | -------- | ------ | ------------------------------------------ |
 | `spacing` | `number` | `-8`   | 子项之间的水平间距，负值产生重叠效果       |
-
-> AvatarGroup 只负责排版（重叠间距 + 描边），子项各自的 size/shape 仍由它们自己的 props 决定。

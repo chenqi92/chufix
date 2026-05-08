@@ -1,91 +1,168 @@
 ---
 title: Input 输入框
-description: ChuKit 的输入框 —— 三种 variant、三种尺寸、错误态、可清空、prefix/suffix。
+description: 单行输入 —— 3 种 variant、3 种尺寸、错误态、可清空、prefix/suffix。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/input/BasicVue.vue';
-import BasicReact from '~/components/demos/input/BasicReact.tsx';
+import VariantsVue from '~/components/demos/input/VariantsVue.vue';
+import SizesVue from '~/components/demos/input/SizesVue.vue';
 import StatesVue from '~/components/demos/input/StatesVue.vue';
-import StatesReact from '~/components/demos/input/StatesReact.tsx';
+import AffixVue from '~/components/demos/input/AffixVue.vue';
 
 ## 基础用法
 
-Vue 使用 `v-model`；React 用受控/非受控均可。第二个输入框开启了 `clearable`，输入文字后右侧会出现清空按钮。
+`v-model` / `value + onChange` 直接绑定字符串。`placeholder` 跟原生 input 一致。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@chukit/vue';
+import { Input } from '@chufix/vue';
 
 const name = ref('');
-const email = ref('user@chukit.dev');
 </script>
 
 <template>
-  <Input v-model="name" placeholder="请输入名字" />
-  <Input v-model="email" clearable placeholder="邮箱" />
-  <Input v-model="pwd" type="password" placeholder="密码" />
+  <Input v-model="name" placeholder="请输入用户名" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Input } from '@chukit/react';
+import { Input } from '@chufix/react';
 
 export default function Demo() {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('user@chukit.dev');
-  const [pwd, setPwd] = useState('');
+  return (
+    <Input
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      placeholder="请输入用户名"
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 视觉变体
+
+3 种 variant 提供不同的边框 / 背景强度。`filled` 适合表单密集的场景，`ghost` 在已有容器边框时使用，避免双重边框。
+
+<DemoFrame
+  vueCode={`<Input variant="outline" placeholder="outline · 默认" />
+<Input variant="filled" placeholder="filled · 灰色填充" />
+<Input variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
+  reactCode={`<Input variant="outline" placeholder="outline · 默认" />
+<Input variant="filled" placeholder="filled · 灰色填充" />
+<Input variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 尺寸
+
+<DemoFrame
+  vueCode={`<Input size="sm" placeholder="Small" />
+<Input size="md" placeholder="Medium" />
+<Input size="lg" placeholder="Large" />`}
+  reactCode={`<Input size="sm" placeholder="Small" />
+<Input size="md" placeholder="Medium" />
+<Input size="lg" placeholder="Large" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 状态
+
+`clearable` 只在有值时显示清除按钮；`error` 切换到危险色边框 + ring；`disabled` / `readonly` 与原生 input 一致。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Input } from '@chufix/vue';
+
+const email = ref('not-an-email');
+const valid = (s: string) => /.+@.+\\..+/.test(s);
+</script>
+
+<template>
+  <Input v-model="search" clearable placeholder="可清空（输入后出现 ×）" />
+  <Input
+    v-model="email"
+    :error="!valid(email)"
+    placeholder="错误状态：邮箱格式不对"
+  />
+  <Input placeholder="禁用" disabled />
+  <Input placeholder="只读" readonly model-value="readonly content" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Input } from '@chufix/react';
+
+export default function Demo() {
+  const [email, setEmail] = useState('not-an-email');
+  const valid = /.+@.+\\..+/.test(email);
 
   return (
     <>
-      <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="请输入名字" />
-      <Input value={email} clearable onChange={(e) => setEmail(e.target.value)}
-             onClear={() => setEmail('')} placeholder="邮箱" />
-      <Input value={pwd} type="password" onChange={(e) => setPwd(e.target.value)} placeholder="密码" />
+      <Input clearable placeholder="可清空（输入后出现 ×）" />
+      <Input
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={!valid}
+        placeholder="错误状态：邮箱格式不对"
+      />
+      <Input placeholder="禁用" disabled />
+      <Input placeholder="只读" readOnly defaultValue="readonly content" />
     </>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <StatesVue client:load />
 </DemoFrame>
 
-## Variants 与状态
+## 前后缀
+
+通过具名插槽（Vue）/ `prefix` & `suffix` props（React）放置图标或固定文本。`clearable` 和 `suffix` 互斥（有内容时显示清除按钮）。
 
 <DemoFrame
-  vueCode={`<Input v-model="v" />
-<Input v-model="v" variant="filled" />
-<Input v-model="v" variant="ghost" />
-<Input v-model="v" error />
-<Input model-value="禁用" disabled />
-<Input size="sm" placeholder="sm" />
-<Input size="lg" placeholder="lg" />`}
-  reactCode={`<Input value={v} onChange={...} />
-<Input value={v} variant="filled" onChange={...} />
-<Input value={v} variant="ghost" onChange={...} />
-<Input value={v} error onChange={...} />
-<Input value="禁用" disabled readOnly />
-<Input inputSize="sm" placeholder="sm" />
-<Input inputSize="lg" placeholder="lg" />`}
+  vueCode={`<Input v-model="url" placeholder="example">
+  <template #prefix>https://</template>
+  <template #suffix>.com</template>
+</Input>
+
+<Input v-model="search" clearable placeholder="搜索…">
+  <template #prefix>
+    <SearchIcon />
+  </template>
+</Input>`}
+  reactCode={`<Input
+  value={url}
+  onChange={(e) => setUrl(e.target.value)}
+  placeholder="example"
+  prefix={<>https://</>}
+  suffix={<>.com</>}
+/>
+
+<Input
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  clearable
+  placeholder="搜索…"
+  prefix={<SearchIcon />}
+/>`}
 >
-  <StatesVue slot="vue" client:load />
-  <StatesReact slot="react" client:load />
+  <AffixVue client:load />
 </DemoFrame>
 
-## Props
+## API
 
-| 名称           | 类型                                                       | 默认值      | 说明                                |
-| -------------- | ---------------------------------------------------------- | ----------- | ----------------------------------- |
-| `variant`      | `'outline' \| 'filled' \| 'ghost'`                         | `'outline'` | 视觉变体                            |
-| `size` *(Vue)* / `inputSize` *(React)* | `'sm' \| 'md' \| 'lg'`                     | `'md'`      | 高度与字号                          |
-| `type`         | `'text' \| 'password' \| 'email' \| 'number' \| ...`       | `'text'`    | 原生 input type                     |
-| `error`        | `boolean`                                                  | `false`     | 错误态（红色边框 + ring）           |
-| `clearable`    | `boolean`                                                  | `false`     | 有内容时显示清空按钮                |
-| `disabled`     | `boolean`                                                  | `false`     | 禁用                                |
-| `placeholder`  | `string`                                                   | —           | 占位文字                            |
-
-> React 用 `inputSize` 而不是 `size`，是因为原生 `<input size>` 是字符长度属性，避免冲突。
-
-## 插槽 / Children
-
-- **Vue**：`prefix` / `suffix` 具名插槽；
-- **React**：`prefix` / `suffix` props，传 `ReactNode`。
+| Prop          | 类型                                                                          | 默认值      | 说明                |
+| ------------- | ----------------------------------------------------------------------------- | ----------- | ------------------- |
+| `modelValue`  | `string \| number`                                                            | —           | Vue v-model 绑定值  |
+| `value`       | `string`                                                                      | —           | React 受控值        |
+| `type`        | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url' \| 'search'`   | `'text'`    | 输入类型            |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'`                                            | `'outline'` | 视觉变体            |
+| `size`        | `'sm' \| 'md' \| 'lg'`                                                        | `'md'`      | 高度与字号          |
+| `clearable`   | `boolean`                                                                     | `false`     | 有值时显示清除按钮  |
+| `error`       | `boolean`                                                                     | `false`     | 错误态边框 / ring   |
+| `disabled`    | `boolean`                                                                     | `false`     | 禁用                |
+| `readonly`    | `boolean`                                                                     | `false`     | 只读                |
+| `placeholder` | `string`                                                                      | —           | 占位文本            |

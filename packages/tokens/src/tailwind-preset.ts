@@ -1,7 +1,7 @@
-/* Optional Tailwind preset that exposes ChuKit tokens as Tailwind utilities.
+/* Optional Tailwind preset that exposes ChuFix tokens as Tailwind utilities.
  * Usage:
  *   // tailwind.config.ts
- *   import preset from '@chukit/tokens/tailwind';
+ *   import preset from '@chufix/tokens/tailwind';
  *   export default { presets: [preset], content: [...] };
  */
 const channel = (v: string) => `hsl(var(${v}) / <alpha-value>)`;
@@ -10,37 +10,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        chukit: {
-          bg: channel('--ck-bg'),
-          fg: channel('--ck-fg'),
+        chufix: {
+          bg: channel('--cf-bg'),
+          fg: channel('--cf-fg'),
           muted: {
-            DEFAULT: channel('--ck-muted'),
-            fg: channel('--ck-muted-fg'),
+            DEFAULT: channel('--cf-muted'),
+            fg: channel('--cf-muted-fg'),
           },
-          border: channel('--ck-border'),
-          ring: channel('--ck-ring'),
+          border: channel('--cf-border'),
+          ring: channel('--cf-ring'),
           primary: {
-            DEFAULT: channel('--ck-primary'),
-            hover: channel('--ck-primary-hover'),
-            active: channel('--ck-primary-active'),
-            fg: channel('--ck-primary-fg'),
-            soft: channel('--ck-primary-soft'),
+            DEFAULT: channel('--cf-primary'),
+            hover: channel('--cf-primary-hover'),
+            active: channel('--cf-primary-active'),
+            fg: channel('--cf-primary-fg'),
+            soft: channel('--cf-primary-soft'),
           },
           danger: {
-            DEFAULT: channel('--ck-danger'),
-            hover: channel('--ck-danger-hover'),
-            fg: channel('--ck-danger-fg'),
-            soft: channel('--ck-danger-soft'),
+            DEFAULT: channel('--cf-danger'),
+            hover: channel('--cf-danger-hover'),
+            fg: channel('--cf-danger-fg'),
+            soft: channel('--cf-danger-soft'),
           },
         },
       },
       borderRadius: {
-        chukit: 'var(--ck-radius)',
-        'chukit-sm': 'var(--ck-radius-sm)',
-        'chukit-lg': 'var(--ck-radius-lg)',
+        chufix: 'var(--cf-radius)',
+        'chufix-sm': 'var(--cf-radius-sm)',
+        'chufix-lg': 'var(--cf-radius-lg)',
       },
       fontFamily: {
-        chukit: 'var(--ck-font-sans)',
+        chufix: 'var(--cf-font-sans)',
       },
     },
   },

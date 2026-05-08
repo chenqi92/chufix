@@ -1,20 +1,68 @@
 ---
 title: Checkbox 复选框
-description: ChuKit 的复选框 —— 三尺寸、indeterminate 半选、disabled 态，原生 input 语义。
+description: 多选框 —— 3 种尺寸、indeterminate 半选状态，原生 input 语义保留。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/checkbox/BasicVue.vue';
-import BasicReact from '~/components/demos/checkbox/BasicReact.tsx';
+import SizesVue from '~/components/demos/checkbox/SizesVue.vue';
+import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
 
 ## 基础用法
 
-底层是真实的 `<input type="checkbox">`，键盘 / 表单 / 屏幕阅读器全部直接可用。`indeterminate` 是视觉状态，不进入 `checked`。
+底层是真实的 `<input type="checkbox">`，键盘 / 表单 / 屏幕阅读器全部直接可用。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Checkbox } from '@chufix/vue';
+
+const agree = ref(false);
+</script>
+
+<template>
+  <Checkbox v-model="agree">我同意服务协议</Checkbox>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Checkbox } from '@chufix/react';
+
+export default function Demo() {
+  const [agree, setAgree] = useState(false);
+  return (
+    <Checkbox checked={agree} onChange={(e) => setAgree(e.target.checked)}>
+      我同意服务协议
+    </Checkbox>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 尺寸与禁用
+
+<DemoFrame
+  vueCode={`<Checkbox size="sm" :model-value="true">sm 已选</Checkbox>
+<Checkbox size="md" :model-value="true">md 已选</Checkbox>
+<Checkbox size="lg" :model-value="true">lg 已选</Checkbox>
+<Checkbox disabled>禁用</Checkbox>
+<Checkbox disabled :model-value="true">禁用已选</Checkbox>`}
+  reactCode={`<Checkbox size="sm" defaultChecked>sm 已选</Checkbox>
+<Checkbox size="md" defaultChecked>md 已选</Checkbox>
+<Checkbox size="lg" defaultChecked>lg 已选</Checkbox>
+<Checkbox disabled>禁用</Checkbox>
+<Checkbox disabled defaultChecked>禁用已选</Checkbox>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 半选 indeterminate
+
+`indeterminate` 是纯视觉状态，不影响实际的 `checked` 值。常见用法是父级 "全选" 在子项部分选中时显示。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Checkbox } from '@chukit/vue';
+import { Checkbox } from '@chufix/vue';
 
 const apple = ref(true);
 const banana = ref(false);
@@ -37,7 +85,7 @@ const indeterminate = computed(() => count.value > 0 && count.value < 3);
   <Checkbox v-model="cherry">樱桃</Checkbox>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { Checkbox } from '@chukit/react';
+import { Checkbox } from '@chufix/react';
 
 export default function Demo() {
   const [apple, setApple] = useState(true);
@@ -62,19 +110,13 @@ export default function Demo() {
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <IndeterminateVue client:load />
 </DemoFrame>
 
-## Props
+## API
 
-| 名称            | 类型                   | 默认值  | 说明                              |
+| Prop            | 类型                   | 默认值  | 说明                              |
 | --------------- | ---------------------- | ------- | --------------------------------- |
 | `size`          | `'sm' \| 'md' \| 'lg'` | `'md'`  | 整体尺寸                          |
 | `disabled`      | `boolean`              | `false` | 禁用                              |
-| `indeterminate` | `boolean`              | `false` | 半选状态（视觉态，不影响 checked） |
-
-## 双向绑定
-
-- **Vue**：`v-model` 绑定到 `boolean`；`@change` 拿到 `boolean` 值。
-- **React**：受控传 `checked` + `onChange`；非受控传 `defaultChecked`。`onChange` 是原生 ChangeEvent。
+| `indeterminate` | `boolean`              | `false` | 半选状态（视觉态，不影响 checked）|

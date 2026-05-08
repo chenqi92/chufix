@@ -29,9 +29,9 @@ export function selectClass(p: {
   error: boolean;
 }): string {
   return [
-    'ck-select',
-    `ck-select--${p.variant}`,
-    `ck-select--${p.size}`,
+    'cf-select',
+    `cf-select--${p.variant}`,
+    `cf-select--${p.size}`,
     p.open && 'is-open',
     p.disabled && 'is-disabled',
     p.error && 'is-error',

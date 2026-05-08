@@ -1,103 +1,155 @@
 ---
 title: Button 按钮
-description: ChuKit 的按钮组件 —— 五种 variant、三种尺寸、两个语义色、loading 状态。
+description: 5 种 variant、3 种尺寸、3 种形状、2 种语义色、loading 与 disabled 态。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/button/BasicVue.vue';
-import BasicReact from '~/components/demos/button/BasicReact.tsx';
+import TonesVue from '~/components/demos/button/TonesVue.vue';
 import SizesVue from '~/components/demos/button/SizesVue.vue';
-import SizesReact from '~/components/demos/button/SizesReact.tsx';
+import StatesVue from '~/components/demos/button/StatesVue.vue';
 
 ## 基础用法
 
-预览区左 Vue、右 React 是同时跑在页面上的真实实例（不是截图）；下方代码区在 Vue / React 之间切换可对照源码并一键复制。
+5 种视觉变体覆盖从主操作到次操作的全部层级。`solid` 是默认的实心按钮，`link` 退化成纯文字链接。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { Button } from '@chukit/vue';
-
-const count = ref(0);
-const loading = ref(false);
-
-async function load() {
-  loading.value = true;
-  await new Promise((r) => setTimeout(r, 1200));
-  loading.value = false;
-}
+import { Button } from '@chufix/vue';
 </script>
 
 <template>
-  <Button @click="count++">点击 {{ count }}</Button>
+  <Button>Solid</Button>
   <Button variant="soft">Soft</Button>
   <Button variant="outline">Outline</Button>
   <Button variant="ghost">Ghost</Button>
-  <Button tone="danger">Danger</Button>
-  <Button :loading="loading" @click="load">
-    {{ loading ? '加载中' : '点击加载' }}
-  </Button>
+  <Button variant="link">Link</Button>
 </template>`}
-  reactCode={`import { useState } from 'react';
-import { Button } from '@chukit/react';
+  reactCode={`import { Button } from '@chufix/react';
 
 export default function Demo() {
-  const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(false);
-
-  async function load() {
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-  }
-
   return (
     <>
-      <Button onClick={() => setCount((c) => c + 1)}>点击 {count}</Button>
+      <Button>Solid</Button>
       <Button variant="soft">Soft</Button>
       <Button variant="outline">Outline</Button>
       <Button variant="ghost">Ghost</Button>
-      <Button tone="danger">Danger</Button>
-      <Button loading={loading} onClick={load}>
-        {loading ? '加载中' : '点击加载'}
-      </Button>
+      <Button variant="link">Link</Button>
     </>
   );
 }`}
 >
-  <BasicVue slot="vue" client:load />
-  <BasicReact slot="react" client:load />
+  <BasicVue client:load />
+</DemoFrame>
+
+## 语义色
+
+`tone` 控制颜色语义。`primary` 是默认值，`danger` 用于删除等不可逆操作。所有 variant 都支持。
+
+<DemoFrame
+  vueCode={`<Button tone="primary">Primary</Button>
+<Button tone="primary" variant="soft">Soft</Button>
+<Button tone="primary" variant="outline">Outline</Button>
+
+<Button tone="danger">Danger</Button>
+<Button tone="danger" variant="soft">Soft</Button>
+<Button tone="danger" variant="outline">Outline</Button>`}
+  reactCode={`<Button tone="primary">Primary</Button>
+<Button tone="primary" variant="soft">Soft</Button>
+<Button tone="primary" variant="outline">Outline</Button>
+
+<Button tone="danger">Danger</Button>
+<Button tone="danger" variant="soft">Soft</Button>
+<Button tone="danger" variant="outline">Outline</Button>`}
+>
+  <TonesVue client:load />
 </DemoFrame>
 
 ## 尺寸与形状
+
+3 档尺寸（`sm` / `md` / `lg`）适配不同信息密度；3 种形状中 `pill` 是胶囊形，`square` 是正方形（icon-only 时常用）。
 
 <DemoFrame
   vueCode={`<Button size="sm">Small</Button>
 <Button size="md">Medium</Button>
 <Button size="lg">Large</Button>
-<Button shape="pill">Pill</Button>`}
+
+<Button shape="default">默认圆角</Button>
+<Button shape="pill">Pill</Button>
+<Button shape="square" aria-label="设置">⚙</Button>`}
   reactCode={`<Button size="sm">Small</Button>
 <Button size="md">Medium</Button>
 <Button size="lg">Large</Button>
-<Button shape="pill">Pill</Button>`}
+
+<Button shape="default">默认圆角</Button>
+<Button shape="pill">Pill</Button>
+<Button shape="square" aria-label="设置">⚙</Button>`}
 >
-  <SizesVue slot="vue" client:load />
-  <SizesReact slot="react" client:load />
+  <SizesVue client:load />
 </DemoFrame>
 
-## Props
+## 状态
 
-| 名称       | 类型                                                       | 默认值     | 说明                                |
-| ---------- | ---------------------------------------------------------- | ---------- | ----------------------------------- |
-| `variant`  | `'solid' \| 'soft' \| 'outline' \| 'ghost' \| 'link'`     | `'solid'`  | 视觉变体                            |
-| `size`     | `'sm' \| 'md' \| 'lg'`                                     | `'md'`     | 高度与字号                          |
-| `shape`    | `'default' \| 'pill' \| 'square'`                          | `'default'`| 圆角形状；`square` 适合 icon-only   |
-| `tone`     | `'primary' \| 'danger'`                                    | `'primary'`| 语义色                              |
-| `loading`  | `boolean`                                                  | `false`    | 显示 spinner 并阻止点击             |
-| `block`    | `boolean`                                                  | `false`    | 撑满父容器宽度                      |
-| `disabled` | `boolean`                                                  | `false`    | 禁用                                |
+`loading` 自动渲染 spinner 并阻止点击；`disabled` 让按钮不可交互；`block` 让宽度铺满父容器。
 
-## 插槽 / Children
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { Button } from '@chufix/vue';
 
-- **Vue**：默认插槽为 label，`leading` / `trailing` 具名插槽放图标。
-- **React**：`children` 为 label，`leading` / `trailing` props 放图标节点。
+const loading = ref(false);
+async function load() {
+  loading.value = true;
+  await new Promise((r) => setTimeout(r, 1500));
+  loading.value = false;
+}
+</script>
+
+<template>
+  <Button :loading="loading" @click="load">
+    {{ loading ? '加载中…' : '点击加载' }}
+  </Button>
+  <Button disabled>Disabled</Button>
+  <Button block>整行铺满（block）</Button>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { Button } from '@chufix/react';
+
+export default function Demo() {
+  const [loading, setLoading] = useState(false);
+  async function load() {
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    setLoading(false);
+  }
+
+  return (
+    <>
+      <Button loading={loading} onClick={load}>
+        {loading ? '加载中…' : '点击加载'}
+      </Button>
+      <Button disabled>Disabled</Button>
+      <Button block>整行铺满（block）</Button>
+    </>
+  );
+}`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop       | 类型                                                       | 默认值       | 说明                                |
+| ---------- | ---------------------------------------------------------- | ------------ | ----------------------------------- |
+| `variant`  | `'solid' \| 'soft' \| 'outline' \| 'ghost' \| 'link'`      | `'solid'`    | 视觉变体                            |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                     | `'md'`       | 高度与字号                          |
+| `shape`    | `'default' \| 'pill' \| 'square'`                          | `'default'`  | 圆角形状                            |
+| `tone`     | `'primary' \| 'danger'`                                    | `'primary'`  | 语义色                              |
+| `loading`  | `boolean`                                                  | `false`      | 显示 spinner 并阻止点击             |
+| `block`    | `boolean`                                                  | `false`      | 撑满父容器宽度                      |
+| `disabled` | `boolean`                                                  | `false`      | 禁用                                |
+
+### 插槽 / Children
+
+- **Vue**：默认插槽是 label，`leading` / `trailing` 具名插槽放图标。
+- **React**：`children` 是 label，`leading` / `trailing` props 放图标节点。

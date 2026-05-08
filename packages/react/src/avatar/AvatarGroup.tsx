@@ -5,9 +5,9 @@ export function AvatarGroup(props: AvatarGroupProps) {
   const { spacing = -8, children, className, style } = props;
   const groupStyle: CSSProperties = {
     ...style,
-    ['--ck-avatar-spacing' as any]: `${spacing}px`,
+    ['--cf-avatar-spacing' as any]: `${spacing}px`,
   };
-  const cls = ['ck-avatar-group', className].filter(Boolean).join(' ');
+  const cls = ['cf-avatar-group', className].filter(Boolean).join(' ');
 
   return (
     <span className={cls} style={groupStyle}>

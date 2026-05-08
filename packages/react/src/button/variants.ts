@@ -32,12 +32,12 @@ export function buttonClass(p: Required<Pick<ButtonOwnProps, 'variant' | 'size' 
   className?: string;
 }): string {
   return [
-    'ck-btn',
-    `ck-btn--${p.variant}`,
-    `ck-btn--${p.size}`,
-    `ck-btn--${p.tone}`,
-    p.shape !== 'default' && `ck-btn--${p.shape}`,
-    p.block && 'ck-btn--block',
+    'cf-btn',
+    `cf-btn--${p.variant}`,
+    `cf-btn--${p.size}`,
+    `cf-btn--${p.tone}`,
+    p.shape !== 'default' && `cf-btn--${p.shape}`,
+    p.block && 'cf-btn--block',
     p.loading && 'is-loading',
     p.className,
   ]

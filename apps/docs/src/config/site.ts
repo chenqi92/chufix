@@ -1,9 +1,9 @@
 export const site = {
-  title: 'ChuKit UI',
+  title: 'ChuFix UI',
   tagline: '初见即用的基础组件库',
-  description: 'Vue 3 与 React 双框架同源的基础组件库，类 shadcn 体验。',
-  github: 'https://github.com/chenqi92/chukit',
-  docsRepo: 'https://github.com/chenqi92/chukit-docs',
+  description: 'Vue 3 与 React 双框架同源的基础组件库，可装包也可拷源码。',
+  github: 'https://github.com/chenqi92/chufix',
+  docsRepo: 'https://github.com/chenqi92/chufix-docs',
   version: '0.0.1',
 };
 
