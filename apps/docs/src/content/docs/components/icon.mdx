@@ -1,0 +1,40 @@
+---
+title: Icon 图标
+description: ChuFix 内置 SVG 图标组件，类型化 name，默认内联渲染，无需额外挂载 sprite。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/icon/BasicVue.vue';
+
+## 基础用法
+
+`name` 使用 `IconName` 类型，来自 `@chufix/icons` 的 169 个内置图标名。默认作为装饰性图标渲染；需要可访问名称时传 `title` 或 `label`。
+
+<DemoFrame
+  vueCode={`<CfIcon name="search" />
+<CfIcon name="calendar" size="lg" />
+<CfIcon name="component" :size="28" />
+<CfIcon name="alert-circle" title="错误" />`}
+  reactCode={`<CfIcon name="search" />
+<CfIcon name="calendar" size="lg" />
+<CfIcon name="component" size={28} />
+<CfIcon name="alert-circle" title="错误" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | 类型                                      | 默认值 | 说明 |
+| ------------- | ----------------------------------------- | ------ | ---- |
+| `name`        | `IconName`                                | —      | 图标名，类型化校验 |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number \| string` | `'md'` | 尺寸 |
+| `strokeWidth` | `number`                                  | `1.5`  | 描边宽度 |
+| `title`       | `string`                                  | —      | SVG title，同时让图标具备 img 语义 |
+| `label`       | `string`                                  | —      | Vue 专用 aria-label |
+
+React 可直接传 `aria-label`：
+
+```tsx
+<CfIcon name="search" aria-label="搜索" />
+```

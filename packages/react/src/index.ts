@@ -1,4 +1,5 @@
 import '@chufix/tokens/tokens.css';
+import './styles/icon.css';
 import './styles/button.css';
 import './styles/input.css';
 import './styles/card.css';
@@ -32,6 +33,8 @@ import './styles/dropdown.css';
 import './styles/inputgroup.css';
 import './styles/otp.css';
 import './styles/form.css';
+import './styles/combobox.css';
+import './styles/taginput.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -202,6 +205,14 @@ export type {
   DropdownItem,
 } from './dropdown/variants';
 
+export { Icon as CfIcon } from './icon/Icon';
+export type {
+  IconProps,
+  IconSize,
+  IconStrokeWidth,
+} from './icon/variants';
+export type { IconName } from '@chufix/icons';
+
 export { InputGroup as CfInputGroup } from './inputgroup/InputGroup';
 export type {
   InputGroupProps,
@@ -221,3 +232,20 @@ export type {
   FormLayout,
   FormSize,
 } from './form/variants';
+
+export { Combobox as CfCombobox } from './combobox/Combobox';
+export type {
+  ComboboxProps,
+  ComboboxOption,
+  ComboboxVariant,
+  ComboboxSize,
+  ComboboxValue,
+} from './combobox/variants';
+
+export { TagInput as CfTagInput } from './taginput/TagInput';
+export type {
+  TagInputProps,
+  TagInputVariant,
+  TagInputSize,
+  TagInputTone,
+} from './taginput/variants';

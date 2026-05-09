@@ -32,6 +32,7 @@ export const sidebar: SidebarGroup[] = [
     label: '组件',
     items: [
       { label: '总览', href: '/components/' },
+      { label: 'Icon 图标', href: '/components/icon/' },
       { label: 'Button 按钮', href: '/components/button/' },
       { label: 'Input 输入框', href: '/components/input/' },
       { label: 'Card 卡片', href: '/components/card/' },
@@ -65,6 +66,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'InputGroup 输入组合', href: '/components/inputgroup/' },
       { label: 'OtpInput 一次性密码', href: '/components/otp/' },
       { label: 'Form 表单', href: '/components/form/' },
+      { label: 'Combobox 组合选择', href: '/components/combobox/' },
+      { label: 'TagInput 标签输入', href: '/components/taginput/' },
     ],
   },
 ];

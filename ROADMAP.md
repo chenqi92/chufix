@@ -7,9 +7,9 @@
 
 ---
 
-## 已发布 · 33 / 70+
+## 已发布 · 35 / 70+
 
-### 表单 · Form (13)
+### 表单 · Form (15)
 
 - [x] Button (atoms · B.1.1)
 - [x] Input (atoms · B.1.3)
@@ -24,6 +24,8 @@
 - [x] InputGroup (base2 · InputGroup)
 - [x] OtpInput (forms-plus · OTPInput)
 - [x] Form / FormField (base · B.16)
+- [x] Combobox (forms-plus · Combobox)
+- [x] TagInput (forms-plus · TagInput)
 
 ### 容器 · Container (1)
 
@@ -78,7 +80,7 @@
 ## 路线图 · 优先级 P1（高价值，工作量中）· 8
 
 - [x] **Form / FormField** (base · B.16) —— 表单封装层，统一 label / 错误信息 / 校验流。把所有现有 input 接进来
-- [ ] **Combobox · TagInput** (forms-plus · Combobox / TagInput) —— Select + 输入过滤；TagInput 多标签输入
+- [x] **Combobox · TagInput** (forms-plus · Combobox / TagInput) —— Select + 输入过滤；TagInput 多标签输入
 - [ ] **FileDropzone / Upload** (forms-plus · FileDropzone / rich · Upload) —— 拖拽 + 点击 + 进度条
 - [ ] **ColorPicker** (forms-plus · ColorPicker / rich) —— hex/rgb/hsl/oklch 输入 + 调色板 + 透明度滑块
 - [ ] **DatePicker** (rich · DatePicker · Range) —— 日期 / 月份 / 年份选择

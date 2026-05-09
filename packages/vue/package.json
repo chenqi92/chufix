@@ -30,6 +30,7 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
+    "@chufix/icons": "workspace:*",
     "@chufix/tokens": "workspace:*"
   },
   "devDependencies": {

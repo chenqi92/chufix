@@ -1,0 +1,17 @@
+/* Icon · 16x16 currentColor SVG, aligned for text and controls. */
+
+.cf-icon {
+  --cf-icon-size: 16px;
+  display: inline-block;
+  width: var(--cf-icon-size, 16px);
+  height: var(--cf-icon-size, 16px);
+  flex-shrink: 0;
+  color: currentColor;
+  vertical-align: -0.15em;
+}
+
+.cf-icon--xs { --cf-icon-size: 12px; }
+.cf-icon--sm { --cf-icon-size: 14px; }
+.cf-icon--md { --cf-icon-size: 16px; }
+.cf-icon--lg { --cf-icon-size: 20px; }
+.cf-icon--xl { --cf-icon-size: 24px; }
