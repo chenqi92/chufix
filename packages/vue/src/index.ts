@@ -32,6 +32,7 @@ import './styles/docklayout.css';
 import './styles/detachedpanel.css';
 import './styles/floatinginspector.css';
 import './styles/tearofftab.css';
+import './styles/templatepane.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -351,6 +352,30 @@ export type {
   TearOffTabsProps,
   TearOffTabItem,
 } from './tearofftab/variants';
+
+/* ── Template panes (Cf<Domain>Pane) — page-module shells with predefined Tabs + slots. ── */
+export { default as CfProtocolPane } from './templatepanes/ProtocolPane.vue';
+export { default as CfNetworkPane } from './templatepanes/NetworkPane.vue';
+export { default as CfSqlWorkbench } from './templatepanes/SqlWorkbench.vue';
+export { default as CfTerminalPane } from './templatepanes/TerminalPane.vue';
+export { default as CfCrashPane } from './templatepanes/CrashPane.vue';
+export { default as CfPluginPane } from './templatepanes/PluginPane.vue';
+export { default as CfDomainPane } from './templatepanes/DomainPane.vue';
+export { default as CfOnboardingFlow } from './templatepanes/OnboardingFlow.vue';
+export type {
+  TemplatePaneProps,
+  TemplatePaneTab,
+} from './templatepanes/variants';
+export {
+  PROTOCOL_TABS,
+  NETWORK_TABS,
+  SQL_TABS,
+  TERMINAL_TABS,
+  CRASH_TABS,
+  PLUGIN_TABS,
+  DOMAIN_TABS,
+  ONBOARDING_TABS,
+} from './templatepanes/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

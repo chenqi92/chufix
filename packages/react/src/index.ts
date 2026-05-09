@@ -32,6 +32,7 @@ import './styles/docklayout.css';
 import './styles/detachedpanel.css';
 import './styles/floatinginspector.css';
 import './styles/tearofftab.css';
+import './styles/templatepane.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -359,6 +360,33 @@ export type {
   TearOffTabsProps,
   TearOffTabItem,
 } from './tearofftab/variants';
+
+/* ── Template panes ── */
+export {
+  ProtocolPane as CfProtocolPane,
+  NetworkPane as CfNetworkPane,
+  SqlWorkbench as CfSqlWorkbench,
+  TerminalPane as CfTerminalPane,
+  CrashPane as CfCrashPane,
+  PluginPane as CfPluginPane,
+  DomainPane as CfDomainPane,
+  OnboardingFlow as CfOnboardingFlow,
+} from './templatepanes/Panes';
+export { TemplatePane as CfTemplatePane } from './templatepanes/TemplatePane';
+export type {
+  TemplatePaneProps,
+  TemplatePaneTab,
+} from './templatepanes/variants';
+export {
+  PROTOCOL_TABS,
+  NETWORK_TABS,
+  SQL_TABS,
+  TERMINAL_TABS,
+  CRASH_TABS,
+  PLUGIN_TABS,
+  DOMAIN_TABS,
+  ONBOARDING_TABS,
+} from './templatepanes/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

@@ -1,0 +1,126 @@
+/* ChuFix Template Panes — thin Tabs+slots shells for domain page modules.
+ * Used by CfProtocolPane / NetworkPane / SqlWorkbench / TerminalPane /
+ * CrashPane / PluginPane / DomainPane / OnboardingFlow.
+ *
+ * Consumer fills tab content via named slots: <template #panel-{tabId}>. */
+
+.cf-tplpane {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-1);
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  overflow: hidden;
+}
+
+.cf-tplpane--sm {
+  font-size: var(--t-12);
+}
+.cf-tplpane--md {
+  font-size: var(--t-13);
+}
+.cf-tplpane--lg {
+  font-size: var(--t-14);
+}
+
+.cf-tplpane__bar {
+  display: flex;
+  align-items: stretch;
+  height: 36px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cf-tplpane__bar::-webkit-scrollbar {
+  display: none;
+}
+
+.cf-tplpane__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  border: 0;
+  border-right: 1px solid var(--line-1);
+  background: transparent;
+  color: var(--fg-2);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cf-tplpane__tab:hover:not(:disabled) {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-tplpane__tab.is-active {
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border-bottom: 2px solid var(--accent-1);
+  margin-bottom: -1px;
+  font-weight: var(--w-medium);
+}
+.cf-tplpane__tab:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+
+.cf-tplpane__label {
+  font-weight: inherit;
+}
+
+.cf-tplpane__badge {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  padding: 1px 5px;
+  border-radius: var(--r-3);
+  background: var(--bg-3);
+  color: var(--fg-3);
+}
+.cf-tplpane__tab.is-active .cf-tplpane__badge {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+
+.cf-tplpane__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--bg-1);
+}
+
+.cf-tplpane__panel {
+  height: 100%;
+  padding: 14px 16px;
+}
+
+/* per-template tinted left border for affordance */
+.cf-tplpane--protocol .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--proto-grpc);
+}
+.cf-tplpane--network .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--proto-ws);
+}
+.cf-tplpane--sql .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--proto-put);
+}
+.cf-tplpane--terminal .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--fg-2);
+}
+.cf-tplpane--crash .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--status-error);
+}
+.cf-tplpane--plugin .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--proto-gql);
+}
+.cf-tplpane--domain .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--accent-1);
+}
+.cf-tplpane--onboarding .cf-tplpane__tab.is-active {
+  border-bottom-color: var(--proto-sse);
+}

@@ -10,7 +10,7 @@
 
 ---
 
-## 已发布 · 121 / 130+
+## 已发布 · 129 / 130+
 
 ### 表单 · Form (27)
 
@@ -265,41 +265,41 @@
 > 模版内的子模块（如 SSE 监视器、HAR 时序图）都用现有 atoms 拼，不再自造单独导出。
 > 命名约定：`Cf<Domain>Pane` / `Cf<Domain>Workbench` / `Cf<Domain>Flow`。
 
-- [ ] **CfProtocolPane** (protocols.html) —— 协议监视器面板，Tabs 切 SSE / MQTT / Kafka / gRPC
+- [x] **CfProtocolPane** (protocols.html) —— 协议监视器面板，Tabs 切 SSE / MQTT / Kafka / gRPC
   - SSE tab: 事件流时间轴 + 重连状态
   - MQTT tab: topic 树 + 订阅消息列表
   - Kafka tab: partition grid + offset / lag 矩阵
   - gRPC tab: service / method 列表 + 调用历史
-- [ ] **CfNetworkPane** (network.html) —— HTTP / TCP 监视面板，Tabs 切 HAR / Hex / PCAP / Cert / Cookie
+- [x] **CfNetworkPane** (network.html) —— HTTP / TCP 监视面板，Tabs 切 HAR / Hex / PCAP / Cert / Cookie
   - HAR Timeline: 请求瀑布图（依赖 P8 ChartCrosshair + 时间条）
   - HexViewer: 16 进制 + ASCII 双栏
   - PCAPRow: 抓包行项
   - CertViewer: X.509 证书字段树
   - CookieJar: 域级 cookie 管理
-- [ ] **CfSqlWorkbench** (sql.html) —— SQL 工作台，包含 Editor / Console / History 三区
+- [x] **CfSqlWorkbench** (sql.html) —— SQL 工作台，包含 Editor / Console / History 三区
   - 上：SQL 编辑器（基于 P8 CodeEditor）
   - 中：执行结果表（DataGrid）
   - 下/侧：查询历史（List）
-- [ ] **CfTerminalPane** (terminal.html) —— 终端面板壳
+- [x] **CfTerminalPane** (terminal.html) —— 终端面板壳
   - OutputBlock: 等宽输出区（基于 P8 AnsiText）
   - CommandLine: 命令输入行（基于 Input + History）
   - 完整 PTY 交互需用户自接 xterm.js
-- [ ] **CfCrashPane** (crash.html) —— 崩溃报告面板，包含 Dialog / StackTrace / DumpUploader
+- [x] **CfCrashPane** (crash.html) —— 崩溃报告面板，包含 Dialog / StackTrace / DumpUploader
   - CrashDialog: 错误对话框（Modal 派生）
   - ErrorReport: Sentry 风格堆栈
   - DumpUploader: dump 文件上传槽（基于 Dropzone）
   - SafeModeLauncher: 安全模式启动入口
-- [ ] **CfPluginPane** (plugins.html) —— 插件中心面板
+- [x] **CfPluginPane** (plugins.html) —— 插件中心面板
   - PluginCard / PluginGrid
   - PermissionDialog
   - SandboxBadge / ManifestViewer
   - Marketplace（搜索 + 列表 + 详情，复合多个 atoms）
-- [ ] **CfDomainPane** (domain.html) —— API 调试领域面板
+- [x] **CfDomainPane** (domain.html) —— API 调试领域面板
   - CollectionTree（左侧 REST 集合树）
   - RequestBuilder（中间请求构造器，最大件）
   - ResponsePanel（下方响应检查器）
   - MockRuleCard / WorkflowNode / ChaosPolicyPanel 作为子卡片
-- [ ] **CfOnboardingFlow** (onboarding.html) —— 完整引导流，FirstRunWizard + HotspotTour + 多步流程
+- [x] **CfOnboardingFlow** (onboarding.html) —— 完整引导流，FirstRunWizard + HotspotTour + 多步流程
 
 ---
 
