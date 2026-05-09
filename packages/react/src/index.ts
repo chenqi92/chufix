@@ -51,6 +51,10 @@ import './styles/stat.css';
 import './styles/table.css';
 import './styles/treeview.css';
 import './styles/datagrid.css';
+import './styles/kbd.css';
+import './styles/link.css';
+import './styles/code.css';
+import './styles/aspectratio.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -393,3 +397,19 @@ export type {
   DataGridCellEdit,
   DataGridSize,
 } from './datagrid/variants';
+
+export { Kbd as CfKbd } from './kbd/Kbd';
+export type { KbdProps, KbdSize } from './kbd/variants';
+
+export { Link as CfLink } from './link/Link';
+export type { LinkProps, LinkVariant, LinkSize } from './link/variants';
+
+export { InlineCode as CfInlineCode, CodeBlock as CfCodeBlock } from './code/Code';
+export type {
+  InlineCodeProps,
+  CodeBlockProps,
+  CodeBlockSize,
+} from './code/variants';
+
+export { AspectRatio as CfAspectRatio } from './aspectratio/AspectRatio';
+export type { AspectRatioProps } from './aspectratio/variants';

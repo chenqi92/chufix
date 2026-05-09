@@ -1,0 +1,24 @@
+/* ChuFix AspectRatio — locks a child container to width / ratio. */
+
+.cf-aspect {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--cf-aspect, calc(16 / 9));
+}
+
+.cf-aspect__inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Children commonly want to fill the box: */
+.cf-aspect__inner > img,
+.cf-aspect__inner > video,
+.cf-aspect__inner > iframe,
+.cf-aspect__inner > svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

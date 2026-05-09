@@ -1,0 +1,38 @@
+---
+title: Link 链接
+description: 设计稿一致的链接样式，4 种 variant、自动识别外部链接、可禁用。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/link/BasicVue.vue';
+
+## 基础用法
+
+外部链接（`href` 以 `http://` / `https://` 开头，或 `external=true`，或 `target="_blank"`）会自动加：尾部小图标、`rel="noopener noreferrer"`、`target="_blank"`（仅 external 简写）。`disabled` 阻止点击并把光标置灰。
+
+<DemoFrame
+  vueCode={`<CfLink href="#">默认链接</CfLink>
+<CfLink href="https://github.com/chenqi92/chufix">外部链接</CfLink>
+<CfLink href="#" variant="subtle">subtle 链接</CfLink>
+<CfLink href="#" variant="underline">underline</CfLink>
+<CfLink href="#" disabled>已禁用</CfLink>`}
+  reactCode={`<CfLink href="#">默认链接</CfLink>
+<CfLink href="https://github.com/chenqi92/chufix">外部链接</CfLink>
+<CfLink href="#" variant="subtle">subtle</CfLink>
+<CfLink href="#" variant="underline">underline</CfLink>
+<CfLink href="#" disabled>已禁用</CfLink>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `href` | `string` | `—` | 链接地址 |
+| `target` | `string` | `—` | 同原生 `<a target>` |
+| `rel` | `string` | 自动 | 外链时自动写 `noopener noreferrer` |
+| `external` | `boolean` | `false` | 显式标记为外链；显示尾部图标 |
+| `variant` | `'default' \| 'subtle' \| 'inverse' \| 'underline'` | `'default'` | 视觉模式 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
+| `disabled` | `boolean` | `false` | 禁用 |

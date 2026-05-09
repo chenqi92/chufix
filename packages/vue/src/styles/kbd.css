@@ -1,0 +1,38 @@
+/* ChuFix Kbd — keyboard key combo display. */
+
+.cf-kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  vertical-align: baseline;
+}
+
+.cf-kbd--sm { font-size: var(--t-11); gap: 3px; }
+.cf-kbd--lg { font-size: var(--t-13); gap: 5px; }
+
+.cf-kbd__key {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-weight: var(--w-medium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  color: var(--fg-2);
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-bottom-width: 2px;
+  border-radius: var(--r-2);
+  line-height: 1;
+}
+.cf-kbd--sm .cf-kbd__key { min-width: 16px; height: 16px; padding: 0 4px; }
+.cf-kbd--lg .cf-kbd__key { min-width: 22px; height: 22px; padding: 0 7px; }
+
+.cf-kbd__sep {
+  color: var(--fg-3);
+  font-weight: var(--w-medium);
+  font-size: 0.85em;
+}

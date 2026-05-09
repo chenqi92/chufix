@@ -85,6 +85,10 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Table 表格', href: '/components/table/' },
       { label: 'DataGrid 数据网格', href: '/components/datagrid/' },
       { label: 'TreeView 树形列表', href: '/components/treeview/' },
+      { label: 'Kbd 键盘按键', href: '/components/kbd/' },
+      { label: 'Link 链接', href: '/components/link/' },
+      { label: 'Code 代码', href: '/components/code/' },
+      { label: 'AspectRatio 宽高比', href: '/components/aspectratio/' },
     ],
   },
 ];

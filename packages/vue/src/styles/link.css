@@ -1,0 +1,46 @@
+/* ChuFix Link — semantic styled anchor with variants. */
+
+.cf-link {
+  font-family: inherit;
+  color: var(--accent-1);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  vertical-align: baseline;
+}
+
+.cf-link--sm { font-size: var(--t-12); }
+.cf-link--md { font-size: var(--t-13); }
+.cf-link--lg { font-size: var(--t-14); }
+
+.cf-link:hover { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+.cf-link:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+  border-radius: var(--r-2);
+}
+
+.cf-link--subtle { color: var(--fg-1); text-decoration: underline dotted; text-underline-offset: 3px; }
+.cf-link--subtle:hover { color: var(--accent-1); text-decoration-style: solid; }
+
+.cf-link--inverse { color: var(--fg-on-accent); }
+.cf-link--inverse:hover { color: var(--fg-on-accent); opacity: 0.85; }
+
+.cf-link--underline { text-decoration: underline; text-underline-offset: 3px; }
+
+.cf-link.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.cf-link__external {
+  width: 0.85em;
+  height: 0.85em;
+  flex: none;
+  opacity: 0.7;
+}

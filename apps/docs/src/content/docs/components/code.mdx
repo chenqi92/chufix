@@ -1,0 +1,60 @@
+---
+title: Code 代码
+description: InlineCode 行内代码 + CodeBlock 多行代码块；可加标题、语言标签、行号、复制按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/code/BasicVue.vue';
+
+## 基础用法
+
+`<CfInlineCode>` 用于句中嵌入小段代码（如包名 / 命令）。`<CfCodeBlock>` 接收 `code` 字符串，可选 `title` / `language` / `showLineNumbers` / `copyable`。注意：本组件只渲染样式，不做语法高亮 —— 如需高亮请在外部接 `shiki` / `highlight.js` 等并把高亮后的 HTML 通过 slot / `dangerouslySetInnerHTML` 传入（v0 暂不内置）。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfInlineCode, CfCodeBlock } from '@chufix/vue';
+
+const code = \`import { CfButton } from '@chufix/vue';
+
+export function Hello() {
+  return <CfButton>Click me</CfButton>;
+}\`;
+</script>
+
+<template>
+  <p>用 <CfInlineCode>npm i @chufix/vue</CfInlineCode> 安装。</p>
+  <CfCodeBlock :code="code" language="tsx" title="hello.tsx" show-line-numbers />
+</template>`}
+  reactCode={`import { CfInlineCode, CfCodeBlock } from '@chufix/react';
+
+const code = \`import { CfButton } from '@chufix/react';\`;
+
+export default function Demo() {
+  return (
+    <>
+      <p>用 <CfInlineCode>npm i @chufix/react</CfInlineCode> 安装。</p>
+      <CfCodeBlock code={code} language="tsx" title="hello.tsx" showLineNumbers />
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API · InlineCode
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `size` | `'sm' \| 'md'` | `'md'` | 大小，相对父字号 |
+
+## API · CodeBlock
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `code` | `string` | 必填 | 代码内容（多行用 `\n` 分隔） |
+| `language` | `string` | `—` | 头部右侧的语言标签 |
+| `title` | `string \| ReactNode` | `—` | 头部左侧标题，常用作文件名 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
+| `showLineNumbers` | `boolean` | `false` | 是否显示行号 |
+| `copyable` | `boolean` | `true` | 头部显示复制按钮 |
+| `maxHeight` | `number \| string` | `—` | 启用纵向滚动的最大高度 |

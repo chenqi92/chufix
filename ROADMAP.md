@@ -7,7 +7,7 @@
 
 ---
 
-## 已发布 · 52 / 70+
+## 已发布 · 56 / 70+
 
 ### 表单 · Form (19)
 
@@ -126,12 +126,12 @@
 
 ## 路线图 · 优先级 P4（小件/utility）· 8
 
-- [ ] **Kbd · KeyCombo** (atoms · #kbd / base2 · Kbd) —— 键盘按键展示（`Ctrl+K`）
-- [ ] **Code · InlineCode · CodeBlock** (base2 · Code) —— 代码片段展示
-- [ ] **Link** (base2 · Link) —— 设计稿一致的链接样式
+- [x] **Kbd · KeyCombo** (atoms · #kbd / base2 · Kbd) —— 键盘按键展示（`Ctrl+K`）
+- [x] **Code · InlineCode · CodeBlock** (base2 · Code) —— 代码片段展示
+- [x] **Link** (base2 · Link) —— 设计稿一致的链接样式
 - [ ] **TableOfContents · Anchor** (base2 · TOC) —— 文章侧边目录
 - [ ] **Rating** (rich · Rating) —— 星级评分
-- [ ] **AspectRatio** (base · B.16) —— 锁定宽高比的容器
+- [x] **AspectRatio** (base · B.16) —— 锁定宽高比的容器
 - [ ] **ScrollArea** (base · B.16) —— 自定义滚动条容器
 - [ ] **SegmentedControl 单独导出** (atoms · #segmented) —— 当前是 `Tabs variant=segmented`，加个语义化的别名导出
 

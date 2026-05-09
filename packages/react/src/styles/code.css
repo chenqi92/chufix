@@ -1,0 +1,102 @@
+/* ChuFix Code — InlineCode + CodeBlock. */
+
+.cf-code {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  background: var(--bg-2);
+  color: var(--accent-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-2);
+  padding: 1px 4px;
+  font-size: 0.9em;
+  line-height: 1.5;
+  word-break: break-word;
+}
+.cf-code--sm { padding: 0 3px; font-size: 0.85em; }
+
+.cf-code-block {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}
+
+.cf-code-block--sm { font-size: var(--t-12); }
+.cf-code-block--md { font-size: var(--t-13); }
+.cf-code-block--lg { font-size: var(--t-14); }
+
+.cf-code-block__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--t-12);
+  font-family: var(--font-sans);
+  color: var(--fg-3);
+}
+
+.cf-code-block__title {
+  flex: 1;
+  font-weight: var(--w-medium);
+  color: var(--fg-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-code-block__lang {
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  font-size: var(--t-11);
+  background: var(--bg-2);
+  color: var(--fg-3);
+  padding: 1px 6px;
+  border-radius: var(--r-2);
+}
+
+.cf-code-block__copy {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--r-2);
+}
+.cf-code-block__copy:hover { background: var(--bg-2); color: var(--fg-1); }
+
+.cf-code-block__pre {
+  margin: 0;
+  padding: 12px 14px;
+  overflow: auto;
+  scrollbar-width: thin;
+  white-space: pre;
+  display: flex;
+  gap: 12px;
+  line-height: 1.55;
+}
+
+.cf-code-block__nums {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  color: var(--fg-3);
+  user-select: none;
+  flex: none;
+  border-right: 1px solid var(--line-1);
+  padding-right: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-code-block__code {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  color: var(--fg-1);
+  background: transparent;
+  font-family: inherit;
+}
