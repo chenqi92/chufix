@@ -1,0 +1,77 @@
+---
+title: DateRangePicker 日期范围
+description: 双月并列展示，点击两次确认范围；支持 hover 预览、min/max/disabledDate、近 7 / 30 / 90 天预设。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/daterangepicker/BasicVue.vue';
+import BoundsVue from '~/components/demos/daterangepicker/BoundsVue.vue';
+
+## 基础用法
+
+`v-model` 绑定 `[start, end]` 二元组，每一项是 `'YYYY-MM-DD'` 字符串或 `null`。第一次点击设定起点，鼠标移动到目标日期会高亮预览，再点一次确认终点。如果第二次点击早于第一次，自动调换顺序。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDateRangePicker, type DateRangeValue } from '@chufix/vue';
+
+const value = ref<DateRangeValue>(['2026-05-01', '2026-05-12']);
+</script>
+
+<template>
+  <CfDateRangePicker v-model="value" clearable />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDateRangePicker, type DateRangeValue } from '@chufix/react';
+
+export default function Demo() {
+  const [value, setValue] = useState<DateRangeValue>(['2026-05-01', '2026-05-12']);
+  return <CfDateRangePicker value={value} clearable onChange={(v) => setValue(v)} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 范围限制
+
+`minDate` / `maxDate` 同 DatePicker；`disabledDate` 也支持。面板底部内置「近 7 / 30 / 90 天」三个快捷按钮，点击后立即应用并关闭。
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker
+  v-model="value"
+  min-date="2026-01-01"
+  max-date="2026-12-31"
+  clearable
+  :placeholder="['起始', '结束']"
+/>`}
+  reactCode={`<CfDateRangePicker
+  value={value}
+  minDate="2026-01-01"
+  maxDate="2026-12-31"
+  clearable
+  placeholder={['起始', '结束']}
+  onChange={(v) => setValue(v)}
+/>`}
+>
+  <BoundsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `[string \| null, string \| null]` | `[null, null]` | 起止日期数组 |
+| `format` | `string` | `'YYYY-MM-DD'` | 显示格式 |
+| `placeholder` | `[string, string]` | `['开始日期', '结束日期']` | 起止占位 |
+| `separator` | `string` | `'至'` | 起止之间的连接词 |
+| `variant` | `'outline' \| 'filled' \| 'ghost'` | `'outline'` | 触发器视觉模式 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `clearable` | `boolean` | `false` | 显示清除按钮 |
+| `error` | `boolean` | `false` | 错误态 |
+| `minDate` / `maxDate` | `DateLike` | `—` | 可选范围 |
+| `disabledDate` | `(date: Date) => boolean` | `—` | 自定义禁用规则 |
+| `weekStartsOn` | `0 \| 1` | `1` | 0 = 周日开头，1 = 周一开头 |
+
+事件：`update:modelValue` / `change(start, end)`（React 端：`onChange(value, start, end)`）。

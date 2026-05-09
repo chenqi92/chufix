@@ -1,0 +1,113 @@
+---
+title: DatePicker 日期选择
+description: 输入框 + 月历面板，支持日 / 月 / 年三视图、min/max/disabledDate 约束、可清除。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/datepicker/BasicVue.vue';
+import BoundsVue from '~/components/demos/datepicker/BoundsVue.vue';
+import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
+
+## 基础用法
+
+`v-model` 绑定 `'YYYY-MM-DD'` 格式字符串。点击触发器弹出月历面板，再点击日期格子直接选中并关闭。点击月份名进入月份选择，点击年份进入年份选择。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDatePicker } from '@chufix/vue';
+
+const value = ref<string | null>('2026-05-09');
+</script>
+
+<template>
+  <CfDatePicker v-model="value" clearable />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDatePicker } from '@chufix/react';
+
+export default function Demo() {
+  const [value, setValue] = useState<string | null>('2026-05-09');
+  return <CfDatePicker value={value} clearable onChange={(v) => setValue(v)} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 范围 + disabledDate
+
+`minDate` / `maxDate` 限制可选区间；`disabledDate` 是一个 `(date: Date) => boolean` 回调，返回 `true` 的日期会被打上删除线、禁止点击。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDatePicker } from '@chufix/vue';
+
+const value = ref<string | null>(null);
+const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
+</script>
+
+<template>
+  <CfDatePicker
+    v-model="value"
+    min-date="2026-01-01"
+    max-date="2026-12-31"
+    :disabled-date="noWeekends"
+    clearable
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDatePicker } from '@chufix/react';
+
+const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
+
+export default function Demo() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <CfDatePicker
+      value={value}
+      minDate="2026-01-01"
+      maxDate="2026-12-31"
+      disabledDate={noWeekends}
+      clearable
+      onChange={(v) => setValue(v)}
+    />
+  );
+}`}
+>
+  <BoundsVue client:load />
+</DemoFrame>
+
+## 显示格式
+
+`format` 控制触发器上显示的格式（不影响 `v-model` 的存储格式，存储始终是 `'YYYY-MM-DD'`）。支持 token：`YYYY` `YY` `MM` `M` `DD` `D`。
+
+<DemoFrame
+  vueCode={`<CfDatePicker v-model="a" format="YYYY-MM-DD" />
+<CfDatePicker v-model="b" format="YYYY 年 M 月 D 日" />
+<CfDatePicker v-model="c" format="DD/MM/YYYY" />`}
+  reactCode={`<CfDatePicker value={a} format="YYYY-MM-DD" onChange={(v) => setA(v)} />
+<CfDatePicker value={b} format="YYYY 年 M 月 D 日" onChange={(v) => setB(v)} />
+<CfDatePicker value={c} format="DD/MM/YYYY" onChange={(v) => setC(v)} />`}
+>
+  <FormatVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `Date \| string \| number \| null` | `null` | 当前日期，输入容忍 ISO / 时间戳 / Date |
+| `format` | `string` | `'YYYY-MM-DD'` | 触发器显示格式 |
+| `placeholder` | `string` | `'选择日期'` | 占位文案 |
+| `variant` | `'outline' \| 'filled' \| 'ghost'` | `'outline'` | 触发器视觉模式 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `clearable` | `boolean` | `false` | 显示清除按钮 |
+| `error` | `boolean` | `false` | 错误态 |
+| `minDate` / `maxDate` | `DateLike` | `—` | 可选范围 |
+| `disabledDate` | `(date: Date) => boolean` | `—` | 自定义禁用规则 |
+| `weekStartsOn` | `0 \| 1` | `1` | 0 = 周日开头，1 = 周一开头 |
+| `view` | `'day' \| 'month' \| 'year'` | `'day'` | 初始打开视图 |
+
+事件：`update:modelValue` / `change`（React 端：`onChange(value, date)`，第二参数是 `Date \| null`）。

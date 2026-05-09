@@ -7,9 +7,9 @@
 
 ---
 
-## 已发布 · 37 / 70+
+## 已发布 · 39 / 70+
 
-### 表单 · Form (17)
+### 表单 · Form (19)
 
 - [x] Button (atoms · B.1.1)
 - [x] Input (atoms · B.1.3)
@@ -28,6 +28,8 @@
 - [x] TagInput (forms-plus · TagInput)
 - [x] Dropzone (forms-plus · FileDropzone / rich · Upload)
 - [x] ColorPicker (forms-plus · ColorPicker / rich)
+- [x] DatePicker (rich · DatePicker · Range)
+- [x] DateRangePicker (forms-plus · DateRangePicker)
 
 ### 容器 · Container (1)
 
@@ -85,8 +87,8 @@
 - [x] **Combobox · TagInput** (forms-plus · Combobox / TagInput) —— Select + 输入过滤；TagInput 多标签输入
 - [x] **FileDropzone / Upload** (forms-plus · FileDropzone / rich · Upload) —— 拖拽 + 点击 + 进度条
 - [x] **ColorPicker** (forms-plus · ColorPicker / rich) —— hex/rgb/hsl/oklch 输入 + 调色板 + 透明度滑块
-- [ ] **DatePicker** (rich · DatePicker · Range) —— 日期 / 月份 / 年份选择
-- [ ] **DateRangePicker** (forms-plus · DateRangePicker) —— 日期范围
+- [x] **DatePicker** (rich · DatePicker · Range) —— 日期 / 月份 / 年份选择
+- [x] **DateRangePicker** (forms-plus · DateRangePicker) —— 日期范围
 - [x] **OTP Input** (forms-plus · OTPInput / rich) —— 一次性密码格子
 - [x] **InputGroup** (base2 · InputGroup) —— 把多个 input/btn 拼到一起，共用边框
 

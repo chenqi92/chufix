@@ -1,0 +1,274 @@
+/* ChuFix DatePicker — input trigger + month/year/day grid panel. Shared with DateRangePicker. */
+
+.cf-date {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+}
+
+.cf-date--sm { font-size: var(--t-12); }
+.cf-date--lg { font-size: var(--t-14); }
+
+.cf-date__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 200px;
+  height: var(--control-h);
+  padding: 0 10px;
+  font: inherit;
+  text-align: left;
+  color: var(--fg-1);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+.cf-date--sm .cf-date__trigger { height: var(--control-h-sm); padding: 0 8px; min-width: 160px; }
+.cf-date--lg .cf-date__trigger { height: var(--control-h-lg); padding: 0 12px; min-width: 240px; }
+
+.cf-date__trigger:hover:not(:disabled) { border-color: var(--fg-3); }
+.cf-date__trigger:focus-visible,
+.cf-date.is-open .cf-date__trigger {
+  outline: none;
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
+}
+.cf-date__trigger:disabled {
+  cursor: not-allowed;
+  background: var(--bg-2);
+  opacity: var(--disabled-opacity);
+}
+.cf-date.is-error .cf-date__trigger { border-color: var(--status-error); }
+
+.cf-date--filled .cf-date__trigger {
+  background: var(--bg-2);
+  border-color: transparent;
+}
+.cf-date--ghost .cf-date__trigger {
+  background: transparent;
+  border-color: transparent;
+}
+
+.cf-date__icon {
+  width: 14px;
+  height: 14px;
+  color: var(--fg-3);
+  flex: none;
+}
+.cf-date__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.cf-date__placeholder { color: var(--fg-3); }
+
+.cf-date__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex: none;
+}
+.cf-date__clear:hover { background: var(--bg-3); color: var(--fg-1); }
+
+/* panel */
+.cf-date__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: var(--z-popover);
+  width: 280px;
+  padding: 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cf-date__header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px;
+}
+.cf-date__nav {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-3);
+  color: var(--fg-2);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.cf-date__nav:hover { background: var(--bg-2); color: var(--fg-1); }
+
+.cf-date__title {
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  gap: 4px;
+}
+.cf-date__title-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: var(--r-3);
+  color: var(--fg-1);
+  font-weight: var(--w-medium);
+  cursor: pointer;
+}
+.cf-date__title-btn:hover { background: var(--bg-2); }
+
+.cf-date__body { display: flex; flex-direction: column; gap: 4px; }
+
+.cf-date__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  padding: 4px 0;
+}
+.cf-date__weekdays span {
+  text-align: center;
+}
+
+.cf-date__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cf-date__day {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 32px;
+  border-radius: var(--r-3);
+  color: var(--fg-1);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cf-date__day:hover:not(:disabled) { background: var(--bg-2); }
+.cf-date__day.is-out { color: var(--fg-3); }
+.cf-date__day.is-today {
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.cf-date__day.is-selected {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  box-shadow: none;
+}
+.cf-date__day.is-selected:hover { background: var(--accent-2); }
+.cf-date__day.is-disabled,
+.cf-date__day:disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* range states (used by DateRangePicker) */
+.cf-date__day.is-in-range:not(.is-selected) { background: var(--accent-soft); }
+.cf-date__day.is-range-start { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.cf-date__day.is-range-end   { border-top-left-radius: 0;  border-bottom-left-radius: 0; }
+.cf-date__day.is-in-range.is-out { color: var(--fg-3); }
+
+.cf-date__months,
+.cf-date__years {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 6px 4px;
+}
+.cf-date__cell {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 36px;
+  border-radius: var(--r-3);
+  color: var(--fg-1);
+  font: inherit;
+  cursor: pointer;
+}
+.cf-date__cell:hover { background: var(--bg-2); }
+.cf-date__cell.is-selected {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+
+.cf-date__footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+  border-top: 1px solid var(--line-1);
+}
+.cf-date__action {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 6px 10px;
+  border-radius: var(--r-3);
+  font: inherit;
+  color: var(--fg-2);
+  cursor: pointer;
+}
+.cf-date__action:hover { background: var(--bg-2); color: var(--fg-1); }
+
+/* range-specific layout */
+.cf-date__trigger--range {
+  min-width: 280px;
+}
+.cf-date--range.cf-date--sm .cf-date__trigger { min-width: 240px; }
+.cf-date--range.cf-date--lg .cf-date__trigger { min-width: 340px; }
+
+.cf-date__separator {
+  color: var(--fg-3);
+  flex: none;
+  padding: 0 4px;
+}
+
+.cf-date__panel--range {
+  width: 560px;
+}
+
+.cf-date__range-grids {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cf-date__range-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cf-date__presets {
+  display: flex;
+  gap: 4px;
+}

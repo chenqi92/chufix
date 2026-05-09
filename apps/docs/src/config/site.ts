@@ -70,6 +70,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'TagInput 标签输入', href: '/components/taginput/' },
       { label: 'Dropzone 文件上传', href: '/components/dropzone/' },
       { label: 'ColorPicker 颜色选择', href: '/components/colorpicker/' },
+      { label: 'DatePicker 日期选择', href: '/components/datepicker/' },
+      { label: 'DateRangePicker 日期范围', href: '/components/daterangepicker/' },
     ],
   },
 ];

@@ -37,6 +37,7 @@ import './styles/combobox.css';
 import './styles/taginput.css';
 import './styles/dropzone.css';
 import './styles/colorpicker.css';
+import './styles/datepicker.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -249,6 +250,23 @@ export type {
   ColorPickerSize,
 } from './colorpicker/variants';
 export type { ColorFormat, RGB, RGBA, HSV, HSL } from './colorpicker/color';
+
+export { default as CfDatePicker } from './datepicker/DatePicker.vue';
+export type {
+  DatePickerProps,
+  DatePickerSize,
+  DatePickerVariant,
+  DatePickerView,
+} from './datepicker/variants';
+export type { DateLike } from './datepicker/date';
+
+export { default as CfDateRangePicker } from './daterangepicker/DateRangePicker.vue';
+export type {
+  DateRangePickerProps,
+  DateRangeSize,
+  DateRangeVariant,
+  DateRangeValue,
+} from './daterangepicker/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {
