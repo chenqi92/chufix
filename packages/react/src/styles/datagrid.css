@@ -1,0 +1,151 @@
+/* ChuFix DataGrid — Table-like with column resize, cell editing, scrollable container. */
+
+.cf-datagrid {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}
+
+.cf-datagrid--sm { font-size: var(--t-12); }
+.cf-datagrid--lg { font-size: var(--t-14); }
+
+.cf-datagrid__scroll {
+  overflow: auto;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+
+.cf-datagrid__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  table-layout: fixed;
+}
+
+.cf-datagrid__cell {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-1);
+  border-right: 1px solid var(--line-1);
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cf-datagrid--sm .cf-datagrid__cell { padding: 6px 8px; }
+.cf-datagrid--lg .cf-datagrid__cell { padding: 10px 14px; }
+.cf-datagrid__cell:last-child { border-right: 0; }
+
+.cf-datagrid__cell--center { text-align: center; }
+.cf-datagrid__cell--right { text-align: right; font-variant-numeric: tabular-nums; }
+
+.cf-datagrid__cell--th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-2);
+  color: var(--fg-2);
+  font-weight: var(--w-medium);
+  font-size: var(--t-12);
+  letter-spacing: 0.01em;
+}
+.cf-datagrid__cell--th.is-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.cf-datagrid__cell--th.is-sortable:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-datagrid__cell--th.is-sorted { color: var(--accent-1); }
+
+.cf-datagrid__th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-datagrid__sort {
+  width: 10px;
+  height: 10px;
+  color: var(--fg-3);
+  flex: none;
+}
+.cf-datagrid__sort.is-asc path:nth-child(1) { color: var(--accent-1); }
+.cf-datagrid__sort.is-desc path:nth-child(2) { color: var(--accent-1); }
+
+.cf-datagrid__resize {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 2;
+  user-select: none;
+}
+.cf-datagrid__resize:hover::after,
+.cf-datagrid__resize:active::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent-1);
+}
+
+.cf-datagrid__cell--th { position: sticky; top: 0; z-index: 1; }
+.cf-datagrid__cell--th { position: relative; }
+
+.cf-datagrid__row.is-clickable { cursor: pointer; }
+.cf-datagrid.is-hoverable .cf-datagrid__row:hover .cf-datagrid__cell {
+  background: var(--bg-2);
+}
+.cf-datagrid__row.is-selected .cf-datagrid__cell {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+
+.cf-datagrid__cell.is-editable { cursor: cell; }
+.cf-datagrid__cell.is-editable:hover {
+  outline: 1px dashed var(--line-2);
+  outline-offset: -1px;
+}
+
+.cf-datagrid__edit {
+  width: 100%;
+  height: calc(100% - 4px);
+  padding: 0 4px;
+  font: inherit;
+  color: inherit;
+  background: var(--bg-1);
+  border: 1px solid var(--accent-1);
+  border-radius: var(--r-2);
+  outline: none;
+}
+
+.cf-datagrid__cell--check {
+  width: 36px;
+  text-align: center;
+}
+.cf-datagrid__cell--check input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+
+.cf-datagrid__row--empty td {
+  padding: 32px 16px;
+  color: var(--fg-3);
+  text-align: center;
+  font-size: var(--t-12);
+  border-right: 0;
+}
+
+.cf-datagrid.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}

@@ -1,0 +1,102 @@
+---
+title: TreeView 树形列表
+description: 嵌套树形展示，支持单选 / 复选框（带级联）、展开 / 折叠、自定义图标。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/treeview/BasicVue.vue';
+
+## 基础用法
+
+`nodes` 是一棵树（每个节点可有 `children`）。`selectedKey` + `update:selectedKey` 控制单选高亮；`checkable` 打开后多一列复选框，配合 `v-model` 绑定 `string[]`。`cascade=true`（默认）让父节点 / 子节点的勾选互相联动，并自动算 indeterminate。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfTreeView, type TreeNode } from '@chufix/vue';
+
+const selected = ref<string | null>('home');
+const checked = ref<string[]>(['styles']);
+
+const nodes: TreeNode[] = [
+  {
+    key: 'src',
+    label: 'src',
+    children: [
+      {
+        key: 'components',
+        label: 'components',
+        children: [
+          { key: 'home', label: 'Home.vue' },
+          { key: 'about', label: 'About.vue' },
+        ],
+      },
+      { key: 'main', label: 'main.ts' },
+      { key: 'styles', label: 'styles.css' },
+    ],
+  },
+  { key: 'readme', label: 'README.md' },
+];
+</script>
+
+<template>
+  <!-- 单选 -->
+  <CfTreeView
+    :nodes="nodes"
+    :selected-key="selected"
+    :default-expanded-keys="['src', 'components']"
+    @update:selected-key="selected = $event"
+  />
+
+  <!-- 复选 -->
+  <CfTreeView
+    v-model="checked"
+    :nodes="nodes"
+    checkable
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfTreeView, type TreeNode } from '@chufix/react';
+
+const nodes: TreeNode[] = [/* ... */];
+
+export default function Demo() {
+  const [selected, setSelected] = useState<string | null>('home');
+  const [checked, setChecked] = useState<string[]>(['styles']);
+  return (
+    <>
+      <CfTreeView
+        nodes={nodes}
+        selectedKey={selected}
+        defaultExpandedKeys={['src', 'components']}
+        onSelectedKeyChange={setSelected}
+      />
+      <CfTreeView
+        nodes={nodes}
+        value={checked}
+        checkable
+        onChange={setChecked}
+      />
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `nodes` | `TreeNode[]` | `[]` | 树形数据 |
+| `modelValue` (Vue) / `value` (React) | `string[]` | `[]` | 已勾选的 key（仅 checkable） |
+| `expandedKeys` / `defaultExpandedKeys` | `string[]` | `—` | 受控 / 非受控的展开列表 |
+| `selectedKey` | `string \| null` | `null` | 当前单选的 key |
+| `checkable` | `boolean` | `false` | 显示复选框 |
+| `cascade` | `boolean` | `true` | 父子勾选联动 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 内距 |
+| `showLine` | `boolean` | `true` | 显示嵌套连接线 |
+| `emptyText` | `string \| ReactNode` | `'暂无数据'` | 空状态文案 |
+
+`TreeNode`：`{ key, label, icon?, children?, disabled?, selectable?, isLeaf? }`。
+事件：`update:modelValue` / `update:expandedKeys` / `update:selectedKey` / `select` / `expand` / `check`（React 端：`onChange` / `onExpandedKeysChange` / `onSelectedKeyChange` / `onSelect` / `onExpand` / `onCheck`）。

@@ -1,0 +1,119 @@
+/* ChuFix TreeView — recursive nested tree with expand / select / checkbox cascade. */
+
+.cf-tree {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+}
+
+.cf-tree--sm { font-size: var(--t-12); }
+.cf-tree--lg { font-size: var(--t-14); }
+
+.cf-tree__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cf-tree__list--child {
+  position: relative;
+}
+.cf-tree.is-lined .cf-tree__list--child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 1px;
+  background: var(--line-1);
+}
+
+.cf-tree__item { position: relative; }
+
+.cf-tree__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.cf-tree--sm .cf-tree__row { padding: 3px 6px; }
+.cf-tree--lg .cf-tree__row { padding: 7px 10px; }
+
+.cf-tree__row:hover { background: var(--bg-2); }
+.cf-tree__row.is-selected {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.cf-tree__row.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+  background: transparent !important;
+}
+
+.cf-tree__caret {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex: none;
+  padding: 0;
+}
+.cf-tree__caret:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-tree__caret--leaf { cursor: default; opacity: 0.4; }
+.cf-tree__caret--leaf::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--line-2);
+}
+.cf-tree__caret svg {
+  width: 12px;
+  height: 12px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-tree__caret.is-open svg { transform: rotate(90deg); }
+
+.cf-tree__checkbox {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+
+.cf-tree__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: var(--fg-3);
+  flex: none;
+}
+.cf-tree__icon svg { width: 100%; height: 100%; }
+
+.cf-tree__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-tree__empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}

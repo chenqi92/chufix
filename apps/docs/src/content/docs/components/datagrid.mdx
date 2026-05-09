@@ -1,0 +1,104 @@
+---
+title: DataGrid 数据网格
+description: 重型表格 — 列拖拽调宽、单元格双击编辑、固定表头滚动；适合后台管理与数据维护。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/datagrid/BasicVue.vue';
+
+## 基础用法
+
+`DataGrid` 在 [Table](/components/table/) 的列定义之上额外支持：
+
+- `column.resizable: true` —— 用户可拖拽该列的右边缘改变宽度
+- `column.editable: true` —— 双击单元格进入内联编辑模式，回车提交、Esc 取消，触发 `cellEdit` 事件
+- `maxHeight` —— 给容器一个最大高度，启用纵向滚动 + sticky 表头
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDataGrid, type DataGridColumn, type DataGridCellEdit } from '@chufix/vue';
+
+interface Row { id: string; name: string; email: string; role: string; level: number; }
+
+const rows = ref<Row[]>([/* ... */]);
+const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60, sortable: true },
+  { key: 'name', title: '姓名', width: 120, sortable: true, resizable: true, editable: true },
+  { key: 'email', title: '邮箱', width: 200, resizable: true, editable: true },
+  { key: 'role', title: '角色', width: 100, resizable: true, editable: true },
+  { key: 'level', title: '等级', width: 80, align: 'right', sortable: true, editable: true },
+];
+
+function onEdit(edit: DataGridCellEdit<Row>) {
+  const target = rows.value.find((r) => r.id === edit.row.id);
+  if (target) (target as any)[edit.column.dataIndex ?? edit.column.key] = edit.value;
+}
+</script>
+
+<template>
+  <CfDataGrid
+    :columns="columns"
+    :rows="rows"
+    row-key="id"
+    selectable="multiple"
+    :max-height="320"
+    @cell-edit="onEdit"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDataGrid, type DataGridColumn, type DataGridCellEdit } from '@chufix/react';
+
+interface Row { id: string; name: string; email: string; role: string; level: number; }
+
+const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60, sortable: true },
+  { key: 'name', title: '姓名', width: 120, sortable: true, resizable: true, editable: true },
+  { key: 'email', title: '邮箱', width: 200, resizable: true, editable: true },
+];
+
+export default function Demo() {
+  const [rows, setRows] = useState<Row[]>([/* ... */]);
+  function onEdit(edit: DataGridCellEdit<Row>) {
+    setRows((arr) =>
+      arr.map((r) =>
+        r.id === edit.row.id
+          ? { ...r, [edit.column.dataIndex ?? edit.column.key]: edit.value }
+          : r,
+      ),
+    );
+  }
+  return (
+    <CfDataGrid
+      columns={columns}
+      rows={rows}
+      rowKey="id"
+      selectable="multiple"
+      maxHeight={320}
+      onCellEdit={onEdit}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API · DataGrid
+
+继承 [Table](/components/table/) 的所有列基础属性，额外加：
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `maxHeight` | `number \| string` | `—` | 容器最大高度，启用 sticky thead + 纵向滚动 |
+| `onCellEdit` (React) / `cell-edit` (Vue) | `(edit) => void` | `—` | 单元格编辑提交回调 |
+| `onColumnResize` / `column-resize` | `(col, width) => void` | `—` | 列宽变化回调 |
+
+`DataGridColumn` 在 `TableColumn` 上加：
+
+| 属性 | 类型 | 说明 |
+|---|---|---|
+| `resizable` | `boolean` | 是否允许拖拽改宽 |
+| `minWidth` | `number` | 拖拽最小宽度 |
+| `editable` | `boolean` | 是否允许双击进入内联编辑 |
+
+> 当前版本不内置虚拟滚动 / 列拖动（顺序）。如果数据量超过 1000 行，建议自行实现分页或上层数据切片，再把切片传入 `rows`。

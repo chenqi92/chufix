@@ -49,6 +49,8 @@ import './styles/list.css';
 import './styles/descriptionlist.css';
 import './styles/stat.css';
 import './styles/table.css';
+import './styles/treeview.css';
+import './styles/datagrid.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -376,3 +378,18 @@ export type {
   TableAlign,
   SortDirection,
 } from './table/variants';
+
+export { TreeView as CfTreeView } from './treeview/TreeView';
+export type {
+  TreeViewProps,
+  TreeNode,
+  TreeViewSize,
+} from './treeview/variants';
+
+export { DataGrid as CfDataGrid } from './datagrid/DataGrid';
+export type {
+  DataGridProps,
+  DataGridColumn,
+  DataGridCellEdit,
+  DataGridSize,
+} from './datagrid/variants';
