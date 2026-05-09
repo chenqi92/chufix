@@ -41,27 +41,42 @@
   fill: var(--viz-1);
 }
 
-/* per-series colors, by index */
-.cf-chart__series-0 .cf-chart__line,
-.cf-chart__bar--0 { stroke: var(--viz-1); fill: var(--viz-1); }
+/* per-series colors, split by element so lines never get filled.
+ * lines: stroke only · areas: fill only · dots / bars: fill */
+.cf-chart__series-0 .cf-chart__line { stroke: var(--viz-1); }
+.cf-chart__series-1 .cf-chart__line { stroke: var(--viz-2); }
+.cf-chart__series-2 .cf-chart__line { stroke: var(--viz-3); }
+.cf-chart__series-3 .cf-chart__line { stroke: var(--viz-4); }
+.cf-chart__series-4 .cf-chart__line { stroke: var(--viz-5); }
+.cf-chart__series-5 .cf-chart__line { stroke: var(--viz-6); }
+.cf-chart__series-6 .cf-chart__line { stroke: var(--viz-7); }
+.cf-chart__series-7 .cf-chart__line { stroke: var(--viz-8); }
+
 .cf-chart__series-0 .cf-chart__area { fill: var(--viz-1); }
-.cf-chart__series-1 .cf-chart__line,
-.cf-chart__bar--1 { stroke: var(--viz-2); fill: var(--viz-2); }
 .cf-chart__series-1 .cf-chart__area { fill: var(--viz-2); }
-.cf-chart__series-2 .cf-chart__line,
-.cf-chart__bar--2 { stroke: var(--viz-3); fill: var(--viz-3); }
 .cf-chart__series-2 .cf-chart__area { fill: var(--viz-3); }
-.cf-chart__series-3 .cf-chart__line,
-.cf-chart__bar--3 { stroke: var(--viz-4); fill: var(--viz-4); }
 .cf-chart__series-3 .cf-chart__area { fill: var(--viz-4); }
-.cf-chart__series-4 .cf-chart__line,
-.cf-chart__bar--4 { stroke: var(--viz-5); fill: var(--viz-5); }
-.cf-chart__series-5 .cf-chart__line,
-.cf-chart__bar--5 { stroke: var(--viz-6); fill: var(--viz-6); }
-.cf-chart__series-6 .cf-chart__line,
-.cf-chart__bar--6 { stroke: var(--viz-7); fill: var(--viz-7); }
-.cf-chart__series-7 .cf-chart__line,
-.cf-chart__bar--7 { stroke: var(--viz-8); fill: var(--viz-8); }
+.cf-chart__series-4 .cf-chart__area { fill: var(--viz-5); }
+.cf-chart__series-5 .cf-chart__area { fill: var(--viz-6); }
+.cf-chart__series-6 .cf-chart__area { fill: var(--viz-7); }
+.cf-chart__series-7 .cf-chart__area { fill: var(--viz-8); }
+
+.cf-chart__series-0 .cf-chart__dot,
+.cf-chart__bar--0 { fill: var(--viz-1); }
+.cf-chart__series-1 .cf-chart__dot,
+.cf-chart__bar--1 { fill: var(--viz-2); }
+.cf-chart__series-2 .cf-chart__dot,
+.cf-chart__bar--2 { fill: var(--viz-3); }
+.cf-chart__series-3 .cf-chart__dot,
+.cf-chart__bar--3 { fill: var(--viz-4); }
+.cf-chart__series-4 .cf-chart__dot,
+.cf-chart__bar--4 { fill: var(--viz-5); }
+.cf-chart__series-5 .cf-chart__dot,
+.cf-chart__bar--5 { fill: var(--viz-6); }
+.cf-chart__series-6 .cf-chart__dot,
+.cf-chart__bar--6 { fill: var(--viz-7); }
+.cf-chart__series-7 .cf-chart__dot,
+.cf-chart__bar--7 { fill: var(--viz-8); }
 
 /* sparkline variants */
 .cf-sparkline {
