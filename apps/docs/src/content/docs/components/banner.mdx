@@ -1,43 +1,53 @@
 ---
 title: Banner 全宽提示
-description: 顶部全宽通告条，支持 6 种 tone × 2 种 variant、可关闭、可吸顶。
+description: 顶部全宽通告条 —— 6 种 tone × 2 种 variant，可关闭、可吸顶。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/banner/BasicVue.vue';
+import TonesVue from '~/components/demos/banner/TonesVue.vue';
 import SolidVue from '~/components/demos/banner/SolidVue.vue';
+import ActionVue from '~/components/demos/banner/ActionVue.vue';
 
-## 基础用法（subtle）
+## 基础用法
 
-`Banner` 默认是 `variant="subtle"`：浅色底 + 强调色文字，适合放在页面顶部或卡片首行。
+最简形态 — 一段公告文案。`Banner` 默认 `variant="subtle"`：浅色底 + 强调色文字，最克制的全宽提示。
 
 <DemoFrame
-  vueCode={`<CfBanner tone="info" dismissible>
+  vueCode={`<CfBanner tone="info">
   系统将于今晚 22:00 - 22:30 进行维护，部分功能可能不可用。
-</CfBanner>
-<CfBanner tone="success">您的订单已支付完成。</CfBanner>
-<CfBanner tone="warning" dismissible>
-  存储空间已使用 86%，请尽快清理或升级配额。
-  <template #action>
-    <CfButton size="sm" variant="tertiary">清理</CfButton>
-  </template>
-</CfBanner>
-<CfBanner tone="danger">数据库连接已断开，正在尝试重连…</CfBanner>`}
-  reactCode={`<CfBanner tone="info" dismissible>
+</CfBanner>`}
+  reactCode={`<CfBanner tone="info">
   系统将于今晚 22:00 - 22:30 进行维护，部分功能可能不可用。
-</CfBanner>
-<CfBanner tone="success">您的订单已支付完成。</CfBanner>
-<CfBanner tone="warning" dismissible action={<CfButton size="sm" variant="tertiary">清理</CfButton>}>
-  存储空间已使用 86%，请尽快清理或升级配额。
-</CfBanner>
-<CfBanner tone="danger">数据库连接已断开，正在尝试重连…</CfBanner>`}
+</CfBanner>`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
-## 实色（solid）
+## 6 种 tone
 
-`variant="solid"` 用 tone 的实色填底、白字，视觉权重更强，适合营销公告或紧急提示。
+`tone` —— `info`（中性公告）/ `success`（已完成）/ `warning`（需注意）/ `danger`（紧急）/ `accent`（营销）/ `neutral`（最克制）。
+
+<DemoFrame
+  vueCode={`<CfBanner tone="info">info</CfBanner>
+<CfBanner tone="success">success</CfBanner>
+<CfBanner tone="warning">warning</CfBanner>
+<CfBanner tone="danger">danger</CfBanner>
+<CfBanner tone="accent">accent</CfBanner>
+<CfBanner tone="neutral">neutral</CfBanner>`}
+  reactCode={`<CfBanner tone="info">info</CfBanner>
+<CfBanner tone="success">success</CfBanner>
+<CfBanner tone="warning">warning</CfBanner>
+<CfBanner tone="danger">danger</CfBanner>
+<CfBanner tone="accent">accent</CfBanner>
+<CfBanner tone="neutral">neutral</CfBanner>`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## 实色 variant
+
+`variant="solid"` 用 tone 的实色填底、白字，视觉权重最强，适合营销公告或紧急中断。
 
 <DemoFrame
   vueCode={`<CfBanner variant="solid" tone="accent" dismissible>
@@ -56,6 +66,28 @@ import SolidVue from '~/components/demos/banner/SolidVue.vue';
 </CfBanner>`}
 >
   <SolidVue client:load />
+</DemoFrame>
+
+## 关闭按钮 + 操作槽
+
+`dismissible` 在右侧加 × 关闭按钮 — 点击后整个 banner 移除并触发 `dismiss` / `onDismiss`。`action` 槽 / prop 在文案与 × 之间放一个操作按钮（清理 / 查看 / 续费）。
+
+<DemoFrame
+  vueCode={`<CfBanner tone="warning" dismissible>
+  存储空间已使用 86%，请尽快清理或升级配额。
+  <template #action>
+    <CfButton size="sm" variant="tertiary">清理</CfButton>
+  </template>
+</CfBanner>`}
+  reactCode={`<CfBanner
+  tone="warning"
+  dismissible
+  action={<CfButton size="sm" variant="tertiary">清理</CfButton>}
+>
+  存储空间已使用 86%，请尽快清理或升级配额。
+</CfBanner>`}
+>
+  <ActionVue client:load />
 </DemoFrame>
 
 ## API
