@@ -1,0 +1,31 @@
+---
+title: QRCode 二维码
+description: 把文本 / URL 编码为二维码 SVG，纯客户端零依赖（Byte 模式，自动选版本 1–40）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
+
+## 基础用法
+
+`value` 是要编码的字符串（任意 UTF-8）。`ecc` 控制纠错等级 — 等级越高同样数据需要更高版本（更密的网格），但抗污损能力更强。
+
+<DemoFrame
+  vueCode={`<CfQRCode :value="value" :size="160" ecc="M" />`}
+  reactCode={`<CfQRCode value={value} size={160} ecc="M" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `value` | `string` | `—` | 要编码的内容（UTF-8） |
+| `ecc` | `'L' \| 'M' \| 'Q' \| 'H'` | `'M'` | 纠错等级（约 7% / 15% / 25% / 30%） |
+| `size` | `number` | `160` | 渲染尺寸（像素） |
+| `margin` | `number` | `2` | 留白模块数（quiet zone） |
+| `color` | `string` | `'currentColor'` | 暗格颜色 |
+| `background` | `string` | `'transparent'` | 背景色 |
+
+实现说明：内置 Byte-mode QR 编码器，自动选择最小可装下数据的版本（1–40）。算法改编自 Project Nayuki 的 MIT 参考实现。

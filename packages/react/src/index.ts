@@ -79,6 +79,14 @@ import './styles/anchor.css';
 import './styles/imagepreview.css';
 import './styles/timepicker.css';
 import './styles/transfer.css';
+import './styles/highlight.css';
+import './styles/textellipsis.css';
+import './styles/countdown.css';
+import './styles/infinitescroll.css';
+import './styles/timerangepicker.css';
+import './styles/calendarheatmap.css';
+import './styles/tour.css';
+import './styles/qrcode.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -557,3 +565,35 @@ export type { TimePickerProps, TimePickerSize } from './timepicker/variants';
 
 export { Transfer as CfTransfer } from './transfer/Transfer';
 export type { TransferProps, TransferItem } from './transfer/variants';
+
+export { Highlight as CfHighlight } from './highlight/Highlight';
+export type { HighlightProps, HighlightSegment } from './highlight/variants';
+
+export { TextEllipsis as CfTextEllipsis } from './textellipsis/TextEllipsis';
+export type { TextEllipsisProps } from './textellipsis/variants';
+
+export { CountDown as CfCountDown } from './countdown/CountDown';
+export type { CountDownProps, CountDownSize } from './countdown/variants';
+
+export { InfiniteScroll as CfInfiniteScroll } from './infinitescroll/InfiniteScroll';
+export type { InfiniteScrollProps } from './infinitescroll/variants';
+
+export { TimeRangePicker as CfTimeRangePicker } from './timerangepicker/TimeRangePicker';
+export type {
+  TimeRangePickerProps,
+  TimeRangeSize,
+  TimeRangeValue,
+} from './timerangepicker/variants';
+
+export { CalendarHeatmap as CfCalendarHeatmap } from './calendarheatmap/CalendarHeatmap';
+export type {
+  CalendarHeatmapProps,
+  HeatmapDay,
+  HeatmapCell,
+} from './calendarheatmap/variants';
+
+export { Tour as CfTour } from './tour/Tour';
+export type { TourProps, TourStep, TourPlacement } from './tour/variants';
+
+export { QRCode as CfQRCode } from './qrcode/QRCode';
+export type { QRCodeProps, QrEcc } from './qrcode/variants';

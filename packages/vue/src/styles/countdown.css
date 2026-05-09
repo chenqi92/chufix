@@ -1,0 +1,11 @@
+.cf-countdown {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  color: var(--fg-1);
+  font-weight: 600;
+}
+
+.cf-countdown--sm { font-size: var(--t-14); }
+.cf-countdown--md { font-size: var(--t-18); }
+.cf-countdown--lg { font-size: var(--t-22); }

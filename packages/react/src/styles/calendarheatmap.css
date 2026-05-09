@@ -1,0 +1,82 @@
+.cf-heatmap {
+  display: inline-block;
+  font-size: var(--t-12);
+  color: var(--fg-2);
+}
+
+.cf-heatmap__months {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 12px;
+  margin-left: 24px;
+  margin-bottom: 4px;
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  position: relative;
+  height: 14px;
+}
+
+.cf-heatmap__month {
+  white-space: nowrap;
+  align-self: end;
+}
+
+.cf-heatmap__grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.cf-heatmap__dow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-right: 4px;
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  width: 16px;
+}
+
+.cf-heatmap__dow-cell {
+  height: 10px;
+  line-height: 10px;
+}
+
+.cf-heatmap__dow-cell.is-hidden {
+  visibility: hidden;
+}
+
+.cf-heatmap__weeks {
+  display: flex;
+  gap: 2px;
+}
+
+.cf-heatmap__week {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cf-heatmap__cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--bg-2);
+  display: inline-block;
+}
+
+.cf-heatmap__cell.is-empty { visibility: hidden; }
+.cf-heatmap__cell.is-l0 { background: var(--bg-2); }
+.cf-heatmap__cell.is-l1 { background: oklch(64% 0.16 263 / 0.25); }
+.cf-heatmap__cell.is-l2 { background: oklch(64% 0.16 263 / 0.5); }
+.cf-heatmap__cell.is-l3 { background: oklch(64% 0.16 263 / 0.75); }
+.cf-heatmap__cell.is-l4 { background: var(--accent-1); }
+
+.cf-heatmap__legend {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--fg-3);
+  font-size: var(--t-11);
+}

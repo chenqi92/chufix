@@ -62,6 +62,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Cascader 级联选择', href: '/components/cascader/' },
       { label: 'TimePicker 时间选择', href: '/components/timepicker/' },
       { label: 'Transfer 穿梭框', href: '/components/transfer/' },
+      { label: 'TimeRangePicker 时间范围', href: '/components/timerangepicker/' },
     ],
   },
   {
@@ -102,6 +103,11 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Timeline 时间轴', href: '/components/timeline/' },
       { label: 'Marquee 跑马灯', href: '/components/marquee/' },
       { label: 'ImagePreview 大图预览', href: '/components/imagepreview/' },
+      { label: 'Highlight 文本高亮', href: '/components/highlight/' },
+      { label: 'TextEllipsis 多行省略', href: '/components/textellipsis/' },
+      { label: 'CountDown 倒计时', href: '/components/countdown/' },
+      { label: 'CalendarHeatmap 活跃热力', href: '/components/calendarheatmap/' },
+      { label: 'QRCode 二维码', href: '/components/qrcode/' },
     ],
   },
   {
@@ -144,6 +150,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Affix 固钉', href: '/components/affix/' },
       { label: 'Watermark 水印', href: '/components/watermark/' },
       { label: 'FloatButton 悬浮按钮', href: '/components/floatbutton/' },
+      { label: 'InfiniteScroll 无限滚动', href: '/components/infinitescroll/' },
+      { label: 'Tour 新手引导', href: '/components/tour/' },
     ],
   },
 ];

@@ -1,0 +1,29 @@
+---
+title: CountDown 倒计时
+description: 倒数到一个目标时间戳，支持 DD/HH/mm/ss/SSS 占位的格式串。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/countdown/BasicVue.vue';
+
+## 基础用法
+
+`target` 接受时间戳 (ms) / Date / 可被 `Date.parse` 识别的字符串。`format` 控制展示样式，归零时触发 `onFinish`。
+
+<DemoFrame
+  vueCode={`<CfCountDown :target="target" format="HH:mm:ss" size="lg" @finish="onDone" />`}
+  reactCode={`<CfCountDown target={target} format="HH:mm:ss" size="lg" onFinish={onDone} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `target` | `number \| Date \| string` | `—` | 目标时间，到达后归零 |
+| `format` | `string` | `'HH:mm:ss'` | 占位符：DD HH mm ss SSS |
+| `interval` | `number` | `1000` | 刷新间隔（毫秒）；写 100 可取得百毫秒精度 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：`onFinish()` 归零；`onChange(remaining)` 每次 tick。

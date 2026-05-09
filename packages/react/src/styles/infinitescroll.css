@@ -1,0 +1,16 @@
+.cf-infscroll {
+  display: block;
+}
+
+.cf-infscroll__sentinel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 32px;
+  padding: 8px 0;
+}
+
+.cf-infscroll__hint {
+  color: var(--fg-3);
+  font-size: var(--t-13);
+}

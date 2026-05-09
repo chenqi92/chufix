@@ -1,0 +1,26 @@
+---
+title: Highlight 文本高亮
+description: 在长文本中高亮匹配的关键字，常用于搜索结果列表 / 命中关键词标记。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/highlight/BasicVue.vue';
+
+## 基础用法
+
+`text` 是被高亮的原文，`match` 可以是字符串或正则；字符串模式默认大小写不敏感。
+
+<DemoFrame
+  vueCode={`<CfHighlight :text="text" :match="q" />`}
+  reactCode={`<CfHighlight text={text} match={q} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `text` | `string` | `—` | 原始文本 |
+| `match` | `string \| RegExp` | `—` | 关键字或正则；为空时不高亮 |
+| `caseSensitive` | `boolean` | `false` | 字符串模式下是否区分大小写 |

@@ -1,0 +1,99 @@
+.cf-tour {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  pointer-events: none;
+}
+
+.cf-tour > * {
+  pointer-events: auto;
+}
+
+.cf-tour__backdrop {
+  position: absolute;
+  inset: 0;
+  background: oklch(0% 0 0 / 0.5);
+}
+
+.cf-tour__highlight {
+  border-radius: var(--r-3);
+  box-shadow: 0 0 0 9999px oklch(0% 0 0 / 0.5);
+  pointer-events: none;
+  transition: top var(--dur-base) var(--ease-out),
+    left var(--dur-base) var(--ease-out),
+    width var(--dur-base) var(--ease-out),
+    height var(--dur-base) var(--ease-out);
+}
+
+.cf-tour__popover {
+  width: 320px;
+  max-width: 90vw;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
+  padding: 16px;
+}
+
+.cf-tour__title {
+  margin: 0 0 4px;
+  font-size: var(--t-14);
+  font-weight: 600;
+  color: var(--fg-1);
+}
+
+.cf-tour__desc {
+  margin: 0;
+  color: var(--fg-2);
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+}
+
+.cf-tour__footer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cf-tour__progress {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-tour__actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.cf-tour__btn {
+  appearance: none;
+  border: 1px solid transparent;
+  padding: 4px 12px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-13);
+  line-height: 1.4;
+}
+
+.cf-tour__btn--ghost {
+  background: transparent;
+  color: var(--fg-2);
+  border-color: var(--line-1);
+}
+
+.cf-tour__btn--ghost:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+
+.cf-tour__btn--primary {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+
+.cf-tour__btn--primary:hover {
+  background: var(--accent-2);
+}

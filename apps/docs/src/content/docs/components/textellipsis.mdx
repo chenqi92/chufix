@@ -1,0 +1,28 @@
+---
+title: TextEllipsis 多行省略
+description: 多行文本溢出时显示省略号，可选「展开 / 收起」按钮控制展示长度。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/textellipsis/BasicVue.vue';
+
+## 基础用法
+
+基于 CSS `-webkit-line-clamp`。`expandable` 时通过 ResizeObserver 检测溢出，仅在确实溢出时才显示「展开」按钮。
+
+<DemoFrame
+  vueCode={`<CfTextEllipsis :text="long" :rows="2" expandable />`}
+  reactCode={`<CfTextEllipsis text={long} rows={2} expandable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `text` | `string` | `—` | 文本内容（也可使用 slot/children） |
+| `rows` | `number` | `2` | 折叠状态最多显示行数 |
+| `expandable` | `boolean` | `false` | 显示「展开 / 收起」按钮 |
+| `expandText` | `string` | `'展开'` | 展开按钮文案 |
+| `collapseText` | `string` | `'收起'` | 收起按钮文案 |

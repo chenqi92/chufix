@@ -1,0 +1,33 @@
+---
+title: TimeRangePicker 时间范围
+description: 两个 TimePicker 组合，选择「开始 – 结束」时间区间。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timerangepicker/BasicVue.vue';
+
+## 基础用法
+
+`v-model` / `value` 是 `[string, string] | null`，每一项是 `HH:mm` 或 `HH:mm:ss`（开启 `showSeconds`）。
+
+<DemoFrame
+  vueCode={`<CfTimeRangePicker v-model="range" clearable />`}
+  reactCode={`<CfTimeRangePicker value={range} onChange={setRange} clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `value` / `modelValue` | `[string \| null, string \| null] \| null` | `—` | 受控范围值 |
+| `defaultValue` | `[string \| null, string \| null] \| null` | `null` | 非受控初始值 |
+| `placeholder` | `[string, string]` | `['开始时间', '结束时间']` | 两端占位 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 触发器尺寸 |
+| `disabled` | `boolean` | `false` | 整组禁用 |
+| `clearable` | `boolean` | `false` | 显示清除按钮 |
+| `showSeconds` | `boolean` | `false` | 显示秒列 |
+| `separator` | `string` | `'–'` | 中间分隔符 |
+
+事件：`onChange(value)` 当任一端变化时触发。

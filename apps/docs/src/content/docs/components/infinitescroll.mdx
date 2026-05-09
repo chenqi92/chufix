@@ -1,0 +1,34 @@
+---
+title: InfiniteScroll 无限滚动
+description: 滚动到底部时自动触发加载下一页，基于 IntersectionObserver。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/infinitescroll/BasicVue.vue';
+
+## 基础用法
+
+把列表放在组件 slot 内即可；当组件底部的 sentinel 进入视口（提前 `threshold` 像素）时触发 `load`。`loading` 抑制重复触发，`finished` 显示「没有更多了」。
+
+<DemoFrame
+  vueCode={`<CfInfiniteScroll :loading="loading" :finished="finished" @load="loadMore">
+  <ul>...</ul>
+</CfInfiniteScroll>`}
+  reactCode={`<CfInfiniteScroll loading={loading} finished={finished} onLoad={loadMore}>
+  <ul>...</ul>
+</CfInfiniteScroll>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `loading` | `boolean` | `false` | 加载中，期间不再触发 `load` |
+| `finished` | `boolean` | `false` | 已无更多数据 |
+| `threshold` | `number` | `100` | sentinel 进入视口前 N 像素就触发（rootMargin） |
+
+事件：`onLoad()` —— 应在事件中加载下一批数据。
+
+Slot（Vue）：`loading` / `finished` 自定义底部提示文案。

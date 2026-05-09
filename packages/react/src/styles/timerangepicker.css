@@ -1,0 +1,15 @@
+.cf-timerangepicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-timerangepicker__sep {
+  color: var(--fg-3);
+  font-size: var(--t-13);
+}
+
+.cf-timerangepicker.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

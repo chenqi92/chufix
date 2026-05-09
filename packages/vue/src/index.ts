@@ -79,6 +79,14 @@ import './styles/anchor.css';
 import './styles/imagepreview.css';
 import './styles/timepicker.css';
 import './styles/transfer.css';
+import './styles/highlight.css';
+import './styles/textellipsis.css';
+import './styles/countdown.css';
+import './styles/infinitescroll.css';
+import './styles/timerangepicker.css';
+import './styles/calendarheatmap.css';
+import './styles/tour.css';
+import './styles/qrcode.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -540,6 +548,38 @@ export type { TimePickerProps, TimePickerSize } from './timepicker/variants';
 
 export { default as CfTransfer } from './transfer/Transfer.vue';
 export type { TransferProps, TransferItem } from './transfer/variants';
+
+export { default as CfHighlight } from './highlight/Highlight.vue';
+export type { HighlightProps, HighlightSegment } from './highlight/variants';
+
+export { default as CfTextEllipsis } from './textellipsis/TextEllipsis.vue';
+export type { TextEllipsisProps } from './textellipsis/variants';
+
+export { default as CfCountDown } from './countdown/CountDown.vue';
+export type { CountDownProps, CountDownSize } from './countdown/variants';
+
+export { default as CfInfiniteScroll } from './infinitescroll/InfiniteScroll.vue';
+export type { InfiniteScrollProps } from './infinitescroll/variants';
+
+export { default as CfTimeRangePicker } from './timerangepicker/TimeRangePicker.vue';
+export type {
+  TimeRangePickerProps,
+  TimeRangeSize,
+  TimeRangeValue,
+} from './timerangepicker/variants';
+
+export { default as CfCalendarHeatmap } from './calendarheatmap/CalendarHeatmap.vue';
+export type {
+  CalendarHeatmapProps,
+  HeatmapDay,
+  HeatmapCell,
+} from './calendarheatmap/variants';
+
+export { default as CfTour } from './tour/Tour.vue';
+export type { TourProps, TourStep, TourPlacement } from './tour/variants';
+
+export { default as CfQRCode } from './qrcode/QRCode.vue';
+export type { QRCodeProps, QrEcc } from './qrcode/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {
