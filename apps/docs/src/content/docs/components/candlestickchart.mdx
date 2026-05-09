@@ -1,0 +1,25 @@
+---
+title: CandlestickChart K 线图
+description: OHLC 蜡烛图，涨绿跌红，wick + body。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/candlestickchart/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfCandlestickChart ... />`}
+  reactCode={`<CfCandlestickChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `Candle[]` | `—` | &#123; open, high, low, close, label? &#125;[] |

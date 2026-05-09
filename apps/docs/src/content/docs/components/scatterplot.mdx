@@ -1,0 +1,26 @@
+---
+title: ScatterPlot 散点图
+description: 二维散点，可按 group 分色。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfScatterPlot ... />`}
+  reactCode={`<CfScatterPlot ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `ScatterPoint[]` | `—` | &#123; x, y, r?, group? &#125;[] |
+| `width / height` | `number` | `480 / 240` |  |

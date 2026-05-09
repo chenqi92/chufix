@@ -1,0 +1,38 @@
+---
+title: StatusCodeBadge 状态码徽标
+description: HTTP 状态码徽标，按 1xx / 2xx / 3xx / 4xx / 5xx 自动配色，支持可选 reason 文本。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statuscodebadge/BasicVue.vue';
+
+## 基础用法
+
+`reason` 可选，显示在数字后面。边框 + 软色背景双重信号，色盲也可通过数字识别状态类。
+
+<DemoFrame
+  vueCode={`<CfStatusCodeBadge :code="200" reason="OK" />
+<CfStatusCodeBadge :code="404" reason="Not Found" />
+<CfStatusCodeBadge :code="500" reason="Internal" />`}
+  reactCode={`<CfStatusCodeBadge code={200} reason="OK" />
+<CfStatusCodeBadge code={404} reason="Not Found" />
+<CfStatusCodeBadge code={500} reason="Internal" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `code` | `number` | — | HTTP 状态码 |
+| `reason` | `string` | — | 可选 reason phrase |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+| 类别 | 范围 | 颜色 token |
+|---|---|---|
+| 1xx | 100–199 | `--status-info` |
+| 2xx | 200–299 | `--status-success` |
+| 3xx | 300–399 | `--status-info` |
+| 4xx | 400–499 | `--status-warning` |
+| 5xx | 500–599 | `--status-error` |

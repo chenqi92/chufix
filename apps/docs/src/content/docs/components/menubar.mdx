@@ -1,0 +1,26 @@
+---
+title: MenuBar 菜单栏
+description: 应用顶部菜单栏（File / Edit / View 风格），支持快捷键、分隔符、危险项。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/menubar/BasicVue.vue';
+
+## 基础用法
+
+点击菜单触发 / 切换；hover 在不同顶级菜单间快速切换；点击外部 / 选择条目自动关闭。
+
+<DemoFrame
+  vueCode={`<CfMenuBar :menus="menus" @select="(menuId, itemId) => onPick(menuId, itemId)" />`}
+  reactCode={`<CfMenuBar menus={menus} onSelect={(menuId, itemId) => onPick(menuId, itemId)} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+`menus: MenuBarMenu[]` —— `{ id, label, items: MenuBarItem[] }`
+
+`MenuBarItem`：`{ id, label, shortcut?, disabled?, danger?, separator? }`
+
+事件：`select(menuId, itemId, item)`。

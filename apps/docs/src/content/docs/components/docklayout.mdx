@@ -1,0 +1,42 @@
+---
+title: DockLayout 多面板布局
+description: 递归 split + tabbed pane 的桌面应用布局壳。v1 声明式布局，v2 加入拖拽重排。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/docklayout/BasicVue.vue';
+
+## 基础用法
+
+布局以一棵 `DockGroup` 树声明：每个 group 要么有 `children`（继续切分）要么有 `panels`（这是一个 tabbed 区域）。
+内容通过 named slot `panel-{id}`（Vue）/ `slots["panel-{id}"]`（React）提供。
+
+<DemoFrame
+  vueCode={`<CfDockLayout :layout="layout">
+  <template #panel-orders>… orders.ts 内容 …</template>
+  <template #panel-login>… login.ts 内容 …</template>
+  <template #panel-terminal>… terminal 内容 …</template>
+</CfDockLayout>`}
+  reactCode={`<CfDockLayout layout={layout} slots={{
+  'panel-orders': <pre>orders.ts</pre>,
+  'panel-login': <pre>login.ts</pre>,
+  'panel-terminal': <Terminal />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `layout` | `DockGroup` | — | 布局描述树 |
+| `active` | `Record<groupId, panelId>` | `{}` | 各 group 的活动 tab id |
+
+`DockGroup`：`{ id, orientation: 'horizontal' \| 'vertical', children?: DockGroup[], panels?: DockPanel[], size? }`
+
+`DockPanel`：`{ id, title, contentKey?, closable?, detachable?, size?, collapsed? }`
+
+事件：`active-change(groupId, panelId)` / `panel-close(...)` / `panel-detach(...)`。
+
+> v1 限制：splitter resize 与 drag-to-rearrange 暂未支持，将在 v2 加入。

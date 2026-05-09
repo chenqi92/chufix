@@ -132,12 +132,55 @@ kbd {
   display: inline-block;
 }
 
+.site-announcement {
+  border-bottom: 1px solid var(--line-1);
+  background: var(--accent-soft);
+  color: var(--fg-1);
+}
+.site-announcement__inner {
+  max-width: 1480px;
+  min-height: 44px;
+  margin: 0 auto;
+  padding: 0.55rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  font-size: var(--t-13);
+  line-height: 1.45;
+}
+.site-announcement__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.45rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--accent-1);
+  border-radius: var(--r-3);
+  color: var(--accent-1);
+  font-weight: var(--w-semibold);
+  font-size: var(--t-11);
+}
+.site-announcement__inner strong {
+  font-weight: var(--w-semibold);
+}
+.site-announcement__date {
+  margin-left: auto;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .site-announcement__date {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
 /* ─── Docs shell (3-column) ────────────────────────────────────────────── */
 
 .docs-shell {
   max-width: 1480px;
   margin: 0 auto;
-  height: calc(100dvh - 60px);
+  height: calc(100dvh - 104px);
   padding: 1.5rem 1.25rem 2rem;
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr) 176px;
@@ -295,6 +338,24 @@ kbd {
   margin-bottom: 2rem;
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--line-1);
+}
+.docs-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.85rem;
+}
+.docs-header__meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-2);
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
 }
 .docs-header h1 {
   margin: 0;

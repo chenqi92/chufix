@@ -1,0 +1,37 @@
+---
+title: StatusIllustration 状态插图
+description: 一组语义状态插图（empty / search / upload / success / 404 / 403 / 500 等），与 token 联动。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
+
+## 基础用法
+
+10 种 variant，统一主体（窗口 + 阴影），每种 variant 添加专属辅助元素与配色。
+默认作为装饰图（`aria-hidden`），传 `title` 后变可访问图（含 `<title>`）。
+
+<DemoFrame
+  vueCode={`<CfStatusIllustration variant="empty" />
+<CfStatusIllustration variant="search" />
+<CfStatusIllustration variant="upload" />
+<CfStatusIllustration variant="success" />
+<CfStatusIllustration variant="not-found" />`}
+  reactCode={`<CfStatusIllustration variant="empty" />
+<CfStatusIllustration variant="search" />
+<CfStatusIllustration variant="upload" />
+<CfStatusIllustration variant="success" />
+<CfStatusIllustration variant="not-found" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `variant` | `'empty' \| 'search' \| 'upload' \| 'success' \| 'info' \| 'warning' \| 'error' \| 'not-found' \| 'forbidden' \| 'server-error'` | `'empty'` | 状态语义 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `title` | `string` | — | 传入即可访问；不传则装饰图 |
+
+> 已被 [Empty](/components/empty/) / [Result](/components/result/) / [Dropzone](/components/dropzone/) 默认采用。

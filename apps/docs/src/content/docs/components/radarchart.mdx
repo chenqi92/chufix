@@ -1,0 +1,28 @@
+---
+title: RadarChart 雷达图
+description: 多维度对比的多边形图，支持多 series。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfRadarChart ... />`}
+  reactCode={`<CfRadarChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `axes` | `string[]` | `—` | 维度名 |
+| `series` | `RadarSeries[]` | `—` | &#123; name, values: number[], colorIndex? &#125;[] |
+| `size` | `number` | `240` |  |
+| `max` | `number` | `数据最大值` | 标准化基准 |

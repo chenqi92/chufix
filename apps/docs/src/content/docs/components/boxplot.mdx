@@ -1,0 +1,25 @@
+---
+title: BoxPlot 箱线图
+description: 统计分布的 5 数概要 + outliers。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/boxplot/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfBoxPlot ... />`}
+  reactCode={`<CfBoxPlot ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `BoxStat[]` | `—` | &#123; label, min, q1, median, q3, max, outliers? &#125;[] |

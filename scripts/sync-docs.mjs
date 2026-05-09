@@ -3,7 +3,7 @@
  * sync-docs.mjs
  *
  * Pushes the docs (apps/docs/src) and vendored built packages
- * (packages/{tokens,vue,react}) into the standalone deploy repo
+ * (packages/{tokens,icons,vue,react}) into the standalone deploy repo
  * E:/workspace-freq/chufix-docs (chenqi92/chufix-docs on GitHub).
  *
  * Why vendoring:
@@ -74,6 +74,17 @@ if (existsSync(publicSrc)) {
   cpSync(publicSrc, publicDst, { recursive: true });
 }
 
+/* ── 3b. sync optional Cloudflare Pages Functions and schemas ── */
+for (const d of ['functions', 'schema']) {
+  const extraSrc = join(repoRoot, 'apps/docs', d);
+  const extraDst = join(deployRoot, d);
+  if (existsSync(extraSrc)) {
+    console.log(`• sync ${d}: ${extraSrc} → ${extraDst}`);
+    rmSync(extraDst, { recursive: true, force: true });
+    cpSync(extraSrc, extraDst, { recursive: true });
+  }
+}
+
 /* ── 4. vendor packages into chufix-docs/vendor/ ── */
 const vendorRoot = join(deployRoot, 'vendor');
 rmSync(vendorRoot, { recursive: true, force: true });
@@ -81,6 +92,7 @@ mkdirSync(vendorRoot, { recursive: true });
 
 const pkgs = [
   { name: 'tokens', dirs: ['src'] },
+  { name: 'icons',  dirs: ['src'] },
   { name: 'vue',    dirs: ['src', 'dist'] },
   { name: 'react',  dirs: ['src', 'dist'] },
 ];
@@ -105,6 +117,9 @@ for (const { name, dirs } of pkgs) {
     for (const [k, v] of Object.entries(pkgJson.dependencies)) {
       if (k === '@chufix/tokens' && /^workspace:/.test(v)) {
         pkgJson.dependencies[k] = 'file:../tokens';
+      }
+      if (k === '@chufix/icons' && /^workspace:/.test(v)) {
+        pkgJson.dependencies[k] = 'file:../icons';
       }
     }
   }
@@ -145,6 +160,7 @@ for (const { name, dirs } of pkgs) {
 const deployPkgPath = join(deployRoot, 'package.json');
 const deployPkg = JSON.parse(readFileSync(deployPkgPath, 'utf8'));
 deployPkg.dependencies['@chufix/tokens'] = 'file:./vendor/tokens';
+deployPkg.dependencies['@chufix/icons'] = 'file:./vendor/icons';
 deployPkg.dependencies['@chufix/vue'] = 'file:./vendor/vue';
 deployPkg.dependencies['@chufix/react'] = 'file:./vendor/react';
 writeFileSync(deployPkgPath, JSON.stringify(deployPkg, null, 2) + '\n');

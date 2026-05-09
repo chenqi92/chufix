@@ -1,0 +1,30 @@
+---
+title: Sparkline 缩略走势
+description: 行内微缩走势线，常用于 KPI 卡的趋势线。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfSparkline ... />`}
+  reactCode={`<CfSparkline ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `number[]` | `—` | 数据点数组 |
+| `width / height` | `number` | `80 / 24` |  |
+| `filled` | `boolean` | `false` | 显示填充面积 |
+| `smooth` | `boolean` | `false` | 平滑曲线 |
+| `colorIndex` | `0..7` | `0` | 颜色索引（--viz-&#123;n+1&#125;） |
+| `showDot` | `boolean` | `true` | 高亮最后一个点 |

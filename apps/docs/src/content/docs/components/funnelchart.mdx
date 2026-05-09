@@ -1,0 +1,26 @@
+---
+title: FunnelChart 漏斗图
+description: 逐层收窄的转化漏斗，每层显示绝对值。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfFunnelChart ... />`}
+  reactCode={`<CfFunnelChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `steps` | `FunnelStep[]` | `—` | &#123; label, value &#125;[]，从上到下值递减 |
+| `width / height / showLabels` | `` | `` |  |

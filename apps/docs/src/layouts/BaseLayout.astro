@@ -29,6 +29,14 @@ const fullTitle = title ? `${title} · ${site.title}` : `${site.title} · ${site
   </head>
   <body>
     <SiteNav />
+    <aside class="site-announcement" aria-label="站点公告">
+      <div class="site-announcement__inner">
+        <span class="site-announcement__badge">{site.status.label}</span>
+        <strong>{site.status.announcementTitle}</strong>
+        <span>{site.status.announcement}</span>
+        <span class="site-announcement__date">更新于 {site.status.updatedAt}</span>
+      </div>
+    </aside>
     <slot />
     <CfToaster client:only="vue" position="top-right" />
   </body>

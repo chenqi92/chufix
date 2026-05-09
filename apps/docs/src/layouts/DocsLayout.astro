@@ -2,8 +2,9 @@
 import BaseLayout from './BaseLayout.astro';
 import SiteSidebar from '~/components/SiteSidebar.astro';
 import SiteToc from '~/components/SiteToc.astro';
+import DocComments from '~/components/DocComments.vue';
 import type { MarkdownHeading } from 'astro';
-import { sidebar } from '~/config/site';
+import { sidebar, site } from '~/config/site';
 
 interface Props {
   title: string;
@@ -25,6 +26,11 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
     <main class="docs-main" data-docs-main>
       <article class="cf-prose">
         <header class="docs-header">
+          <div class="docs-header__meta">
+            <span>{site.status.label}</span>
+            <span>更新于 {site.status.updatedAt}</span>
+            {!site.status.npmPublished && <span>npm 公共包暂未发布</span>}
+          </div>
           <h1>{title}</h1>
           {description && <p class="docs-header__lede">{description}</p>}
         </header>
@@ -45,6 +51,12 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
           </a>
         ) : <span />}
       </nav>
+
+      <DocComments
+        client:load
+        page-id={currentPath}
+        title={`${title} 的讨论`}
+      />
     </main>
     <SiteToc headings={headings} />
   </div>

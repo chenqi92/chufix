@@ -1,0 +1,30 @@
+---
+title: LineChart 折线图
+description: 多 series 折线图，支持平滑曲线、网格线、x/y 轴标签。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/linechart/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfLineChart ... />`}
+  reactCode={`<CfLineChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `series` | `LineSeries[]` | `—` | &#123; name?, data: number[] &#125;[] |
+| `labels` | `string[]` | `自动 0..n-1` | x 轴标签 |
+| `width / height` | `number` | `480 / 240` |  |
+| `smooth` | `boolean` | `false` | 平滑曲线 |
+| `showGrid / showLabels` | `boolean` | `true` |  |
+| `yLabelFn` | `(v) => string` | `v.toFixed(0)` | y 轴标签格式化 |

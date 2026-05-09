@@ -1,0 +1,26 @@
+---
+title: RidgePlot 密度脊图
+description: 多组密度曲线垂直堆叠。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfRidgePlot ... />`}
+  reactCode={`<CfRidgePlot ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `rows` | `RidgeRow[]` | `—` | &#123; label, density: number[], colorIndex? &#125;[] |
+| `overlap` | `0..1` | `0.6` | 行间重叠比例 |

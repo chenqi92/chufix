@@ -1,0 +1,27 @@
+---
+title: StackedBar100 100% 占比柱
+description: 横向 100% 堆叠柱，适合占比分布。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfStackedBar100 ... />`}
+  reactCode={`<CfStackedBar100 ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `segments` | `StackedBar100Series[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `height` | `number` | `24` |  |
+| `showLegend` | `boolean` | `true` |  |

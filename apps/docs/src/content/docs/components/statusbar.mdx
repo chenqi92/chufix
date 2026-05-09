@@ -1,0 +1,32 @@
+---
+title: StatusBar 状态栏
+description: 编辑器底栏。三段（左 / 中 / 右）槽位，6 种语义色调。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statusbar/BasicVue.vue';
+
+## 基础用法
+
+支持以数组形式传入 `leftItems` / `centerItems` / `rightItems`，或使用具名插槽（Vue: `#left/#center/#right`）/
+slot prop（React: `leftSlot/centerSlot/rightSlot`）替换。
+整条 `tone` 染色（如 `error`），单 item 也可单独设 tone。
+
+<DemoFrame
+  vueCode={`<CfStatusBar :left-items="left" :center-items="center" :right-items="right" />`}
+  reactCode={`<CfStatusBar leftItems={left} centerItems={center} rightItems={right} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `size` | `'sm' \| 'md'` | `'md'` | 20 / 24 px 高 |
+| `tone` | `'default' \| 'accent' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'default'` | 整条染色 |
+| `leftItems` / `centerItems` / `rightItems` | `StatusBarItem[]` | `[]` | |
+
+`StatusBarItem`：`{ id, label, tone?, shortcut?, disabled? }`。
+
+事件：`item-click(id, item)`。

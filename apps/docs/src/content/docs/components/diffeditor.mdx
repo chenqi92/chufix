@@ -1,0 +1,28 @@
+---
+title: DiffEditor 文本对比
+description: 行级 LCS diff，支持 split / unified 双模式，行号 + +/- 标识。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/diffeditor/BasicVue.vue';
+
+## 基础用法
+
+通用文本 diff（区别于 [JsonDiff](/components/jsondiff/) 的 JSON 专用版）。`mode="unified"` 单栏紧凑展示。
+
+<DemoFrame
+  vueCode={`<CfDiffEditor :left="oldText" :right="newText" />`}
+  reactCode={`<CfDiffEditor left={oldText} right={newText} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `left` / `right` | `string` | — | 双侧文本 |
+| `mode` | `'split' \| 'unified'` | `'split'` | |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `showLineNumbers` | `boolean` | `true` | |
+| `leftLabel` / `rightLabel` | `string` | `'原文'` / `'修改'` | 顶部标题 |

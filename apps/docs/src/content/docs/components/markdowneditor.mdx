@@ -1,0 +1,31 @@
+---
+title: MarkdownEditor Markdown 编辑器
+description: 内置最小 markdown 渲染器，支持 split / edit / preview 三种模式。需要更全功能可传 render fn。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/markdowneditor/BasicVue.vue';
+
+## 基础用法
+
+内置渲染器支持：标题、加粗 / 斜体 / 行内 code、围栏代码块、有序 / 无序列表、引用、`---` 分隔线、链接。
+更复杂场景（表格、任务列表、扩展语法）用 `render` 自定义。
+
+<DemoFrame
+  vueCode={`<CfMarkdownEditor v-model="md" :mode="mode" @update:mode="setMode" />`}
+  reactCode={`<CfMarkdownEditor value={md} onChange={setMd} mode={mode} onModeChange={setMode} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | markdown 源 |
+| `mode` | `'split' \| 'edit' \| 'preview'` | `'split'` | |
+| `size` / `placeholder` / `rows` / `readOnly` | | | |
+| `render` | `(md: string) => string` | 内置 | 自定义渲染（返回 HTML 字符串） |
+
+> 注意：本组件的输出会通过 `v-html` / `dangerouslySetInnerHTML` 注入。
+> 用户内容请先用 `DOMPurify` 等手段消毒。

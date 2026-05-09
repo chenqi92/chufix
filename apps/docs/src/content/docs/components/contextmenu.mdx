@@ -1,0 +1,35 @@
+---
+title: ContextMenu 右键菜单
+description: 右键打开的菜单。支持分隔符、快捷键、危险项；自动 clamp 到视口内。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
+
+## 基础用法
+
+包裹目标区域，右键触发 `contextmenu` 事件后在光标位置显示菜单。`Esc` / 点击外部关闭。
+
+<DemoFrame
+  vueCode={`<CfContextMenu :items="items" @select="onPick">
+  <div>右键这里</div>
+</CfContextMenu>`}
+  reactCode={`<CfContextMenu items={items} onSelect={onPick}>
+  <div>右键这里</div>
+</CfContextMenu>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+`items: ContextMenuItem[]`，每项支持：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `label` | `string` | 文本 |
+| `value` | `string` | 选中时的 value（默认回落 label） |
+| `shortcut` | `string` | 右侧快捷键提示 |
+| `disabled` | `boolean` | |
+| `danger` | `boolean` | 红色样式 |
+| `separator` | `boolean` | 分隔行（其他字段忽略） |

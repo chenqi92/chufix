@@ -1,0 +1,29 @@
+---
+title: PhoneInput 电话号码输入
+description: 国家码下拉 + 号码输入。内置 12 个常见国家，可通过 countries 覆盖。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
+
+## 基础用法
+
+国家码段独立背景，下拉支持模糊搜索。本组件不做 E.164 校验，由消费方接 libphonenumber 等库。
+
+<DemoFrame
+  vueCode={`<CfPhoneInput v-model="phone" v-model:country="country" />`}
+  reactCode={`<CfPhoneInput value={phone} onChange={setPhone} country={country} onCountryChange={setCountry} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | 国内号码段 |
+| `country` | `string` | `'CN'` | ISO 3166-1 alpha-2 |
+| `countries` | `CountryCode[]` | `defaultCountries`（12 项） | 自定义国家列表 |
+| `size` / `placeholder` / `disabled` / `error` | | | |
+
+`CountryCode = { code: string; dial: string; label: string }`

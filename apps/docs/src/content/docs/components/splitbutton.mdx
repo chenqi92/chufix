@@ -1,0 +1,33 @@
+---
+title: SplitButton 分裂按钮
+description: 主按钮 + 下拉箭头复合，用于一组相关动作。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
+
+## 基础用法
+
+主按钮触发 `click`，箭头打开下拉，下拉项触发 `select(value, item)`。
+
+<DemoFrame
+  vueCode={`<CfSplitButton :items="items" @click="save" @select="onPick">
+  Save
+</CfSplitButton>`}
+  reactCode={`<CfSplitButton items={items} onClick={save} onSelect={(v) => onPick(v)}>
+  Save
+</CfSplitButton>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'danger'` | `'primary'` | 复用 Button variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `items` | `SplitButtonItem[]` | — | 下拉项 `{ label, value, disabled?, danger? }` |
+| `disabled` / `loading` | `boolean` | `false` | |
+
+事件：`click`（主按钮）、`select(value, item)`（下拉项）。
