@@ -4,8 +4,8 @@ import { CfDivider } from '@chufix/vue';
 
 <template>
   <div class="demo-stack" style="width: 100%; max-width: 28rem;">
-    <p>分割上下两段文字</p>
-    <CfDivider />
-    <p>下面这一段是另一组内容</p>
+    <CfDivider align="start">左对齐</CfDivider>
+    <CfDivider align="center">居中（默认）</CfDivider>
+    <CfDivider align="end">右对齐</CfDivider>
   </div>
 </template>

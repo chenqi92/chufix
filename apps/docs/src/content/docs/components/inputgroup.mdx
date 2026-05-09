@@ -5,78 +5,92 @@ description: 把多个 Input / Button / Select / 静态标签拼到一起，共�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/inputgroup/BasicVue.vue';
+import UrlVue from '~/components/demos/inputgroup/UrlVue.vue';
+import AddonVue from '~/components/demos/inputgroup/AddonVue.vue';
+import StretchVue from '~/components/demos/inputgroup/StretchVue.vue';
 
 ## 基础用法
 
-InputGroup 是一个纯样式包裹层。把表单控件按顺序放入它，子元素会自动去掉相邻的内圆角，并合并边框，第一个/最后一个元素继承外圆角。静态标签用 `<span class="cf-input-group__addon">` 渲染。
+InputGroup 是一个纯样式包裹层。把表单控件按顺序放入，相邻的内圆角会被自动去掉，第一个 / 最后一个元素继承外圆角。静态标签用 `<span class="cf-input-group__addon">` 渲染。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { CfInputGroup, CfInput, CfButton, CfSelect } from '@chufix/vue';
-
-const search = ref('');
-const protocol = ref('https');
-const host = ref('chufix.com');
-const protocols = [
-  { label: 'https://', value: 'https' },
-  { label: 'http://', value: 'http' },
-];
-</script>
-
-<template>
-  <CfInputGroup>
-    <span class="cf-input-group__addon">@</span>
-    <CfInput v-model="search" placeholder="username" />
-  </CfInputGroup>
-
-  <CfInputGroup>
-    <CfSelect v-model="protocol" :options="protocols" />
-    <CfInput v-model="host" placeholder="example.com" />
-    <CfButton>访问</CfButton>
-  </CfInputGroup>
-
-  <CfInputGroup stretch>
-    <CfInput placeholder="搜索…" />
-    <CfButton variant="primary">搜索</CfButton>
-  </CfInputGroup>
-</template>`}
-  reactCode={`import { useState } from 'react';
-import { CfInputGroup, CfInput, CfButton, CfSelect } from '@chufix/react';
-
-export default function Demo() {
-  const [search, setSearch] = useState('');
-  const [host, setHost] = useState('chufix.com');
-  const [protocol, setProtocol] = useState('https');
-  return (
-    <>
-      <CfInputGroup>
-        <span className="cf-input-group__addon">@</span>
-        <CfInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="username" />
-      </CfInputGroup>
-
-      <CfInputGroup>
-        <CfSelect
-          value={protocol}
-          onChange={setProtocol}
-          options={[
-            { label: 'https://', value: 'https' },
-            { label: 'http://', value: 'http' },
-          ]}
-        />
-        <CfInput value={host} onChange={(e) => setHost(e.target.value)} placeholder="example.com" />
-        <CfButton>访问</CfButton>
-      </CfInputGroup>
-
-      <CfInputGroup stretch>
-        <CfInput placeholder="搜索…" />
-        <CfButton variant="primary">搜索</CfButton>
-      </CfInputGroup>
-    </>
-  );
-}`}
+  vueCode={`<CfInputGroup>
+  <span class="cf-input-group__addon">@</span>
+  <CfInput v-model="search" placeholder="username" />
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup>
+  <span className="cf-input-group__addon">@</span>
+  <CfInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="username" />
+</CfInputGroup>`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 与 Select / Button 组合
+
+最常见的「URL 输入框 + 协议选择 + 提交按钮」组合 — 三段拼到一起共享一组边框。
+
+<DemoFrame
+  vueCode={`<CfInputGroup>
+  <CfSelect v-model="protocol" :options="protocols" />
+  <CfInput v-model="host" placeholder="example.com" />
+  <CfButton>访问</CfButton>
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup>
+  <CfSelect value={protocol} onChange={setProtocol} options={protocols} />
+  <CfInput value={host} onChange={(e) => setHost(e.target.value)} placeholder="example.com" />
+  <CfButton>访问</CfButton>
+</CfInputGroup>`}
+>
+  <UrlVue client:load />
+</DemoFrame>
+
+## 前后静态标签
+
+`<span class="cf-input-group__addon">` 可以放在输入框两侧，常见于货币 / URL 路径前缀后缀。
+
+<DemoFrame
+  vueCode={`<CfInputGroup>
+  <span class="cf-input-group__addon">¥</span>
+  <CfInput v-model="price" placeholder="价格" />
+  <span class="cf-input-group__addon">RMB</span>
+</CfInputGroup>
+
+<CfInputGroup>
+  <span class="cf-input-group__addon">https://</span>
+  <CfInput v-model="url" placeholder="example.com" />
+  <span class="cf-input-group__addon">/path</span>
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup>
+  <span className="cf-input-group__addon">¥</span>
+  <CfInput value={price} onChange={(e) => setPrice(e.target.value)} placeholder="价格" />
+  <span className="cf-input-group__addon">RMB</span>
+</CfInputGroup>
+
+<CfInputGroup>
+  <span className="cf-input-group__addon">https://</span>
+  <CfInput value={url} onChange={(e) => setUrl(e.target.value)} placeholder="example.com" />
+  <span className="cf-input-group__addon">/path</span>
+</CfInputGroup>`}
+>
+  <AddonVue client:load />
+</DemoFrame>
+
+## 等宽撑满
+
+`stretch` 让子元素等宽撑满父容器 — 适合占满表单整行的搜索框 + 提交按钮组合。
+
+<DemoFrame
+  vueCode={`<CfInputGroup stretch>
+  <CfInput v-model="q" placeholder="搜索…" />
+  <CfButton variant="primary">搜索</CfButton>
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup stretch>
+  <CfInput value={q} onChange={(e) => setQ(e.target.value)} placeholder="搜索…" />
+  <CfButton variant="primary">搜索</CfButton>
+</CfInputGroup>`}
+>
+  <StretchVue client:load />
 </DemoFrame>
 
 ## API · Props

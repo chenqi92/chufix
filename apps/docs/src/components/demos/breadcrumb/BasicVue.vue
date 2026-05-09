@@ -9,9 +9,5 @@ const items = [
 </script>
 
 <template>
-  <div class="demo-stack">
-    <CfBreadcrumb :items="items" />
-    <CfBreadcrumb :items="items" separator="›" />
-    <CfBreadcrumb :items="items" separator="·" />
-  </div>
+  <CfBreadcrumb :items="items" />
 </template>

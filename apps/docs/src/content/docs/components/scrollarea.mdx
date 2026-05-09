@@ -1,23 +1,29 @@
 ---
 title: ScrollArea 滚动容器
-description: 自定义主题滚动条容器，scrollbar-gutter stable + overscroll-behavior contain。
+description: 自定义主题滚动条容器，scrollbar-gutter stable + overscroll-behavior contain，支持 Y / X / 双向。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/scrollarea/BasicVue.vue';
+import HorizontalVue from '~/components/demos/scrollarea/HorizontalVue.vue';
+import BothVue from '~/components/demos/scrollarea/BothVue.vue';
 
 ## 基础用法
 
-把可能溢出的内容塞进 `CfScrollArea`，限制 `maxHeight` / `maxWidth` 触发滚动。组件已经处理：`scrollbar-width: thin` / `scrollbar-gutter: stable`（避免布局抖动）/ `overscroll-behavior: contain`（不会把滚动事件冒泡到外层）+ webkit 主题化滚动条。
+把可能溢出的内容塞进 `CfScrollArea`，限制 `maxHeight` / `maxWidth` 触发滚动。组件已经处理：
+
+- `scrollbar-width: thin` / `scrollbar-gutter: stable` — 避免出现 / 隐藏滚动条时的布局抖动
+- `overscroll-behavior: contain` — 不把滚动事件冒泡到外层
+- webkit 主题化滚动条（与 token 配色一致）
 
 <DemoFrame
   vueCode={`<CfScrollArea bordered :max-height="200" :max-width="420">
-  <ul style="margin: 0; padding: 8px 12px; list-style: none;">
+  <ul>
     <li v-for="i in 30" :key="i">第 {{ i }} 项 — Lorem ipsum...</li>
   </ul>
 </CfScrollArea>`}
   reactCode={`<CfScrollArea bordered maxHeight={200} maxWidth={420}>
-  <ul style={{ margin: 0, padding: '8px 12px', listStyle: 'none' }}>
+  <ul>
     {Array.from({ length: 30 }).map((_, i) => (
       <li key={i}>第 {i + 1} 项 — Lorem ipsum...</li>
     ))}
@@ -25,6 +31,40 @@ import BasicVue from '~/components/demos/scrollarea/BasicVue.vue';
 </CfScrollArea>`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 横向滚动
+
+`axis="x"` 把滚动方向锁成横向；适合 tag 长列表、表格预览、命令历史等。
+
+<DemoFrame
+  vueCode={`<CfScrollArea bordered axis="x" :max-width="420">
+  <div style="display: flex; gap: 6px; white-space: nowrap;">
+    <span v-for="t in tags" :key="t">{{ t }}</span>
+  </div>
+</CfScrollArea>`}
+  reactCode={`<CfScrollArea bordered axis="x" maxWidth={420}>
+  <div style={{ display: 'flex', gap: 6, whiteSpace: 'nowrap' }}>
+    {tags.map((t) => <span key={t}>{t}</span>)}
+  </div>
+</CfScrollArea>`}
+>
+  <HorizontalVue client:load />
+</DemoFrame>
+
+## 双向滚动
+
+`axis="both"` —— 横竖都滚。常见于表格 / 矩阵 / 时间轴。
+
+<DemoFrame
+  vueCode={`<CfScrollArea bordered axis="both" :max-width="420" :max-height="200">
+  <div>{/* 18 × 12 网格 */}</div>
+</CfScrollArea>`}
+  reactCode={`<CfScrollArea bordered axis="both" maxWidth={420} maxHeight={200}>
+  <div>{/* 18 × 12 网格 */}</div>
+</CfScrollArea>`}
+>
+  <BothVue client:load />
 </DemoFrame>
 
 ## API

@@ -1,34 +1,82 @@
 ---
 title: Divider 分割线
-description: 横/竖分割线，支持实线 / 虚线 / 点线，可带标签和位置控制。
+description: 横 / 竖分割线，3 种线型，可带标签和位置控制。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/divider/BasicVue.vue';
+import VariantsVue from '~/components/demos/divider/VariantsVue.vue';
+import AlignVue from '~/components/demos/divider/AlignVue.vue';
+import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
 
 ## 基础用法
 
-`orientation` 控制方向，`variant` 控制线型，默认插槽是中部标签。
+无 prop 渲染一条横向实线，把上下文档结构隔开。
 
 <DemoFrame
-  vueCode={`<CfDivider />
-<CfDivider variant="dashed">分组 A</CfDivider>
-<CfDivider variant="dotted" align="start">日志</CfDivider>
-
-<span>文本 <CfDivider orientation="vertical" /> 中间</span>`}
-  reactCode={`<CfDivider />
-<CfDivider variant="dashed">分组 A</CfDivider>
-<CfDivider variant="dotted" align="start">日志</CfDivider>
-
-<span>文本 <CfDivider orientation="vertical" /> 中间</span>`}
+  vueCode={`<p>第一段</p>
+<CfDivider />
+<p>第二段</p>`}
+  reactCode={`<p>第一段</p>
+<CfDivider />
+<p>第二段</p>`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
+## 三种线型
+
+`variant` —— `solid` 实线（默认）/ `dashed` 虚线 / `dotted` 点线。default slot 是中部标签。
+
+<DemoFrame
+  vueCode={`<CfDivider variant="solid">solid 实线</CfDivider>
+<CfDivider variant="dashed">dashed 虚线</CfDivider>
+<CfDivider variant="dotted">dotted 点线</CfDivider>`}
+  reactCode={`<CfDivider variant="solid">solid 实线</CfDivider>
+<CfDivider variant="dashed">dashed 虚线</CfDivider>
+<CfDivider variant="dotted">dotted 点线</CfDivider>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 标签对齐
+
+`align` —— `start` / `center`（默认）/ `end`，控制中部标签的水平位置。
+
+<DemoFrame
+  vueCode={`<CfDivider align="start">左对齐</CfDivider>
+<CfDivider align="center">居中</CfDivider>
+<CfDivider align="end">右对齐</CfDivider>`}
+  reactCode={`<CfDivider align="start">左对齐</CfDivider>
+<CfDivider align="center">居中</CfDivider>
+<CfDivider align="end">右对齐</CfDivider>`}
+>
+  <AlignVue client:load />
+</DemoFrame>
+
+## 竖向分割
+
+`orientation="vertical"` 切换成竖线，行内插入用于分隔单行多段文字。竖向也支持 `variant`。
+
+<DemoFrame
+  vueCode={`<span>左侧</span>
+<CfDivider orientation="vertical" />
+<span>中间</span>
+<CfDivider orientation="vertical" variant="dashed" />
+<span>右侧</span>`}
+  reactCode={`<span>左侧</span>
+<CfDivider orientation="vertical" />
+<span>中间</span>
+<CfDivider orientation="vertical" variant="dashed" />
+<span>右侧</span>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
 ## API
 
-| Prop          | 类型                              | 默认值          | 说明                       |
-| ------------- | --------------------------------- | --------------- | -------------------------- |
-| `orientation` | `'horizontal' \| 'vertical'`      | `'horizontal'`  | 方向                       |
-| `variant`     | `'solid' \| 'dashed' \| 'dotted'` | `'solid'`       | 线型                       |
-| `align`       | `'start' \| 'center' \| 'end'`    | `'center'`      | 标签位置（仅 horizontal）  |
+| Prop | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 方向 |
+| `variant` | `'solid' \| 'dashed' \| 'dotted'` | `'solid'` | 线型 |
+| `align` | `'start' \| 'center' \| 'end'` | `'center'` | 标签位置（仅 horizontal） |

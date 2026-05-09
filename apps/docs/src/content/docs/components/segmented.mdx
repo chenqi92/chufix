@@ -1,14 +1,16 @@
 ---
 title: SegmentedControl 分段控件
-description: Tabs 的 segmented variant 的语义化别名导出，专门用于「视图切换 / 时段切换」类场景。
+description: Tabs 的 segmented variant 语义化别名导出，专门用于「视图切换 / 时段切换」场景。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/segmented/BasicVue.vue';
+import SizesVue from '~/components/demos/segmented/SizesVue.vue';
+import AlignVue from '~/components/demos/segmented/AlignVue.vue';
 
 ## 基础用法
 
-`CfSegmentedControl` 等价于 `<CfTabs variant="segmented" />`，只是导出名更直观。API 与 Tabs 的 `value` / `items` / `size` / `align` 一致。
+`CfSegmentedControl` 等价于 `<CfTabs variant="segmented" />`，只是导出名更直观，API 与 Tabs 的 `value` / `items` / `size` / `align` 一致。
 
 <DemoFrame
   vueCode={`<CfSegmentedControl
@@ -18,39 +20,48 @@ import BasicVue from '~/components/demos/segmented/BasicVue.vue';
     { value: 'card', label: '卡片' },
     { value: 'kanban', label: '看板' },
   ]"
-/>
-<CfSegmentedControl
-  v-model="period"
-  size="sm"
-  :items="[
-    { value: 'day', label: '日' },
-    { value: 'week', label: '周' },
-    { value: 'month', label: '月' },
-    { value: 'year', label: '年' },
-  ]"
 />`}
   reactCode={`<CfSegmentedControl
   value={view}
+  onChange={setView}
   items={[
     { value: 'list', label: '列表' },
     { value: 'card', label: '卡片' },
     { value: 'kanban', label: '看板' },
   ]}
-  onChange={setView}
-/>
-<CfSegmentedControl
-  value={period}
-  size="sm"
-  items={[
-    { value: 'day', label: '日' },
-    { value: 'week', label: '周' },
-    { value: 'month', label: '月' },
-    { value: 'year', label: '年' },
-  ]}
-  onChange={setPeriod}
 />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+<DemoFrame
+  vueCode={`<CfSegmentedControl v-model="a" :items="items" size="sm" />
+<CfSegmentedControl v-model="b" :items="items" size="md" />
+<CfSegmentedControl v-model="c" :items="items" size="lg" />`}
+  reactCode={`<CfSegmentedControl value={a} onChange={setA} items={items} size="sm" />
+<CfSegmentedControl value={b} onChange={setB} items={items} size="md" />
+<CfSegmentedControl value={c} onChange={setC} items={items} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 4 种对齐方式
+
+`align` —— `start`（默认）/ `center` / `end` / `stretch`（按宽度均分撑满父容器）。
+
+<DemoFrame
+  vueCode={`<CfSegmentedControl v-model="a" :items="items" align="start" />
+<CfSegmentedControl v-model="b" :items="items" align="center" />
+<CfSegmentedControl v-model="c" :items="items" align="end" />
+<CfSegmentedControl v-model="d" :items="items" align="stretch" />`}
+  reactCode={`<CfSegmentedControl value={a} onChange={setA} items={items} align="start" />
+<CfSegmentedControl value={b} onChange={setB} items={items} align="center" />
+<CfSegmentedControl value={c} onChange={setC} items={items} align="end" />
+<CfSegmentedControl value={d} onChange={setD} items={items} align="stretch" />`}
+>
+  <AlignVue client:load />
 </DemoFrame>
 
 ## API

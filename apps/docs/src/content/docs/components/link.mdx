@@ -1,28 +1,85 @@
 ---
 title: Link 链接
-description: 设计稿一致的链接样式，4 种 variant、自动识别外部链接、可禁用。
+description: 设计稿一致的链接样式，4 种 variant、3 种尺寸、自动识别外部链接、可禁用。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/link/BasicVue.vue';
+import VariantsVue from '~/components/demos/link/VariantsVue.vue';
+import ExternalVue from '~/components/demos/link/ExternalVue.vue';
+import StatesVue from '~/components/demos/link/StatesVue.vue';
 
 ## 基础用法
 
-外部链接（`href` 以 `http://` / `https://` 开头，或 `external=true`，或 `target="_blank"`）会自动加：尾部小图标、`rel="noopener noreferrer"`、`target="_blank"`（仅 external 简写）。`disabled` 阻止点击并把光标置灰。
+最常见的两种 — 站内锚点跳转 / 外部网址。外部链接（`href` 以 `http://` 或 `https://` 开头）会自动加尾部小图标、`rel="noopener noreferrer"`。
 
 <DemoFrame
-  vueCode={`<CfLink href="#">默认链接</CfLink>
-<CfLink href="https://github.com/chenqi92/chufix">外部链接</CfLink>
-<CfLink href="#" variant="subtle">subtle 链接</CfLink>
-<CfLink href="#" variant="underline">underline</CfLink>
-<CfLink href="#" disabled>已禁用</CfLink>`}
-  reactCode={`<CfLink href="#">默认链接</CfLink>
-<CfLink href="https://github.com/chenqi92/chufix">外部链接</CfLink>
-<CfLink href="#" variant="subtle">subtle</CfLink>
-<CfLink href="#" variant="underline">underline</CfLink>
-<CfLink href="#" disabled>已禁用</CfLink>`}
+  vueCode={`<CfLink href="#getting-started">前往入门指南</CfLink>
+<CfLink href="https://github.com/chenqi92/chufix">GitHub 仓库</CfLink>`}
+  reactCode={`<CfLink href="#getting-started">前往入门指南</CfLink>
+<CfLink href="https://github.com/chenqi92/chufix">GitHub 仓库</CfLink>`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 4 种 variant
+
+- `default` — 主色，hover 出下划线
+- `subtle` — 跟随父级文字颜色，hover 才显示下划线（嵌入正文段落里很合适）
+- `underline` — 永久带下划线（特别强调可点击）
+- `inverse` — 反色面板（accent 背景）内使用，避免主色与背景冲突
+
+<DemoFrame
+  vueCode={`<CfLink href="#" variant="default">default</CfLink>
+<CfLink href="#" variant="subtle">subtle</CfLink>
+<CfLink href="#" variant="underline">underline</CfLink>
+<div style="background: var(--accent-1); color: var(--fg-on-accent); padding: 6px 10px;">
+  <CfLink href="#" variant="inverse">inverse</CfLink>
+</div>`}
+  reactCode={`<CfLink href="#" variant="default">default</CfLink>
+<CfLink href="#" variant="subtle">subtle</CfLink>
+<CfLink href="#" variant="underline">underline</CfLink>
+<div style={{ background: 'var(--accent-1)', color: 'var(--fg-on-accent)', padding: '6px 10px' }}>
+  <CfLink href="#" variant="inverse">inverse</CfLink>
+</div>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 外部链接
+
+三种触发方式都会让组件认作外链 — 自动加尾部图标 + `rel="noopener noreferrer"`：
+
+- `href` 以 `http://` / `https://` 开头
+- 显式 `external` prop
+- `target="_blank"`
+
+<DemoFrame
+  vueCode={`<CfLink href="https://github.com/chenqi92/chufix">自动识别</CfLink>
+<CfLink href="/internal" external>显式 external</CfLink>
+<CfLink href="#" target="_blank">target=_blank</CfLink>`}
+  reactCode={`<CfLink href="https://github.com/chenqi92/chufix">自动识别</CfLink>
+<CfLink href="/internal" external>显式 external</CfLink>
+<CfLink href="#" target="_blank">target=_blank</CfLink>`}
+>
+  <ExternalVue client:load />
+</DemoFrame>
+
+## 尺寸 / 禁用
+
+`size` 控制字号；`disabled` 阻止点击并把光标置灰。
+
+<DemoFrame
+  vueCode={`<CfLink href="#" size="sm">小号</CfLink>
+<CfLink href="#" size="md">默认</CfLink>
+<CfLink href="#" size="lg">大号</CfLink>
+<CfLink href="#" disabled>已禁用</CfLink>`}
+  reactCode={`<CfLink href="#" size="sm">小号</CfLink>
+<CfLink href="#" size="md">默认</CfLink>
+<CfLink href="#" size="lg">大号</CfLink>
+<CfLink href="#" disabled>已禁用</CfLink>`}
+>
+  <StatesVue client:load />
 </DemoFrame>
 
 ## API

@@ -5,30 +5,70 @@ description: 锁定子元素宽高比的容器（基于 CSS aspect-ratio），�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/aspectratio/BasicVue.vue';
+import RatiosVue from '~/components/demos/aspectratio/RatiosVue.vue';
+import ImageVue from '~/components/demos/aspectratio/ImageVue.vue';
 
 ## 基础用法
 
-`ratio` 是一个数字（宽 / 高）。容器宽度跟随父元素，高度由 `aspect-ratio` 计算。子节点自动 `position: absolute; inset: 0`，常见的 `<img>` / `<video>` / `<iframe>` 默认 `width:100%; height:100%; object-fit: cover`。
+`ratio` 是一个数字（宽 / 高）。容器宽度跟随父元素，高度由 CSS `aspect-ratio` 计算。
 
 <DemoFrame
   vueCode={`<CfAspectRatio :ratio="16 / 9">
-  <div>16 / 9</div>
-</CfAspectRatio>
-<CfAspectRatio :ratio="4 / 3">
-  <div>4 / 3</div>
-</CfAspectRatio>
-<CfAspectRatio :ratio="1">
-  <div>1 / 1</div>
+  <div>16 / 9 内容</div>
 </CfAspectRatio>`}
-  reactCode={`<CfAspectRatio ratio={16 / 9}><div>16 / 9</div></CfAspectRatio>
-<CfAspectRatio ratio={4 / 3}><div>4 / 3</div></CfAspectRatio>
-<CfAspectRatio ratio={1}><div>1 / 1</div></CfAspectRatio>`}
+  reactCode={`<CfAspectRatio ratio={16 / 9}>
+  <div>16 / 9 内容</div>
+</CfAspectRatio>`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 常用比例
+
+视频、卡片缩略图、人像头像、短视频 ... 比例的视觉对照。
+
+<DemoFrame
+  vueCode={`<CfAspectRatio :ratio="21 / 9">…</CfAspectRatio>
+<CfAspectRatio :ratio="16 / 9">…</CfAspectRatio>
+<CfAspectRatio :ratio="4 / 3">…</CfAspectRatio>
+<CfAspectRatio :ratio="1">…</CfAspectRatio>
+<CfAspectRatio :ratio="3 / 4">…</CfAspectRatio>
+<CfAspectRatio :ratio="9 / 16">…</CfAspectRatio>`}
+  reactCode={`<CfAspectRatio ratio={21 / 9}>…</CfAspectRatio>
+<CfAspectRatio ratio={16 / 9}>…</CfAspectRatio>
+<CfAspectRatio ratio={4 / 3}>…</CfAspectRatio>
+<CfAspectRatio ratio={1}>…</CfAspectRatio>
+<CfAspectRatio ratio={3 / 4}>…</CfAspectRatio>
+<CfAspectRatio ratio={9 / 16}>…</CfAspectRatio>`}
+>
+  <RatiosVue client:load />
+</DemoFrame>
+
+## 子元素自动撑满
+
+子节点会被 `position: absolute; inset: 0` 撑满。常见的 `<img>` / `<video>` / `<iframe>` 默认 `width: 100%; height: 100%; object-fit: cover`，开箱即用。
+
+<DemoFrame
+  vueCode={`<CfAspectRatio :ratio="16 / 9">
+  <img src="cover.jpg" alt="封面" />
+</CfAspectRatio>
+
+<CfAspectRatio :ratio="16 / 9">
+  <iframe src="https://www.youtube.com/embed/..." allowfullscreen />
+</CfAspectRatio>`}
+  reactCode={`<CfAspectRatio ratio={16 / 9}>
+  <img src="cover.jpg" alt="封面" />
+</CfAspectRatio>
+
+<CfAspectRatio ratio={16 / 9}>
+  <iframe src="https://www.youtube.com/embed/..." allowFullScreen />
+</CfAspectRatio>`}
+>
+  <ImageVue client:load />
 </DemoFrame>
 
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `ratio` | `number` | `16 / 9` | 宽 / 高比。常用值：`16/9` `4/3` `1` `9/16` `21/9` |
+| `ratio` | `number` | `16 / 9` | 宽 / 高比。常用值：`21/9` `16/9` `4/3` `1` `3/4` `9/16` |

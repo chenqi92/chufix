@@ -1,16 +1,16 @@
 ---
 title: NavMenu 主导航
-description: 顶部水平导航栏，每一项可挂富面板（多列链接 + 描述），hover 或点击触发。
+description: 顶部水平导航栏，每一项可挂富面板（多列链接 + 描述），3 种 variant、hover / click 触发。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/navmenu/BasicVue.vue';
+import VariantsVue from '~/components/demos/navmenu/VariantsVue.vue';
+import TriggerVue from '~/components/demos/navmenu/TriggerVue.vue';
 
 ## 基础用法
 
-`items` 是一个数组，每项要么是简单链接（`href`），要么有 `links[]` 列表。后者会在 hover / click 时打开富面板，每条 link 可带 `description` 与 `icon`。
-
-`columns` 控制面板每行多少链接（1 / 2 / 3）。
+`items` 是顶层菜单数组，每项要么是简单链接（`href`），要么有 `links[]` 子列表。后者会在 hover / click 时打开富面板，每条 link 可带 `description` 和 `icon`。`columns` 控制面板每行多少列（1 / 2 / 3）。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
@@ -26,8 +26,8 @@ const items: NavMenuItem[] = [
     links: [
       { label: '组件库', description: 'Vue 3 与 React 双框架同源', href: '#' },
       { label: 'Tokens', description: 'OKLCH 设计变量与三套主题', href: '#' },
-      { label: '图标', description: '16x16 sprite，CSS currentColor', href: '#' },
-      { label: 'CLI', description: 'npx chufix add 拷贝源码到自己仓库', href: '#' },
+      { label: '图标', description: '16x16 sprite', href: '#' },
+      { label: 'CLI', description: 'npx chufix add', href: '#' },
     ],
   },
   { key: 'docs', label: '文档', links: [{ label: '快速开始', href: '#' }] },
@@ -42,11 +42,39 @@ const items: NavMenuItem[] = [
 
 const items: NavMenuItem[] = [/* ... */];
 
-export default function Demo() {
-  return <CfNavMenu items={items} active="products" />;
-}`}
+<CfNavMenu items={items} active="products" />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 3 种 variant
+
+- `underline` —— 当前项底部细下划线（默认，最克制）
+- `pill` —— 当前项变成填充胶囊
+- `minimal` —— 仅文字颜色变化，无任何形状提示
+
+<DemoFrame
+  vueCode={`<CfNavMenu :items="items" :active="a" variant="underline" />
+<CfNavMenu :items="items" :active="b" variant="pill" />
+<CfNavMenu :items="items" :active="c" variant="minimal" />`}
+  reactCode={`<CfNavMenu items={items} active={a} variant="underline" />
+<CfNavMenu items={items} active={b} variant="pill" />
+<CfNavMenu items={items} active={c} variant="minimal" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 触发方式
+
+`trigger` —— `hover`（默认，鼠标悬停就打开）/ `click`（点击触发，更适合移动端或避免误触）。
+
+<DemoFrame
+  vueCode={`<CfNavMenu :items="items" :active="a" trigger="hover" />
+<CfNavMenu :items="items" :active="b" trigger="click" />`}
+  reactCode={`<CfNavMenu items={items} active={a} trigger="hover" />
+<CfNavMenu items={items} active={b} trigger="click" />`}
+>
+  <TriggerVue client:load />
 </DemoFrame>
 
 ## API
@@ -58,7 +86,23 @@ export default function Demo() {
 | `variant` | `'underline' \| 'pill' \| 'minimal'` | `'underline'` | 视觉模式 |
 | `trigger` | `'hover' \| 'click'` | `'hover'` | 富面板的触发方式 |
 
-`NavMenuItem`：`{ key, label, href?, links?, columns?, disabled? }`。
-`NavMenuLink`：`{ label, description?, href, icon? }`。
+类型导出：
 
-事件：`navigate(item)`（React 端：`onNavigate`），仅在简单链接被点击（无 links 子项）时触发。
+```ts
+interface NavMenuItem {
+  key: string;
+  label: string;
+  href?: string;
+  links?: NavMenuLink[];
+  columns?: 1 | 2 | 3;
+  disabled?: boolean;
+}
+interface NavMenuLink {
+  label: string;
+  description?: string;
+  href: string;
+  icon?: VNode | ReactNode;
+}
+```
+
+事件：`navigate(item)`（React 端：`onNavigate`），仅在简单链接被点击（无 `links` 子项）时触发。

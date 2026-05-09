@@ -1,44 +1,83 @@
 ---
 title: Empty 空状态
-description: 列表 / 表格 / 搜索结果为空时的占位组件，可带操作按钮。
+description: 列表 / 表格 / 搜索结果为空时的占位组件，可带操作按钮，3 档尺寸。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/empty/BasicVue.vue';
+import TextVue from '~/components/demos/empty/TextVue.vue';
+import ActionVue from '~/components/demos/empty/ActionVue.vue';
+import SizesVue from '~/components/demos/empty/SizesVue.vue';
 
 ## 基础用法
 
-不传 props 显示默认图标和"暂无数据"。`title` / `description` 自定义文案，`action` 插槽放跳转或新建按钮。
+不传 props 显示默认图标和「暂无数据」。
 
 <DemoFrame
-  vueCode={`<CfEmpty />
+  vueCode={`<CfEmpty />`}
+  reactCode={`<CfEmpty />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
 
-<CfEmpty
+## 自定义文案
+
+`title` 是主文案，`description` 是副文案。两者都可作为 prop 或同名 slot 提供。
+
+<DemoFrame
+  vueCode={`<CfEmpty
   title="还没有项目"
   description="创建你的第一个项目来开始使用础件。"
+/>`}
+  reactCode={`<CfEmpty
+  title="还没有项目"
+  description="创建你的第一个项目来开始使用础件。"
+/>`}
 >
+  <TextVue client:load />
+</DemoFrame>
+
+## 操作按钮
+
+`action` 插槽（Vue）/ `action` prop（React）放跳转或新建按钮 — 让用户从空状态有路径回到正常状态。
+
+<DemoFrame
+  vueCode={`<CfEmpty title="还没有项目" description="创建你的第一个项目来开始使用础件。">
   <template #action>
     <CfButton variant="primary" size="sm">+ 新建项目</CfButton>
   </template>
 </CfEmpty>`}
-  reactCode={`<CfEmpty />
-
-<CfEmpty
+  reactCode={`<CfEmpty
   title="还没有项目"
   description="创建你的第一个项目来开始使用础件。"
   action={<CfButton variant="primary" size="sm">+ 新建项目</CfButton>}
 />`}
 >
-  <BasicVue client:load />
+  <ActionVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` —— `sm`（行内 inline 占位）/ `md` 默认 / `lg` 整页空状态。
+
+<DemoFrame
+  vueCode={`<CfEmpty size="sm" />
+<CfEmpty size="md" />
+<CfEmpty size="lg" />`}
+  reactCode={`<CfEmpty size="sm" />
+<CfEmpty size="md" />
+<CfEmpty size="lg" />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API
 
-| Prop          | 类型               | 默认值        | 说明              |
-| ------------- | ------------------ | ------------- | ----------------- |
-| `title`       | `string`           | `'暂无数据'`  | 主文案            |
-| `description` | `string`           | —             | 副文案            |
-| `size`        | `'sm' \| 'md' \| 'lg'` | `'md'`    | 整体尺寸          |
+| Prop | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `title` | `string` | `'暂无数据'` | 主文案 |
+| `description` | `string` | — | 副文案 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 整体尺寸 |
 
 ### 插槽 / Children
 

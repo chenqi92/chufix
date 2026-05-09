@@ -1,26 +1,74 @@
 ---
 title: Kbd 键盘按键
-description: 显示键盘快捷键的微小排印控件，支持组合键与分隔符。
+description: 显示键盘快捷键的微小排印控件，支持组合键、自定义分隔符、3 档尺寸。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/kbd/BasicVue.vue';
+import CombosVue from '~/components/demos/kbd/CombosVue.vue';
+import SingleVue from '~/components/demos/kbd/SingleVue.vue';
+import SizesVue from '~/components/demos/kbd/SizesVue.vue';
 
 ## 基础用法
 
-`keys` 数组表示组合键，自动用 `separator`（默认 `+`）拼接；省略时把 default slot 包在单个 `<kbd>` 里。
+`keys` 数组渲染成多个独立的 `<kbd>`，自动用 `separator`（默认 `+`）拼接。
 
 <DemoFrame
-  vueCode={`<CfKbd :keys="['Ctrl', 'K']" />
-<CfKbd :keys="['⌘', 'N']" />
-<CfKbd>Caps Lock</CfKbd>
-<CfKbd :keys="['Shift', 'Alt', 'F']" size="sm" />`}
-  reactCode={`<CfKbd keys={['Ctrl', 'K']} />
-<CfKbd keys={['⌘', 'N']} />
-<CfKbd>Caps Lock</CfKbd>
-<CfKbd keys={['Shift', 'Alt', 'F']} size="sm" />`}
+  vueCode={`<CfKbd :keys="['Ctrl', 'K']" />`}
+  reactCode={`<CfKbd keys={['Ctrl', 'K']} />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 组合键 + 自定义分隔符
+
+`separator` 可改 — 比如用空格表示「按下后再按下一个键」（vim 风格）。
+
+<DemoFrame
+  vueCode={`<CfKbd :keys="['⌘', 'N']" />
+<CfKbd :keys="['Ctrl', 'W']" />
+<CfKbd :keys="['Ctrl', 'Shift', 'P']" />
+<CfKbd :keys="['Esc', ':', 'q']" separator=" " />`}
+  reactCode={`<CfKbd keys={['⌘', 'N']} />
+<CfKbd keys={['Ctrl', 'W']} />
+<CfKbd keys={['Ctrl', 'Shift', 'P']} />
+<CfKbd keys={['Esc', ':', 'q']} separator=" " />`}
+>
+  <CombosVue client:load />
+</DemoFrame>
+
+## 单键（slot 用法）
+
+省略 `keys`，把按键名写进 default slot / children — 适合「单个键」场景。
+
+<DemoFrame
+  vueCode={`<CfKbd>Caps Lock</CfKbd>
+<CfKbd>Tab</CfKbd>
+<CfKbd>Esc</CfKbd>
+<CfKbd>Enter</CfKbd>
+<CfKbd>Space</CfKbd>`}
+  reactCode={`<CfKbd>Caps Lock</CfKbd>
+<CfKbd>Tab</CfKbd>
+<CfKbd>Esc</CfKbd>
+<CfKbd>Enter</CfKbd>
+<CfKbd>Space</CfKbd>`}
+>
+  <SingleVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` —— `sm` 行内说明用 / `md` 默认 / `lg` 落地页强调用。
+
+<DemoFrame
+  vueCode={`<CfKbd :keys="['Ctrl', 'K']" size="sm" />
+<CfKbd :keys="['Ctrl', 'K']" size="md" />
+<CfKbd :keys="['Ctrl', 'K']" size="lg" />`}
+  reactCode={`<CfKbd keys={['Ctrl', 'K']} size="sm" />
+<CfKbd keys={['Ctrl', 'K']} size="md" />
+<CfKbd keys={['Ctrl', 'K']} size="lg" />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API
