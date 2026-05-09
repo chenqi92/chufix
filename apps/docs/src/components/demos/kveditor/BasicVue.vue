@@ -2,20 +2,21 @@
 import { ref } from 'vue';
 import { CfKVEditor, type KVRow } from '@chufix/vue';
 
-const headers = ref<KVRow[]>([
-  { key: 'Authorization', value: 'Bearer xxx', enabled: true },
-  { key: 'Accept', value: 'application/json', enabled: true },
+const params = ref<KVRow[]>([
+  { key: 'page', value: '1', enabled: true },
+  { key: 'pageSize', value: '20', enabled: true },
 ]);
 </script>
 
 <template>
   <div style="display:flex; flex-direction:column; gap: 12px;">
     <CfKVEditor
-      v-model="headers"
-      key-placeholder="Header"
-      value-placeholder="Value"
-      show-toggle
+      v-model="params"
+      key-placeholder="参数名"
+      value-placeholder="参数值"
     />
-    <pre style="font-size: 12px; color: var(--fg-3); margin: 0;">{{ JSON.stringify(headers, null, 2) }}</pre>
+    <span style="font-size: 12px; color: var(--fg-3);">
+      条目数：<code>{{ params.filter((r) => r.key.trim()).length }}</code>
+    </span>
   </div>
 </template>

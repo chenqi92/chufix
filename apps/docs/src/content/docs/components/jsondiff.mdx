@@ -5,10 +5,17 @@ description: 对两个 JSON 值做行级 LCS diff，按 add / del / eq 三种状
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/jsondiff/BasicVue.vue';
+import NoNumbersVue from '~/components/demos/jsondiff/NoNumbersVue.vue';
+import SizesVue from '~/components/demos/jsondiff/SizesVue.vue';
 
 ## 基础用法
 
-`CfJsonDiff` 把 `left` / `right` 两个值各自 `JSON.stringify` 成多行字符串，再做最长公共子序列 diff。增加行绿底 `+`，删除行红底 `-`。
+`CfJsonDiff` 把 `left` / `right` 两个值各自 `JSON.stringify` 成多行字符串，再做一遍最长公共子序列 diff。
+- 新增行：绿底 `+` 前缀
+- 删除行：红底 `-` 前缀
+- 共同行：透明底 ` ` 前缀
+
+适合做配置版本对比、审计 diff、API 响应回放对照。
 
 <DemoFrame
   vueCode={`<CfJsonDiff :left="left" :right="right" />`}
@@ -17,11 +24,46 @@ import BasicVue from '~/components/demos/jsondiff/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+## 关闭行号
+
+行号默认开启 — 一些嵌入文档或评论场景里行号反而是噪音，关掉只留 diff 文本本身。
+
+<DemoFrame
+  vueCode={`<CfJsonDiff :left="before" :right="after" :line-numbers="false" />`}
+  reactCode={`<CfJsonDiff left={before} right={after} lineNumbers={false} />`}
+>
+  <NoNumbersVue client:load />
+</DemoFrame>
+
+## 大小变体
+
+3 档字号同其他 JSON 系列组件保持一致。
+
+<DemoFrame
+  vueCode={`<CfJsonDiff :left="left" :right="right" size="sm" />
+<CfJsonDiff :left="left" :right="right" size="md" />
+<CfJsonDiff :left="left" :right="right" size="lg" />`}
+  reactCode={`<CfJsonDiff left={left} right={right} size="sm" />
+<CfJsonDiff left={left} right={right} size="md" />
+<CfJsonDiff left={left} right={right} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `left` / `right` | `unknown` | `—` | 要对比的两个值 |
+| `left` | `unknown` | `—` | 旧值，渲染在删除行 |
+| `right` | `unknown` | `—` | 新值，渲染在新增行 |
 | `lineNumbers` | `boolean` | `true` | 显示行号 |
 | `bordered` | `boolean` | `true` | 边框 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
+| `className` | `string` | `—` | 透传到根 `<pre>` |
+
+类型导出：
+
+```ts
+type DiffOp = 'eq' | 'add' | 'del';
+interface DiffLine { op: DiffOp; text: string; depth: number; }
+```

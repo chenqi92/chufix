@@ -1,20 +1,62 @@
 ---
 title: Calendar 日历
-description: 月视图日历，可选周序号、周起始日、min/max 范围，与 DatePicker 用同一套日期工具。
+description: 嵌入式月视图日历，支持周序号、周起始日、min/max 范围、三档尺寸。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/calendar/BasicVue.vue';
+import WeekVue from '~/components/demos/calendar/WeekVue.vue';
+import RangeVue from '~/components/demos/calendar/RangeVue.vue';
+import SizesVue from '~/components/demos/calendar/SizesVue.vue';
 
 ## 基础用法
 
-`CfCalendar` 是嵌入式月视图。选中日期通过 `v-model` (Vue) / `value` + `onChange` (React) 暴露。
+`CfCalendar` 是一个独立的月视图日历，跟 [DatePicker](/components/datepicker/) 不同：它直接展开在页面上而不弹出气泡。日期通过 `v-model` (Vue) / `value` + `onChange` (React) 暴露。点击 `‹` `›` 切换月份；点击日期就选中。
 
 <DemoFrame
-  vueCode={`<CfCalendar v-model="date" show-week-numbers />`}
-  reactCode={`<CfCalendar value={date} onChange={setDate} showWeekNumbers />`}
+  vueCode={`<CfCalendar v-model="date" />`}
+  reactCode={`<CfCalendar value={date} onChange={setDate} />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 周起始日 + 周序号
+
+`weekStartsOn` 控制每行从哪一天开始：`1` 周一（默认）、`0` 周日。`showWeekNumbers` 在最左侧加一列 ISO 周序号 — 排期 / 项目管理类后台常用。
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="a" :week-starts-on="1" show-week-numbers />
+<CfCalendar v-model="b" :week-starts-on="0" />`}
+  reactCode={`<CfCalendar value={a} onChange={setA} weekStartsOn={1} showWeekNumbers />
+<CfCalendar value={b} onChange={setB} weekStartsOn={0} />`}
+>
+  <WeekVue client:load />
+</DemoFrame>
+
+## 限制可选范围
+
+`min` / `max` 划定可选区间。区间外的日期变灰且不响应点击。下面这个例子把可选区间锁在「本月初到下个月底」。
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="date" :min="min" :max="max" />`}
+  reactCode={`<CfCalendar value={date} onChange={setDate} min={min} max={max} />`}
+>
+  <RangeVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+整体字号通过 `size` 同步：`sm` / `md`（默认）/ `lg`。日历单元格高度跟着字号走。
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="a" size="sm" />
+<CfCalendar v-model="b" size="md" />
+<CfCalendar v-model="c" size="lg" />`}
+  reactCode={`<CfCalendar value={a} onChange={setA} size="sm" />
+<CfCalendar value={b} onChange={setB} size="md" />
+<CfCalendar value={c} onChange={setC} size="lg" />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API
@@ -22,9 +64,14 @@ import BasicVue from '~/components/demos/calendar/BasicVue.vue';
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` (Vue) / `value` (React) | `Date \| null` | `null` | 当前选中日期 |
+| `defaultValue` | `Date \| null` | `null` | 非受控初值 |
 | `month` | `Date` | `今天所在月` | 受控显示月份 |
-| `min` / `max` | `Date` | `—` | 可选范围，外侧禁用 |
-| `weekStartsOn` | `0 \| 1` | `1` | 0=周日 1=周一 |
-| `showWeekNumbers` | `boolean` | `false` | 显示周序号列 |
+| `defaultMonth` | `Date` | — | 非受控初始显示月份 |
+| `min` / `max` | `Date` | `—` | 可选区间端点（含端点） |
+| `weekStartsOn` | `0 \| 1` | `1` | 0 = 周日，1 = 周一 |
+| `showWeekNumbers` | `boolean` | `false` | 显示 ISO 周序号列 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 整体字号 |
 | `disabled` | `boolean` | `false` | 禁用全部交互 |
+| `className` | `string` | `—` | 透传到根容器 |
+
+事件：`onChange(date)` / `update:modelValue` 在选中日期时触发；`onMonthChange(month)` / `update:month` 在切换月份时触发。

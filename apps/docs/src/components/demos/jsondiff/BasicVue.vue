@@ -5,7 +5,6 @@ const left = {
   name: 'ChuFix',
   version: '0.1.0',
   features: ['theme', 'density'],
-  beta: true,
 };
 const right = {
   name: 'ChuFix UI',

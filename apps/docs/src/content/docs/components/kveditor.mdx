@@ -5,10 +5,55 @@ description: 用于编辑 HTTP headers / query params / 环境变量等键值对
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
+import HeadersVue from '~/components/demos/kveditor/HeadersVue.vue';
+import StatesVue from '~/components/demos/kveditor/StatesVue.vue';
 
 ## 基础用法
 
-`CfKVEditor` 把数组形态的 `{ key, value, enabled? }` 渲染成可编辑表格。最后一行是空行，输入后自动追加新空行。
+`CfKVEditor` 把 `KVRow[]`（每行 `{ key, value, enabled?, description? }`）渲染成可编辑表格。最末一行始终是空行 — 在空行的 key 或 value 输入字符后，组件会自动追加新的空行，永远留一行可填。点击行尾 `×` 删除整行。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfKVEditor, type KVRow } from '@chufix/vue';
+
+const params = ref<KVRow[]>([
+  { key: 'page', value: '1', enabled: true },
+  { key: 'pageSize', value: '20', enabled: true },
+]);
+</script>
+
+<template>
+  <CfKVEditor
+    v-model="params"
+    key-placeholder="参数名"
+    value-placeholder="参数值"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfKVEditor, type KVRow } from '@chufix/react';
+
+export default function Demo() {
+  const [params, setParams] = useState<KVRow[]>([
+    { key: 'page', value: '1', enabled: true },
+    { key: 'pageSize', value: '20', enabled: true },
+  ]);
+  return (
+    <CfKVEditor
+      value={params}
+      onChange={setParams}
+      keyPlaceholder="参数名"
+      valuePlaceholder="参数值"
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 启用开关 + 说明列
+
+打开 `showToggle` 增加最左侧的勾选列 — 关掉的行 `enabled: false` 留在数组里但消费方可以根据它过滤。打开 `showDescription` 增加末列说明输入。两列都是相互独立的可选 knob。
 
 <DemoFrame
   vueCode={`<CfKVEditor
@@ -16,6 +61,7 @@ import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
   key-placeholder="Header"
   value-placeholder="Value"
   show-toggle
+  show-description
 />`}
   reactCode={`<CfKVEditor
   value={headers}
@@ -23,9 +69,23 @@ import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
   keyPlaceholder="Header"
   valuePlaceholder="Value"
   showToggle
+  showDescription
 />`}
 >
-  <BasicVue client:load />
+  <HeadersVue client:load />
+</DemoFrame>
+
+## 只读 / 禁用
+
+`readonly` 输入框只读但仍可聚焦复制；`disabled` 灰显且不可聚焦。两种状态下不再渲染删除按钮，也不会自动追加新空行。
+
+<DemoFrame
+  vueCode={`<CfKVEditor :model-value="env" readonly />
+<CfKVEditor :model-value="env" disabled />`}
+  reactCode={`<CfKVEditor value={env} readonly />
+<CfKVEditor value={env} disabled />`}
+>
+  <StatesVue client:load />
 </DemoFrame>
 
 ## API
@@ -33,10 +93,14 @@ import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` (Vue) / `value` (React) | `KVRow[]` | `[]` | 行数组 `{ key, value, enabled?, description? }` |
+| `defaultValue` | `KVRow[]` | `[]` | 非受控初值 |
 | `keyPlaceholder` | `string` | `'键'` | 表头与输入占位 |
 | `valuePlaceholder` | `string` | `'值'` | 表头与输入占位 |
-| `showToggle` | `boolean` | `false` | 显示启用开关列 |
-| `showDescription` | `boolean` | `false` | 显示说明列 |
+| `showToggle` | `boolean` | `false` | 显示启用开关列（写入 `enabled`） |
+| `showDescription` | `boolean` | `false` | 显示说明列（写入 `description`） |
 | `autoAppend` | `boolean` | `true` | 末尾自动追加空行 |
-| `disabled` / `readonly` | `boolean` | `false` | 禁用 / 只读 |
+| `disabled` / `readonly` | `boolean` | `false` | 整体禁用 / 只读 |
 | `bordered` | `boolean` | `true` | 边框 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
+
+事件：`onChange(rows)` / `update:modelValue` 在任意行变化或自动追加时触发，传入完整行数组。
