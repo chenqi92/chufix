@@ -1,0 +1,44 @@
+/* ChuFix HoverCard — long-delay rich preview card.
+ * Differs from Tooltip: free-form content slot, longer open delay,
+ * stays open while pointer is over the card itself. */
+
+.cf-hovercard__trigger {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cf-hovercard {
+  position: absolute;
+  z-index: var(--z-popover);
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  padding: 12px 14px;
+  color: var(--fg-1);
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  box-shadow: var(--shadow-3);
+  pointer-events: auto;
+  animation: cf-hovercard-in var(--dur-fast) var(--ease-out);
+}
+
+.cf-hovercard--sm {
+  width: 220px;
+}
+.cf-hovercard--md {
+  width: 280px;
+}
+.cf-hovercard--lg {
+  width: 360px;
+}
+
+@keyframes cf-hovercard-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

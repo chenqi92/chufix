@@ -1,6 +1,19 @@
 import '@chufix/tokens/tokens.css';
 import './styles/icon.css';
 import './styles/button.css';
+import './styles/iconbutton.css';
+import './styles/toolbar.css';
+import './styles/colorswatch.css';
+import './styles/splitbutton.css';
+import './styles/confirmdialog.css';
+import './styles/hovercard.css';
+import './styles/contextmenu.css';
+import './styles/snackbar.css';
+import './styles/passwordstrength.css';
+import './styles/phoneinput.css';
+import './styles/rangeslider.css';
+import './styles/filepicker.css';
+import './styles/commandpalette.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -100,6 +113,105 @@ export type {
   ButtonSize,
   ButtonShape,
 } from './button/variants';
+
+export { IconButton as CfIconButton } from './iconbutton/IconButton';
+export type {
+  IconButtonProps,
+  IconButtonOwnProps,
+  IconButtonVariant,
+  IconButtonSize,
+  IconButtonShape,
+} from './iconbutton/variants';
+
+export { Toolbar as CfToolbar, ToolbarSeparator as CfToolbarSeparator } from './toolbar/Toolbar';
+export type {
+  ToolbarProps,
+  ToolbarOwnProps,
+  ToolbarVariant,
+  ToolbarSize,
+  ToolbarOrientation,
+} from './toolbar/variants';
+
+export { ColorSwatch as CfColorSwatch } from './colorswatch/ColorSwatch';
+export type {
+  ColorSwatchProps,
+  ColorSwatchOwnProps,
+  ColorSwatchSize,
+  ColorSwatchShape,
+} from './colorswatch/variants';
+
+export { SplitButton as CfSplitButton } from './splitbutton/SplitButton';
+export type {
+  SplitButtonProps,
+  SplitButtonOwnProps,
+  SplitButtonItem,
+  SplitButtonVariant,
+  SplitButtonSize,
+} from './splitbutton/variants';
+
+export { ConfirmDialog as CfConfirmDialog } from './confirmdialog/ConfirmDialog';
+export type {
+  ConfirmDialogProps,
+  ConfirmTone,
+} from './confirmdialog/variants';
+
+export { HoverCard as CfHoverCard } from './hovercard/HoverCard';
+export type {
+  HoverCardProps,
+  HoverCardPlacement,
+  HoverCardSize,
+} from './hovercard/variants';
+
+export { ContextMenu as CfContextMenu } from './contextmenu/ContextMenu';
+export type {
+  ContextMenuProps,
+  ContextMenuItem,
+} from './contextmenu/variants';
+
+export { Snackbar as CfSnackbar } from './snackbar/Snackbar';
+export type {
+  SnackbarProps,
+  SnackbarTone,
+  SnackbarPlacement,
+} from './snackbar/variants';
+
+export { PasswordStrength as CfPasswordStrength } from './passwordstrength/PasswordStrength';
+export type {
+  PasswordStrengthProps,
+  PasswordStrengthSize,
+  PasswordRequirement,
+  StrengthLevel,
+} from './passwordstrength/variants';
+export { defaultRequirements as defaultPasswordRequirements } from './passwordstrength/variants';
+
+export { PhoneInput as CfPhoneInput } from './phoneinput/PhoneInput';
+export type {
+  PhoneInputProps,
+  PhoneInputSize,
+  CountryCode,
+} from './phoneinput/variants';
+export { defaultCountries } from './phoneinput/variants';
+
+export { RangeSlider as CfRangeSlider } from './rangeslider/RangeSlider';
+export type {
+  RangeSliderProps,
+  RangeSliderSize,
+  RangeSliderTone,
+  RangeValue,
+} from './rangeslider/variants';
+
+export { FilePicker as CfFilePicker } from './filepicker/FilePicker';
+export type {
+  FilePickerProps,
+  FilePickerSize,
+  FilePickerVariant,
+} from './filepicker/variants';
+
+export { CommandPalette as CfCommandPalette } from './commandpalette/CommandPalette';
+export type {
+  CommandPaletteProps,
+  CommandPaletteItem,
+} from './commandpalette/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

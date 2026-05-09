@@ -1,0 +1,152 @@
+/* ChuFix FilePicker — button trigger + selected files list.
+ * Differs from Dropzone: no drag area, just click-to-pick + inline file list. */
+
+.cf-filepicker {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font: inherit;
+  font-family: var(--font-sans);
+}
+
+.cf-filepicker__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--control-h);
+  padding: 0 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-13);
+  font-weight: var(--w-medium);
+  cursor: pointer;
+  transition: background var(--dur-instant) linear,
+    border-color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+}
+.cf-filepicker__btn:hover {
+  background: var(--bg-3);
+}
+.cf-filepicker__btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.cf-filepicker__btn > svg {
+  width: 14px;
+  height: 14px;
+  color: var(--fg-2);
+}
+.cf-filepicker.is-disabled {
+  opacity: var(--disabled-opacity);
+  pointer-events: none;
+}
+
+/* sizes */
+.cf-filepicker--sm .cf-filepicker__btn {
+  height: var(--control-h-sm);
+  padding: 0 10px;
+  font-size: var(--t-12);
+}
+.cf-filepicker--lg .cf-filepicker__btn {
+  height: var(--control-h-lg);
+  padding: 0 14px;
+  font-size: var(--t-14);
+}
+
+.cf-filepicker--plain .cf-filepicker__btn {
+  background: transparent;
+  border-color: transparent;
+  color: var(--accent-1);
+}
+.cf-filepicker--plain .cf-filepicker__btn:hover {
+  background: var(--bg-2);
+}
+
+.cf-filepicker__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cf-filepicker__empty {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+
+.cf-filepicker__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cf-filepicker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-pill);
+  font-size: var(--t-12);
+  color: var(--fg-1);
+}
+
+.cf-filepicker__name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-filepicker__size {
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+}
+
+.cf-filepicker__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+}
+.cf-filepicker__remove:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-filepicker__remove > svg {
+  width: 10px;
+  height: 10px;
+}
+
+.cf-filepicker__clear {
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+  cursor: pointer;
+  padding: 0 6px;
+}
+.cf-filepicker__clear:hover {
+  color: var(--fg-1);
+}

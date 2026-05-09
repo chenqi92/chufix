@@ -1,0 +1,74 @@
+/* ChuFix ContextMenu — right-click menu, position at cursor.
+ * Items support disabled / danger / separator / shortcut. */
+
+.cf-ctxmenu__trigger {
+  display: contents;
+}
+
+.cf-ctxmenu {
+  position: absolute;
+  z-index: var(--z-popover);
+  min-width: 180px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  animation: cf-ctxmenu-in var(--dur-fast) var(--ease-out);
+}
+
+.cf-ctxmenu__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: var(--r-4);
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+.cf-ctxmenu__item:hover:not(.is-disabled) {
+  background: var(--bg-2);
+}
+.cf-ctxmenu__item.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+}
+.cf-ctxmenu__item.is-danger {
+  color: var(--status-error);
+}
+.cf-ctxmenu__item.is-danger:hover:not(.is-disabled) {
+  background: var(--status-error-soft);
+}
+.cf-ctxmenu__label {
+  flex: 1;
+  min-width: 0;
+}
+.cf-ctxmenu__shortcut {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  flex-shrink: 0;
+}
+.cf-ctxmenu__sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line-1);
+  list-style: none;
+}
+
+@keyframes cf-ctxmenu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

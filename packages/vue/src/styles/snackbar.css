@@ -1,0 +1,164 @@
+/* ChuFix Snackbar — pill-shaped bottom toast with optional action.
+ * Differs from Toast: single-line, action button, longer duration default. */
+
+.cf-snackbar {
+  position: fixed;
+  z-index: var(--z-toast);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 10px 14px 10px 16px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-3);
+  color: var(--fg-1);
+  font-size: var(--t-13);
+  line-height: 1;
+  pointer-events: auto;
+}
+
+/* placements */
+.cf-snackbar--bottom-center {
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.cf-snackbar--bottom-left {
+  bottom: 24px;
+  left: 24px;
+}
+.cf-snackbar--bottom-right {
+  bottom: 24px;
+  right: 24px;
+}
+.cf-snackbar--top-center {
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.cf-snackbar--top-left {
+  top: 24px;
+  left: 24px;
+}
+.cf-snackbar--top-right {
+  top: 24px;
+  right: 24px;
+}
+
+/* tones */
+.cf-snackbar--default .cf-snackbar__icon {
+  color: var(--fg-2);
+}
+.cf-snackbar--success .cf-snackbar__icon {
+  color: var(--status-success);
+}
+.cf-snackbar--warning .cf-snackbar__icon {
+  color: var(--status-warning);
+}
+.cf-snackbar--error .cf-snackbar__icon {
+  color: var(--status-error);
+}
+.cf-snackbar--info .cf-snackbar__icon {
+  color: var(--status-info);
+}
+
+.cf-snackbar__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+}
+.cf-snackbar__icon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cf-snackbar__message {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-snackbar__sep {
+  width: 1px;
+  height: 16px;
+  background: var(--line-1);
+  flex-shrink: 0;
+}
+
+.cf-snackbar__action {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent-1);
+  font-weight: var(--w-medium);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.cf-snackbar__action:hover {
+  color: var(--accent-2);
+}
+.cf-snackbar__action:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-3);
+}
+
+.cf-snackbar__shortcut {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+}
+
+.cf-snackbar__dismiss {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: var(--r-3);
+}
+.cf-snackbar__dismiss:hover {
+  color: var(--fg-1);
+  background: var(--bg-2);
+}
+.cf-snackbar__dismiss > svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* enter / leave */
+.cf-snackbar-enter-active,
+.cf-snackbar-leave-active {
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+.cf-snackbar-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.cf-snackbar--bottom-center.cf-snackbar-enter-from,
+.cf-snackbar--top-center.cf-snackbar-enter-from {
+  transform: translate(-50%, 8px);
+}
+.cf-snackbar-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.cf-snackbar--bottom-center.cf-snackbar-leave-to,
+.cf-snackbar--top-center.cf-snackbar-leave-to {
+  transform: translate(-50%, 8px);
+}

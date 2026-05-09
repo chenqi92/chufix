@@ -4,7 +4,7 @@
  *
  * Pushes the docs (apps/docs/src) and vendored built packages
  * (packages/{tokens,vue,react}) into the standalone deploy repo
- * E:/workspace-freq/chukit-docs (chenqi92/chufix-docs on GitHub).
+ * E:/workspace-freq/chufix-docs (chenqi92/chufix-docs on GitHub).
  *
  * Why vendoring:
  *   The deploy repo is built on Cloudflare Pages, which only clones the
@@ -33,13 +33,22 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
-const deployRoot = resolve(repoRoot, '../../chukit-docs');
 
-if (!existsSync(deployRoot)) {
-  console.error(`deploy repo not found at ${deployRoot}`);
-  console.error('expected sibling clone of chenqi92/chufix-docs.');
+const candidates = [
+  process.env.CHUFIX_DOCS_PATH,
+  resolve(repoRoot, '../chufix-docs'),
+  resolve(repoRoot, '../../chufix-docs'),
+].filter(Boolean);
+
+const deployRoot = candidates.find((p) => existsSync(p));
+
+if (!deployRoot) {
+  console.error('deploy repo not found. Tried:');
+  for (const p of candidates) console.error(`  - ${p}`);
+  console.error('Set CHUFIX_DOCS_PATH or place the chufix-docs clone next to this repo.');
   process.exit(1);
 }
+console.log(`deploy repo: ${deployRoot}`);
 
 /* ── 1. ensure both packages have a fresh dist/ ── */
 function sh(cmd) {
@@ -49,14 +58,14 @@ function sh(cmd) {
 sh('pnpm --filter @chufix/vue build');
 sh('pnpm --filter @chufix/react build');
 
-/* ── 2. sync apps/docs/src → chukit-docs/src ── */
+/* ── 2. sync apps/docs/src → chufix-docs/src ── */
 const docsSrc = join(repoRoot, 'apps/docs/src');
 const docsDst = join(deployRoot, 'src');
 console.log(`\n• sync src: ${docsSrc} → ${docsDst}`);
 rmSync(docsDst, { recursive: true, force: true });
 cpSync(docsSrc, docsDst, { recursive: true });
 
-/* ── 3. sync apps/docs/public → chukit-docs/public ── */
+/* ── 3. sync apps/docs/public → chufix-docs/public ── */
 const publicSrc = join(repoRoot, 'apps/docs/public');
 const publicDst = join(deployRoot, 'public');
 if (existsSync(publicSrc)) {
@@ -65,7 +74,7 @@ if (existsSync(publicSrc)) {
   cpSync(publicSrc, publicDst, { recursive: true });
 }
 
-/* ── 4. vendor packages into chukit-docs/vendor/ ── */
+/* ── 4. vendor packages into chufix-docs/vendor/ ── */
 const vendorRoot = join(deployRoot, 'vendor');
 rmSync(vendorRoot, { recursive: true, force: true });
 mkdirSync(vendorRoot, { recursive: true });
@@ -132,7 +141,7 @@ for (const { name, dirs } of pkgs) {
   }
 }
 
-/* ── 5. rewrite chukit-docs/package.json deps to file:./vendor/* ── */
+/* ── 5. rewrite chufix-docs/package.json deps to file:./vendor/* ── */
 const deployPkgPath = join(deployRoot, 'package.json');
 const deployPkg = JSON.parse(readFileSync(deployPkgPath, 'utf8'));
 deployPkg.dependencies['@chufix/tokens'] = 'file:./vendor/tokens';
@@ -141,4 +150,4 @@ deployPkg.dependencies['@chufix/react'] = 'file:./vendor/react';
 writeFileSync(deployPkgPath, JSON.stringify(deployPkg, null, 2) + '\n');
 
 console.log(`\nsync · done · deploy repo at ${deployRoot}`);
-console.log('next: cd into chukit-docs, commit and push to trigger Cloudflare deploy.');
+console.log('next: cd into chufix-docs, commit and push to trigger Cloudflare deploy.');

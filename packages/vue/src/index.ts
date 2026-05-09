@@ -1,6 +1,19 @@
 import '@chufix/tokens/tokens.css';
 import './styles/icon.css';
 import './styles/button.css';
+import './styles/iconbutton.css';
+import './styles/toolbar.css';
+import './styles/colorswatch.css';
+import './styles/splitbutton.css';
+import './styles/confirmdialog.css';
+import './styles/hovercard.css';
+import './styles/contextmenu.css';
+import './styles/snackbar.css';
+import './styles/passwordstrength.css';
+import './styles/phoneinput.css';
+import './styles/rangeslider.css';
+import './styles/filepicker.css';
+import './styles/commandpalette.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -95,6 +108,102 @@ import './styles/qrcode.css';
 
 export { default as CfButton } from './button/Button.vue';
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape } from './button/variants';
+
+export { default as CfIconButton } from './iconbutton/IconButton.vue';
+export type {
+  IconButtonProps,
+  IconButtonVariant,
+  IconButtonSize,
+  IconButtonShape,
+} from './iconbutton/variants';
+
+export { default as CfToolbar } from './toolbar/Toolbar.vue';
+export { default as CfToolbarSeparator } from './toolbar/ToolbarSeparator.vue';
+export type {
+  ToolbarProps,
+  ToolbarVariant,
+  ToolbarSize,
+  ToolbarOrientation,
+} from './toolbar/variants';
+
+export { default as CfColorSwatch } from './colorswatch/ColorSwatch.vue';
+export type {
+  ColorSwatchProps,
+  ColorSwatchSize,
+  ColorSwatchShape,
+} from './colorswatch/variants';
+
+export { default as CfSplitButton } from './splitbutton/SplitButton.vue';
+export type {
+  SplitButtonProps,
+  SplitButtonItem,
+  SplitButtonVariant,
+  SplitButtonSize,
+} from './splitbutton/variants';
+
+export { default as CfConfirmDialog } from './confirmdialog/ConfirmDialog.vue';
+export type {
+  ConfirmDialogProps,
+  ConfirmTone,
+} from './confirmdialog/variants';
+
+export { default as CfHoverCard } from './hovercard/HoverCard.vue';
+export type {
+  HoverCardProps,
+  HoverCardPlacement,
+  HoverCardSize,
+} from './hovercard/variants';
+
+export { default as CfContextMenu } from './contextmenu/ContextMenu.vue';
+export type {
+  ContextMenuProps,
+  ContextMenuItem,
+} from './contextmenu/variants';
+
+export { default as CfSnackbar } from './snackbar/Snackbar.vue';
+export type {
+  SnackbarProps,
+  SnackbarTone,
+  SnackbarPlacement,
+} from './snackbar/variants';
+
+export { default as CfPasswordStrength } from './passwordstrength/PasswordStrength.vue';
+export type {
+  PasswordStrengthProps,
+  PasswordStrengthSize,
+  PasswordRequirement,
+  StrengthLevel,
+} from './passwordstrength/variants';
+export { defaultRequirements as defaultPasswordRequirements } from './passwordstrength/variants';
+
+export { default as CfPhoneInput } from './phoneinput/PhoneInput.vue';
+export type {
+  PhoneInputProps,
+  PhoneInputSize,
+  CountryCode,
+} from './phoneinput/variants';
+export { defaultCountries } from './phoneinput/variants';
+
+export { default as CfRangeSlider } from './rangeslider/RangeSlider.vue';
+export type {
+  RangeSliderProps,
+  RangeSliderSize,
+  RangeSliderTone,
+  RangeValue,
+} from './rangeslider/variants';
+
+export { default as CfFilePicker } from './filepicker/FilePicker.vue';
+export type {
+  FilePickerProps,
+  FilePickerSize,
+  FilePickerVariant,
+} from './filepicker/variants';
+
+export { default as CfCommandPalette } from './commandpalette/CommandPalette.vue';
+export type {
+  CommandPaletteProps,
+  CommandPaletteItem,
+} from './commandpalette/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
