@@ -59,6 +59,17 @@
   --proto-sse: oklch(74% 0.14 110);
   --proto-gql: oklch(70% 0.18 320);
 
+  /* data-viz · 8-color qualitative · OKLCH evenly stepped, color-blind safe */
+  --viz-1: oklch(68% 0.16 263);
+  --viz-2: oklch(72% 0.14 78);
+  --viz-3: oklch(70% 0.15 152);
+  --viz-4: oklch(70% 0.18 22);
+  --viz-5: oklch(70% 0.13 195);
+  --viz-6: oklch(70% 0.16 320);
+  --viz-7: oklch(74% 0.14 110);
+  --viz-8: oklch(70% 0.1 230);
+  --fg-on-viz: oklch(98% 0.005 260);
+
   /* focus · 2-ring composite */
   --focus-ring: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--accent-1);
   --focus-ring-inset: inset 0 0 0 2px var(--accent-1);
@@ -149,6 +160,16 @@
   --proto-grpc: oklch(48% 0.16 263);
   --proto-sse: oklch(52% 0.14 110);
   --proto-gql: oklch(50% 0.18 320);
+
+  --viz-1: oklch(54% 0.16 263);
+  --viz-2: oklch(56% 0.14 78);
+  --viz-3: oklch(50% 0.15 152);
+  --viz-4: oklch(54% 0.18 22);
+  --viz-5: oklch(50% 0.13 195);
+  --viz-6: oklch(54% 0.16 320);
+  --viz-7: oklch(52% 0.14 110);
+  --viz-8: oklch(54% 0.1 230);
+  --fg-on-viz: oklch(98% 0.005 260);
 
   --focus-ring: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--accent-1);
   --focus-ring-inset: inset 0 0 0 2px var(--accent-1);

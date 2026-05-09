@@ -33,6 +33,7 @@ import './styles/detachedpanel.css';
 import './styles/floatinginspector.css';
 import './styles/tearofftab.css';
 import './styles/templatepane.css';
+import './styles/charts.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -376,6 +377,93 @@ export {
   DOMAIN_TABS,
   ONBOARDING_TABS,
 } from './templatepanes/variants';
+
+/* ── Data viz · 22 chart components ── */
+export { default as CfSparkline } from './sparkline/Sparkline.vue';
+export type { SparklineProps } from './sparkline/variants';
+
+export { default as CfLineChart } from './linechart/LineChart.vue';
+export type { LineChartProps, LineSeries } from './linechart/variants';
+
+export { default as CfAreaChart } from './areachart/AreaChart.vue';
+export type { AreaChartProps, AreaSeries } from './areachart/variants';
+
+export { default as CfBarChart } from './barchart/BarChart.vue';
+export type { BarChartProps } from './barchart/variants';
+
+export { default as CfHistogram } from './histogram/Histogram.vue';
+export type { HistogramProps, HistogramBin } from './histogram/variants';
+
+export { default as CfStackedBar100 } from './stackedbar100/StackedBar100.vue';
+export type {
+  StackedBar100Props,
+  StackedBar100Series,
+} from './stackedbar100/variants';
+
+export { default as CfBulletChart } from './bulletchart/BulletChart.vue';
+export type { BulletChartProps } from './bulletchart/variants';
+
+export { default as CfCandlestickChart } from './candlestickchart/CandlestickChart.vue';
+export type {
+  CandlestickChartProps,
+  Candle,
+} from './candlestickchart/variants';
+
+export { default as CfDonutChart } from './donutchart/DonutChart.vue';
+export type { DonutChartProps, DonutSegment } from './donutchart/variants';
+
+export { default as CfFunnelChart } from './funnelchart/FunnelChart.vue';
+export type { FunnelChartProps, FunnelStep } from './funnelchart/variants';
+
+export { default as CfTreemap } from './treemap/Treemap.vue';
+export type { TreemapProps, TreemapNode } from './treemap/variants';
+
+export { default as CfSankeyDiagram } from './sankeydiagram/SankeyDiagram.vue';
+export type {
+  SankeyDiagramProps,
+  SankeyNode,
+  SankeyLink,
+} from './sankeydiagram/variants';
+
+export { default as CfScatterPlot } from './scatterplot/ScatterPlot.vue';
+export type { ScatterPlotProps, ScatterPoint } from './scatterplot/variants';
+
+export { default as CfBoxPlot } from './boxplot/BoxPlot.vue';
+export type { BoxPlotProps, BoxStat } from './boxplot/variants';
+
+export { default as CfRadarChart } from './radarchart/RadarChart.vue';
+export type { RadarChartProps, RadarSeries } from './radarchart/variants';
+
+export { default as CfRidgePlot } from './ridgeplot/RidgePlot.vue';
+export type { RidgePlotProps, RidgeRow } from './ridgeplot/variants';
+
+export { default as CfGauge } from './gauge/Gauge.vue';
+export type { GaugeProps } from './gauge/variants';
+
+export { default as CfMetricCard } from './metriccard/MetricCard.vue';
+export type { MetricCardProps } from './metriccard/variants';
+
+export { default as CfTimingBar } from './timingbar/TimingBar.vue';
+export type { TimingBarProps, TimingPhase } from './timingbar/variants';
+
+export { default as CfLatencyHeatmap } from './latencyheatmap/LatencyHeatmap.vue';
+export type { LatencyHeatmapProps } from './latencyheatmap/variants';
+
+export { default as CfConnectionGraph } from './connectiongraph/ConnectionGraph.vue';
+export type {
+  ConnectionGraphProps,
+  GraphNode,
+  GraphEdge,
+} from './connectiongraph/variants';
+
+export { default as CfChartCrosshair } from './chartcrosshair/ChartCrosshair.vue';
+export type { ChartCrosshairProps } from './chartcrosshair/variants';
+
+export { default as CfChartToolbar } from './charttoolbar/ChartToolbar.vue';
+export type {
+  ChartToolbarProps,
+  LegendSeries,
+} from './charttoolbar/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

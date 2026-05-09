@@ -33,6 +33,7 @@ import './styles/detachedpanel.css';
 import './styles/floatinginspector.css';
 import './styles/tearofftab.css';
 import './styles/templatepane.css';
+import './styles/charts.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -387,6 +388,93 @@ export {
   DOMAIN_TABS,
   ONBOARDING_TABS,
 } from './templatepanes/variants';
+
+/* ── Data viz · 22 chart components ── */
+export { Sparkline as CfSparkline } from './sparkline/Sparkline';
+export type { SparklineProps } from './sparkline/variants';
+
+export { LineChart as CfLineChart } from './linechart/LineChart';
+export type { LineChartProps, LineSeries } from './linechart/variants';
+
+export { AreaChart as CfAreaChart } from './areachart/AreaChart';
+export type { AreaChartProps, AreaSeries } from './areachart/variants';
+
+export { BarChart as CfBarChart } from './barchart/BarChart';
+export type { BarChartProps } from './barchart/variants';
+
+export { Histogram as CfHistogram } from './histogram/Histogram';
+export type { HistogramProps, HistogramBin } from './histogram/variants';
+
+export { StackedBar100 as CfStackedBar100 } from './stackedbar100/StackedBar100';
+export type {
+  StackedBar100Props,
+  StackedBar100Series,
+} from './stackedbar100/variants';
+
+export { BulletChart as CfBulletChart } from './bulletchart/BulletChart';
+export type { BulletChartProps } from './bulletchart/variants';
+
+export { CandlestickChart as CfCandlestickChart } from './candlestickchart/CandlestickChart';
+export type {
+  CandlestickChartProps,
+  Candle,
+} from './candlestickchart/variants';
+
+export { DonutChart as CfDonutChart } from './donutchart/DonutChart';
+export type { DonutChartProps, DonutSegment } from './donutchart/variants';
+
+export { FunnelChart as CfFunnelChart } from './funnelchart/FunnelChart';
+export type { FunnelChartProps, FunnelStep } from './funnelchart/variants';
+
+export { Treemap as CfTreemap } from './treemap/Treemap';
+export type { TreemapProps, TreemapNode } from './treemap/variants';
+
+export { SankeyDiagram as CfSankeyDiagram } from './sankeydiagram/SankeyDiagram';
+export type {
+  SankeyDiagramProps,
+  SankeyNode,
+  SankeyLink,
+} from './sankeydiagram/variants';
+
+export { ScatterPlot as CfScatterPlot } from './scatterplot/ScatterPlot';
+export type { ScatterPlotProps, ScatterPoint } from './scatterplot/variants';
+
+export { BoxPlot as CfBoxPlot } from './boxplot/BoxPlot';
+export type { BoxPlotProps, BoxStat } from './boxplot/variants';
+
+export { RadarChart as CfRadarChart } from './radarchart/RadarChart';
+export type { RadarChartProps, RadarSeries } from './radarchart/variants';
+
+export { RidgePlot as CfRidgePlot } from './ridgeplot/RidgePlot';
+export type { RidgePlotProps, RidgeRow } from './ridgeplot/variants';
+
+export { Gauge as CfGauge } from './gauge/Gauge';
+export type { GaugeProps } from './gauge/variants';
+
+export { MetricCard as CfMetricCard } from './metriccard/MetricCard';
+export type { MetricCardProps } from './metriccard/variants';
+
+export { TimingBar as CfTimingBar } from './timingbar/TimingBar';
+export type { TimingBarProps, TimingPhase } from './timingbar/variants';
+
+export { LatencyHeatmap as CfLatencyHeatmap } from './latencyheatmap/LatencyHeatmap';
+export type { LatencyHeatmapProps } from './latencyheatmap/variants';
+
+export { ConnectionGraph as CfConnectionGraph } from './connectiongraph/ConnectionGraph';
+export type {
+  ConnectionGraphProps,
+  GraphNode,
+  GraphEdge,
+} from './connectiongraph/variants';
+
+export { ChartCrosshair as CfChartCrosshair } from './chartcrosshair/ChartCrosshair';
+export type { ChartCrosshairProps } from './chartcrosshair/variants';
+
+export { ChartToolbar as CfChartToolbar } from './charttoolbar/ChartToolbar';
+export type {
+  ChartToolbarProps,
+  LegendSeries,
+} from './charttoolbar/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

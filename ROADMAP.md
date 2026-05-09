@@ -10,7 +10,7 @@
 
 ---
 
-## 已发布 · 129 / 130+
+## 已发布 · 151 / 151 ✓ — 全部组件都已具象化
 
 ### 表单 · Form (27)
 
@@ -312,43 +312,43 @@
 
 ### P11.1 时序 (4)
 
-- [ ] **LineChart** (charts · B.5.1)
-- [ ] **AreaChart** (charts · B.5.2)
-- [ ] **Sparkline** (charts · B.5.5) —— 行内微缩图
-- [ ] **CandlestickChart** (charts2 · B.5.18) —— OHLC K 线
+- [x] **LineChart** (charts · B.5.1)
+- [x] **AreaChart** (charts · B.5.2)
+- [x] **Sparkline** (charts · B.5.5) —— 行内微缩图
+- [x] **CandlestickChart** (charts2 · B.5.18) —— OHLC K 线
 
 ### P11.2 分类 (4)
 
-- [ ] **BarChart** (charts · B.5.3)
-- [ ] **Histogram** (charts · B.5.4)
-- [ ] **StackedBar100** (charts2 · B.5.20)
-- [ ] **BulletChart** (charts2 · B.5.19) —— 子弹进度条
+- [x] **BarChart** (charts · B.5.3)
+- [x] **Histogram** (charts · B.5.4)
+- [x] **StackedBar100** (charts2 · B.5.20)
+- [x] **BulletChart** (charts2 · B.5.19) —— 子弹进度条
 
 ### P11.3 占比 (4)
 
-- [ ] **DonutChart** (charts2 · B.5.14)
-- [ ] **FunnelChart** (charts2 · B.5.15)
-- [ ] **Treemap** (charts2 · B.5.17)
-- [ ] **SankeyDiagram** (charts2 · B.5.16)
+- [x] **DonutChart** (charts2 · B.5.14)
+- [x] **FunnelChart** (charts2 · B.5.15)
+- [x] **Treemap** (charts2 · B.5.17)
+- [x] **SankeyDiagram** (charts2 · B.5.16)
 
 ### P11.4 多维 (4)
 
-- [ ] **ScatterPlot** (charts2 · B.5.11)
-- [ ] **BoxPlot** (charts2 · B.5.12)
-- [ ] **RadarChart** (charts2 · B.5.13)
-- [ ] **RidgePlot** (charts2 · B.5.21) —— 密度脊图
+- [x] **ScatterPlot** (charts2 · B.5.11)
+- [x] **BoxPlot** (charts2 · B.5.12)
+- [x] **RadarChart** (charts2 · B.5.13)
+- [x] **RidgePlot** (charts2 · B.5.21) —— 密度脊图
 
 ### P11.5 单值 / 性能 (5)
 
-- [ ] **Gauge** (charts · B.5.6) —— 圆环进度
-- [ ] **MetricCard** (charts · B.5.10) —— 数值卡片 + 趋势 + sparkline
-- [ ] **TimingBar** (charts · B.5.7) —— 请求瀑布
-- [ ] **LatencyHeatmap** (charts · B.5.8) —— 延迟热力图
-- [ ] **ConnectionGraph** (charts · B.5.9) —— 网络拓扑图
+- [x] **Gauge** (charts · B.5.6) —— 圆环进度
+- [x] **MetricCard** (charts · B.5.10) —— 数值卡片 + 趋势 + sparkline
+- [x] **TimingBar** (charts · B.5.7) —— 请求瀑布
+- [x] **LatencyHeatmap** (charts · B.5.8) —— 延迟热力图
+- [x] **ConnectionGraph** (charts · B.5.9) —— 网络拓扑图
 
 ### P11.6 通用工具 (1)
 
-- [ ] **ChartCrosshair** + **ChartToolbar** (charts2 · B.5.22 / B.5.23) —— 共享给上面所有图表的浮层工具
+- [x] **ChartCrosshair** + **ChartToolbar** (charts2 · B.5.22 / B.5.23) —— 共享给上面所有图表的浮层工具
 
 ---
 
