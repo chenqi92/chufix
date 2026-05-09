@@ -1,0 +1,38 @@
+---
+title: ScrollArea 滚动容器
+description: 自定义主题滚动条容器，scrollbar-gutter stable + overscroll-behavior contain。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/scrollarea/BasicVue.vue';
+
+## 基础用法
+
+把可能溢出的内容塞进 `CfScrollArea`，限制 `maxHeight` / `maxWidth` 触发滚动。组件已经处理：`scrollbar-width: thin` / `scrollbar-gutter: stable`（避免布局抖动）/ `overscroll-behavior: contain`（不会把滚动事件冒泡到外层）+ webkit 主题化滚动条。
+
+<DemoFrame
+  vueCode={`<CfScrollArea bordered :max-height="200" :max-width="420">
+  <ul style="margin: 0; padding: 8px 12px; list-style: none;">
+    <li v-for="i in 30" :key="i">第 {{ i }} 项 — Lorem ipsum...</li>
+  </ul>
+</CfScrollArea>`}
+  reactCode={`<CfScrollArea bordered maxHeight={200} maxWidth={420}>
+  <ul style={{ margin: 0, padding: '8px 12px', listStyle: 'none' }}>
+    {Array.from({ length: 30 }).map((_, i) => (
+      <li key={i}>第 {i + 1} 项 — Lorem ipsum...</li>
+    ))}
+  </ul>
+</CfScrollArea>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `maxHeight` | `number \| string` | `—` | 容器最大高度 |
+| `maxWidth` | `number \| string` | `—` | 容器最大宽度 |
+| `axis` | `'y' \| 'x' \| 'both'` | `'y'` | 滚动方向 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 滚动条粗细（仅 webkit） |
+| `bordered` | `boolean` | `false` | 显示外描边和圆角 |

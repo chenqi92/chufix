@@ -1,0 +1,64 @@
+/* ChuFix Rating — star rating, supports half values. */
+
+.cf-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--accent-1);
+}
+
+.cf-rating--sm { gap: 1px; }
+.cf-rating--lg { gap: 3px; }
+
+.cf-rating__star {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--line-2);
+  transition: color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.cf-rating.is-readonly .cf-rating__star,
+.cf-rating.is-disabled .cf-rating__star {
+  cursor: default;
+}
+.cf-rating.is-disabled { opacity: var(--disabled-opacity); }
+
+.cf-rating__star svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.cf-rating--sm .cf-rating__star svg { width: 14px; height: 14px; }
+.cf-rating--lg .cf-rating__star svg { width: 22px; height: 22px; }
+
+.cf-rating__star--full { color: var(--accent-1); }
+.cf-rating__star--half {
+  position: relative;
+  color: var(--line-2);
+}
+.cf-rating__star--half::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  width: calc(50% - 2px);
+  background-image: linear-gradient(to right, var(--accent-1) 100%, transparent 100%);
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.5l2.7 6.5 7 .6-5.3 4.6 1.6 6.8L12 17.7l-6 3.3 1.6-6.8-5.3-4.6 7-.6L12 2.5z" fill="black"/></svg>') left center / 200% 100% no-repeat;
+          mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.5l2.7 6.5 7 .6-5.3 4.6 1.6 6.8L12 17.7l-6 3.3 1.6-6.8-5.3-4.6 7-.6L12 2.5z" fill="black"/></svg>') left center / 200% 100% no-repeat;
+}
+
+.cf-rating:not(.is-readonly):not(.is-disabled) .cf-rating__star:hover { transform: scale(1.08); }
+
+.cf-rating__value {
+  margin-left: 6px;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+.cf-rating__total { color: var(--fg-3); }

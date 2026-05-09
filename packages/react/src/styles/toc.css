@@ -1,0 +1,54 @@
+/* ChuFix Toc — table-of-contents anchor list with optional scroll-spy. */
+
+.cf-toc {
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  line-height: 1.6;
+  padding: 4px 0;
+}
+
+.cf-toc__title {
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-3);
+  padding: 0 8px 6px;
+}
+
+.cf-toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--line-1);
+}
+
+.cf-toc__item {
+  position: relative;
+}
+
+.cf-toc__item--depth-1 .cf-toc__link { padding-left: 12px; }
+.cf-toc__item--depth-2 .cf-toc__link { padding-left: 24px; }
+.cf-toc__item--depth-3 .cf-toc__link { padding-left: 36px; }
+.cf-toc__item--depth-4 .cf-toc__link { padding-left: 48px; }
+.cf-toc__item--depth-5 .cf-toc__link { padding-left: 60px; }
+.cf-toc__item--depth-6 .cf-toc__link { padding-left: 72px; }
+
+.cf-toc__link {
+  display: block;
+  padding: 4px 8px 4px 12px;
+  color: var(--fg-3);
+  text-decoration: none;
+  border-left: 1px solid transparent;
+  margin-left: -1px;
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.cf-toc__link:hover { color: var(--fg-1); }
+
+.cf-toc__item.is-active .cf-toc__link {
+  color: var(--accent-1);
+  border-left-color: var(--accent-1);
+  font-weight: var(--w-medium);
+}

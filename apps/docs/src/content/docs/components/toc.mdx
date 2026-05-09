@@ -1,0 +1,60 @@
+---
+title: Toc 目录锚点
+description: 文章侧边目录，按 depth 缩进，可手动指定或自动（IntersectionObserver scroll-spy）跟随当前阅读位置。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/toc/BasicVue.vue';
+
+## 基础用法
+
+`items` 是一个数组，每项至少有 `id` 和 `label`。`depth: 1..6` 控制缩进层级。点击会平滑滚动并更新地址栏 hash。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfToc, type TocItem } from '@chufix/vue';
+
+const items: TocItem[] = [
+  { id: 'intro', label: '介绍', depth: 1 },
+  { id: 'install', label: '安装', depth: 1 },
+  { id: 'install-vue', label: 'Vue 3', depth: 2 },
+  { id: 'install-react', label: 'React 18', depth: 2 },
+  { id: 'usage', label: '基本用法', depth: 1 },
+];
+</script>
+
+<template>
+  <CfToc :items="items" :active-id="'install-vue'" title="本页目录" />
+</template>`}
+  reactCode={`import { CfToc, type TocItem } from '@chufix/react';
+
+const items: TocItem[] = [/* ... */];
+
+export default function Demo() {
+  return <CfToc items={items} activeId="install-vue" title="本页目录" />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 自动滚动跟随
+
+`autoSpy: true` 让组件自动监听文章里 `id` 与 `items` 对应的标题，根据可视范围自动切换 active。`scrollRoot` 指定监听容器；省略时监听 viewport。
+
+```vue
+<CfToc :items="items" auto-spy />
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `TocItem[]` | `[]` | 目录条目 |
+| `autoSpy` | `boolean` | `false` | 启用 IntersectionObserver 自动跟随 |
+| `scrollRoot` | `string` | `—` | 监听容器选择器；省略则使用 viewport |
+| `activeId` | `string \| null` | `null` | 受控当前 id |
+| `defaultActiveId` (React) | `string \| null` | `null` | 非受控初始值 |
+| `title` | `string \| ReactNode` | `—` | 顶部小标题 |
+| `maxDepth` | `number` | `6` | 渲染的最大深度 |
+
+`TocItem`：`{ id, label, depth? }`。事件：`update:activeId`（React 端：`onActiveIdChange`）。

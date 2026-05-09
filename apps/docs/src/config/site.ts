@@ -89,6 +89,10 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Link 链接', href: '/components/link/' },
       { label: 'Code 代码', href: '/components/code/' },
       { label: 'AspectRatio 宽高比', href: '/components/aspectratio/' },
+      { label: 'Rating 评分', href: '/components/rating/' },
+      { label: 'Toc 目录锚点', href: '/components/toc/' },
+      { label: 'ScrollArea 滚动容器', href: '/components/scrollarea/' },
+      { label: 'SegmentedControl 分段控件', href: '/components/segmented/' },
     ],
   },
 ];

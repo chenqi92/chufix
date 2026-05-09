@@ -1,0 +1,41 @@
+/* ChuFix ScrollArea — themed scrollbar container with overscroll containment. */
+
+.cf-scrollarea {
+  position: relative;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+  overscroll-behavior: contain;
+}
+
+.cf-scrollarea--y { overflow-y: auto; overflow-x: hidden; }
+.cf-scrollarea--x { overflow-x: auto; overflow-y: hidden; }
+.cf-scrollarea--both { overflow: auto; }
+
+.cf-scrollarea.is-bordered {
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+}
+
+/* webkit themed scrollbar */
+.cf-scrollarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.cf-scrollarea--sm::-webkit-scrollbar { width: 6px; height: 6px; }
+.cf-scrollarea--lg::-webkit-scrollbar { width: 10px; height: 10px; }
+
+.cf-scrollarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cf-scrollarea::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: var(--r-pill);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.cf-scrollarea::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-3);
+  background-clip: padding-box;
+}
+.cf-scrollarea::-webkit-scrollbar-corner { background: transparent; }

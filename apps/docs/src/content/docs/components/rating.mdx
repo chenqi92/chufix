@@ -1,0 +1,36 @@
+---
+title: Rating 评分
+description: 星级评分控件，整数 / 半星精度、可只读、可禁用，支持显示数值。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/rating/BasicVue.vue';
+
+## 基础用法
+
+`v-model` 绑定数字。`allowHalf` 启用半星精度（鼠标悬停在格子左半边返回 `i + 0.5`）。`readonly` 锁定不能改但保持视觉，`disabled` 灰显且禁用交互。
+
+<DemoFrame
+  vueCode={`<CfRating v-model="a" />
+<CfRating v-model="b" allow-half show-value />
+<CfRating :model-value="4" readonly show-value />
+<CfRating :model-value="2" disabled />`}
+  reactCode={`<CfRating value={a} onChange={setA} />
+<CfRating value={b} allowHalf showValue onChange={setB} />
+<CfRating value={4} readonly showValue />
+<CfRating value={2} disabled />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `0` | 当前分值 |
+| `count` | `number` | `5` | 星星总数 |
+| `allowHalf` | `boolean` | `false` | 启用半星精度 |
+| `readonly` | `boolean` | `false` | 只读 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `showValue` | `boolean` | `false` | 在尾部显示 `value / count` |

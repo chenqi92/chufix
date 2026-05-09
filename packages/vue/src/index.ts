@@ -55,6 +55,9 @@ import './styles/kbd.css';
 import './styles/link.css';
 import './styles/code.css';
 import './styles/aspectratio.css';
+import './styles/rating.css';
+import './styles/toc.css';
+import './styles/scrollarea.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -396,6 +399,23 @@ export type {
 
 export { default as CfAspectRatio } from './aspectratio/AspectRatio.vue';
 export type { AspectRatioProps } from './aspectratio/variants';
+
+export { default as CfRating } from './rating/Rating.vue';
+export type { RatingProps, RatingSize } from './rating/variants';
+
+export { default as CfToc } from './toc/Toc.vue';
+export type { TocProps, TocItem } from './toc/variants';
+
+export { default as CfScrollArea } from './scrollarea/ScrollArea.vue';
+export type { ScrollAreaProps, ScrollAreaSize } from './scrollarea/variants';
+
+export { default as CfSegmentedControl } from './segmented/SegmentedControl.vue';
+export type {
+  SegmentedProps,
+  SegmentedItem,
+  SegmentedSize,
+  SegmentedAlign,
+} from './segmented/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

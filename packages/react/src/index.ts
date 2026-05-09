@@ -55,6 +55,9 @@ import './styles/kbd.css';
 import './styles/link.css';
 import './styles/code.css';
 import './styles/aspectratio.css';
+import './styles/rating.css';
+import './styles/toc.css';
+import './styles/scrollarea.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -413,3 +416,20 @@ export type {
 
 export { AspectRatio as CfAspectRatio } from './aspectratio/AspectRatio';
 export type { AspectRatioProps } from './aspectratio/variants';
+
+export { Rating as CfRating } from './rating/Rating';
+export type { RatingProps, RatingSize } from './rating/variants';
+
+export { Toc as CfToc } from './toc/Toc';
+export type { TocProps, TocItem } from './toc/variants';
+
+export { ScrollArea as CfScrollArea } from './scrollarea/ScrollArea';
+export type { ScrollAreaProps, ScrollAreaSize } from './scrollarea/variants';
+
+export { SegmentedControl as CfSegmentedControl } from './segmented/SegmentedControl';
+export type {
+  SegmentedProps,
+  SegmentedItem,
+  SegmentedSize,
+  SegmentedAlign,
+} from './segmented/variants';
