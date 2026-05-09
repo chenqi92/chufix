@@ -40,6 +40,7 @@
 .cf-navmenu__trigger:hover {
   color: var(--fg-1);
   background: var(--bg-2);
+  text-decoration: none;
 }
 .cf-navmenu__item.is-active .cf-navmenu__trigger { color: var(--accent-1); }
 .cf-navmenu__item.is-disabled .cf-navmenu__trigger { color: var(--fg-3); cursor: not-allowed; }
@@ -110,7 +111,10 @@
   background: transparent;
   transition: background-color var(--dur-fast) var(--ease-out);
 }
-.cf-navmenu__link:hover { background: var(--bg-2); }
+.cf-navmenu__link:hover {
+  background: var(--bg-2);
+  text-decoration: none;
+}
 
 .cf-navmenu__link-icon {
   display: inline-flex;

@@ -71,13 +71,17 @@
 
 .cf-code-block__pre {
   margin: 0;
-  padding: 12px 14px;
+  padding: 0;
   overflow: auto;
   scrollbar-width: thin;
   white-space: pre;
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
   line-height: 1.55;
+}
+.cf-code-block.has-numbers .cf-code-block__pre {
+  grid-template-columns: auto minmax(0, 1fr);
 }
 
 .cf-code-block__nums {
@@ -88,15 +92,22 @@
   user-select: none;
   flex: none;
   border-right: 1px solid var(--line-1);
-  padding-right: 12px;
+  padding: 12px 12px 12px 14px;
   font-variant-numeric: tabular-nums;
+  line-height: inherit;
+}
+.cf-code-block__nums span {
+  display: block;
+  min-height: 1.55em;
 }
 
 .cf-code-block__code {
   display: block;
-  flex: 1;
-  min-width: 0;
+  min-width: max-content;
+  padding: 12px 14px;
   color: var(--fg-1);
   background: transparent;
   font-family: inherit;
+  line-height: inherit;
+  white-space: inherit;
 }

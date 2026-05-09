@@ -25,9 +25,10 @@
   -webkit-user-select: none;
   user-select: none;
   white-space: nowrap;
+  text-decoration: none;
 }
-.cf-btn:hover { background: var(--accent-2); }
-.cf-btn:active { background: var(--accent-3); }
+.cf-btn:hover { background: var(--accent-2); text-decoration: none; }
+.cf-btn:active { background: var(--accent-3); text-decoration: none; }
 .cf-btn:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);

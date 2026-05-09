@@ -29,3 +29,38 @@ function isActive(href: string) {
     ))}
   </nav>
 </aside>
+
+<script is:inline>
+  (() => {
+    const sidebar = document.querySelector('[data-site-sidebar]');
+    if (!(sidebar instanceof HTMLElement)) return;
+
+    const key = 'chufix:docs-sidebar-scroll';
+    const saved = sessionStorage.getItem(key);
+    if (saved !== null) {
+      requestAnimationFrame(() => {
+        sidebar.scrollTop = Number(saved) || 0;
+      });
+    }
+
+    let frame = 0;
+    sidebar.addEventListener(
+      'scroll',
+      () => {
+        if (frame) return;
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          sessionStorage.setItem(key, String(sidebar.scrollTop));
+        });
+      },
+      { passive: true },
+    );
+
+    sidebar.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest('a')) {
+        sessionStorage.setItem(key, String(sidebar.scrollTop));
+      }
+    });
+  })();
+</script>
