@@ -75,6 +75,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Banner 全宽提示', href: '/components/banner/' },
       { label: 'PageHeader 页头', href: '/components/pageheader/' },
       { label: 'Stepper 步骤指示', href: '/components/stepper/' },
+      { label: 'Splitter 分隔面板', href: '/components/splitter/' },
+      { label: 'AppShell 应用脚手架', href: '/components/appshell/' },
     ],
   },
 ];

@@ -1,0 +1,84 @@
+---
+title: Splitter 分隔面板
+description: 拖拽中间分隔条调整两侧面板尺寸；横竖两向、键盘可达、可受控。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/splitter/BasicVue.vue';
+import VerticalVue from '~/components/demos/splitter/VerticalVue.vue';
+
+## 基础用法
+
+`v-model` 绑定一个数字。`unit="%"`（默认）时它是百分比，`unit="px"` 时是像素。`min` / `max` 锁定边界。键盘聚焦分隔条后：← / → 微调（Shift 跳 10），Home / End 直接到极值。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSplitter } from '@chufix/vue';
+
+const size = ref(35);
+</script>
+
+<template>
+  <CfSplitter v-model="size" :min="15" :max="85">
+    <template #start>侧栏</template>
+    <template #end>主区域</template>
+  </CfSplitter>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSplitter } from '@chufix/react';
+
+export default function Demo() {
+  const [size, setSize] = useState(35);
+  return (
+    <CfSplitter
+      value={size}
+      min={15}
+      max={85}
+      start={<div>侧栏</div>}
+      end={<div>主区域</div>}
+      onChange={setSize}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 竖向
+
+`orientation="vertical"` 把分隔条横置，上下分割两块面板。常用于编辑器 + 控制台、表格 + 详情这种竖直布局。
+
+<DemoFrame
+  vueCode={`<CfSplitter v-model="size" orientation="vertical" :min="20" :max="80">
+  <template #start>编辑器</template>
+  <template #end>控制台</template>
+</CfSplitter>`}
+  reactCode={`<CfSplitter
+  value={size}
+  orientation="vertical"
+  min={20}
+  max={80}
+  start={<div>编辑器</div>}
+  end={<div>控制台</div>}
+  onChange={setSize}
+/>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `—` | 受控尺寸值；省略则用 `defaultSize` 自管 |
+| `defaultSize` (Vue) / `defaultValue` (React) | `number` | `30` | 初始尺寸 |
+| `unit` | `'%' \| 'px'` | `'%'` | 数值单位 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 排列方向 |
+| `min` / `max` | `number` | `10` / `90` | 取值边界（与 unit 一致） |
+| `disabled` | `boolean` | `false` | 禁用拖拽 |
+| `collapsible` | `boolean` | `false` | 启用 Enter / 空格在 `min` 与 `defaultSize` 间切换 |
+| `resizeFrom` | `'start' \| 'end'` | `'start'` | 数值绑定到哪一侧的尺寸 |
+
+事件：`update:modelValue` / `resize`（React 端：`onChange` / `onResize`）。
+Slot：`start` / `end`（React 用同名 prop 接 ReactNode）。

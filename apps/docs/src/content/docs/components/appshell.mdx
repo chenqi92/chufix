@@ -1,0 +1,96 @@
+---
+title: AppShell 应用脚手架
+description: header + sidebar + main + aside + footer 的 CSS Grid 布局，整站脚手架推荐起点。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/appshell/BasicVue.vue';
+
+## 基础用法
+
+`AppShell` 把整个应用最常见的几块布局区域固定下来：顶部头栏（sticky）、左侧栏、可选的右侧栏、主区域、底栏。每一块都是命名 slot / prop，留空则不渲染。
+
+侧栏宽度通过 `sidebarWidth`（数字，px）控制；`sidebarCollapsed=true` 把侧栏宽度收成 0 但保留 DOM，便于响应式切换。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfAppShell, CfButton } from '@chufix/vue';
+
+const collapsed = ref(false);
+</script>
+
+<template>
+  <CfAppShell :sidebar-collapsed="collapsed" :sidebar-width="180">
+    <template #header>
+      <CfButton size="sm" variant="tertiary" @click="collapsed = !collapsed">
+        {{ collapsed ? '展开侧栏' : '收起侧栏' }}
+      </CfButton>
+      <strong>My App</strong>
+    </template>
+    <template #sidebar>
+      <nav>导航列表</nav>
+    </template>
+    <template #footer>© ChuFix</template>
+    <div>主区域内容</div>
+  </CfAppShell>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfAppShell, CfButton } from '@chufix/react';
+
+export default function Demo() {
+  const [collapsed, setCollapsed] = useState(false);
+  return (
+    <CfAppShell
+      sidebarCollapsed={collapsed}
+      sidebarWidth={180}
+      header={
+        <>
+          <CfButton size="sm" variant="tertiary" onClick={() => setCollapsed((v) => !v)}>
+            {collapsed ? '展开侧栏' : '收起侧栏'}
+          </CfButton>
+          <strong>My App</strong>
+        </>
+      }
+      sidebar={<nav>导航列表</nav>}
+      footer={<>© ChuFix</>}
+    >
+      <div>主区域内容</div>
+    </CfAppShell>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 布局区域
+
+```
+┌──────────────────────────────────────────┐
+│             header (sticky)              │
+├────────┬──────────────────┬──────────────┤
+│        │                  │              │
+│ side-  │      main        │   aside      │
+│ bar    │                  │   (右侧栏)   │
+│        │                  │              │
+├────────┴──────────────────┴──────────────┤
+│                  footer                  │
+└──────────────────────────────────────────┘
+```
+
+- `header` 默认 `position: sticky; top: 0`，滚动主区域时保持悬挂
+- `sidebar` / `aside` / `main` 各自 `overflow-y: auto`，互相独立滚动；都加了 `overscroll-behavior: contain` 防止滚动链式冒泡
+- 整体用 `display: grid`，布局区域由 `grid-template-areas` 定义
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `variant` | `'default' \| 'condensed' \| 'spacious'` | `'default'` | 整体字号档位 |
+| `sidebarWidth` | `number` | `240` | 侧栏宽度（px） |
+| `headerHeight` | `number` | `auto` | 顶栏固定高度（px）；省略时按内容自适应 |
+| `bordered` | `boolean` | `true` | 侧栏是否描右边框 |
+| `sidebarCollapsed` | `boolean` | `false` | 是否收起侧栏（视觉宽度归 0） |
+
+Vue slot：`header` / `sidebar` / `aside` / `footer` / 默认（main）。
+React 用同名 prop 接 `ReactNode`，主内容传 `children`。

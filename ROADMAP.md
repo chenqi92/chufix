@@ -7,7 +7,7 @@
 
 ---
 
-## 已发布 · 42 / 70+
+## 已发布 · 44 / 70+
 
 ### 表单 · Form (19)
 
@@ -31,10 +31,12 @@
 - [x] DatePicker (rich · DatePicker · Range)
 - [x] DateRangePicker (forms-plus · DateRangePicker)
 
-### 容器 · Container (2)
+### 容器 · Container (4)
 
 - [x] Card (base · B.08)
 - [x] PageHeader (layout · #pageheader)
+- [x] AppShell (layout · #appshell)
+- [x] Splitter (navigation · Splitter / rich)
 
 ### 数据展示 · Display (3)
 
@@ -97,9 +99,9 @@
 
 ## 路线图 · 优先级 P2（容器/导航/状态扩展）· 7
 
-- [ ] **AppShell / Layout** (layout · #appshell) —— 顶栏 + 侧边栏 + 主区域骨架，用作整站脚手架
+- [x] **AppShell / Layout** (layout · #appshell) —— 顶栏 + 侧边栏 + 主区域骨架，用作整站脚手架
 - [ ] **Sidebar** (navigation · Sidebar) —— 可折叠侧栏，支持嵌套菜单
-- [ ] **Splitter / Resizable** (navigation · Splitter / rich) —— 可拖拽分隔的双面板
+- [x] **Splitter / Resizable** (navigation · Splitter / rich) —— 可拖拽分隔的双面板
 - [x] **PageHeader** (layout · #pageheader) —— 标题 + 面包屑 + 操作区一体的页头
 - [x] **Stepper · Wizard** (navigation · Stepper · Wizard / base2 · Stepper) —— 多步流程
 - [ ] **NavigationMenu** (base · B.15) —— 顶部主导航 + hover 富面板

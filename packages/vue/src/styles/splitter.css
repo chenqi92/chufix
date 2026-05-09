@@ -1,0 +1,75 @@
+/* ChuFix Splitter — drag-resizable two-pane container. */
+
+.cf-splitter {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-sans);
+  background: var(--bg-1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cf-splitter--horizontal { flex-direction: row; }
+.cf-splitter--vertical   { flex-direction: column; }
+
+.cf-splitter__pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--bg-1);
+}
+
+.cf-splitter__handle {
+  position: relative;
+  flex: none;
+  background: var(--line-1);
+  cursor: col-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: none;
+  outline: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.cf-splitter--horizontal .cf-splitter__handle {
+  width: 4px;
+  cursor: col-resize;
+}
+.cf-splitter--vertical .cf-splitter__handle {
+  height: 4px;
+  cursor: row-resize;
+}
+
+.cf-splitter__handle:hover,
+.cf-splitter__handle:focus-visible,
+.cf-splitter.is-dragging .cf-splitter__handle {
+  background: var(--accent-1);
+}
+.cf-splitter.is-disabled .cf-splitter__handle {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity);
+}
+
+.cf-splitter__grip {
+  pointer-events: none;
+  display: block;
+  background: var(--bg-3);
+  border-radius: var(--r-pill);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.cf-splitter--horizontal .cf-splitter__grip {
+  width: 2px;
+  height: 28px;
+}
+.cf-splitter--vertical .cf-splitter__grip {
+  width: 28px;
+  height: 2px;
+}
+.cf-splitter__handle:hover .cf-splitter__grip,
+.cf-splitter__handle:focus-visible .cf-splitter__grip {
+  opacity: 1;
+}

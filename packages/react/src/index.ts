@@ -41,6 +41,8 @@ import './styles/datepicker.css';
 import './styles/banner.css';
 import './styles/pageheader.css';
 import './styles/stepper.css';
+import './styles/splitter.css';
+import './styles/appshell.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -304,3 +306,13 @@ export type {
   StepStatus,
   StepItem,
 } from './stepper/variants';
+
+export { Splitter as CfSplitter } from './splitter/Splitter';
+export type {
+  SplitterProps,
+  SplitterOrientation,
+  SplitterUnit,
+} from './splitter/variants';
+
+export { AppShell as CfAppShell } from './appshell/AppShell';
+export type { AppShellProps, AppShellVariant } from './appshell/variants';
