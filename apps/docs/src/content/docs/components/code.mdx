@@ -1,44 +1,64 @@
 ---
 title: Code 代码
-description: InlineCode 行内代码 + CodeBlock 多行代码块；可加标题、语言标签、行号、复制按钮。
+description: InlineCode 行内代码 + CodeBlock 多行代码块；可加标题、语言标签、行号、复制按钮、滚动高度。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/code/BasicVue.vue';
+import InlineVue from '~/components/demos/code/InlineVue.vue';
+import NumbersVue from '~/components/demos/code/NumbersVue.vue';
+import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 
 ## 基础用法
 
-`<CfInlineCode>` 用于句中嵌入小段代码（如包名 / 命令）。`<CfCodeBlock>` 接收 `code` 字符串，可选 `title` / `language` / `showLineNumbers` / `copyable`。注意：本组件只渲染样式，不做语法高亮 —— 如需高亮请在外部接 `shiki` / `highlight.js` 等并把高亮后的 HTML 通过 slot / `dangerouslySetInnerHTML` 传入（v0 暂不内置）。
+`<CfInlineCode>` 用于句中嵌入小段代码（包名 / 命令）。`<CfCodeBlock>` 接收 `code` 字符串渲染多行代码块，可选 `title` / `language` / `showLineNumbers` / `copyable`。
+
+> 本组件只渲染样式，不做语法高亮 — 如需高亮请在外部接 `shiki` / `highlight.js` 等并把高亮后的 HTML 通过 slot / `dangerouslySetInnerHTML` 传入（v0 暂不内置）。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { CfInlineCode, CfCodeBlock } from '@chufix/vue';
-
-const code = \`import { CfButton } from '@chufix/vue';
-
-export function Hello() {
-  return <CfButton>Click me</CfButton>;
-}\`;
-</script>
-
-<template>
-  <p>用 <CfInlineCode>npm i @chufix/vue</CfInlineCode> 安装。</p>
-  <CfCodeBlock :code="code" language="tsx" title="hello.tsx" show-line-numbers />
-</template>`}
-  reactCode={`import { CfInlineCode, CfCodeBlock } from '@chufix/react';
-
-const code = \`import { CfButton } from '@chufix/react';\`;
-
-export default function Demo() {
-  return (
-    <>
-      <p>用 <CfInlineCode>npm i @chufix/react</CfInlineCode> 安装。</p>
-      <CfCodeBlock code={code} language="tsx" title="hello.tsx" showLineNumbers />
-    </>
-  );
-}`}
+  vueCode={`<p>用 <CfInlineCode>npm i @chufix/vue</CfInlineCode> 安装。</p>
+<CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
+  reactCode={`<p>用 <CfInlineCode>npm i @chufix/react</CfInlineCode> 安装。</p>
+<CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 行内代码
+
+`<CfInlineCode>` 单独使用 — 把 `<code>` 包成等宽 + 浅色底 + 圆角的小标签。`size="sm"` 在密集文档里更小一档。
+
+<DemoFrame
+  vueCode={`<p>常用包：<CfInlineCode>@chufix/vue</CfInlineCode>、<CfInlineCode>@chufix/react</CfInlineCode>。</p>
+<p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
+<p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
+  reactCode={`<p>常用包：<CfInlineCode>@chufix/vue</CfInlineCode>、<CfInlineCode>@chufix/react</CfInlineCode>。</p>
+<p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
+<p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
+>
+  <InlineVue client:load />
+</DemoFrame>
+
+## 行号
+
+`showLineNumbers` 在每行左侧显示行号 — 教程 / 教学场景中便于读者跟随。
+
+<DemoFrame
+  vueCode={`<CfCodeBlock :code="code" language="js" title="fib.js" show-line-numbers />`}
+  reactCode={`<CfCodeBlock code={code} language="js" title="fib.js" showLineNumbers />`}
+>
+  <NumbersVue client:load />
+</DemoFrame>
+
+## 限制最大高度
+
+`maxHeight` 启用纵向滚动 — 长代码块在文档里不至于把屏幕占满。
+
+<DemoFrame
+  vueCode={`<CfCodeBlock :code="code" language="js" title="long-output.js" show-line-numbers :max-height="200" />`}
+  reactCode={`<CfCodeBlock code={code} language="js" title="long-output.js" showLineNumbers maxHeight={200} />`}
+>
+  <MaxHeightVue client:load />
 </DemoFrame>
 
 ## API · InlineCode

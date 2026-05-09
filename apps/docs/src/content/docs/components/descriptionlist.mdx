@@ -1,53 +1,75 @@
 ---
 title: DescriptionList 描述列表
-description: dt / dd 风格的键值对展示，支持横竖两种布局、多列、可描边。
+description: dt / dd 风格的键值对展示 —— 横竖两种布局、多列、3 档尺寸、可描边。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/descriptionlist/BasicVue.vue';
 import ColumnsVue from '~/components/demos/descriptionlist/ColumnsVue.vue';
+import LayoutVue from '~/components/demos/descriptionlist/LayoutVue.vue';
+import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
 
 ## 基础用法
 
 把数据填进 `items`：每项有 `term` 与 `description`。`termWidth` 控制 term 列宽（horizontal layout）。`bordered` 给条目之间加描边。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { CfDescriptionList } from '@chufix/vue';
-const items = [
-  { term: '订单号', description: '#2026-CF-00018' },
-  { term: '下单时间', description: '2026-05-09 14:23' },
-  { term: '配送地址', description: '上海市浦东新区世纪大道 100 号 18A 室' },
-];
-</script>
-
-<template>
-  <CfDescriptionList :items="items" :term-width="100" bordered title="订单信息" />
-</template>`}
-  reactCode={`import { CfDescriptionList } from '@chufix/react';
-
-const items = [
+  vueCode={`const items = [
   { term: '订单号', description: '#2026-CF-00018' },
   { term: '下单时间', description: '2026-05-09 14:23' },
   { term: '配送地址', description: '上海市浦东新区世纪大道 100 号 18A 室' },
 ];
 
-export default function Demo() {
-  return <CfDescriptionList items={items} termWidth={100} bordered title="订单信息" />;
-}`}
+<CfDescriptionList :items="items" :term-width="100" bordered title="订单信息" />`}
+  reactCode={`const items = [
+  { term: '订单号', description: '#2026-CF-00018' },
+  { term: '下单时间', description: '2026-05-09 14:23' },
+  { term: '配送地址', description: '上海市浦东新区世纪大道 100 号 18A 室' },
+];
+
+<CfDescriptionList items={items} termWidth={100} bordered title="订单信息" />`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
+## 横竖布局
+
+`layout="horizontal"`（默认）—— term 与 description 同一行；适合属性表 / 详情页。
+`layout="vertical"` —— term 在上、description 在下；适合较长的描述文案或移动端窄屏。
+
+<DemoFrame
+  vueCode={`<CfDescriptionList :items="items" layout="horizontal" :term-width="80" bordered />
+<CfDescriptionList :items="items" layout="vertical" bordered />`}
+  reactCode={`<CfDescriptionList items={items} layout="horizontal" termWidth={80} bordered />
+<CfDescriptionList items={items} layout="vertical" bordered />`}
+>
+  <LayoutVue client:load />
+</DemoFrame>
+
 ## 多列
 
-`columns` 是一个数字，控制内部 grid 的列数。`item.span` 让单条目跨多列。
+`columns` 是一个数字，控制内部 grid 的列数。`item.span` 让单条目跨多列。适合表头宽 / 字段多的场景。
 
 <DemoFrame
   vueCode={`<CfDescriptionList :items="items" :columns="3" bordered :term-width="60" />`}
   reactCode={`<CfDescriptionList items={items} columns={3} bordered termWidth={60} />`}
 >
   <ColumnsVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 控制字号与内距 —— `sm` 紧凑型 / `md`（默认）/ `lg` 详情大字。
+
+<DemoFrame
+  vueCode={`<CfDescriptionList :items="items" size="sm" bordered title="size = sm" />
+<CfDescriptionList :items="items" size="md" bordered title="size = md" />
+<CfDescriptionList :items="items" size="lg" bordered title="size = lg" />`}
+  reactCode={`<CfDescriptionList items={items} size="sm" bordered title="size = sm" />
+<CfDescriptionList items={items} size="md" bordered title="size = md" />
+<CfDescriptionList items={items} size="lg" bordered title="size = lg" />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API

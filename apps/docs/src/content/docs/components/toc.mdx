@@ -5,44 +5,73 @@ description: 文章侧边目录，按 depth 缩进，可手动指定或自动（
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toc/BasicVue.vue';
+import NestedVue from '~/components/demos/toc/NestedVue.vue';
+import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
 
 ## 基础用法
 
-`items` 是一个数组，每项至少有 `id` 和 `label`。`depth: 1..6` 控制缩进层级。点击会平滑滚动并更新地址栏 hash。
+`items` 是一个数组，每项至少有 `id` 和 `label`。`activeId` 控制当前高亮项；点击会平滑滚动并更新地址栏 hash。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { CfToc, type TocItem } from '@chufix/vue';
-
-const items: TocItem[] = [
-  { id: 'intro', label: '介绍', depth: 1 },
-  { id: 'install', label: '安装', depth: 1 },
-  { id: 'install-vue', label: 'Vue 3', depth: 2 },
-  { id: 'install-react', label: 'React 18', depth: 2 },
-  { id: 'usage', label: '基本用法', depth: 1 },
-];
-</script>
-
-<template>
-  <CfToc :items="items" :active-id="'install-vue'" title="本页目录" />
-</template>`}
-  reactCode={`import { CfToc, type TocItem } from '@chufix/react';
-
-const items: TocItem[] = [/* ... */];
-
-export default function Demo() {
-  return <CfToc items={items} activeId="install-vue" title="本页目录" />;
-}`}
+  vueCode={`<CfToc
+  :items="items"
+  :active-id="'install'"
+  title="本页目录"
+/>`}
+  reactCode={`<CfToc items={items} activeId="install" title="本页目录" />`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
-## 自动滚动跟随
+## 嵌套缩进
+
+`depth: 1..6` 控制缩进层级。同一份 items 数组只要 depth 配对正确，就自然形成嵌套缩进。
+
+<DemoFrame
+  vueCode={`const items: TocItem[] = [
+  { id: 'intro', label: '介绍', depth: 1 },
+  { id: 'install', label: '安装', depth: 1 },
+  { id: 'install-vue', label: 'Vue 3', depth: 2 },
+  { id: 'install-react', label: 'React 18', depth: 2 },
+  { id: 'theme', label: '主题', depth: 1 },
+  { id: 'theme-detail', label: '颜色细节', depth: 3 },
+];
+
+<CfToc :items="items" />`}
+  reactCode={`const items: TocItem[] = [/* ... */];
+
+<CfToc items={items} />`}
+>
+  <NestedVue client:load />
+</DemoFrame>
+
+## maxDepth 限制
+
+`maxDepth` 决定渲染的最深层级 — 比如博客侧栏只想显示 H1 / H2 时，传 `maxDepth={2}`，更深的标题不渲染。
+
+<DemoFrame
+  vueCode={`<CfToc :items="items" :max-depth="2" />
+<CfToc :items="items" :max-depth="4" />`}
+  reactCode={`<CfToc items={items} maxDepth={2} />
+<CfToc items={items} maxDepth={4} />`}
+>
+  <MaxDepthVue client:load />
+</DemoFrame>
+
+## 自动滚动跟随（scroll-spy）
 
 `autoSpy: true` 让组件自动监听文章里 `id` 与 `items` 对应的标题，根据可视范围自动切换 active。`scrollRoot` 指定监听容器；省略时监听 viewport。
 
 ```vue
+<!-- Vue -->
 <CfToc :items="items" auto-spy />
+<CfToc :items="items" auto-spy scroll-root=".article-body" />
+```
+
+```tsx
+{/* React */}
+<CfToc items={items} autoSpy />
+<CfToc items={items} autoSpy scrollRoot=".article-body" />
 ```
 
 ## API

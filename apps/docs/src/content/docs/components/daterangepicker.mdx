@@ -6,34 +6,21 @@ description: 双月并列展示，点击两次确认范围；支持 hover 预览
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/daterangepicker/BasicVue.vue';
 import BoundsVue from '~/components/demos/daterangepicker/BoundsVue.vue';
+import VariantsVue from '~/components/demos/daterangepicker/VariantsVue.vue';
+import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vue';
 
 ## 基础用法
 
 `v-model` 绑定 `[start, end]` 二元组，每一项是 `'YYYY-MM-DD'` 字符串或 `null`。第一次点击设定起点，鼠标移动到目标日期会高亮预览，再点一次确认终点。如果第二次点击早于第一次，自动调换顺序。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { CfDateRangePicker, type DateRangeValue } from '@chufix/vue';
-
-const value = ref<DateRangeValue>(['2026-05-01', '2026-05-12']);
-</script>
-
-<template>
-  <CfDateRangePicker v-model="value" clearable />
-</template>`}
-  reactCode={`import { useState } from 'react';
-import { CfDateRangePicker, type DateRangeValue } from '@chufix/react';
-
-export default function Demo() {
-  const [value, setValue] = useState<DateRangeValue>(['2026-05-01', '2026-05-12']);
-  return <CfDateRangePicker value={value} clearable onChange={(v) => setValue(v)} />;
-}`}
+  vueCode={`<CfDateRangePicker v-model="value" clearable />`}
+  reactCode={`<CfDateRangePicker value={value} onChange={setValue} clearable />`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
-## 范围限制
+## 范围限制 + 快捷预设
 
 `minDate` / `maxDate` 同 DatePicker；`disabledDate` 也支持。面板底部内置「近 7 / 30 / 90 天」三个快捷按钮，点击后立即应用并关闭。
 
@@ -55,6 +42,34 @@ export default function Demo() {
 />`}
 >
   <BoundsVue client:load />
+</DemoFrame>
+
+## 三种触发器 variant
+
+`variant` 控制触发输入框的视觉模式 — `outline`（默认，带描边）/ `filled`（实底）/ `ghost`（透明，悬停描边）。
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker v-model="a" variant="outline" />
+<CfDateRangePicker v-model="b" variant="filled" />
+<CfDateRangePicker v-model="c" variant="ghost" />`}
+  reactCode={`<CfDateRangePicker value={a} onChange={setA} variant="outline" />
+<CfDateRangePicker value={b} onChange={setB} variant="filled" />
+<CfDateRangePicker value={c} onChange={setC} variant="ghost" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 自定义占位 / 分隔符
+
+`placeholder` 是 `[startPlaceholder, endPlaceholder]` 二元组，`separator` 控制起止之间的连接词（默认「至」）。
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker v-model="a" :placeholder="['起始日期', '结束日期']" separator="至" />
+<CfDateRangePicker v-model="b" :placeholder="['Start', 'End']" separator="—" />`}
+  reactCode={`<CfDateRangePicker value={a} placeholder={['起始日期', '结束日期']} separator="至" />
+<CfDateRangePicker value={b} placeholder={['Start', 'End']} separator="—" />`}
+>
+  <PlaceholderVue client:load />
 </DemoFrame>
 
 ## API
