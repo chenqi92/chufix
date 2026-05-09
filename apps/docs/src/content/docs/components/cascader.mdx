@@ -1,0 +1,42 @@
+---
+title: Cascader 级联选择
+description: 多级选项的逐列展开选择器，路径式选取，常用于地区 / 部门 / 分类筛选。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/cascader/BasicVue.vue';
+
+## 基础用法
+
+`options` 是一棵树，叶节点点击后选中整条路径；`v-model` / `value` 是 `string[]`，从根到选中节点的 value 序列。
+
+<DemoFrame
+  vueCode={`<CfCascader v-model="value" :options="options" clearable />`}
+  reactCode={`<CfCascader value={value} onChange={setValue} options={options} clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `options` | `CascaderOption[]` | `—` | 级联选项树 |
+| `value` / `modelValue` | `string[]` | `—` | 受控选中路径 |
+| `defaultValue` | `string[]` | `[]` | 非受控初始值 |
+| `placeholder` | `string` | `'请选择'` | 未选中时占位文案 |
+| `separator` | `string` | `' / '` | 触发器中显示的路径分隔符 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 触发器尺寸 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `clearable` | `boolean` | `false` | 显示清除按钮 |
+
+### CascaderOption
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `value` | `string` | 唯一值 |
+| `label` | `string` | 显示文本 |
+| `disabled` | `boolean` | 禁用此项 |
+| `children` | `CascaderOption[]` | 下一级选项；省略代表叶节点 |
+
+事件：`onChange(path: string[])` —— 选中路径变化时触发。

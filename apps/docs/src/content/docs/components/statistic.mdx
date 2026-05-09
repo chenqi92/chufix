@@ -1,0 +1,40 @@
+---
+title: Statistic 统计数值
+description: 大字号数字展示 + 千分位 / 前后缀 / 倒计时，常用于 dashboard 顶部指标。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statistic/BasicVue.vue';
+
+## 基础用法
+
+`value` 为数字时自动加千分位分隔符；`precision` 控制小数位；`prefix` / `suffix` 在数字两侧加单位。
+
+<DemoFrame
+  vueCode={`<CfStatistic label="今日访问" :value="12384" />
+<CfStatistic label="收入" :value="84520.42" prefix="¥" :precision="2" />
+<CfStatistic label="转化率" :value="3.2" suffix="%" :precision="1" />`}
+  reactCode={`<CfStatistic label="今日访问" value={12384} />
+<CfStatistic label="收入" value={84520.42} prefix="¥" precision={2} />
+<CfStatistic label="转化率" value={3.2} suffix="%" precision={1} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `label` | `string` | `—` | 数字上方的小字标签 |
+| `value` | `number` | `—` | 主数字 |
+| `precision` | `number` | `0` | 小数位数 |
+| `prefix` / `suffix` | `string` | `—` | 数字前后单位 |
+| `separator` | `string` | `','` | 千分位分隔符 |
+| `decimal` | `string` | `'.'` | 小数点字符 |
+| `duration` | `number` | `800` | 数值变化时的滚动动画时长（毫秒） |
+| `countdown` | `number \| Date \| null` | `—` | 倒计时目标时间戳 / Date 对象 |
+| `format` | `string` | `'HH:mm:ss'` | 倒计时格式（支持 DD / HH / mm / ss） |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 数字字号 |
+| `loading` | `boolean` | `false` | 加载态，数字位显示 `—` |
+
+事件：`onFinish`（仅倒计时模式，归零时触发）。

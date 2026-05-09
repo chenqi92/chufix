@@ -1,0 +1,85 @@
+/* ChuFix Carousel — image / content rotator */
+
+.cf-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+}
+.cf-carousel--sm { --cf-carousel-h: 180px; }
+.cf-carousel--lg { --cf-carousel-h: 400px; }
+
+.cf-carousel__viewport {
+  width: 100%;
+  height: var(--cf-carousel-h, 280px);
+  overflow: hidden;
+}
+
+.cf-carousel__track {
+  display: flex;
+  height: 100%;
+  transition: transform var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+.cf-carousel__slide {
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cf-carousel__slide > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cf-carousel__control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 0;
+  background: oklch(0% 0 0 / 0.45);
+  color: white;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.cf-carousel__control:hover { background: oklch(0% 0 0 / 0.65); }
+.cf-carousel__control:disabled { opacity: 0.3; cursor: not-allowed; }
+.cf-carousel__control--prev { left: 12px; }
+.cf-carousel__control--next { right: 12px; }
+
+.cf-carousel__indicators {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.cf-carousel__indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 0;
+  background: oklch(100% 0 0 / 0.45);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), width var(--dur-fast) var(--ease-out);
+}
+.cf-carousel__indicator.is-active {
+  background: oklch(100% 0 0 / 0.95);
+  width: 22px;
+}

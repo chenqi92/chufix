@@ -1,0 +1,22 @@
+/* ChuFix Statistic — animated number / countdown */
+.cf-statistic { display: inline-flex; flex-direction: column; gap: 4px; }
+.cf-statistic__label { font-size: var(--t-12); color: var(--fg-3); }
+.cf-statistic__value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-feature-settings: 'tnum';
+  color: var(--fg-1);
+}
+.cf-statistic__number {
+  font-size: var(--t-22);
+  font-weight: var(--w-medium, 500);
+  line-height: 1.2;
+}
+.cf-statistic--sm .cf-statistic__number { font-size: var(--t-18); }
+.cf-statistic--lg .cf-statistic__number { font-size: var(--t-28); }
+.cf-statistic__prefix,
+.cf-statistic__suffix {
+  font-size: 0.7em;
+  color: var(--fg-3);
+}

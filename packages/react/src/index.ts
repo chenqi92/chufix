@@ -64,6 +64,15 @@ import './styles/jsondiff.css';
 import './styles/calendar.css';
 import './styles/kanban.css';
 import './styles/mention.css';
+import './styles/backtop.css';
+import './styles/affix.css';
+import './styles/watermark.css';
+import './styles/image.css';
+import './styles/timeline.css';
+import './styles/result.css';
+import './styles/statistic.css';
+import './styles/carousel.css';
+import './styles/cascader.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -483,3 +492,40 @@ export type {
   MentionSize,
   MentionOption,
 } from './mention/variants';
+
+export { BackTop as CfBackTop } from './backtop/BackTop';
+export type { BackTopProps, BackTopSize } from './backtop/variants';
+
+export { Affix as CfAffix } from './affix/Affix';
+export type { AffixProps } from './affix/variants';
+
+export { Watermark as CfWatermark } from './watermark/Watermark';
+export type { WatermarkProps } from './watermark/variants';
+
+export { Image as CfImage } from './image/Image';
+export type { ImageProps, ImageFit } from './image/variants';
+
+export { Timeline as CfTimeline } from './timeline/Timeline';
+export type {
+  TimelineProps,
+  TimelineItem,
+  TimelineSize,
+  TimelineMode,
+  TimelineDotColor,
+} from './timeline/variants';
+
+export { Result as CfResult } from './result/Result';
+export type { ResultProps, ResultStatus, ResultSize } from './result/variants';
+
+export { Statistic as CfStatistic } from './statistic/Statistic';
+export type { StatisticProps, StatisticSize } from './statistic/variants';
+
+export { Carousel as CfCarousel } from './carousel/Carousel';
+export type { CarouselProps, CarouselItem, CarouselSize } from './carousel/variants';
+
+export { Cascader as CfCascader } from './cascader/Cascader';
+export type {
+  CascaderProps,
+  CascaderOption,
+  CascaderSize,
+} from './cascader/variants';

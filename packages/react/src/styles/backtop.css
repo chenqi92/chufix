@@ -1,0 +1,43 @@
+/* ChuFix BackTop — fixed scroll-to-top button */
+
+.cf-backtop {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  color: var(--fg-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+  z-index: var(--z-sticky);
+  box-shadow: var(--shadow-2);
+}
+.cf-backtop.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.cf-backtop:hover {
+  background: var(--bg-3);
+  color: var(--accent-1);
+}
+.cf-backtop svg {
+  width: 18px;
+  height: 18px;
+}
+.cf-backtop--sm { width: 32px; height: 32px; }
+.cf-backtop--sm svg { width: 14px; height: 14px; }
+.cf-backtop--lg { width: 48px; height: 48px; }
+.cf-backtop--lg svg { width: 22px; height: 22px; }

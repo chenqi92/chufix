@@ -1,0 +1,3 @@
+/* ChuFix Affix — sticky position helper */
+.cf-affix { position: relative; }
+.cf-affix.is-fixed { /* placeholder keeps layout flow */ }

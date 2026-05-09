@@ -59,6 +59,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'DateRangePicker 日期范围', href: '/components/daterangepicker/' },
       { label: 'KVEditor 键值编辑器', href: '/components/kveditor/' },
       { label: 'Mention 提及输入', href: '/components/mention/' },
+      { label: 'Cascader 级联选择', href: '/components/cascader/' },
     ],
   },
   {
@@ -93,6 +94,10 @@ export const sidebar: SidebarGroup[] = [
       { label: 'JsonViewer JSON 浏览', href: '/components/jsonviewer/' },
       { label: 'JsonDiff JSON 对比', href: '/components/jsondiff/' },
       { label: 'Kanban 看板', href: '/components/kanban/' },
+      { label: 'Image 图片', href: '/components/image/' },
+      { label: 'Carousel 轮播', href: '/components/carousel/' },
+      { label: 'Statistic 统计数值', href: '/components/statistic/' },
+      { label: 'Timeline 时间轴', href: '/components/timeline/' },
     ],
   },
   {
@@ -119,6 +124,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Drawer 抽屉', href: '/components/drawer/' },
       { label: 'Popover 弹出层', href: '/components/popover/' },
       { label: 'Banner 全宽提示', href: '/components/banner/' },
+      { label: 'Result 结果页', href: '/components/result/' },
     ],
   },
   {
@@ -129,6 +135,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Progress 进度', href: '/components/progress/' },
       { label: 'Spinner 加载', href: '/components/spinner/' },
       { label: 'Accordion 折叠面板', href: '/components/accordion/' },
+      { label: 'BackTop 返回顶部', href: '/components/backtop/' },
+      { label: 'Affix 固钉', href: '/components/affix/' },
+      { label: 'Watermark 水印', href: '/components/watermark/' },
     ],
   },
 ];

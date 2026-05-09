@@ -1,0 +1,34 @@
+---
+title: Carousel 轮播
+description: 横向轮播图片或自定义内容，支持自动播放、循环、指示点、左右控制。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/carousel/BasicVue.vue';
+
+## 基础用法
+
+`items` 接收 `{ src, alt }` 列表渲染图片；`autoplay` 配合 `interval` 自动滚动，鼠标悬停时暂停。
+
+<DemoFrame
+  vueCode={`<CfCarousel :items="items" autoplay :interval="3000" />`}
+  reactCode={`<CfCarousel items={items} autoplay interval={3000} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `CarouselItem[]` | `—` | 轮播项列表 |
+| `value` / `modelValue` | `number` | `—` | 受控当前索引 |
+| `defaultValue` | `number` | `0` | 非受控初始索引 |
+| `autoplay` | `boolean` | `false` | 自动播放 |
+| `interval` | `number` | `4000` | 自动播放间隔（毫秒） |
+| `loop` | `boolean` | `true` | 循环播放 |
+| `controls` | `boolean` | `true` | 显示左右切换按钮 |
+| `indicators` | `boolean` | `true` | 显示底部指示点 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 视口高度档位 |
+
+事件：`onChange(index)` —— 当前索引变化时触发。

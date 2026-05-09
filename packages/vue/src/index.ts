@@ -64,6 +64,15 @@ import './styles/jsondiff.css';
 import './styles/calendar.css';
 import './styles/kanban.css';
 import './styles/mention.css';
+import './styles/backtop.css';
+import './styles/affix.css';
+import './styles/watermark.css';
+import './styles/image.css';
+import './styles/timeline.css';
+import './styles/result.css';
+import './styles/statistic.css';
+import './styles/carousel.css';
+import './styles/cascader.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -466,6 +475,43 @@ export type {
   MentionSize,
   MentionOption,
 } from './mention/variants';
+
+export { default as CfBackTop } from './backtop/BackTop.vue';
+export type { BackTopProps, BackTopSize } from './backtop/variants';
+
+export { default as CfAffix } from './affix/Affix.vue';
+export type { AffixProps } from './affix/variants';
+
+export { default as CfWatermark } from './watermark/Watermark.vue';
+export type { WatermarkProps } from './watermark/variants';
+
+export { default as CfImage } from './image/Image.vue';
+export type { ImageProps, ImageFit } from './image/variants';
+
+export { default as CfTimeline } from './timeline/Timeline.vue';
+export type {
+  TimelineProps,
+  TimelineItem,
+  TimelineSize,
+  TimelineMode,
+  TimelineDotColor,
+} from './timeline/variants';
+
+export { default as CfResult } from './result/Result.vue';
+export type { ResultProps, ResultStatus, ResultSize } from './result/variants';
+
+export { default as CfStatistic } from './statistic/Statistic.vue';
+export type { StatisticProps, StatisticSize } from './statistic/variants';
+
+export { default as CfCarousel } from './carousel/Carousel.vue';
+export type { CarouselProps, CarouselItem, CarouselSize } from './carousel/variants';
+
+export { default as CfCascader } from './cascader/Cascader.vue';
+export type {
+  CascaderProps,
+  CascaderOption,
+  CascaderSize,
+} from './cascader/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

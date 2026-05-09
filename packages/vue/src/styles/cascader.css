@@ -1,0 +1,85 @@
+/* ChuFix Cascader — multi-level dropdown selection */
+
+.cf-cascader {
+  position: relative;
+  display: inline-block;
+  min-width: 240px;
+}
+.cf-cascader.is-disabled .cf-cascader__trigger { opacity: 0.6; cursor: not-allowed; }
+
+.cf-cascader__trigger {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px 0 10px;
+  height: 32px;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  color: var(--fg-1);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+.cf-cascader--sm .cf-cascader__trigger { height: 28px; font-size: var(--t-12); }
+.cf-cascader--lg .cf-cascader__trigger { height: 38px; font-size: var(--t-14); }
+.cf-cascader__trigger:hover { border-color: var(--accent-1); }
+
+.cf-cascader__value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cf-cascader__value.is-placeholder { color: var(--fg-3); }
+.cf-cascader__caret { color: var(--fg-3); font-size: 11px; }
+.cf-cascader__clear {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.cf-cascader__clear:hover { color: var(--fg-1); }
+
+.cf-cascader__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: var(--z-dropdown);
+  display: flex;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-3);
+  max-height: 240px;
+}
+
+.cf-cascader__col {
+  width: 160px;
+  overflow-y: auto;
+  border-right: 1px solid var(--line-1);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.cf-cascader__col:last-child { border-right: 0; }
+
+.cf-cascader__item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-radius: var(--r-2);
+  cursor: pointer;
+  font-size: var(--t-13);
+  color: var(--fg-1);
+}
+.cf-cascader__item:hover,
+.cf-cascader__item.is-active { background: var(--bg-2); }
+.cf-cascader__item.is-selected { color: var(--accent-1); font-weight: var(--w-medium, 500); }
+.cf-cascader__item.is-disabled { opacity: 0.5; cursor: not-allowed; }
+.cf-cascader__arrow { color: var(--fg-3); font-size: 12px; }

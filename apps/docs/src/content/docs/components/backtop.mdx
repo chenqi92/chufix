@@ -1,0 +1,33 @@
+---
+title: BackTop 返回顶部
+description: 滚动超过阈值后浮现的固定按钮，点击平滑回到容器顶部。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/backtop/BasicVue.vue';
+
+## 基础用法
+
+`target` 指定要监听并滚动的容器（CSS 选择器）；省略则监听 `window`。`visibilityHeight` 控制按钮在滚出多少像素后才显形。
+
+<DemoFrame
+  vueCode={`<div class="scroll-root" style="height: 600px; overflow-y: auto;">
+  <p v-for="i in 24" :key="i">第 {{ i }} 段内容…</p>
+  <CfBackTop target=".scroll-root" :visibility-height="120" />
+</div>`}
+  reactCode={`<div className="scroll-root" style={{ height: 600, overflowY: 'auto' }}>
+  {Array.from({ length: 24 }, (_, i) => <p key={i}>第 {i + 1} 段内容…</p>)}
+  <CfBackTop target=".scroll-root" visibilityHeight={120} />
+</div>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `visibilityHeight` | `number` | `200` | 滚动超过此值后按钮可见 |
+| `target` | `string` | `—` | 要监听的容器选择器；省略时监听 `window` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 按钮尺寸 |
+| `duration` | `number` | `320` | 平滑滚动时长（毫秒） |

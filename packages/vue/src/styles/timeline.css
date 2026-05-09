@@ -1,0 +1,103 @@
+/* ChuFix Timeline — vertical event axis */
+
+.cf-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.cf-timeline__item {
+  position: relative;
+  padding-left: 28px;
+  padding-bottom: var(--s-4);
+  display: flex;
+  flex-direction: column;
+}
+.cf-timeline__item:not(.is-last)::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 14px;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-1);
+}
+
+.cf-timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--accent-1);
+  border: 2px solid var(--bg-0);
+  box-shadow: 0 0 0 1px currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-1);
+  flex: none;
+}
+.cf-timeline__item--success > .cf-timeline__dot { background: var(--status-success); color: var(--status-success); }
+.cf-timeline__item--warning > .cf-timeline__dot { background: var(--status-warning); color: var(--status-warning); }
+.cf-timeline__item--danger > .cf-timeline__dot { background: var(--status-error); color: var(--status-error); }
+.cf-timeline__item--neutral > .cf-timeline__dot { background: var(--fg-3); color: var(--fg-3); }
+
+.cf-timeline__body { font-size: var(--t-13); }
+.cf-timeline--sm .cf-timeline__body { font-size: var(--t-12); }
+.cf-timeline--lg .cf-timeline__body { font-size: var(--t-14); }
+
+.cf-timeline__title { font-weight: var(--w-medium, 500); color: var(--fg-1); }
+.cf-timeline__content { color: var(--fg-2); margin-top: 2px; }
+.cf-timeline__time { color: var(--fg-3); font-size: 0.85em; margin-top: 4px; }
+
+/* right mode */
+.cf-timeline--right .cf-timeline__item {
+  padding-left: 0;
+  padding-right: 28px;
+  align-items: flex-end;
+  text-align: right;
+}
+.cf-timeline--right .cf-timeline__item:not(.is-last)::before {
+  left: auto;
+  right: 7px;
+}
+.cf-timeline--right .cf-timeline__dot {
+  left: auto;
+  right: 0;
+}
+
+/* alternate mode */
+.cf-timeline--alternate {
+  padding-left: 0;
+}
+.cf-timeline--alternate .cf-timeline__item {
+  width: 50%;
+  padding-left: 0;
+  padding-right: 0;
+}
+.cf-timeline--alternate .cf-timeline__item.is-left {
+  padding-right: 28px;
+  align-items: flex-end;
+  text-align: right;
+}
+.cf-timeline--alternate .cf-timeline__item.is-right {
+  padding-left: 28px;
+  margin-left: 50%;
+}
+.cf-timeline--alternate .cf-timeline__item.is-left::before {
+  left: auto;
+  right: 7px;
+}
+.cf-timeline--alternate .cf-timeline__item.is-left > .cf-timeline__dot {
+  left: auto;
+  right: -7px;
+}
+.cf-timeline--alternate .cf-timeline__item.is-right::before {
+  left: -7px;
+}
+.cf-timeline--alternate .cf-timeline__item.is-right > .cf-timeline__dot {
+  left: -7px;
+}

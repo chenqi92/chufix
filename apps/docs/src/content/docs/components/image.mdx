@@ -1,0 +1,34 @@
+---
+title: Image 图片
+description: 带加载占位、错误回退、懒加载的图片容器。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/image/BasicVue.vue';
+
+## 基础用法
+
+加载中显示骨架闪烁；`onerror` 时切换到 `fallback`（未提供则显示错误图标占位）。`lazy` 默认开启，使用浏览器原生 `loading="lazy"`。
+
+<DemoFrame
+  vueCode={`<CfImage src="/photo.jpg" alt="风景" :width="160" :height="100" rounded bordered />
+<CfImage src="/broken.jpg" alt="加载失败示例" :width="160" :height="100" rounded bordered />`}
+  reactCode={`<CfImage src="/photo.jpg" alt="风景" width={160} height={100} rounded bordered />
+<CfImage src="/broken.jpg" alt="加载失败示例" width={160} height={100} rounded bordered />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `src` | `string` | `—` | 图片地址（必填） |
+| `alt` | `string` | `''` | 替代文本 |
+| `width` / `height` | `number \| string` | `—` | 容器尺寸 |
+| `fit` | `'cover' \| 'contain' \| 'fill' \| 'none' \| 'scale-down'` | `'cover'` | object-fit 行为 |
+| `rounded` | `boolean` | `false` | 圆角容器 |
+| `bordered` | `boolean` | `false` | 描边 |
+| `fallback` | `string` | `—` | 加载失败时切换到的备用图地址 |
+| `lazy` | `boolean` | `true` | 是否启用浏览器懒加载 |
+| `loading` | `'lazy' \| 'eager'` | `—` | 强制指定 `loading` 属性 |
