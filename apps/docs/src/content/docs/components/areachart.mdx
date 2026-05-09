@@ -18,6 +18,21 @@ import BasicVue from '~/components/demos/areachart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 堆叠模式
+
+`stacked = true` 把 series 累加显示（每条数据值是前面所有 series 的累加值），
+适合展示组成；默认 false 重叠显示，适合比较趋势。
+
+import StackedVue from '~/components/demos/areachart/StackedVue.vue';
+
+<DemoFrame
+  vueCode={`<CfAreaChart :series="series" stacked smooth />`}
+  reactCode={`<CfAreaChart series={series} stacked smooth />`}
+>
+  <StackedVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

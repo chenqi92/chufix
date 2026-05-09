@@ -30,6 +30,22 @@ import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 方向与变体
+
+`orientation="vertical"` 垂直堆叠；`variant="plain"` 取消背景与边框，作为纯按钮组使用。
+
+import VerticalVue from '~/components/demos/toolbar/VerticalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfToolbar orientation="vertical">…</CfToolbar>
+<CfToolbar variant="plain">…</CfToolbar>`}
+  reactCode={`<CfToolbar orientation="vertical">…</CfToolbar>
+<CfToolbar variant="plain">…</CfToolbar>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
 ## API
 
 ### CfToolbar

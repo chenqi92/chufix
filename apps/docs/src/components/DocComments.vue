@@ -85,7 +85,16 @@ async function loadComments() {
       return;
     }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json() as { comments?: CommentItem[] };
+    const data = await res.json() as {
+      ok?: boolean;
+      code?: string;
+      comments?: CommentItem[];
+    };
+    if (data.ok === false && data.code === 'COMMENTS_DB_NOT_BOUND') {
+      unavailable.value = true;
+      comments.value = [];
+      return;
+    }
     comments.value = normalize(data.comments ?? []);
   } catch {
     unavailable.value = true;

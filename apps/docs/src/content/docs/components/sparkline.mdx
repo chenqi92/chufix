@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 8 色调色板
+
+通过 `colorIndex`（0..7）选 `--viz-1..8` 任一色号，色盲友好且与图表系列色统一。
+
+import ColorsVue from '~/components/demos/sparkline/ColorsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSparkline :data="data" :color-index="0" filled smooth />
+<CfSparkline :data="data" :color-index="3" filled smooth />`}
+  reactCode={`<CfSparkline data={data} colorIndex={0} filled smooth />
+<CfSparkline data={data} colorIndex={3} filled smooth />`}
+>
+  <ColorsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

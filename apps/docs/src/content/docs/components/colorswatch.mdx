@@ -23,6 +23,30 @@ import BasicVue from '~/components/demos/colorswatch/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 尺寸 / 形状 / 状态
+
+3 档尺寸，square / round 两种形状，可选中、可禁用。
+
+import SizesVue from '~/components/demos/colorswatch/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfColorSwatch size="sm" color="var(--accent-1)" />
+<CfColorSwatch size="md" color="var(--accent-1)" />
+<CfColorSwatch size="lg" color="var(--accent-1)" />
+<CfColorSwatch shape="round" color="var(--accent-1)" />
+<CfColorSwatch :selected="true" color="var(--accent-1)" />
+<CfColorSwatch disabled color="var(--accent-1)" />`}
+  reactCode={`<CfColorSwatch size="sm" color="var(--accent-1)" />
+<CfColorSwatch size="md" color="var(--accent-1)" />
+<CfColorSwatch size="lg" color="var(--accent-1)" />
+<CfColorSwatch shape="round" color="var(--accent-1)" />
+<CfColorSwatch selected color="var(--accent-1)" />
+<CfColorSwatch disabled color="var(--accent-1)" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

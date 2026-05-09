@@ -21,6 +21,24 @@ import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 尺寸
+
+3 档尺寸跟着 `--control-h` token 变化。
+
+import SizesVue from '~/components/demos/splitbutton/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSplitButton size="sm" :items="items">Small</CfSplitButton>
+<CfSplitButton size="md" :items="items">Medium</CfSplitButton>
+<CfSplitButton size="lg" :items="items">Large</CfSplitButton>`}
+  reactCode={`<CfSplitButton size="sm" items={items}>Small</CfSplitButton>
+<CfSplitButton size="md" items={items}>Medium</CfSplitButton>
+<CfSplitButton size="lg" items={items}>Large</CfSplitButton>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

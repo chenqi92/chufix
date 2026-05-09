@@ -18,6 +18,34 @@ import BasicVue from '~/components/demos/linechart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 平滑曲线
+
+`smooth = true` 走 Catmull-Rom 风格的 cubic Bezier，控制点取相邻两点的差值乘以 0.2 张力，
+不会过冲（不会出现拐点处的"半圆"鼓包）。
+
+import SmoothVue from '~/components/demos/linechart/SmoothVue.vue';
+
+<DemoFrame
+  vueCode={`<CfLineChart :series="series" smooth />`}
+  reactCode={`<CfLineChart series={series} smooth />`}
+>
+  <SmoothVue client:load />
+</DemoFrame>
+
+## 多 series
+
+最多支持 8 条同时显示，配色按 `--viz-1..8` 依次循环。
+
+import MultiSeriesVue from '~/components/demos/linechart/MultiSeriesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfLineChart :series="series" smooth />`}
+  reactCode={`<CfLineChart series={series} smooth />`}
+>
+  <MultiSeriesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
