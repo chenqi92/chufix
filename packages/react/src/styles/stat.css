@@ -1,0 +1,116 @@
+/* ChuFix Stat / KPI — number + label + optional trend indicator. */
+
+.cf-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  font-family: var(--font-sans);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+  color: var(--fg-1);
+}
+
+.cf-stat--sm { padding: 10px 12px; }
+.cf-stat--md { padding: 14px 16px; }
+.cf-stat--lg { padding: 18px 20px; }
+
+.cf-stat--outlined {
+  border: 1px solid var(--line-1);
+}
+.cf-stat--soft {
+  background: var(--bg-2);
+}
+
+.cf-stat__head {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+.cf-stat--lg .cf-stat__head { font-size: var(--t-13); }
+.cf-stat__label {
+  font-weight: var(--w-medium);
+  flex: 1;
+  min-width: 0;
+}
+.cf-stat__trailing {
+  flex: none;
+  color: var(--fg-3);
+}
+
+.cf-stat__value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--fg-1);
+  font-weight: var(--w-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.cf-stat--sm .cf-stat__value { font-size: var(--t-22); }
+.cf-stat--md .cf-stat__value { font-size: var(--t-28); }
+.cf-stat--lg .cf-stat__value { font-size: var(--t-36, 36px); }
+
+.cf-stat__prefix,
+.cf-stat__suffix {
+  color: var(--fg-3);
+  font-weight: var(--w-medium);
+  font-size: 0.7em;
+}
+
+.cf-stat__foot {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+
+.cf-stat__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: var(--w-medium);
+  border-radius: var(--r-3);
+  padding: 1px 6px;
+  font-variant-numeric: tabular-nums;
+}
+.cf-stat__trend--up {
+  color: var(--status-success);
+  background: var(--status-success-soft);
+}
+.cf-stat__trend--down {
+  color: var(--status-error);
+  background: var(--status-error-soft);
+}
+.cf-stat__trend--flat {
+  color: var(--fg-3);
+  background: var(--bg-2);
+}
+
+.cf-stat__trend-icon {
+  width: 10px;
+  height: 10px;
+}
+
+.cf-stat__trend-label {
+  color: var(--fg-3);
+  font-weight: var(--w-medium);
+}
+
+.cf-stat__hint {
+  color: var(--fg-3);
+}
+
+.cf-stat.is-loading .cf-stat__value::before {
+  content: '—';
+  color: var(--fg-3);
+  font-weight: var(--w-medium);
+}
+.cf-stat.is-loading .cf-stat__number,
+.cf-stat.is-loading .cf-stat__prefix,
+.cf-stat.is-loading .cf-stat__suffix { display: none; }

@@ -1,0 +1,69 @@
+/* ChuFix DescriptionList — dt/dd style key-value layout. */
+
+.cf-dl {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+}
+
+.cf-dl--sm { font-size: var(--t-12); }
+.cf-dl--lg { font-size: var(--t-14); }
+
+.cf-dl.is-bordered {
+  border: 1px solid var(--line-1);
+  padding: 4px 0;
+}
+
+.cf-dl__title {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+  padding: 8px 12px 4px;
+  font-size: var(--t-14);
+}
+
+.cf-dl__grid {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cf-dl-cols, 1), minmax(0, 1fr));
+  gap: 0;
+}
+
+.cf-dl__row {
+  display: grid;
+  align-items: baseline;
+  padding: 8px 12px;
+}
+.cf-dl--sm .cf-dl__row { padding: 6px 10px; }
+.cf-dl--lg .cf-dl__row { padding: 10px 16px; }
+
+.cf-dl.is-bordered .cf-dl__row + .cf-dl__row {
+  border-top: 1px solid var(--line-1);
+}
+.cf-dl.is-bordered .cf-dl__row {
+  margin: 0;
+}
+
+.cf-dl--horizontal .cf-dl__row {
+  grid-template-columns: var(--cf-dl-term-width, 120px) 1fr;
+  column-gap: 12px;
+}
+
+.cf-dl--vertical .cf-dl__row {
+  grid-template-columns: 1fr;
+  row-gap: 4px;
+}
+
+.cf-dl__term {
+  margin: 0;
+  color: var(--fg-3);
+  font-weight: var(--w-medium);
+}
+
+.cf-dl__description {
+  margin: 0;
+  color: var(--fg-1);
+  word-break: break-word;
+}

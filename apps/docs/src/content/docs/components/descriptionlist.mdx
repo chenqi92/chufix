@@ -1,0 +1,65 @@
+---
+title: DescriptionList 描述列表
+description: dt / dd 风格的键值对展示，支持横竖两种布局、多列、可描边。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/descriptionlist/BasicVue.vue';
+import ColumnsVue from '~/components/demos/descriptionlist/ColumnsVue.vue';
+
+## 基础用法
+
+把数据填进 `items`：每项有 `term` 与 `description`。`termWidth` 控制 term 列宽（horizontal layout）。`bordered` 给条目之间加描边。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfDescriptionList } from '@chufix/vue';
+const items = [
+  { term: '订单号', description: '#2026-CF-00018' },
+  { term: '下单时间', description: '2026-05-09 14:23' },
+  { term: '配送地址', description: '上海市浦东新区世纪大道 100 号 18A 室' },
+];
+</script>
+
+<template>
+  <CfDescriptionList :items="items" :term-width="100" bordered title="订单信息" />
+</template>`}
+  reactCode={`import { CfDescriptionList } from '@chufix/react';
+
+const items = [
+  { term: '订单号', description: '#2026-CF-00018' },
+  { term: '下单时间', description: '2026-05-09 14:23' },
+  { term: '配送地址', description: '上海市浦东新区世纪大道 100 号 18A 室' },
+];
+
+export default function Demo() {
+  return <CfDescriptionList items={items} termWidth={100} bordered title="订单信息" />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 多列
+
+`columns` 是一个数字，控制内部 grid 的列数。`item.span` 让单条目跨多列。
+
+<DemoFrame
+  vueCode={`<CfDescriptionList :items="items" :columns="3" bordered :term-width="60" />`}
+  reactCode={`<CfDescriptionList items={items} columns={3} bordered termWidth={60} />`}
+>
+  <ColumnsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `DescriptionItem[]` | `[]` | 数据数组 |
+| `layout` | `'horizontal' \| 'vertical'` | `'horizontal'` | term/description 排列方向 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 内距 |
+| `columns` | `number` | `1` | 整体列数 |
+| `bordered` | `boolean` | `false` | 整体描边 + 行分隔 |
+| `termWidth` | `number \| string` | `'120px'` | term 列宽（仅 horizontal） |
+| `title` | `string \| ReactNode` | `—` | 顶部标题 |
+
+`DescriptionItem`：`{ key?, term, description?, span? }`。

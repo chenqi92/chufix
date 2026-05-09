@@ -1,0 +1,89 @@
+---
+title: List 列表
+description: 通用列表，支持选中（单选 / 多选）、分组、卡片化、自定义渲染。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/list/BasicVue.vue';
+import GroupedVue from '~/components/demos/list/GroupedVue.vue';
+import CardVue from '~/components/demos/list/CardVue.vue';
+
+## 单选
+
+`selectable="single"` 把列表变成单选控件，`v-model` 绑定 `string`。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfList, type ListItem } from '@chufix/vue';
+
+const value = ref<string | null>('alice');
+const items: ListItem[] = [
+  { key: 'alice', label: 'Alice Chen', description: '前端工程师 · 上海' },
+  { key: 'bob',   label: 'Bob Wang',   description: '后端工程师 · 北京' },
+  { key: 'carol', label: 'Carol Liu',  description: '设计师 · 深圳', disabled: true },
+  { key: 'dave',  label: 'Dave Zhang', description: '产品经理 · 杭州' },
+];
+</script>
+
+<template>
+  <CfList v-model="value" selectable="single" :items="items" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfList, type ListItem } from '@chufix/react';
+
+const items: ListItem[] = [/* ... */];
+
+export default function Demo() {
+  const [value, setValue] = useState<string>('alice');
+  return (
+    <CfList
+      value={value}
+      selectable="single"
+      items={items}
+      onChange={(v) => setValue(v as string)}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 多选 + 分组
+
+每个 `ListItem` 可声明 `group`，相同 group 会自动聚合到一起，并显示分组标题。`selectable="multiple"` 时 `v-model` 绑定 `string[]`。
+
+<DemoFrame
+  vueCode={`<CfList v-model="value" selectable="multiple" :items="items" />`}
+  reactCode={`<CfList value={value} selectable="multiple" items={items} onChange={setValue as any} />`}
+>
+  <GroupedVue client:load />
+</DemoFrame>
+
+## 卡片化
+
+`variant="card"` 把每一项渲染成独立卡片，自带间距与圆角，适合展示订单 / 通知等独立条目。
+
+<DemoFrame
+  vueCode={`<CfList :items="items" variant="card" :bordered="false" />`}
+  reactCode={`<CfList items={items} variant="card" bordered={false} />`}
+>
+  <CardVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `ListItem[]` | `[]` | 数据数组 |
+| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | `null` | 选中项；类型由 `selectable` 决定 |
+| `selectable` | `'single' \| 'multiple' \| undefined` | `—` | 选择模式；省略则无选择行为 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `variant` | `'default' \| 'divided' \| 'card'` | `'default'` | 视觉模式 |
+| `bordered` | `boolean` | `true` | 整体描边 |
+| `hoverable` | `boolean` | `true` | 鼠标悬停高亮 |
+| `emptyText` | `string \| ReactNode` | `'暂无数据'` | 空状态文案 |
+
+`ListItem`：`{ key, label?, description?, leading?, trailing?, disabled?, group?, ...extra }`。
+事件：`update:modelValue` / `select`（React 端：`onChange` / `onSelect`）。
+插槽：默认 slot（Vue）或 `renderItem`（React）可完全覆盖每行的渲染。

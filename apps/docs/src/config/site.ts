@@ -79,6 +79,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'AppShell 应用脚手架', href: '/components/appshell/' },
       { label: 'Sidebar 侧栏', href: '/components/sidebar/' },
       { label: 'NavMenu 主导航', href: '/components/navmenu/' },
+      { label: 'List 列表', href: '/components/list/' },
+      { label: 'DescriptionList 描述列表', href: '/components/descriptionlist/' },
+      { label: 'Stat / KPI 指标', href: '/components/stat/' },
     ],
   },
 ];

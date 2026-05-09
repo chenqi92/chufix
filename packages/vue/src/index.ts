@@ -45,6 +45,9 @@ import './styles/splitter.css';
 import './styles/appshell.css';
 import './styles/sidebar.css';
 import './styles/navmenu.css';
+import './styles/list.css';
+import './styles/descriptionlist.css';
+import './styles/stat.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -317,6 +320,32 @@ export type {
   NavMenuLink,
   NavMenuVariant,
 } from './navmenu/variants';
+
+export { default as CfList } from './list/List.vue';
+export type {
+  ListProps,
+  ListItem,
+  ListSize,
+  ListVariant,
+  ListSelectable,
+} from './list/variants';
+
+export { default as CfDescriptionList } from './descriptionlist/DescriptionList.vue';
+export type {
+  DescriptionListProps,
+  DescriptionItem,
+  DescriptionListLayout,
+  DescriptionListSize,
+} from './descriptionlist/variants';
+
+export { default as CfStat } from './stat/Stat.vue';
+export type {
+  StatProps,
+  StatVariant,
+  StatSize,
+  StatTrend,
+  StatTrendDirection,
+} from './stat/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

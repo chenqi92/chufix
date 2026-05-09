@@ -1,0 +1,143 @@
+/* ChuFix List — generic list with grouping, selection, hover, empty state. */
+
+.cf-list {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}
+
+.cf-list--sm { font-size: var(--t-12); }
+.cf-list--lg { font-size: var(--t-14); }
+
+.cf-list.is-bordered {
+  border: 1px solid var(--line-1);
+}
+
+.cf-list--card {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cf-list--card.is-bordered {
+  border: 0;
+}
+
+.cf-list__group + .cf-list__group {
+  border-top: 1px solid var(--line-1);
+}
+.cf-list--card .cf-list__group + .cf-list__group {
+  border-top: 0;
+}
+
+.cf-list__group-label {
+  padding: 8px 12px 4px;
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  color: var(--fg-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--bg-1);
+}
+
+.cf-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cf-list--card .cf-list__items {
+  gap: 6px;
+}
+
+.cf-list__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: default;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.cf-list--sm .cf-list__item { padding: 6px 10px; }
+.cf-list--lg .cf-list__item { padding: 12px 16px; }
+
+.cf-list--divided .cf-list__item + .cf-list__item,
+.cf-list--default .cf-list__item + .cf-list__item {
+  border-top: 1px solid var(--line-1);
+}
+
+.cf-list--card .cf-list__item {
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+}
+
+.cf-list.is-selectable .cf-list__item {
+  cursor: pointer;
+}
+.cf-list.is-hoverable .cf-list__item:hover:not(.is-disabled) {
+  background: var(--bg-2);
+}
+.cf-list--card.is-hoverable .cf-list__item:hover:not(.is-disabled) {
+  background: var(--bg-3);
+  border-color: var(--line-2);
+}
+
+.cf-list__item.is-selected {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.cf-list--card .cf-list__item.is-selected {
+  border-color: var(--accent-1);
+  background: var(--accent-soft);
+}
+
+.cf-list__item.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+}
+
+.cf-list__leading,
+.cf-list__trailing {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  color: var(--fg-3);
+}
+.cf-list__leading svg,
+.cf-list__trailing svg {
+  width: 1em;
+  height: 1em;
+}
+
+.cf-list__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cf-list__label {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cf-list__item.is-selected .cf-list__label { color: var(--accent-1); }
+.cf-list__description {
+  font-size: var(--t-12);
+  color: var(--fg-3);
+  line-height: 1.45;
+}
+
+.cf-list__empty {
+  padding: 32px 16px;
+  color: var(--fg-3);
+  text-align: center;
+  font-size: var(--t-12);
+}

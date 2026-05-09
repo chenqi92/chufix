@@ -7,7 +7,7 @@
 
 ---
 
-## 已发布 · 46 / 70+
+## 已发布 · 49 / 70+
 
 ### 表单 · Form (19)
 
@@ -38,11 +38,14 @@
 - [x] AppShell (layout · #appshell)
 - [x] Splitter (navigation · Splitter / rich)
 
-### 数据展示 · Display (3)
+### 数据展示 · Display (6)
 
 - [x] Tag (atoms · B.2.1)
 - [x] Badge (atoms · B.2.1)
 - [x] Avatar · AvatarGroup (atoms · B.2.5)
+- [x] List (base2 · List)
+- [x] DescriptionList (base2 · DescriptionList)
+- [x] Stat / KPI (base2 · KPI · Stat / rich)
 
 ### 反馈与覆盖层 · Feedback / Overlay (8)
 
@@ -114,9 +117,9 @@
 - [ ] **Table** (base · B.16 / data · #table) —— 轻量表格，列定义、排序、空状态
 - [ ] **DataGrid** (data · #datagrid) —— 重量表格，虚拟滚动、列拖动、单元格编辑
 - [ ] **TreeView** (data · #tree / rich · Tree) —— 树形列表，可选/可拖
-- [ ] **List** (base2 · List) —— 通用列表，支持选中、分组、虚拟滚动
-- [ ] **DescriptionList** (base2 · DescriptionList) —— `dt/dd` 风格的键值描述
-- [ ] **KPI · Stat** (base2 · KPI · Stat / rich) —— 关键指标卡片（数字 + 标签 + 趋势）
+- [x] **List** (base2 · List) —— 通用列表，支持选中、分组、虚拟滚动
+- [x] **DescriptionList** (base2 · DescriptionList) —— `dt/dd` 风格的键值描述
+- [x] **KPI · Stat** (base2 · KPI · Stat / rich) —— 关键指标卡片（数字 + 标签 + 趋势）
 
 ## 路线图 · 优先级 P4（小件/utility）· 8
 

@@ -45,6 +45,9 @@ import './styles/splitter.css';
 import './styles/appshell.css';
 import './styles/sidebar.css';
 import './styles/navmenu.css';
+import './styles/list.css';
+import './styles/descriptionlist.css';
+import './styles/stat.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -335,3 +338,29 @@ export type {
   NavMenuLink,
   NavMenuVariant,
 } from './navmenu/variants';
+
+export { List as CfList } from './list/List';
+export type {
+  ListProps,
+  ListItem,
+  ListSize,
+  ListVariant,
+  ListSelectable,
+} from './list/variants';
+
+export { DescriptionList as CfDescriptionList } from './descriptionlist/DescriptionList';
+export type {
+  DescriptionListProps,
+  DescriptionItem,
+  DescriptionListLayout,
+  DescriptionListSize,
+} from './descriptionlist/variants';
+
+export { Stat as CfStat } from './stat/Stat';
+export type {
+  StatProps,
+  StatVariant,
+  StatSize,
+  StatTrend,
+  StatTrendDirection,
+} from './stat/variants';
