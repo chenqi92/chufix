@@ -1,0 +1,76 @@
+/* ChuFix Mention — textarea with @-trigger autocomplete */
+
+.cf-mention {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.cf-mention__input {
+  width: 100%;
+  padding: var(--s-2) var(--s-3);
+  font: inherit;
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.cf-mention--sm .cf-mention__input { font-size: var(--t-12); padding: 4px 8px; }
+.cf-mention--lg .cf-mention__input { font-size: var(--t-14); padding: 10px 14px; }
+.cf-mention__input:focus {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.cf-mention.is-disabled .cf-mention__input,
+.cf-mention__input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cf-mention__menu {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 220px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-3);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cf-mention__item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: var(--r-2);
+  cursor: pointer;
+  color: var(--fg-1);
+  font-size: var(--t-13);
+}
+.cf-mention__item:hover,
+.cf-mention__item.is-active {
+  background: var(--bg-2);
+}
+.cf-mention__item.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cf-mention__label { font-weight: var(--w-medium, 500); }
+.cf-mention__desc { font-size: 0.85em; color: var(--fg-3); }

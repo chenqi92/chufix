@@ -58,6 +58,12 @@ import './styles/aspectratio.css';
 import './styles/rating.css';
 import './styles/toc.css';
 import './styles/scrollarea.css';
+import './styles/kveditor.css';
+import './styles/jsonviewer.css';
+import './styles/jsondiff.css';
+import './styles/calendar.css';
+import './styles/kanban.css';
+import './styles/mention.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -433,3 +439,47 @@ export type {
   SegmentedSize,
   SegmentedAlign,
 } from './segmented/variants';
+
+export { KVEditor as CfKVEditor } from './kveditor/KVEditor';
+export type {
+  KVEditorProps,
+  KVEditorSize,
+  KVRow,
+} from './kveditor/variants';
+
+export { JsonViewer as CfJsonViewer } from './jsonviewer/JsonViewer';
+export type {
+  JsonViewerProps,
+  JsonViewerSize,
+  JsonValueType,
+} from './jsonviewer/variants';
+
+export { JsonDiff as CfJsonDiff } from './jsondiff/JsonDiff';
+export type {
+  JsonDiffProps,
+  JsonDiffSize,
+  DiffOp,
+  DiffLine,
+} from './jsondiff/variants';
+
+export { Calendar as CfCalendar } from './calendar/Calendar';
+export type {
+  CalendarProps,
+  CalendarSize,
+  DayCell,
+} from './calendar/variants';
+
+export { Kanban as CfKanban } from './kanban/Kanban';
+export type {
+  KanbanProps,
+  KanbanSize,
+  KanbanColumn,
+  KanbanCard,
+} from './kanban/variants';
+
+export { Mention as CfMention } from './mention/Mention';
+export type {
+  MentionProps,
+  MentionSize,
+  MentionOption,
+} from './mention/variants';

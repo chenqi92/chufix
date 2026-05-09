@@ -1,0 +1,31 @@
+---
+title: Mention 提及输入
+description: 多行文本输入器，输入 `@`（或自定义 trigger）触发候选下拉，键盘上下键选择，Enter / Tab 确认。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/mention/BasicVue.vue';
+
+## 基础用法
+
+`CfMention` 在 `<textarea>` 上叠加触发字符识别。支持自定义 `trigger`（默认 `@`）、`options` 选项、`label` / `description` 双行渲染。
+
+<DemoFrame
+  vueCode={`<CfMention v-model="text" :options="options" />`}
+  reactCode={`<CfMention value={text} onChange={setText} options={options} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `''` | 文本内容 |
+| `options` | `MentionOption[]` | `—` | `{ value, label?, description?, disabled? }` |
+| `trigger` | `string` | `'@'` | 触发字符 |
+| `rows` | `number` | `4` | textarea 行数 |
+| `placeholder` | `string` | `'输入 @ 触发提及'` | |
+| `disabled` / `readonly` | `boolean` | `false` | |
+
+事件：`select(option)` 在选中候选项时触发。

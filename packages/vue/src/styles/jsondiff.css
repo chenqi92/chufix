@@ -1,0 +1,46 @@
+/* ChuFix JsonDiff — line-by-line diff view of two JSON values. */
+
+.cf-jdiff {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-size: var(--t-12);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+  margin: 0;
+  padding: 8px 0;
+  overflow: auto;
+  line-height: 1.55;
+  white-space: pre;
+}
+.cf-jdiff--sm { font-size: var(--t-11); }
+.cf-jdiff--lg { font-size: var(--t-13); }
+.cf-jdiff.is-bordered { border: 1px solid var(--line-1); }
+
+.cf-jdiff__line {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 12px;
+}
+.cf-jdiff__line--add {
+  background: oklch(70% 0.16 145 / 0.16);
+}
+.cf-jdiff__line--del {
+  background: oklch(65% 0.18 25 / 0.16);
+}
+
+.cf-jdiff__num {
+  flex: none;
+  width: 36px;
+  color: var(--fg-3);
+  text-align: right;
+  user-select: none;
+  margin-right: 10px;
+}
+.cf-jdiff__sigil {
+  flex: none;
+  width: 14px;
+  color: var(--fg-3);
+}
+.cf-jdiff__line--add .cf-jdiff__sigil { color: oklch(70% 0.16 145); }
+.cf-jdiff__line--del .cf-jdiff__sigil { color: oklch(65% 0.18 25); }
+.cf-jdiff__text { flex: 1; min-width: 0; }

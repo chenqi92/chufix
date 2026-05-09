@@ -7,7 +7,7 @@
 
 ---
 
-## 已发布 · 60 / 70+
+## 已发布 · 66 / 70+
 
 ### 表单 · Form (19)
 
@@ -137,12 +137,12 @@
 
 ## 路线图 · 优先级 P5（特殊场景，按需）· 6
 
-- [ ] **Calendar** (base · B.14 / rich · Calendar) —— 月视图日历
-- [ ] **Kanban Board** (rich · Kanban) —— 看板列拖动
-- [ ] **JSONViewer** (data · #json) —— 折叠/展开 JSON 树
-- [ ] **JSONDiff** (data · #jsondiff) —— 双侧 JSON 对比
-- [ ] **KVEditor** (data · #kv) —— 键值对编辑（行式表单）
-- [ ] **Mention / RichText** (forms-plus · Mention) —— 富文本 `@` 提及
+- [x] **Calendar** (base · B.14 / rich · Calendar) —— 月视图日历
+- [x] **Kanban Board** (rich · Kanban) —— 看板列拖动
+- [x] **JSONViewer** (data · #json) —— 折叠/展开 JSON 树
+- [x] **JSONDiff** (data · #jsondiff) —— 双侧 JSON 对比
+- [x] **KVEditor** (data · #kv) —— 键值对编辑（行式表单）
+- [x] **Mention / RichText** (forms-plus · Mention) —— 富文本 `@` 提及
 
 ## 不做 / 暂不在范围 · ProtoForge 专属
 

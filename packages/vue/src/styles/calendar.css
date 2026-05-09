@@ -1,0 +1,96 @@
+/* ChuFix Calendar — month grid date picker */
+
+.cf-cal {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+  border: 1px solid var(--line-1);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  user-select: none;
+}
+.cf-cal--sm { font-size: var(--t-12); }
+.cf-cal--lg { font-size: var(--t-14); }
+.cf-cal.is-disabled { opacity: 0.6; pointer-events: none; }
+
+.cf-cal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.cf-cal__nav {
+  appearance: none;
+  border: 1px solid var(--line-1);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-2);
+  cursor: pointer;
+  font-size: 1.1em;
+  line-height: 1;
+}
+.cf-cal__nav:hover { background: var(--bg-3); }
+.cf-cal__nav:disabled { opacity: 0.4; cursor: not-allowed; }
+.cf-cal__title {
+  font-weight: var(--w-medium, 500);
+  color: var(--fg-1);
+}
+
+.cf-cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 32px);
+  gap: 2px;
+}
+.cf-cal.has-weeknums .cf-cal__grid {
+  grid-template-columns: 28px repeat(7, 32px);
+}
+.cf-cal__head {
+  font-size: 0.85em;
+  color: var(--fg-3);
+  text-align: center;
+  line-height: 24px;
+}
+.cf-cal__head--week { color: var(--fg-3); }
+.cf-cal__week {
+  font-size: 0.8em;
+  color: var(--fg-3);
+  text-align: center;
+  align-self: center;
+}
+
+.cf-cal__day {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-2);
+  cursor: pointer;
+  font-size: 0.95em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cf-cal__day:hover { background: var(--bg-2); }
+.cf-cal__day.is-outside { color: var(--fg-3); opacity: 0.55; }
+.cf-cal__day.is-weekend:not(.is-selected) { color: oklch(65% 0.15 25); }
+.cf-cal__day.is-today {
+  outline: 1px solid var(--accent-1);
+  outline-offset: -2px;
+}
+.cf-cal__day.is-selected {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-cal__day.is-selected:hover { background: var(--accent-2); }
+.cf-cal__day.is-disabled,
+.cf-cal__day:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

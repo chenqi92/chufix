@@ -58,6 +58,12 @@ import './styles/aspectratio.css';
 import './styles/rating.css';
 import './styles/toc.css';
 import './styles/scrollarea.css';
+import './styles/kveditor.css';
+import './styles/jsonviewer.css';
+import './styles/jsondiff.css';
+import './styles/calendar.css';
+import './styles/kanban.css';
+import './styles/mention.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -416,6 +422,50 @@ export type {
   SegmentedSize,
   SegmentedAlign,
 } from './segmented/variants';
+
+export { default as CfKVEditor } from './kveditor/KVEditor.vue';
+export type {
+  KVEditorProps,
+  KVEditorSize,
+  KVRow,
+} from './kveditor/variants';
+
+export { default as CfJsonViewer } from './jsonviewer/JsonViewer.vue';
+export type {
+  JsonViewerProps,
+  JsonViewerSize,
+  JsonValueType,
+} from './jsonviewer/variants';
+
+export { default as CfJsonDiff } from './jsondiff/JsonDiff.vue';
+export type {
+  JsonDiffProps,
+  JsonDiffSize,
+  DiffOp,
+  DiffLine,
+} from './jsondiff/variants';
+
+export { default as CfCalendar } from './calendar/Calendar.vue';
+export type {
+  CalendarProps,
+  CalendarSize,
+  DayCell,
+} from './calendar/variants';
+
+export { default as CfKanban } from './kanban/Kanban.vue';
+export type {
+  KanbanProps,
+  KanbanSize,
+  KanbanColumn,
+  KanbanCard,
+} from './kanban/variants';
+
+export { default as CfMention } from './mention/Mention.vue';
+export type {
+  MentionProps,
+  MentionSize,
+  MentionOption,
+} from './mention/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

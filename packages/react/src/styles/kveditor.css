@@ -1,0 +1,105 @@
+/* ChuFix KVEditor — row-form for editing key-value pairs (HTTP headers / params / env). */
+
+.cf-kv {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}
+
+.cf-kv--sm { font-size: var(--t-12); }
+.cf-kv--lg { font-size: var(--t-14); }
+
+.cf-kv.is-bordered { border: 1px solid var(--line-1); }
+.cf-kv.is-disabled { opacity: var(--disabled-opacity); }
+
+.cf-kv__header,
+.cf-kv__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 36px;
+  align-items: center;
+  border-bottom: 1px solid var(--line-1);
+}
+.cf-kv__row:last-child { border-bottom: 0; }
+
+.cf-kv__header.has-toggle,
+.cf-kv__row.has-toggle {
+  grid-template-columns: 36px 1fr 1fr 36px;
+}
+.cf-kv__header.has-desc,
+.cf-kv__row.has-desc {
+  grid-template-columns: 1fr 1fr 1fr 36px;
+}
+.cf-kv__header.has-toggle.has-desc,
+.cf-kv__row.has-toggle.has-desc {
+  grid-template-columns: 36px 1fr 1fr 1fr 36px;
+}
+
+.cf-kv__header {
+  background: var(--bg-2);
+  color: var(--fg-3);
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cf-kv__col {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.cf-kv--sm .cf-kv__col { padding: 4px 8px; }
+.cf-kv--lg .cf-kv__col { padding: 8px 12px; }
+
+.cf-kv__col--toggle,
+.cf-kv__col--remove {
+  justify-content: center;
+}
+
+.cf-kv__input {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+  padding: 0;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-size: 0.95em;
+}
+.cf-kv__input::placeholder { color: var(--fg-3); }
+.cf-kv__input:disabled { cursor: not-allowed; }
+
+.cf-kv__row .cf-kv__col + .cf-kv__col {
+  border-left: 1px solid var(--line-1);
+}
+
+.cf-kv__check {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+
+.cf-kv__remove {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.cf-kv__remove:hover { background: var(--bg-2); color: var(--fg-1); }
+
+.cf-kv__row:has(.cf-kv__input[value=""]):last-child {
+  background: var(--bg-2);
+}

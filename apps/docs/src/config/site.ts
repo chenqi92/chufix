@@ -93,6 +93,12 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Toc 目录锚点', href: '/components/toc/' },
       { label: 'ScrollArea 滚动容器', href: '/components/scrollarea/' },
       { label: 'SegmentedControl 分段控件', href: '/components/segmented/' },
+      { label: 'KVEditor 键值编辑器', href: '/components/kveditor/' },
+      { label: 'JsonViewer JSON 浏览', href: '/components/jsonviewer/' },
+      { label: 'JsonDiff JSON 对比', href: '/components/jsondiff/' },
+      { label: 'Calendar 日历', href: '/components/calendar/' },
+      { label: 'Kanban 看板', href: '/components/kanban/' },
+      { label: 'Mention 提及输入', href: '/components/mention/' },
     ],
   },
 ];

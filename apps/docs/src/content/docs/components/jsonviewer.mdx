@@ -1,0 +1,28 @@
+---
+title: JsonViewer JSON 浏览器
+description: 折叠式 JSON 树视图，按值类型上色，支持深度展开、类型徽标、行号外框。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/jsonviewer/BasicVue.vue';
+
+## 基础用法
+
+`CfJsonViewer` 接受任意 JS 值作为 `data`，按对象 / 数组 / 字符串 / 数字 / 布尔 / null / undefined 着色。
+
+<DemoFrame
+  vueCode={`<CfJsonViewer :data="data" :default-expand-depth="2" show-types />`}
+  reactCode={`<CfJsonViewer data={data} defaultExpandDepth={2} showTypes />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `unknown` | `—` | 要渲染的 JSON-like 值 |
+| `defaultExpandDepth` | `number` | `1` | 初始展开深度 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
+| `bordered` | `boolean` | `true` | 边框 |
+| `showTypes` | `boolean` | `false` | 在叶节点旁显示 `string` / `number` 等类型徽标 |

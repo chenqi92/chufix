@@ -1,0 +1,92 @@
+/* ChuFix Kanban — column board with draggable cards */
+
+.cf-kanban {
+  display: flex;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: var(--bg-0);
+  border-radius: var(--r-4);
+  overflow-x: auto;
+  align-items: flex-start;
+}
+.cf-kanban.is-bordered { border: 1px solid var(--line-1); }
+.cf-kanban--sm { font-size: var(--t-12); }
+.cf-kanban--lg { font-size: var(--t-14); }
+
+.cf-kanban__col {
+  flex: 0 0 var(--cf-kanban-col-w, 280px);
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  display: flex;
+  flex-direction: column;
+  max-height: var(--cf-kanban-col-max-h, 600px);
+}
+
+.cf-kanban__col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s-3);
+  border-bottom: 1px solid var(--line-1);
+  font-weight: var(--w-medium, 500);
+}
+.cf-kanban__col-title { color: var(--fg-1); }
+.cf-kanban__col-count {
+  font-size: 0.85em;
+  color: var(--fg-3);
+  background: var(--bg-2);
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+}
+
+.cf-kanban__col-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  overflow-y: auto;
+  min-height: 60px;
+}
+
+.cf-kanban__card {
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-2);
+  padding: var(--s-2) var(--s-3);
+  cursor: grab;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.cf-kanban__card:hover {
+  border-color: var(--accent-1);
+  box-shadow: var(--shadow-1);
+}
+.cf-kanban__card:active { cursor: grabbing; }
+
+.cf-kanban__card-title {
+  font-weight: var(--w-medium, 500);
+  color: var(--fg-1);
+}
+.cf-kanban__card-desc {
+  font-size: 0.9em;
+  color: var(--fg-2);
+  margin-top: 4px;
+}
+.cf-kanban__card-foot {
+  margin-top: var(--s-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.cf-kanban__card-tag {
+  font-size: 0.8em;
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+}
+.cf-kanban__card-meta {
+  font-size: 0.8em;
+  color: var(--fg-3);
+}

@@ -1,0 +1,80 @@
+/* ChuFix JsonViewer — collapsible JSON tree, color-coded by type. */
+
+.cf-json {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-size: var(--t-12);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  padding: 8px 12px;
+  border-radius: var(--r-4);
+  line-height: 1.6;
+}
+.cf-json--sm { font-size: var(--t-11); }
+.cf-json--lg { font-size: var(--t-13); }
+.cf-json.is-bordered { border: 1px solid var(--line-1); }
+
+.cf-json__line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: pre;
+}
+.cf-json__line--close { padding-bottom: 0; }
+
+.cf-json__caret {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--r-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex: none;
+  padding: 0;
+}
+.cf-json__caret:hover { background: var(--bg-2); color: var(--fg-1); }
+.cf-json__caret--leaf { cursor: default; opacity: 0.4; }
+.cf-json__caret--leaf::before {
+  content: '';
+  width: 4px;
+  height: 1px;
+  background: var(--line-2);
+}
+.cf-json__caret svg {
+  width: 10px;
+  height: 10px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-json__caret.is-open svg { transform: rotate(90deg); }
+
+.cf-json__key {
+  color: var(--accent-1);
+}
+.cf-json__sep { color: var(--fg-3); margin-right: 2px; }
+
+.cf-json__value--string  { color: oklch(60% 0.18 140); }
+.cf-json__value--number  { color: oklch(70% 0.18 60); }
+.cf-json__value--boolean { color: oklch(70% 0.16 280); font-weight: var(--w-medium); }
+.cf-json__value--null,
+.cf-json__value--undefined { color: var(--fg-3); font-style: italic; }
+
+.cf-json__bracket { color: var(--fg-3); }
+.cf-json__summary {
+  color: var(--fg-3);
+  margin: 0 4px;
+  font-size: 0.85em;
+}
+.cf-json__type {
+  margin-left: 6px;
+  font-size: 0.85em;
+  color: var(--fg-3);
+  background: var(--bg-2);
+  padding: 0 5px;
+  border-radius: var(--r-pill);
+}
+
+.cf-json__children { display: flex; flex-direction: column; }

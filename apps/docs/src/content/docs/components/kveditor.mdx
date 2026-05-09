@@ -1,0 +1,42 @@
+---
+title: KVEditor 键值对编辑器
+description: 用于编辑 HTTP headers / query params / 环境变量等键值对列表，支持启用开关、说明列、自动追加空行。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
+
+## 基础用法
+
+`CfKVEditor` 把数组形态的 `{ key, value, enabled? }` 渲染成可编辑表格。最后一行是空行，输入后自动追加新空行。
+
+<DemoFrame
+  vueCode={`<CfKVEditor
+  v-model="headers"
+  key-placeholder="Header"
+  value-placeholder="Value"
+  show-toggle
+/>`}
+  reactCode={`<CfKVEditor
+  value={headers}
+  onChange={setHeaders}
+  keyPlaceholder="Header"
+  valuePlaceholder="Value"
+  showToggle
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `KVRow[]` | `[]` | 行数组 `{ key, value, enabled?, description? }` |
+| `keyPlaceholder` | `string` | `'键'` | 表头与输入占位 |
+| `valuePlaceholder` | `string` | `'值'` | 表头与输入占位 |
+| `showToggle` | `boolean` | `false` | 显示启用开关列 |
+| `showDescription` | `boolean` | `false` | 显示说明列 |
+| `autoAppend` | `boolean` | `true` | 末尾自动追加空行 |
+| `disabled` / `readonly` | `boolean` | `false` | 禁用 / 只读 |
+| `bordered` | `boolean` | `true` | 边框 |
