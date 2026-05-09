@@ -7,6 +7,7 @@ import {
   type DropzoneProps,
   type DropzoneRejection,
 } from './variants';
+import StatusIllustration from '../statusillustration/StatusIllustration.vue';
 
 const props = withDefaults(defineProps<DropzoneProps>(), {
   modelValue: () => [] as File[],
@@ -166,20 +167,7 @@ defineExpose({ pickFiles, clearAll });
         @change="onSelect"
       />
       <slot name="icon">
-        <svg
-          class="cf-dropzone__icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M12 4v12m0-12-4 4m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <StatusIllustration class="cf-dropzone__illustration" variant="upload" />
       </slot>
       <slot>
         <div class="cf-dropzone__title">

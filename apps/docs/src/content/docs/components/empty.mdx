@@ -8,6 +8,7 @@ import BasicVue from '~/components/demos/empty/BasicVue.vue';
 import TextVue from '~/components/demos/empty/TextVue.vue';
 import ActionVue from '~/components/demos/empty/ActionVue.vue';
 import SizesVue from '~/components/demos/empty/SizesVue.vue';
+import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
 
 ## 基础用法
 
@@ -56,6 +57,37 @@ import SizesVue from '~/components/demos/empty/SizesVue.vue';
   <ActionVue client:load />
 </DemoFrame>
 
+## 状态插图
+
+默认图标来自 `CfStatusIllustration`。可以在 `icon` 插槽（Vue）/ `icon` prop（React）里换成搜索、上传、错误等不同状态。
+
+<DemoFrame
+  vueCode={`<CfEmpty title="没有搜索结果" description="换个关键词或清空筛选条件试试。">
+  <template #icon>
+    <CfStatusIllustration variant="search" />
+  </template>
+</CfEmpty>
+
+<CfEmpty title="还没有文件" description="拖拽文件到这里，或点击上传。">
+  <template #icon>
+    <CfStatusIllustration variant="upload" />
+  </template>
+</CfEmpty>`}
+  reactCode={`<CfEmpty
+  title="没有搜索结果"
+  description="换个关键词或清空筛选条件试试。"
+  icon={<CfStatusIllustration variant="search" />}
+/>
+
+<CfEmpty
+  title="还没有文件"
+  description="拖拽文件到这里，或点击上传。"
+  icon={<CfStatusIllustration variant="upload" />}
+/>`}
+>
+  <IllustrationsVue client:load />
+</DemoFrame>
+
 ## 三档尺寸
 
 `size` —— `sm`（行内 inline 占位）/ `md` 默认 / `lg` 整页空状态。
@@ -84,3 +116,11 @@ import SizesVue from '~/components/demos/empty/SizesVue.vue';
 - `icon` —— 替换默认 SVG 图标
 - `title` / `description` —— 替换文本节点（同名 prop 也可）
 - `action` —— 操作按钮区
+
+### CfStatusIllustration
+
+| Prop | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `variant` | `'empty' \| 'search' \| 'upload' \| 'success' \| 'info' \| 'warning' \| 'error' \| 'not-found' \| 'forbidden' \| 'server-error'` | `'empty'` | 状态插图类型 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 插图尺寸 |
+| `title` | `string` | — | 传入后作为可访问名称；不传则作为装饰图 |

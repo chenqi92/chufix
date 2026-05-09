@@ -1,12 +1,22 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = resolve(packageDir, '..', '..', '..');
-const sourceSvgPath = resolve(repoRoot, 'icons.svg');
 const targetSvgPath = resolve(packageDir, 'src', 'icons.svg');
 const targetNamesPath = resolve(packageDir, 'src', 'names.ts');
+const sourceCandidates = [
+  process.env.CHUFIX_ICONS_SOURCE,
+  resolve(repoRoot, 'icons.svg'),
+  targetSvgPath,
+].filter(Boolean);
+const sourceSvgPath = sourceCandidates.find((p) => existsSync(p));
+
+if (!sourceSvgPath) {
+  throw new Error(`No icons.svg source found. Tried: ${sourceCandidates.join(', ')}`);
+}
 
 const svg = await readFile(sourceSvgPath, 'utf8');
 const symbolMatches = Array.from(
