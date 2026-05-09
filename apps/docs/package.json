@@ -13,6 +13,7 @@
     "@astrojs/mdx": "^3.1.9",
     "@astrojs/react": "^3.6.2",
     "@astrojs/vue": "^4.5.3",
+    "@chufix/icons": "workspace:*",
     "@chufix/react": "workspace:*",
     "@chufix/tokens": "workspace:*",
     "@chufix/vue": "workspace:*",

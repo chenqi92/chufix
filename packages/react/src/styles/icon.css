@@ -15,3 +15,37 @@
 .cf-icon--md { --cf-icon-size: 16px; }
 .cf-icon--lg { --cf-icon-size: 20px; }
 .cf-icon--xl { --cf-icon-size: 24px; }
+
+.cf-icon--motion-spin {
+  animation: cf-icon-spin 0.9s linear infinite;
+}
+
+.cf-icon--motion-pulse {
+  animation: cf-icon-pulse 1.4s ease-in-out infinite;
+}
+
+.cf-icon--motion-bounce {
+  animation: cf-icon-bounce 0.9s ease-in-out infinite;
+}
+
+@keyframes cf-icon-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cf-icon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes cf-icon-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-icon--motion-spin,
+  .cf-icon--motion-pulse,
+  .cf-icon--motion-bounce {
+    animation: none;
+  }
+}

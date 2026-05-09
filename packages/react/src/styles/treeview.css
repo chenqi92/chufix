@@ -10,7 +10,7 @@
 .cf-tree--sm { font-size: var(--t-12); }
 .cf-tree--lg { font-size: var(--t-14); }
 
-.cf-tree__list {
+.cf-tree .cf-tree__list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -28,7 +28,10 @@
   background: var(--line-1);
 }
 
-.cf-tree__item { position: relative; }
+.cf-tree .cf-tree__item {
+  position: relative;
+  margin: 0;
+}
 
 .cf-tree__row {
   display: flex;

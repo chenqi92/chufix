@@ -100,7 +100,7 @@
 }
 .cf-select__clear:hover { background: var(--bg-3); color: var(--fg-1); }
 
-.cf-select__menu {
+.cf-select .cf-select__menu {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -117,12 +117,13 @@
   box-shadow: var(--shadow-3);
 }
 
-.cf-select__option {
+.cf-select .cf-select__option {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   padding: 6px 10px;
+  margin: 0;
   border-radius: var(--r-4);
   cursor: pointer;
   color: var(--fg-1);
@@ -135,8 +136,9 @@
 .cf-select__option.is-disabled { color: var(--fg-3); cursor: not-allowed; }
 .cf-select__check { width: 1em; height: 1em; flex: none; }
 
-.cf-select__empty {
+.cf-select .cf-select__empty {
   padding: 8px 10px;
+  margin: 0;
   color: var(--fg-3);
   font-size: var(--t-12);
   text-align: center;

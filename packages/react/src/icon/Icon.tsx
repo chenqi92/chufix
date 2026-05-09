@@ -7,6 +7,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(props, re
     name,
     size = 'md',
     strokeWidth = 1.5,
+    color,
+    motion,
     title,
     className,
     style,
@@ -21,8 +23,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(props, re
   return (
     <svg
       ref={ref}
-      className={iconClass({ size, className })}
-      style={iconStyle(size, style)}
+      className={iconClass({ size, motion, className })}
+      style={iconStyle(size, color, style)}
       viewBox="0 0 16 16"
       fill="none"
       stroke="currentColor"

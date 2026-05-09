@@ -9,8 +9,8 @@ const props = withDefaults(defineProps<IconProps>(), {
 });
 
 const titleId = useId();
-const cls = computed(() => iconClass(props.size!));
-const style = computed(() => iconStyle(props.size!));
+const cls = computed(() => iconClass(props.size!, props.motion));
+const style = computed(() => iconStyle(props.size!, props.color));
 const hasAccessibleName = computed(() => Boolean(props.title || props.label));
 const markup = computed(() => iconSymbols[props.name]);
 </script>

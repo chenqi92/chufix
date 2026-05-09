@@ -69,6 +69,17 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
     const section = root.querySelector<HTMLElement>('.cf-demo__code-section');
     const tabs = root.querySelectorAll<HTMLButtonElement>('.cf-demo__tab');
     const panels = root.querySelectorAll<HTMLElement>('.cf-demo__panel');
+    const floatingSelector = [
+      '.cf-select.is-open',
+      '.cf-combobox.is-open',
+      '.cf-date.is-open',
+      '.cf-color.is-open',
+      '.cf-navmenu__item.is-open',
+    ].join(',');
+
+    const syncFloatingState = () => {
+      root.dataset.floatingOpen = String(Boolean(root.querySelector(floatingSelector)));
+    };
 
     if (toggle && section) {
       toggle.addEventListener('click', () => {
@@ -77,6 +88,7 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
         toggle.setAttribute('aria-expanded', String(collapsed));
         const label = toggle.querySelector<HTMLElement>('.cf-demo__toggle-label');
         if (label) label.textContent = collapsed ? '收起代码' : '查看代码';
+        syncFloatingState();
       });
     }
 
@@ -107,6 +119,14 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
         }, 1400);
       });
     });
+
+    const observer = new MutationObserver(syncFloatingState);
+    observer.observe(root, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'data-state', 'aria-expanded'],
+    });
+    syncFloatingState();
   }
   document
     .querySelectorAll<HTMLElement>('[data-demo-frame]')
