@@ -23,6 +23,11 @@ import './styles/diffeditor.css';
 import './styles/markdowneditor.css';
 import './styles/regexbuilder.css';
 import './styles/ansitext.css';
+import './styles/titlebar.css';
+import './styles/statusbar.css';
+import './styles/menubar.css';
+import './styles/notificationcenter.css';
+import './styles/globalsearch.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -292,6 +297,41 @@ export type {
   AnsiTextSize,
   AnsiSpan,
 } from './ansitext/variants';
+
+export { TitleBar as CfTitleBar } from './titlebar/TitleBar';
+export type {
+  TitleBarProps,
+  TitleBarPlatform,
+  TitleBarSize,
+} from './titlebar/variants';
+
+export { StatusBar as CfStatusBar } from './statusbar/StatusBar';
+export type {
+  StatusBarProps,
+  StatusBarItem,
+  StatusBarTone,
+  StatusBarSize,
+} from './statusbar/variants';
+
+export { MenuBar as CfMenuBar } from './menubar/MenuBar';
+export type {
+  MenuBarProps,
+  MenuBarMenu,
+  MenuBarItem,
+} from './menubar/variants';
+
+export { NotificationCenter as CfNotificationCenter } from './notificationcenter/NotificationCenter';
+export type {
+  NotificationCenterProps,
+  NotificationItem,
+  NotificationTone,
+} from './notificationcenter/variants';
+
+export { GlobalSearch as CfGlobalSearch } from './globalsearch/GlobalSearch';
+export type {
+  GlobalSearchProps,
+  GlobalSearchResult,
+} from './globalsearch/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

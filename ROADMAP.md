@@ -10,7 +10,7 @@
 
 ---
 
-## 已发布 · 112 / 130+
+## 已发布 · 117 / 130+
 
 ### 表单 · Form (27)
 
@@ -241,11 +241,11 @@
 桌面 App 风格的窗口装饰。Web App 也有部分场景能用（StatusBar、NotificationCenter），但 TitleBar / MenuBar 在浏览器里没意义。
 **实现策略**：放在主包但用文档明确标注"适用于 Tauri / Electron / 准桌面 web 应用"。
 
-- [ ] **TitleBar** (system · TitleBar) —— 应用窗口标题栏（含最小化/最大化/关闭按钮槽）
-- [ ] **StatusBar** (system · StatusBar) —— 底部状态条（左中右槽，支持点击展开）
-- [ ] **MenuBar** (system · MenuBar) —— 应用顶部菜单栏（File / Edit / View 风格）
-- [ ] **NotificationCenter** (system · NotificationCenter) —— 通知中心面板（Toast 历史记录列表）
-- [ ] **GlobalSearch** (system · GlobalSearch) —— 全局搜索壳（CommandPalette 的全屏变体）
+- [x] **TitleBar** (system · TitleBar) —— 应用窗口标题栏（含最小化/最大化/关闭按钮槽）
+- [x] **StatusBar** (system · StatusBar) —— 底部状态条（左中右槽，支持点击展开）
+- [x] **MenuBar** (system · MenuBar) —— 应用顶部菜单栏（File / Edit / View 风格）
+- [x] **NotificationCenter** (system · NotificationCenter) —— 通知中心面板（Toast 历史记录列表）
+- [x] **GlobalSearch** (system · GlobalSearch) —— 全局搜索壳（CommandPalette 的全屏变体）
 
 ## 路线图 · 优先级 P10（多窗口布局）· 4
 

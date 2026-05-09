@@ -1,0 +1,171 @@
+/* ChuFix NotificationCenter — flyout panel listing notification history. */
+
+.cf-notifcenter {
+  width: 360px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+}
+
+.cf-notifcenter__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-2);
+}
+
+.cf-notifcenter__title {
+  font-size: var(--t-13);
+  font-weight: var(--w-medium);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-notifcenter__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-pill);
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+}
+
+.cf-notifcenter__head-actions {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.cf-notifcenter__action {
+  border: 0;
+  background: transparent;
+  color: var(--accent-1);
+  font: inherit;
+  font-size: var(--t-11);
+  padding: 4px 6px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+}
+.cf-notifcenter__action:hover {
+  background: var(--bg-3);
+}
+
+.cf-notifcenter__body {
+  overflow-y: auto;
+  max-height: 480px;
+}
+
+.cf-notifcenter__empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+
+.cf-notifcenter__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cf-notifcenter__item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line-1);
+  cursor: pointer;
+  position: relative;
+}
+.cf-notifcenter__item:last-child {
+  border-bottom: 0;
+}
+.cf-notifcenter__item:hover {
+  background: var(--bg-2);
+}
+.cf-notifcenter__item.is-read .cf-notifcenter__dot {
+  visibility: hidden;
+}
+
+.cf-notifcenter__dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 7px;
+  background: var(--accent-1);
+}
+.cf-notifcenter__item--success .cf-notifcenter__dot {
+  background: var(--status-success);
+}
+.cf-notifcenter__item--warning .cf-notifcenter__dot {
+  background: var(--status-warning);
+}
+.cf-notifcenter__item--error .cf-notifcenter__dot {
+  background: var(--status-error);
+}
+.cf-notifcenter__item--info .cf-notifcenter__dot {
+  background: var(--status-info);
+}
+
+.cf-notifcenter__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cf-notifcenter__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.cf-notifcenter__name {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+  font-size: var(--t-13);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-notifcenter__time {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  flex-shrink: 0;
+}
+
+.cf-notifcenter__desc {
+  margin: 4px 0 0;
+  color: var(--fg-2);
+  font-size: var(--t-12);
+  line-height: 1.5;
+}
+
+.cf-notifcenter__item-action {
+  margin-top: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--accent-1);
+  font: inherit;
+  font-size: var(--t-12);
+  padding: 0;
+  cursor: pointer;
+}
+.cf-notifcenter__item-action:hover {
+  text-decoration: underline;
+}

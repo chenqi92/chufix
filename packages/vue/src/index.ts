@@ -23,6 +23,11 @@ import './styles/diffeditor.css';
 import './styles/markdowneditor.css';
 import './styles/regexbuilder.css';
 import './styles/ansitext.css';
+import './styles/titlebar.css';
+import './styles/statusbar.css';
+import './styles/menubar.css';
+import './styles/notificationcenter.css';
+import './styles/globalsearch.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -283,6 +288,41 @@ export type {
   AnsiTextSize,
   AnsiSpan,
 } from './ansitext/variants';
+
+export { default as CfTitleBar } from './titlebar/TitleBar.vue';
+export type {
+  TitleBarProps,
+  TitleBarPlatform,
+  TitleBarSize,
+} from './titlebar/variants';
+
+export { default as CfStatusBar } from './statusbar/StatusBar.vue';
+export type {
+  StatusBarProps,
+  StatusBarItem,
+  StatusBarTone,
+  StatusBarSize,
+} from './statusbar/variants';
+
+export { default as CfMenuBar } from './menubar/MenuBar.vue';
+export type {
+  MenuBarProps,
+  MenuBarMenu,
+  MenuBarItem,
+} from './menubar/variants';
+
+export { default as CfNotificationCenter } from './notificationcenter/NotificationCenter.vue';
+export type {
+  NotificationCenterProps,
+  NotificationItem,
+  NotificationTone,
+} from './notificationcenter/variants';
+
+export { default as CfGlobalSearch } from './globalsearch/GlobalSearch.vue';
+export type {
+  GlobalSearchProps,
+  GlobalSearchResult,
+} from './globalsearch/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
