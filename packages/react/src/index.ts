@@ -73,6 +73,12 @@ import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
 import './styles/cascader.css';
+import './styles/marquee.css';
+import './styles/floatbutton.css';
+import './styles/anchor.css';
+import './styles/imagepreview.css';
+import './styles/timepicker.css';
+import './styles/transfer.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -529,3 +535,25 @@ export type {
   CascaderOption,
   CascaderSize,
 } from './cascader/variants';
+
+export { Marquee as CfMarquee } from './marquee/Marquee';
+export type { MarqueeProps, MarqueeDirection } from './marquee/variants';
+
+export { FloatButton as CfFloatButton } from './floatbutton/FloatButton';
+export type {
+  FloatButtonProps,
+  FloatButtonShape,
+  FloatButtonVariant,
+} from './floatbutton/variants';
+
+export { Anchor as CfAnchor } from './anchor/Anchor';
+export type { AnchorProps, AnchorItem } from './anchor/variants';
+
+export { ImagePreview as CfImagePreview } from './imagepreview/ImagePreview';
+export type { ImagePreviewProps } from './imagepreview/variants';
+
+export { TimePicker as CfTimePicker } from './timepicker/TimePicker';
+export type { TimePickerProps, TimePickerSize } from './timepicker/variants';
+
+export { Transfer as CfTransfer } from './transfer/Transfer';
+export type { TransferProps, TransferItem } from './transfer/variants';

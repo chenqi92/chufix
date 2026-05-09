@@ -1,0 +1,131 @@
+.cf-timepicker {
+  position: relative;
+  display: inline-block;
+  font-family: inherit;
+}
+
+.cf-timepicker--sm { font-size: var(--t-12); }
+.cf-timepicker--md { font-size: var(--t-13); }
+.cf-timepicker--lg { font-size: var(--t-14); }
+
+.cf-timepicker__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  height: var(--cf-timepicker-h, var(--control-h));
+  padding: 0 12px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.cf-timepicker--sm .cf-timepicker__trigger { --cf-timepicker-h: var(--control-h-sm); }
+.cf-timepicker--lg .cf-timepicker__trigger { --cf-timepicker-h: var(--control-h-lg); }
+
+.cf-timepicker__trigger:hover:not(:disabled) {
+  border-color: var(--line-2);
+  background: var(--bg-2);
+}
+
+.cf-timepicker.is-open .cf-timepicker__trigger {
+  border-color: var(--accent-1);
+  outline: 1px solid var(--accent-1);
+}
+
+.cf-timepicker__trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.cf-timepicker__value {
+  flex: 1;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-timepicker__placeholder {
+  flex: 1;
+  text-align: left;
+  color: var(--fg-3);
+}
+
+.cf-timepicker__clear {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: var(--t-14);
+  line-height: 1;
+}
+
+.cf-timepicker__clear:hover {
+  color: var(--fg-1);
+}
+
+.cf-timepicker__caret {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+
+.cf-timepicker__panel {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
+  padding: 6px;
+}
+
+.cf-timepicker__columns {
+  display: flex;
+  gap: 4px;
+}
+
+.cf-timepicker__col {
+  display: flex;
+  flex-direction: column;
+  width: 56px;
+  height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  border-radius: var(--r-2);
+}
+
+.cf-timepicker__col:not(:last-child) {
+  border-right: 1px solid var(--line-1);
+}
+
+.cf-timepicker__cell {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-1);
+  text-align: center;
+  padding: 6px 0;
+  font-size: var(--t-13);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  border-radius: var(--r-2);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.cf-timepicker__cell:hover {
+  background: var(--bg-2);
+}
+
+.cf-timepicker__cell.is-selected {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  font-weight: 600;
+}

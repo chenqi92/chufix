@@ -60,6 +60,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'KVEditor 键值编辑器', href: '/components/kveditor/' },
       { label: 'Mention 提及输入', href: '/components/mention/' },
       { label: 'Cascader 级联选择', href: '/components/cascader/' },
+      { label: 'TimePicker 时间选择', href: '/components/timepicker/' },
+      { label: 'Transfer 穿梭框', href: '/components/transfer/' },
     ],
   },
   {
@@ -98,6 +100,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Carousel 轮播', href: '/components/carousel/' },
       { label: 'Statistic 统计数值', href: '/components/statistic/' },
       { label: 'Timeline 时间轴', href: '/components/timeline/' },
+      { label: 'Marquee 跑马灯', href: '/components/marquee/' },
+      { label: 'ImagePreview 大图预览', href: '/components/imagepreview/' },
     ],
   },
   {
@@ -111,6 +115,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Stepper 步骤指示', href: '/components/stepper/' },
       { label: 'Sidebar 侧栏', href: '/components/sidebar/' },
       { label: 'NavMenu 主导航', href: '/components/navmenu/' },
+      { label: 'Anchor 锚点导航', href: '/components/anchor/' },
     ],
   },
   {
@@ -138,6 +143,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'BackTop 返回顶部', href: '/components/backtop/' },
       { label: 'Affix 固钉', href: '/components/affix/' },
       { label: 'Watermark 水印', href: '/components/watermark/' },
+      { label: 'FloatButton 悬浮按钮', href: '/components/floatbutton/' },
     ],
   },
 ];

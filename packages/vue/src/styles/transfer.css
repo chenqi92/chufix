@@ -1,0 +1,122 @@
+.cf-transfer {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 12px;
+  font-size: var(--t-13);
+}
+
+.cf-transfer__pane {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: 280px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+
+.cf-transfer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-2);
+}
+
+.cf-transfer__select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.cf-transfer__title {
+  color: var(--fg-1);
+  font-weight: 500;
+}
+
+.cf-transfer__count {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-transfer__search {
+  appearance: none;
+  margin: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-2);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font: inherit;
+}
+
+.cf-transfer__search:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 0;
+  border-color: var(--accent-1);
+}
+
+.cf-transfer__list {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+}
+
+.cf-transfer__item {
+  padding: 0;
+}
+
+.cf-transfer__item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: var(--fg-1);
+}
+
+.cf-transfer__item label:hover {
+  background: var(--bg-2);
+}
+
+.cf-transfer__item.is-disabled label {
+  cursor: not-allowed;
+  color: var(--fg-3);
+}
+
+.cf-transfer__ops {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cf-transfer__btn {
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font-size: var(--t-16);
+  line-height: 1;
+}
+
+.cf-transfer__btn:hover:not(:disabled) {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  border-color: transparent;
+}
+
+.cf-transfer__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}

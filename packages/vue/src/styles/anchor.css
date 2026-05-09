@@ -1,0 +1,49 @@
+.cf-anchor {
+  display: block;
+  border-left: 1px solid var(--line-1);
+  padding-left: var(--s-3);
+}
+
+.cf-anchor__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cf-anchor__list--nested {
+  margin-top: var(--s-1);
+  padding-left: var(--s-3);
+}
+
+.cf-anchor__item {
+  margin: 0;
+  padding: 0;
+}
+
+.cf-anchor__link {
+  display: block;
+  padding: 4px 8px;
+  margin: 2px 0;
+  font-size: var(--t-13);
+  color: var(--fg-2);
+  text-decoration: none;
+  border-radius: var(--r-2);
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.cf-anchor__link:hover {
+  color: var(--fg-1);
+  background: var(--bg-2);
+}
+
+.cf-anchor__link.is-active {
+  color: var(--accent-1);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.cf-anchor__link--nested {
+  font-size: var(--t-12);
+  padding-left: 12px;
+}

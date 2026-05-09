@@ -1,0 +1,36 @@
+.cf-marquee {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.cf-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: cf-marquee-left linear infinite;
+}
+
+.cf-marquee--right .cf-marquee__track {
+  animation-name: cf-marquee-right;
+}
+
+.cf-marquee--pause-on-hover:hover .cf-marquee__track {
+  animation-play-state: paused;
+}
+
+.cf-marquee__group {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding-right: var(--cf-marquee-pad, 40px);
+}
+
+@keyframes cf-marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes cf-marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}

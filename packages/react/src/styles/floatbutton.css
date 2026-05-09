@@ -1,0 +1,78 @@
+.cf-floatbtn {
+  position: fixed;
+  z-index: var(--z-sticky);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--line-1);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+  box-shadow: var(--shadow-2);
+}
+
+.cf-floatbtn--circle {
+  border-radius: 9999px;
+}
+
+.cf-floatbtn--square {
+  border-radius: var(--r-4);
+}
+
+.cf-floatbtn--primary {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  border-color: transparent;
+}
+
+.cf-floatbtn:hover {
+  background: var(--bg-3);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-3);
+}
+
+.cf-floatbtn--primary:hover {
+  background: var(--accent-2);
+}
+
+.cf-floatbtn:active {
+  transform: translateY(0);
+}
+
+.cf-floatbtn:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+}
+
+.cf-floatbtn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-floatbtn__icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+.cf-floatbtn__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9999px;
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  font-size: var(--t-11);
+  line-height: 18px;
+  text-align: center;
+  font-weight: 600;
+}

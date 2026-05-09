@@ -1,0 +1,37 @@
+---
+title: ImagePreview 图片大图预览
+description: 全屏图片查看器，支持滚轮缩放、鼠标拖拽、键盘 +/− / 0 / Esc 控制。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/imagepreview/BasicVue.vue';
+
+## 基础用法
+
+通常用一个缩略图触发预览：缩略图设为 `cursor: zoom-in`，点击时把 `open` 切到 `true`。
+
+- 滚轮：缩放
+- 鼠标拖拽：平移
+- 键盘 `+` / `-`：缩放
+- 键盘 `0`：恢复 100%
+- 键盘 `Esc`：关闭
+
+<DemoFrame
+  vueCode={`<img :src="thumbSrc" @click="open = true" style="cursor: zoom-in;" />
+<CfImagePreview v-model="open" :src="fullSrc" alt="示例" />`}
+  reactCode={`<img src={thumbSrc} onClick={() => setOpen(true)} style={{ cursor: 'zoom-in' }} />
+<CfImagePreview open={open} onOpenChange={setOpen} src={fullSrc} alt="示例" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `src` | `string` | `—` | 大图地址 |
+| `alt` | `string` | `''` | 替代文本 |
+| `open` / `modelValue` | `boolean` | `—` | 受控显示状态 |
+| `defaultOpen` | `boolean` | `false` | 非受控初始显示状态 |
+
+事件：`onOpenChange(open)` / `onClose()`。

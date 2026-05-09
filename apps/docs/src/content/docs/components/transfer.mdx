@@ -1,0 +1,38 @@
+---
+title: Transfer 穿梭框
+description: 两栏列表 + 中间箭头，把元素在「可选」与「已选」之间移动，常用于权限分配、字段勾选。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/transfer/BasicVue.vue';
+
+## 基础用法
+
+`dataSource` 是全集，`v-model` / `value` 是已选 keys 数组。每栏有「全选 / 反选」复选框，箭头按钮把当前栏勾选项移到对侧。`searchable` 在每栏顶部加搜索框。
+
+<DemoFrame
+  vueCode={`<CfTransfer :data-source="data" v-model="target" searchable />`}
+  reactCode={`<CfTransfer dataSource={data} value={target} onChange={setTarget} searchable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `dataSource` | `TransferItem[]` | `—` | 全集列表 |
+| `value` / `modelValue` | `string[]` | `—` | 受控的「已选」key 数组 |
+| `defaultValue` | `string[]` | `[]` | 非受控初始已选 keys |
+| `titles` | `[string, string]` | `['可选', '已选']` | 两栏标题 |
+| `searchable` | `boolean` | `false` | 显示搜索框 |
+
+### TransferItem
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `key` | `string` | 唯一 key |
+| `label` | `string` | 显示文本 |
+| `disabled` | `boolean` | 禁用，不可勾选 / 移动 |
+
+事件：`onChange(keys)` —— 已选 keys 数组变化时触发。

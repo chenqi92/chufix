@@ -1,0 +1,32 @@
+---
+title: Marquee 跑马灯
+description: 横向匀速滚动的文字或元素，常用于公告条 / 滚动消息 / logo 墙。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/marquee/BasicVue.vue';
+
+## 基础用法
+
+`duration` 控制完整滚动一圈的秒数；默认从右往左。`pauseOnHover` 默认开启，鼠标悬停时暂停。
+
+<DemoFrame
+  vueCode={`<CfMarquee :duration="20">
+  📢 系统将于今晚 23:00 进行升级维护...
+</CfMarquee>`}
+  reactCode={`<CfMarquee duration={20}>
+  📢 系统将于今晚 23:00 进行升级维护...
+</CfMarquee>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `content` | `string` | `—` | 简单文本内容；也可使用默认 slot / children 传入富内容 |
+| `duration` | `number` | `20` | 滚动一圈的秒数；越小越快 |
+| `direction` | `'left' \| 'right'` | `'left'` | 滚动方向 |
+| `pauseOnHover` | `boolean` | `true` | 鼠标悬停时暂停动画 |
+| `gap` | `number` | `40` | 内容尾端与下一轮起点之间的留白（像素） |

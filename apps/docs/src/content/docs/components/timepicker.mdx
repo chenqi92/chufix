@@ -1,0 +1,34 @@
+---
+title: TimePicker 时间选择器
+description: 触发器 + 三列滚动面板的时间选择器，支持时分秒，可配 DatePicker 用于"日期 + 时间"场景。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timepicker/BasicVue.vue';
+
+## 基础用法
+
+`v-model` / `value` 是字符串，格式 `HH:mm` 或 `HH:mm:ss`（开启 `showSeconds` 时）。`clearable` 显示清除按钮。
+
+<DemoFrame
+  vueCode={`<CfTimePicker v-model="t1" clearable />
+<CfTimePicker v-model="t2" show-seconds clearable />`}
+  reactCode={`<CfTimePicker value={t1} onChange={setT1} clearable />
+<CfTimePicker value={t2} onChange={setT2} showSeconds clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `value` / `modelValue` | `string \| null` | `—` | 受控值，格式 `HH:mm` 或 `HH:mm:ss` |
+| `defaultValue` | `string \| null` | `null` | 非受控初始值 |
+| `placeholder` | `string` | `'请选择时间'` | 未选中时占位文案 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 触发器尺寸 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `clearable` | `boolean` | `false` | 显示清除按钮 |
+| `showSeconds` | `boolean` | `false` | 显示秒列，输出格式变为 `HH:mm:ss` |
+
+事件：`onChange(value)` —— 时间变化时触发。

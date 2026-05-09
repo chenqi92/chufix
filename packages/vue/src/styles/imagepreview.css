@@ -1,0 +1,74 @@
+.cf-imgpreview {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-imgpreview__backdrop {
+  position: absolute;
+  inset: 0;
+  background: oklch(0% 0 0 / 0.78);
+}
+
+.cf-imgpreview__stage {
+  position: relative;
+  width: min(92vw, 1280px);
+  height: 84vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.cf-imgpreview__stage:active {
+  cursor: grabbing;
+}
+
+.cf-imgpreview__img {
+  max-width: 100%;
+  max-height: 100%;
+  user-select: none;
+  transition: transform var(--dur-fast) var(--ease-out);
+  will-change: transform;
+}
+
+.cf-imgpreview__toolbar {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: oklch(0% 0 0 / 0.5);
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+}
+
+.cf-imgpreview__toolbar button {
+  appearance: none;
+  border: 0;
+  background: oklch(100% 0 0 / 0.06);
+  color: oklch(98% 0 0);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 9999px;
+  font-size: var(--t-13);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.cf-imgpreview__toolbar button:hover {
+  background: oklch(100% 0 0 / 0.16);
+}
+
+.cf-imgpreview__toolbar button:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+}

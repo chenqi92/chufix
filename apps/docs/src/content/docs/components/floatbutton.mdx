@@ -1,0 +1,39 @@
+---
+title: FloatButton 悬浮按钮
+description: 固定在视口角落的圆形按钮，常用于「联系客服」「打开购物车」「写新内容」入口。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/floatbutton/BasicVue.vue';
+
+## 基础用法
+
+默认 `position: fixed`，`bottom` 与 `right` 默认 24px。`tooltip` 在悬停时通过 `title` 显示，`badge` 渲染右上角小红点徽标。
+
+<DemoFrame
+  vueCode={`<CfFloatButton tooltip="联系客服" badge="3" :bottom="24" :right="24" variant="primary">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8..." />
+  </svg>
+</CfFloatButton>`}
+  reactCode={`<CfFloatButton tooltip="联系客服" badge="3" bottom={24} right={24} variant="primary">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8..." />
+  </svg>
+</CfFloatButton>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `shape` | `'circle' \| 'square'` | `'circle'` | 按钮形状 |
+| `variant` | `'default' \| 'primary'` | `'default'` | 视觉强度 |
+| `tooltip` | `string` | `—` | 悬停提示文本（通过 `title` 显示） |
+| `badge` | `string \| number` | `—` | 右上角徽标文字；为空时不显示 |
+| `bottom` / `right` / `top` / `left` | `number` | `bottom: 24, right: 24` | 距视口边缘的偏移；与 CSS 同义 |
+| `ariaLabel` | `string` | 等同 `tooltip` | 屏幕阅读器标签 |
+
+事件：`onClick(evt)` —— 点击按钮。
