@@ -6,6 +6,8 @@ description: 标题 + 描述 + 面包屑 + 操作区 + 工具栏 + 标签页一�
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pageheader/BasicVue.vue';
 import WithTabsVue from '~/components/demos/pageheader/WithTabsVue.vue';
+import SizesVue from '~/components/demos/pageheader/SizesVue.vue';
+import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
 
 ## 基础用法
 
@@ -76,6 +78,40 @@ import WithTabsVue from '~/components/demos/pageheader/WithTabsVue.vue';
 />`}
 >
   <WithTabsVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 控制内距与字号 — `sm`（详情子页 / 弹窗内）/ `md`（默认）/ `lg`（落地页强调）。
+
+<DemoFrame
+  vueCode={`<CfPageHeader title="size = sm" description="紧凑头部" size="sm" />
+<CfPageHeader title="size = md" description="默认尺寸" size="md" />
+<CfPageHeader title="size = lg" description="落地页强调" size="lg" />`}
+  reactCode={`<CfPageHeader title="size = sm" description="紧凑头部" size="sm" />
+<CfPageHeader title="size = md" description="默认尺寸" size="md" />
+<CfPageHeader title="size = lg" description="落地页强调" size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 无底边
+
+`bordered={false}` 去掉默认的底部分隔线，让页头紧贴页面背景或后续卡片。
+
+<DemoFrame
+  vueCode={`<CfPageHeader
+  title="无底边的页头"
+  description="bordered=false 把底部分隔线去掉"
+  :bordered="false"
+/>`}
+  reactCode={`<CfPageHeader
+  title="无底边的页头"
+  description="bordered=false 把底部分隔线去掉"
+  bordered={false}
+/>`}
+>
+  <NoBorderVue client:load />
 </DemoFrame>
 
 ## API

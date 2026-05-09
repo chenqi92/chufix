@@ -6,6 +6,8 @@ description: 竖直主导航，支持分组、嵌套子菜单、徽标、收起�
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sidebar/BasicVue.vue';
 import CollapsedVue from '~/components/demos/sidebar/CollapsedVue.vue';
+import BadgesVue from '~/components/demos/sidebar/BadgesVue.vue';
+import SizesVue from '~/components/demos/sidebar/SizesVue.vue';
 
 ## 基础用法
 
@@ -79,6 +81,39 @@ export default function Demo() {
   reactCode={`<CfSidebar value={active} items={items} collapsed onChange={setActive} />`}
 >
   <CollapsedVue client:load />
+</DemoFrame>
+
+## 徽标 + 禁用
+
+`item.badge` 接收数字或字符串，渲染在 label 右侧。`item.disabled` 灰显且不响应点击。
+
+<DemoFrame
+  vueCode={`const items: SidebarEntry[] = [
+  { key: 'inbox', label: '收件箱', badge: 12 },
+  { key: 'starred', label: '加星' },
+  { key: 'drafts', label: '草稿', badge: 'NEW' },
+  { key: 'trash', label: '已删除', disabled: true },
+];
+
+<CfSidebar v-model="active" :items="items" />`}
+  reactCode={`<CfSidebar value={active} items={items} onChange={setActive} />`}
+>
+  <BadgesVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` —— `sm`（紧凑型，适合多级嵌套或多条目）/ `md` / `lg`（触摸友好）。
+
+<DemoFrame
+  vueCode={`<CfSidebar v-model="a" :items="items" size="sm" />
+<CfSidebar v-model="b" :items="items" size="md" />
+<CfSidebar v-model="c" :items="items" size="lg" />`}
+  reactCode={`<CfSidebar value={a} onChange={setA} items={items} size="sm" />
+<CfSidebar value={b} onChange={setB} items={items} size="md" />
+<CfSidebar value={c} onChange={setC} items={items} size="lg" />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API

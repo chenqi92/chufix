@@ -5,6 +5,8 @@ description: header + sidebar + main + aside + footer 的 CSS Grid 布局，整�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/appshell/BasicVue.vue';
+import WithAsideVue from '~/components/demos/appshell/WithAsideVue.vue';
+import VariantsVue from '~/components/demos/appshell/VariantsVue.vue';
 
 ## 基础用法
 
@@ -81,6 +83,45 @@ export default function Demo() {
 - `header` 默认 `position: sticky; top: 0`，滚动主区域时保持悬挂
 - `sidebar` / `aside` / `main` 各自 `overflow-y: auto`，互相独立滚动；都加了 `overscroll-behavior: contain` 防止滚动链式冒泡
 - 整体用 `display: grid`，布局区域由 `grid-template-areas` 定义
+
+## 加上右侧栏 aside
+
+`aside` slot 启用最右一列，常用于详情面板、大纲、提示侧栏。`asideWidth` 控制宽度。
+
+<DemoFrame
+  vueCode={`<CfAppShell :sidebar-width="160" :aside-width="200">
+  <template #header>顶栏</template>
+  <template #sidebar>左侧导航</template>
+  <template #aside>右侧 aside</template>
+  <template #footer>底栏</template>
+  <div>主内容区</div>
+</CfAppShell>`}
+  reactCode={`<CfAppShell
+  sidebarWidth={160}
+  asideWidth={200}
+  header={<>顶栏</>}
+  sidebar={<>左侧导航</>}
+  aside={<>右侧 aside</>}
+  footer={<>底栏</>}
+>
+  <div>主内容区</div>
+</CfAppShell>`}
+>
+  <WithAsideVue client:load />
+</DemoFrame>
+
+## 三档密度 variant
+
+`variant` 控制整体字号 / 内距档位 — `default` / `condensed`（紧凑后台用）/ `spacious`（落地页 / 大屏用）。
+
+<DemoFrame
+  vueCode={`<CfAppShell variant="condensed">…</CfAppShell>
+<CfAppShell variant="spacious">…</CfAppShell>`}
+  reactCode={`<CfAppShell variant="condensed">…</CfAppShell>
+<CfAppShell variant="spacious">…</CfAppShell>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
 
 ## API
 

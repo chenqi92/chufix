@@ -5,22 +5,83 @@ description: ChuFix 内置 SVG 图标组件，类型化 name，默认内联渲�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/icon/BasicVue.vue';
+import SizesVue from '~/components/demos/icon/SizesVue.vue';
+import ColorsVue from '~/components/demos/icon/ColorsVue.vue';
+import MotionVue from '~/components/demos/icon/MotionVue.vue';
+import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
 
 ## 基础用法
 
-`name` 使用 `IconName` 类型，来自 `@chufix/icons` 的 169 个内置图标名。默认作为装饰性图标渲染；需要可访问名称时传 `title` 或 `label`。
+`name` 使用 `IconName` 类型，来自 `@chufix/icons` 的 231 个内置图标名。默认作为装饰性图标渲染；需要可访问名称时传 `title` 或 `label`。
 
 <DemoFrame
   vueCode={`<CfIcon name="search" />
 <CfIcon name="calendar" size="lg" />
 <CfIcon name="component" :size="28" />
+<CfIcon name="check-circle" color="var(--status-success)" />
+<CfIcon name="loader" motion="spin" />
 <CfIcon name="alert-circle" title="错误" />`}
   reactCode={`<CfIcon name="search" />
 <CfIcon name="calendar" size="lg" />
 <CfIcon name="component" size={28} />
+<CfIcon name="check-circle" color="var(--status-success)" />
+<CfIcon name="loader" motion="spin" />
 <CfIcon name="alert-circle" title="错误" />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 尺寸
+
+`size` 接受预设档位（`xs` / `sm` / `md` / `lg` / `xl`）或数字 / 字符串（自定义 px / em）。
+
+<DemoFrame
+  vueCode={`<CfIcon name="search" size="xs" />
+<CfIcon name="search" size="sm" />
+<CfIcon name="search" size="md" />
+<CfIcon name="search" size="lg" />
+<CfIcon name="search" size="xl" />
+<CfIcon name="search" :size="32" />`}
+  reactCode={`<CfIcon name="search" size="xs" />
+<CfIcon name="search" size="sm" />
+<CfIcon name="search" size="md" />
+<CfIcon name="search" size="lg" />
+<CfIcon name="search" size="xl" />
+<CfIcon name="search" size={32} />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 颜色
+
+不传 `color` 时图标用 `currentColor`，跟随父级文字颜色 — 这是默认且最灵活的方式。需要语义色时直接传 token：`var(--status-success)` / `var(--accent-1)` 等。
+
+<DemoFrame
+  vueCode={`<CfIcon name="check-circle" color="var(--status-success)" size="lg" />
+<CfIcon name="alert-triangle" color="var(--status-warning)" size="lg" />
+<CfIcon name="x-circle" color="var(--status-error)" size="lg" />
+<CfIcon name="info" color="var(--status-info)" size="lg" />`}
+  reactCode={`<CfIcon name="check-circle" color="var(--status-success)" size="lg" />
+<CfIcon name="alert-triangle" color="var(--status-warning)" size="lg" />
+<CfIcon name="x-circle" color="var(--status-error)" size="lg" />
+<CfIcon name="info" color="var(--status-info)" size="lg" />`}
+>
+  <ColorsVue client:load />
+</DemoFrame>
+
+## 动效 motion
+
+`motion` 给图标加简单的循环动效 — `spin`（loader 用）/ `pulse`（呼吸高亮）/ `bounce`（强引导）。所有动效遵循 `prefers-reduced-motion`，用户开了减少动画选项时会自动停止。
+
+<DemoFrame
+  vueCode={`<CfIcon name="loader" motion="spin" size="lg" />
+<CfIcon name="circle" motion="pulse" size="lg" />
+<CfIcon name="arrow-down" motion="bounce" size="lg" />`}
+  reactCode={`<CfIcon name="loader" motion="spin" size="lg" />
+<CfIcon name="circle" motion="pulse" size="lg" />
+<CfIcon name="arrow-down" motion="bounce" size="lg" />`}
+>
+  <MotionVue client:load />
 </DemoFrame>
 
 ## API
@@ -30,6 +91,8 @@ import BasicVue from '~/components/demos/icon/BasicVue.vue';
 | `name`        | `IconName`                                | —      | 图标名，类型化校验 |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number \| string` | `'md'` | 尺寸 |
 | `strokeWidth` | `number`                                  | `1.5`  | 描边宽度 |
+| `color`       | `string`                                  | —      | 图标颜色；默认继承 `currentColor` |
+| `motion`      | `'spin' \| 'pulse' \| 'bounce'`           | —      | 简单动态图标效果，遵循 `prefers-reduced-motion` |
 | `title`       | `string`                                  | —      | SVG title，同时让图标具备 img 语义 |
 | `label`       | `string`                                  | —      | Vue 专用 aria-label |
 
@@ -38,3 +101,9 @@ React 可直接传 `aria-label`：
 ```tsx
 <CfIcon name="search" aria-label="搜索" />
 ```
+
+## 图标清单
+
+下面列出当前内置的全部图标。点击任意项会复制带组件前缀的用法，例如 `<CfIcon name="search" />`。
+
+<IconGalleryVue client:load />

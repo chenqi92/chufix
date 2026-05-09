@@ -6,6 +6,8 @@ description: 拖拽中间分隔条调整两侧面板尺寸；横竖两向、键�
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/splitter/BasicVue.vue';
 import VerticalVue from '~/components/demos/splitter/VerticalVue.vue';
+import PixelVue from '~/components/demos/splitter/PixelVue.vue';
+import DisabledVue from '~/components/demos/splitter/DisabledVue.vue';
 
 ## 基础用法
 
@@ -65,6 +67,39 @@ export default function Demo() {
 />`}
 >
   <VerticalVue client:load />
+</DemoFrame>
+
+## 像素单位
+
+`unit="px"` 把数值切到像素 — 适合需要精准控制侧栏宽度的场景（不希望 `%` 让宽度跟着窗口变）。
+
+<DemoFrame
+  vueCode={`<CfSplitter v-model="size" unit="px" :min="120" :max="480">
+  <template #start>侧栏 — 当前 {{ size }}px</template>
+  <template #end>主区域</template>
+</CfSplitter>`}
+  reactCode={`<CfSplitter
+  value={size}
+  onChange={setSize}
+  unit="px"
+  min={120}
+  max={480}
+  start={<div>侧栏 — 当前 {size}px</div>}
+  end={<div>主区域</div>}
+/>`}
+>
+  <PixelVue client:load />
+</DemoFrame>
+
+## 禁用
+
+`disabled` 锁定分隔条 — 仍渲染当前比例，但用户不能拖。常用于演示态或权限受限的视图。
+
+<DemoFrame
+  vueCode={`<CfSplitter v-model="size" disabled />`}
+  reactCode={`<CfSplitter value={size} disabled />`}
+>
+  <DisabledVue client:load />
 </DemoFrame>
 
 ## API
