@@ -1,0 +1,255 @@
+/* ChuFix ColorPicker — trigger swatch + panel with HSV plane, hue/alpha sliders, presets. */
+
+.cf-color {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+}
+
+.cf-color--sm { font-size: var(--t-12); }
+.cf-color--lg { font-size: var(--t-14); }
+
+.cf-color__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--control-h);
+  padding: 0 10px;
+  font: inherit;
+  color: var(--fg-1);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.cf-color--sm .cf-color__trigger { height: var(--control-h-sm); padding: 0 8px; }
+.cf-color--lg .cf-color__trigger { height: var(--control-h-lg); padding: 0 12px; }
+
+.cf-color__trigger:hover:not(:disabled) { border-color: var(--fg-3); }
+.cf-color__trigger:focus-visible,
+.cf-color.is-open .cf-color__trigger {
+  outline: none;
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
+}
+.cf-color__trigger:disabled {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity);
+}
+
+.cf-color__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-3);
+  flex: none;
+  background-image: linear-gradient(45deg, var(--bg-3) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg-3) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg-3) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg-3) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+  box-shadow: inset 0 0 0 1px var(--line-1);
+}
+
+.cf-color__value {
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  letter-spacing: 0.02em;
+}
+
+/* panel */
+.cf-color__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: var(--z-popover);
+  width: 232px;
+  padding: 12px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cf-color--panel-only .cf-color__panel {
+  position: static;
+  box-shadow: none;
+  border-color: var(--line-2);
+  background: var(--bg-2);
+}
+
+.cf-color__sv {
+  position: relative;
+  width: 100%;
+  height: 132px;
+  border-radius: var(--r-4);
+  cursor: crosshair;
+  user-select: none;
+  touch-action: none;
+  overflow: hidden;
+}
+.cf-color__sv-white,
+.cf-color__sv-black {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cf-color__sv-white {
+  background: linear-gradient(to right, #fff, transparent);
+}
+.cf-color__sv-black {
+  background: linear-gradient(to top, #000, transparent);
+}
+.cf-color__sv-cursor {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px oklch(0% 0 0 / 0.5);
+  pointer-events: none;
+}
+
+.cf-color__sliders {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.cf-color__preview {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-3);
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  background-image: linear-gradient(45deg, var(--bg-3) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg-3) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg-3) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg-3) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+  box-shadow: inset 0 0 0 1px var(--line-1);
+}
+.cf-color__preview-swatch {
+  flex: 1;
+  width: 100%;
+}
+
+.cf-color__slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cf-color__slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: var(--r-pill);
+  outline: none;
+  cursor: pointer;
+}
+.cf-color__slider:disabled { cursor: not-allowed; opacity: var(--disabled-opacity); }
+
+.cf-color__slider--hue {
+  background: linear-gradient(
+    to right,
+    #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%
+  );
+}
+.cf-color__slider--alpha {
+  background-image: linear-gradient(to right, transparent, var(--solid, #000)),
+    linear-gradient(45deg, var(--bg-3) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg-3) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg-3) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg-3) 75%);
+  background-size: 100% 100%, 8px 8px, 8px 8px, 8px 8px, 8px 8px;
+  background-position: 0 0, 0 0, 0 4px, 4px -4px, -4px 0;
+}
+
+.cf-color__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px oklch(0% 0 0 / 0.5);
+  cursor: grab;
+}
+.cf-color__slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px oklch(0% 0 0 / 0.5);
+  cursor: grab;
+}
+
+.cf-color__formats {
+  display: inline-flex;
+  background: var(--bg-2);
+  padding: 2px;
+  border-radius: var(--r-3);
+  gap: 2px;
+}
+.cf-color__format {
+  appearance: none;
+  border: 0;
+  flex: 1;
+  height: 22px;
+  padding: 0 8px;
+  background: transparent;
+  color: var(--fg-2);
+  font-family: var(--font-sans);
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  letter-spacing: 0.04em;
+  border-radius: var(--r-2);
+  cursor: pointer;
+}
+.cf-color__format.is-active {
+  background: var(--bg-inset);
+  color: var(--fg-1);
+  box-shadow: 0 0 0 1px var(--line-2);
+}
+
+.cf-color__input {
+  width: 100%;
+  height: var(--control-h-sm);
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  color: var(--fg-1);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-3);
+  outline: none;
+}
+.cf-color__input:focus { border-color: var(--accent-1); box-shadow: var(--focus-ring); }
+
+.cf-color__presets {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+.cf-color__preset {
+  appearance: none;
+  border: 0;
+  height: 22px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--line-1);
+}
+.cf-color__preset:hover { transform: scale(1.06); }

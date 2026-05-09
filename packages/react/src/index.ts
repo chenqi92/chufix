@@ -36,6 +36,7 @@ import './styles/form.css';
 import './styles/combobox.css';
 import './styles/taginput.css';
 import './styles/dropzone.css';
+import './styles/colorpicker.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -259,3 +260,10 @@ export type {
   DropzoneRejection,
   DropzoneFileStatus,
 } from './dropzone/variants';
+
+export { ColorPicker as CfColorPicker } from './colorpicker/ColorPicker';
+export type {
+  ColorPickerProps,
+  ColorPickerSize,
+} from './colorpicker/variants';
+export type { ColorFormat, RGB, RGBA, HSV, HSL } from './colorpicker/color';

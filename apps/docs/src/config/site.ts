@@ -69,6 +69,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Combobox 组合选择', href: '/components/combobox/' },
       { label: 'TagInput 标签输入', href: '/components/taginput/' },
       { label: 'Dropzone 文件上传', href: '/components/dropzone/' },
+      { label: 'ColorPicker 颜色选择', href: '/components/colorpicker/' },
     ],
   },
 ];

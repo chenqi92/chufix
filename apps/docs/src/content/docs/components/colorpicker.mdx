@@ -1,0 +1,73 @@
+---
+title: ColorPicker 颜色选择
+description: HSV 调色板 + 色相滑块 + 透明度滑块 + 多格式输入；点击触发器弹出，或 panelOnly 内联展开。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/colorpicker/BasicVue.vue';
+import AlphaVue from '~/components/demos/colorpicker/AlphaVue.vue';
+import PanelVue from '~/components/demos/colorpicker/PanelVue.vue';
+
+## 基础用法
+
+`v-model` 绑定颜色字符串。点开后能拖拽 HSV 色板、调色相、切换 HEX / RGB / HSL 格式，也能直接编辑文本。预设色块一键选色。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfColorPicker } from '@chufix/vue';
+
+const value = ref('#3b82f6');
+</script>
+
+<template>
+  <CfColorPicker v-model="value" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfColorPicker } from '@chufix/react';
+
+export default function Demo() {
+  const [value, setValue] = useState('#3b82f6');
+  return <CfColorPicker value={value} onChange={setValue} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 透明度
+
+`showAlpha` 打开后多一条透明度滑块；输出会自动切换到 `rgba()` / `hsla()` / 8 位 HEX。
+
+<DemoFrame
+  vueCode={`<CfColorPicker v-model="value" show-alpha default-format="rgb" />`}
+  reactCode={`<CfColorPicker value={value} showAlpha defaultFormat="rgb" onChange={setValue} />`}
+>
+  <AlphaVue client:load />
+</DemoFrame>
+
+## 内联面板
+
+`panelOnly` 把面板永远展开嵌入到页面里，常用于设置侧栏 / 主题编辑器。
+
+<DemoFrame
+  vueCode={`<CfColorPicker v-model="value" panel-only show-alpha />`}
+  reactCode={`<CfColorPicker value={value} panelOnly showAlpha onChange={setValue} />`}
+>
+  <PanelVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `'#3b82f6'` | 颜色字符串，支持 hex / rgb / rgba / hsl / hsla 输入 |
+| `defaultFormat` | `'hex' \| 'rgb' \| 'hsl'` | `'hex'` | 输出格式（带透明度时自动 -a 后缀或 8 位 HEX） |
+| `showAlpha` | `boolean` | `false` | 是否显示透明度滑块 |
+| `presets` | `string[]` | 12 色默认调色盘 | 自定义预设色块 |
+| `panelOnly` | `boolean` | `false` | 不渲染触发器，直接展开面板 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅触发器） |
+
+事件：`update:modelValue` / `change`（React 端：`onChange`）。
+
+> 颜色解析容忍 `#rgb` `#rgba` `#rrggbb` `#rrggbbaa` `rgb()` `rgba()` `hsl()` `hsla()` 多种写法；输入框失焦时自动尝试解析，无法解析时回滚到上一个有效值。
