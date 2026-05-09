@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 混合状态
+
+已知（accent 高亮）+ 未知（红色波浪线）的组合实例。
+
+import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
+
+<DemoFrame
+  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
+  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
+>
+  <InvalidVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

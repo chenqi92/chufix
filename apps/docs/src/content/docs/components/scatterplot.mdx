@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 多 group 聚类
+
+点的 `group` 字段决定颜色，未传则归到 `default`。
+
+import GroupsVue from '~/components/demos/scatterplot/GroupsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfScatterPlot :data="points" />`}
+  reactCode={`<CfScatterPlot data={points} />`}
+>
+  <GroupsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

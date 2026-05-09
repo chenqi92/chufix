@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/treemap/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## label 显隐
+
+`showLabels=false` 时只展示色块，适合微缩组合。仅当矩形足够大（w>50, h>20）时才显示文字。
+
+import LabeledVue from '~/components/demos/treemap/LabeledVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTreemap :nodes="nodes" />
+<CfTreemap :nodes="nodes" :show-labels="false" />`}
+  reactCode={`<CfTreemap nodes={nodes} />
+<CfTreemap nodes={nodes} showLabels={false} />`}
+>
+  <LabeledVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

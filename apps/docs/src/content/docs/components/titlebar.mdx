@@ -21,6 +21,24 @@ import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## macOS / Windows / Linux 三平台
+
+同一组件，`platform` 切视觉。`hideControls=true` 用作普通 header bar。
+
+import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTitleBar platform="macos" title="…" subtitle="…" :modified="true" />
+<CfTitleBar platform="windows" title="…" subtitle="…" />
+<CfTitleBar platform="linux" title="…" />`}
+  reactCode={`<CfTitleBar platform="macos" title="…" subtitle="…" modified />
+<CfTitleBar platform="windows" title="…" subtitle="…" />
+<CfTitleBar platform="linux" title="…" />`}
+>
+  <PlatformsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

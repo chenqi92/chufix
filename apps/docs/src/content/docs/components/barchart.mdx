@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/barchart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 颜色
+
+`colorIndex` 0..7 直接选 `--viz-1..8`。
+
+import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBarChart :data="data" :color-index="0" />
+<CfBarChart :data="data" :color-index="3" />`}
+  reactCode={`<CfBarChart data={data} colorIndex={0} />
+<CfBarChart data={data} colorIndex={3} />`}
+>
+  <SeriesColorVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

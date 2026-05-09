@@ -19,6 +19,20 @@ slot prop（React: `leftSlot/centerSlot/rightSlot`）替换。
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 6 种 tone
+
+`tone` 整条染色，例如 `error` 让整条标红示意 build failed。
+
+import TonesVue from '~/components/demos/statusbar/TonesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfStatusBar :tone="'error'" :left-items="items" />`}
+  reactCode={`<CfStatusBar tone="error" leftItems={items} />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

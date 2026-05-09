@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 多 series 对比
+
+3 套方案在 6 维度上的对比，颜色循环 `--viz-*`。
+
+import CompareVue from '~/components/demos/radarchart/CompareVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRadarChart :axes="axes" :series="threeSeries" />`}
+  reactCode={`<CfRadarChart axes={axes} series={threeSeries} />`}
+>
+  <CompareVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

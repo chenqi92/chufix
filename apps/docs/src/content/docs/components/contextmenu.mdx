@@ -21,6 +21,20 @@ import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## 禁用 / 危险 / 分隔符
+
+`disabled` 灰化、`danger` 红字、`separator: true` 画分隔行。
+
+import NestedVue from '~/components/demos/contextmenu/NestedVue.vue';
+
+<DemoFrame
+  vueCode={`<CfContextMenu :items="items">…</CfContextMenu>`}
+  reactCode={`<CfContextMenu items={items}>…</CfContextMenu>`}
+>
+  <NestedVue client:load />
+</DemoFrame>
+
 ## API
 
 `items: ContextMenuItem[]`，每项支持：

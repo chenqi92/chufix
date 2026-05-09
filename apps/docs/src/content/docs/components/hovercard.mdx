@@ -22,6 +22,20 @@ import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## 4 种 placement
+
+`top / bottom / left / right` 自动计算位置；这里用 200ms 短延迟方便演示。
+
+import PlacementsVue from '~/components/demos/hovercard/PlacementsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfHoverCard placement="top">…</CfHoverCard>`}
+  reactCode={`<CfHoverCard placement="top" trigger={…}>…</CfHoverCard>`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

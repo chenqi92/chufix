@@ -32,6 +32,20 @@ import BasicVue from '~/components/demos/snackbar/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## 6 种 placement
+
+默认 `bottom-center`，常用替代是 `top-right`（不挡底部内容）。
+
+import PlacementsVue from '~/components/demos/snackbar/PlacementsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSnackbar v-model:open="open" placement="bottom-right" message="…" />`}
+  reactCode={`<CfSnackbar open={open} onOpenChange={setOpen} placement="bottom-right" message="…" />`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

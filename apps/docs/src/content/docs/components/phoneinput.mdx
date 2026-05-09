@@ -17,6 +17,22 @@ import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 尺寸 / 错误 / 禁用
+
+`error` 切红边，`disabled` 整体灰化。
+
+import StatesVue from '~/components/demos/phoneinput/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfPhoneInput v-model="v" :error="true" />
+<CfPhoneInput v-model="v" disabled />`}
+  reactCode={`<CfPhoneInput value={v} onChange={setV} error />
+<CfPhoneInput value={v} onChange={setV} disabled />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
