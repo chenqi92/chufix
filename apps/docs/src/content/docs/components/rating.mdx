@@ -5,22 +5,58 @@ description: 星级评分控件，整数 / 半星精度、可只读、可禁用�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/rating/BasicVue.vue';
+import HalfVue from '~/components/demos/rating/HalfVue.vue';
+import StatesVue from '~/components/demos/rating/StatesVue.vue';
+import SizesVue from '~/components/demos/rating/SizesVue.vue';
 
 ## 基础用法
 
-`v-model` 绑定数字。`allowHalf` 启用半星精度（鼠标悬停在格子左半边返回 `i + 0.5`）。`readonly` 锁定不能改但保持视觉，`disabled` 灰显且禁用交互。
+最简形态 —— 5 颗整数星，鼠标悬停预览，点击确定。
 
 <DemoFrame
-  vueCode={`<CfRating v-model="a" />
-<CfRating v-model="b" allow-half show-value />
-<CfRating :model-value="4" readonly show-value />
-<CfRating :model-value="2" disabled />`}
-  reactCode={`<CfRating value={a} onChange={setA} />
-<CfRating value={b} allowHalf showValue onChange={setB} />
-<CfRating value={4} readonly showValue />
-<CfRating value={2} disabled />`}
+  vueCode={`<CfRating v-model="value" />`}
+  reactCode={`<CfRating value={value} onChange={setValue} />`}
 >
   <BasicVue client:load />
+</DemoFrame>
+
+## 半星精度
+
+`allowHalf` 启用半星 —— 鼠标悬停在每颗星左半边时返回 `i + 0.5`，右半边返回 `i + 1`。常用于 0.5 分粒度的评价场景。
+
+<DemoFrame
+  vueCode={`<CfRating v-model="value" allow-half show-value />`}
+  reactCode={`<CfRating value={value} onChange={setValue} allowHalf showValue />`}
+>
+  <HalfVue client:load />
+</DemoFrame>
+
+## 只读 / 禁用
+
+`readonly` 锁定值但保留视觉（用于展示已有评价）；`disabled` 灰显且禁用所有交互。
+
+<DemoFrame
+  vueCode={`<CfRating :model-value="4" readonly show-value />
+<CfRating :model-value="2" disabled />`}
+  reactCode={`<CfRating value={4} readonly showValue />
+<CfRating value={2} disabled />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 控制单颗星的直径 — `sm` / `md`（默认）/ `lg`。`showValue` 在末尾追加 `value / count`。
+
+<DemoFrame
+  vueCode={`<CfRating v-model="a" size="sm" show-value />
+<CfRating v-model="b" size="md" show-value />
+<CfRating v-model="c" size="lg" show-value />`}
+  reactCode={`<CfRating value={a} onChange={setA} size="sm" showValue />
+<CfRating value={b} onChange={setB} size="md" showValue />
+<CfRating value={c} onChange={setC} size="lg" showValue />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API

@@ -3,13 +3,10 @@ import { ref } from 'vue';
 import { CfSearchInput } from '@chufix/vue';
 
 const q = ref('');
-function handleSearch(v: string) {
-  console.log('search:', v);
-}
 </script>
 
 <template>
   <div style="max-width: 24rem;">
-    <CfSearchInput v-model="q" placeholder="搜索文档…" @search="handleSearch" />
+    <CfSearchInput v-model="q" placeholder="按 Ctrl K 聚焦" shortcut="Ctrl K" />
   </div>
 </template>

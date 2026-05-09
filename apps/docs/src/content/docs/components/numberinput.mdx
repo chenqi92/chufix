@@ -1,50 +1,87 @@
 ---
 title: NumberInput 数字输入
-description: 数字输入框，带 +/− 步进按钮、min/max/step 约束、键盘上下步进。
+description: 数字输入框，带 +/− 步进按钮、min/max/step 约束、键盘上下步进、自动 clamp。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/numberinput/BasicVue.vue';
+import PrecisionVue from '~/components/demos/numberinput/PrecisionVue.vue';
+import SizesVue from '~/components/demos/numberinput/SizesVue.vue';
+import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
 
 ## 基础用法
 
-`step` 设小数会自动推断 `precision`（`step=0.05` → 显示 2 位小数）。可通过键盘 ↑/↓ 步进，离焦自动 clamp 到 [min, max]。
+绑定 `number | null` —— `null` 代表空值，便于跟「未填写」区分开。`min` / `max` 约束，离焦时自动 clamp。
 
 <DemoFrame
-  vueCode={`<CfNumberInput v-model="a" :min="0" :max="100" />
-<CfNumberInput v-model="b" :step="0.05" :min="0" :max="1" />
-<CfNumberInput v-model="c" placeholder="可空" />
-
-<CfNumberInput v-model="d" size="sm" />
-<CfNumberInput v-model="d" size="lg" />
-
-<CfNumberInput v-model="d" hide-steppers />`}
-  reactCode={`<CfNumberInput value={a} onChange={setA} min={0} max={100} />
-<CfNumberInput value={b} onChange={setB} step={0.05} min={0} max={1} />
-<CfNumberInput value={c} onChange={setC} placeholder="可空" />
-
-<CfNumberInput value={d} onChange={setD} size="sm" />
-<CfNumberInput value={d} onChange={setD} size="lg" />
-
-<CfNumberInput value={d} onChange={setD} hideSteppers />`}
+  vueCode={`<CfNumberInput v-model="value" :min="0" :max="100" />`}
+  reactCode={`<CfNumberInput value={value} onChange={setValue} min={0} max={100} />`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
+## 步进与精度
+
+`step` 是按钮 / 键盘每次的步进单位；小数 step 会自动推断 `precision`（`step=0.05` → 显示 2 位小数）。也可以显式传 `precision` 强制位数。空值 `null` 时占位文本生效。
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="ratio" :step="0.05" :min="0" :max="1" />
+<CfNumberInput v-model="price" :step="0.1" :precision="2" />
+<CfNumberInput v-model="optional" placeholder="留空表示不限" />`}
+  reactCode={`<CfNumberInput value={ratio} onChange={setRatio} step={0.05} min={0} max={1} />
+<CfNumberInput value={price} onChange={setPrice} step={0.1} precision={2} />
+<CfNumberInput value={optional} onChange={setOptional} placeholder="留空表示不限" />`}
+>
+  <PrecisionVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 控制控件高度，与 Input / Select 保持一致 — `sm` 紧凑型 / `md` 默认 / `lg` 大号触摸友好。
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="a" size="sm" />
+<CfNumberInput v-model="b" size="md" />
+<CfNumberInput v-model="c" size="lg" />`}
+  reactCode={`<CfNumberInput value={a} onChange={setA} size="sm" />
+<CfNumberInput value={b} onChange={setB} size="md" />
+<CfNumberInput value={c} onChange={setC} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 隐藏步进按钮 / 禁用
+
+`hideSteppers` 隐藏右侧 +/− 按钮但保留键盘步进 —— 在表格内或紧凑表单里更清爽。`disabled` 完全禁用交互。
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="a" />
+<CfNumberInput v-model="b" hide-steppers />
+<CfNumberInput :model-value="42" disabled />`}
+  reactCode={`<CfNumberInput value={a} onChange={setA} />
+<CfNumberInput value={b} onChange={setB} hideSteppers />
+<CfNumberInput value={42} disabled />`}
+>
+  <NoSteppersVue client:load />
+</DemoFrame>
+
+## 键盘交互
+
+- `↑` / `↓` —— 按 step 步进
+- `Enter` —— 提交并 clamp
+- 离焦 —— 自动 clamp 到 [min, max]，不在范围内的输入会被纠正
+- 非数字字符被屏蔽（保留 `-` / `.` 作为符号）
+
 ## API
 
-| Prop                                  | 类型               | 默认值  | 说明                        |
-| ------------------------------------- | ------------------ | ------- | --------------------------- |
-| `modelValue` (Vue) / `value` (React)  | `number \| null`   | `null`  | 当前值；`null` 表示空        |
-| `min`                                 | `number`           | —       | 最小值                      |
-| `max`                                 | `number`           | —       | 最大值                      |
-| `step`                                | `number`           | `1`     | 步进                        |
-| `precision`                           | `number`           | 推断    | 小数位数；不传从 step 推断   |
-| `size`                                | `'sm' \| 'md' \| 'lg'` | `'md'` | 高度                        |
-| `hideSteppers`                        | `boolean`          | `false` | 隐藏 +/− 按钮（仍可键盘步进）|
-| `disabled`                            | `boolean`          | `false` | 禁用                        |
-
-### 键盘
-
-- `↑` / `↓`：按 step 步进
-- 输入完按 `Enter` 或离焦：commit + clamp
+| Prop | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number \| null` | `null` | 当前值；`null` 表示空 |
+| `min` | `number` | — | 最小值 |
+| `max` | `number` | — | 最大值 |
+| `step` | `number` | `1` | 步进 |
+| `precision` | `number` | 推断 | 小数位数；不传则从 step 推断 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 高度 |
+| `hideSteppers` | `boolean` | `false` | 隐藏 +/− 按钮（仍可键盘步进） |
+| `placeholder` | `string` | `—` | 占位文本（值为 `null` 时显示） |
+| `disabled` | `boolean` | `false` | 禁用 |

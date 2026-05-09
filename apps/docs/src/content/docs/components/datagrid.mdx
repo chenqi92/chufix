@@ -5,87 +5,130 @@ description: 重型表格 — 列拖拽调宽、单元格双击编辑、固定�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/datagrid/BasicVue.vue';
+import ResizeVue from '~/components/demos/datagrid/ResizeVue.vue';
+import EditVue from '~/components/demos/datagrid/EditVue.vue';
+import StickyVue from '~/components/demos/datagrid/StickyVue.vue';
 
 ## 基础用法
 
-`DataGrid` 在 [Table](/components/table/) 的列定义之上额外支持：
-
-- `column.resizable: true` —— 用户可拖拽该列的右边缘改变宽度
-- `column.editable: true` —— 双击单元格进入内联编辑模式，回车提交、Esc 取消，触发 `cellEdit` 事件
-- `maxHeight` —— 给容器一个最大高度，启用纵向滚动 + sticky 表头
+`CfDataGrid` 在 [Table](/components/table/) 的列定义之上额外支持列拖宽 / 单元格编辑 / sticky 表头。最简形态 — 配置 `columns` + `rows` + `rowKey`，与 Table 一致。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfDataGrid, type DataGridColumn, type DataGridCellEdit } from '@chufix/vue';
+import { CfDataGrid, type DataGridColumn } from '@chufix/vue';
 
-interface Row { id: string; name: string; email: string; role: string; level: number; }
+interface Row { id: string; name: string; role: string; level: number; }
 
-const rows = ref<Row[]>([/* ... */]);
+const rows = ref<Row[]>([
+  { id: '1', name: 'Alice Chen', role: '前端', level: 3 },
+  // ...
+]);
 const columns: DataGridColumn<Row>[] = [
   { key: 'id', title: 'ID', width: 60, sortable: true },
-  { key: 'name', title: '姓名', width: 120, sortable: true, resizable: true, editable: true },
-  { key: 'email', title: '邮箱', width: 200, resizable: true, editable: true },
-  { key: 'role', title: '角色', width: 100, resizable: true, editable: true },
-  { key: 'level', title: '等级', width: 80, align: 'right', sortable: true, editable: true },
+  { key: 'name', title: '姓名', width: 140, sortable: true },
+  { key: 'role', title: '角色', width: 100 },
+  { key: 'level', title: '等级', width: 80, align: 'right', sortable: true },
 ];
-
-function onEdit(edit: DataGridCellEdit<Row>) {
-  const target = rows.value.find((r) => r.id === edit.row.id);
-  if (target) (target as any)[edit.column.dataIndex ?? edit.column.key] = edit.value;
-}
 </script>
 
 <template>
-  <CfDataGrid
-    :columns="columns"
-    :rows="rows"
-    row-key="id"
-    selectable="multiple"
-    :max-height="320"
-    @cell-edit="onEdit"
-  />
+  <CfDataGrid :columns="columns" :rows="rows" row-key="id" />
 </template>`}
-  reactCode={`import { useState } from 'react';
-import { CfDataGrid, type DataGridColumn, type DataGridCellEdit } from '@chufix/react';
+  reactCode={`import { CfDataGrid, type DataGridColumn } from '@chufix/react';
 
-interface Row { id: string; name: string; email: string; role: string; level: number; }
-
+interface Row { id: string; name: string; role: string; level: number; }
 const columns: DataGridColumn<Row>[] = [
   { key: 'id', title: 'ID', width: 60, sortable: true },
-  { key: 'name', title: '姓名', width: 120, sortable: true, resizable: true, editable: true },
-  { key: 'email', title: '邮箱', width: 200, resizable: true, editable: true },
+  { key: 'name', title: '姓名', width: 140, sortable: true },
+  { key: 'role', title: '角色', width: 100 },
+  { key: 'level', title: '等级', width: 80, align: 'right', sortable: true },
 ];
 
-export default function Demo() {
-  const [rows, setRows] = useState<Row[]>([/* ... */]);
-  function onEdit(edit: DataGridCellEdit<Row>) {
-    setRows((arr) =>
-      arr.map((r) =>
-        r.id === edit.row.id
-          ? { ...r, [edit.column.dataIndex ?? edit.column.key]: edit.value }
-          : r,
-      ),
-    );
-  }
-  return (
-    <CfDataGrid
-      columns={columns}
-      rows={rows}
-      rowKey="id"
-      selectable="multiple"
-      maxHeight={320}
-      onCellEdit={onEdit}
-    />
-  );
-}`}
+<CfDataGrid columns={columns} rows={rows} rowKey="id" />`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
+## 列宽拖拽
+
+给列加 `resizable: true` 让用户拖拽该列右边缘改变宽度。`minWidth` 限制拖拽下限避免列被拖到看不见。每次松手会触发 `columnResize(col, width)` 事件，可用来持久化用户的列宽偏好。
+
+<DemoFrame
+  vueCode={`const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60 },
+  { key: 'name', title: '姓名', width: 140, resizable: true, minWidth: 80 },
+  { key: 'email', title: '邮箱', width: 220, resizable: true, minWidth: 120 },
+  { key: 'role', title: '角色', width: 100, resizable: true },
+];
+
+<CfDataGrid :columns="columns" :rows="rows" row-key="id" />`}
+  reactCode={`const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60 },
+  { key: 'name', title: '姓名', width: 140, resizable: true, minWidth: 80 },
+  { key: 'email', title: '邮箱', width: 220, resizable: true, minWidth: 120 },
+  { key: 'role', title: '角色', width: 100, resizable: true },
+];
+
+<CfDataGrid columns={columns} rows={rows} rowKey="id" />`}
+>
+  <ResizeVue client:load />
+</DemoFrame>
+
+## 单元格编辑
+
+给列加 `editable: true` 启用双击进入内联编辑模式。Enter 提交并触发 `cellEdit(edit)`；Esc 取消。回调里拿到 `{ row, column, value }`，把变化写回数据源。
+
+<DemoFrame
+  vueCode={`function onEdit(edit: DataGridCellEdit<Row>) {
+  const target = rows.value.find((r) => r.id === edit.row.id);
+  if (!target) return;
+  const key = edit.column.dataIndex ?? edit.column.key;
+  (target as any)[key] = key === 'level' ? Number(edit.value) : edit.value;
+}
+
+<CfDataGrid :columns="columns" :rows="rows" row-key="id" @cell-edit="onEdit" />`}
+  reactCode={`function onEdit(edit: DataGridCellEdit<Row>) {
+  setRows((arr) =>
+    arr.map((r) =>
+      r.id === edit.row.id
+        ? { ...r, [edit.column.dataIndex ?? edit.column.key]: edit.value }
+        : r,
+    ),
+  );
+}
+
+<CfDataGrid columns={columns} rows={rows} rowKey="id" onCellEdit={onEdit} />`}
+>
+  <EditVue client:load />
+</DemoFrame>
+
+## 高度限制 + sticky 表头
+
+传 `maxHeight` 启用纵向滚动 — 表头通过 sticky 固定在容器顶部。配合 `selectable="multiple"` 做大数据量浏览页很合适。
+
+<DemoFrame
+  vueCode={`<CfDataGrid
+  :columns="columns"
+  :rows="rows"
+  row-key="id"
+  :max-height="280"
+  selectable="multiple"
+/>`}
+  reactCode={`<CfDataGrid
+  columns={columns}
+  rows={rows}
+  rowKey="id"
+  maxHeight={280}
+  selectable="multiple"
+/>`}
+>
+  <StickyVue client:load />
+</DemoFrame>
+
 ## API · DataGrid
 
-继承 [Table](/components/table/) 的所有列基础属性，额外加：
+继承 [Table](/components/table/) 的所有列基础属性（`title` / `width` / `align` / `sortable` / `dataIndex` 等），额外加：
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|

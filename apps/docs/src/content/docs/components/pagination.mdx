@@ -1,71 +1,93 @@
 ---
 title: Pagination 分页
-description: 数字按钮 + 上下页 + 跳转输入框，自动计算页码省略。
+description: 数字按钮 + 上下页 + 跳转输入框，自动计算页码省略号，3 档尺寸。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pagination/BasicVue.vue';
+import ExtrasVue from '~/components/demos/pagination/ExtrasVue.vue';
+import SiblingsVue from '~/components/demos/pagination/SiblingsVue.vue';
+import SizesVue from '~/components/demos/pagination/SizesVue.vue';
 
 ## 基础用法
 
-传 `total` 和 `pageSize`，组件自动算页数。`siblingCount` 控制中间显示几个相邻页码（默认 1）。
+传 `total`（总条数）和 `pageSize`（每页条数），组件自动算页数。`v-model` (Vue) / `value` + `onChange` (React) 绑定当前页（1-based）。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { CfPagination } from '@chufix/vue';
+  vueCode={`<CfPagination v-model="page" :total="80" :page-size="10" />`}
+  reactCode={`<CfPagination value={page} onChange={setPage} total={80} pageSize={10} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
 
-const page = ref(1);
-</script>
+## 显示总数 / 跳转输入
 
-<template>
-  <CfPagination v-model="page" :total="80" :page-size="10" />
+`showTotal` 在左侧加「共 N 条」文案；`showJumper` 在右侧加「跳至 N 页」输入框（按 Enter 或离焦提交）。两个开关相互独立。
 
-  <CfPagination
-    v-model="page"
-    :total="200"
-    :page-size="10"
-    show-total
-    show-jumper
-  />
-
-  <CfPagination v-model="page" :total="500" :page-size="10" :sibling-count="2" size="sm" />
-</template>`}
-  reactCode={`import { useState } from 'react';
-import { CfPagination } from '@chufix/react';
-
-const [page, setPage] = useState(1);
-
-<CfPagination value={page} onChange={setPage} total={80} pageSize={10} />
-
-<CfPagination
+<DemoFrame
+  vueCode={`<CfPagination
+  v-model="page"
+  :total="200"
+  :page-size="10"
+  show-total
+  show-jumper
+/>`}
+  reactCode={`<CfPagination
   value={page}
   onChange={setPage}
   total={200}
   pageSize={10}
   showTotal
   showJumper
-/>
-
-<CfPagination value={page} onChange={setPage} total={500} pageSize={10} siblingCount={2} size="sm" />`}
+/>`}
 >
-  <BasicVue client:load />
+  <ExtrasVue client:load />
+</DemoFrame>
+
+## 邻接页码数量
+
+`siblingCount` 控制当前页两侧显示几个相邻页码 — 默认 `1`。结合首尾页一起最多渲染 `siblingCount * 2 + 5` 个按钮，超出会插入省略号 `…`。
+
+<DemoFrame
+  vueCode={`<CfPagination v-model="a" :total="500" :page-size="10" :sibling-count="0" />
+<CfPagination v-model="b" :total="500" :page-size="10" :sibling-count="1" />
+<CfPagination v-model="c" :total="500" :page-size="10" :sibling-count="2" />`}
+  reactCode={`<CfPagination value={a} onChange={setA} total={500} pageSize={10} siblingCount={0} />
+<CfPagination value={b} onChange={setB} total={500} pageSize={10} siblingCount={1} />
+<CfPagination value={c} onChange={setC} total={500} pageSize={10} siblingCount={2} />`}
+>
+  <SiblingsVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 与 Button / Input 保持一致 — `sm` 紧凑（表格内分页常用）/ `md` 默认 / `lg` 大号。
+
+<DemoFrame
+  vueCode={`<CfPagination v-model="a" :total="120" :page-size="10" size="sm" />
+<CfPagination v-model="b" :total="120" :page-size="10" size="md" />
+<CfPagination v-model="c" :total="120" :page-size="10" size="lg" />`}
+  reactCode={`<CfPagination value={a} onChange={setA} total={120} pageSize={10} size="sm" />
+<CfPagination value={b} onChange={setB} total={120} pageSize={10} size="md" />
+<CfPagination value={c} onChange={setC} total={120} pageSize={10} size="lg" />`}
+>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## API
 
-| Prop                                  | 类型                | 默认值   | 说明                                    |
-| ------------------------------------- | ------------------- | -------- | --------------------------------------- |
-| `modelValue` (Vue) / `value` (React)  | `number`            | `1`      | 当前页（1-based）                       |
-| `total`                               | `number`            | `0`      | 总条数                                  |
-| `pageSize`                            | `number`            | `10`     | 每页条数                                |
-| `siblingCount`                        | `number`            | `1`      | 当前页两侧显示几个相邻页码              |
-| `size`                                | `'sm' \| 'md' \| 'lg'` | `'md'` | 按钮高度                                |
-| `showNav`                             | `boolean`           | `true`   | 显示上一页 / 下一页箭头                 |
-| `showJumper`                          | `boolean`           | `false`  | 显示「跳至 N 页」输入框                 |
-| `showTotal`                           | `boolean`           | `false`  | 显示「共 N 条」文案                     |
+| Prop | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `1` | 当前页（1-based） |
+| `total` | `number` | `0` | 总条数 |
+| `pageSize` | `number` | `10` | 每页条数 |
+| `siblingCount` | `number` | `1` | 当前页两侧显示几个相邻页码 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 按钮高度 |
+| `showNav` | `boolean` | `true` | 显示上一页 / 下一页箭头 |
+| `showJumper` | `boolean` | `false` | 显示跳转输入 |
+| `showTotal` | `boolean` | `false` | 显示「共 N 条」文案 |
 
-### 事件
+事件：
 
 - Vue：`@update:modelValue` —— `v-model` 自动监听
 - React：`onChange(page: number)`

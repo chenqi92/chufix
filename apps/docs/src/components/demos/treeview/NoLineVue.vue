@@ -15,14 +15,11 @@ const nodes: TreeNode[] = [
         children: [
           { key: 'home', label: 'Home.vue' },
           { key: 'about', label: 'About.vue' },
-          { key: 'contact', label: 'Contact.vue', disabled: true },
         ],
       },
       { key: 'main', label: 'main.ts' },
-      { key: 'styles', label: 'styles.css' },
     ],
   },
-  { key: 'readme', label: 'README.md' },
 ];
 </script>
 
@@ -32,6 +29,7 @@ const nodes: TreeNode[] = [
       :nodes="nodes"
       :selected-key="selected"
       :default-expanded-keys="['src', 'components']"
+      :show-line="false"
       @update:selected-key="selected = $event"
     />
   </div>

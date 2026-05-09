@@ -2,9 +2,15 @@
 import { ref } from 'vue';
 import { CfPagination } from '@chufix/vue';
 
-const page = ref(1);
+const page = ref(5);
 </script>
 
 <template>
-  <CfPagination v-model="page" :total="80" :page-size="10" />
+  <CfPagination
+    v-model="page"
+    :total="200"
+    :page-size="10"
+    show-total
+    show-jumper
+  />
 </template>
