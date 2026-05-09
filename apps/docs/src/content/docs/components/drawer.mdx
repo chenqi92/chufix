@@ -1,60 +1,52 @@
 ---
 title: Drawer 抽屉
-description: 抽屉 —— Modal 的边缘变体，从上下左右滑入，自带 portal / focus trap / 滚动锁 / Esc 关闭。
+description: Modal 的边缘变体 —— 从上下左右滑入，自带 portal / focus trap / 滚动锁 / Esc 关闭。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/drawer/BasicVue.vue';
+import PlacementVue from '~/components/demos/drawer/PlacementVue.vue';
+import SizesVue from '~/components/demos/drawer/SizesVue.vue';
+import NoCloseVue from '~/components/demos/drawer/NoCloseVue.vue';
 
 ## 基础用法
 
-`v-model:open` 双向绑定，`placement` 控制滑入方向。Drawer 共用 Modal 的 portal / focus trap / body 滚动锁 / Esc 关闭基础设施。
+`v-model:open` (Vue) / `open + onOpenChange` (React) 双向绑定。Drawer 共用 Modal 的 portal / focus trap / body 滚动锁 / Esc 关闭基础设施。
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
 import { CfButton, CfDrawer } from '@chufix/vue';
 
-const right = ref(false);
-const left = ref(false);
-const top = ref(false);
-const bottom = ref(false);
+const open = ref(false);
 </script>
 
 <template>
-  <CfButton @click="right = true">右侧</CfButton>
-  <CfButton variant="secondary" @click="left = true">左侧</CfButton>
-  <CfButton variant="secondary" @click="top = true">顶部</CfButton>
-  <CfButton variant="secondary" @click="bottom = true">底部</CfButton>
-
-  <CfDrawer v-model:open="right" title="右侧抽屉" placement="right">
-    <p>从右侧滑入，按 Esc 或点击遮罩关闭。</p>
+  <CfButton @click="open = true">打开抽屉</CfButton>
+  <CfDrawer v-model:open="open" title="基础抽屉">
+    <p>从右侧滑入。按 Esc 或点击遮罩关闭。</p>
     <template #footer>
-      <CfButton variant="ghost" @click="right = false">取消</CfButton>
-      <CfButton @click="right = false">确定</CfButton>
+      <CfButton variant="ghost" @click="open = false">取消</CfButton>
+      <CfButton @click="open = false">确定</CfButton>
     </template>
   </CfDrawer>
-  <CfDrawer v-model:open="left" title="左侧抽屉" placement="left" />
-  <CfDrawer v-model:open="top" title="顶部抽屉" placement="top" />
-  <CfDrawer v-model:open="bottom" title="底部抽屉" placement="bottom" />
 </template>`}
   reactCode={`import { useState } from 'react';
 import { CfButton, CfDrawer } from '@chufix/react';
 
 export default function Demo() {
-  const [right, setRight] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
     <>
-      <CfButton onClick={() => setRight(true)}>右侧</CfButton>
+      <CfButton onClick={() => setOpen(true)}>打开抽屉</CfButton>
       <CfDrawer
-        open={right}
-        onOpenChange={setRight}
-        title="右侧抽屉"
-        placement="right"
+        open={open}
+        onOpenChange={setOpen}
+        title="基础抽屉"
         footer={
           <>
-            <CfButton variant="ghost" onClick={() => setRight(false)}>取消</CfButton>
-            <CfButton onClick={() => setRight(false)}>确定</CfButton>
+            <CfButton variant="ghost" onClick={() => setOpen(false)}>取消</CfButton>
+            <CfButton onClick={() => setOpen(false)}>确定</CfButton>
           </>
         }
       >
@@ -65,6 +57,81 @@ export default function Demo() {
 }`}
 >
   <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 4 种滑入方向
+
+`placement` 决定从哪一边滑入 — 右（默认，最常见的详情侧栏）/ 左（移动端导航）/ 顶 / 底（中文输入面板风格的临时操作）。
+
+<DemoFrame
+  vueCode={`<CfDrawer v-model:open="right" title="右侧抽屉" placement="right" />
+<CfDrawer v-model:open="left" title="左侧抽屉" placement="left" />
+<CfDrawer v-model:open="top" title="顶部抽屉" placement="top" />
+<CfDrawer v-model:open="bottom" title="底部抽屉" placement="bottom" />`}
+  reactCode={`<CfDrawer open={right} onOpenChange={setRight} title="右侧抽屉" placement="right" />
+<CfDrawer open={left} onOpenChange={setLeft} title="左侧抽屉" placement="left" />
+<CfDrawer open={top} onOpenChange={setTop} title="顶部抽屉" placement="top" />
+<CfDrawer open={bottom} onOpenChange={setBottom} title="底部抽屉" placement="bottom" />`}
+>
+  <PlacementVue client:only="vue" />
+</DemoFrame>
+
+## 5 档尺寸
+
+`size` 控制抽屉宽度（左右 placement）或高度（上下 placement） — `sm` / `md`（默认）/ `lg` / `xl` / `full`（全屏）。
+
+<DemoFrame
+  vueCode={`<CfDrawer v-model:open="sm" title="size = sm" size="sm" />
+<CfDrawer v-model:open="md" title="size = md" size="md" />
+<CfDrawer v-model:open="lg" title="size = lg" size="lg" />
+<CfDrawer v-model:open="xl" title="size = xl" size="xl" />
+<CfDrawer v-model:open="full" title="size = full" size="full" />`}
+  reactCode={`<CfDrawer open={sm} onOpenChange={setSm} title="size = sm" size="sm" />
+<CfDrawer open={md} onOpenChange={setMd} title="size = md" size="md" />
+<CfDrawer open={lg} onOpenChange={setLg} title="size = lg" size="lg" />
+<CfDrawer open={xl} onOpenChange={setXl} title="size = xl" size="xl" />
+<CfDrawer open={full} onOpenChange={setFull} title="size = full" size="full" />`}
+>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
+## 锁死关闭路径
+
+表单 / 长流程里有时不希望误触关闭。三个开关全部置 `false` 让用户必须通过底部按钮显式提交或取消：
+
+- `closeOnOverlay={false}` —— 点击遮罩不关
+- `closeOnEsc={false}` —— Esc 不关
+- `showClose={false}` —— 隐藏右上角 ×
+
+<DemoFrame
+  vueCode={`<CfDrawer
+  v-model:open="open"
+  title="表单填写中"
+  :close-on-overlay="false"
+  :close-on-esc="false"
+  :show-close="false"
+>
+  <template #footer>
+    <CfButton variant="ghost" @click="open = false">取消</CfButton>
+    <CfButton @click="open = false">提交</CfButton>
+  </template>
+</CfDrawer>`}
+  reactCode={`<CfDrawer
+  open={open}
+  onOpenChange={setOpen}
+  title="表单填写中"
+  closeOnOverlay={false}
+  closeOnEsc={false}
+  showClose={false}
+  footer={
+    <>
+      <CfButton variant="ghost" onClick={() => setOpen(false)}>取消</CfButton>
+      <CfButton onClick={() => setOpen(false)}>提交</CfButton>
+    </>
+  }
+/>`}
+>
+  <NoCloseVue client:only="vue" />
 </DemoFrame>
 
 ## API · Props

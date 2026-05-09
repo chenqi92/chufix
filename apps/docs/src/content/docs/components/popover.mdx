@@ -1,67 +1,95 @@
 ---
 title: Popover 弹出层
-description: 弹出层 —— Tooltip 的可交互变体，支持任意富内容、表单、按钮，自动避让屏幕边缘。
+description: Tooltip 的可交互变体 —— 支持任意富内容、表单、按钮，自动避让屏幕边缘。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/popover/BasicVue.vue';
+import TriggersVue from '~/components/demos/popover/TriggersVue.vue';
+import PlacementVue from '~/components/demos/popover/PlacementVue.vue';
+import WidthVue from '~/components/demos/popover/WidthVue.vue';
 
 ## 基础用法
 
 与 Tooltip 不同，Popover 内部支持任意可交互内容（输入、按钮、列表）。点击外部或按 Esc 关闭，鼠标移入悬停 Popover 不会关闭。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { CfButton, CfPopover, CfInput } from '@chufix/vue';
-</script>
-
-<template>
-  <CfPopover placement="bottom">
-    <CfButton variant="secondary">点击展开</CfButton>
-    <template #content>
+  vueCode={`<CfPopover placement="bottom">
+  <CfButton variant="secondary">点击展开</CfButton>
+  <template #content>
+    <strong>快速操作</strong>
+    <CfInput placeholder="搜索…" size="sm" />
+    <CfButton size="sm">应用</CfButton>
+  </template>
+</CfPopover>`}
+  reactCode={`<CfPopover
+  placement="bottom"
+  content={
+    <div>
       <strong>快速操作</strong>
       <CfInput placeholder="搜索…" size="sm" />
       <CfButton size="sm">应用</CfButton>
-    </template>
-  </CfPopover>
-
-  <CfPopover trigger="hover" placement="top">
-    <CfButton variant="tertiary">悬停展开</CfButton>
-    <template #content>
-      悬停 Popover 支持任意富文本。
-    </template>
-  </CfPopover>
-</template>`}
-  reactCode={`import { CfButton, CfPopover, CfInput } from '@chufix/react';
-
-export default function Demo() {
-  return (
-    <>
-      <CfPopover
-        placement="bottom"
-        content={
-          <div>
-            <strong>快速操作</strong>
-            <CfInput placeholder="搜索…" size="sm" />
-            <CfButton size="sm">应用</CfButton>
-          </div>
-        }
-      >
-        <CfButton variant="secondary">点击展开</CfButton>
-      </CfPopover>
-
-      <CfPopover
-        trigger="hover"
-        placement="top"
-        content={<div>悬停 Popover 支持任意富文本。</div>}
-      >
-        <CfButton variant="tertiary">悬停展开</CfButton>
-      </CfPopover>
-    </>
-  );
-}`}
+    </div>
+  }
+>
+  <CfButton variant="secondary">点击展开</CfButton>
+</CfPopover>`}
 >
   <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 触发方式
+
+`trigger` 决定如何打开 popover：
+
+- `click`（默认）—— 点击触发器打开，再点击或点外部关闭
+- `hover` —— 悬停打开，移开延时关闭
+- `manual` —— 完全由父组件通过 `open` 控制（受控模式）
+
+<DemoFrame
+  vueCode={`<CfPopover trigger="click"><CfButton>click</CfButton><template #content>…</template></CfPopover>
+<CfPopover trigger="hover"><CfButton>hover</CfButton><template #content>…</template></CfPopover>
+<CfPopover trigger="manual" :open="manualOpen" @update:open="(v) => manualOpen = v">
+  <CfButton @click="manualOpen = !manualOpen">manual</CfButton>
+  <template #content>…</template>
+</CfPopover>`}
+  reactCode={`<CfPopover trigger="click" content={...}><CfButton>click</CfButton></CfPopover>
+<CfPopover trigger="hover" content={...}><CfButton>hover</CfButton></CfPopover>
+<CfPopover trigger="manual" open={open} onOpenChange={setOpen} content={...}>
+  <CfButton onClick={() => setOpen(!open)}>manual</CfButton>
+</CfPopover>`}
+>
+  <TriggersVue client:only="vue" />
+</DemoFrame>
+
+## 4 种 placement
+
+`placement` —— `top` / `bottom`（默认）/ `left` / `right`，空间不够时自动翻转到对侧。
+
+<DemoFrame
+  vueCode={`<CfPopover placement="top">…</CfPopover>
+<CfPopover placement="bottom">…</CfPopover>
+<CfPopover placement="left">…</CfPopover>
+<CfPopover placement="right">…</CfPopover>`}
+  reactCode={`<CfPopover placement="top">…</CfPopover>
+<CfPopover placement="bottom">…</CfPopover>
+<CfPopover placement="left">…</CfPopover>
+<CfPopover placement="right">…</CfPopover>`}
+>
+  <PlacementVue client:only="vue" />
+</DemoFrame>
+
+## 固定宽度
+
+`width` 给 popover 一个固定宽度（数字或 CSS 字符串）；省略则按内容自适应。需要多列内容或精准排版时用。
+
+<DemoFrame
+  vueCode={`<CfPopover placement="bottom"><CfButton>自适应</CfButton></CfPopover>
+<CfPopover placement="bottom" :width="320"><CfButton>固定 320</CfButton></CfPopover>`}
+  reactCode={`<CfPopover placement="bottom" content={...}><CfButton>自适应</CfButton></CfPopover>
+<CfPopover placement="bottom" width={320} content={...}><CfButton>固定 320</CfButton></CfPopover>`}
+>
+  <WidthVue client:only="vue" />
 </DemoFrame>
 
 ## API · Props
