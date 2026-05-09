@@ -1,0 +1,87 @@
+/* ChuFix DetachedPanel — floating draggable panel.
+ * Drag from header to reposition. */
+
+.cf-detached {
+  position: fixed;
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  min-width: 220px;
+  min-height: 120px;
+  z-index: var(--z-drawer);
+}
+
+.cf-detached__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+.cf-detached__header:active {
+  cursor: grabbing;
+}
+
+.cf-detached__title {
+  font-weight: var(--w-medium);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.cf-detached__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-detached__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: var(--r-3);
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+.cf-detached__close:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+
+.cf-detached__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 12px;
+}
+
+/* enter / leave */
+.cf-detached-enter-active,
+.cf-detached-leave-active {
+  transition: opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.cf-detached-enter-from,
+.cf-detached-leave-to {
+  opacity: 0;
+  transform: scale(0.96);
+}

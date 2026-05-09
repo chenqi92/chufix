@@ -28,6 +28,10 @@ import './styles/statusbar.css';
 import './styles/menubar.css';
 import './styles/notificationcenter.css';
 import './styles/globalsearch.css';
+import './styles/docklayout.css';
+import './styles/detachedpanel.css';
+import './styles/floatinginspector.css';
+import './styles/tearofftab.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -323,6 +327,30 @@ export type {
   GlobalSearchProps,
   GlobalSearchResult,
 } from './globalsearch/variants';
+
+export { default as CfDockLayout } from './docklayout/DockLayout.vue';
+export { default as CfDockNode } from './docklayout/DockNode.vue';
+export type {
+  DockLayoutProps,
+  DockGroup,
+  DockPanel,
+  DockOrientation,
+} from './docklayout/variants';
+
+export { default as CfDetachedPanel } from './detachedpanel/DetachedPanel.vue';
+export type { DetachedPanelProps } from './detachedpanel/variants';
+
+export { default as CfFloatingInspector } from './floatinginspector/FloatingInspector.vue';
+export type {
+  FloatingInspectorProps,
+  InspectorPlacement,
+} from './floatinginspector/variants';
+
+export { default as CfTearOffTabs } from './tearofftab/TearOffTabs.vue';
+export type {
+  TearOffTabsProps,
+  TearOffTabItem,
+} from './tearofftab/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

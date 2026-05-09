@@ -10,7 +10,7 @@
 
 ---
 
-## 已发布 · 117 / 130+
+## 已发布 · 121 / 130+
 
 ### 表单 · Form (27)
 
@@ -251,10 +251,10 @@
 
 可拖拽多面板布局，VSCode / Postman / 数据库工具风格。`DockLayout` 是其中最大件，预计 1500+ 行，单独排期。
 
-- [ ] **DockLayout** (multiwindow · DockLayout) —— 多面板可拖拽 / 可折叠 / 可重排布局壳
-- [ ] **DetachedPanel** (multiwindow · DetachedPanel) —— 浮动可分离面板（拖出即变独立窗口槽）
-- [ ] **FloatingInspector** (multiwindow · FloatingInspector) —— 全局浮动检查器面板
-- [ ] **TearOffTab** (multiwindow · TearOffTab) —— 可撕离的 Tab（拖出主窗口）
+- [x] **DockLayout** (multiwindow · DockLayout) —— 多面板可拖拽 / 可折叠 / 可重排布局壳（v1：递归 split + tabbed pane，v2 加 splitter resize / drag-to-dock）
+- [x] **DetachedPanel** (multiwindow · DetachedPanel) —— 浮动可分离面板（拖出即变独立窗口槽）
+- [x] **FloatingInspector** (multiwindow · FloatingInspector) —— 全局浮动检查器面板
+- [x] **TearOffTab** (multiwindow · TearOffTab) —— 可撕离的 Tab（拖出主窗口）
 
 ---
 

@@ -28,6 +28,10 @@ import './styles/statusbar.css';
 import './styles/menubar.css';
 import './styles/notificationcenter.css';
 import './styles/globalsearch.css';
+import './styles/docklayout.css';
+import './styles/detachedpanel.css';
+import './styles/floatinginspector.css';
+import './styles/tearofftab.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -332,6 +336,29 @@ export type {
   GlobalSearchProps,
   GlobalSearchResult,
 } from './globalsearch/variants';
+
+export { DockLayout as CfDockLayout } from './docklayout/DockLayout';
+export type {
+  DockLayoutProps,
+  DockGroup,
+  DockPanel,
+  DockOrientation,
+} from './docklayout/variants';
+
+export { DetachedPanel as CfDetachedPanel } from './detachedpanel/DetachedPanel';
+export type { DetachedPanelProps } from './detachedpanel/variants';
+
+export { FloatingInspector as CfFloatingInspector } from './floatinginspector/FloatingInspector';
+export type {
+  FloatingInspectorProps,
+  InspectorPlacement,
+} from './floatinginspector/variants';
+
+export { TearOffTabs as CfTearOffTabs } from './tearofftab/TearOffTabs';
+export type {
+  TearOffTabsProps,
+  TearOffTabItem,
+} from './tearofftab/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
