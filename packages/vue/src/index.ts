@@ -38,6 +38,9 @@ import './styles/taginput.css';
 import './styles/dropzone.css';
 import './styles/colorpicker.css';
 import './styles/datepicker.css';
+import './styles/banner.css';
+import './styles/pageheader.css';
+import './styles/stepper.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -267,6 +270,22 @@ export type {
   DateRangeVariant,
   DateRangeValue,
 } from './daterangepicker/variants';
+
+export { default as CfBanner } from './banner/Banner.vue';
+export type { BannerProps, BannerTone, BannerVariant } from './banner/variants';
+
+export { default as CfPageHeader } from './pageheader/PageHeader.vue';
+export type { PageHeaderProps, PageHeaderSize } from './pageheader/variants';
+
+export { default as CfStepper } from './stepper/Stepper.vue';
+export type {
+  StepperProps,
+  StepperVariant,
+  StepperOrientation,
+  StepperSize,
+  StepStatus,
+  StepItem,
+} from './stepper/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

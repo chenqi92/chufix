@@ -1,0 +1,155 @@
+/* ChuFix Stepper — multi-step progress indicator. */
+
+.cf-stepper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  display: flex;
+}
+
+.cf-stepper--horizontal { flex-direction: row; align-items: flex-start; gap: 0; }
+.cf-stepper--vertical   { flex-direction: column; gap: 0; }
+
+.cf-stepper--sm { font-size: var(--t-12); }
+.cf-stepper--lg { font-size: var(--t-14); }
+
+.cf-stepper__item {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+.cf-stepper--horizontal .cf-stepper__item { align-items: flex-start; }
+.cf-stepper--vertical   .cf-stepper__item { flex-direction: column; }
+
+.cf-stepper__node {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: default;
+}
+.cf-stepper--vertical .cf-stepper__node { align-items: flex-start; }
+.cf-stepper__item.is-clickable .cf-stepper__node { cursor: pointer; }
+.cf-stepper__item.is-clickable .cf-stepper__node:hover .cf-stepper__title {
+  color: var(--accent-1);
+}
+.cf-stepper__node:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; border-radius: var(--r-3); }
+
+.cf-stepper__indicator {
+  --cf-stepper-size: 28px;
+  width: var(--cf-stepper-size, 28px);
+  height: var(--cf-stepper-size, 28px);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-2);
+  color: var(--fg-2);
+  font-weight: var(--w-medium);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  transition: background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.cf-stepper--sm .cf-stepper__indicator { --cf-stepper-size:22px; font-size: var(--t-11); }
+.cf-stepper--md .cf-stepper__indicator { --cf-stepper-size:28px; font-size: var(--t-13); }
+.cf-stepper--lg .cf-stepper__indicator { --cf-stepper-size:32px; font-size: var(--t-14); }
+
+.cf-stepper__indicator svg { width: 60%; height: 60%; }
+
+/* status states */
+.cf-stepper__item.is-current .cf-stepper__indicator {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.cf-stepper__item.is-done .cf-stepper__indicator {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  box-shadow: inset 0 0 0 1px var(--accent-1);
+}
+.cf-stepper__item.is-error .cf-stepper__indicator {
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  box-shadow: inset 0 0 0 1px var(--status-error);
+}
+.cf-stepper__item.is-disabled .cf-stepper__indicator {
+  opacity: var(--disabled-opacity);
+}
+
+.cf-stepper--dots .cf-stepper__indicator {
+  --cf-stepper-size:12px;
+  background: var(--line-2);
+  box-shadow: none;
+  align-self: center;
+}
+.cf-stepper--dots .cf-stepper__item.is-current .cf-stepper__indicator,
+.cf-stepper--dots .cf-stepper__item.is-done .cf-stepper__indicator {
+  background: var(--accent-1);
+  box-shadow: none;
+}
+
+.cf-stepper--minimal .cf-stepper__indicator {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.cf-stepper--minimal .cf-stepper__item.is-current .cf-stepper__indicator {
+  color: var(--accent-1);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--accent-1);
+}
+
+.cf-stepper__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cf-stepper__title {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+}
+.cf-stepper__item.is-pending .cf-stepper__title { color: var(--fg-3); }
+.cf-stepper__item.is-error   .cf-stepper__title { color: var(--status-error); }
+.cf-stepper__description {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+
+/* connector line */
+.cf-stepper__connector {
+  flex: 1;
+  background: var(--line-2);
+  align-self: center;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.cf-stepper--horizontal .cf-stepper__connector {
+  height: 1px;
+  margin: 0 12px;
+  margin-top: 14px;
+  align-self: flex-start;
+}
+.cf-stepper--horizontal.cf-stepper--sm .cf-stepper__connector { margin-top: 11px; }
+.cf-stepper--horizontal.cf-stepper--lg .cf-stepper__connector { margin-top: 16px; }
+.cf-stepper--vertical .cf-stepper__connector {
+  width: 1px;
+  height: 24px;
+  margin: 6px 0 6px 14px;
+}
+.cf-stepper--vertical.cf-stepper--sm .cf-stepper__connector { margin-left: 11px; }
+.cf-stepper--vertical.cf-stepper--lg .cf-stepper__connector { margin-left: 16px; }
+
+.cf-stepper__connector.is-active {
+  background: var(--accent-1);
+}

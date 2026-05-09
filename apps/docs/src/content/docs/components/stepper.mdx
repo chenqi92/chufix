@@ -1,0 +1,102 @@
+---
+title: Stepper 步骤指示
+description: 多步流程进度条，支持横竖两种方向、3 种 variant、可点击切换。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/stepper/BasicVue.vue';
+import VariantsVue from '~/components/demos/stepper/VariantsVue.vue';
+import VerticalVue from '~/components/demos/stepper/VerticalVue.vue';
+
+## 基础用法
+
+`items` 数组每项至少有 `title`，`current` 是当前步骤的索引（从 0 起）。索引小于 `current` 的自动标 `done`，等于的标 `current`，大于的标 `pending`。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfStepper, type StepItem } from '@chufix/vue';
+
+const current = ref(1);
+const items: StepItem[] = [
+  { title: '填写信息', description: '账号 / 邮箱 / 密码' },
+  { title: '验证邮箱', description: '收到的邮件中点击链接' },
+  { title: '完成', description: '即可开始使用' },
+];
+</script>
+
+<template>
+  <CfStepper :items="items" :current="current" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfStepper, type StepItem } from '@chufix/react';
+
+const items: StepItem[] = [
+  { title: '填写信息', description: '账号 / 邮箱 / 密码' },
+  { title: '验证邮箱', description: '收到的邮件中点击链接' },
+  { title: '完成', description: '即可开始使用' },
+];
+
+export default function Demo() {
+  const [current, setCurrent] = useState(1);
+  return <CfStepper items={items} current={current} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 三种 variant
+
+`numbered`（默认）显示步骤号；`dots` 极简圆点；`minimal` 透明描边。
+
+<DemoFrame
+  vueCode={`<CfStepper :items="items" :current="2" variant="numbered" />
+<CfStepper :items="items" :current="2" variant="dots" />
+<CfStepper :items="items" :current="2" variant="minimal" />`}
+  reactCode={`<CfStepper items={items} current={2} variant="numbered" />
+<CfStepper items={items} current={2} variant="dots" />
+<CfStepper items={items} current={2} variant="minimal" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 竖向 + 显式状态
+
+`orientation="vertical"` 把步骤竖排展开。每一项可以单独指定 `status: 'done' | 'current' | 'pending' | 'error'`，会覆盖 `current` 自动推断的结果。
+
+<DemoFrame
+  vueCode={`<CfStepper
+  orientation="vertical"
+  :items="[
+    { title: '提交申请', description: '已于 2026-05-01 提交', status: 'done' },
+    { title: '审核中', description: '客户经理预计 2 天内回复', status: 'current' },
+    { title: '签订合同' },
+    { title: '账户激活', status: 'error' },
+  ]"
+/>`}
+  reactCode={`<CfStepper
+  orientation="vertical"
+  items={[
+    { title: '提交申请', description: '已于 2026-05-01 提交', status: 'done' },
+    { title: '审核中', description: '客户经理预计 2 天内回复', status: 'current' },
+    { title: '签订合同' },
+    { title: '账户激活', status: 'error' },
+  ]}
+/>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `StepItem[]` | `[]` | 步骤数组 |
+| `current` | `number` | `0` | 当前步骤索引（0 起） |
+| `variant` | `'numbered' \| 'dots' \| 'minimal'` | `'numbered'` | 视觉模式 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 排列方向 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `clickable` | `boolean` | `false` | 步骤是否可点击切换；与 `change` 事件配合使用 |
+
+`StepItem`：`{ key?, title, description?, status?, disabled? }`。
+事件：`change(index, item)`（React 端：`onChange`）。

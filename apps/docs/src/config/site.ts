@@ -72,6 +72,9 @@ export const sidebar: SidebarGroup[] = [
       { label: 'ColorPicker 颜色选择', href: '/components/colorpicker/' },
       { label: 'DatePicker 日期选择', href: '/components/datepicker/' },
       { label: 'DateRangePicker 日期范围', href: '/components/daterangepicker/' },
+      { label: 'Banner 全宽提示', href: '/components/banner/' },
+      { label: 'PageHeader 页头', href: '/components/pageheader/' },
+      { label: 'Stepper 步骤指示', href: '/components/stepper/' },
     ],
   },
 ];

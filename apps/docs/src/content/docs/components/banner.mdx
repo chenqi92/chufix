@@ -1,0 +1,71 @@
+---
+title: Banner 全宽提示
+description: 顶部全宽通告条，支持 6 种 tone × 2 种 variant、可关闭、可吸顶。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/banner/BasicVue.vue';
+import SolidVue from '~/components/demos/banner/SolidVue.vue';
+
+## 基础用法（subtle）
+
+`Banner` 默认是 `variant="subtle"`：浅色底 + 强调色文字，适合放在页面顶部或卡片首行。
+
+<DemoFrame
+  vueCode={`<CfBanner tone="info" dismissible>
+  系统将于今晚 22:00 - 22:30 进行维护，部分功能可能不可用。
+</CfBanner>
+<CfBanner tone="success">您的订单已支付完成。</CfBanner>
+<CfBanner tone="warning" dismissible>
+  存储空间已使用 86%，请尽快清理或升级配额。
+  <template #action>
+    <CfButton size="sm" variant="tertiary">清理</CfButton>
+  </template>
+</CfBanner>
+<CfBanner tone="danger">数据库连接已断开，正在尝试重连…</CfBanner>`}
+  reactCode={`<CfBanner tone="info" dismissible>
+  系统将于今晚 22:00 - 22:30 进行维护，部分功能可能不可用。
+</CfBanner>
+<CfBanner tone="success">您的订单已支付完成。</CfBanner>
+<CfBanner tone="warning" dismissible action={<CfButton size="sm" variant="tertiary">清理</CfButton>}>
+  存储空间已使用 86%，请尽快清理或升级配额。
+</CfBanner>
+<CfBanner tone="danger">数据库连接已断开，正在尝试重连…</CfBanner>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 实色（solid）
+
+`variant="solid"` 用 tone 的实色填底、白字，视觉权重更强，适合营销公告或紧急提示。
+
+<DemoFrame
+  vueCode={`<CfBanner variant="solid" tone="accent" dismissible>
+  新版本 v2.0 上线 — 全新主题与三套密度
+  <template #action>
+    <CfButton size="sm" variant="ghost">查看更新</CfButton>
+  </template>
+</CfBanner>`}
+  reactCode={`<CfBanner
+  variant="solid"
+  tone="accent"
+  dismissible
+  action={<CfButton size="sm" variant="ghost">查看更新</CfButton>}
+>
+  新版本 v2.0 上线 — 全新主题与三套密度
+</CfBanner>`}
+>
+  <SolidVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `tone` | `'info' \| 'success' \| 'warning' \| 'danger' \| 'accent' \| 'neutral'` | `'info'` | 语义色 |
+| `variant` | `'subtle' \| 'solid'` | `'subtle'` | 视觉模式 |
+| `dismissible` | `boolean` | `false` | 显示关闭 × |
+| `icon` | `boolean` | `true` | 是否显示左侧图标（Vue 端默认 true，可用 `#icon` slot 替换；React 端用 `icon` prop 传节点） |
+| `sticky` | `boolean` | `false` | 是否吸顶（`position: sticky`） |
+
+事件：`dismiss`（React 端：`onDismiss`）。Slot：默认内容、`action`、`icon`（Vue）。

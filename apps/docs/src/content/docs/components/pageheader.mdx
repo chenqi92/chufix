@@ -1,0 +1,91 @@
+---
+title: PageHeader 页头
+description: 标题 + 描述 + 面包屑 + 操作区 + 工具栏 + 标签页一体的页头容器。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pageheader/BasicVue.vue';
+import WithTabsVue from '~/components/demos/pageheader/WithTabsVue.vue';
+
+## 基础用法
+
+`PageHeader` 是一个组合容器，把整页头部常用的几块（面包屑、标题、描述、操作）放进固定布局里。`title` / `description` 是简便属性；如果要放复杂内容，用同名 slot 覆盖。
+
+<DemoFrame
+  vueCode={`<CfPageHeader
+  title="项目设置"
+  description="管理项目成员、权限以及通知偏好。"
+>
+  <template #breadcrumb>
+    <CfBreadcrumb :items="[
+      { label: '工作台', href: '#' },
+      { label: '项目', href: '#' },
+      { label: '设置' },
+    ]" />
+  </template>
+  <template #actions>
+    <CfButton variant="tertiary">取消</CfButton>
+    <CfButton variant="primary">保存</CfButton>
+  </template>
+</CfPageHeader>`}
+  reactCode={`<CfPageHeader
+  title="项目设置"
+  description="管理项目成员、权限以及通知偏好。"
+  breadcrumb={
+    <CfBreadcrumb items={[
+      { label: '工作台', href: '#' },
+      { label: '项目', href: '#' },
+      { label: '设置' },
+    ]} />
+  }
+  actions={
+    <>
+      <CfButton variant="tertiary">取消</CfButton>
+      <CfButton variant="primary">保存</CfButton>
+    </>
+  }
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 标签页 + 复杂标题
+
+把 Tabs 直接嵌入 `tabs` slot / prop，会与页头无缝衔接（负 margin 把 tabs 贴到底部边线）。
+
+<DemoFrame
+  vueCode={`<CfPageHeader>
+  <template #title>
+    chufix
+    <CfTag tone="primary" variant="solid" size="sm">v0.0.1</CfTag>
+  </template>
+  <template #description>Vue 3 + React 双框架同源的基础组件库</template>
+  <template #actions>
+    <CfButton variant="tertiary" size="sm">分享</CfButton>
+    <CfButton variant="primary" size="sm">部署</CfButton>
+  </template>
+  <template #tabs>
+    <CfTabs v-model="tab" :items="items" />
+  </template>
+</CfPageHeader>`}
+  reactCode={`<CfPageHeader
+  title={<>chufix <CfTag tone="primary" variant="solid" size="sm">v0.0.1</CfTag></>}
+  description="Vue 3 + React 双框架同源的基础组件库"
+  actions={<><CfButton size="sm" variant="tertiary">分享</CfButton><CfButton size="sm" variant="primary">部署</CfButton></>}
+  tabs={<CfTabs value={tab} items={items} onChange={setTab} />}
+/>`}
+>
+  <WithTabsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `title` | `string \| ReactNode` | `—` | 主标题（h1）；与 `#title` slot 二选一 |
+| `description` | `string \| ReactNode` | `—` | 副描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 整体内距与字号 |
+| `bordered` | `boolean` | `true` | 底部是否描边 |
+
+Vue slot：`breadcrumb` / `back` / `title` / `description` / `actions` / `toolbar` / `tabs`。
+React 用同名 prop 传 `ReactNode`。
