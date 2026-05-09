@@ -27,6 +27,20 @@ import BasicVue from '~/components/demos/commandpalette/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## 隐藏底部提示
+
+`hide-footer` 隐藏底部"↑↓ 导航 · ↵ 选择 · Esc 关闭"提示，节省竖向空间。
+
+import HiddenFooterVue from '~/components/demos/commandpalette/HiddenFooterVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCommandPalette ... hide-footer />`}
+  reactCode={`<CfCommandPalette ... hideFooter />`}
+>
+  <HiddenFooterVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

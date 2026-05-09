@@ -28,6 +28,20 @@ import BasicVue from '~/components/demos/globalsearch/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## 类目过滤
+
+18 个跨 5 个类目的结果。点击顶部 chip 过滤；类目数量 ≤ 1 时自动隐藏 chip 行。
+
+import CategoriesVue from '~/components/demos/globalsearch/CategoriesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfGlobalSearch ... :show-categories="true" />`}
+  reactCode={`<CfGlobalSearch ... showCategories />`}
+>
+  <CategoriesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

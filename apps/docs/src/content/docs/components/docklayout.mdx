@@ -26,6 +26,20 @@ import BasicVue from '~/components/demos/docklayout/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 最简布局（无嵌套）
+
+一个 group + 多个 panels = 普通 tabbed 视图，等价于 CfTabs；当只有 tab 切换需求时直接用 CfTabs 更轻。
+
+import MinimalVue from '~/components/demos/docklayout/MinimalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDockLayout :layout="{ id: 'r', orientation: 'vertical', panels: [...] }" />`}
+  reactCode={`<CfDockLayout layout={{ id: "r", orientation: "vertical", panels: [...] }} />`}
+>
+  <MinimalVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

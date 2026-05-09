@@ -38,6 +38,7 @@ const notice = ref('');
 const comments = ref<CommentItem[]>([]);
 const author = ref('');
 const content = ref('');
+const quickEmojis = ['👍', '❤️', '🎉', '👀', '🙌', '💡'];
 
 const count = computed(() =>
   comments.value.reduce((sum, item) => sum + 1 + (item.replies?.length ?? 0), 0),
@@ -104,9 +105,9 @@ async function loadComments() {
   }
 }
 
-async function submit() {
+async function submit(overrideContent?: string) {
   const nextAuthor = author.value.trim();
-  const nextContent = content.value.trim();
+  const nextContent = (overrideContent ?? content.value).trim();
   if (!nextAuthor || !nextContent || posting.value || unavailable.value) return;
 
   posting.value = true;
@@ -122,7 +123,7 @@ async function submit() {
       }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    content.value = '';
+    if (!overrideContent) content.value = '';
     notice.value = '评论已提交，审核通过后会显示在这里。';
     await loadComments();
   } catch {
@@ -130,6 +131,16 @@ async function submit() {
   } finally {
     posting.value = false;
   }
+}
+
+function quickSendEmoji(emoji: string) {
+  if (posting.value || unavailable.value) return;
+  if (!author.value.trim()) {
+    content.value = emoji;
+    notice.value = '先填写昵称，再点 emoji 就能一键发送。';
+    return;
+  }
+  submit(emoji);
 }
 
 onMounted(loadComments);
@@ -149,7 +160,7 @@ onMounted(loadComments);
       当前页面已经预留评论模块。配置 Cloudflare Pages Functions 和 D1 绑定后，用户评论会进入待审核队列。
     </CfAlert>
 
-    <form class="doc-comments__form" @submit.prevent="submit">
+    <form class="doc-comments__form" @submit.prevent="submit()">
       <CfInput
         v-model="author"
         placeholder="昵称"
@@ -165,6 +176,22 @@ onMounted(loadComments);
         auto-resize
         :disabled="posting || unavailable"
       />
+      <div class="doc-comments__emoji" aria-label="快捷 emoji 评论">
+        <span>一键发送</span>
+        <CfButton
+          v-for="emoji in quickEmojis"
+          :key="emoji"
+          type="button"
+          variant="ghost"
+          size="sm"
+          shape="square"
+          :disabled="posting || unavailable"
+          :aria-label="`发送 ${emoji}`"
+          @click="quickSendEmoji(emoji)"
+        >
+          {{ emoji }}
+        </CfButton>
+      </div>
       <div class="doc-comments__actions">
         <p v-if="notice" class="doc-comments__notice">{{ notice }}</p>
         <CfButton
@@ -251,6 +278,19 @@ onMounted(loadComments);
   flex-direction: column;
   gap: 0.75rem;
   margin: 1rem 0 1.25rem;
+}
+.doc-comments__emoji {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+.doc-comments__emoji span {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+.doc-comments__emoji .cf-btn {
+  min-width: 2rem;
 }
 .doc-comments__actions {
   display: flex;

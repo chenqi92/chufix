@@ -33,6 +33,20 @@ import BasicVue from '~/components/demos/confirmdialog/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## Loading 异步确认
+
+把 confirm 钩到一个 1.5s 的异步操作，期间 confirm button 显示 spinner，cancel 被禁用。
+
+import LoadingVue from '~/components/demos/confirmdialog/LoadingVue.vue';
+
+<DemoFrame
+  vueCode={`<CfConfirmDialog ... :loading="loading" @confirm="onConfirm" />`}
+  reactCode={`<CfConfirmDialog ... loading={loading} onConfirm={onConfirm} />`}
+>
+  <LoadingVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
