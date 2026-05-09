@@ -77,6 +77,8 @@ export const sidebar: SidebarGroup[] = [
       { label: 'Stepper 步骤指示', href: '/components/stepper/' },
       { label: 'Splitter 分隔面板', href: '/components/splitter/' },
       { label: 'AppShell 应用脚手架', href: '/components/appshell/' },
+      { label: 'Sidebar 侧栏', href: '/components/sidebar/' },
+      { label: 'NavMenu 主导航', href: '/components/navmenu/' },
     ],
   },
 ];

@@ -1,0 +1,64 @@
+---
+title: NavMenu 主导航
+description: 顶部水平导航栏，每一项可挂富面板（多列链接 + 描述），hover 或点击触发。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/navmenu/BasicVue.vue';
+
+## 基础用法
+
+`items` 是一个数组，每项要么是简单链接（`href`），要么有 `links[]` 列表。后者会在 hover / click 时打开富面板，每条 link 可带 `description` 与 `icon`。
+
+`columns` 控制面板每行多少链接（1 / 2 / 3）。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfNavMenu, type NavMenuItem } from '@chufix/vue';
+
+const active = ref('products');
+const items: NavMenuItem[] = [
+  {
+    key: 'products',
+    label: '产品',
+    columns: 2,
+    links: [
+      { label: '组件库', description: 'Vue 3 与 React 双框架同源', href: '#' },
+      { label: 'Tokens', description: 'OKLCH 设计变量与三套主题', href: '#' },
+      { label: '图标', description: '16x16 sprite，CSS currentColor', href: '#' },
+      { label: 'CLI', description: 'npx chufix add 拷贝源码到自己仓库', href: '#' },
+    ],
+  },
+  { key: 'docs', label: '文档', links: [{ label: '快速开始', href: '#' }] },
+  { key: 'pricing', label: '价格', href: '#' },
+];
+</script>
+
+<template>
+  <CfNavMenu :items="items" :active="active" />
+</template>`}
+  reactCode={`import { CfNavMenu, type NavMenuItem } from '@chufix/react';
+
+const items: NavMenuItem[] = [/* ... */];
+
+export default function Demo() {
+  return <CfNavMenu items={items} active="products" />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `NavMenuItem[]` | `[]` | 顶级菜单条目 |
+| `active` | `string` | `—` | 当前活动项的 `key`，影响下划线 / 高亮 |
+| `variant` | `'underline' \| 'pill' \| 'minimal'` | `'underline'` | 视觉模式 |
+| `trigger` | `'hover' \| 'click'` | `'hover'` | 富面板的触发方式 |
+
+`NavMenuItem`：`{ key, label, href?, links?, columns?, disabled? }`。
+`NavMenuLink`：`{ label, description?, href, icon? }`。
+
+事件：`navigate(item)`（React 端：`onNavigate`），仅在简单链接被点击（无 links 子项）时触发。

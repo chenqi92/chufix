@@ -1,0 +1,142 @@
+/* ChuFix NavMenu — top-bar primary navigation with hover/click rich panel. */
+
+.cf-navmenu {
+  position: relative;
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: transparent;
+}
+
+.cf-navmenu__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cf-navmenu__item {
+  position: relative;
+}
+
+.cf-navmenu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--control-h);
+  padding: 0 12px;
+  font: inherit;
+  color: var(--fg-2);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+.cf-navmenu__trigger:hover {
+  color: var(--fg-1);
+  background: var(--bg-2);
+}
+.cf-navmenu__item.is-active .cf-navmenu__trigger { color: var(--accent-1); }
+.cf-navmenu__item.is-disabled .cf-navmenu__trigger { color: var(--fg-3); cursor: not-allowed; }
+
+.cf-navmenu__caret {
+  width: 12px;
+  height: 12px;
+  color: var(--fg-3);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-navmenu__item.is-open .cf-navmenu__caret { transform: rotate(180deg); }
+
+/* underline variant */
+.cf-navmenu--underline .cf-navmenu__item {
+  position: relative;
+}
+.cf-navmenu--underline .cf-navmenu__item::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent-1);
+  border-radius: var(--r-pill);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-navmenu--underline .cf-navmenu__item.is-active::after,
+.cf-navmenu--underline .cf-navmenu__item.is-open::after {
+  transform: scaleX(1);
+}
+
+/* pill variant */
+.cf-navmenu--pill .cf-navmenu__item.is-active .cf-navmenu__trigger,
+.cf-navmenu--pill .cf-navmenu__item.is-open .cf-navmenu__trigger {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+
+/* minimal variant — keep base styles */
+
+/* panel */
+.cf-navmenu__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: var(--z-popover);
+  min-width: 360px;
+  padding: 8px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  display: grid;
+  grid-template-columns: repeat(var(--cf-navmenu-cols, 2), minmax(0, 1fr));
+  gap: 4px;
+}
+
+.cf-navmenu__link {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-4);
+  text-decoration: none;
+  color: var(--fg-1);
+  background: transparent;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.cf-navmenu__link:hover { background: var(--bg-2); }
+
+.cf-navmenu__link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-3);
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  flex: none;
+}
+.cf-navmenu__link-icon svg { width: 60%; height: 60%; }
+
+.cf-navmenu__link-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cf-navmenu__link-label {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+}
+.cf-navmenu__link-description {
+  font-size: var(--t-12);
+  color: var(--fg-3);
+  line-height: 1.45;
+}

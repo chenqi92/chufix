@@ -7,7 +7,7 @@
 
 ---
 
-## 已发布 · 44 / 70+
+## 已发布 · 46 / 70+
 
 ### 表单 · Form (19)
 
@@ -55,13 +55,15 @@
 - [x] Popover (overlays · #popover)
 - [x] Banner (navigation · Banner)
 
-### 导航 · Navigation (5)
+### 导航 · Navigation (7)
 
 - [x] Tabs (base · B.09)
 - [x] Breadcrumb (base · B.14)
 - [x] Pagination (base · B.14 / data · #pagination)
 - [x] Dropdown / DropdownMenu (overlays · #menu)
 - [x] Stepper (navigation · Stepper · Wizard / base2 · Stepper)
+- [x] Sidebar (navigation · Sidebar)
+- [x] NavMenu (base · B.15)
 
 ### 布局与状态 · Layout (5)
 
@@ -100,11 +102,11 @@
 ## 路线图 · 优先级 P2（容器/导航/状态扩展）· 7
 
 - [x] **AppShell / Layout** (layout · #appshell) —— 顶栏 + 侧边栏 + 主区域骨架，用作整站脚手架
-- [ ] **Sidebar** (navigation · Sidebar) —— 可折叠侧栏，支持嵌套菜单
+- [x] **Sidebar** (navigation · Sidebar) —— 可折叠侧栏，支持嵌套菜单
 - [x] **Splitter / Resizable** (navigation · Splitter / rich) —— 可拖拽分隔的双面板
 - [x] **PageHeader** (layout · #pageheader) —— 标题 + 面包屑 + 操作区一体的页头
 - [x] **Stepper · Wizard** (navigation · Stepper · Wizard / base2 · Stepper) —— 多步流程
-- [ ] **NavigationMenu** (base · B.15) —— 顶部主导航 + hover 富面板
+- [x] **NavigationMenu** (base · B.15) —— 顶部主导航 + hover 富面板
 - [x] **Banner · Announcement** (navigation · Banner) —— 顶部全宽提示条
 
 ## 路线图 · 优先级 P3（数据展示重型）· 6

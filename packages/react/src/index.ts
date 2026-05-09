@@ -43,6 +43,8 @@ import './styles/pageheader.css';
 import './styles/stepper.css';
 import './styles/splitter.css';
 import './styles/appshell.css';
+import './styles/sidebar.css';
+import './styles/navmenu.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -316,3 +318,20 @@ export type {
 
 export { AppShell as CfAppShell } from './appshell/AppShell';
 export type { AppShellProps, AppShellVariant } from './appshell/variants';
+
+export { Sidebar as CfSidebar } from './sidebar/Sidebar';
+export type {
+  SidebarProps,
+  SidebarSize,
+  SidebarItem,
+  SidebarGroup,
+  SidebarEntry,
+} from './sidebar/variants';
+
+export { NavMenu as CfNavMenu } from './navmenu/NavMenu';
+export type {
+  NavMenuProps,
+  NavMenuItem,
+  NavMenuLink,
+  NavMenuVariant,
+} from './navmenu/variants';

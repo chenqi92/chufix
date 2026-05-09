@@ -1,0 +1,99 @@
+---
+title: Sidebar 侧栏
+description: 竖直主导航，支持分组、嵌套子菜单、徽标、收起为图标模式。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sidebar/BasicVue.vue';
+import CollapsedVue from '~/components/demos/sidebar/CollapsedVue.vue';
+
+## 基础用法
+
+`items` 接受两种条目：普通 `SidebarItem`（叶子菜单）或 `SidebarGroup`（分组容器，`type: 'group'` + `items[]`）。`v-model` 绑定当前选中的 key，`defaultOpenKeys` 控制初始展开的有 children 的项。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSidebar, type SidebarEntry } from '@chufix/vue';
+
+const active = ref('analytics');
+const items: SidebarEntry[] = [
+  {
+    type: 'group',
+    label: '工作台',
+    items: [
+      { key: 'overview', label: '概览' },
+      { key: 'analytics', label: '分析', badge: '12' },
+      { key: 'reports', label: '报表' },
+    ],
+  },
+  {
+    type: 'group',
+    label: '资源',
+    items: [
+      {
+        key: 'team',
+        label: '团队',
+        children: [
+          { key: 'members', label: '成员' },
+          { key: 'roles', label: '角色' },
+          { key: 'invitations', label: '邀请', badge: 3 },
+        ],
+      },
+      { key: 'settings', label: '设置' },
+      { key: 'billing', label: '账单', disabled: true },
+    ],
+  },
+];
+</script>
+
+<template>
+  <CfSidebar v-model="active" :items="items" :default-open-keys="['team']" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSidebar, type SidebarEntry } from '@chufix/react';
+
+const items: SidebarEntry[] = [/* ... */];
+
+export default function Demo() {
+  const [active, setActive] = useState('analytics');
+  return (
+    <CfSidebar
+      value={active}
+      items={items}
+      defaultOpenKeys={['team']}
+      onChange={setActive}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 收起为图标
+
+`collapsed` 把侧栏宽度缩到 56px，只显示图标 + tooltip（鼠标悬停显示 `title`）。这种模式下子菜单不再展开，需要在你的应用层面接管交互。
+
+<DemoFrame
+  vueCode={`<CfSidebar v-model="active" :items="items" collapsed />`}
+  reactCode={`<CfSidebar value={active} items={items} collapsed onChange={setActive} />`}
+>
+  <CollapsedVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `items` | `SidebarEntry[]` | `[]` | 菜单条目，可混排叶子和分组 |
+| `modelValue` (Vue) / `value` (React) | `string` | `—` | 当前选中的 `item.key` |
+| `openKeys` / `defaultOpenKeys` | `string[]` | `—` | 受控 / 非受控的展开 key 列表 |
+| `collapsed` | `boolean` | `false` | 是否收成 56px 图标模式 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 内距 |
+
+`SidebarItem`：`{ key, label, icon?, href?, badge?, disabled?, children? }`。
+`SidebarGroup`：`{ type: 'group', key?, label?, items[] }`。
+
+事件：`update:modelValue` / `update:openKeys` / `select`（React 端：`onChange` / `onOpenKeysChange` / `onSelect`）。
+
+> 与 [AppShell](/components/appshell/) 配合使用时，把 `<CfSidebar>` 放到 `#sidebar` slot 即可拼出完整后台壳。

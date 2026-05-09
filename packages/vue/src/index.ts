@@ -43,6 +43,8 @@ import './styles/pageheader.css';
 import './styles/stepper.css';
 import './styles/splitter.css';
 import './styles/appshell.css';
+import './styles/sidebar.css';
+import './styles/navmenu.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -298,6 +300,23 @@ export type {
 
 export { default as CfAppShell } from './appshell/AppShell.vue';
 export type { AppShellProps, AppShellVariant } from './appshell/variants';
+
+export { default as CfSidebar } from './sidebar/Sidebar.vue';
+export type {
+  SidebarProps,
+  SidebarSize,
+  SidebarItem,
+  SidebarGroup,
+  SidebarEntry,
+} from './sidebar/variants';
+
+export { default as CfNavMenu } from './navmenu/NavMenu.vue';
+export type {
+  NavMenuProps,
+  NavMenuItem,
+  NavMenuLink,
+  NavMenuVariant,
+} from './navmenu/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {
