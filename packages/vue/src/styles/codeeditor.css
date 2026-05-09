@@ -1,0 +1,81 @@
+/* ChuFix CodeEditor — editable variant of CodeBlock with line numbers.
+ * Lightweight textarea host; bring your own syntax highlighter via overlay. */
+
+.cf-codeeditor {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  background: var(--bg-inset);
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  line-height: 20px;
+  overflow: hidden;
+  transition: border-color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+}
+.cf-codeeditor:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring-inset);
+}
+.cf-codeeditor.is-readonly {
+  background: var(--bg-2);
+}
+
+/* sizes */
+.cf-codeeditor--sm {
+  font-size: var(--t-12);
+  line-height: 18px;
+}
+.cf-codeeditor--md {
+  font-size: var(--t-13);
+  line-height: 20px;
+}
+.cf-codeeditor--lg {
+  font-size: var(--t-14);
+  line-height: 22px;
+}
+
+/* gutter */
+.cf-codeeditor__gutter {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px 8px 10px 12px;
+  border-right: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  overflow: hidden;
+  min-width: 36px;
+}
+.cf-codeeditor__gutter > span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* input */
+.cf-codeeditor__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--fg-1);
+  font: inherit;
+  padding: 10px 14px;
+  resize: none;
+  white-space: pre;
+  overflow: auto;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+.cf-codeeditor__input::placeholder {
+  color: var(--fg-3);
+}
+.cf-codeeditor.is-wrap .cf-codeeditor__input {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

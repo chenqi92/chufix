@@ -1,5 +1,6 @@
 import '@chufix/tokens/tokens.css';
 import './styles/icon.css';
+import './styles/statusillustration.css';
 import './styles/button.css';
 import './styles/iconbutton.css';
 import './styles/toolbar.css';
@@ -17,6 +18,11 @@ import './styles/commandpalette.css';
 import './styles/protocolbadge.css';
 import './styles/statuscodebadge.css';
 import './styles/variableinput.css';
+import './styles/codeeditor.css';
+import './styles/diffeditor.css';
+import './styles/markdowneditor.css';
+import './styles/regexbuilder.css';
+import './styles/ansitext.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -125,6 +131,13 @@ export type {
   IconButtonSize,
   IconButtonShape,
 } from './iconbutton/variants';
+
+export { StatusIllustration as CfStatusIllustration } from './statusillustration/StatusIllustration';
+export type {
+  StatusIllustrationProps,
+  StatusIllustrationSize,
+  StatusIllustrationVariant,
+} from './statusillustration/variants';
 
 export { Toolbar as CfToolbar, ToolbarSeparator as CfToolbarSeparator } from './toolbar/Toolbar';
 export type {
@@ -240,6 +253,45 @@ export type {
   VariableAwareInputVariant,
   Token as VariableAwareInputToken,
 } from './variableinput/variants';
+
+export { CodeEditor as CfCodeEditor } from './codeeditor/CodeEditor';
+export type {
+  CodeEditorProps,
+  CodeEditorSize,
+} from './codeeditor/variants';
+
+export { DiffEditor as CfDiffEditor } from './diffeditor/DiffEditor';
+export type {
+  DiffEditorProps,
+  DiffEditorSize,
+  DiffEditorMode,
+  DiffOp as DiffEditorOp,
+  DiffRow as DiffEditorRow,
+} from './diffeditor/variants';
+
+export { MarkdownEditor as CfMarkdownEditor } from './markdowneditor/MarkdownEditor';
+export type {
+  MarkdownEditorProps,
+  MarkdownEditorSize,
+  MarkdownEditorMode,
+} from './markdowneditor/variants';
+export { renderMarkdown as renderMarkdownDefault } from './markdowneditor/variants';
+
+export { RegexBuilder as CfRegexBuilder } from './regexbuilder/RegexBuilder';
+export type {
+  RegexBuilderProps,
+  RegexBuilderSize,
+  RegexFlag,
+  RegexMatch,
+  RegexResult,
+} from './regexbuilder/variants';
+
+export { AnsiText as CfAnsiText } from './ansitext/AnsiText';
+export type {
+  AnsiTextProps,
+  AnsiTextSize,
+  AnsiSpan,
+} from './ansitext/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

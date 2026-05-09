@@ -1,5 +1,6 @@
 import '@chufix/tokens/tokens.css';
 import './styles/icon.css';
+import './styles/statusillustration.css';
 import './styles/button.css';
 import './styles/iconbutton.css';
 import './styles/toolbar.css';
@@ -17,6 +18,11 @@ import './styles/commandpalette.css';
 import './styles/protocolbadge.css';
 import './styles/statuscodebadge.css';
 import './styles/variableinput.css';
+import './styles/codeeditor.css';
+import './styles/diffeditor.css';
+import './styles/markdowneditor.css';
+import './styles/regexbuilder.css';
+import './styles/ansitext.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -119,6 +125,13 @@ export type {
   IconButtonSize,
   IconButtonShape,
 } from './iconbutton/variants';
+
+export { default as CfStatusIllustration } from './statusillustration/StatusIllustration.vue';
+export type {
+  StatusIllustrationProps,
+  StatusIllustrationSize,
+  StatusIllustrationVariant,
+} from './statusillustration/variants';
 
 export { default as CfToolbar } from './toolbar/Toolbar.vue';
 export { default as CfToolbarSeparator } from './toolbar/ToolbarSeparator.vue';
@@ -231,6 +244,45 @@ export type {
   VariableAwareInputVariant,
   Token as VariableAwareInputToken,
 } from './variableinput/variants';
+
+export { default as CfCodeEditor } from './codeeditor/CodeEditor.vue';
+export type {
+  CodeEditorProps,
+  CodeEditorSize,
+} from './codeeditor/variants';
+
+export { default as CfDiffEditor } from './diffeditor/DiffEditor.vue';
+export type {
+  DiffEditorProps,
+  DiffEditorSize,
+  DiffEditorMode,
+  DiffOp as DiffEditorOp,
+  DiffRow as DiffEditorRow,
+} from './diffeditor/variants';
+
+export { default as CfMarkdownEditor } from './markdowneditor/MarkdownEditor.vue';
+export type {
+  MarkdownEditorProps,
+  MarkdownEditorSize,
+  MarkdownEditorMode,
+} from './markdowneditor/variants';
+export { renderMarkdown as renderMarkdownDefault } from './markdowneditor/variants';
+
+export { default as CfRegexBuilder } from './regexbuilder/RegexBuilder.vue';
+export type {
+  RegexBuilderProps,
+  RegexBuilderSize,
+  RegexFlag,
+  RegexMatch,
+  RegexResult,
+} from './regexbuilder/variants';
+
+export { default as CfAnsiText } from './ansitext/AnsiText.vue';
+export type {
+  AnsiTextProps,
+  AnsiTextSize,
+  AnsiSpan,
+} from './ansitext/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

@@ -1,0 +1,134 @@
+/* ChuFix DiffEditor — line-level text diff with split / unified mode. */
+
+.cf-diff {
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-inset);
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  line-height: 20px;
+  overflow: hidden;
+  --diff-add-bg: oklch(70% 0.15 152 / 0.12);
+  --diff-add-fg: var(--status-success);
+  --diff-del-bg: oklch(66% 0.2 22 / 0.12);
+  --diff-del-fg: var(--status-error);
+}
+
+.cf-diff--sm {
+  font-size: var(--t-12);
+  line-height: 18px;
+}
+.cf-diff--lg {
+  font-size: var(--t-14);
+  line-height: 22px;
+}
+
+.cf-diff__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  color: var(--fg-2);
+}
+.cf-diff--unified .cf-diff__header {
+  grid-template-columns: 1fr;
+}
+.cf-diff__label {
+  padding: 6px 14px;
+}
+.cf-diff__label--right {
+  border-left: 1px solid var(--line-1);
+}
+
+.cf-diff__body {
+  display: block;
+  max-height: 480px;
+  overflow: auto;
+}
+
+/* split mode rows */
+.cf-diff__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr;
+  align-items: stretch;
+}
+.cf-diff:not(.cf-diff--gutter) .cf-diff__row {
+  grid-template-columns: 1fr 1fr;
+}
+.cf-diff__row[data-op='eq'] .cf-diff__cell {
+  background: transparent;
+}
+.cf-diff__row[data-op='del'] .cf-diff__cell--left {
+  background: var(--diff-del-bg);
+  color: var(--diff-del-fg);
+}
+.cf-diff__row[data-op='add'] .cf-diff__cell--right {
+  background: var(--diff-add-bg);
+  color: var(--diff-add-fg);
+}
+.cf-diff__cell {
+  padding: 0 12px;
+  white-space: pre;
+  overflow-x: auto;
+  border-right: 1px solid var(--line-1);
+  display: flex;
+  align-items: center;
+}
+.cf-diff__cell--right {
+  border-right: 0;
+}
+.cf-diff__cell[data-empty] {
+  background: var(--bg-2);
+}
+
+.cf-diff__num {
+  padding: 0 8px;
+  background: var(--bg-1);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  border-right: 1px solid var(--line-1);
+  user-select: none;
+  text-align: right;
+  min-width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cf-diff__sigil {
+  display: inline-block;
+  width: 14px;
+  flex-shrink: 0;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cf-diff__text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* unified mode lines */
+.cf-diff__line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  white-space: pre;
+}
+.cf-diff__line[data-op='add'] {
+  background: var(--diff-add-bg);
+  color: var(--diff-add-fg);
+}
+.cf-diff__line[data-op='del'] {
+  background: var(--diff-del-bg);
+  color: var(--diff-del-fg);
+}
+.cf-diff__line .cf-diff__num {
+  margin-right: 4px;
+}
+.cf-diff__line .cf-diff__text {
+  padding: 0 12px;
+}

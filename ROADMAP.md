@@ -10,7 +10,7 @@
 
 ---
 
-## 已发布 · 107 / 130+
+## 已发布 · 112 / 130+
 
 ### 表单 · Form (27)
 
@@ -230,11 +230,11 @@
 
 定位：**视觉容器 + 轻交互**，不自造 lexer / parser / language server。重型能力请用户自带 Monaco/CodeMirror，本组件提供 token 主题外壳。
 
-- [ ] **CodeEditor** (editors · MonacoWrapper) —— 升级版 CodeBlock，支持单行编辑、行号、minimap 占位
-- [ ] **DiffEditor** (editors · DiffEditor / sql · DiffEditor) —— 双栏文本对比（jsondiff 是 JSON 专用，本组件通用文本）
-- [ ] **MarkdownEditor** (editors · MarkdownEditor) —— split preview，左编辑右预览
-- [ ] **RegexBuilder** (editors · RegexBuilder) —— 正则可视化拼装 + 测试匹配
-- [ ] **AnsiText** (terminal · AnsiText) —— ANSI 转义序列 → 着色 span，纯展示组件，不依赖 xterm.js
+- [x] **CodeEditor** (editors · MonacoWrapper) —— 升级版 CodeBlock，支持单行编辑、行号、minimap 占位
+- [x] **DiffEditor** (editors · DiffEditor / sql · DiffEditor) —— 双栏文本对比（jsondiff 是 JSON 专用，本组件通用文本）
+- [x] **MarkdownEditor** (editors · MarkdownEditor) —— split preview，左编辑右预览
+- [x] **RegexBuilder** (editors · RegexBuilder) —— 正则可视化拼装 + 测试匹配
+- [x] **AnsiText** (terminal · AnsiText) —— ANSI 转义序列 → 着色 span，纯展示组件，不依赖 xterm.js
 
 ## 路线图 · 优先级 P9（系统壳层）· 5
 

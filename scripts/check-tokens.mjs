@@ -41,6 +41,12 @@ const localAllow = new Set([
    * they exist for inheritance/cascading inside the component, not as global tokens. */
   '--cf-rs-track-h',
   '--cf-rs-knob-size',
+  '--cf-status-accent',
+  '--cf-status-soft',
+  '--diff-add-bg',
+  '--diff-add-fg',
+  '--diff-del-bg',
+  '--diff-del-fg',
 ]);
 
 /* ── 3. walk style dirs ── */
