@@ -82,6 +82,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'List 列表', href: '/components/list/' },
       { label: 'DescriptionList 描述列表', href: '/components/descriptionlist/' },
       { label: 'Stat / KPI 指标', href: '/components/stat/' },
+      { label: 'Table 表格', href: '/components/table/' },
     ],
   },
 ];

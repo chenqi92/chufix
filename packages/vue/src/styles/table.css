@@ -1,0 +1,131 @@
+/* ChuFix Table — column-defined data table with sort, selection, empty state. */
+
+.cf-table {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+}
+
+.cf-table--sm { font-size: var(--t-12); }
+.cf-table--lg { font-size: var(--t-14); }
+
+.cf-table--bordered {
+  border: 1px solid var(--line-1);
+}
+
+.cf-table__scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.cf-table__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.cf-table__cell {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-1);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.cf-table--sm .cf-table__cell { padding: 6px 10px; }
+.cf-table--lg .cf-table__cell { padding: 12px 16px; }
+
+.cf-table__cell--center { text-align: center; }
+.cf-table__cell--right { text-align: right; font-variant-numeric: tabular-nums; }
+
+.cf-table__cell--th {
+  background: var(--bg-2);
+  color: var(--fg-2);
+  font-weight: var(--w-medium);
+  font-size: var(--t-12);
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--line-1);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.cf-table__cell--th.is-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.cf-table__cell--th.is-sortable:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-table__cell--th.is-sorted { color: var(--accent-1); }
+
+.cf-table__th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-table__sort {
+  width: 10px;
+  height: 10px;
+  color: var(--fg-3);
+  flex: none;
+}
+.cf-table__sort.is-asc path:nth-child(1) { color: var(--accent-1); }
+.cf-table__sort.is-asc path:nth-child(2) { color: var(--line-2); }
+.cf-table__sort.is-desc path:nth-child(1) { color: var(--line-2); }
+.cf-table__sort.is-desc path:nth-child(2) { color: var(--accent-1); }
+.cf-table__cell--th.is-sorted .cf-table__sort { color: var(--accent-1); }
+
+.cf-table--bordered .cf-table__cell {
+  border-right: 1px solid var(--line-1);
+}
+.cf-table--bordered .cf-table__cell:last-child {
+  border-right: 0;
+}
+
+.cf-table__row:last-child .cf-table__cell {
+  border-bottom: 0;
+}
+
+.cf-table--striped .cf-table__row:nth-child(odd) .cf-table__cell {
+  background: var(--bg-2);
+}
+
+.cf-table.is-hoverable .cf-table__row:hover .cf-table__cell {
+  background: var(--bg-2);
+}
+.cf-table--striped.is-hoverable .cf-table__row:hover .cf-table__cell {
+  background: var(--bg-3);
+}
+
+.cf-table__row.is-clickable { cursor: pointer; }
+
+.cf-table__row.is-selected .cf-table__cell {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+
+.cf-table__cell--check {
+  width: 36px;
+  text-align: center;
+}
+.cf-table__cell--check input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+
+.cf-table__row--empty td {
+  padding: 32px 16px;
+  color: var(--fg-3);
+  text-align: center;
+  font-size: var(--t-12);
+}
+
+.cf-table.is-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}

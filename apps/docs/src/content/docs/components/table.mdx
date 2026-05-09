@@ -1,0 +1,126 @@
+---
+title: Table 表格
+description: 列定义式 API、列排序、行选择（单 / 多）、3 种 variant、自定义渲染。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/table/BasicVue.vue';
+import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+
+## 基础用法
+
+`columns` 定义列，每列至少要有 `key` 和 `title`。`rows` 是数据数组；`rowKey` 指定哪个字段作为唯一 key（也可传函数）。点击 `sortable: true` 的列头切换 asc / desc / 无序三态。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfTable, type TableColumn } from '@chufix/vue';
+
+interface Order {
+  id: string;
+  customer: string;
+  amount: number;
+  status: string;
+  date: string;
+}
+
+const rows: Order[] = [/* ... */];
+const columns: TableColumn<Order>[] = [
+  { key: 'id', title: '订单号', sortable: true, width: 100 },
+  { key: 'customer', title: '客户', sortable: true },
+  {
+    key: 'amount',
+    title: '金额',
+    align: 'right',
+    sortable: true,
+    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
+  },
+  { key: 'status', title: '状态' },
+  { key: 'date', title: '日期', sortable: true },
+];
+</script>
+
+<template>
+  <CfTable :columns="columns" :rows="rows" row-key="id" variant="bordered" />
+</template>`}
+  reactCode={`import { CfTable, type TableColumn } from '@chufix/react';
+
+interface Order { id: string; customer: string; amount: number; status: string; date: string; }
+const rows: Order[] = [/* ... */];
+const columns: TableColumn<Order>[] = [
+  { key: 'id', title: '订单号', sortable: true, width: 100 },
+  { key: 'customer', title: '客户', sortable: true },
+  {
+    key: 'amount',
+    title: '金额',
+    align: 'right',
+    sortable: true,
+    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
+  },
+  { key: 'status', title: '状态' },
+  { key: 'date', title: '日期', sortable: true },
+];
+
+export default function Demo() {
+  return <CfTable columns={columns} rows={rows} rowKey="id" variant="bordered" />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 行选择 + 条纹
+
+`selectable="multiple"` 在最左加一列复选框，`v-model` 绑定 `string[]`；`selectable="single"` 行点击直接切换单选，`v-model` 绑定 `string`。`variant="striped"` 给奇数行加底色。
+
+<DemoFrame
+  vueCode={`<CfTable
+  v-model="selected"
+  :columns="columns"
+  :rows="rows"
+  row-key="id"
+  selectable="multiple"
+  variant="striped"
+/>`}
+  reactCode={`<CfTable
+  value={selected}
+  columns={columns}
+  rows={rows}
+  rowKey="id"
+  selectable="multiple"
+  variant="striped"
+  onChange={setSelected as any}
+/>`}
+>
+  <SelectionVue client:load />
+</DemoFrame>
+
+## API · Table
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `columns` | `TableColumn<T>[]` | `[]` | 列定义 |
+| `rows` | `T[]` | `[]` | 数据数组 |
+| `rowKey` | `string \| ((row, i) => string)` | `index` | 行唯一标识字段或函数 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 内距 |
+| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | 视觉模式 |
+| `hoverable` | `boolean` | `true` | 行悬停高亮 |
+| `emptyText` | `string \| ReactNode` | `'暂无数据'` | 空状态文案 |
+| `loading` | `boolean` | `false` | 加载态（半透明 + 不可点） |
+| `sort` / `defaultSort` | `TableSort` | `—` | 受控 / 非受控的排序 |
+| `selectable` | `'single' \| 'multiple'` | `—` | 行选择模式 |
+| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | `null` | 选中行的 key |
+
+事件：`update:sort` / `sort-change` / `update:modelValue` / `row-click`（React 端：`onSortChange` / `onChange` / `onRowClick`）。
+插槽（Vue）：`cell:<key>` / `header:<key>` / `empty`；React 用 `column.render` 自定义单元格。
+
+## API · TableColumn
+
+| 属性 | 类型 | 说明 |
+|---|---|---|
+| `key` | `string` | 列唯一标识 |
+| `title` | `string \| ReactNode` | 表头 |
+| `dataIndex` | `string` | 取值字段；省略时使用 `key` |
+| `width` | `number \| string` | 列宽 |
+| `align` | `'left' \| 'center' \| 'right'` | 对齐方式（right 自动 tabular-nums） |
+| `sortable` | `boolean` | 是否可排序 |
+| `format` | `(value, row, i) => string` | 格式化字符串 |
+| `render` | `(value, row, i) => ReactNode` | 自定义渲染（React） |

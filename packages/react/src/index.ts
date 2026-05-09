@@ -48,6 +48,7 @@ import './styles/navmenu.css';
 import './styles/list.css';
 import './styles/descriptionlist.css';
 import './styles/stat.css';
+import './styles/table.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -364,3 +365,14 @@ export type {
   StatTrend,
   StatTrendDirection,
 } from './stat/variants';
+
+export { Table as CfTable } from './table/Table';
+export type {
+  TableProps,
+  TableColumn,
+  TableSort,
+  TableSize,
+  TableVariant,
+  TableAlign,
+  SortDirection,
+} from './table/variants';
