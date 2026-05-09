@@ -1,55 +1,101 @@
 ---
 title: OtpInput 一次性密码
-description: 一次性密码输入格子，自动跳转下一格、Backspace 退格、整段粘贴自动分配。
+description: 一次性密码输入格子 —— 自动跳转下一格、Backspace 回退、整段粘贴自动分配。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/otp/BasicVue.vue';
+import LengthsVue from '~/components/demos/otp/LengthsVue.vue';
+import TypesVue from '~/components/demos/otp/TypesVue.vue';
+import SeparatorVue from '~/components/demos/otp/SeparatorVue.vue';
+import SizesVue from '~/components/demos/otp/SizesVue.vue';
 
 ## 基础用法
 
-`length` 设定格子数；输入后自动聚焦下一格，`Backspace` 在空格回退到上一格，`←/→` 切换焦点，整段数字粘贴时按位填入剩余格子。`type='numeric'` 限制只能数字。
+`length` 设定格子数；输入后自动聚焦下一格，整段数字粘贴时按位分配到剩余格子。
 
 <DemoFrame
-  vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { CfOtpInput } from '@chufix/vue';
-
-const code = ref('');
-const filled = ref('');
-</script>
-
-<template>
-  <CfOtpInput
-    v-model="code"
-    :length="6"
-    auto-focus
-    @complete="filled = $event"
-  />
-  <p>当前值：{{ code }}</p>
-</template>`}
-  reactCode={`import { useState } from 'react';
-import { CfOtpInput } from '@chufix/react';
-
-export default function Demo() {
-  const [code, setCode] = useState('');
-  const [filled, setFilled] = useState('');
-  return (
-    <>
-      <CfOtpInput
-        value={code}
-        onChange={setCode}
-        onComplete={setFilled}
-        length={6}
-        autoFocus
-      />
-      <p>当前值：{code}</p>
-    </>
-  );
-}`}
+  vueCode={`<CfOtpInput v-model="code" :length="6" />`}
+  reactCode={`<CfOtpInput value={code} onChange={setCode} length={6} />`}
 >
   <BasicVue client:load />
 </DemoFrame>
+
+## 长度变化
+
+`length` 任意整数 — 4 位 PIN、6 位 OTP（默认）、8 位长验证码。
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="a" :length="4" />
+<CfOtpInput v-model="b" :length="6" />
+<CfOtpInput v-model="c" :length="8" />`}
+  reactCode={`<CfOtpInput value={a} onChange={setA} length={4} />
+<CfOtpInput value={b} onChange={setB} length={6} />
+<CfOtpInput value={c} onChange={setC} length={8} />`}
+>
+  <LengthsVue client:load />
+</DemoFrame>
+
+## 字符集
+
+`type` —— `numeric`（默认，仅 0–9）/ `alphanumeric`（字母 + 数字）。粘贴时不在字符集里的字符会被剔除。
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="a" :length="6" type="numeric" />
+<CfOtpInput v-model="b" :length="6" type="alphanumeric" />`}
+  reactCode={`<CfOtpInput value={a} onChange={setA} length={6} type="numeric" />
+<CfOtpInput value={b} onChange={setB} length={6} type="alphanumeric" />`}
+>
+  <TypesVue client:load />
+</DemoFrame>
+
+## 分隔符 + 自动聚焦 + complete
+
+`separatorAt` 在第 N 格后插入分隔符（视觉分组，常用 3 / 4）。`autoFocus` 让组件挂载即聚焦第一格。所有格子填满时触发 `complete` / `onComplete` —— 立即提交验证码很方便。
+
+<DemoFrame
+  vueCode={`<CfOtpInput
+  v-model="code"
+  :length="6"
+  :separator-at="3"
+  auto-focus
+  @complete="(v) => completed = v"
+/>`}
+  reactCode={`<CfOtpInput
+  value={code}
+  onChange={setCode}
+  length={6}
+  separatorAt={3}
+  autoFocus
+  onComplete={setCompleted}
+/>`}
+>
+  <SeparatorVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` —— `sm` 紧凑型 / `md` 默认 / `lg` 移动端友好。
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="a" :length="6" size="sm" />
+<CfOtpInput v-model="b" :length="6" size="md" />
+<CfOtpInput v-model="c" :length="6" size="lg" />`}
+  reactCode={`<CfOtpInput value={a} onChange={setA} length={6} size="sm" />
+<CfOtpInput value={b} onChange={setB} length={6} size="md" />
+<CfOtpInput value={c} onChange={setC} length={6} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 键盘交互
+
+| 按键 | 行为 |
+|---|---|
+| 字符键 | 当前格写入字符，自动跳到下一格 |
+| `Backspace` | 当前格非空时清空；空格时回退到上一格 |
+| `←` / `→` | 在格子之间移动焦点 |
+| 粘贴 | 整段按位填入剩余格子，超出忽略 |
 
 ## API · Props
 

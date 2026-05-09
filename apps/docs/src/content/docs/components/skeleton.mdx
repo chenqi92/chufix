@@ -5,12 +5,14 @@ description: 数据加载中的占位元素 —— 三种形状、shimmer 动画
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/skeleton/BasicVue.vue';
+import ShapesVue from '~/components/demos/skeleton/ShapesVue.vue';
 import TextVue from '~/components/demos/skeleton/TextVue.vue';
+import StaticVue from '~/components/demos/skeleton/StaticVue.vue';
+import CardVue from '~/components/demos/skeleton/CardVue.vue';
 
 ## 基础用法
 
-`shape` 控制基础形态：`text`（一根细线）、`circle`（圆形，默认 32×32）、`rect`（矩形块）。
-`width` / `height` 接受像素数字或带单位字符串（`'80%'`、`'2rem'`）。
+最常见组合 — 圆形头像 + 两行文字行。`width` / `height` 接受像素数字或带单位字符串（`'80%'` `'2rem'`）。
 
 <DemoFrame
   vueCode={`<div style="display: flex; gap: 12px; align-items: center;">
@@ -19,23 +21,36 @@ import TextVue from '~/components/demos/skeleton/TextVue.vue';
     <CfSkeleton shape="text" :width="120" />
     <CfSkeleton shape="text" :width="200" />
   </div>
-</div>
-<CfSkeleton shape="rect" :height="80" />`}
+</div>`}
   reactCode={`<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
   <CfSkeleton shape="circle" width={40} height={40} />
   <div style={{ flex: 1 }}>
     <CfSkeleton shape="text" width={120} />
     <CfSkeleton shape="text" width={200} />
   </div>
-</div>
-<CfSkeleton shape="rect" height={80} />`}
+</div>`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
+## 三种形状
+
+`shape` —— `text`（一根细线，默认 1em 高）/ `circle`（圆形，给头像 / 图标用）/ `rect`（矩形块，给图片 / 卡片用）。
+
+<DemoFrame
+  vueCode={`<CfSkeleton shape="text" :width="240" />
+<CfSkeleton shape="circle" :width="48" :height="48" />
+<CfSkeleton shape="rect" :height="80" />`}
+  reactCode={`<CfSkeleton shape="text" width={240} />
+<CfSkeleton shape="circle" width={48} height={48} />
+<CfSkeleton shape="rect" height={80} />`}
+>
+  <ShapesVue client:load />
+</DemoFrame>
+
 ## 多行文本
 
-`lines > 1` 时 `shape="text"` 自动渲染多行，最后一行宽度 60% 模拟段尾。
+`lines > 1` 时 `shape="text"` 自动渲染多行，最后一行宽度收缩到 60% 模拟段尾。
 
 <DemoFrame
   vueCode={`<CfSkeleton shape="text" :lines="4" />`}
@@ -44,12 +59,56 @@ import TextVue from '~/components/demos/skeleton/TextVue.vue';
   <TextVue client:load />
 </DemoFrame>
 
+## 关闭动画
+
+`static` 关掉 shimmer 动画，仅渲染纯色块 — 在低端设备 / `prefers-reduced-motion` 场景下更省 CPU。
+
+<DemoFrame
+  vueCode={`<CfSkeleton shape="rect" :height="40" />
+<CfSkeleton shape="rect" :height="40" static />`}
+  reactCode={`<CfSkeleton shape="rect" height={40} />
+<CfSkeleton shape="rect" height={40} static />`}
+>
+  <StaticVue client:load />
+</DemoFrame>
+
+## 卡片占位
+
+把多种 shape 组合起来模拟一张卡片的真实结构 —— 头图 + 头像 + 标题 + 副标题 + 多行正文。
+
+<DemoFrame
+  vueCode={`<div class="card">
+  <CfSkeleton shape="rect" :height="120" />
+  <div class="row">
+    <CfSkeleton shape="circle" :width="32" :height="32" />
+    <div>
+      <CfSkeleton shape="text" :width="100" />
+      <CfSkeleton shape="text" :width="160" />
+    </div>
+  </div>
+  <CfSkeleton shape="text" :lines="3" />
+</div>`}
+  reactCode={`<div className="card">
+  <CfSkeleton shape="rect" height={120} />
+  <div className="row">
+    <CfSkeleton shape="circle" width={32} height={32} />
+    <div>
+      <CfSkeleton shape="text" width={100} />
+      <CfSkeleton shape="text" width={160} />
+    </div>
+  </div>
+  <CfSkeleton shape="text" lines={3} />
+</div>`}
+>
+  <CardVue client:load />
+</DemoFrame>
+
 ## API
 
-| Prop      | 类型                              | 默认值    | 说明                                               |
-| --------- | --------------------------------- | --------- | -------------------------------------------------- |
-| `shape`   | `'text' \| 'circle' \| 'rect'`    | `'rect'`  | 基础形态                                           |
-| `width`   | `string \| number`                | —         | 宽度，数字按 px、字符串原样写入 CSS                |
-| `height`  | `string \| number`                | —         | 高度，同上                                         |
-| `lines`   | `number`                          | `1`       | shape=text 时的行数，最后一行 60% 宽               |
-| `static`  | `boolean`                         | `false`   | 关闭 shimmer 动画，仅渲染纯色块（首次绘制更省 CPU）|
+| Prop | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `shape` | `'text' \| 'circle' \| 'rect'` | `'rect'` | 基础形态 |
+| `width` | `string \| number` | — | 宽度，数字按 px、字符串原样写入 CSS |
+| `height` | `string \| number` | — | 高度，同上 |
+| `lines` | `number` | `1` | shape=text 时的行数，最后一行 60% 宽 |
+| `static` | `boolean` | `false` | 关闭 shimmer 动画，仅渲染纯色块（首次绘制更省 CPU） |
