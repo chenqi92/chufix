@@ -35,6 +35,7 @@ import './styles/otp.css';
 import './styles/form.css';
 import './styles/combobox.css';
 import './styles/taginput.css';
+import './styles/dropzone.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -231,6 +232,15 @@ export type {
   TagInputSize,
   TagInputTone,
 } from './taginput/variants';
+
+export { default as CfDropzone } from './dropzone/Dropzone.vue';
+export type {
+  DropzoneProps,
+  DropzoneSize,
+  DropzoneRejectReason,
+  DropzoneRejection,
+  DropzoneFileStatus,
+} from './dropzone/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

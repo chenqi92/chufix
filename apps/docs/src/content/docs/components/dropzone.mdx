@@ -1,0 +1,148 @@
+---
+title: Dropzone 文件拖拽上传
+description: 拖拽 + 点击双触发的文件选择器，内置文件列表、进度条与 reject 回调。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/dropzone/BasicVue.vue';
+import ConstraintsVue from '~/components/demos/dropzone/ConstraintsVue.vue';
+import ProgressVue from '~/components/demos/dropzone/ProgressVue.vue';
+
+## 基础用法
+
+`v-model` 绑定一个 `File[]`。把文件拖进虚线框，或点击区域弹出文件对话框；选完会出现一个紧凑的文件列表，每行带尺寸和移除按钮。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDropzone } from '@chufix/vue';
+
+const files = ref<File[]>([]);
+</script>
+
+<template>
+  <CfDropzone v-model="files" hint="支持拖入或点击选择，多文件均可" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDropzone } from '@chufix/react';
+
+export default function Demo() {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+    <CfDropzone
+      value={files}
+      hint="支持拖入或点击选择，多文件均可"
+      onChange={setFiles}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 约束 + 拒绝回调
+
+`accept` / `maxSize` / `maxFiles` 控制接受范围；任何被拒绝的文件都会通过 `reject`（Vue）/ `onReject`（React）回调出来，附带具体原因（`'too-large' | 'too-many' | 'wrong-type' | 'duplicate'`）。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDropzone, type DropzoneRejection } from '@chufix/vue';
+
+const files = ref<File[]>([]);
+
+function onReject(items: DropzoneRejection[]) {
+  // 自行处理，例如触发 Toast
+}
+</script>
+
+<template>
+  <CfDropzone
+    v-model="files"
+    accept="image/*"
+    :max-size="1024 * 1024"
+    :max-files="3"
+    hint="只接受图片，单文件最大 1 MB，最多 3 个"
+    @reject="onReject"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDropzone, type DropzoneRejection } from '@chufix/react';
+
+export default function Demo() {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+    <CfDropzone
+      value={files}
+      accept="image/*"
+      maxSize={1024 * 1024}
+      maxFiles={3}
+      hint="只接受图片，单文件最大 1 MB，最多 3 个"
+      onChange={setFiles}
+      onReject={(items: DropzoneRejection[]) => console.warn(items)}
+    />
+  );
+}`}
+>
+  <ConstraintsVue client:load />
+</DemoFrame>
+
+## 上传进度
+
+把外部上传状态用 `statuses`（Vue / React）传进来，长度需与 `modelValue` / `value` 一致。`status` 取值 `'pending' | 'uploading' | 'success' | 'error'`；`progress` 0 ~ 100；`error` 仅在 `status === 'error'` 时显示。
+
+下面这个 demo 用 `setTimeout` 假装上传，实际项目里把 `statuses` 接到 `fetch` / `XHR` 的 progress 事件即可。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix/vue';
+
+const files = ref<File[]>([]);
+const statuses = ref<DropzoneFileStatus[]>([]);
+
+watch(files, (next) => {
+  statuses.value = next.map((_, i) =>
+    statuses.value[i] ?? { progress: 0, status: 'pending' }
+  );
+});
+</script>
+
+<template>
+  <CfDropzone v-model="files" :statuses="statuses" />
+</template>`}
+  reactCode={`import { useState, useEffect } from 'react';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix/react';
+
+export default function Demo() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [statuses, setStatuses] = useState<DropzoneFileStatus[]>([]);
+  useEffect(() => {
+    setStatuses((prev) =>
+      files.map((_, i) => prev[i] ?? { progress: 0, status: 'pending' })
+    );
+  }, [files]);
+  return <CfDropzone value={files} statuses={statuses} onChange={setFiles} />;
+}`}
+>
+  <ProgressVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `File[]` | `[]` | 当前文件数组 |
+| `accept` | `string` | `—` | 同 `<input>` 的 `accept`，逗号分隔；支持 `image/*` 与 `.ext` 形式 |
+| `multiple` | `boolean` | `true` | 单选 / 多选；`false` 时新选会替换旧值 |
+| `maxSize` | `number` | `—` | 单文件最大字节数 |
+| `maxFiles` | `number` | `—` | 总数量上限 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `hint` | `string` | `—` | 副标题文字 |
+| `statuses` | `DropzoneFileStatus[]` | `—` | 与文件平行的状态数组：`{ progress, status, error }` |
+| `hideList` | `boolean` | `false` | 不渲染内置文件列表，由你自定义 |
+
+事件：`update:modelValue` / `change` / `reject` / `remove`（React 端：`onChange` / `onReject` / `onRemove`）。
+
+插槽：默认 slot 替换标题区域；`#icon` 替换上传图标。
