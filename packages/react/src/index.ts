@@ -14,6 +14,9 @@ import './styles/phoneinput.css';
 import './styles/rangeslider.css';
 import './styles/filepicker.css';
 import './styles/commandpalette.css';
+import './styles/protocolbadge.css';
+import './styles/statuscodebadge.css';
+import './styles/variableinput.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -212,6 +215,31 @@ export type {
   CommandPaletteProps,
   CommandPaletteItem,
 } from './commandpalette/variants';
+
+export {
+  ProtocolBadge as CfProtocolBadge,
+  MethodBadge as CfMethodBadge,
+} from './protocolbadge/ProtocolBadge';
+export type {
+  ProtocolBadgeProps,
+  ProtocolBadgeSize,
+  ProtocolKind,
+} from './protocolbadge/variants';
+
+export { StatusCodeBadge as CfStatusCodeBadge } from './statuscodebadge/StatusCodeBadge';
+export type {
+  StatusCodeBadgeProps,
+  StatusCodeBadgeSize,
+  StatusClass,
+} from './statuscodebadge/variants';
+
+export { VariableAwareInput as CfVariableAwareInput } from './variableinput/VariableAwareInput';
+export type {
+  VariableAwareInputProps,
+  VariableAwareInputSize,
+  VariableAwareInputVariant,
+  Token as VariableAwareInputToken,
+} from './variableinput/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

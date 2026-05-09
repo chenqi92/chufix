@@ -45,6 +45,20 @@
   --status-error-soft: oklch(66% 0.2 22 / 0.14);
   --status-info-soft: oklch(72% 0.11 230 / 0.14);
 
+  /* protocol palette · 12 protocols, color + letter encoded */
+  --proto-get: oklch(70% 0.15 152);
+  --proto-post: oklch(72% 0.14 78);
+  --proto-put: oklch(72% 0.11 230);
+  --proto-patch: oklch(68% 0.16 340);
+  --proto-del: oklch(66% 0.2 22);
+  --proto-head: oklch(60% 0.06 260);
+  --proto-opt: oklch(60% 0.06 260);
+  --proto-ws: oklch(70% 0.13 195);
+  --proto-mqtt: oklch(72% 0.14 175);
+  --proto-grpc: oklch(64% 0.16 263);
+  --proto-sse: oklch(74% 0.14 110);
+  --proto-gql: oklch(70% 0.18 320);
+
   /* focus · 2-ring composite */
   --focus-ring: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--accent-1);
   --focus-ring-inset: inset 0 0 0 2px var(--accent-1);
@@ -121,6 +135,20 @@
   --status-warning-soft: oklch(56% 0.14 78 / 0.1);
   --status-error-soft: oklch(54% 0.2 22 / 0.1);
   --status-info-soft: oklch(54% 0.11 230 / 0.1);
+
+  /* protocol palette · darkened for light-theme readability */
+  --proto-get: oklch(48% 0.15 152);
+  --proto-post: oklch(56% 0.14 78);
+  --proto-put: oklch(50% 0.11 230);
+  --proto-patch: oklch(50% 0.16 340);
+  --proto-del: oklch(54% 0.2 22);
+  --proto-head: oklch(46% 0.04 260);
+  --proto-opt: oklch(46% 0.04 260);
+  --proto-ws: oklch(48% 0.13 195);
+  --proto-mqtt: oklch(48% 0.14 175);
+  --proto-grpc: oklch(48% 0.16 263);
+  --proto-sse: oklch(52% 0.14 110);
+  --proto-gql: oklch(50% 0.18 320);
 
   --focus-ring: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--accent-1);
   --focus-ring-inset: inset 0 0 0 2px var(--accent-1);

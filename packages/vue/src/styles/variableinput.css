@@ -1,0 +1,113 @@
+/* ChuFix VariableAwareInput — input with inline {{var}} highlighting.
+ * Implementation: native input is transparent; an aria-hidden overlay
+ * renders the parsed tokens with visible colors. The two layers share
+ * font + padding, so the caret in the input lines up with the overlay text. */
+
+.cf-vinput {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: var(--control-h);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  background: var(--bg-inset);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  line-height: 1;
+  transition: border-color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+}
+.cf-vinput:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring-inset);
+}
+.cf-vinput.is-error {
+  border-color: var(--status-error);
+}
+.cf-vinput.is-disabled {
+  opacity: var(--disabled-opacity);
+  pointer-events: none;
+}
+.cf-vinput--filled {
+  background: var(--bg-2);
+}
+.cf-vinput--outline {
+  /* default */
+}
+
+/* sizes */
+.cf-vinput--sm {
+  height: var(--control-h-sm);
+  font-size: var(--t-12);
+}
+.cf-vinput--md {
+  height: var(--control-h);
+  font-size: var(--t-13);
+}
+.cf-vinput--lg {
+  height: var(--control-h-lg);
+  font-size: var(--t-14);
+}
+
+/* shared input metrics */
+.cf-vinput__overlay,
+.cf-vinput__input {
+  position: absolute;
+  inset: 0;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  font: inherit;
+  white-space: pre;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cf-vinput__overlay::-webkit-scrollbar,
+.cf-vinput__input::-webkit-scrollbar {
+  display: none;
+}
+
+.cf-vinput__overlay {
+  pointer-events: none;
+  color: var(--fg-1);
+  z-index: 1;
+}
+
+.cf-vinput__input {
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: transparent;
+  caret-color: var(--accent-1);
+  z-index: 2;
+}
+.cf-vinput__input::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+.cf-vinput__placeholder {
+  color: var(--fg-3);
+  font-family: var(--font-sans);
+}
+
+.cf-vinput__plain {
+  color: var(--fg-1);
+}
+.cf-vinput__var {
+  display: inline-block;
+  padding: 1px 5px;
+  margin: 0 1px;
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  border-radius: var(--r-3);
+  font-weight: var(--w-medium);
+}
+.cf-vinput__var.is-invalid {
+  background: var(--status-error-soft);
+  color: var(--status-error);
+  text-decoration: underline wavy;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}

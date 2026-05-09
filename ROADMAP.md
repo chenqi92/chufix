@@ -10,9 +10,9 @@
 
 ---
 
-## 已发布 · 103 / 130+
+## 已发布 · 107 / 130+
 
-### 表单 · Form (26)
+### 表单 · Form (27)
 
 - [x] Button (atoms · B.1.1)
 - [x] IconButton (atoms · B.1.2)
@@ -40,6 +40,7 @@
 - [x] PasswordStrength (forms-plus · B.f.7)
 - [x] PhoneInput (forms-plus · B.f.8)
 - [x] SplitButton (base2 · B2.03)
+- [x] VariableAwareInput (atoms · B.1.5)
 
 ### 容器 · Container (4)
 
@@ -48,7 +49,7 @@
 - [x] AppShell (layout · #appshell)
 - [x] Splitter (navigation · Splitter / rich)
 
-### 数据展示 · Display (16)
+### 数据展示 · Display (19)
 
 - [x] Tag (atoms · B.2.1)
 - [x] Badge (atoms · B.2.1)
@@ -66,6 +67,9 @@
 - [x] Carousel (rich · Carousel)
 - [x] Highlight (rich · Highlight)
 - [x] CalendarHeatmap (rich · CalendarHeatmap)
+- [x] ProtocolBadge (atoms · B.2.2)
+- [x] MethodBadge (alias of ProtocolBadge)
+- [x] StatusCodeBadge (atoms · B.2.3)
 
 ### 反馈与覆盖层 · Feedback / Overlay (15)
 
@@ -217,10 +221,10 @@
 
 设计稿原作者打了 ★ 的领域标记，但本质上是通用 badge / 输入框的语义子类，做成 atom 收益不亏。
 
-- [ ] **ProtocolBadge** (atoms · B.2.2) —— GET/POST/PUT/PATCH/DELETE/WS/MQTT/gRPC 语义色 badge，复用 `--proto-*` token
-- [ ] **MethodBadge** —— ProtocolBadge 的别名导出，HTTP method 专用
-- [ ] **StatusCodeBadge** (atoms · B.2.3) —— 2xx/3xx/4xx/5xx 自动配色
-- [ ] **VariableAwareInput** ★ (atoms · B.1.5) —— Input 增强版，识别 `{{var}}` 语法高亮 + 补全
+- [x] **ProtocolBadge** (atoms · B.2.2) —— GET/POST/PUT/PATCH/DELETE/WS/MQTT/gRPC 语义色 badge，复用 `--proto-*` token
+- [x] **MethodBadge** —— ProtocolBadge 的别名导出，HTTP method 专用
+- [x] **StatusCodeBadge** (atoms · B.2.3) —— 2xx/3xx/4xx/5xx 自动配色
+- [x] **VariableAwareInput** ★ (atoms · B.1.5) —— Input 增强版，识别 `{{var}}` 语法高亮 + 补全
 
 ## 路线图 · 优先级 P8（编辑器家族）· 5
 

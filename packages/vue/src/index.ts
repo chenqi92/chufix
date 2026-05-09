@@ -14,6 +14,9 @@ import './styles/phoneinput.css';
 import './styles/rangeslider.css';
 import './styles/filepicker.css';
 import './styles/commandpalette.css';
+import './styles/protocolbadge.css';
+import './styles/statuscodebadge.css';
+import './styles/variableinput.css';
 import './styles/input.css';
 import './styles/card.css';
 import './styles/switch.css';
@@ -204,6 +207,30 @@ export type {
   CommandPaletteProps,
   CommandPaletteItem,
 } from './commandpalette/variants';
+
+export { default as CfProtocolBadge } from './protocolbadge/ProtocolBadge.vue';
+/** Alias of CfProtocolBadge for HTTP-method-only contexts. */
+export { default as CfMethodBadge } from './protocolbadge/ProtocolBadge.vue';
+export type {
+  ProtocolBadgeProps,
+  ProtocolBadgeSize,
+  ProtocolKind,
+} from './protocolbadge/variants';
+
+export { default as CfStatusCodeBadge } from './statuscodebadge/StatusCodeBadge.vue';
+export type {
+  StatusCodeBadgeProps,
+  StatusCodeBadgeSize,
+  StatusClass,
+} from './statuscodebadge/variants';
+
+export { default as CfVariableAwareInput } from './variableinput/VariableAwareInput.vue';
+export type {
+  VariableAwareInputProps,
+  VariableAwareInputSize,
+  VariableAwareInputVariant,
+  Token as VariableAwareInputToken,
+} from './variableinput/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
