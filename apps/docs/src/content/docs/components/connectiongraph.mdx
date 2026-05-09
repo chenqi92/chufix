@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/connectiongraph/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 微服务拓扑
+
+7 个服务、7 条连线，展示典型 gateway 分发模式。
+
+import MicroservicesVue from '~/components/demos/connectiongraph/MicroservicesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfConnectionGraph :nodes="nodes" :edges="edges" />`}
+  reactCode={`<CfConnectionGraph nodes={nodes} edges={edges} />`}
+>
+  <MicroservicesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

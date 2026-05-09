@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/candlestickchart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 上行 / 下行趋势
+
+红绿涨跌染色由 `close >= open` 自动判定，wick 与 body 同色。
+
+import UpDownVue from '~/components/demos/candlestickchart/UpDownVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCandlestickChart :data="ohlc" />`}
+  reactCode={`<CfCandlestickChart data={ohlc} />`}
+>
+  <UpDownVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

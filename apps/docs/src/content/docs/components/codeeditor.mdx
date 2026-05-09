@@ -18,6 +18,24 @@ import BasicVue from '~/components/demos/codeeditor/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## readOnly / wrap / 无行号
+
+不同状态组合：只读演示文档、自动换行长文本、无行号紧凑模式。
+
+import StatesVue from '~/components/demos/codeeditor/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCodeEditor v-model="code" read-only />
+<CfCodeEditor v-model="text" wrap />
+<CfCodeEditor v-model="snip" :show-line-numbers="false" />`}
+  reactCode={`<CfCodeEditor value={code} onChange={set} readOnly />
+<CfCodeEditor value={text} onChange={set} wrap />
+<CfCodeEditor value={snip} onChange={set} showLineNumbers={false} />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

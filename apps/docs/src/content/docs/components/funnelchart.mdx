@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 好坏漏斗对比
+
+健康漏斗（每段流失 30-50%）vs 流失严重漏斗（92% 直接流失）。
+
+import CompareVue from '~/components/demos/funnelchart/CompareVue.vue';
+
+<DemoFrame
+  vueCode={`<CfFunnelChart :steps="good" />
+<CfFunnelChart :steps="bad" />`}
+  reactCode={`<CfFunnelChart steps={good} />
+<CfFunnelChart steps={bad} />`}
+>
+  <CompareVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

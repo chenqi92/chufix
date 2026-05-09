@@ -26,6 +26,24 @@ import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 3 档尺寸
+
+`size` 控制 illustration 比例。常用 sm 在 inline 提示，md 默认，lg 在整页 Result。
+
+import SizesVue from '~/components/demos/statusillustration/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfStatusIllustration size="sm" />
+<CfStatusIllustration size="md" />
+<CfStatusIllustration size="lg" />`}
+  reactCode={`<CfStatusIllustration size="sm" />
+<CfStatusIllustration size="md" />
+<CfStatusIllustration size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

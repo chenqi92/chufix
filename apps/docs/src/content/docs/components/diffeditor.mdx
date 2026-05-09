@@ -17,6 +17,20 @@ import BasicVue from '~/components/demos/diffeditor/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## Unified 模式
+
+`mode="unified"` 单栏紧凑显示，删除行红、新增行绿、未变行白。
+
+import UnifiedVue from '~/components/demos/diffeditor/UnifiedVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDiffEditor :left="a" :right="b" mode="unified" />`}
+  reactCode={`<CfDiffEditor left={a} right={b} mode="unified" />`}
+>
+  <UnifiedVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

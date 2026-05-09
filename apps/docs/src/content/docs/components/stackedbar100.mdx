@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 趋势对比
+
+把多年份的占比柱叠在一起，能直观看出份额迁移。
+
+import CompareVue from '~/components/demos/stackedbar100/CompareVue.vue';
+
+<DemoFrame
+  vueCode={`<CfStackedBar100 :segments="seg2024" />
+<CfStackedBar100 :segments="seg2025" />`}
+  reactCode={`<CfStackedBar100 segments={seg2024} />
+<CfStackedBar100 segments={seg2025} />`}
+>
+  <CompareVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

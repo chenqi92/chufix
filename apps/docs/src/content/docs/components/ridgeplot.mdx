@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 多峰分布
+
+把多个 bell 叠加可得到双峰分布，常见于跨季节、跨用户群的二次集中点。
+
+import SeasonsVue from '~/components/demos/ridgeplot/SeasonsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRidgePlot :rows="rows" :overlap="0.5" />`}
+  reactCode={`<CfRidgePlot rows={rows} overlap={0.5} />`}
+>
+  <SeasonsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

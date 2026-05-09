@@ -18,6 +18,20 @@ import BasicVue from '~/components/demos/bulletchart/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 质量带 + 超过目标
+
+`bands` 三段染色 + `target` 垂直线，超过目标时 value 条会延伸过 target。
+
+import BandsVue from '~/components/demos/bulletchart/BandsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBulletChart :value="92" :target="80" :max="100" :bands="bands" />`}
+  reactCode={`<CfBulletChart value={92} target={80} max={100} bands={bands} />`}
+>
+  <BandsVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

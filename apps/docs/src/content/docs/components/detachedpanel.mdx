@@ -22,6 +22,22 @@ import BasicVue from '~/components/demos/detachedpanel/BasicVue.vue';
   <BasicVue client:only="vue" />
 </DemoFrame>
 
+
+## 多面板共存
+
+可同时打开多个 DetachedPanel；通过 `zIndex` 显式分层。`resizable=true` 启用浏览器原生 resize 句柄。
+
+import MultipleVue from '~/components/demos/detachedpanel/MultipleVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDetachedPanel v-model:open="a" :width="280" />
+<CfDetachedPanel v-model:open="b" resizable />`}
+  reactCode={`<CfDetachedPanel open={a} onOpenChange={setA} width={280} />
+<CfDetachedPanel open={b} onOpenChange={setB} resizable />`}
+>
+  <MultipleVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

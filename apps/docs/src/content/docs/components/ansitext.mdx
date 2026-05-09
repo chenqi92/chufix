@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/ansitext/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 3 档尺寸
+
+`sm / md / lg` 调整字号与行距，常用于 toast 内紧凑日志（sm）vs 终端面板（lg）。
+
+import SizesVue from '~/components/demos/ansitext/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfAnsiText :text="log" size="sm" />
+<CfAnsiText :text="log" size="lg" />`}
+  reactCode={`<CfAnsiText text={log} size="sm" />
+<CfAnsiText text={log} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |

@@ -18,6 +18,22 @@ import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
   <BasicVue client:load />
 </DemoFrame>
 
+
+## 交互联动
+
+legend chip 点击 toggle 隐藏 series；下方 LineChart 实时联动重画。
+
+import InteractiveVue from '~/components/demos/charttoolbar/InteractiveVue.vue';
+
+<DemoFrame
+  vueCode={`<CfChartToolbar :series="series" @series-toggle="toggle" />
+<CfLineChart :series="visibleSeries" />`}
+  reactCode={`<CfChartToolbar series={series} onSeriesToggle={toggle} />
+<CfLineChart series={visibleSeries} />`}
+>
+  <InteractiveVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
