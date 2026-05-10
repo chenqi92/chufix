@@ -1,0 +1,271 @@
+---
+title: Plain HTML / JS
+description: Use ChuFix UI in projects without a build tool, Vue, or React. Pure HTML+JS gets you ~90% of the visual coverage via CSS classes alone.
+order: 3
+---
+
+ChuFix is **CSS-first**: every visual choice lives in a stylesheet keyed by `cf-*` class names. The component packages are just thin wrappers that string those classes together. Frameworks are optional — pull in the stylesheets and use `<button class="cf-btn cf-btn--primary">` straight inside any plain HTML page.
+
+## Pull the CSS in
+
+Two files are enough:
+
+```html
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 1. design tokens (colors, spacing, type, shadow, density) -->
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/tokens/src/tokens.css" />
+    <!-- 2. all component class styles, bundled -->
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/vue/dist/style.css" />
+    <title>ChuFix demo</title>
+  </head>
+  <body>
+    …
+  </body>
+</html>
+```
+
+Switch theme: change `data-theme` on `<html>` to `dark-cool` / `dark-warm` / `light`.
+Switch density: add `data-density="compact"`.
+
+## CSS-only components (no JS needed)
+
+These components carry no behavior — write the HTML and the styles take over.
+
+### Button
+
+```html
+<button class="cf-btn cf-btn--primary">Primary</button>
+<button class="cf-btn cf-btn--secondary">Secondary</button>
+<button class="cf-btn cf-btn--tertiary">Tertiary</button>
+<button class="cf-btn cf-btn--ghost">Ghost</button>
+<button class="cf-btn cf-btn--danger">Danger</button>
+<button class="cf-btn cf-btn--primary cf-btn--lg">Large</button>
+<button class="cf-btn cf-btn--primary" disabled>Disabled</button>
+<button class="cf-btn cf-btn--primary is-loading">Loading</button>
+```
+
+### Input
+
+`cf-input` is the wrapping label. `cf-input__native` is the actual `<input>`:
+
+```html
+<label class="cf-input cf-input--outline cf-input--md">
+  <input class="cf-input__native" type="text" placeholder="Enter…" />
+</label>
+
+<label class="cf-input cf-input--filled cf-input--md">
+  <span class="cf-input__prefix">@</span>
+  <input class="cf-input__native" type="email" placeholder="Email" />
+</label>
+```
+
+### Card
+
+```html
+<article class="cf-card cf-card--elevated">
+  <div class="cf-card__header">Title</div>
+  <div class="cf-card__body">Body text goes here.</div>
+  <div class="cf-card__footer">
+    <button class="cf-btn cf-btn--primary cf-btn--sm">Confirm</button>
+  </div>
+</article>
+```
+
+Variants: `cf-card--outlined` / `cf-card--elevated` / `cf-card--filled`.
+
+### Tag / Badge / Avatar
+
+```html
+<span class="cf-tag cf-tag--soft cf-tag--primary">Tag</span>
+<span class="cf-tag cf-tag--solid cf-tag--success">OK</span>
+<span class="cf-tag cf-tag--outline cf-tag--danger">Danger</span>
+
+<span class="cf-badge cf-badge--danger">5</span>
+<span class="cf-badge cf-badge--dot cf-badge--success"></span>
+
+<span class="cf-avatar cf-avatar--md">CQ</span>
+<span class="cf-avatar cf-avatar--lg cf-avatar--circle">
+  <img src="/me.jpg" alt="" />
+</span>
+```
+
+### Alert
+
+```html
+<div class="cf-alert cf-alert--info cf-alert--soft">
+  <div class="cf-alert__body">
+    <div class="cf-alert__title">An info notice</div>
+    <div class="cf-alert__content">Supplementary text here.</div>
+  </div>
+</div>
+```
+
+### Skeleton
+
+```html
+<span class="cf-skeleton cf-skeleton--text" style="width: 200px;"></span>
+<span class="cf-skeleton cf-skeleton--circle"></span>
+<span class="cf-skeleton cf-skeleton--rect" style="width: 100%; height: 80px;"></span>
+```
+
+### Checkbox / Radio / Switch
+
+```html
+<label class="cf-checkbox cf-checkbox--md">
+  <input type="checkbox" class="cf-checkbox__input" />
+  <span class="cf-checkbox__box"></span>
+  <span class="cf-checkbox__label">Accept terms</span>
+</label>
+
+<label class="cf-radio cf-radio--md">
+  <input type="radio" name="r" class="cf-radio__input" />
+  <span class="cf-radio__dot"></span>
+  <span class="cf-radio__label">Option A</span>
+</label>
+
+<label class="cf-switch cf-switch--md">
+  <input type="checkbox" class="cf-switch__input" />
+  <span class="cf-switch__track"></span>
+</label>
+```
+
+## Components that need JS
+
+Modal / Tooltip / Toast and similar need state or position math, so plain CSS isn't enough. Two paths:
+
+### Path A: load Vue 3 from the ESM CDN
+
+If your project has no bundler but you can drop in a `<script type="module">`, you can wire up Vue 3 + `@chufix-design/vue` via importmap:
+
+```html
+<script type="importmap">
+{
+  "imports": {
+    "vue": "https://esm.sh/vue@3",
+    "@chufix-design/vue": "https://esm.sh/@chufix-design/vue@latest"
+  }
+}
+</script>
+
+<div id="app">
+  <cf-button @click="show">Open</cf-button>
+  <cf-modal v-model:open="open" title="Hello"><p>From ChuFix</p></cf-modal>
+</div>
+
+<script type="module">
+  import { createApp, ref } from 'vue';
+  import { CfButton, CfModal } from '@chufix-design/vue';
+
+  createApp({
+    components: { CfButton, CfModal },
+    setup() {
+      const open = ref(false);
+      return { open, show: () => (open.value = true) };
+    },
+  }).mount('#app');
+</script>
+```
+
+### Path B: hand-roll a small vanilla JS shim
+
+Modal / Tooltip / Toast already have their visuals defined in CSS; the only behavior to wire up is toggling a class:
+
+```html
+<button id="open" class="cf-btn cf-btn--primary">Open</button>
+<div id="modal" class="cf-modal" data-state="closed">
+  <div class="cf-modal__backdrop"></div>
+  <div class="cf-modal__panel cf-modal__panel--md">
+    <header class="cf-modal__header">
+      <h2 class="cf-modal__title">Title</h2>
+      <button class="cf-modal__close" data-close>×</button>
+    </header>
+    <div class="cf-modal__body">Body.</div>
+  </div>
+</div>
+
+<script>
+  const m = document.getElementById('modal');
+  document.getElementById('open').onclick = () => m.dataset.state = 'open';
+  m.querySelectorAll('[data-close], .cf-modal__backdrop').forEach((el) =>
+    el.addEventListener('click', () => (m.dataset.state = 'closed'))
+  );
+</script>
+```
+
+`.cf-modal[data-state='open']` already drives the show/hide animation. Toggle `data-state` between `'open'` and `'closed'` and you're done. Tooltip is similar — toggle visibility and compute position with `getBoundingClientRect()`.
+
+## Minimal runnable example, no build tool
+
+Drop the snippet below into a single `index.html`. Double-click in your browser:
+
+```html
+<!doctype html>
+<html lang="en" data-theme="dark-cool">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/tokens/src/tokens.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/vue/dist/style.css" />
+    <title>ChuFix · vanilla demo</title>
+    <style>
+      body { padding: 32px; max-width: 720px; margin: 0 auto; }
+      .row { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>ChuFix · plain HTML demo</h1>
+
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="cf-btn cf-btn--primary">Primary</button>
+      <button class="cf-btn cf-btn--secondary">Secondary</button>
+      <button class="cf-btn cf-btn--tertiary">Tertiary</button>
+      <button class="cf-btn cf-btn--ghost">Ghost</button>
+      <button class="cf-btn cf-btn--danger">Danger</button>
+    </div>
+
+    <h2>Form</h2>
+    <label class="cf-input cf-input--outline">
+      <input class="cf-input__native" type="text" placeholder="Nickname" />
+    </label>
+
+    <h2>Card</h2>
+    <article class="cf-card cf-card--elevated">
+      <div class="cf-card__header">Project settings</div>
+      <div class="cf-card__body">ChuFix runs zero-dependency in plain HTML projects.</div>
+      <div class="cf-card__footer">
+        <button class="cf-btn cf-btn--primary cf-btn--sm">Save</button>
+      </div>
+    </article>
+
+    <h2>Status</h2>
+    <div class="cf-alert cf-alert--success cf-alert--soft">
+      <div class="cf-alert__body">
+        <div class="cf-alert__title">Ready</div>
+        <div class="cf-alert__content">No npm, no webpack required.</div>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+## Class cheat sheet
+
+| Component | Container class | Key modifiers |
+|------|------------|----------|
+| Button | `cf-btn` | `--primary` / `--secondary` / `--tertiary` / `--ghost` / `--danger`; `--sm` / `--lg`; `--pill` / `--square` |
+| Input  | `cf-input` + inner `cf-input__native` | `--outline` / `--filled` / `--ghost`; `--sm` / `--lg` |
+| Textarea | `cf-textarea` + inner `cf-textarea__native` | same |
+| Card   | `cf-card` | `--outlined` / `--elevated` / `--filled` |
+| Tag    | `cf-tag`  | `--solid` / `--soft` / `--outline` × `--primary/success/warning/danger/info/neutral` |
+| Badge  | `cf-badge` | `--danger`/`--success` and other tones; `--dot` |
+| Avatar | `cf-avatar` | `--sm/md/lg/xl`; `--circle`/`--square` |
+| Alert  | `cf-alert` | `--info/success/warning/error` × `--soft/outline/solid` |
+| Skeleton | `cf-skeleton` | `--text/circle/rect` |
+| Checkbox | `cf-checkbox` + inner `cf-checkbox__input` + `cf-checkbox__box` | `--sm/md/lg` |
+| Radio  | `cf-radio` + inner `cf-radio__input` + `cf-radio__dot` | `--sm/md/lg` |
+| Switch | `cf-switch` + inner `cf-switch__input` + `cf-switch__track` | `--sm/md/lg` |
+| Tabs   | `cf-tabs` + `cf-tabs__list` + `cf-tabs__tab` | `--line/segmented/pill`; active item gets `is-active` |

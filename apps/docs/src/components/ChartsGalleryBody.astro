@@ -1,0 +1,128 @@
+---
+import CategoryTabs from '~/components/CategoryTabs.astro';
+import ChartPreview from '~/components/ChartPreview.vue';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const isEn = locale === 'en';
+
+interface ChartItem { key: string; nameZh: string; nameEn: string; descZh: string; descEn: string; slug: string; }
+interface ChartCategory { id: string; labelZh: string; labelEn: string; descZh: string; descEn: string; items: ChartItem[]; }
+
+const ITEM = (key: string, nameZh: string, nameEn: string, descZh: string, descEn: string, slug: string): ChartItem => ({ key, nameZh, nameEn, descZh, descEn, slug });
+
+const categories: ChartCategory[] = [
+  {
+    id: 'time',
+    labelZh: '时序', labelEn: 'Time series',
+    descZh: '时间维度上的趋势变化', descEn: 'Trends along the time axis',
+    items: [
+      ITEM('linechart', 'LineChart 折线图', 'LineChart', '多 series 折线，支持平滑曲线', 'Multi-series lines with optional smoothing', 'linechart'),
+      ITEM('areachart', 'AreaChart 面积图', 'AreaChart', '面积图，支持堆叠模式', 'Area chart with optional stacking', 'areachart'),
+      ITEM('sparkline', 'Sparkline 缩略走势', 'Sparkline', '行内微缩走势线', 'Inline tiny trend line', 'sparkline'),
+      ITEM('candlestickchart', 'CandlestickChart K 线', 'CandlestickChart', 'OHLC 蜡烛图', 'OHLC candlestick chart', 'candlestickchart'),
+    ],
+  },
+  {
+    id: 'category',
+    labelZh: '分类', labelEn: 'Category',
+    descZh: '离散类别的数值比较', descEn: 'Compare values across discrete categories',
+    items: [
+      ITEM('barchart', 'BarChart 柱状图', 'BarChart', '单 series 垂直柱状图', 'Single-series vertical bars', 'barchart'),
+      ITEM('histogram', 'Histogram 直方图', 'Histogram', '分箱直方图', 'Binned histogram', 'histogram'),
+      ITEM('stackedbar100', 'StackedBar100 占比柱', 'StackedBar100', '横向 100% 堆叠柱', '100% stacked horizontal bars', 'stackedbar100'),
+      ITEM('bulletchart', 'BulletChart 子弹图', 'BulletChart', '单值进度 + 目标线 + 质量带', 'Single-value progress with target & quality bands', 'bulletchart'),
+    ],
+  },
+  {
+    id: 'composition',
+    labelZh: '占比', labelEn: 'Composition',
+    descZh: '部分与整体的关系', descEn: 'Part-to-whole relationships',
+    items: [
+      ITEM('donutchart', 'DonutChart 环形图', 'DonutChart', '中空饼图，可放中心数值', 'Pie with a hole, optional center value', 'donutchart'),
+      ITEM('funnelchart', 'FunnelChart 漏斗图', 'FunnelChart', '逐层收窄的转化漏斗', 'Layered conversion funnel', 'funnelchart'),
+      ITEM('treemap', 'Treemap 矩形树图', 'Treemap', '层级矩形面积图', 'Hierarchical rectangle area map', 'treemap'),
+      ITEM('sankeydiagram', 'SankeyDiagram 流向图', 'SankeyDiagram', '节点 + 加权边的流向图', 'Weighted-edge node flow diagram', 'sankeydiagram'),
+    ],
+  },
+  {
+    id: 'multi',
+    labelZh: '多维', labelEn: 'Multi-dimensional',
+    descZh: '多变量分布与对比', descEn: 'Multi-variable distribution & comparison',
+    items: [
+      ITEM('scatterplot', 'ScatterPlot 散点图', 'ScatterPlot', '二维散点，按 group 分色', '2D scatter, colored by group', 'scatterplot'),
+      ITEM('boxplot', 'BoxPlot 箱线图', 'BoxPlot', '统计 5 数概要 + outliers', 'Five-number summary plus outliers', 'boxplot'),
+      ITEM('radarchart', 'RadarChart 雷达图', 'RadarChart', '多维度对比的多边形', 'Multi-axis polygon comparison', 'radarchart'),
+      ITEM('ridgeplot', 'RidgePlot 密度脊图', 'RidgePlot', '多组密度曲线垂直堆叠', 'Stacked density ridges', 'ridgeplot'),
+    ],
+  },
+  {
+    id: 'single',
+    labelZh: '单值 / 性能', labelEn: 'Single value / perf',
+    descZh: '单数值或性能瀑布', descEn: 'Single values or performance waterfalls',
+    items: [
+      ITEM('gauge', 'Gauge 仪表盘', 'Gauge', '圆环型当前值仪表', 'Ring-style current-value gauge', 'gauge'),
+      ITEM('metriccard', 'MetricCard 指标卡', 'MetricCard', '数值 + 涨跌 + sparkline', 'Value + delta + sparkline', 'metriccard'),
+      ITEM('timingbar', 'TimingBar 请求瀑布', 'TimingBar', '横向请求阶段瀑布图', 'Horizontal request-phase waterfall', 'timingbar'),
+      ITEM('latencyheatmap', 'LatencyHeatmap 延迟热力', 'LatencyHeatmap', '二维矩阵热力图', '2D matrix heatmap', 'latencyheatmap'),
+      ITEM('connectiongraph', 'ConnectionGraph 连接图', 'ConnectionGraph', '节点 + 边的关系图', 'Node-edge relationship graph', 'connectiongraph'),
+    ],
+  },
+  {
+    id: 'tools',
+    labelZh: '工具', labelEn: 'Helpers',
+    descZh: '可嵌入到任何图表的辅助件', descEn: 'Embeddable helpers for any chart',
+    items: [
+      ITEM('charttoolbar', 'ChartToolbar 图表工具栏', 'ChartToolbar', '标题 + legend toggle + zoom/export', 'Title + legend toggle + zoom/export', 'charttoolbar'),
+      ITEM('chartcrosshair', 'ChartCrosshair 十字线', 'ChartCrosshair', '可嵌入任意 SVG 的十字定位线', 'Crosshair embeddable in any SVG', 'chartcrosshair'),
+    ],
+  },
+];
+
+const heroTitle = isEn ? 'Charts · data visualization' : 'Charts 数据可视化';
+const heroLede = isEn
+  ? '22 pure-SVG charts, no third-party deps. All built on the internal _useScale / _arcPath / _polar utilities. The palette uses --viz-1..8 tokens (color-blind friendly) and follows your active ChuFix theme.'
+  : '22 个纯 SVG 图表，零三方依赖，全部基于内部 _useScale / _arcPath / _polar 工具函数实现。色板使用 --viz-1..8 token，色盲友好，与 ChuFix 主题切换联动。';
+---
+
+<div class="charts-page">
+  <header class="blocks-hero">
+    <h1 class="blocks-hero__title">{heroTitle}</h1>
+    <p class="blocks-hero__lede">{heroLede}</p>
+  </header>
+
+  <CategoryTabs tabs={categories.map(c => ({ id: c.id, label: isEn ? c.labelEn : c.labelZh }))} defaultId={categories[0].id}>
+    {categories.map((c) => (
+      <div data-cat-panel={c.id} data-active={c.id === categories[0].id ? 'true' : 'false'}>
+        <p class="charts-page__cat-desc">{isEn ? c.descEn : c.descZh}</p>
+        <div class="cf-gallery">
+          {c.items.map((it) => (
+            <a class="cf-gallery-card" href={prefixHref(`/components/${it.slug}/`, locale)}>
+              <div class="cf-gallery-card__preview">
+                <ChartPreview chart={it.key} client:only="vue" />
+              </div>
+              <div class="cf-gallery-card__body">
+                <div class="cf-gallery-card__name">{isEn ? it.nameEn : it.nameZh}</div>
+                <div class="cf-gallery-card__desc">{isEn ? it.descEn : it.descZh}</div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </CategoryTabs>
+</div>
+
+<style>
+  .charts-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .charts-page__cat-desc {
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    margin: 0 0 14px;
+  }
+</style>

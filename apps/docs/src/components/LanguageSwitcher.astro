@@ -1,0 +1,60 @@
+---
+import { LOCALES, LOCALE_LABELS, type Locale } from '~/i18n/strings';
+import { getLocaleFromUrl, localizeUrl } from '~/i18n/utils';
+
+const current = getLocaleFromUrl(Astro.url);
+const path = Astro.url.pathname;
+---
+
+<div class="lang-switch" data-current={current}>
+  {LOCALES.map((loc: Locale) => {
+    const href = localizeUrl(path, loc);
+    const isActive = loc === current;
+    return (
+      <a
+        href={href}
+        class:list={['lang-switch__link', isActive && 'is-active']}
+        hreflang={loc === 'en' ? 'en' : 'zh-CN'}
+        aria-current={isActive ? 'true' : undefined}
+        title={LOCALE_LABELS[loc]}
+      >
+        {loc.toUpperCase()}
+      </a>
+    );
+  })}
+</div>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-pill);
+    background: var(--bg-1);
+  }
+  .lang-switch__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 22px;
+    padding: 0 8px;
+    font-size: var(--t-11);
+    font-weight: var(--w-medium);
+    color: var(--fg-3);
+    border-radius: var(--r-pill);
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .lang-switch__link:hover {
+    color: var(--fg-1);
+    background: var(--bg-2);
+    text-decoration: none;
+  }
+  .lang-switch__link.is-active {
+    color: var(--fg-on-accent);
+    background: var(--accent-1);
+  }
+</style>

@@ -1,0 +1,173 @@
+---
+import { Image } from 'astro:assets';
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/button/BasicVue.vue';
+import { site } from '~/config/site';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+import { t } from '~/i18n/strings';
+import logo from '~/assets/chufix.png';
+
+const locale = getLocaleFromUrl(Astro.url);
+
+// 首页里的"丸"按钮，统一加 locale 前缀
+const pills = [
+  ['Button', 'button'], ['Input', 'input'], ['Textarea', 'textarea'], ['Select', 'select'],
+  ['Checkbox', 'checkbox'], ['Radio', 'radio'], ['Switch', 'switch'], ['Card', 'card'],
+  ['Modal', 'modal'], ['Tooltip', 'tooltip'], ['Toast', 'toast'], ['Tag', 'tag'],
+  ['Badge', 'badge'], ['Avatar', 'avatar'], ['Tabs', 'tabs'], ['Alert', 'alert'],
+  ['Skeleton', 'skeleton'], ['Divider', 'divider'], ['Empty', 'empty'], ['Progress', 'progress'],
+  ['Breadcrumb', 'breadcrumb'], ['Pagination', 'pagination'], ['Spinner', 'spinner'],
+  ['SearchInput', 'searchinput'], ['NumberInput', 'numberinput'], ['Accordion', 'accordion'],
+  ['Slider', 'slider'], ['Drawer', 'drawer'], ['Popover', 'popover'], ['Dropdown', 'dropdown'],
+  ['InputGroup', 'inputgroup'], ['OtpInput', 'otp'], ['Form', 'form'], ['Combobox', 'combobox'],
+  ['TagInput', 'taginput'], ['Dropzone', 'dropzone'], ['ColorPicker', 'colorpicker'],
+  ['DatePicker', 'datepicker'], ['DateRangePicker', 'daterangepicker'], ['Banner', 'banner'],
+  ['PageHeader', 'pageheader'], ['Stepper', 'stepper'], ['Splitter', 'splitter'],
+  ['AppShell', 'appshell'], ['Sidebar', 'sidebar'], ['NavMenu', 'navmenu'], ['List', 'list'],
+  ['DescriptionList', 'descriptionlist'], ['Stat', 'stat'], ['Table', 'table'],
+  ['DataGrid', 'datagrid'], ['TreeView', 'treeview'], ['Kbd', 'kbd'], ['Link', 'link'],
+  ['Code', 'code'], ['AspectRatio', 'aspectratio'], ['Rating', 'rating'], ['Toc', 'toc'],
+  ['ScrollArea', 'scrollarea'], ['SegmentedControl', 'segmented'], ['KVEditor', 'kveditor'],
+  ['JsonViewer', 'jsonviewer'], ['JsonDiff', 'jsondiff'], ['Calendar', 'calendar'],
+  ['Kanban', 'kanban'], ['Mention', 'mention'], ['Cascader', 'cascader'], ['Image', 'image'],
+  ['Carousel', 'carousel'], ['Statistic', 'statistic'], ['Timeline', 'timeline'],
+  ['Result', 'result'], ['BackTop', 'backtop'], ['Affix', 'affix'], ['Watermark', 'watermark'],
+  ['Marquee', 'marquee'], ['FloatButton', 'floatbutton'], ['Anchor', 'anchor'],
+  ['ImagePreview', 'imagepreview'], ['TimePicker', 'timepicker'], ['Transfer', 'transfer'],
+  ['Highlight', 'highlight'], ['TextEllipsis', 'textellipsis'], ['CountDown', 'countdown'],
+  ['InfiniteScroll', 'infinitescroll'], ['TimeRangePicker', 'timerangepicker'],
+  ['CalendarHeatmap', 'calendarheatmap'], ['Tour', 'tour'], ['QRCode', 'qrcode'],
+  ['IconButton', 'iconbutton'], ['CommandPalette', 'commandpalette'], ['HoverCard', 'hovercard'],
+  ['ContextMenu', 'contextmenu'], ['ProtocolBadge', 'protocolbadge'],
+  ['StatusCodeBadge', 'statuscodebadge'], ['CodeEditor', 'codeeditor'],
+  ['DiffEditor', 'diffeditor'], ['MarkdownEditor', 'markdowneditor'],
+  ['RegexBuilder', 'regexbuilder'], ['AnsiText', 'ansitext'], ['TitleBar', 'titlebar'],
+  ['NotificationCenter', 'notificationcenter'], ['GlobalSearch', 'globalsearch'],
+  ['DockLayout', 'docklayout'], ['LineChart', 'linechart'], ['DonutChart', 'donutchart'],
+  ['Gauge', 'gauge'], ['SankeyDiagram', 'sankeydiagram'], ['ProtocolPane', 'protocolpane'],
+  ['SqlWorkbench', 'sqlworkbench'],
+] as const;
+
+const installVue = locale === 'en'
+  ? `# Vue 3
+pnpm add @chufix-design/vue @chufix-design/tokens
+
+# React 18+
+pnpm add @chufix-design/react @chufix-design/tokens
+
+# or copy source into your repo
+npx @chufix-design/cli add button`
+  : `# Vue 3
+pnpm add @chufix-design/vue @chufix-design/tokens
+
+# React 18+
+pnpm add @chufix-design/react @chufix-design/tokens
+
+# 或源码复制（拷贝到自己仓库）
+npx @chufix-design/cli add button`;
+
+const featureLabels = locale === 'en' ? {
+  primary: 'Primary',
+  secondary: 'Secondary',
+  tertiary: 'Tertiary',
+  ghost: 'Ghost',
+  danger: 'Danger',
+} : {
+  primary: '主要',
+  secondary: '次要',
+  tertiary: '三级',
+  ghost: '幽灵',
+  danger: '危险',
+};
+---
+
+<section class="hero">
+  <div class="hero__inner">
+    <Image src={logo} alt="" class="hero__logo" widths={[160, 220]} sizes="220px" />
+    <h1 class="hero__title">{locale === 'en' ? site.title : site.nameZh}</h1>
+    <p class="hero__tagline">{t(locale, 'site.tagline')}</p>
+    <p class="hero__brand">{t(locale, 'site.brand.line')}</p>
+    <div class="hero__cta">
+      <a href={prefixHref('/getting-started/installation/', locale)} class="cf-btn cf-btn--lg">{t(locale, 'home.cta.start')}</a>
+      <a href={prefixHref('/getting-started/vanilla/', locale)} class="cf-btn cf-btn--secondary cf-btn--lg">{t(locale, 'home.cta.vanilla')}</a>
+      <a href={prefixHref('/components/', locale)} class="cf-btn cf-btn--tertiary cf-btn--lg">{t(locale, 'home.cta.components')}</a>
+      <a href={site.github} target="_blank" rel="noopener" class="cf-btn cf-btn--ghost cf-btn--lg">{t(locale, 'home.cta.github')}</a>
+    </div>
+  </div>
+</section>
+
+<section class="splash-section">
+  <h2 class="splash-section__title">{t(locale, 'home.section.why.title')}</h2>
+  <div class="cf-feature-grid">
+    <article class="cf-card cf-card--elevated">
+      <div class="cf-card__header">{t(locale, 'home.feature.dual.title')}</div>
+      <div class="cf-card__body">{t(locale, 'home.feature.dual.body')}</div>
+    </article>
+    <article class="cf-card cf-card--elevated">
+      <div class="cf-card__header">{t(locale, 'home.feature.theme.title')}</div>
+      <div class="cf-card__body">
+        {t(locale, 'home.feature.theme.body').replace('[data-theme]', '')}
+        <code>[data-theme]</code>
+      </div>
+    </article>
+    <article class="cf-card cf-card--elevated">
+      <div class="cf-card__header">{t(locale, 'home.feature.usage.title')}</div>
+      <div class="cf-card__body">
+        <code>npm i @chufix-design/vue</code> {locale === 'en' ? 'or' : '或'} <code>npx chufix add</code> {t(locale, 'home.feature.usage.body').split(' or ').pop()?.split('，或').pop()}
+      </div>
+    </article>
+    <article class="cf-card cf-card--elevated">
+      <div class="cf-card__header">{t(locale, 'home.feature.html.title')}</div>
+      <div class="cf-card__body">
+        {t(locale, 'home.feature.html.body').split('<link>')[0]}<code>&lt;link&gt;</code>{t(locale, 'home.feature.html.body').split('<link>')[1] ?? ''}
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="splash-section">
+  <h2 class="splash-section__title">{t(locale, 'home.section.demo.title')}</h2>
+  <p class="splash-section__lede">{t(locale, 'home.section.demo.lede')}</p>
+  <DemoFrame
+    vueCode={`<script setup lang="ts">
+import { CfButton } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfButton variant="primary">${featureLabels.primary}</CfButton>
+  <CfButton variant="secondary">${featureLabels.secondary}</CfButton>
+  <CfButton variant="tertiary">${featureLabels.tertiary}</CfButton>
+  <CfButton variant="ghost">${featureLabels.ghost}</CfButton>
+  <CfButton variant="danger">${featureLabels.danger}</CfButton>
+</template>`}
+    reactCode={`import { CfButton } from '@chufix-design/react';
+
+export default () => (
+  <>
+    <CfButton variant="primary">${featureLabels.primary}</CfButton>
+    <CfButton variant="secondary">${featureLabels.secondary}</CfButton>
+    <CfButton variant="tertiary">${featureLabels.tertiary}</CfButton>
+    <CfButton variant="ghost">${featureLabels.ghost}</CfButton>
+    <CfButton variant="danger">${featureLabels.danger}</CfButton>
+  </>
+);`}
+    cliCode={installVue}
+  >
+    <BasicVue client:load />
+  </DemoFrame>
+</section>
+
+<section class="splash-section">
+  <h2 class="splash-section__title">{t(locale, 'home.section.has.title')}</h2>
+  <p class="splash-section__lede">{t(locale, 'home.section.has.lede')}</p>
+  <div class="splash-pills">
+    {pills.map(([label, slug]) => (
+      <a href={prefixHref(`/components/${slug}/`, locale)} class="cf-btn cf-btn--secondary">{label}</a>
+    ))}
+    <a href={prefixHref('/components/', locale)} class="cf-btn cf-btn--tertiary">{t(locale, 'home.section.has.viewAll')}</a>
+  </div>
+</section>
+
+<footer class="splash-footer">
+  <p>ChuFix UI · {t(locale, 'home.footer.license')} · v{site.version}</p>
+</footer>

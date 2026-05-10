@@ -1,5 +1,8 @@
 ---
-import { sidebar } from '~/config/site';
+import { sidebar, pickLabel } from '~/config/site';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 function isActive(href: string) {
   const norm = href.replace(/\/$/, '') || '/';
@@ -11,19 +14,22 @@ function isActive(href: string) {
   <nav>
     {sidebar.map((group) => (
       <div class="site-sidebar__group">
-        <h3 class="site-sidebar__title">{group.label}</h3>
+        <h3 class="site-sidebar__title">{pickLabel(group.label, locale)}</h3>
         <ul class="site-sidebar__list">
-          {group.items.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class:list={['site-sidebar__link', isActive(item.href) && 'is-active']}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {group.items.map((item) => {
+            const href = prefixHref(item.href, locale);
+            return (
+              <li>
+                <a
+                  href={href}
+                  class:list={['site-sidebar__link', isActive(href) && 'is-active']}
+                  aria-current={isActive(href) ? 'page' : undefined}
+                >
+                  {pickLabel(item.label, locale)}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     ))}
