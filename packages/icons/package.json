@@ -2,6 +2,23 @@
   "name": "@chufix/icons",
   "version": "0.0.1",
   "description": "ChuFix UI 图标库 —— 16x16 SVG sprite 与类型化图标名",
+  "license": "MIT",
+  "author": "chenqi92",
+  "homepage": "https://chufix.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenqi92/chufix.git",
+    "directory": "packages/icons"
+  },
+  "bugs": {
+    "url": "https://github.com/chenqi92/chufix/issues"
+  },
+  "keywords": [
+    "chufix",
+    "icons",
+    "svg-sprite",
+    "design-system"
+  ],
   "type": "module",
   "files": [
     "src",
@@ -18,6 +35,10 @@
       "types": "./src/names.ts",
       "import": "./src/names.ts"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "dev": "node scripts/generate-icons.mjs",
