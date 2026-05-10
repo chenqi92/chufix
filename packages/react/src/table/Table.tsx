@@ -27,7 +27,10 @@ import {
   flattenColumns,
   getCellValue,
   getRowKey,
+  moveTreeRow,
   nextSortDirection,
+  normalizeFixedOrder,
+  parseClipboardGrid,
   rowsToCsv,
   tableClass,
   type SortDirection,
@@ -37,6 +40,7 @@ import {
   type TableProps,
   type TableSort,
   type TableSummaryRow,
+  type TreeDropPos,
 } from './variants';
 
 /** React 端额外开放的回调 props（除了 TableProps 里已有的）。*/
@@ -53,8 +57,11 @@ export interface ReactTableProps<T extends Record<string, unknown> = Record<stri
   onRowClick?: (row: T, index: number) => void;
   onRowsChange?: (rows: T[]) => void;
   onRowReorder?: (payload: { from: number; to: number; rows: T[] }) => void;
+  onTreeReorder?: (payload: { fromKey: string; toKey: string; pos: TreeDropPos; rows: T[] }) => void;
   onCellEdit?: (payload: { row: T; column: TableColumn<T>; oldValue: unknown; newValue: unknown; index: number }) => void;
+  onCellPaste?: (payload: { applied: number; skipped: number }) => void;
   onExport?: (csv: string) => void;
+  onHistoryChange?: (payload: { canUndo: boolean; canRedo: boolean }) => void;
   /** Header / cell render maps keyed by column.key. */
   renderHeader?: Record<string, (column: TableColumn<T>) => ReactNode>;
   renderCell?: Record<string, (ctx: { row: T; index: number; value: unknown }) => ReactNode>;
@@ -120,9 +127,14 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     persistKey,
     serverDebounce = 0,
     cellSelectable = false,
+    cellPastable = false,
     colVirtual = false,
     colWidth = 120,
     colOverscan = 4,
+    treeReorderable = false,
+    historyEnabled = false,
+    historyDepth = 50,
+    getRowHeight,
     className,
     onSortChange,
     onFiltersChange,
@@ -134,8 +146,11 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     onRowClick,
     onRowsChange,
     onRowReorder,
+    onTreeReorder,
     onCellEdit,
+    onCellPaste,
     onExport,
+    onHistoryChange,
     renderHeader,
     renderCell,
     toolbarLeft,
@@ -191,10 +206,13 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
         hidden: patch.hidden ?? activeColumnsState.hidden ?? [],
         widths: { ...(activeColumnsState.widths ?? {}), ...(patch.widths ?? {}) },
       };
+      if (patch.order !== undefined) {
+        next.order = normalizeFixedOrder(patch.order, flattenColumns(columns));
+      }
       if (columnsState === undefined) setInternalColumnsState(next);
       onColumnsStateChange?.(next);
     },
-    [activeColumnsState, columnsState, onColumnsStateChange],
+    [activeColumnsState, columnsState, onColumnsStateChange, columns],
   );
 
   /* ---------------- columns derivation ---------------- */
@@ -643,24 +661,49 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
   /* ---------------- row reorder ---------------- */
   const [rowDragKey, setRowDragKey] = useState<string | null>(null);
   const [rowDragOverKey, setRowDragOverKey] = useState<string | null>(null);
+  const [rowDropPos, setRowDropPos] = useState<TreeDropPos>('below');
   const onRowDragStart = (ev: DragEvent, key: string) => {
     if (!rowReorderable) return;
     setRowDragKey(key);
     ev.dataTransfer.setData('text/plain', key);
     ev.dataTransfer.effectAllowed = 'move';
   };
+  const computeDropPos = (ev: DragEvent, target: HTMLElement): TreeDropPos => {
+    const rect = target.getBoundingClientRect();
+    const y = ev.clientY - rect.top;
+    const ratio = y / rect.height;
+    if (treeReorderable && ratio >= 0.25 && ratio <= 0.75) return 'inside';
+    return ratio < 0.5 ? 'above' : 'below';
+  };
   const onRowDragOver = (ev: DragEvent, key: string) => {
     if (!rowDragKey || rowDragKey === key) return;
     ev.preventDefault();
     ev.dataTransfer.dropEffect = 'move';
     if (rowDragOverKey !== key) setRowDragOverKey(key);
+    setRowDropPos(computeDropPos(ev, ev.currentTarget as HTMLElement));
   };
   const onRowDrop = (ev: DragEvent, key: string) => {
     ev.preventDefault();
     const from = rowDragKey;
+    const pos = rowDropPos;
     setRowDragKey(null);
     setRowDragOverKey(null);
     if (!from || from === key) return;
+    if (treeReorderable) {
+      const [next, ok] = moveTreeRow(
+        rows as Record<string, unknown>[],
+        from,
+        key,
+        pos,
+        (r, i) => getRowKey(r as T, i, rowKey),
+        childrenField,
+      );
+      if (ok) {
+        onRowsChange?.(next as T[]);
+        onTreeReorder?.({ fromKey: from, toKey: key, pos, rows: next as T[] });
+      }
+      return;
+    }
     const fromIdx = rows.findIndex((r, i) => getRowKey(r, i, rowKey) === from);
     const toIdx = rows.findIndex((r, i) => getRowKey(r, i, rowKey) === key);
     if (fromIdx === -1 || toIdx === -1) return;
@@ -950,6 +993,210 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     if (!colVirtual) return renderLeafColumns;
     return renderLeafColumns.slice(colWindow.start, colWindow.end);
   }, [colVirtual, renderLeafColumns, colWindow.start, colWindow.end]);
+
+  /* ---------------- variable row heights ---------------- */
+  const rowOffsets = useMemo<number[]>(() => {
+    const out: number[] = [0];
+    const total = flatTreeRows.length;
+    if (getRowHeight) {
+      let acc = 0;
+      for (let i = 0; i < total; i++) {
+        acc += getRowHeight(i) || rowHeight;
+        out.push(acc);
+      }
+    } else {
+      for (let i = 1; i <= total; i++) out.push(i * rowHeight);
+    }
+    return out;
+  }, [flatTreeRows.length, getRowHeight, rowHeight]);
+  const totalRowsHeight = rowOffsets[rowOffsets.length - 1] ?? 0;
+  const findRowAtOffset = (offset: number): number => {
+    let lo = 0;
+    let hi = rowOffsets.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (rowOffsets[mid + 1] <= offset) lo = mid + 1;
+      else hi = mid;
+    }
+    return lo;
+  };
+  const virtualWindowVar = useMemo(() => {
+    if (!virtual) return { start: 0, end: flatTreeRows.length, padTop: 0, padBottom: 0 };
+    const total = flatTreeRows.length;
+    const start = Math.max(0, findRowAtOffset(scrollTop) - overscan);
+    const endTarget = scrollTop + (viewportHeight || 400);
+    let end = findRowAtOffset(endTarget) + 1;
+    end = Math.min(total, end + overscan);
+    return {
+      start,
+      end,
+      padTop: rowOffsets[start] ?? 0,
+      padBottom: Math.max(0, totalRowsHeight - (rowOffsets[end] ?? totalRowsHeight)),
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [virtual, flatTreeRows.length, scrollTop, viewportHeight, rowOffsets, totalRowsHeight, overscan]);
+  const visibleFlatRowsVar = useMemo(() => {
+    if (!virtual) return flatTreeRows;
+    return flatTreeRows.slice(virtualWindowVar.start, virtualWindowVar.end);
+  }, [virtual, flatTreeRows, virtualWindowVar.start, virtualWindowVar.end]);
+  const rowHeightOf = (idx: number): number => {
+    if (getRowHeight) return getRowHeight(idx) || rowHeight;
+    return rowHeight;
+  };
+
+  /* ---------------- TSV paste ---------------- */
+  const applyPasteFromClipboard = (text: string) => {
+    if (!cellPastable || !cellSelection) return;
+    const grid = parseClipboardGrid(text);
+    if (!grid.length) return;
+    const r0 = Math.min(cellSelection.startRow, cellSelection.endRow);
+    const c0 = Math.min(cellSelection.startCol, cellSelection.endCol);
+    let applied = 0;
+    let skipped = 0;
+    for (let dr = 0; dr < grid.length; dr++) {
+      const fr = flatTreeRows[r0 + dr];
+      if (!fr) break;
+      const line = grid[dr];
+      for (let dc = 0; dc < line.length; dc++) {
+        const col = renderLeafColumns[c0 + dc];
+        if (!col) break;
+        if (!isCellEditable(fr.row, col, fr.index)) {
+          skipped++;
+          continue;
+        }
+        let value: unknown = line[dc];
+        if (col.editType === 'number') {
+          const n = Number(value);
+          value = Number.isFinite(n) ? n : null;
+        }
+        if (col.editValidate && col.editValidate(value, fr.row, fr.index) === false) {
+          skipped++;
+          continue;
+        }
+        const oldValue = getCellValue(fr.row, col);
+        if (oldValue !== value) {
+          onCellEdit?.({ row: fr.row, column: col, oldValue, newValue: value, index: fr.index });
+          applied++;
+        }
+      }
+    }
+    onCellPaste?.({ applied, skipped });
+  };
+  useEffect(() => {
+    if (!cellPastable) return;
+    const handler = (ev: ClipboardEvent) => {
+      if (!cellSelection) return;
+      const text = ev.clipboardData?.getData('text/plain');
+      if (!text) return;
+      ev.preventDefault();
+      applyPasteFromClipboard(text);
+    };
+    window.addEventListener('paste', handler);
+    return () => window.removeEventListener('paste', handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cellPastable, cellSelection]);
+
+  /* ---------------- history stack ---------------- */
+  interface HistorySnapshot {
+    sort: TableSort | TableSort[] | null;
+    filters: Record<string, unknown>;
+    search: string;
+    pagination: TablePagination | null;
+    columnsState: TableColumnsState;
+  }
+  const historyStackRef = useRef<HistorySnapshot[]>([]);
+  const historyFutureRef = useRef<HistorySnapshot[]>([]);
+  const isApplyingRef = useRef(false);
+
+  const takeSnapshot = (): HistorySnapshot => ({
+    sort: JSON.parse(JSON.stringify(activeSort)),
+    filters: JSON.parse(JSON.stringify(activeFilters)),
+    search: activeSearch,
+    pagination: activePagination ? { ...activePagination } : null,
+    columnsState: JSON.parse(JSON.stringify(activeColumnsState)),
+  });
+
+  const applySnapshot = (s: HistorySnapshot) => {
+    if (sort === undefined) setInternalSort(s.sort);
+    onSortChange?.(s.sort);
+    if (filters === undefined) setInternalFilters({ ...s.filters });
+    onFiltersChange?.({ ...s.filters });
+    if (globalSearch === undefined) setInternalSearch(s.search);
+    onGlobalSearchChange?.(s.search);
+    if (pagination === undefined) setInternalPagination(s.pagination);
+    if (s.pagination) onPaginationChange?.(s.pagination);
+    if (columnsState === undefined) setInternalColumnsState({ ...s.columnsState });
+    onColumnsStateChange?.({ ...s.columnsState });
+  };
+
+  const undo = () => {
+    if (!historyEnabled || !historyStackRef.current.length) return;
+    const cur = takeSnapshot();
+    const prev = historyStackRef.current.pop()!;
+    historyFutureRef.current.push(cur);
+    isApplyingRef.current = true;
+    applySnapshot(prev);
+    setTimeout(() => {
+      isApplyingRef.current = false;
+    }, 0);
+    onHistoryChange?.({
+      canUndo: historyStackRef.current.length > 0,
+      canRedo: historyFutureRef.current.length > 0,
+    });
+  };
+  const redo = () => {
+    if (!historyEnabled || !historyFutureRef.current.length) return;
+    const cur = takeSnapshot();
+    const next = historyFutureRef.current.pop()!;
+    historyStackRef.current.push(cur);
+    isApplyingRef.current = true;
+    applySnapshot(next);
+    setTimeout(() => {
+      isApplyingRef.current = false;
+    }, 0);
+    onHistoryChange?.({
+      canUndo: historyStackRef.current.length > 0,
+      canRedo: historyFutureRef.current.length > 0,
+    });
+  };
+
+  // 监听需要纳入历史的状态变化
+  const lastSnapshotRef = useRef<string>('');
+  useEffect(() => {
+    if (!historyEnabled || isApplyingRef.current) {
+      lastSnapshotRef.current = JSON.stringify(takeSnapshot());
+      return;
+    }
+    const snap = takeSnapshot();
+    const cur = JSON.stringify(snap);
+    if (cur === lastSnapshotRef.current) return;
+    if (lastSnapshotRef.current) {
+      historyStackRef.current.push(JSON.parse(lastSnapshotRef.current));
+      if (historyStackRef.current.length > historyDepth) historyStackRef.current.shift();
+      historyFutureRef.current = [];
+      onHistoryChange?.({ canUndo: true, canRedo: false });
+    }
+    lastSnapshotRef.current = cur;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [historyEnabled, activeSort, activeFilters, activeSearch, activePagination, activeColumnsState]);
+
+  useEffect(() => {
+    if (!historyEnabled) return;
+    const handler = (ev: KeyboardEvent) => {
+      const meta = ev.ctrlKey || ev.metaKey;
+      if (!meta) return;
+      if ((ev.key === 'z' || ev.key === 'Z') && !ev.shiftKey) {
+        ev.preventDefault();
+        undo();
+      } else if ((ev.key === 'y' || ev.key === 'Y') || (ev.shiftKey && (ev.key === 'z' || ev.key === 'Z'))) {
+        ev.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [historyEnabled]);
 
   return (
     <div ref={rootRef} className={fullCls}>
@@ -1281,7 +1528,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
               </tr>
             ) : (
               <>
-                {virtual && virtualWindow.padTop > 0 && (
+                {virtual && virtualWindowVar.padTop > 0 && (
                   <tr className="cf-table__row cf-table__row--virtual-pad" aria-hidden>
                     <td
                       colSpan={
@@ -1290,11 +1537,11 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                         (expandable ? 1 : 0) +
                         (rowReorderable ? 1 : 0)
                       }
-                      style={{ height: virtualWindow.padTop, padding: 0, border: 0 }}
+                      style={{ height: virtualWindowVar.padTop, padding: 0, border: 0 }}
                     />
                   </tr>
                 )}
-                {visibleFlatRows.map((fr) => (
+                {visibleFlatRowsVar.map((fr) => (
                   <Row
                     key={fr.key}
                     fr={fr}
@@ -1318,10 +1565,12 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                     cellClassOf={cellClassOf}
                     renderCell={renderCell}
                     virtual={virtual}
-                    rowHeight={rowHeight}
+                    rowHeight={rowHeightOf(fr.index)}
                     rowReorderable={rowReorderable}
+                    treeReorderable={treeReorderable}
                     rowDragKey={rowDragKey}
                     rowDragOverKey={rowDragOverKey}
+                    rowDropPos={rowDropPos}
                     onRowDragStart={onRowDragStart}
                     onRowDragOver={onRowDragOver}
                     onRowDrop={onRowDrop}
@@ -1341,7 +1590,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                     onCellMouseEnter={onCellMouseEnter}
                   />
                 ))}
-                {virtual && virtualWindow.padBottom > 0 && (
+                {virtual && virtualWindowVar.padBottom > 0 && (
                   <tr className="cf-table__row cf-table__row--virtual-pad" aria-hidden>
                     <td
                       colSpan={
@@ -1350,7 +1599,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                         (expandable ? 1 : 0) +
                         (rowReorderable ? 1 : 0)
                       }
-                      style={{ height: virtualWindow.padBottom, padding: 0, border: 0 }}
+                      style={{ height: virtualWindowVar.padBottom, padding: 0, border: 0 }}
                     />
                   </tr>
                 )}
@@ -1466,8 +1715,10 @@ interface RowProps<T> {
   virtual: boolean;
   rowHeight: number;
   rowReorderable: boolean;
+  treeReorderable: boolean;
   rowDragKey: string | null;
   rowDragOverKey: string | null;
+  rowDropPos: TreeDropPos;
   onRowDragStart: (ev: DragEvent, key: string) => void;
   onRowDragOver: (ev: DragEvent, key: string) => void;
   onRowDrop: (ev: DragEvent, key: string) => void;
@@ -1499,19 +1750,19 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
           p.selected ? 'is-selected' : '',
           p.selectable ? 'is-clickable' : '',
           fr.level > 0 ? 'is-tree-child' : '',
-          p.rowDragOverKey === fr.key ? 'is-row-drop-target' : '',
+          p.rowDragOverKey === fr.key ? `is-row-drop-target is-row-drop-${p.rowDropPos}` : '',
           p.rowDragKey === fr.key ? 'is-row-dragging' : '',
         ]
           .filter(Boolean)
           .join(' ')}
         style={p.virtual ? { height: p.rowHeight } : undefined}
         onClick={() => (p.selectable ? p.toggleRow(fr.key) : p.onRowClick?.(row, fr.index))}
-        onDragOver={(e) => p.rowReorderable && fr.level === 0 && p.onRowDragOver(e, fr.key)}
-        onDrop={(e) => p.rowReorderable && fr.level === 0 && p.onRowDrop(e, fr.key)}
+        onDragOver={(e) => p.rowReorderable && p.onRowDragOver(e, fr.key)}
+        onDrop={(e) => p.rowReorderable && p.onRowDrop(e, fr.key)}
       >
         {p.rowReorderable && (
           <td className="cf-table__cell cf-table__cell--row-drag">
-            {fr.level === 0 && (
+            {(p.treeReorderable || fr.level === 0) && (
               <span
                 className="cf-table__row-drag-handle"
                 draggable

@@ -34,6 +34,19 @@ import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
   <SeriesColorVue client:load />
 </DemoFrame>
 
+## 横向布局
+
+需要较长分类名、排行或对比列表时，使用 `orientation="horizontal"`。
+
+import HorizontalVue from '~/components/demos/barchart/HorizontalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBarChart :data="data" :labels="labels" orientation="horizontal" />`}
+  reactCode={`<CfBarChart data={data} labels={labels} orientation="horizontal" />`}
+>
+  <HorizontalVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
@@ -41,4 +54,5 @@ import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
 | `data` | `number[]` | `—` | 柱高度 |
 | `labels` | `string[]` | `—` | x 轴标签 |
 | `colorIndex` | `0..7` | `0` |  |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | 柱方向 |
 | `width / height / showGrid / showLabels` | `` | `` |  |

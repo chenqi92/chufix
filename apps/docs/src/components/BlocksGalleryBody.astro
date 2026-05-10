@@ -18,6 +18,57 @@ const grouped = CATEGORIES.map((cat) => ({
   items: blocks.filter((b) => b.category === cat.id),
 }));
 const defaultCat = CATEGORIES[0].id;
+
+const thumbProfiles = {
+  templates: [
+    { h: 300, scale: 0.58, x: -2, y: 0 },
+    { h: 360, scale: 0.62, x: -10, y: -18 },
+    { h: 270, scale: 0.66, x: -18, y: -52 },
+  ],
+  dashboards: [
+    { h: 320, scale: 0.58, x: -8, y: -20 },
+    { h: 280, scale: 0.64, x: -18, y: -54 },
+    { h: 380, scale: 0.56, x: 0, y: 0 },
+  ],
+  auth: [
+    { h: 280, scale: 0.66, x: -60, y: -30 },
+    { h: 340, scale: 0.6, x: -24, y: -12 },
+  ],
+  errors: [
+    { h: 260, scale: 0.68, x: -42, y: -42 },
+    { h: 320, scale: 0.6, x: -10, y: -8 },
+  ],
+  workbench: [
+    { h: 330, scale: 0.57, x: -10, y: -4 },
+    { h: 290, scale: 0.64, x: -36, y: -48 },
+  ],
+  settings: [
+    { h: 300, scale: 0.6, x: -12, y: -18 },
+    { h: 350, scale: 0.56, x: 0, y: 0 },
+  ],
+  profile: [
+    { h: 300, scale: 0.62, x: -28, y: -20 },
+    { h: 360, scale: 0.58, x: -10, y: -8 },
+  ],
+  pricing: [
+    { h: 330, scale: 0.58, x: -10, y: -8 },
+    { h: 280, scale: 0.64, x: -36, y: -52 },
+  ],
+  billing: [
+    { h: 320, scale: 0.58, x: -10, y: -12 },
+    { h: 280, scale: 0.64, x: -34, y: -52 },
+  ],
+  team: [
+    { h: 300, scale: 0.6, x: -18, y: -18 },
+    { h: 360, scale: 0.56, x: 0, y: 0 },
+  ],
+};
+
+function thumbStyle(category: string, index: number) {
+  const profiles = thumbProfiles[category as keyof typeof thumbProfiles] || thumbProfiles.templates;
+  const profile = profiles[index % profiles.length];
+  return `--thumb-h:${profile.h}px;--thumb-scale:${profile.scale};--thumb-x:${profile.x}px;--thumb-y:${profile.y}px;`;
+}
 ---
 
 <div class="blocks-page">
@@ -30,9 +81,9 @@ const defaultCat = CATEGORIES[0].id;
     {grouped.map((g) => (
       <div data-cat-panel={g.id} data-active={g.id === defaultCat ? 'true' : 'false'}>
         <p class="blocks-page__cat-desc">{g.description}</p>
-        <div class="cf-gallery">
-          {g.items.map((b) => (
-            <article class="cf-gallery-card">
+        <div class="cf-gallery cf-gallery--masonry">
+          {g.items.map((b, index) => (
+            <article class={`cf-gallery-card block-card block-card--${b.category}`} style={thumbStyle(b.category, index)}>
               <div class="cf-gallery-card__preview block-thumb" aria-hidden="true">
                 <div class="block-thumb__stage">
                   <BlockPreview blockId={b.id} client:visible />
@@ -62,8 +113,21 @@ const defaultCat = CATEGORIES[0].id;
     font-size: var(--t-12);
     margin: 0 0 14px;
   }
+  .cf-gallery--masonry {
+    display: block;
+    columns: 3 340px;
+    column-gap: 16px;
+  }
+  .block-card {
+    display: inline-flex;
+    width: 100%;
+    margin: 0 0 16px;
+    break-inside: avoid;
+  }
   .block-thumb {
-    min-height: 260px;
+    height: var(--thumb-h, 300px);
+    min-height: 0;
+    aspect-ratio: auto;
     padding: 0;
     align-items: stretch;
     justify-content: stretch;
@@ -72,10 +136,10 @@ const defaultCat = CATEGORIES[0].id;
       var(--bg-inset);
   }
   .block-thumb__stage {
-    width: 1180px;
-    min-height: 780px;
+    width: 900px;
+    min-height: 680px;
     pointer-events: none;
-    transform: scale(0.305);
+    transform: translate(var(--thumb-x, 0), var(--thumb-y, 0)) scale(var(--thumb-scale, 0.6));
     transform-origin: 0 0;
   }
   .block-thumb__stage :global(.cf-block-preview-shell),
@@ -92,8 +156,12 @@ const defaultCat = CATEGORIES[0].id;
     z-index: 1;
   }
   @media (max-width: 760px) {
+    .cf-gallery--masonry {
+      columns: 1;
+    }
     .block-thumb__stage {
-      transform: scale(0.28);
+      width: 760px;
+      transform: translate(var(--thumb-x, 0), var(--thumb-y, 0)) scale(0.5);
     }
   }
 </style>

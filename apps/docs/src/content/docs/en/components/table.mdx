@@ -19,6 +19,10 @@ import PersistVue from '~/components/demos/table/PersistVue.vue';
 import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
 import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
 import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
+import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
+import PasteVue from '~/components/demos/table/PasteVue.vue';
+import HistoryVue from '~/components/demos/table/HistoryVue.vue';
+import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
 
 `CfTable` is one of the most feature-complete components in the library. Design choices:
 
@@ -185,6 +189,52 @@ When you have 100+ columns of simple cells (think 2-D matrices), enabling `col-v
 
 200 rows × 121 columns = 24,200 cells, but the actual DOM stays under ~800 nodes. Note: `column.fixed` still pins columns, but try to keep total fixed width under one third of the viewport so the visible area isn't crowded.
 
+## Tree-aware drag (across parents)
+
+Add `tree-reorderable` on top of `row-reorderable` and the drop UI splits each target row into three zones, like Finder / Excel / Kanban tools:
+
+- Top quarter → drop **above** (same parent)
+- Bottom quarter → drop **below** (same parent)
+- Middle half → drop **inside** as a child
+
+Ancestor-into-descendant moves are blocked.
+
+<DemoFrame>
+  <TreeDragVue client:load />
+</DemoFrame>
+
+`@tree-reorder` emits `{ fromKey, toKey, pos: 'above' | 'below' | 'inside', rows }` so you can persist the new tree shape.
+
+## TSV paste-back
+
+On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a starting cell, paste TSV / CSV from your clipboard with <kbd>Ctrl/⌘ + V</kbd>, and the data flows back into cells starting at that anchor. `column.editable` decides which cells accept writes; `column.editValidate` rejects invalid values.
+
+<DemoFrame>
+  <PasteVue client:load />
+</DemoFrame>
+
+`@cell-paste` returns `{ applied, skipped }` — handy for a "write 12 cells, skipped 3" toast.
+
+## Undo / redo history
+
+`history-enabled` records every change to sort / filter / search / pagination / columnsState into an in-memory stack. <kbd>Ctrl/⌘ + Z</kbd> undoes, <kbd>Ctrl/⌘ + Shift + Z</kbd> / <kbd>Ctrl + Y</kbd> redoes. `history-depth` caps the stack size (default 50).
+
+<DemoFrame>
+  <HistoryVue client:load />
+</DemoFrame>
+
+`@history-change` fires `{ canUndo, canRedo }` for toolbar buttons. Component instance also exposes imperative `undo()` / `redo()`.
+
+## Variable row heights
+
+`virtual` defaults to a single `rowHeight`. For rows of varying height (markdown body, image gallery, etc.), pass `:get-row-height="(idx) => 42"` and the table builds cumulative offsets, then binary-searches for the visible window on each scroll.
+
+<DemoFrame>
+  <VarHeightVue client:load />
+</DemoFrame>
+
+`getRowHeight` should be a pure function — the component recomputes offsets when row count changes. If real heights are only known after rendering, return an estimate first and update once measured. A future `auto-row-height` mode will wire ResizeObserver in for you.
+
 ## Server-side debounce
 
 Typing in the search box or filter dropdown shouldn't pound your backend on every keystroke. Pass `:server-debounce="300"` (ms) to delay `update:globalSearch` and `update:filters` until the input is idle. Other signals (sort click, page change) are explicit clicks and remain synchronous.
@@ -271,6 +321,11 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `colVirtual` | `boolean` | `false` | Enable column virtualization (recommended for 100+ columns) |
 | `colWidth` | `number` | `120` | Default column width when virtualizing (px) |
 | `colOverscan` | `number` | `4` | Extra columns rendered on each side |
+| `treeReorderable` | `boolean` | `false` | Combined with `rowReorderable`, enable above/below/inside drop zones |
+| `cellPastable` | `boolean` | `false` | Accept Ctrl/⌘+V to paste TSV / CSV back into cells |
+| `historyEnabled` | `boolean` | `false` | Snapshot stack for undo / redo across sort/filter/search/page/columnsState |
+| `historyDepth` | `number` | `50` | Max snapshots kept |
+| `getRowHeight` | `(index) => number` | — | Per-row height in virtual mode for variable-height rows |
 
 ### `TableColumn`
 
@@ -318,8 +373,11 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `update:columnsState` | `TableColumnsState` | Reorder / hide / resize |
 | `update:expandedRowKeys` | `string[]` | Expansion changed |
 | `update:rows` / `row-reorder` | `T[]` / `{from,to,rows}` | Row drag reorder |
+| `tree-reorder` | `{fromKey, toKey, pos, rows}` | Tree-aware drag (above/below/inside) |
 | `cell-edit` | `{row, column, oldValue, newValue, index}` | Inline cell commit |
+| `cell-paste` | `{applied, skipped}` | TSV paste finished |
 | `export` | `string` | CSV export hook (receives the CSV string) |
+| `history-change` | `{canUndo, canRedo}` | History stack changed |
 | `row-click` | `(row, i)` | Row click (when not selectable) |
 | `#header:<key>` | — | Custom header node |
 | `#cell:<key>` | `{ row, index, value }` | Custom cell |

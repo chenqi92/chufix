@@ -26,6 +26,18 @@ body {
 a { color: var(--accent-1); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
+.site-nav a:hover,
+.site-announcement a:hover,
+.cf-cat-tabs__tab:hover,
+.cf-gallery-card:hover,
+.cf-gallery-card:hover *,
+.cf-gallery-card__body:hover,
+.cf-gallery-card__body:hover *,
+.cf-btn:hover,
+.theme-switcher button:hover {
+  text-decoration: none;
+}
+
 img { max-width: 100%; height: auto; display: block; }
 
 code {
@@ -103,6 +115,7 @@ kbd {
 .site-nav__menu-link:hover {
   background: var(--bg-2);
   color: var(--fg-1);
+  text-decoration: none;
 }
 .site-nav__menu-link[aria-current='page'] {
   background: var(--accent-soft);
@@ -156,27 +169,39 @@ kbd {
 }
 .theme-switcher {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
-.theme-switcher__trigger {
+.theme-switcher__mode,
+.theme-switcher__accent-trigger {
   position: relative;
 }
-.theme-switcher__trigger::after {
+.theme-switcher__accent-dot {
+  width: 14px;
+  height: 14px;
+  border: 1px solid color-mix(in oklch, var(--bg-0), var(--fg-1) 22%);
+  border-radius: 50%;
+  background: var(--accent-1);
+  box-shadow: inset 0 0 0 2px var(--bg-0);
+}
+.theme-switcher__accent-trigger::after {
   content: '';
   position: absolute;
   right: 5px;
   bottom: 5px;
-  width: 7px;
-  height: 7px;
+  width: 4px;
+  height: 4px;
   border: 1px solid var(--bg-0);
   border-radius: 50%;
-  background: var(--accent-1);
+  background: var(--fg-3);
 }
 .theme-switcher__menu {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   z-index: var(--z-popover);
-  width: 220px;
+  width: 276px;
   padding: 10px;
   border: 1px solid var(--line-1);
   border-radius: var(--r-6);
@@ -196,6 +221,11 @@ kbd {
   color: var(--fg-3);
   font-size: var(--t-11);
   font-weight: var(--w-semibold);
+}
+.theme-switcher__palette {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
 }
 .theme-switcher__option,
 .theme-switcher__swatch {
@@ -237,10 +267,18 @@ kbd {
   box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 0.12);
 }
 .theme-switcher__swatch--blue::before { background: oklch(54% 0.16 250); }
+.theme-switcher__swatch--sky::before { background: oklch(55% 0.13 230); }
+.theme-switcher__swatch--cyan::before { background: oklch(54% 0.13 195); }
+.theme-switcher__swatch--teal::before { background: oklch(52% 0.12 178); }
 .theme-switcher__swatch--emerald::before { background: oklch(52% 0.14 155); }
+.theme-switcher__swatch--lime::before { background: oklch(58% 0.14 125); }
 .theme-switcher__swatch--violet::before { background: oklch(56% 0.17 305); }
 .theme-switcher__swatch--amber::before { background: oklch(58% 0.14 78); }
+.theme-switcher__swatch--orange::before { background: oklch(58% 0.16 50); }
 .theme-switcher__swatch--rose::before { background: oklch(55% 0.18 20); }
+.theme-switcher__swatch--pink::before { background: oklch(56% 0.17 340); }
+.theme-switcher__swatch--grape::before { background: oklch(55% 0.16 285); }
+.theme-switcher__swatch--slate::before { background: oklch(50% 0.05 255); }
 
 .site-announcement {
   border-bottom: 1px solid var(--line-1);

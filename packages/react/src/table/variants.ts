@@ -198,6 +198,9 @@ export interface TableProps<T = Record<string, unknown>> {
 
   /* 行拖拽换序 */
   rowReorderable?: boolean;
+  /** 树形数据下，是否允许跨父节点拖动（释放时根据指针位置判定 above/below/inside）。
+   *  默认 false：仅在同一父节点内换序。*/
+  treeReorderable?: boolean;
 
   /* CSV 导出 */
   /** true：工具栏自动出现 Export 按钮。*/
@@ -217,6 +220,15 @@ export interface TableProps<T = Record<string, unknown>> {
   /* 单元格选区 */
   /** 启用 Excel 风格的单元格选区：单击 / Shift 单击扩展矩形 / Ctrl-Cmd C 拷贝 TSV。*/
   cellSelectable?: boolean;
+  /** 启用从剪贴板粘贴 TSV / CSV 反向写回单元格。会按 column.editable 判断每格能否写。
+   *  默认 false。*/
+  cellPastable?: boolean;
+
+  /* 历史撤销 */
+  /** 启用 sort / filter / search / pagination / columnsState 的快照栈，支持 Cmd/Ctrl+Z 撤销。*/
+  historyEnabled?: boolean;
+  /** 最多保留多少步历史。默认 50。*/
+  historyDepth?: number;
 
   /* 列虚拟化（适合 100+ 列） */
   /** 启用列虚拟化。建议同时为列指定 width（缺省按 colWidth 估算）。*/
@@ -225,6 +237,10 @@ export interface TableProps<T = Record<string, unknown>> {
   colWidth?: number;
   /** 列虚拟化的左右额外渲染列数。*/
   colOverscan?: number;
+
+  /* 行虚拟化下的可变高 */
+  /** 返回某一行的高度（px）。优先于 rowHeight，让虚拟滚动支持每行不同高。*/
+  getRowHeight?: (index: number) => number;
 
   /* 工具栏 */
   /** 'auto'：根据开启的能力自动展示 search / column-visibility / export 按钮。*/
@@ -426,6 +442,162 @@ export function arrayMove<T>(arr: T[], from: number, to: number): T[] {
   const [moved] = next.splice(from, 1);
   next.splice(to, 0, moved);
   return next;
+}
+
+export type TreeDropPos = 'above' | 'below' | 'inside';
+
+/** 在嵌套树形数组里把节点 fromKey 移到节点 toKey 的 above / below / inside（不可变）。
+ *  返回 [新树, ok]，ok = false 表示找不到节点或非法移动（不能把祖先移到后代里）。*/
+export function moveTreeRow<T extends Record<string, unknown>>(
+  rows: T[],
+  fromKey: string,
+  toKey: string,
+  pos: TreeDropPos,
+  getKey: (row: T, indexInParent: number) => string,
+  childrenField = 'children',
+): [T[], boolean] {
+  if (fromKey === toKey) return [rows, false];
+
+  type Node = { row: T; key: string; children: Node[]; };
+  function build(arr: T[]): Node[] {
+    return arr.map((r, i) => {
+      const ch = (r as Record<string, unknown>)[childrenField] as T[] | undefined;
+      return { row: r, key: getKey(r, i), children: ch?.length ? build(ch) : [] };
+    });
+  }
+  function flatten(arr: Node[]): T[] {
+    return arr.map((n) => {
+      const out: Record<string, unknown> = { ...(n.row as Record<string, unknown>) };
+      out[childrenField] = n.children.length ? flatten(n.children) : undefined;
+      // 删掉 undefined 字段
+      if (out[childrenField] === undefined) delete out[childrenField];
+      return out as T;
+    });
+  }
+
+  const tree = build(rows);
+
+  // 找节点 + 父引用 + 索引
+  function find(arr: Node[], parent: Node | null, key: string): { parent: Node | null; idx: number; node: Node } | null {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].key === key) return { parent, idx: i, node: arr[i] };
+      const sub = find(arr[i].children, arr[i], key);
+      if (sub) return sub;
+    }
+    return null;
+  }
+  function isAncestor(maybeAncestor: Node, target: Node): boolean {
+    if (maybeAncestor === target) return true;
+    return maybeAncestor.children.some((c) => isAncestor(c, target));
+  }
+
+  const fromHit = find(tree, null, fromKey);
+  if (!fromHit) return [rows, false];
+  const toHit = find(tree, null, toKey);
+  if (!toHit) return [rows, false];
+  if (isAncestor(fromHit.node, toHit.node)) return [rows, false]; // 不能把祖先放进后代
+
+  // 先从原位置移除
+  const fromArr = fromHit.parent ? fromHit.parent.children : tree;
+  fromArr.splice(fromHit.idx, 1);
+
+  // 重新定位 toHit（数组变了，索引可能不准）—— 简单起见只处理同父降索引
+  // 由于我们记录了 toHit.node 引用，只需要找它在哪个数组里
+  function locate(arr: Node[], parent: Node | null, target: Node): { parent: Node | null; idx: number } | null {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === target) return { parent, idx: i };
+      const sub = locate(arr[i].children, arr[i], target);
+      if (sub) return sub;
+    }
+    return null;
+  }
+  const toLoc = locate(tree, null, toHit.node);
+  if (!toLoc) {
+    // 极端情况：toHit 是 fromHit 的兄弟且 splice 把它带走了 — 退回原态
+    fromArr.splice(fromHit.idx, 0, fromHit.node);
+    return [rows, false];
+  }
+
+  if (pos === 'inside') {
+    toLoc.parent && toLoc.parent.children; // no-op，仅为可读
+    toHit.node.children.splice(0, 0, fromHit.node); // 放到 children 头部，最直观
+  } else {
+    const targetArr = toLoc.parent ? toLoc.parent.children : tree;
+    const insertIdx = pos === 'above' ? toLoc.idx : toLoc.idx + 1;
+    targetArr.splice(insertIdx, 0, fromHit.node);
+  }
+
+  return [flatten(tree), true];
+}
+
+/** 解析剪贴板 TSV / CSV 为二维字符串数组。优先按 \t 分列；如果没 tab，再按 , 分。*/
+export function parseClipboardGrid(text: string): string[][] {
+  const lines = text.replace(/\r\n/g, '\n').split('\n');
+  const lastNonEmpty = lines.length && lines[lines.length - 1] === '' ? lines.length - 1 : lines.length;
+  const trimmed = lines.slice(0, lastNonEmpty);
+  const sep = trimmed[0]?.includes('\t') ? '\t' : ',';
+  return trimmed.map((line) => parseLine(line, sep));
+}
+
+function parseLine(line: string, sep: string): string[] {
+  // 简易 CSV 解析：支持 "..." 套引号 + "" 转义；TSV 直接 split。
+  if (sep === '\t') return line.split('\t');
+  const out: string[] = [];
+  let cur = '';
+  let i = 0;
+  let inQuote = false;
+  while (i < line.length) {
+    const ch = line[i];
+    if (inQuote) {
+      if (ch === '"' && line[i + 1] === '"') {
+        cur += '"';
+        i += 2;
+        continue;
+      }
+      if (ch === '"') {
+        inQuote = false;
+        i++;
+        continue;
+      }
+      cur += ch;
+      i++;
+    } else {
+      if (ch === '"') {
+        inQuote = true;
+        i++;
+        continue;
+      }
+      if (ch === sep) {
+        out.push(cur);
+        cur = '';
+        i++;
+        continue;
+      }
+      cur += ch;
+      i++;
+    }
+  }
+  out.push(cur);
+  return out;
+}
+
+/** 在 columnsState.order 里把 fixed:left 列拉到最前、fixed:right 列拉到最后；其余保持相对顺序。*/
+export function normalizeFixedOrder<T = Record<string, unknown>>(
+  order: string[] | undefined,
+  cols: TableColumn<T>[],
+): string[] | undefined {
+  if (!order?.length) return order;
+  const meta = new Map(cols.map((c) => [c.key, c.fixed] as const));
+  const left: string[] = [];
+  const mid: string[] = [];
+  const right: string[] = [];
+  for (const k of order) {
+    const f = meta.get(k);
+    if (f === 'left') left.push(k);
+    else if (f === 'right') right.push(k);
+    else mid.push(k);
+  }
+  return [...left, ...mid, ...right];
 }
 
 /** 默认列过滤匹配。*/

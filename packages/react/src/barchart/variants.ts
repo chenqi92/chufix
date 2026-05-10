@@ -4,6 +4,7 @@ export interface BarChartProps {
   width?: number;
   height?: number;
   colorIndex?: number;
+  orientation?: 'vertical' | 'horizontal';
   showGrid?: boolean;
   showLabels?: boolean;
   ariaLabel?: string;

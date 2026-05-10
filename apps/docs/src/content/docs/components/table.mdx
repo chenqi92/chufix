@@ -19,6 +19,10 @@ import PersistVue from '~/components/demos/table/PersistVue.vue';
 import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
 import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
 import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
+import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
+import PasteVue from '~/components/demos/table/PasteVue.vue';
+import HistoryVue from '~/components/demos/table/HistoryVue.vue';
+import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
 
 `CfTable` 是组件库里功能最完整的"主力"组件之一。设计取舍：
 
@@ -185,6 +189,52 @@ import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
 
 200 行 × 121 列 = 24200 单元格，DOM 实际不到 800 个节点。注意：列虚拟化下 `column.fixed` 仍然钉住，但要求被钉的列总宽不要超过视口的 1/3，否则可视区会很拥挤。
 
+## 树形拖拽（跨父节点）
+
+在 `row-reorderable` 之上加 `tree-reorderable`，拖拽行为升级为 Excel / Finder / 看板风格的"上下/中间"三段：
+
+- 拖到目标行**上 1/4** → 放在它**前面**（同父）
+- 拖到目标行**下 1/4** → 放在它**后面**（同父）
+- 拖到**中间一半** → 拖**进**目标行作为它的子节点
+
+不会让你把祖先放进自己的后代里。
+
+<DemoFrame>
+  <TreeDragVue client:load />
+</DemoFrame>
+
+`@tree-reorder` 事件给到 `{ fromKey, toKey, pos: 'above' | 'below' | 'inside', rows }`，业务方可以决定要不要持久化到后端。
+
+## TSV 反向粘贴
+
+在 `cell-selectable` 上再加 `cell-pastable`：单击或框选起点单元格，按 <kbd>Ctrl/⌘ + V</kbd> 粘贴整片 TSV / CSV，从起点开始按行写回；`column.editable` 控制每格能否写、`column.editValidate` 拦截非法值。
+
+<DemoFrame>
+  <PasteVue client:load />
+</DemoFrame>
+
+`@cell-paste` 事件返回 `{ applied, skipped }`，可以拿来给个 toast 提示。
+
+## 历史撤销
+
+`history-enabled` 把 sort / filter / search / pagination / columnsState 的每一次变化记到内存栈，监听 <kbd>Ctrl/⌘ + Z</kbd> 撤销、<kbd>Ctrl/⌘ + Shift + Z</kbd> / <kbd>Ctrl + Y</kbd> 重做。`history-depth` 控制最多保留多少步（默认 50）。
+
+<DemoFrame>
+  <HistoryVue client:load />
+</DemoFrame>
+
+`@history-change` 事件吐 `{ canUndo, canRedo }`，方便业务方亮 / 灭对应按钮。组件实例上还暴露 `undo()` / `redo()` 命令式调用。
+
+## 变高行虚拟滚动
+
+`virtual` 默认要求所有行高一致。如果每行高度不固定（比如 body 是 markdown 渲染、有多张图片），传 `:get-row-height="(idx) => 42"` 让组件按累计偏移做二分查找定位可见窗口。
+
+<DemoFrame>
+  <VarHeightVue client:load />
+</DemoFrame>
+
+注意：`getRowHeight` 必须**纯函数**，组件会在每次行数变化时重算累计偏移。如果高度真的需要等 DOM 渲染后才知道，目前的建议是先返回一个估值，DOM 测量完成后再 `setState` 改回真实值；后续会出 `auto-row-height` 模式自动用 ResizeObserver。
+
 ## 服务端模式 · 防抖
 
 输入框 / 过滤面板的状态变化每一帧都触发会把后端打爆。给 `:server-debounce="300"`（ms）让 `update:globalSearch` 与 `update:filters` 在静默 300ms 后才发出。其它信号（点排序 / 翻页）是显式点击，不需要防抖，所以保持同步触发。
@@ -271,6 +321,11 @@ import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
 | `colVirtual` | `boolean` | `false` | 启用列虚拟化（推荐 100+ 列时开启） |
 | `colWidth` | `number` | `120` | 列虚拟化的默认列宽（px） |
 | `colOverscan` | `number` | `4` | 列虚拟化左右额外渲染的列数 |
+| `treeReorderable` | `boolean` | `false` | 配合 rowReorderable 启用 above/below/inside 三段拖拽 |
+| `cellPastable` | `boolean` | `false` | 启用 Ctrl/⌘+V 粘贴 TSV 反向写回 |
+| `historyEnabled` | `boolean` | `false` | 启用快照栈：sort/filter/search/page/columnsState 全部入栈 |
+| `historyDepth` | `number` | `50` | 历史栈最大深度 |
+| `getRowHeight` | `(index) => number` | — | 虚拟滚动下指定每行高度，用于变高行 |
 
 ### `TableColumn`
 
@@ -318,8 +373,11 @@ import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
 | `update:columnsState` | `TableColumnsState` | 拖拽 / 隐藏 / 调宽 |
 | `update:expandedRowKeys` | `string[]` | 展开行变化 |
 | `update:rows` / `row-reorder` | `T[]` / `{from,to,rows}` | 行拖拽换序 |
+| `tree-reorder` | `{fromKey, toKey, pos, rows}` | 树形拖拽（含 above/below/inside） |
 | `cell-edit` | `{row, column, oldValue, newValue, index}` | 单元格内联编辑提交 |
+| `cell-paste` | `{applied, skipped}` | TSV 粘贴完成后 |
 | `export` | `string` | CSV 导出（拿到 csv 字符串后自定义处理） |
+| `history-change` | `{canUndo, canRedo}` | 历史栈状态变化 |
 | `row-click` | `(row, i)` | 选择关闭时单击行 |
 | `#header:<key>` | — | 自定义表头节点 |
 | `#cell:<key>` | `{ row, index, value }` | 自定义单元格 |

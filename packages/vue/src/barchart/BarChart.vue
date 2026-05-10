@@ -7,6 +7,7 @@ const props = withDefaults(defineProps<BarChartProps>(), {
   width: 480,
   height: 240,
   colorIndex: 0,
+  orientation: 'vertical',
   showGrid: true,
   showLabels: true,
 });
@@ -22,12 +23,35 @@ const layout = computed(() => {
   const data = props.data ?? [];
   if (!data.length) return null;
   const dom = domainOf([0, ...data]);
+  const axisTicks = ticks(dom, 5);
+
+  if (props.orientation === 'horizontal') {
+    const left = 72;
+    const sx = linearScale(dom, { start: left, end: w - padRight });
+    const innerH = h - padTop - padBottom;
+    const slot = innerH / data.length;
+    const barH = Math.max(2, slot * 0.62);
+    const bars = data.map((v, i) => {
+      const cy = padTop + slot * (i + 0.5);
+      const x0 = sx(0);
+      const x1 = sx(v);
+      return {
+        x: Math.min(x0, x1),
+        y: cy - barH / 2,
+        width: Math.abs(x1 - x0),
+        height: barH,
+        label: props.labels?.[i] ?? '',
+        cx: x1,
+        cy,
+      };
+    });
+    return { orientation: 'horizontal', scale: sx, ticks: axisTicks, bars, padLeft: left };
+  }
+
   const sy = linearScale(dom, { start: h - padBottom, end: padTop });
   const innerW = w - padLeft - padRight;
-  const barCount = data.length;
-  const slot = innerW / barCount;
+  const slot = innerW / data.length;
   const barW = Math.max(2, slot * 0.7);
-  const yTicks = ticks(dom, 5);
   const bars = data.map((v, i) => {
     const cx = padLeft + slot * (i + 0.5);
     const y0 = sy(0);
@@ -39,9 +63,10 @@ const layout = computed(() => {
       height: Math.abs(y1 - y0),
       label: props.labels?.[i] ?? '',
       cx,
+      cy: Math.min(y0, y1) + Math.abs(y1 - y0) / 2,
     };
   });
-  return { sy, yTicks, bars };
+  return { orientation: 'vertical', scale: sy, ticks: axisTicks, bars, padLeft };
 });
 </script>
 
@@ -57,30 +82,30 @@ const layout = computed(() => {
     <template v-if="layout">
       <g v-if="showGrid">
         <line
-          v-for="(t, i) in layout.yTicks"
+          v-for="(t, i) in layout.ticks"
           :key="`g${i}`"
           class="cf-chart__grid"
-          :x1="36"
-          :x2="width - 12"
-          :y1="layout.sy(t)"
-          :y2="layout.sy(t)"
+          :x1="layout.orientation === 'horizontal' ? layout.scale(t) : layout.padLeft"
+          :x2="layout.orientation === 'horizontal' ? layout.scale(t) : width - padRight"
+          :y1="layout.orientation === 'horizontal' ? padTop : layout.scale(t)"
+          :y2="layout.orientation === 'horizontal' ? height - padBottom : layout.scale(t)"
         />
       </g>
       <g v-if="showLabels">
         <text
-          v-for="(t, i) in layout.yTicks"
+          v-for="(t, i) in layout.ticks"
           :key="`yl${i}`"
-          :x="32"
-          :y="layout.sy(t) + 4"
-          text-anchor="end"
+          :x="layout.orientation === 'horizontal' ? layout.scale(t) : layout.padLeft - 4"
+          :y="layout.orientation === 'horizontal' ? height - 6 : layout.scale(t) + 4"
+          :text-anchor="layout.orientation === 'horizontal' ? 'middle' : 'end'"
         >{{ Math.round(t) }}</text>
         <template v-if="layout.bars.length <= 24">
           <text
             v-for="(b, i) in layout.bars"
             :key="`xl${i}`"
-            :x="b.cx"
-            :y="height - 6"
-            text-anchor="middle"
+            :x="layout.orientation === 'horizontal' ? layout.padLeft - 8 : b.cx"
+            :y="layout.orientation === 'horizontal' ? b.cy + 4 : height - 6"
+            :text-anchor="layout.orientation === 'horizontal' ? 'end' : 'middle'"
           >{{ b.label }}</text>
         </template>
       </g>

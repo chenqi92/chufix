@@ -4,11 +4,9 @@
 <div class="theme-switcher" data-theme-switcher>
   <button
     type="button"
-    class="cf-btn cf-btn--ghost cf-btn--sm cf-btn--square theme-switcher__trigger"
-    aria-label="主题与颜色"
-    aria-haspopup="menu"
-    aria-expanded="false"
-    data-theme-menu-toggle
+    class="cf-btn cf-btn--ghost cf-btn--sm cf-btn--square theme-switcher__mode"
+    aria-label="切换亮暗模式"
+    data-theme-mode-toggle
   >
     <svg class="theme-toggle__sun" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
       <circle cx="8" cy="8" r="3" />
@@ -19,20 +17,33 @@
     </svg>
   </button>
 
-  <div class="theme-switcher__menu" role="menu" data-theme-menu hidden>
-    <div class="theme-switcher__group">
-      <div class="theme-switcher__label" data-theme-mode-label>模式</div>
-      <button type="button" class="theme-switcher__option" data-theme-option="light" role="menuitemradio">浅色</button>
-      <button type="button" class="theme-switcher__option" data-theme-option="dark-cool" role="menuitemradio">深色冷调</button>
-      <button type="button" class="theme-switcher__option" data-theme-option="dark-warm" role="menuitemradio">深色暖调</button>
-    </div>
-    <div class="theme-switcher__group">
-      <div class="theme-switcher__label" data-theme-accent-label>强调色</div>
+  <button
+    type="button"
+    class="cf-btn cf-btn--ghost cf-btn--sm cf-btn--square theme-switcher__accent-trigger"
+    aria-label="选择强调色"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-accent-menu-toggle
+  >
+    <span class="theme-switcher__accent-dot" aria-hidden="true"></span>
+  </button>
+
+  <div class="theme-switcher__menu" role="menu" data-accent-menu hidden>
+    <div class="theme-switcher__label" data-theme-accent-label>强调色</div>
+    <div class="theme-switcher__palette">
       <button type="button" class="theme-switcher__swatch theme-switcher__swatch--blue" data-accent-option="blue" role="menuitemradio">蓝</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--sky" data-accent-option="sky" role="menuitemradio">天蓝</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--cyan" data-accent-option="cyan" role="menuitemradio">青</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--teal" data-accent-option="teal" role="menuitemradio">蓝绿</button>
       <button type="button" class="theme-switcher__swatch theme-switcher__swatch--emerald" data-accent-option="emerald" role="menuitemradio">绿</button>
-      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--violet" data-accent-option="violet" role="menuitemradio">紫</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--lime" data-accent-option="lime" role="menuitemradio">青柠</button>
       <button type="button" class="theme-switcher__swatch theme-switcher__swatch--amber" data-accent-option="amber" role="menuitemradio">金</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--orange" data-accent-option="orange" role="menuitemradio">橙</button>
       <button type="button" class="theme-switcher__swatch theme-switcher__swatch--rose" data-accent-option="rose" role="menuitemradio">红</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--pink" data-accent-option="pink" role="menuitemradio">粉</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--violet" data-accent-option="violet" role="menuitemradio">紫</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--grape" data-accent-option="grape" role="menuitemradio">葡萄</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--slate" data-accent-option="slate" role="menuitemradio">石墨</button>
     </div>
   </div>
 </div>
@@ -45,30 +56,31 @@
     const switcher = document.querySelector('[data-theme-switcher]');
     if (!switcher) return;
 
-    const menu = switcher.querySelector('[data-theme-menu]');
-    const toggle = switcher.querySelector('[data-theme-menu-toggle]');
-    const isEn = location.pathname.startsWith('/en/');
-    const modeLabel = switcher.querySelector('[data-theme-mode-label]');
+    const menu = switcher.querySelector('[data-accent-menu]');
+    const accentToggle = switcher.querySelector('[data-accent-menu-toggle]');
+    const modeToggle = switcher.querySelector('[data-theme-mode-toggle]');
     const accentLabel = switcher.querySelector('[data-theme-accent-label]');
-    const themeNames = {
-      light: isEn ? 'Light' : '浅色',
-      'dark-cool': isEn ? 'Dark cool' : '深色冷调',
-      'dark-warm': isEn ? 'Dark warm' : '深色暖调',
-    };
+    const isEn = location.pathname.startsWith('/en/');
     const accentNames = {
       blue: isEn ? 'Blue' : '蓝',
+      sky: isEn ? 'Sky' : '天蓝',
+      cyan: isEn ? 'Cyan' : '青',
+      teal: isEn ? 'Teal' : '蓝绿',
       emerald: isEn ? 'Emerald' : '绿',
-      violet: isEn ? 'Violet' : '紫',
+      lime: isEn ? 'Lime' : '青柠',
       amber: isEn ? 'Amber' : '金',
+      orange: isEn ? 'Orange' : '橙',
       rose: isEn ? 'Rose' : '红',
+      pink: isEn ? 'Pink' : '粉',
+      violet: isEn ? 'Violet' : '紫',
+      grape: isEn ? 'Grape' : '葡萄',
+      slate: isEn ? 'Slate' : '石墨',
     };
-    if (modeLabel) modeLabel.textContent = isEn ? 'Mode' : '模式';
-    if (accentLabel) accentLabel.textContent = isEn ? 'Accent' : '强调色';
 
-    switcher.querySelectorAll('[data-theme-option]').forEach((btn) => {
-      const value = btn.dataset.themeOption;
-      btn.textContent = themeNames[value] || value;
-    });
+    if (accentLabel) accentLabel.textContent = isEn ? 'Accent' : '强调色';
+    modeToggle?.setAttribute('aria-label', isEn ? 'Toggle light or dark mode' : '切换亮暗模式');
+    accentToggle?.setAttribute('aria-label', isEn ? 'Choose accent color' : '选择强调色');
+
     switcher.querySelectorAll('[data-accent-option]').forEach((btn) => {
       const value = btn.dataset.accentOption;
       btn.textContent = accentNames[value] || value;
@@ -81,12 +93,15 @@
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-cool' : 'light');
     const initialAccent = storedAccent || 'blue';
 
+    function normalizeTheme(theme) {
+      return theme && theme.startsWith('dark') ? 'dark-cool' : 'light';
+    }
+
     function syncState(theme, accent) {
-      root.dataset.theme = theme;
+      const nextTheme = normalizeTheme(theme);
+      root.dataset.theme = nextTheme;
       root.dataset.accent = accent;
-      switcher.querySelectorAll('[data-theme-option]').forEach((btn) => {
-        btn.setAttribute('aria-checked', btn.dataset.themeOption === theme ? 'true' : 'false');
-      });
+      modeToggle?.setAttribute('aria-pressed', nextTheme === 'dark-cool' ? 'true' : 'false');
       switcher.querySelectorAll('[data-accent-option]').forEach((btn) => {
         btn.setAttribute('aria-checked', btn.dataset.accentOption === accent ? 'true' : 'false');
       });
@@ -94,10 +109,16 @@
 
     syncState(initialTheme, initialAccent);
 
-    toggle?.addEventListener('click', () => {
+    modeToggle?.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark-cool' ? 'light' : 'dark-cool';
+      localStorage.setItem(THEME_KEY, next);
+      syncState(next, root.dataset.accent || initialAccent);
+    });
+
+    accentToggle?.addEventListener('click', () => {
       const open = menu.hasAttribute('hidden');
       menu.toggleAttribute('hidden', !open);
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      accentToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
     document.addEventListener('click', (event) => {
@@ -105,14 +126,8 @@
       if (!(target instanceof Element)) return;
       if (!switcher.contains(target)) {
         menu.setAttribute('hidden', '');
-        toggle?.setAttribute('aria-expanded', 'false');
+        accentToggle?.setAttribute('aria-expanded', 'false');
         return;
-      }
-      const themeBtn = target.closest('[data-theme-option]');
-      if (themeBtn) {
-        const next = themeBtn.dataset.themeOption;
-        localStorage.setItem(THEME_KEY, next);
-        syncState(next, root.dataset.accent || initialAccent);
       }
       const accentBtn = target.closest('[data-accent-option]');
       if (accentBtn) {
@@ -125,7 +140,7 @@
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
       menu.setAttribute('hidden', '');
-      toggle?.setAttribute('aria-expanded', 'false');
+      accentToggle?.setAttribute('aria-expanded', 'false');
     });
   })();
 </script>

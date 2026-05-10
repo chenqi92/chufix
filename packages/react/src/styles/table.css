@@ -497,8 +497,15 @@
 .cf-table__row.is-row-dragging {
   opacity: 0.55;
 }
-.cf-table__row.is-row-drop-target > .cf-table__cell {
+.cf-table__row.is-row-drop-above > .cf-table__cell {
   box-shadow: inset 0 2px 0 var(--accent-1);
+}
+.cf-table__row.is-row-drop-below > .cf-table__cell {
+  box-shadow: inset 0 -2px 0 var(--accent-1);
+}
+.cf-table__row.is-row-drop-inside > .cf-table__cell {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-1);
 }
 
 /* ---- Inline edit ---- */

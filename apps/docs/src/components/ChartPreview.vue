@@ -26,6 +26,7 @@ const map: Record<string, () => Promise<any>> = {
   latencyheatmap: () => import('~/components/demos/latencyheatmap/BasicVue.vue'),
   connectiongraph: () => import('~/components/demos/connectiongraph/BasicVue.vue'),
   charttoolbar: () => import('~/components/demos/charttoolbar/BasicVue.vue'),
+  chartcrosshair: () => import('~/components/demos/chartcrosshair/BasicVue.vue'),
 };
 
 const Comp = computed(() => {

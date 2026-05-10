@@ -21,7 +21,10 @@ import {
   flattenColumns,
   getCellValue,
   getRowKey,
+  moveTreeRow,
   nextSortDirection,
+  normalizeFixedOrder,
+  parseClipboardGrid,
   rowsToCsv,
   tableClass,
   type SortDirection,
@@ -32,6 +35,7 @@ import {
   type TableProps,
   type TableSort,
   type TableSummaryRow,
+  type TreeDropPos,
 } from './variants';
 
 const props = withDefaults(defineProps<TableProps<T>>(), {
@@ -57,9 +61,13 @@ const props = withDefaults(defineProps<TableProps<T>>(), {
   exportFileName: 'table',
   serverDebounce: 0,
   cellSelectable: false,
+  cellPastable: false,
   colVirtual: false,
   colWidth: 120,
   colOverscan: 4,
+  treeReorderable: false,
+  historyEnabled: false,
+  historyDepth: 50,
 });
 
 const emit = defineEmits<{
@@ -75,7 +83,10 @@ const emit = defineEmits<{
   (e: 'row-click', row: T, index: number): void;
   (e: 'cell-edit', payload: { row: T; column: TableColumn<T>; oldValue: unknown; newValue: unknown; index: number }): void;
   (e: 'row-reorder', payload: { from: number; to: number; rows: T[] }): void;
+  (e: 'tree-reorder', payload: { fromKey: string; toKey: string; pos: TreeDropPos; rows: T[] }): void;
+  (e: 'cell-paste', payload: { applied: number; skipped: number }): void;
   (e: 'export', csv: string): void;
+  (e: 'history-change', payload: { canUndo: boolean; canRedo: boolean }): void;
 }>();
 
 /* ============================================================ */
@@ -179,6 +190,11 @@ function patchColumnsState(patch: Partial<TableColumnsState>) {
     hidden: patch.hidden ?? activeColumnsState.value.hidden ?? [],
     widths: { ...(activeColumnsState.value.widths ?? {}), ...(patch.widths ?? {}) },
   };
+  // 自动把 fixed 列归位到首 / 尾
+  if (patch.order !== undefined) {
+    const all = flattenColumns(props.columns);
+    next.order = normalizeFixedOrder(patch.order, all);
+  }
   if (props.columnsState === undefined) internalColumnsState.value = next;
   emit('update:columnsState', next);
 }
@@ -797,6 +813,7 @@ const visibleFlatRows = computed(() => {
 
 const rowDragKey = ref<string | null>(null);
 const rowDragOverKey = ref<string | null>(null);
+const rowDropPos = ref<TreeDropPos>('below');
 
 function onRowDragStart(ev: DragEvent, key: string) {
   if (!props.rowReorderable) return;
@@ -804,19 +821,49 @@ function onRowDragStart(ev: DragEvent, key: string) {
   ev.dataTransfer?.setData('text/plain', key);
   if (ev.dataTransfer) ev.dataTransfer.effectAllowed = 'move';
 }
+
+function computeDropPos(ev: DragEvent, target: HTMLElement): TreeDropPos {
+  const rect = target.getBoundingClientRect();
+  const y = ev.clientY - rect.top;
+  const ratio = y / rect.height;
+  if (props.treeReorderable && ratio >= 0.25 && ratio <= 0.75) return 'inside';
+  return ratio < 0.5 ? 'above' : 'below';
+}
+
 function onRowDragOver(ev: DragEvent, key: string) {
   if (!rowDragKey.value || rowDragKey.value === key) return;
   ev.preventDefault();
   if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'move';
   if (rowDragOverKey.value !== key) rowDragOverKey.value = key;
+  const target = ev.currentTarget as HTMLElement;
+  rowDropPos.value = computeDropPos(ev, target);
 }
+
 function onRowDrop(ev: DragEvent, key: string) {
   ev.preventDefault();
   const from = rowDragKey.value;
+  const pos = rowDropPos.value;
   rowDragKey.value = null;
   rowDragOverKey.value = null;
   if (!from || from === key) return;
-  // 找到 from / to 在 props.rows 里的索引（仅限顶层）
+
+  if (props.treeReorderable) {
+    const [next, ok] = moveTreeRow(
+      props.rows,
+      from,
+      key,
+      pos,
+      (r, i) => getRowKey(r, i, props.rowKey),
+      props.childrenField ?? 'children',
+    );
+    if (ok) {
+      emit('update:rows', next);
+      emit('tree-reorder', { fromKey: from, toKey: key, pos, rows: next });
+    }
+    return;
+  }
+
+  // 顶层 only：保留旧行为
   const fromIdx = props.rows.findIndex((r, i) => getRowKey(r, i, props.rowKey) === from);
   const toIdx = props.rows.findIndex((r, i) => getRowKey(r, i, props.rowKey) === key);
   if (fromIdx === -1 || toIdx === -1) return;
@@ -1162,7 +1209,235 @@ const visibleColumns = computed(() => {
   return renderLeafColumns.value.slice(colWindow.value.start, colWindow.value.end);
 });
 
-defineExpose({ patchColumnsState, exportCsv: doExport, copySelection: copySelectionToClipboard });
+/* ============================================================ */
+/*                变高行：累计偏移 + 二分查找                    */
+/* ============================================================ */
+
+const rowOffsets = computed<number[]>(() => {
+  const out: number[] = [0];
+  const total = flatTreeRows.value.length;
+  if (props.getRowHeight) {
+    let acc = 0;
+    for (let i = 0; i < total; i++) {
+      acc += props.getRowHeight(i) || (props.rowHeight ?? 36);
+      out.push(acc);
+    }
+  } else {
+    const h = props.rowHeight ?? 36;
+    for (let i = 1; i <= total; i++) out.push(i * h);
+  }
+  return out;
+});
+
+const totalRowsHeight = computed(() => rowOffsets.value[rowOffsets.value.length - 1] ?? 0);
+
+function findRowAtOffset(offset: number): number {
+  const arr = rowOffsets.value;
+  let lo = 0;
+  let hi = arr.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (arr[mid + 1] <= offset) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+}
+
+// 用 rowOffsets 重算 virtualWindow（覆盖前面 rowHeight 简单乘法）
+const virtualWindowVar = computed(() => {
+  if (!props.virtual) {
+    return { start: 0, end: flatTreeRows.value.length, padTop: 0, padBottom: 0 };
+  }
+  const total = flatTreeRows.value.length;
+  const overscan = props.overscan ?? 6;
+  const start = Math.max(0, findRowAtOffset(scrollTop.value) - overscan);
+  const endTarget = scrollTop.value + (viewportHeight.value || 400);
+  let end = findRowAtOffset(endTarget) + 1;
+  end = Math.min(total, end + overscan);
+  return {
+    start,
+    end,
+    padTop: rowOffsets.value[start] ?? 0,
+    padBottom: Math.max(0, totalRowsHeight.value - (rowOffsets.value[end] ?? totalRowsHeight.value)),
+  };
+});
+
+// 替换 visibleFlatRows 改用 virtualWindowVar
+const visibleFlatRowsVar = computed(() => {
+  if (!props.virtual) return flatTreeRows.value;
+  return flatTreeRows.value.slice(virtualWindowVar.value.start, virtualWindowVar.value.end);
+});
+
+function rowHeightOf(idx: number): number {
+  if (props.getRowHeight) return props.getRowHeight(idx) || (props.rowHeight ?? 36);
+  return props.rowHeight ?? 36;
+}
+
+/* ============================================================ */
+/*               TSV 粘贴 → 反向写回单元格                       */
+/* ============================================================ */
+
+function applyPasteFromClipboard(text: string) {
+  if (!props.cellPastable || !cellSelection.value) return;
+  const grid = parseClipboardGrid(text);
+  if (!grid.length) return;
+
+  const s = cellSelection.value;
+  // 起点 = 选区左上角；扩展范围 = 粘贴板大小（不限制选区大小，让用户用单格起点也能贴出整片）
+  const r0 = Math.min(s.startRow, s.endRow);
+  const c0 = Math.min(s.startCol, s.endCol);
+
+  let applied = 0;
+  let skipped = 0;
+  for (let dr = 0; dr < grid.length; dr++) {
+    const fr = flatTreeRows.value[r0 + dr];
+    if (!fr) break;
+    const line = grid[dr];
+    for (let dc = 0; dc < line.length; dc++) {
+      const col = renderLeafColumns.value[c0 + dc];
+      if (!col) break;
+      if (!isCellEditable(fr.row, col, fr.index)) {
+        skipped++;
+        continue;
+      }
+      let value: unknown = line[dc];
+      if (col.editType === 'number') {
+        const n = Number(value);
+        value = Number.isFinite(n) ? n : null;
+      }
+      if (col.editValidate && col.editValidate(value, fr.row, fr.index) === false) {
+        skipped++;
+        continue;
+      }
+      const oldValue = getCellValue(fr.row, col);
+      if (oldValue !== value) {
+        emit('cell-edit', { row: fr.row, column: col, oldValue, newValue: value, index: fr.index });
+        applied++;
+      }
+    }
+  }
+  emit('cell-paste', { applied, skipped });
+}
+
+function onPaste(ev: ClipboardEvent) {
+  if (!props.cellPastable || !cellSelection.value) return;
+  const text = ev.clipboardData?.getData('text/plain');
+  if (!text) return;
+  ev.preventDefault();
+  applyPasteFromClipboard(text);
+}
+onMounted(() => {
+  if (typeof window !== 'undefined') window.addEventListener('paste', onPaste);
+});
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') window.removeEventListener('paste', onPaste);
+});
+
+/* ============================================================ */
+/*                       历史撤销栈                               */
+/* ============================================================ */
+
+interface HistorySnapshot {
+  sort: TableSort | TableSort[] | null;
+  filters: Record<string, unknown>;
+  search: string;
+  pagination: TablePagination | null;
+  columnsState: TableColumnsState;
+}
+
+const historyStack = ref<HistorySnapshot[]>([]);
+const historyFuture = ref<HistorySnapshot[]>([]);
+
+function takeSnapshot(): HistorySnapshot {
+  return {
+    sort: JSON.parse(JSON.stringify(activeSort.value)),
+    filters: JSON.parse(JSON.stringify(activeFilters.value)),
+    search: activeSearch.value,
+    pagination: activePagination.value ? { ...activePagination.value } : null,
+    columnsState: JSON.parse(JSON.stringify(activeColumnsState.value)),
+  };
+}
+
+function pushHistory() {
+  if (!props.historyEnabled) return;
+  const snap = takeSnapshot();
+  historyStack.value.push(snap);
+  if (historyStack.value.length > (props.historyDepth ?? 50)) historyStack.value.shift();
+  historyFuture.value = [];
+  emit('history-change', { canUndo: historyStack.value.length > 0, canRedo: false });
+}
+
+function applySnapshot(s: HistorySnapshot) {
+  if (props.sort === undefined) internalSort.value = s.sort;
+  emit('update:sort', s.sort);
+  if (props.filters === undefined) internalFilters.value = { ...s.filters };
+  emit('update:filters', { ...s.filters });
+  if (props.globalSearch === undefined) internalSearch.value = s.search;
+  emit('update:globalSearch', s.search);
+  if (props.pagination === undefined) internalPagination.value = s.pagination;
+  if (s.pagination) emit('update:pagination', s.pagination);
+  if (props.columnsState === undefined) internalColumnsState.value = { ...s.columnsState };
+  emit('update:columnsState', { ...s.columnsState });
+}
+
+function undo() {
+  if (!props.historyEnabled || !historyStack.value.length) return;
+  const cur = takeSnapshot();
+  const prev = historyStack.value.pop()!;
+  historyFuture.value.push(cur);
+  applySnapshot(prev);
+  emit('history-change', { canUndo: historyStack.value.length > 0, canRedo: historyFuture.value.length > 0 });
+}
+function redo() {
+  if (!props.historyEnabled || !historyFuture.value.length) return;
+  const cur = takeSnapshot();
+  const next = historyFuture.value.pop()!;
+  historyStack.value.push(cur);
+  applySnapshot(next);
+  emit('history-change', { canUndo: historyStack.value.length > 0, canRedo: historyFuture.value.length > 0 });
+}
+
+// 监听需要纳入历史的状态变化（避开 undo/redo 自身触发的）
+let isApplying = false;
+watch(
+  () => [activeSort.value, activeFilters.value, activeSearch.value, activePagination.value, activeColumnsState.value],
+  () => {
+    if (isApplying || !props.historyEnabled) return;
+    pushHistory();
+  },
+  { deep: true, flush: 'post' },
+);
+
+function onHistoryKeydown(ev: KeyboardEvent) {
+  if (!props.historyEnabled) return;
+  const meta = ev.ctrlKey || ev.metaKey;
+  if (!meta) return;
+  if ((ev.key === 'z' || ev.key === 'Z') && !ev.shiftKey) {
+    ev.preventDefault();
+    isApplying = true;
+    undo();
+    nextTick(() => (isApplying = false));
+  } else if ((ev.key === 'y' || ev.key === 'Y') || (ev.shiftKey && (ev.key === 'z' || ev.key === 'Z'))) {
+    ev.preventDefault();
+    isApplying = true;
+    redo();
+    nextTick(() => (isApplying = false));
+  }
+}
+onMounted(() => {
+  if (typeof window !== 'undefined') window.addEventListener('keydown', onHistoryKeydown);
+});
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') window.removeEventListener('keydown', onHistoryKeydown);
+});
+
+defineExpose({
+  patchColumnsState,
+  exportCsv: doExport,
+  copySelection: copySelectionToClipboard,
+  undo,
+  redo,
+});
 </script>
 
 <template>
@@ -1426,24 +1701,24 @@ defineExpose({ patchColumnsState, exportCsv: doExport, copySelection: copySelect
           </tr>
 
           <!-- 虚拟滚动顶部占位 -->
-          <tr v-if="virtual && virtualWindow.padTop > 0" class="cf-table__row cf-table__row--virtual-pad" aria-hidden="true">
-            <td :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)" :style="{ height: `${virtualWindow.padTop}px`, padding: 0, border: 0 }" />
+          <tr v-if="virtual && virtualWindowVar.padTop > 0" class="cf-table__row cf-table__row--virtual-pad" aria-hidden="true">
+            <td :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)" :style="{ height: `${virtualWindowVar.padTop}px`, padding: 0, border: 0 }" />
           </tr>
 
-          <template v-for="(fr) in visibleFlatRows" :key="fr.key">
+          <template v-for="(fr) in visibleFlatRowsVar" :key="fr.key">
             <tr
               class="cf-table__row"
               :class="[
                 selectedSet.has(fr.key) && 'is-selected',
                 selectable && 'is-clickable',
                 fr.level > 0 && 'is-tree-child',
-                rowDragOverKey === fr.key && 'is-row-drop-target',
+                rowDragOverKey === fr.key && `is-row-drop-target is-row-drop-${rowDropPos}`,
                 rowDragKey === fr.key && 'is-row-dragging',
               ]"
-              :style="virtual ? { height: `${rowHeight}px` } : undefined"
+              :style="virtual ? { height: `${rowHeightOf(fr.index)}px` } : undefined"
               @click="selectable ? toggleRow(fr.key) : onRowClick(fr.row, fr.index)"
-              @dragover="rowReorderable && fr.level === 0 && onRowDragOver($event, fr.key)"
-              @drop="rowReorderable && fr.level === 0 && onRowDrop($event, fr.key)"
+              @dragover="rowReorderable && onRowDragOver($event, fr.key)"
+              @drop="rowReorderable && onRowDrop($event, fr.key)"
             >
               <td v-if="rowReorderable" class="cf-table__cell cf-table__cell--row-drag">
                 <span
@@ -1571,8 +1846,8 @@ defineExpose({ patchColumnsState, exportCsv: doExport, copySelection: copySelect
             </tr>
           </template>
           <!-- 虚拟滚动底部占位 -->
-          <tr v-if="virtual && virtualWindow.padBottom > 0" class="cf-table__row cf-table__row--virtual-pad" aria-hidden="true">
-            <td :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)" :style="{ height: `${virtualWindow.padBottom}px`, padding: 0, border: 0 }" />
+          <tr v-if="virtual && virtualWindowVar.padBottom > 0" class="cf-table__row cf-table__row--virtual-pad" aria-hidden="true">
+            <td :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)" :style="{ height: `${virtualWindowVar.padBottom}px`, padding: 0, border: 0 }" />
           </tr>
         </tbody>
 

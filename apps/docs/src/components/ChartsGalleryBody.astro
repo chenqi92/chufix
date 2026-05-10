@@ -28,7 +28,7 @@ const categories: ChartCategory[] = [
     labelZh: '分类', labelEn: 'Category',
     descZh: '离散类别的数值比较', descEn: 'Compare values across discrete categories',
     items: [
-      ITEM('barchart', 'BarChart 柱状图', 'BarChart', '单 series 垂直柱状图', 'Single-series vertical bars', 'barchart'),
+      ITEM('barchart', 'BarChart 柱状图', 'BarChart', '支持纵向 / 横向单 series 柱状图', 'Single-series bars, vertical or horizontal', 'barchart'),
       ITEM('histogram', 'Histogram 直方图', 'Histogram', '分箱直方图', 'Binned histogram', 'histogram'),
       ITEM('stackedbar100', 'StackedBar100 占比柱', 'StackedBar100', '横向 100% 堆叠柱', '100% stacked horizontal bars', 'stackedbar100'),
       ITEM('bulletchart', 'BulletChart 子弹图', 'BulletChart', '单值进度 + 目标线 + 质量带', 'Single-value progress with target & quality bands', 'bulletchart'),
@@ -97,15 +97,15 @@ const heroLede = isEn
         <p class="charts-page__cat-desc">{isEn ? c.descEn : c.descZh}</p>
         <div class="cf-gallery">
           {c.items.map((it) => (
-            <a class="cf-gallery-card" href={prefixHref(`/components/${it.slug}/`, locale)}>
+            <article class="cf-gallery-card cf-gallery-card--linked">
               <div class="cf-gallery-card__preview">
                 <ChartPreview chart={it.key} client:only="vue" />
               </div>
-              <div class="cf-gallery-card__body">
+              <a class="cf-gallery-card__body" href={prefixHref(`/components/${it.slug}/`, locale)}>
                 <div class="cf-gallery-card__name">{isEn ? it.nameEn : it.nameZh}</div>
                 <div class="cf-gallery-card__desc">{isEn ? it.descEn : it.descZh}</div>
-              </div>
-            </a>
+              </a>
+            </article>
           ))}
         </div>
       </div>

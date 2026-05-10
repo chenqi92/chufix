@@ -34,6 +34,19 @@ import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
   <SeriesColorVue client:load />
 </DemoFrame>
 
+## Horizontal layout
+
+Use `orientation="horizontal"` for rankings, comparisons, or longer category labels.
+
+import HorizontalVue from '~/components/demos/barchart/HorizontalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBarChart :data="data" :labels="labels" orientation="horizontal" />`}
+  reactCode={`<CfBarChart data={data} labels={labels} orientation="horizontal" />`}
+>
+  <HorizontalVue client:load />
+</DemoFrame>
+
 ## API
 
 | Prop | Type | Default | Description |
@@ -41,4 +54,5 @@ import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
 | `data` | `number[]` | `—` | Bar heights |
 | `labels` | `string[]` | `—` | x-axis labels |
 | `colorIndex` | `0..7` | `0` |  |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Bar direction |
 | `width / height / showGrid / showLabels` | `` | `` |  |
