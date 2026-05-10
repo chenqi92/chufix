@@ -13,6 +13,7 @@ import { dashboardOverview } from './dashboards/dashboard-overview';
 import { analyticsBoard } from './dashboards/analytics-board';
 import { monitoringBoard } from './dashboards/monitoring-board';
 import { executiveSummary } from './dashboards/executive-summary';
+import { analyticsConsole } from './dashboards/analytics-console';
 
 import { loginBasic } from './auth/login-basic';
 import { loginOtp } from './auth/login-otp';
@@ -25,6 +26,7 @@ import { errorNetwork } from './errors/error-network';
 import { codeWorkbench } from './workbench/code-workbench';
 import { dbWorkbench } from './workbench/db-workbench';
 import { projectPlan } from './workbench/project-plan';
+import { bulkImport } from './workbench/bulk-import';
 
 import { settingsPage } from './settings/settings-page';
 
@@ -47,6 +49,7 @@ export const blocks: BlockMeta[] = [
   analyticsBoard,
   monitoringBoard,
   executiveSummary,
+  analyticsConsole,
 
   loginBasic,
   loginOtp,
@@ -59,6 +62,7 @@ export const blocks: BlockMeta[] = [
   codeWorkbench,
   dbWorkbench,
   projectPlan,
+  bulkImport,
 
   settingsPage,
 
