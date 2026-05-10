@@ -24,6 +24,7 @@ import { errorNetwork } from './errors/error-network';
 
 import { codeWorkbench } from './workbench/code-workbench';
 import { dbWorkbench } from './workbench/db-workbench';
+import { projectPlan } from './workbench/project-plan';
 
 import { settingsPage } from './settings/settings-page';
 
@@ -57,6 +58,7 @@ export const blocks: BlockMeta[] = [
 
   codeWorkbench,
   dbWorkbench,
+  projectPlan,
 
   settingsPage,
 
