@@ -715,6 +715,11 @@ export type {
   FormFieldProps,
   FormLayout,
   FormSize,
+  FieldRule,
+  FieldRules,
+  FieldErrors,
+  FormHandle,
+  ValidateTrigger,
 } from './form/variants';
 
 export { Combobox as CfCombobox } from './combobox/Combobox';

@@ -1,6 +1,6 @@
 ---
 title: Form 表单
-description: 表单封装层 —— 统一 label / 必填星号 / 提示文案 / 错误展示，把所有现有 input 接进来。
+description: 表单封装层 —— 三种布局、规则校验、异步 validator、命令式 validate / reset / submit、自动滚动到第一个错误。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
@@ -8,31 +8,15 @@ import BasicVue from '~/components/demos/form/BasicVue.vue';
 import LayoutVue from '~/components/demos/form/LayoutVue.vue';
 import ValidationVue from '~/components/demos/form/ValidationVue.vue';
 import ComplexVue from '~/components/demos/form/ComplexVue.vue';
+import RulesVue from '~/components/demos/form/RulesVue.vue';
+import AsyncRuleVue from '~/components/demos/form/AsyncRuleVue.vue';
+import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
 
 ## 基础用法
 
-`<CfForm>` 提供布局上下文，`<CfFormField>` 包裹每一个表单项，统一渲染 label、必填星号、提示 / 错误文案。校验逻辑由用户自行实现，组件只负责把 `error` 显示出来并标红控件边框。
+`<CfForm>` 提供布局上下文，`<CfFormField>` 包裹每一个表单项，统一渲染 label、必填星号、提示 / 错误文案。最简形式只是个布局封装。
 
-<DemoFrame
-  vueCode={`<CfForm layout="vertical">
-  <CfFormField label="姓名">
-    <CfInput v-model="name" placeholder="张三" />
-  </CfFormField>
-  <CfFormField label="邮箱" hint="用于登录">
-    <CfInput v-model="email" type="email" />
-  </CfFormField>
-  <CfButton>提交</CfButton>
-</CfForm>`}
-  reactCode={`<CfForm layout="vertical">
-  <CfFormField label="姓名">
-    <CfInput value={name} onChange={(e) => setName(e.target.value)} placeholder="张三" />
-  </CfFormField>
-  <CfFormField label="邮箱" hint="用于登录">
-    <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
-  </CfFormField>
-  <CfButton>提交</CfButton>
-</CfForm>`}
->
+<DemoFrame>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -44,96 +28,110 @@ import ComplexVue from '~/components/demos/form/ComplexVue.vue';
 - `horizontal` —— label 与控件同行，配合 `labelWidth` 对齐
 - `inline` —— 所有字段挤在一行，常用于搜索条 / 工具栏
 
-<DemoFrame
-  vueCode={`<CfForm layout="vertical">…</CfForm>
-<CfForm layout="horizontal" :label-width="80">…</CfForm>
-<CfForm layout="inline">…</CfForm>`}
-  reactCode={`<CfForm layout="vertical">…</CfForm>
-<CfForm layout="horizontal" labelWidth={80}>…</CfForm>
-<CfForm layout="inline">…</CfForm>`}
->
+<DemoFrame>
   <LayoutVue client:load />
 </DemoFrame>
 
-## 校验与错误
+## 手动 error 模式
 
-`required` 在 label 后加红色 ✱；`hint` 在控件下方挂提示文案；`error` 非空时控件边框变红，错误文案替换掉 hint 显示。校验逻辑（同步 / 异步 / 第三方库）完全由父组件控制 — 组件只把 `error` 显示出来。
+最直接的用法：父组件自己写校验逻辑，把错误文案塞进每个字段的 `error` 属性。这种模式不依赖 Form 的内置 validator，适合你已经在用 zod / valibot / yup 等库的项目。
 
-<DemoFrame
-  vueCode={`function submit() {
-  errors.value = {};
-  if (!name.value.trim()) errors.value.name = '姓名不能为空';
-  if (!email.value.includes('@')) errors.value.email = '邮箱格式不正确';
-}
-
-<CfForm layout="vertical">
-  <CfFormField label="姓名" required :error="errors.name">
-    <CfInput v-model="name" />
-  </CfFormField>
-  <CfFormField label="邮箱" required hint="用于登录" :error="errors.email">
-    <CfInput v-model="email" type="email" />
-  </CfFormField>
-  <CfButton @click="submit">提交</CfButton>
-</CfForm>`}
-  reactCode={`function submit() {
-  const next: Record<string, string> = {};
-  if (!name.trim()) next.name = '姓名不能为空';
-  if (!email.includes('@')) next.email = '邮箱格式不正确';
-  setErrors(next);
-}
-
-<CfForm layout="vertical">
-  <CfFormField label="姓名" required error={errors.name}>
-    <CfInput value={name} onChange={(e) => setName(e.target.value)} />
-  </CfFormField>
-  <CfFormField label="邮箱" required hint="用于登录" error={errors.email}>
-    <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
-  </CfFormField>
-  <CfButton onClick={submit}>提交</CfButton>
-</CfForm>`}
->
+<DemoFrame>
   <ValidationVue client:load />
+</DemoFrame>
+
+## 规则校验
+
+给 Form 传 `model + rules + name`，组件内置 validator 就接管了：
+
+- `required` / `min` / `max` / `pattern` / `type: 'email' | 'url' | 'string' | 'number' | 'array'` —— 内置规则
+- `validator: async (value, model) => string | void` —— 任何自定义判断
+- `validateOn="submit" | "change" | "blur"` —— 触发时机
+- 必填星号自动从 `required` 规则推断，不再需要手动写 `required`
+
+```ts
+const rules: Record<string, FieldRules> = {
+  email: [{ required: true, type: 'email' }],
+  password: [{ required: true, min: 8, message: '密码至少 8 位' }],
+  confirm: [
+    { required: true },
+    { validator: (v, m) => (v !== (m as any).password ? '两次输入不一致' : undefined) },
+  ],
+};
+```
+
+<DemoFrame>
+  <RulesVue client:load />
+</DemoFrame>
+
+## 异步 validator
+
+`validator` 可以返回 Promise — 典型场景是"用户名是否被占用"这种需要查后端的校验。
+
+<DemoFrame>
+  <AsyncRuleVue client:load />
+</DemoFrame>
+
+## 命令式方法
+
+通过 `ref` 拿到 Form 实例后，可以调用：
+
+| 方法 | 说明 |
+| --- | --- |
+| `submit()` | 跑一遍 validate 然后触发 `@submit` |
+| `validate()` | 只跑 validate，返回 `{ valid, errors }` |
+| `validateField(name)` | 只校验单个字段 |
+| `clearValidate(name?)` | 清空错误信息（不动数据） |
+| `resetFields()` | 把 model 还原到初始值，并清空错误 |
+
+提交时如果有错，组件会自动滚动到第一个出错字段并 focus，可通过 `:scroll-to-error="false"` 关闭。
+
+<DemoFrame>
+  <ImperativeVue client:load />
 </DemoFrame>
 
 ## 复杂表单
 
 混合 Input / Select / Textarea / Button 的真实表单模板。
 
-<DemoFrame
-  vueCode={`<CfForm layout="vertical">
-  <CfFormField label="姓名" required><CfInput v-model="name" /></CfFormField>
-  <CfFormField label="邮箱" required hint="用于登录"><CfInput v-model="email" type="email" /></CfFormField>
-  <CfFormField label="角色"><CfSelect v-model="role" :options="roles" /></CfFormField>
-  <CfFormField label="简介"><CfTextarea v-model="bio" :rows="3" /></CfFormField>
-  <CfButton>提交</CfButton>
-</CfForm>`}
-  reactCode={`<CfForm layout="vertical">
-  <CfFormField label="姓名" required><CfInput ... /></CfFormField>
-  <CfFormField label="邮箱" required hint="用于登录"><CfInput ... type="email" /></CfFormField>
-  <CfFormField label="角色"><CfSelect value={role} onChange={setRole} options={roles} /></CfFormField>
-  <CfFormField label="简介"><CfTextarea value={bio} rows={3} ... /></CfFormField>
-  <CfButton>提交</CfButton>
-</CfForm>`}
->
+<DemoFrame>
   <ComplexVue client:load />
 </DemoFrame>
 
 ## API · Form Props
 
 | 属性 | 类型 | 默认值 | 说明 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `layout` | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` | 整体布局 |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 默认尺寸（暂为视觉占位，未与控件 size 联动） |
-| `labelWidth` | `number \| string` | `—` | 仅 horizontal 布局生效，固定 label 宽度 |
-| `disabled` | `boolean` | `false` | 全局禁用（暂未与控件 disabled 联动，需要手动透传） |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 默认尺寸 |
+| `labelWidth` | `number \| string` | — | 仅 horizontal 布局生效，固定 label 宽度 |
+| `disabled` | `boolean` | `false` | 全局禁用 |
+| `model` | `Record<string, unknown>` | — | 受控的字段值映射，规则校验需要 |
+| `rules` | `Record<string, FieldRule[]>` | — | 字段名 → 规则数组 |
+| `validateOn` | `'submit' \| 'change' \| 'blur'` | `'submit'` | 何时跑规则校验 |
+| `scrollToError` | `boolean` | `true` | 提交失败时滚动 / focus 到第一个错误 |
+
+事件：`@submit({ valid, values, errors })` / `@validate({ valid, errors })` / `@reset`。
 
 ## API · FormField Props
 
 | 属性 | 类型 | 说明 |
-|---|---|---|
+| --- | --- | --- |
+| `name` | `string` | 字段名，启用规则校验后必填 |
 | `label` | `string \| ReactNode` | 标签文案 |
-| `required` | `boolean` | 显示必填星号 |
+| `required` | `boolean` | 强制显示必填星号；不传时由规则推断 |
 | `hint` | `string \| ReactNode` | 控件下方提示文案 |
-| `error` | `string \| ReactNode` | 错误文案；非空时控件边框变红 |
+| `error` | `string \| ReactNode` | 显式错误文案；非空时优先于规则错误 |
 | `for` (Vue) / `htmlFor` (React) | `string` | 自定义 input id；省略则自动生成 |
 | `layout` | `FormLayout` | 覆盖父级 Form 布局（单字段调整） |
+
+## FieldRule 字段
+
+| 字段 | 含义 |
+| --- | --- |
+| `required` | 不允许 undefined / null / '' / 空数组 |
+| `min` / `max` | 字符串/数组的长度范围；number 类型时直接比较数值 |
+| `pattern` | 正则匹配（仅对字符串生效） |
+| `type` | 内置类型校验：`'string' \| 'number' \| 'email' \| 'url' \| 'array'` |
+| `validator(value, model)` | 自定义；返回错误字符串或 void。可异步 |
+| `message` | 覆盖默认错误文案 |

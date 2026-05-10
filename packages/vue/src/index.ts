@@ -674,6 +674,10 @@ export type {
   FormFieldProps,
   FormLayout,
   FormSize,
+  FieldRule,
+  FieldRules,
+  FieldErrors,
+  ValidateTrigger,
 } from './form/variants';
 
 export { default as CfCombobox } from './combobox/Combobox.vue';

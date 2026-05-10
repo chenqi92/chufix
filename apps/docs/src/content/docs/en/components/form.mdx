@@ -1,6 +1,6 @@
 ---
 title: Form
-description: Form wrapper — unifies labels, required asterisks, hints, and error display, and integrates every existing input.
+description: Form wrapper — three layouts, rule-based validation, async validators, imperative validate / reset / submit, auto-scroll to first error.
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
@@ -8,132 +8,130 @@ import BasicVue from '~/components/demos/form/BasicVue.vue';
 import LayoutVue from '~/components/demos/form/LayoutVue.vue';
 import ValidationVue from '~/components/demos/form/ValidationVue.vue';
 import ComplexVue from '~/components/demos/form/ComplexVue.vue';
+import RulesVue from '~/components/demos/form/RulesVue.vue';
+import AsyncRuleVue from '~/components/demos/form/AsyncRuleVue.vue';
+import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
 
 ## Basic usage
 
-`<CfForm>` provides the layout context and `<CfFormField>` wraps each form item, rendering its label, required asterisk, and hint / error text uniformly. Validation is the consumer's responsibility — the component simply displays `error` and turns the control's border red.
+`<CfForm>` provides layout context. `<CfFormField>` wraps each field and renders the label, required asterisk, hint, and error message uniformly. The minimal form is just a layout wrapper.
 
-<DemoFrame
-  vueCode={`<CfForm layout="vertical">
-  <CfFormField label="Name">
-    <CfInput v-model="name" placeholder="Jane Doe" />
-  </CfFormField>
-  <CfFormField label="Email" hint="Used for sign-in">
-    <CfInput v-model="email" type="email" />
-  </CfFormField>
-  <CfButton>Submit</CfButton>
-</CfForm>`}
-  reactCode={`<CfForm layout="vertical">
-  <CfFormField label="Name">
-    <CfInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Doe" />
-  </CfFormField>
-  <CfFormField label="Email" hint="Used for sign-in">
-    <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
-  </CfFormField>
-  <CfButton>Submit</CfButton>
-</CfForm>`}
->
+<DemoFrame>
   <BasicVue client:load />
 </DemoFrame>
 
 ## Three layouts
 
-`layout` decides how the label and control are arranged:
+`layout` controls how the label and control are arranged:
 
-- `vertical` (default) — label above the control, the most common form layout
+- `vertical` (default) — label above the control, the most common form style
 - `horizontal` — label and control on the same row, paired with `labelWidth` for alignment
-- `inline` — fields packed onto a single row, useful for search bars and toolbars
+- `inline` — all fields packed on one line, useful for search bars / toolbars
 
-<DemoFrame
-  vueCode={`<CfForm layout="vertical">…</CfForm>
-<CfForm layout="horizontal" :label-width="80">…</CfForm>
-<CfForm layout="inline">…</CfForm>`}
-  reactCode={`<CfForm layout="vertical">…</CfForm>
-<CfForm layout="horizontal" labelWidth={80}>…</CfForm>
-<CfForm layout="inline">…</CfForm>`}
->
+<DemoFrame>
   <LayoutVue client:load />
 </DemoFrame>
 
-## Validation and errors
+## Manual error mode
 
-`required` adds a red asterisk after the label. `hint` shows a hint below the control. When `error` is non-empty, the control border turns red and the error text replaces the hint. Validation logic (sync / async / third-party libraries) is fully owned by the parent — the component only displays `error`.
+The most direct usage: the parent component writes its own validation logic and pushes error messages into each field's `error` prop. This mode bypasses Form's built-in validator and works well if you already use libraries like zod / valibot / yup.
 
-<DemoFrame
-  vueCode={`function submit() {
-  errors.value = {};
-  if (!name.value.trim()) errors.value.name = 'Name is required';
-  if (!email.value.includes('@')) errors.value.email = 'Invalid email';
-}
-
-<CfForm layout="vertical">
-  <CfFormField label="Name" required :error="errors.name">
-    <CfInput v-model="name" />
-  </CfFormField>
-  <CfFormField label="Email" required hint="Used for sign-in" :error="errors.email">
-    <CfInput v-model="email" type="email" />
-  </CfFormField>
-  <CfButton @click="submit">Submit</CfButton>
-</CfForm>`}
-  reactCode={`function submit() {
-  const next: Record<string, string> = {};
-  if (!name.trim()) next.name = 'Name is required';
-  if (!email.includes('@')) next.email = 'Invalid email';
-  setErrors(next);
-}
-
-<CfForm layout="vertical">
-  <CfFormField label="Name" required error={errors.name}>
-    <CfInput value={name} onChange={(e) => setName(e.target.value)} />
-  </CfFormField>
-  <CfFormField label="Email" required hint="Used for sign-in" error={errors.email}>
-    <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
-  </CfFormField>
-  <CfButton onClick={submit}>Submit</CfButton>
-</CfForm>`}
->
+<DemoFrame>
   <ValidationVue client:load />
+</DemoFrame>
+
+## Rule-based validation
+
+Pass `model + rules + name` and the built-in validator takes over:
+
+- `required` / `min` / `max` / `pattern` / `type: 'email' | 'url' | 'string' | 'number' | 'array'` — built-in rules
+- `validator: async (value, model) => string | void` — any custom check
+- `validateOn="submit" | "change" | "blur"` — when validation runs
+- The required asterisk is auto-derived from the `required` rule; no need to also pass `required`
+
+```ts
+const rules: Record<string, FieldRules> = {
+  email: [{ required: true, type: 'email' }],
+  password: [{ required: true, min: 8, message: 'At least 8 characters' }],
+  confirm: [
+    { required: true },
+    { validator: (v, m) => (v !== (m as any).password ? "Doesn't match" : undefined) },
+  ],
+};
+```
+
+<DemoFrame>
+  <RulesVue client:load />
+</DemoFrame>
+
+## Async validator
+
+`validator` can return a Promise — typical use case: "is this username taken?" type backend checks.
+
+<DemoFrame>
+  <AsyncRuleVue client:load />
+</DemoFrame>
+
+## Imperative methods
+
+Grab the Form instance via `ref` to call:
+
+| Method | Description |
+| --- | --- |
+| `submit()` | Run validate, then fire `@submit` |
+| `validate()` | Run validate only, returns `{ valid, errors }` |
+| `validateField(name)` | Validate a single field |
+| `clearValidate(name?)` | Clear error messages (does not touch data) |
+| `resetFields()` | Restore model to initial values and clear errors |
+
+On submit failure the component scrolls to and focuses the first invalid field. Disable via `:scroll-to-error="false"`.
+
+<DemoFrame>
+  <ImperativeVue client:load />
 </DemoFrame>
 
 ## Complex form
 
-A real-world form combining Input / Select / Textarea / Button.
+Real-world template combining Input / Select / Textarea / Button.
 
-<DemoFrame
-  vueCode={`<CfForm layout="vertical">
-  <CfFormField label="Name" required><CfInput v-model="name" /></CfFormField>
-  <CfFormField label="Email" required hint="Used for sign-in"><CfInput v-model="email" type="email" /></CfFormField>
-  <CfFormField label="Role"><CfSelect v-model="role" :options="roles" /></CfFormField>
-  <CfFormField label="Bio"><CfTextarea v-model="bio" :rows="3" /></CfFormField>
-  <CfButton>Submit</CfButton>
-</CfForm>`}
-  reactCode={`<CfForm layout="vertical">
-  <CfFormField label="Name" required><CfInput ... /></CfFormField>
-  <CfFormField label="Email" required hint="Used for sign-in"><CfInput ... type="email" /></CfFormField>
-  <CfFormField label="Role"><CfSelect value={role} onChange={setRole} options={roles} /></CfFormField>
-  <CfFormField label="Bio"><CfTextarea value={bio} rows={3} ... /></CfFormField>
-  <CfButton>Submit</CfButton>
-</CfForm>`}
->
+<DemoFrame>
   <ComplexVue client:load />
 </DemoFrame>
 
-## API · Form props
+## API · Form Props
 
 | Prop | Type | Default | Description |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `layout` | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` | Overall layout |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Default size (visual placeholder for now; not yet wired to control sizes) |
-| `labelWidth` | `number \| string` | `—` | Horizontal layout only; fixed label width |
-| `disabled` | `boolean` | `false` | Disable globally (not yet wired to controls; pass through manually) |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Default size |
+| `labelWidth` | `number \| string` | — | Only effective in horizontal layout |
+| `disabled` | `boolean` | `false` | Global disabled flag |
+| `model` | `Record<string, unknown>` | — | Reactive value map; required for rule validation |
+| `rules` | `Record<string, FieldRule[]>` | — | Field name → rule array |
+| `validateOn` | `'submit' \| 'change' \| 'blur'` | `'submit'` | When to run rule validation |
+| `scrollToError` | `boolean` | `true` | Scroll / focus first error on failed submit |
 
-## API · FormField props
+Events: `@submit({ valid, values, errors })` / `@validate({ valid, errors })` / `@reset`.
+
+## API · FormField Props
 
 | Prop | Type | Description |
-|---|---|---|
+| --- | --- | --- |
+| `name` | `string` | Field name; required for rule-based validation |
 | `label` | `string \| ReactNode` | Label text |
-| `required` | `boolean` | Show required asterisk |
-| `hint` | `string \| ReactNode` | Hint text below the control |
-| `error` | `string \| ReactNode` | Error text; turns the control border red when non-empty |
+| `required` | `boolean` | Force-show required asterisk; otherwise inferred from rules |
+| `hint` | `string \| ReactNode` | Helper text below the control |
+| `error` | `string \| ReactNode` | Explicit error; takes precedence over rule errors |
 | `for` (Vue) / `htmlFor` (React) | `string` | Custom input id; auto-generated if omitted |
-| `layout` | `FormLayout` | Override the parent Form layout for this field |
+| `layout` | `FormLayout` | Override parent Form layout for this field |
+
+## FieldRule fields
+
+| Field | Meaning |
+| --- | --- |
+| `required` | Disallow undefined / null / '' / empty array |
+| `min` / `max` | Length bounds for strings/arrays; numeric bounds for numbers |
+| `pattern` | Regex match (string only) |
+| `type` | Built-in type check: `'string' \| 'number' \| 'email' \| 'url' \| 'array'` |
+| `validator(value, model)` | Custom; return error string or void. May be async |
+| `message` | Override default error message |
