@@ -1,9 +1,10 @@
 ---
 import { Code } from 'astro:components';
+import { getLocaleFromUrl } from '~/i18n/utils';
+import { t } from '~/i18n/strings';
 
 /**
  * Multi-file code showcase for Blocks pages — preview + file-tab code view.
- * Mirrors shadcn/ui blocks layout: Preview/Code toggle, then file tabs inside Code mode.
  */
 export interface BlockFile {
   name: string;
@@ -11,15 +12,13 @@ export interface BlockFile {
   lang: 'vue' | 'tsx' | 'ts' | 'js' | 'json' | 'css' | 'bash' | 'mdx';
 }
 interface Props {
-  /** Block id, used for installation hint. */
   id: string;
   files: BlockFile[];
-  /** Optional CLI install hint (e.g. `npx chufix add dashboard-overview`). */
   cli?: string;
-  /** Optional preview frame height. */
   previewHeight?: number | string;
 }
 const { id, files, cli, previewHeight } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
 const heightStyle =
   previewHeight != null
     ? typeof previewHeight === 'number'
@@ -40,14 +39,14 @@ const fileEntries = files.map((f) => {
 
 <section class="cf-block" data-block-showcase data-block-id={id}>
   <header class="cf-block__bar">
-    <div class="cf-block__modes" role="tablist" aria-label="预览 / 代码">
-      <button class="cf-block__mode" data-mode="preview" aria-selected="true">预览</button>
-      <button class="cf-block__mode" data-mode="code" aria-selected="false">代码</button>
+    <div class="cf-block__modes" role="tablist" aria-label={t(locale, 'block.aria.modes')}>
+      <button class="cf-block__mode" data-mode="preview" aria-selected="true">{t(locale, 'block.modes.preview')}</button>
+      <button class="cf-block__mode" data-mode="code" aria-selected="false">{t(locale, 'block.modes.code')}</button>
     </div>
     {cli && (
       <div class="cf-block__cli">
         <code>{cli}</code>
-        <button class="cf-block__copy" type="button" data-copy={cli} title="复制 CLI 命令">复制</button>
+        <button class="cf-block__copy" type="button" data-copy={cli} title={t(locale, 'block.copy.cli')} data-copy-label={t(locale, 'block.copy.copy')} data-copied-label={t(locale, 'block.copy.copied')}>{t(locale, 'block.copy.copy')}</button>
       </div>
     )}
   </header>
@@ -60,13 +59,13 @@ const fileEntries = files.map((f) => {
     </div>
     <div class="cf-block__code" data-pane="code" data-active="false">
       <div class="cf-block__code-shell">
-        <aside class="cf-block__files" aria-label="项目文件">
+        <aside class="cf-block__files" aria-label={t(locale, 'block.aria.files')}>
           <div class="cf-block__tree-head">project</div>
           <div class="cf-block__folder" aria-hidden="true">
             <span class="cf-block__folder-icon">src</span>
             <span>blocks/{id}</span>
           </div>
-          <div class="cf-block__file-list" role="tablist" aria-label="代码文件">
+          <div class="cf-block__file-list" role="tablist" aria-label={t(locale, 'block.aria.codeFiles')}>
             {fileEntries.map((f, i) => (
               <button
                 type="button"
@@ -86,7 +85,7 @@ const fileEntries = files.map((f) => {
             <div class="cf-block__filebody" data-filebody={f.name} data-active={i === 0 ? 'true' : 'false'}>
               <div class="cf-block__code-head">
                 <span>{f.name}</span>
-                <button class="cf-block__copy cf-block__copy--code" data-copy={f.content}>复制</button>
+                <button class="cf-block__copy cf-block__copy--code" data-copy={f.content} data-copy-label={t(locale, 'block.copy.copy')} data-copied-label={t(locale, 'block.copy.copied')}>{t(locale, 'block.copy.copy')}</button>
               </div>
               <div class="cf-block__code-scroll">
                 <Code code={f.content} lang={f.lang as any} theme="github-dark" />
@@ -127,8 +126,9 @@ const fileEntries = files.map((f) => {
         const txt = b.dataset.copy ?? '';
         try {
           await navigator.clipboard.writeText(txt);
-          const orig = b.textContent;
-          b.textContent = '已复制';
+          const orig = b.dataset.copyLabel ?? b.textContent ?? '';
+          const copied = b.dataset.copiedLabel ?? orig;
+          b.textContent = copied;
           setTimeout(() => (b.textContent = orig), 1500);
         } catch {}
       }),

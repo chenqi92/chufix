@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -25,8 +26,16 @@ export function Select(props: SelectProps) {
     disabled = false,
     clearable = false,
     error = false,
+    id,
+    name,
     className,
     onChange,
+    onSelect,
+    onClear,
+    onOpenChange,
+    onActiveChange,
+    onFocus,
+    onBlur,
   } = props;
 
   const isControlled = value !== undefined;
@@ -38,6 +47,9 @@ export function Select(props: SelectProps) {
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
+  const generatedId = useId();
+  const triggerId = id ?? `cf-select-${generatedId}`;
+  const menuId = `${triggerId}-menu`;
 
   const selected = useMemo(
     () => options.find((o) => o.value === current) ?? null,
@@ -53,17 +65,30 @@ export function Select(props: SelectProps) {
     });
   }, []);
 
+  const setOpenState = useCallback((next: boolean) => {
+    setOpen((prev) => {
+      if (prev === next) return prev;
+      onOpenChange?.(next);
+      return next;
+    });
+  }, [onOpenChange]);
+
+  const setActive = useCallback((index: number) => {
+    setActiveIndex(index);
+    onActiveChange?.(index >= 0 ? options[index] : null, index);
+    if (index >= 0) focusActive(index);
+  }, [focusActive, onActiveChange, options]);
+
   const openMenu = useCallback(() => {
     if (disabled) return;
-    setOpen(true);
+    setOpenState(true);
     const idx = options.findIndex((o) => o.value === current);
     const fallback = options.findIndex((o) => !o.disabled);
     const next = idx >= 0 ? idx : fallback;
-    setActiveIndex(next);
-    if (next >= 0) focusActive(next);
-  }, [disabled, options, current, focusActive]);
+    setActive(next);
+  }, [disabled, options, current, setActive, setOpenState]);
 
-  const closeMenu = useCallback(() => setOpen(false), []);
+  const closeMenu = useCallback(() => setOpenState(false), [setOpenState]);
 
   useEffect(() => {
     if (!open) return;
@@ -75,31 +100,32 @@ export function Select(props: SelectProps) {
     return () => document.removeEventListener('mousedown', onDoc);
   }, [open, closeMenu]);
 
-  function commit(v: SelectValue) {
+  function commit(v: SelectValue, option: SelectOption | null) {
     if (!isControlled) setInternal(v);
-    onChange?.(v);
+    onChange?.(v, { option });
   }
 
   function pick(opt: SelectOption) {
     if (opt.disabled) return;
-    commit(opt.value);
+    commit(opt.value, opt);
+    onSelect?.(opt);
     closeMenu();
   }
 
   function clear(e: MouseEvent) {
     e.stopPropagation();
-    commit(null);
+    commit(null, null);
+    onClear?.();
   }
 
   function moveActive(delta: number) {
     if (!options.length) return;
     let i = activeIndex;
     for (let n = 0; n < options.length; n++) {
-      i = (i + delta + options.length) % options.length;
-      if (!options[i].disabled) break;
-    }
-    setActiveIndex(i);
-    focusActive(i);
+    i = (i + delta + options.length) % options.length;
+    if (!options[i].disabled) break;
+  }
+    setActive(i);
   }
 
   function onKeydown(e: KeyboardEvent<HTMLButtonElement>) {
@@ -134,13 +160,20 @@ export function Select(props: SelectProps) {
       className={selectClass({ variant, size, open, disabled, error, className })}
     >
       <button
+        id={triggerId}
         type="button"
         className="cf-select__trigger"
+        role="combobox"
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-label={selected ? selected.label : placeholder}
+        aria-controls={open ? menuId : undefined}
+        aria-activedescendant={open && activeIndex >= 0 ? `${menuId}-option-${activeIndex}` : undefined}
         onClick={() => (open ? closeMenu() : openMenu())}
         onKeyDown={onKeydown}
+        onFocus={onFocus}
+        onBlur={onBlur}
       >
         <span className="cf-select__value">
           {selected ? (
@@ -172,7 +205,7 @@ export function Select(props: SelectProps) {
         </svg>
       </button>
       {open ? (
-        <ul ref={listRef} className="cf-select__menu" role="listbox">
+        <ul id={menuId} ref={listRef} className="cf-select__menu" role="listbox">
           {options.map((opt, i) => {
             const cls = [
               'cf-select__option',
@@ -185,10 +218,11 @@ export function Select(props: SelectProps) {
             return (
               <li
                 key={String(opt.value)}
+                id={`${menuId}-option-${i}`}
                 className={cls}
                 role="option"
                 aria-selected={opt.value === current}
-                onMouseEnter={() => !opt.disabled && setActiveIndex(i)}
+                onMouseEnter={() => !opt.disabled && setActive(i)}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   pick(opt);
@@ -219,6 +253,7 @@ export function Select(props: SelectProps) {
           ) : null}
         </ul>
       ) : null}
+      {name ? <input type="hidden" name={name} value={current ?? ''} /> : null}
     </div>
   );
 }

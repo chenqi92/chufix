@@ -1,5 +1,13 @@
-import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
 import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FocusEvent,
+  type KeyboardEvent,
+} from 'react';
+import {
+  type NumberInputChangeReason,
   type NumberInputProps,
   numberInputClass,
   clampNumber,
@@ -13,12 +21,19 @@ export function NumberInput(props: NumberInputProps) {
     placeholder,
     size = 'md',
     disabled = false,
+    id,
+    name,
     min,
     max,
     step = 1,
     precision,
     hideSteppers = false,
     onChange,
+    onInput,
+    onStep,
+    onInvalid,
+    onFocus,
+    onBlur,
   } = props;
 
   const controlled = value !== undefined;
@@ -39,38 +54,50 @@ export function NumberInput(props: NumberInputProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current, prec]);
 
-  function emit(v: number | null) {
+  function emit(v: number | null, raw: string, reason: NumberInputChangeReason) {
     if (!controlled) setInner(v);
-    onChange?.(v);
+    onChange?.(v, { raw, reason });
   }
 
-  function commit(raw: string) {
+  function commit(raw: string, reason: NumberInputChangeReason = 'commit') {
     const trimmed = raw.trim();
     if (trimmed === '') {
-      emit(null);
+      emit(null, raw, reason);
       setText('');
       return;
     }
     const n = Number(trimmed);
     if (Number.isNaN(n)) {
+      onInvalid?.({ raw, reason: 'nan' });
       setText(fmt(current));
       return;
     }
     const clamped = clampNumber(n, min, max);
-    emit(clamped);
+    emit(clamped, raw, reason);
     setText(fmt(clamped));
+  }
+
+  function setCommittedValue(next: number, raw: string, reason: NumberInputChangeReason) {
+    const clamped = clampNumber(next, min, max);
+    emit(clamped, raw, reason);
+    setText(fmt(clamped));
+    return clamped;
   }
 
   function bumpStep(direction: 1 | -1) {
     if (disabled) return;
     const base = current == null ? 0 : current;
-    const next = clampNumber(parseFloat((base + direction * step).toFixed(10)), min, max);
-    emit(next);
-    setText(fmt(next));
+    const next = setCommittedValue(
+      parseFloat((base + direction * step).toFixed(10)),
+      String(base),
+      'step',
+    );
+    onStep?.(next, { direction });
   }
 
-  function onInput(e: ChangeEvent<HTMLInputElement>) {
+  function handleInput(e: ChangeEvent<HTMLInputElement>) {
     setText(e.target.value);
+    onInput?.(e.target.value);
   }
   function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'ArrowUp') {
@@ -80,25 +107,51 @@ export function NumberInput(props: NumberInputProps) {
       e.preventDefault();
       bumpStep(-1);
     } else if (e.key === 'Enter') {
-      commit(text);
+      commit(text, 'enter');
+    } else if (e.key === 'Home' && typeof min === 'number') {
+      e.preventDefault();
+      setCommittedValue(min, String(min), 'home');
+    } else if (e.key === 'End' && typeof max === 'number') {
+      e.preventDefault();
+      setCommittedValue(max, String(max), 'end');
+    } else if (e.key === 'PageUp') {
+      e.preventDefault();
+      const base = current == null ? 0 : current;
+      setCommittedValue(base + step * 10, String(base), 'step');
+    } else if (e.key === 'PageDown') {
+      e.preventDefault();
+      const base = current == null ? 0 : current;
+      setCommittedValue(base - step * 10, String(base), 'step');
     }
   }
 
-  const canInc = !disabled && (typeof max !== 'number' || (current ?? 0) + step <= max + 1e-9);
-  const canDec = !disabled && (typeof min !== 'number' || (current ?? 0) - step >= min - 1e-9);
+  function handleBlur(e: FocusEvent<HTMLInputElement>) {
+    commit(text, 'blur');
+    onBlur?.(e);
+  }
+
+  const canInc = !disabled && (typeof max !== 'number' || (current ?? 0) < max - 1e-9);
+  const canDec = !disabled && (typeof min !== 'number' || (current ?? 0) > min + 1e-9);
 
   return (
     <div className={numberInputClass({ size })} data-disabled={disabled || undefined}>
       <input
         ref={inputRef}
+        id={id}
+        name={name}
         className="cf-number__native"
         type="text"
+        role="spinbutton"
         inputMode="decimal"
         value={text}
         placeholder={placeholder}
         disabled={disabled || undefined}
-        onChange={onInput}
-        onBlur={() => commit(text)}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={current ?? undefined}
+        onChange={handleInput}
+        onBlur={handleBlur}
+        onFocus={onFocus}
         onKeyDown={onKeyDown}
       />
       {!hideSteppers && (

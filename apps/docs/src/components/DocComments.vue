@@ -23,12 +23,54 @@ interface CommentItem {
   replies?: CommentItem[];
 }
 
+const isEn = typeof window !== 'undefined' && window.location.pathname.startsWith('/en/');
+const T = isEn
+  ? {
+      eyebrow: 'Feedback & discussion',
+      title: 'Discussion',
+      unavailableTitle: 'Comments backend not configured',
+      unavailableBody: 'This page has the comments module wired up. Once Cloudflare Pages Functions and the D1 binding are configured, submissions will land in the moderation queue.',
+      placeholderNick: 'Nickname',
+      placeholderBody: 'Share suggestions, questions, or usage feedback',
+      emojiLabel: 'Quick emoji reply',
+      emojiSend: 'One-click send',
+      emojiAria: 'Send',
+      submit: 'Submit',
+      loading: 'Loading comments…',
+      emptyTitle: 'No public comments yet',
+      emptyBody: 'The first high-quality piece of feedback often saves the next reader a wrong turn.',
+      role: 'Maintainer',
+      noticeSubmitted: 'Submitted — your comment will appear after moderation.',
+      noticeFailed: "Couldn't submit just now, please try again shortly.",
+      noticeNeedNick: 'Fill in a nickname first, then tap an emoji to send.',
+    }
+  : {
+      eyebrow: '反馈与讨论',
+      title: '讨论',
+      unavailableTitle: '评论接口尚未启用',
+      unavailableBody: '当前页面已经预留评论模块。配置 Cloudflare Pages Functions 和 D1 绑定后，用户评论会进入待审核队列。',
+      placeholderNick: '昵称',
+      placeholderBody: '留下建议、问题或使用反馈',
+      emojiLabel: '快捷 emoji 评论',
+      emojiSend: '一键发送',
+      emojiAria: '发送',
+      submit: '提交评论',
+      loading: '正在加载评论...',
+      emptyTitle: '还没有公开评论',
+      emptyBody: '第一条高质量反馈，往往会帮后面的使用者少走一点弯路。',
+      role: '维护者',
+      noticeSubmitted: '评论已提交，审核通过后会显示在这里。',
+      noticeFailed: '评论暂时没有提交成功，请稍后再试。',
+      noticeNeedNick: '先填写昵称，再点 emoji 就能一键发送。',
+    };
+
 const props = withDefaults(defineProps<{
   pageId: string;
   title?: string;
 }>(), {
-  title: '讨论',
+  title: '',
 });
+const resolvedTitle = computed(() => props.title || T.title);
 
 const api = '/api/comments';
 const apiEnabled = !import.meta.env.DEV || import.meta.env.PUBLIC_ENABLE_COMMENTS_API === 'true';
@@ -48,7 +90,7 @@ const count = computed(() =>
 function formatTime(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat(isEn ? 'en-US' : 'zh-CN', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -125,10 +167,10 @@ async function submit(overrideContent?: string) {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     if (!overrideContent) content.value = '';
-    notice.value = '评论已提交，审核通过后会显示在这里。';
+    notice.value = T.noticeSubmitted;
     await loadComments();
   } catch {
-    notice.value = '评论暂时没有提交成功，请稍后再试。';
+    notice.value = T.noticeFailed;
   } finally {
     posting.value = false;
   }
@@ -138,7 +180,7 @@ function quickSendEmoji(emoji: string) {
   if (posting.value || unavailable.value) return;
   if (!author.value.trim()) {
     content.value = emoji;
-    notice.value = '先填写昵称，再点 emoji 就能一键发送。';
+    notice.value = T.noticeNeedNick;
     return;
   }
   submit(emoji);
@@ -158,34 +200,34 @@ onMounted(() => {
   <section class="doc-comments" aria-labelledby="doc-comments-title">
     <header class="doc-comments__header">
       <div>
-        <p class="doc-comments__eyebrow">反馈与讨论</p>
-        <h2 id="doc-comments-title">{{ title }}</h2>
+        <p class="doc-comments__eyebrow">{{ T.eyebrow }}</p>
+        <h2 id="doc-comments-title">{{ resolvedTitle }}</h2>
       </div>
       <CfBadge tone="info" :content="count" show-zero />
     </header>
 
-    <CfAlert v-if="unavailable" tone="warning" variant="soft" title="评论接口尚未启用">
-      当前页面已经预留评论模块。配置 Cloudflare Pages Functions 和 D1 绑定后，用户评论会进入待审核队列。
+    <CfAlert v-if="unavailable" tone="warning" variant="soft" :title="T.unavailableTitle">
+      {{ T.unavailableBody }}
     </CfAlert>
 
     <form class="doc-comments__form" @submit.prevent="submit()">
       <CfInput
         v-model="author"
-        placeholder="昵称"
+        :placeholder="T.placeholderNick"
         size="md"
         :disabled="posting || unavailable"
       />
       <CfTextarea
         v-model="content"
-        placeholder="留下建议、问题或使用反馈"
+        :placeholder="T.placeholderBody"
         :rows="4"
         :maxlength="600"
         show-count
         auto-resize
         :disabled="posting || unavailable"
       />
-      <div class="doc-comments__emoji" aria-label="快捷 emoji 评论">
-        <span>一键发送</span>
+      <div class="doc-comments__emoji" :aria-label="T.emojiLabel">
+        <span>{{ T.emojiSend }}</span>
         <CfButton
           v-for="emoji in quickEmojis"
           :key="emoji"
@@ -194,7 +236,7 @@ onMounted(() => {
           size="sm"
           shape="square"
           :disabled="posting || unavailable"
-          :aria-label="`发送 ${emoji}`"
+          :aria-label="`${T.emojiAria} ${emoji}`"
           @click="quickSendEmoji(emoji)"
         >
           {{ emoji }}
@@ -208,16 +250,16 @@ onMounted(() => {
           :loading="posting"
           :disabled="!author.trim() || !content.trim() || unavailable"
         >
-          提交评论
+          {{ T.submit }}
         </CfButton>
       </div>
     </form>
 
-    <div v-if="loading" class="doc-comments__loading">正在加载评论...</div>
+    <div v-if="loading" class="doc-comments__loading">{{ T.loading }}</div>
     <CfEmpty
       v-else-if="!comments.length"
-      title="还没有公开评论"
-      description="第一条高质量反馈，往往会帮后面的使用者少走一点弯路。"
+      :title="T.emptyTitle"
+      :description="T.emptyBody"
       illustration="empty"
     />
 
@@ -228,7 +270,7 @@ onMounted(() => {
           <div class="doc-comment__body">
             <div class="doc-comment__meta">
               <strong>{{ item.author }}</strong>
-              <span v-if="item.role === 'admin'" class="doc-comment__role">维护者</span>
+              <span v-if="item.role === 'admin'" class="doc-comment__role">{{ T.role }}</span>
               <time :datetime="item.createdAt">{{ formatTime(item.createdAt) }}</time>
             </div>
             <p>{{ item.content }}</p>

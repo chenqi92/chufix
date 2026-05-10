@@ -33,11 +33,19 @@ const Comp = computed(() => {
   if (!loader) return null;
   return defineAsyncComponent(loader);
 });
+
+// runtime locale detection: ZH on / and other paths, EN on /en/*
+function localeMessage(chart: string): string {
+  const isEn = typeof window !== 'undefined' && window.location.pathname.startsWith('/en/');
+  return isEn
+    ? `${chart} must be used inside a parent svg`
+    : `${chart} 需在父 svg 中使用`;
+}
 </script>
 
 <template>
   <component v-if="Comp" :is="Comp" />
   <div v-else style="padding: 8px; color: var(--fg-3); font-size: 12px;">
-    {{ chart }} 需在父 svg 中使用
+    {{ localeMessage(chart) }}
   </div>
 </template>

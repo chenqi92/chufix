@@ -7,10 +7,11 @@ import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/select/BasicVue.vue';
 import VariantsVue from '~/components/demos/select/VariantsVue.vue';
 import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+import EventsVue from '~/components/demos/select/EventsVue.vue';
 
 ## Basic usage
 
-Pass options via the `options` array; each item must have at least `value` and `label`.
+Pass an `options` array; each item needs at least `value` and `label`.
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
@@ -70,7 +71,7 @@ Three variants matching Input: `outline` (default) / `filled` / `ghost`.
 
 ## States and clearable
 
-`clearable` shows × once a value is selected; `disabled` disables the whole control; `error` switches to the error border color. An individual option can set `disabled: true` to be skipped.
+`clearable` shows × when a value is selected; `disabled` disables the whole control; `error` switches the border to the error color. Individual options can have `disabled: true` to be skipped.
 
 <DemoFrame
   vueCode={`<CfSelect v-model="a" :options="options" placeholder="Clearable" clearable />
@@ -83,25 +84,69 @@ Three variants matching Input: `outline` (default) / `filled` / `ghost`.
   <AdvancedVue client:load />
 </DemoFrame>
 
+## Events and forms
+
+Beyond value changes, `Select` exposes events for open state, active option, clear, and focus. When you pass `name`, it syncs a hidden input so the current value is submitted with native forms.
+
+<DemoFrame
+  vueCode={`<CfSelect
+  v-model="value"
+  :options="options"
+  clearable
+  name="status"
+  @change="(value, meta) => console.log(value, meta.option)"
+  @select="(option) => console.log('select', option)"
+  @clear="() => console.log('clear')"
+  @open-change="(open) => console.log('open', open)"
+  @active-change="(option, index) => console.log(option, index)"
+/>`}
+  reactCode={`<CfSelect
+  value={value}
+  options={options}
+  clearable
+  name="status"
+  onChange={(value, meta) => console.log(value, meta.option)}
+  onSelect={(option) => console.log('select', option)}
+  onClear={() => console.log('clear')}
+  onOpenChange={(open) => console.log('open', open)}
+  onActiveChange={(option, index) => console.log(option, index)}
+/>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
 ## Keyboard interaction
 
-| Key               | Behavior                                |
-| ----------------- | --------------------------------------- |
-| `↓` / `↑`         | Open menu / move active item            |
-| `Enter` / `Space` | Open menu / select active item          |
-| `Esc`             | Close menu                              |
-| `Tab`             | Close menu and return focus to browser  |
+| Key              | Behavior                                  |
+| ---------------- | ----------------------------------------- |
+| `↓` / `↑`        | Open the menu / move active among options |
+| `Enter` / `Space`| Open the menu / select the active option  |
+| `Esc`            | Close the menu                            |
+| `Tab`            | Close the menu and return focus to the browser |
 
 ## API
 
-| Prop          | Type                               | Default      | Description                             |
-| ------------- | ---------------------------------- | ------------ | --------------------------------------- |
-| `options`     | `SelectOption[]`                   | `[]`         | Options array, `{ value, label, disabled? }` |
-| `placeholder` | `string`                           | `'Select'`   | Shown when nothing is selected          |
-| `variant`     | `'outline' \| 'filled' \| 'ghost'` | `'outline'`  | Visual variant                          |
-| `size`        | `'sm' \| 'md' \| 'lg'`             | `'md'`       | Overall size                            |
-| `clearable`   | `boolean`                          | `false`      | Show clear button when something is selected |
-| `disabled`    | `boolean`                          | `false`      | Disable the whole control               |
-| `error`       | `boolean`                          | `false`      | Error state                             |
+| Prop          | Type                               | Default      | Description                                     |
+| ------------- | ---------------------------------- | ------------ | ----------------------------------------------- |
+| `options`     | `SelectOption[]`                   | `[]`         | Option array, `{ value, label, disabled? }`     |
+| `placeholder` | `string`                           | `'Select'`   | Shown when no value is selected                 |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'` | `'outline'`  | Visual variant                                  |
+| `size`        | `'sm' \| 'md' \| 'lg'`             | `'md'`       | Overall size                                    |
+| `clearable`   | `boolean`                          | `false`      | Show clear button when a value is selected      |
+| `disabled`    | `boolean`                          | `false`      | Disable the whole control                       |
+| `error`       | `boolean`                          | `false`      | Error state                                     |
+| `name`        | `string`                           | —            | Renders a hidden input for native form submit   |
+| `id`          | `string`                           | —            | Trigger button id, also wires up the listbox    |
 
-> The current implementation uses `position: absolute` for the popup. If a parent's `overflow: hidden` clips the menu, a Portal version will be added later.
+## Events
+
+| Vue event | React callback | payload | Description |
+|---|---|---|---|
+| `change` | `onChange` | `(value, { option })` | Value changed; on clear, `option` is `null` |
+| `select` | `onSelect` | `option` | An option was selected |
+| `clear` | `onClear` | — | Clear button clicked |
+| `open-change` | `onOpenChange` | `open` | Menu opened / closed |
+| `active-change` | `onActiveChange` | `(option, index)` | Keyboard or mouse moved the active option |
+| `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | Trigger button focus events |
+
+> The current implementation uses an `position: absolute` overlay. If a parent has `overflow: hidden` and crops the menu, a Portal version will be added later.

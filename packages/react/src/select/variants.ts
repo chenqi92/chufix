@@ -1,3 +1,5 @@
+import type { FocusEventHandler } from 'react';
+
 export type SelectVariant = 'outline' | 'filled' | 'ghost';
 export type SelectSize = 'sm' | 'md' | 'lg';
 export type SelectValue = string | number | null;
@@ -6,6 +8,10 @@ export interface SelectOption {
   value: SelectValue;
   label: string;
   disabled?: boolean;
+}
+
+export interface SelectChangeMeta {
+  option: SelectOption | null;
 }
 
 export interface SelectProps {
@@ -21,7 +27,13 @@ export interface SelectProps {
   name?: string;
   id?: string;
   className?: string;
-  onChange?: (value: SelectValue) => void;
+  onChange?: (value: SelectValue, meta: SelectChangeMeta) => void;
+  onSelect?: (option: SelectOption) => void;
+  onClear?: () => void;
+  onOpenChange?: (open: boolean) => void;
+  onActiveChange?: (option: SelectOption | null, index: number) => void;
+  onFocus?: FocusEventHandler<HTMLButtonElement>;
+  onBlur?: FocusEventHandler<HTMLButtonElement>;
 }
 
 export function selectClass(p: {

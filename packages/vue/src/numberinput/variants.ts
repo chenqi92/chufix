@@ -5,6 +5,8 @@ export interface NumberInputProps {
   placeholder?: string;
   size?: NumberInputSize;
   disabled?: boolean;
+  name?: string;
+  id?: string;
   min?: number;
   max?: number;
   step?: number;
@@ -12,6 +14,22 @@ export interface NumberInputProps {
   precision?: number;
   /** Hide +/- buttons (still steps with arrow keys). */
   hideSteppers?: boolean;
+}
+
+export type NumberInputChangeReason = 'commit' | 'blur' | 'enter' | 'step' | 'home' | 'end';
+
+export interface NumberInputChangeMeta {
+  raw: string;
+  reason: NumberInputChangeReason;
+}
+
+export interface NumberInputStepMeta {
+  direction: 1 | -1;
+}
+
+export interface NumberInputInvalidMeta {
+  raw: string;
+  reason: 'nan';
 }
 
 export function numberInputClass(p: { size: NumberInputSize }): string {

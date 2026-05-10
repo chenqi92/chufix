@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import {
+  type SelectChangeMeta,
   selectClass,
   type SelectOption,
   type SelectProps,
@@ -20,13 +21,20 @@ const props = withDefaults(defineProps<SelectProps>(), {
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: SelectValue): void;
-  (e: 'change', value: SelectValue): void;
+  (e: 'change', value: SelectValue, meta: SelectChangeMeta): void;
+  (e: 'select', option: SelectOption): void;
+  (e: 'clear'): void;
+  (e: 'openChange', open: boolean): void;
+  (e: 'activeChange', option: SelectOption | null, index: number): void;
+  (e: 'focus', event: FocusEvent): void;
+  (e: 'blur', event: FocusEvent): void;
 }>();
 
 const open = ref(false);
 const activeIndex = ref(-1);
 const rootRef = ref<HTMLDivElement | null>(null);
 const listRef = ref<HTMLUListElement | null>(null);
+const menuId = computed(() => `${props.id ?? 'cf-select'}-menu`);
 
 const cls = computed(() =>
   selectClass({
@@ -51,19 +59,30 @@ function focusActive() {
   });
 }
 
+function optionId(index: number) {
+  return `${menuId.value}-option-${index}`;
+}
+
+function setActive(index: number) {
+  activeIndex.value = index;
+  emit('activeChange', index >= 0 ? props.options[index] : null, index);
+  focusActive();
+}
+
 function openMenu() {
   if (props.disabled || open.value) return;
   open.value = true;
   const idx = props.options.findIndex((o) => o.value === props.modelValue);
-  activeIndex.value = idx >= 0 ? idx : props.options.findIndex((o) => !o.disabled);
+  setActive(idx >= 0 ? idx : props.options.findIndex((o) => !o.disabled));
   document.addEventListener('mousedown', onDocClick);
-  focusActive();
+  emit('openChange', true);
 }
 
 function closeMenu() {
   if (!open.value) return;
   open.value = false;
   document.removeEventListener('mousedown', onDocClick);
+  emit('openChange', false);
 }
 
 function onDocClick(e: MouseEvent) {
@@ -74,14 +93,16 @@ function onDocClick(e: MouseEvent) {
 function pick(opt: SelectOption) {
   if (opt.disabled) return;
   emit('update:modelValue', opt.value);
-  emit('change', opt.value);
+  emit('change', opt.value, { option: opt });
+  emit('select', opt);
   closeMenu();
 }
 
 function clear(e: MouseEvent) {
   e.stopPropagation();
   emit('update:modelValue', null);
-  emit('change', null);
+  emit('change', null, { option: null });
+  emit('clear');
 }
 
 function moveActive(delta: number) {
@@ -91,8 +112,7 @@ function moveActive(delta: number) {
     i = (i + delta + props.options.length) % props.options.length;
     if (!props.options[i].disabled) break;
   }
-  activeIndex.value = i;
-  focusActive();
+  setActive(i);
 }
 
 function onKeydown(e: KeyboardEvent) {
@@ -135,13 +155,20 @@ onBeforeUnmount(() => {
 <template>
   <div ref="rootRef" :class="cls">
     <button
+      :id="id"
       type="button"
       class="cf-select__trigger"
+      role="combobox"
       :disabled="disabled"
       :aria-haspopup="'listbox'"
       :aria-expanded="open"
+      :aria-label="selected ? selected.label : placeholder"
+      :aria-controls="open ? menuId : undefined"
+      :aria-activedescendant="open && activeIndex >= 0 ? optionId(activeIndex) : undefined"
       @click="open ? closeMenu() : openMenu()"
       @keydown="onKeydown"
+      @focus="(event) => emit('focus', event)"
+      @blur="(event) => emit('blur', event)"
     >
       <span class="cf-select__value">
         <template v-if="selected">{{ selected.label }}</template>
@@ -161,6 +188,7 @@ onBeforeUnmount(() => {
     </button>
     <ul
       v-if="open"
+      :id="menuId"
       ref="listRef"
       class="cf-select__menu"
       role="listbox"
@@ -168,6 +196,7 @@ onBeforeUnmount(() => {
       <li
         v-for="(opt, i) in options"
         :key="String(opt.value)"
+        :id="optionId(i)"
         class="cf-select__option"
         :class="{
           'is-active': i === activeIndex,
@@ -176,7 +205,7 @@ onBeforeUnmount(() => {
         }"
         role="option"
         :aria-selected="opt.value === modelValue"
-        @mouseenter="!opt.disabled && (activeIndex = i)"
+        @mouseenter="!opt.disabled && setActive(i)"
         @mousedown.prevent="pick(opt)"
       >
         {{ opt.label }}
@@ -192,5 +221,6 @@ onBeforeUnmount(() => {
       </li>
       <li v-if="!options.length" class="cf-select__empty">无选项</li>
     </ul>
+    <input v-if="name" type="hidden" :name="name" :value="modelValue ?? ''" />
   </div>
 </template>

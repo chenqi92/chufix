@@ -7,6 +7,7 @@ import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/select/BasicVue.vue';
 import VariantsVue from '~/components/demos/select/VariantsVue.vue';
 import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+import EventsVue from '~/components/demos/select/EventsVue.vue';
 
 ## 基础用法
 
@@ -83,6 +84,37 @@ export default function Demo() {
   <AdvancedVue client:load />
 </DemoFrame>
 
+## 事件与表单
+
+`Select` 除了值变化，也会暴露打开状态、active 选项、清空、焦点等事件；传入 `name` 时会同步一个 hidden input，方便在原生表单里提交当前值。
+
+<DemoFrame
+  vueCode={`<CfSelect
+  v-model="value"
+  :options="options"
+  clearable
+  name="status"
+  @change="(value, meta) => console.log(value, meta.option)"
+  @select="(option) => console.log('select', option)"
+  @clear="() => console.log('clear')"
+  @open-change="(open) => console.log('open', open)"
+  @active-change="(option, index) => console.log(option, index)"
+/>`}
+  reactCode={`<CfSelect
+  value={value}
+  options={options}
+  clearable
+  name="status"
+  onChange={(value, meta) => console.log(value, meta.option)}
+  onSelect={(option) => console.log('select', option)}
+  onClear={() => console.log('clear')}
+  onOpenChange={(open) => console.log('open', open)}
+  onActiveChange={(option, index) => console.log(option, index)}
+/>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
 ## 键盘交互
 
 | 按键              | 行为                                |
@@ -103,5 +135,18 @@ export default function Demo() {
 | `clearable`   | `boolean`                          | `false`      | 已选中时显示清除按钮                    |
 | `disabled`    | `boolean`                          | `false`      | 整体禁用                                |
 | `error`       | `boolean`                          | `false`      | 错误态                                  |
+| `name`        | `string`                           | —            | 生成 hidden input，参与原生表单提交     |
+| `id`          | `string`                           | —            | 触发按钮 id，并用于关联 listbox         |
+
+## Events
+
+| Vue 事件 | React 回调 | payload | 说明 |
+|---|---|---|---|
+| `change` | `onChange` | `(value, { option })` | 值变化，清空时 `option` 为 `null` |
+| `select` | `onSelect` | `option` | 选中某个 option |
+| `clear` | `onClear` | — | 点击清除按钮 |
+| `open-change` | `onOpenChange` | `open` | 下拉菜单打开 / 关闭 |
+| `active-change` | `onActiveChange` | `(option, index)` | 键盘或鼠标移动 active option |
+| `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | 触发按钮焦点事件 |
 
 > 当前实现使用 `position: absolute` 浮层；如果父级 `overflow: hidden` 裁掉了菜单，后续会扩展 Portal 版本。

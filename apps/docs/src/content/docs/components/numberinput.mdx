@@ -8,6 +8,7 @@ import BasicVue from '~/components/demos/numberinput/BasicVue.vue';
 import PrecisionVue from '~/components/demos/numberinput/PrecisionVue.vue';
 import SizesVue from '~/components/demos/numberinput/SizesVue.vue';
 import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
+import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
 
 ## 基础用法
 
@@ -65,12 +66,45 @@ import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
   <NoSteppersVue client:load />
 </DemoFrame>
 
+## 事件与表单
+
+`NumberInput` 会区分输入中的原始文本、提交后的数字值、步进来源和非法输入。传入 `name` / `id` 后会直接落到原生 input，适合放进表单或自动化测试。
+
+<DemoFrame
+  vueCode={`<CfNumberInput
+  v-model="value"
+  name="retry-budget"
+  :min="0"
+  :max="100"
+  :step="5"
+  @input="(raw) => console.log('input', raw)"
+  @change="(value, meta) => console.log('change', value, meta.reason)"
+  @step="(value, meta) => console.log('step', value, meta.direction)"
+  @invalid="(meta) => console.log('invalid', meta.raw)"
+/>`}
+  reactCode={`<CfNumberInput
+  value={value}
+  name="retry-budget"
+  min={0}
+  max={100}
+  step={5}
+  onInput={(raw) => console.log('input', raw)}
+  onChange={(value, meta) => console.log('change', value, meta.reason)}
+  onStep={(value, meta) => console.log('step', value, meta.direction)}
+  onInvalid={(meta) => console.log('invalid', meta.raw)}
+/>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
 ## 键盘交互
 
 - `↑` / `↓` —— 按 step 步进
+- `PageUp` / `PageDown` —— 按 10 倍 step 步进
+- `Home` / `End` —— 跳到 min / max（存在边界时）
 - `Enter` —— 提交并 clamp
 - 离焦 —— 自动 clamp 到 [min, max]，不在范围内的输入会被纠正
-- 非数字字符被屏蔽（保留 `-` / `.` 作为符号）
+- 非数字输入会触发 `invalid` 并回滚到上一个有效值
 
 ## API
 
@@ -85,3 +119,15 @@ import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
 | `hideSteppers` | `boolean` | `false` | 隐藏 +/− 按钮（仍可键盘步进） |
 | `placeholder` | `string` | `—` | 占位文本（值为 `null` 时显示） |
 | `disabled` | `boolean` | `false` | 禁用 |
+| `name` | `string` | `—` | 原生 input name，参与表单提交 |
+| `id` | `string` | `—` | 原生 input id |
+
+## Events
+
+| Vue 事件 | React 回调 | payload | 说明 |
+|---|---|---|---|
+| `input` | `onInput` | `raw` | 输入中的原始字符串 |
+| `change` | `onChange` | `(value, { raw, reason })` | 提交后的数字值，`reason` 为 `blur / enter / step / home / end` 等 |
+| `step` | `onStep` | `(value, { direction })` | 点击按钮或方向键步进 |
+| `invalid` | `onInvalid` | `{ raw, reason }` | 提交非法数字时触发 |
+| `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | 原生焦点事件 |

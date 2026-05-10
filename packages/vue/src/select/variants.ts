@@ -8,6 +8,10 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
+export interface SelectChangeMeta {
+  option: SelectOption | null;
+}
+
 export interface SelectProps {
   modelValue?: SelectValue;
   options?: SelectOption[];
