@@ -1,126 +1,197 @@
 ---
 title: Table
-description: Column-definition API with sorting, single/multi row selection, 3 variants, and custom rendering.
+description: Data table — multi-column sort, column reorder & resize, pinned columns, filtering, pagination, row expansion, tree data, summary footer, sticky header, global search, column visibility.
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/table/BasicVue.vue';
 import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+import MultiSortVue from '~/components/demos/table/MultiSortVue.vue';
+import ResizeReorderVue from '~/components/demos/table/ResizeReorderVue.vue';
+import PinVue from '~/components/demos/table/PinVue.vue';
+import ExpandTreeVue from '~/components/demos/table/ExpandTreeVue.vue';
+import SummarySearchVue from '~/components/demos/table/SummarySearchVue.vue';
+
+`CfTable` is one of the most feature-complete components in the library. Design choices:
+
+- **Client-side derivation by default** — global search, per-column filtering, sorting, and pagination all run inside the component. Switch to server mode by passing a numeric `pagination.total`.
+- **Column state is uncontrolled by default** — visibility / order / widths live in internal state; emit through `update:columnsState` to fully control them.
+- **Zero third-party dependencies** — HTML5 DnD for column reorder, PointerEvent for resize, native `position: sticky` for pinned columns and the header.
 
 ## Basic usage
 
-`columns` defines the columns; each one needs at least `key` and `title`. `rows` is the data array; `rowKey` picks the field used as the unique key (a function works too). Click any header with `sortable: true` to cycle asc / desc / unsorted.
+`columns` + `rows` + optional `rowKey`. `column.format` formats values; `column.render` returns VNodes / strings.
 
-<DemoFrame
-  vueCode={`<script setup lang="ts">
-import { CfTable, type TableColumn } from '@chufix-design/vue';
-
-interface Order {
-  id: string;
-  customer: string;
-  amount: number;
-  status: string;
-  date: string;
-}
-
-const rows: Order[] = [/* ... */];
-const columns: TableColumn<Order>[] = [
-  { key: 'id', title: 'Order #', sortable: true, width: 100 },
-  { key: 'customer', title: 'Customer', sortable: true },
-  {
-    key: 'amount',
-    title: 'Amount',
-    align: 'right',
-    sortable: true,
-    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
-  },
-  { key: 'status', title: 'Status' },
-  { key: 'date', title: 'Date', sortable: true },
-];
-</script>
-
-<template>
-  <CfTable :columns="columns" :rows="rows" row-key="id" variant="bordered" />
-</template>`}
-  reactCode={`import { CfTable, type TableColumn } from '@chufix-design/react';
-
-interface Order { id: string; customer: string; amount: number; status: string; date: string; }
-const rows: Order[] = [/* ... */];
-const columns: TableColumn<Order>[] = [
-  { key: 'id', title: 'Order #', sortable: true, width: 100 },
-  { key: 'customer', title: 'Customer', sortable: true },
-  {
-    key: 'amount',
-    title: 'Amount',
-    align: 'right',
-    sortable: true,
-    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
-  },
-  { key: 'status', title: 'Status' },
-  { key: 'date', title: 'Date', sortable: true },
-];
-
-export default function Demo() {
-  return <CfTable columns={columns} rows={rows} rowKey="id" variant="bordered" />;
-}`}
->
+<DemoFrame>
   <BasicVue client:load />
 </DemoFrame>
 
-## Selection and stripes
+## Row selection
 
-`selectable="multiple"` adds a leading checkbox column with `v-model` bound to `string[]`; `selectable="single"` toggles single selection on row click with `v-model` bound to `string`. `variant="striped"` shades odd rows.
+Single-select via `selectable="single"`, multi-select via `selectable="multiple"`. `v-model` accepts a `string` or `string[]` keyed by `rowKey`.
 
-<DemoFrame
-  vueCode={`<CfTable
-  v-model="selected"
-  :columns="columns"
-  :rows="rows"
-  row-key="id"
-  selectable="multiple"
-  variant="striped"
-/>`}
-  reactCode={`<CfTable
-  value={selected}
-  columns={columns}
-  rows={rows}
-  rowKey="id"
-  selectable="multiple"
-  variant="striped"
-  onChange={setSelected as any}
-/>`}
->
+<DemoFrame>
   <SelectionVue client:load />
 </DemoFrame>
 
-## API · Table
+## Multi-column sort
+
+With `multi-sort` enabled, hold <kbd>Shift</kbd> / <kbd>⌘</kbd> while clicking a header to add a secondary sort. Clicking the same column again cycles asc → desc → off. The header shows the column's index in the sort queue.
+
+<DemoFrame>
+  <MultiSortVue client:load />
+</DemoFrame>
+
+Sort priority follows the order of the `sort` array. For full control bind `:sort` to your own ref.
+
+## Column resize + reorder
+
+With `resizable`, every column gets a 6px col-resize handle on its right edge. Dragging updates internal state in real time; `@update:columns-state` exposes the new widths for persistence. `reorderable` makes headers drag-and-drop reorderable.
+
+<DemoFrame>
+  <ResizeReorderVue client:load />
+</DemoFrame>
+
+Per-column overrides: `resizable: false` / `reorderable: false`.
+
+## Pinned columns + sticky header
+
+`column.fixed: 'left' | 'right'` pins columns to either side so they stay visible during horizontal scroll. Combine with `sticky-header` + `:height` for a sticky top row.
+
+<DemoFrame>
+  <PinVue client:load />
+</DemoFrame>
+
+## Row expansion + tree data
+
+`expandable` adds an expand button per row:
+
+- Pass `expand-render` to render custom expanded content (order details, nested charts, etc.).
+- If a row carries a `children` array, the table treats it as tree data and indents each level by `tree-indent` pixels.
+
+<DemoFrame>
+  <ExpandTreeVue client:load />
+</DemoFrame>
+
+`v-model:expanded-row-keys` lifts expansion state up to the parent — handy for syncing to the URL or localStorage.
+
+## Toolbar + summary + pagination + filters
+
+Set `toolbar="auto"` to surface global search + column visibility menu. `column.filterable` puts a funnel button in each column header; `filterType` toggles between `select` / `number-range` / plain text. `column.summary` accepts `'sum' | 'avg' | 'count'` or a function — a **summary** row is rendered at the bottom and updates with the filtered result.
+
+<DemoFrame>
+  <SummarySearchVue client:load />
+</DemoFrame>
+
+`:default-pagination="{ page: 1, pageSize: 8 }"` is uncontrolled. For full control bind `pagination` to a current value and listen to `@update:pagination`.
+
+## Server-side mode
+
+Once `pagination.total` is a number, the component **stops** doing client-side slicing. sort / filter / pagination changes are emitted as events and you fetch from the backend:
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :sort="sort"
+  :filters="filters"
+  :pagination="{ page, pageSize, total }"
+  :loading="loading"
+  @update:sort="(s) => loadData({ sort: s, filters, page, pageSize })"
+  @update:filters="(f) => loadData({ sort, filters: f, page: 1, pageSize })"
+  @update:pagination="(p) => loadData({ sort, filters, ...p })"
+  @update:globalSearch="(q) => loadData({ search: q })"
+/>
+```
+
+## API
+
+### `TableProps`
 
 | Prop | Type | Default | Description |
-|---|---|---|---|
-| `columns` | `TableColumn<T>[]` | `[]` | Column definitions |
-| `rows` | `T[]` | `[]` | Data array |
-| `rowKey` | `string \| ((row, i) => string)` | `index` | Row key field or function |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size + padding |
-| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | Visual mode |
-| `hoverable` | `boolean` | `true` | Highlight row on hover |
-| `emptyText` | `string \| ReactNode` | `'No data'` | Empty state text |
-| `loading` | `boolean` | `false` | Loading state (semi-transparent + non-interactive) |
-| `sort` / `defaultSort` | `TableSort` | `—` | Controlled / uncontrolled sort |
-| `selectable` | `'single' \| 'multiple'` | `—` | Row selection mode |
-| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | `null` | Selected row key(s) |
+| --- | --- | --- | --- |
+| `columns` | `TableColumn[]` | — | Column defs; nest `children` for grouped headers |
+| `rows` | `T[]` | — | Data rows; `row[childrenField]` is children |
+| `rowKey` | `string \| (row, i) => string` | `i` | Unique row id for selection / expansion |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Density |
+| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | Visual variant |
+| `hoverable` | `boolean` | `true` | Row hover highlight |
+| `stickyHeader` | `boolean` | `false` | Sticky header (also pass `height`) |
+| `height` | `number \| string` | — | Body max height; scrolls when exceeded |
+| `loading` | `boolean` | `false` | Show loading overlay |
+| `emptyText` | `string` | `'No data'` | Empty state text |
+| `sort` | `TableSort \| TableSort[] \| null` | — | Current sort (controlled) |
+| `defaultSort` | same | `null` | Initial sort (uncontrolled) |
+| `multiSort` | `boolean` | `false` | Enable shift-click multi-sort |
+| `filters` | `Record<string, unknown>` | — | Filter values (controlled) |
+| `defaultFilters` | same | `{}` | Initial filters (uncontrolled) |
+| `globalSearch` | `string` | — | Global search (controlled) |
+| `defaultGlobalSearch` | `string` | `''` | Initial search (uncontrolled) |
+| `pagination` | `TablePagination \| false` | — | Pagination; `false` disables |
+| `defaultPagination` | `TablePagination` | — | Initial pagination (uncontrolled) |
+| `selectable` | `'single' \| 'multiple'` | — | Row selection mode |
+| `modelValue` | `string \| string[] \| null` | `null` | Selected row keys |
+| `expandable` | `boolean` | `false` | Show expand toggle |
+| `expandRender` | `(row, i) => any` | — | Custom expanded content |
+| `expandedRowKeys` | `string[]` | — | Expanded keys (controlled) |
+| `defaultExpandedRowKeys` | `string[]` | `[]` | Initial expanded (uncontrolled) |
+| `childrenField` | `string` | `'children'` | Tree data field |
+| `treeIndent` | `number` | `16` | Per-level indent (px) |
+| `columnsState` | `TableColumnsState` | — | Hidden / order / widths (controlled) |
+| `defaultColumnsState` | same | — | Initial columns state (uncontrolled) |
+| `resizable` | `boolean` | `false` | Enable resize globally |
+| `reorderable` | `boolean` | `false` | Enable reorder globally |
+| `showSummary` | `boolean` | `false` | Auto-render a summary row from `column.summary` |
+| `summary` | `TableSummaryRow[]` | — | Extra manual summary rows |
+| `toolbar` | `'auto' \| 'none'` | `'none'` | Toolbar (search + column menu) |
 
-Events: `update:sort` / `sort-change` / `update:modelValue` / `row-click` (React: `onSortChange` / `onChange` / `onRowClick`).
-Slots (Vue): `cell:<key>` / `header:<key>` / `empty`; React uses `column.render` for custom cell rendering.
+### `TableColumn`
 
-## API · TableColumn
-
-| Prop | Type | Description |
-|---|---|---|
-| `key` | `string` | Column unique identifier |
-| `title` | `string \| ReactNode` | Header |
+| Field | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | Required unique id |
+| `title` | `string` | Header text |
 | `dataIndex` | `string` | Data field; falls back to `key` |
-| `width` | `number \| string` | Column width |
-| `align` | `'left' \| 'center' \| 'right'` | Alignment (right enables tabular-nums) |
-| `sortable` | `boolean` | Whether the column is sortable |
+| `width / minWidth / maxWidth` | `number \| string` | Geometry |
+| `align` | `'left' \| 'center' \| 'right'` | Alignment |
+| `ellipsis` | `boolean` | Truncate overflow |
+| `sortable` | `boolean` | Enable sort on this column |
+| `sortFn` | `(a, b) => number` | Custom sort comparator |
+| `filterable` | `boolean` | Enable filter on this column |
+| `filterType` | `'text' \| 'select' \| 'number-range' \| 'date-range'` | Filter UI type |
+| `filterOptions` | `{label,value}[]` | Options for `select` |
+| `filterFn` | `(filterValue, row, i) => boolean` | Custom filter |
+| `fixed` | `'left' \| 'right'` | Pin column |
+| `resizable / reorderable / hideable` | `boolean` | Per-column overrides |
+| `hidden` | `boolean` | Hidden by default |
+| `render` | `(value, row, i) => any` | Custom cell render |
 | `format` | `(value, row, i) => string` | String formatter |
-| `render` | `(value, row, i) => ReactNode` | Custom cell render (React) |
+| `headerRender` | `() => any` | Custom header |
+| `children` | `TableColumn[]` | Grouped headers |
+| `summary` | `'sum' \| 'avg' \| 'count' \| (rows) => any` | Aggregation |
+| `summaryRender` | `(value) => any` | Custom summary cell |
+| `cellClass` | `string \| (row, i) => string` | Cell class |
+
+### Events / Slots
+
+| Event / Slot | Payload | Description |
+| --- | --- | --- |
+| `update:sort` / `sort-change` | `TableSort \| TableSort[] \| null` | Sort changed |
+| `update:filters` | `Record<string, unknown>` | Filter values changed |
+| `update:globalSearch` | `string` | Search box changed |
+| `update:pagination` | `TablePagination` | Page / page size changed |
+| `update:modelValue` | `string \| string[] \| null` | Selected rows changed |
+| `update:columnsState` | `TableColumnsState` | Reorder / hide / resize |
+| `update:expandedRowKeys` | `string[]` | Expansion changed |
+| `row-click` | `(row, i)` | Row click (when not selectable) |
+| `#header:<key>` | — | Custom header node |
+| `#cell:<key>` | `{ row, index, value }` | Custom cell |
+| `#empty` | — | Custom empty state |
+| `#toolbar-left` / `#toolbar-right` | — | Toolbar extension slots |
+
+## Performance notes
+
+- All derivations (filtered → sorted → paginated → flat tree) run via `computed`/`useMemo` and only re-run on dependency change.
+- Column resize / reorder updates the **column state object**, not the entire table — only the affected column re-evaluates its style.
+- For 1k+ rows, combine `pagination` + `sticky-header` + `height`. For 10k+, use `expandable` + `children` as a "lazy tree" or wait for the upcoming `<CfVirtualTable>` (real virtual scroll).
+- React side keeps `Row` extracted; you can wrap it with `memo` externally. Vue side uses v-for diffing for cells.
