@@ -1,5 +1,6 @@
 import Preview from './LoginOtp.vue';
 import previewSrc from './LoginOtp.vue?raw';
+import previewReactSrc from './LoginOtp.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const loginOtp: BlockMeta = {
@@ -12,5 +13,6 @@ export const loginOtp: BlockMeta = {
   Preview,
   files: [
     { name: 'LoginOtp.vue', content: previewSrc, lang: 'vue' },
+    { name: 'LoginOtp.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

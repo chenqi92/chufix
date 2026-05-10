@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/terminalpane/BasicVue.vue';
 import previewSrc from '~/components/demos/terminalpane/BasicVue.vue?raw';
+import previewReactSrc from './TerminalPane.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const terminalPane: BlockMeta = {
@@ -10,10 +11,7 @@ export const terminalPane: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'TerminalPane.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'TerminalPane.vue', content: previewSrc, lang: 'vue' },
+    { name: 'TerminalPane.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

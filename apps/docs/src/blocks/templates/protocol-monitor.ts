@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/protocolpane/RealVue.vue';
 import previewSrc from '~/components/demos/protocolpane/RealVue.vue?raw';
+import previewReactSrc from './ProtocolMonitor.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const protocolMonitor: BlockMeta = {
@@ -11,10 +12,7 @@ export const protocolMonitor: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'ProtocolMonitor.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'ProtocolMonitor.vue', content: previewSrc, lang: 'vue' },
+    { name: 'ProtocolMonitor.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

@@ -27,6 +27,11 @@ import { dbWorkbench } from './workbench/db-workbench';
 
 import { settingsPage } from './settings/settings-page';
 
+import { profilePage } from './profile/profile-page';
+import { pricingTable } from './pricing/pricing-table';
+import { teamSettings } from './team/team-settings';
+import { billingPage } from './billing/billing-page';
+
 export const blocks: BlockMeta[] = [
   protocolMonitor,
   networkInspector,
@@ -54,6 +59,11 @@ export const blocks: BlockMeta[] = [
   dbWorkbench,
 
   settingsPage,
+
+  profilePage,
+  pricingTable,
+  teamSettings,
+  billingPage,
 ];
 
 export function getBlock(id: string): BlockMeta | undefined {

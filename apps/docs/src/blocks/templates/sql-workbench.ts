@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/sqlworkbench/BasicVue.vue';
 import previewSrc from '~/components/demos/sqlworkbench/BasicVue.vue?raw';
+import previewReactSrc from './SqlWorkbench.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const sqlWorkbench: BlockMeta = {
@@ -10,10 +11,7 @@ export const sqlWorkbench: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'SqlWorkbench.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'SqlWorkbench.vue', content: previewSrc, lang: 'vue' },
+    { name: 'SqlWorkbench.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

@@ -1,0 +1,22 @@
+{
+  "name": "@chufix/cli",
+  "version": "0.0.1",
+  "description": "ChuFix UI CLI · 一键拉取 blocks 源码到本地项目",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "chufix": "./bin/chufix.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "echo 'no build needed (pure ESM)'",
+    "dev": "node ./bin/chufix.mjs"
+  }
+}

@@ -1,5 +1,6 @@
 import Preview from './LoginBasic.vue';
 import previewSrc from './LoginBasic.vue?raw';
+import previewReactSrc from './LoginBasic.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const loginBasic: BlockMeta = {
@@ -12,5 +13,6 @@ export const loginBasic: BlockMeta = {
   Preview,
   files: [
     { name: 'LoginBasic.vue', content: previewSrc, lang: 'vue' },
+    { name: 'LoginBasic.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

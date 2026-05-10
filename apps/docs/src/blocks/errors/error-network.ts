@@ -1,5 +1,6 @@
 import Preview from './ErrorNetwork.vue';
 import previewSrc from './ErrorNetwork.vue?raw';
+import previewReactSrc from './ErrorNetwork.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const errorNetwork: BlockMeta = {
@@ -11,5 +12,6 @@ export const errorNetwork: BlockMeta = {
   Preview,
   files: [
     { name: 'ErrorNetwork.vue', content: previewSrc, lang: 'vue' },
+    { name: 'ErrorNetwork.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

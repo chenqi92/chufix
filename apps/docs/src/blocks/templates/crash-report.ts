@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/crashpane/RealVue.vue';
 import previewSrc from '~/components/demos/crashpane/RealVue.vue?raw';
+import previewReactSrc from './CrashReport.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const crashReport: BlockMeta = {
@@ -10,10 +11,7 @@ export const crashReport: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'CrashReport.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'CrashReport.vue', content: previewSrc, lang: 'vue' },
+    { name: 'CrashReport.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

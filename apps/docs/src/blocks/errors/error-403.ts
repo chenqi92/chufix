@@ -1,5 +1,6 @@
 import Preview from './Error403.vue';
 import previewSrc from './Error403.vue?raw';
+import previewReactSrc from './Error403.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const error403: BlockMeta = {
@@ -11,5 +12,6 @@ export const error403: BlockMeta = {
   Preview,
   files: [
     { name: 'Error403.vue', content: previewSrc, lang: 'vue' },
+    { name: 'Error403.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

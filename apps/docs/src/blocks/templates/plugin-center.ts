@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/pluginpane/BasicVue.vue';
 import previewSrc from '~/components/demos/pluginpane/BasicVue.vue?raw';
+import previewReactSrc from './PluginCenter.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const pluginCenter: BlockMeta = {
@@ -10,10 +11,7 @@ export const pluginCenter: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'PluginCenter.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'PluginCenter.vue', content: previewSrc, lang: 'vue' },
+    { name: 'PluginCenter.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

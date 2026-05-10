@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/domainpane/RealVue.vue';
 import previewSrc from '~/components/demos/domainpane/RealVue.vue?raw';
+import previewReactSrc from './ApiDebugger.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const apiDebugger: BlockMeta = {
@@ -10,10 +11,7 @@ export const apiDebugger: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'ApiDebugger.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'ApiDebugger.vue', content: previewSrc, lang: 'vue' },
+    { name: 'ApiDebugger.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

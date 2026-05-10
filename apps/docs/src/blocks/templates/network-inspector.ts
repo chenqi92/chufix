@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/networkpane/RealVue.vue';
 import previewSrc from '~/components/demos/networkpane/RealVue.vue?raw';
+import previewReactSrc from './NetworkInspector.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const networkInspector: BlockMeta = {
@@ -10,10 +11,7 @@ export const networkInspector: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'NetworkInspector.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'NetworkInspector.vue', content: previewSrc, lang: 'vue' },
+    { name: 'NetworkInspector.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

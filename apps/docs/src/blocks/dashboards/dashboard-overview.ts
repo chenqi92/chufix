@@ -1,5 +1,6 @@
 import Preview from './DashboardOverview.vue';
 import previewSrc from './DashboardOverview.vue?raw';
+import previewReactSrc from './DashboardOverview.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const dashboardOverview: BlockMeta = {
@@ -12,5 +13,6 @@ export const dashboardOverview: BlockMeta = {
   Preview,
   files: [
     { name: 'DashboardOverview.vue', content: previewSrc, lang: 'vue' },
+    { name: 'DashboardOverview.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

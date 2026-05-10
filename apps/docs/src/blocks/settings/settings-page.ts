@@ -1,5 +1,6 @@
 import Preview from './SettingsPage.vue';
 import previewSrc from './SettingsPage.vue?raw';
+import previewReactSrc from './SettingsPage.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const settingsPage: BlockMeta = {
@@ -12,5 +13,6 @@ export const settingsPage: BlockMeta = {
   Preview,
   files: [
     { name: 'SettingsPage.vue', content: previewSrc, lang: 'vue' },
+    { name: 'SettingsPage.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

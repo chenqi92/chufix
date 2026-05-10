@@ -6,7 +6,11 @@ export type BlockCategory =
   | 'auth'
   | 'errors'
   | 'workbench'
-  | 'settings';
+  | 'settings'
+  | 'profile'
+  | 'pricing'
+  | 'billing'
+  | 'team';
 
 export interface BlockFile {
   name: string;
@@ -42,4 +46,8 @@ export const CATEGORIES: BlockCategoryDef[] = [
   { id: 'errors', label: 'Errors 错误页', description: '404 / 403 / 500 / 网络异常占位' },
   { id: 'workbench', label: 'Workbench 工作台', description: '代码编辑器 / 数据库工具的完整 IDE 风格组合' },
   { id: 'settings', label: 'Settings 设置页', description: '个人 / 团队 / 安全设置组合' },
+  { id: 'profile', label: 'Profile 个人主页', description: '用户公开主页，包含基本信息 / 动态 / 仓库列表' },
+  { id: 'pricing', label: 'Pricing 价格页', description: '多档价格方案 + 功能对比表' },
+  { id: 'billing', label: 'Billing 账单', description: '发票列表 + 支付方式 + 订阅管理' },
+  { id: 'team', label: 'Team 团队', description: '成员管理 + 邀请链接 + 角色权限' },
 ];

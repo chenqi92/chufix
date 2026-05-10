@@ -1,5 +1,6 @@
 import Preview from '~/components/demos/onboardingflow/BasicVue.vue';
 import previewSrc from '~/components/demos/onboardingflow/BasicVue.vue?raw';
+import previewReactSrc from './OnboardingFlow.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const onboardingFlow: BlockMeta = {
@@ -10,10 +11,7 @@ export const onboardingFlow: BlockMeta = {
   height: 480,
   Preview,
   files: [
-    {
-      name: 'OnboardingFlow.vue',
-      content: previewSrc,
-      lang: 'vue',
-    },
+    { name: 'OnboardingFlow.vue', content: previewSrc, lang: 'vue' },
+    { name: 'OnboardingFlow.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

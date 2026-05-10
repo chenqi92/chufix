@@ -1,5 +1,6 @@
 import Preview from './MonitoringBoard.vue';
 import previewSrc from './MonitoringBoard.vue?raw';
+import previewReactSrc from './MonitoringBoard.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const monitoringBoard: BlockMeta = {
@@ -12,5 +13,6 @@ export const monitoringBoard: BlockMeta = {
   Preview,
   files: [
     { name: 'MonitoringBoard.vue', content: previewSrc, lang: 'vue' },
+    { name: 'MonitoringBoard.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

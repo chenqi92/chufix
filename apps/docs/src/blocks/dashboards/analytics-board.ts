@@ -1,5 +1,6 @@
 import Preview from './AnalyticsBoard.vue';
 import previewSrc from './AnalyticsBoard.vue?raw';
+import previewReactSrc from './AnalyticsBoard.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const analyticsBoard: BlockMeta = {
@@ -12,5 +13,6 @@ export const analyticsBoard: BlockMeta = {
   Preview,
   files: [
     { name: 'AnalyticsBoard.vue', content: previewSrc, lang: 'vue' },
+    { name: 'AnalyticsBoard.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

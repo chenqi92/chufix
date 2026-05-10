@@ -1,5 +1,6 @@
 import Preview from './RegisterMultiStep.vue';
 import previewSrc from './RegisterMultiStep.vue?raw';
+import previewReactSrc from './RegisterMultiStep.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const registerMultistep: BlockMeta = {
@@ -12,5 +13,6 @@ export const registerMultistep: BlockMeta = {
   Preview,
   files: [
     { name: 'RegisterMultiStep.vue', content: previewSrc, lang: 'vue' },
+    { name: 'RegisterMultiStep.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };

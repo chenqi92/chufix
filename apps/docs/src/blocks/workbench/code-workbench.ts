@@ -1,5 +1,6 @@
 import Preview from './CodeWorkbench.vue';
 import previewSrc from './CodeWorkbench.vue?raw';
+import previewReactSrc from './CodeWorkbench.tsx?raw';
 import type { BlockMeta } from '../types';
 
 export const codeWorkbench: BlockMeta = {
@@ -12,5 +13,6 @@ export const codeWorkbench: BlockMeta = {
   Preview,
   files: [
     { name: 'CodeWorkbench.vue', content: previewSrc, lang: 'vue' },
+    { name: 'CodeWorkbench.tsx', content: previewReactSrc, lang: 'tsx' },
   ],
 };
