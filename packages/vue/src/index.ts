@@ -473,10 +473,14 @@ export { default as CfCard } from './card/Card.vue';
 export type { CardProps, CardVariant } from './card/variants';
 
 export { default as CfSwitch } from './switch/Switch.vue';
-export type { SwitchProps, SwitchSize } from './switch/variants';
+export type { SwitchChangeMeta, SwitchProps, SwitchSize } from './switch/variants';
 
 export { default as CfCheckbox } from './checkbox/Checkbox.vue';
-export type { CheckboxProps, CheckboxSize } from './checkbox/variants';
+export type {
+  CheckboxChangeMeta,
+  CheckboxProps,
+  CheckboxSize,
+} from './checkbox/variants';
 
 export { default as CfRadio } from './radio/Radio.vue';
 export { default as CfRadioGroup } from './radio/RadioGroup.vue';
@@ -485,6 +489,7 @@ export type {
   RadioGroupProps,
   RadioSize,
   RadioValue,
+  RadioChangeMeta,
 } from './radio/variants';
 
 export { default as CfTextarea } from './textarea/Textarea.vue';
@@ -595,6 +600,8 @@ export type {
   SliderProps,
   SliderSize,
   SliderTone,
+  SliderChangeMeta,
+  SliderChangeSource,
 } from './slider/variants';
 
 export { default as CfDrawer } from './drawer/Drawer.vue';

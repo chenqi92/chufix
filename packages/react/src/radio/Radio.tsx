@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useState } from 'react';
+import { forwardRef, useContext, useState, type ChangeEvent } from 'react';
 import { RadioGroupContext } from './RadioGroup';
 import { radioClass, type RadioProps } from './variants';
 
@@ -15,6 +15,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
     name,
     id,
     onChange,
+    onFocus,
+    onBlur,
     children,
     className,
   } = props;
@@ -36,13 +38,19 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   const finalDisabled = (group?.disabled ?? false) || disabled;
   const finalName = group?.name ?? name;
 
-  function handleChange() {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (finalDisabled) return;
+    const meta = {
+      event: e,
+      value,
+      name: finalName,
+      checked: e.target.checked,
+    };
     if (group) {
-      group.select(value);
+      group.select(value, meta);
     } else {
       if (!isControlled) setInternal(true);
-      onChange?.(value);
+      onChange?.(value, meta);
     }
   }
 
@@ -64,6 +72,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         name={finalName}
         id={id}
         onChange={handleChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
       <span className="cf-radio__dot" aria-hidden="true" />
       {children ? <span className="cf-radio__label">{children}</span> : null}

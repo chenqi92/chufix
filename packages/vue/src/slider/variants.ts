@@ -15,6 +15,14 @@ export interface SliderProps {
   ticks?: boolean;
 }
 
+export type SliderChangeSource = 'pointer' | 'keyboard';
+
+export interface SliderChangeMeta {
+  event: PointerEvent | KeyboardEvent;
+  value: number;
+  source: SliderChangeSource;
+}
+
 export function sliderClass(p: { size: SliderSize; tone: SliderTone }): string {
   return ['cf-slider', `cf-slider--${p.size}`, `cf-slider--${p.tone}`].join(' ');
 }

@@ -3,6 +3,7 @@ import { computed, provide, reactive } from 'vue';
 import {
   radioGroupClass,
   radioGroupKey,
+  type RadioChangeMeta,
   type RadioGroupProps,
   type RadioValue,
 } from './variants';
@@ -16,7 +17,7 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: RadioValue): void;
-  (e: 'change', value: RadioValue): void;
+  (e: 'change', value: RadioValue, meta: RadioChangeMeta): void;
 }>();
 
 const cls = computed(() => radioGroupClass({ direction: props.direction }));
@@ -32,9 +33,9 @@ provide(radioGroupKey, {
   name: props.name,
   size: props.size,
   disabled: props.disabled,
-  select(v: RadioValue) {
+  select(v: RadioValue, meta: RadioChangeMeta) {
     emit('update:modelValue', v);
-    emit('change', v);
+    emit('change', v, meta);
   },
 });
 </script>

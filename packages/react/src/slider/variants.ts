@@ -1,3 +1,5 @@
+import type { KeyboardEvent, PointerEvent } from 'react';
+
 export type SliderSize = 'sm' | 'md' | 'lg';
 export type SliderTone = 'primary' | 'success' | 'warning' | 'danger';
 
@@ -12,7 +14,16 @@ export interface SliderProps {
   disabled?: boolean;
   showValue?: boolean;
   ticks?: boolean;
-  onChange?: (v: number) => void;
+  onChange?: (v: number, meta: SliderChangeMeta) => void;
+  onChangeEnd?: (v: number, meta: SliderChangeMeta) => void;
+}
+
+export type SliderChangeSource = 'pointer' | 'keyboard';
+
+export interface SliderChangeMeta {
+  event: PointerEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>;
+  value: number;
+  source: SliderChangeSource;
 }
 
 export function sliderClass(p: { size: SliderSize; tone: SliderTone }): string {

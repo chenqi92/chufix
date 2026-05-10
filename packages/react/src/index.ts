@@ -489,10 +489,14 @@ export {
 export type { CardProps, CardVariant } from './card/variants';
 
 export { Switch as CfSwitch } from './switch/Switch';
-export type { SwitchProps, SwitchSize } from './switch/variants';
+export type { SwitchChangeMeta, SwitchProps, SwitchSize } from './switch/variants';
 
 export { Checkbox as CfCheckbox } from './checkbox/Checkbox';
-export type { CheckboxProps, CheckboxSize } from './checkbox/variants';
+export type {
+  CheckboxChangeMeta,
+  CheckboxProps,
+  CheckboxSize,
+} from './checkbox/variants';
 
 export { Radio as CfRadio } from './radio/Radio';
 export {
@@ -504,6 +508,7 @@ export type {
   RadioGroupProps,
   RadioSize,
   RadioValue,
+  RadioChangeMeta,
 } from './radio/variants';
 
 export { Textarea as CfTextarea } from './textarea/Textarea';
@@ -610,7 +615,13 @@ export type {
 } from './accordion/variants';
 
 export { Slider as CfSlider } from './slider/Slider';
-export type { SliderProps, SliderSize, SliderTone } from './slider/variants';
+export type {
+  SliderChangeMeta,
+  SliderChangeSource,
+  SliderProps,
+  SliderSize,
+  SliderTone,
+} from './slider/variants';
 
 export { Drawer as CfDrawer } from './drawer/Drawer';
 export type {

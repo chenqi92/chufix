@@ -18,6 +18,7 @@ export function Slider(props: SliderProps) {
     showValue = false,
     ticks = false,
     onChange,
+    onChangeEnd,
   } = props;
 
   const controlled = value !== undefined;
@@ -26,6 +27,7 @@ export function Slider(props: SliderProps) {
 
   const trackRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
+  const interactionValueRef = useRef(current);
 
   const percent = max === min ? 0 : ((current - min) / (max - min)) * 100;
 
@@ -36,10 +38,15 @@ export function Slider(props: SliderProps) {
     }
   }
 
-  function commit(v: number) {
-    if (v === current) return;
+  function commit(
+    v: number,
+    meta: Parameters<NonNullable<SliderProps['onChange']>>[1],
+  ): boolean {
+    interactionValueRef.current = v;
+    if (v === current) return false;
     if (!controlled) setInner(v);
-    onChange?.(v);
+    onChange?.(v, meta);
+    return true;
   }
   function valueFromX(clientX: number): number {
     if (!trackRef.current) return current;
@@ -52,28 +59,51 @@ export function Slider(props: SliderProps) {
     if (disabled) return;
     draggingRef.current = true;
     (e.target as Element).setPointerCapture?.(e.pointerId);
-    commit(valueFromX(e.clientX));
+    const next = valueFromX(e.clientX);
+    commit(next, { event: e, value: next, source: 'pointer' });
   }
   function onPointerMove(e: PointerEvent<HTMLDivElement>) {
     if (!draggingRef.current) return;
-    commit(valueFromX(e.clientX));
+    const next = valueFromX(e.clientX);
+    commit(next, { event: e, value: next, source: 'pointer' });
   }
   function onPointerUp(e: PointerEvent<HTMLDivElement>) {
+    if (!draggingRef.current) return;
     draggingRef.current = false;
     (e.target as Element).releasePointerCapture?.(e.pointerId);
+    onChangeEnd?.(interactionValueRef.current, {
+      event: e,
+      value: interactionValueRef.current,
+      source: 'pointer',
+    });
   }
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (disabled) return;
     let dir = 0;
     if (e.key === 'ArrowRight' || e.key === 'ArrowUp') dir = 1;
     else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') dir = -1;
-    else if (e.key === 'Home') return commit(min);
-    else if (e.key === 'End') return commit(max);
+    else if (e.key === 'Home') {
+      e.preventDefault();
+      if (commit(min, { event: e, value: min, source: 'keyboard' })) {
+        onChangeEnd?.(min, { event: e, value: min, source: 'keyboard' });
+      }
+      return;
+    }
+    else if (e.key === 'End') {
+      e.preventDefault();
+      if (commit(max, { event: e, value: max, source: 'keyboard' })) {
+        onChangeEnd?.(max, { event: e, value: max, source: 'keyboard' });
+      }
+      return;
+    }
     else if (e.key === 'PageUp') dir = 10;
     else if (e.key === 'PageDown') dir = -10;
     if (dir !== 0) {
       e.preventDefault();
-      commit(clampStep(current + dir * step, min, max, step));
+      const next = clampStep(current + dir * step, min, max, step);
+      if (commit(next, { event: e, value: next, source: 'keyboard' })) {
+        onChangeEnd?.(next, { event: e, value: next, source: 'keyboard' });
+      }
     }
   }
 
