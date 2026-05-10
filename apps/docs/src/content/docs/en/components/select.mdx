@@ -1,6 +1,6 @@
 ---
 title: Select
-description: Dropdown picker — array-style options API with clearable, keyboard navigation, and disabled items.
+description: Dropdown picker — single/multi, searchable, grouped, async loading, keyboard nav, tag overflow.
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
@@ -8,6 +8,10 @@ import BasicVue from '~/components/demos/select/BasicVue.vue';
 import VariantsVue from '~/components/demos/select/VariantsVue.vue';
 import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
 import EventsVue from '~/components/demos/select/EventsVue.vue';
+import MultiVue from '~/components/demos/select/MultiVue.vue';
+import SearchVue from '~/components/demos/select/SearchVue.vue';
+import GroupVue from '~/components/demos/select/GroupVue.vue';
+import AsyncLoadVue from '~/components/demos/select/AsyncLoadVue.vue';
 
 ## Basic usage
 
@@ -115,6 +119,38 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
   <EventsVue client:load />
 </DemoFrame>
 
+## Multiple
+
+`multiple` turns the model into an array; the trigger renders removable tag chips. `maxTagCount` collapses overflow into a `+N` pill. Backspace removes the last tag.
+
+<DemoFrame>
+  <MultiVue client:only="vue" />
+</DemoFrame>
+
+## Searchable
+
+`searchable` adds an input atop the menu that filters by label in real time. Stacks with `multiple` for traditional multi-select UX.
+
+<DemoFrame>
+  <SearchVue client:only="vue" />
+</DemoFrame>
+
+## Groups
+
+Add `group: string` to an option and the component renders a section header per group (in first-encounter order).
+
+<DemoFrame>
+  <GroupVue client:only="vue" />
+</DemoFrame>
+
+## Async loading
+
+When `loading=true` the trigger is disabled and shows a spinner; the menu shows "Loading…". Pair with onMounted / SWR / TanStack Query.
+
+<DemoFrame>
+  <AsyncLoadVue client:only="vue" />
+</DemoFrame>
+
 ## Keyboard interaction
 
 | Key              | Behavior                                  |
@@ -137,6 +173,11 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
 | `error`       | `boolean`                          | `false`      | Error state                                     |
 | `name`        | `string`                           | —            | Renders a hidden input for native form submit   |
 | `id`          | `string`                           | —            | Trigger button id, also wires up the listbox    |
+| `multiple`    | `boolean`                          | `false`      | Multi-select; model becomes `Array<value>`      |
+| `searchable`  | `boolean`                          | `false`      | Adds a filter input above the menu              |
+| `loading`     | `boolean`                          | `false`      | Async loading state (trigger disabled + spinner)|
+| `emptyText`   | `string`                           | `'No options'`| Override the empty-state message               |
+| `maxTagCount` | `number`                           | —            | Cap visible tags in multi-mode; rest collapse   |
 
 ## Events
 
@@ -147,6 +188,7 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
 | `clear` | `onClear` | — | Clear button clicked |
 | `open-change` | `onOpenChange` | `open` | Menu opened / closed |
 | `active-change` | `onActiveChange` | `(option, index)` | Keyboard or mouse moved the active option |
+| `search` | `onSearch` | `term` | Search input changed (only when `searchable=true`) |
 | `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | Trigger button focus events |
 
 > The current implementation uses an `position: absolute` overlay. If a parent has `overflow: hidden` and crops the menu, a Portal version will be added later.
