@@ -3,6 +3,7 @@
 
 @import '@chufix/tokens/tokens.css';
 @import '@chufix/vue/style.css';
+@import './blocks.css';
 
 * { box-sizing: border-box; }
 
@@ -81,9 +82,31 @@ kbd {
   height: 60px;
   padding: 0 1.25rem;
   display: grid;
-  grid-template-columns: 260px 1fr auto;
+  grid-template-columns: 240px auto 1fr auto;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
+}
+.site-nav__menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.site-nav__menu-link {
+  color: var(--fg-2);
+  font-size: var(--t-13);
+  font-weight: var(--w-medium);
+  padding: 6px 10px;
+  border-radius: var(--r-4);
+  text-decoration: none;
+  transition: background var(--dur-instant) linear, color var(--dur-instant) linear;
+}
+.site-nav__menu-link:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+.site-nav__menu-link[aria-current='page'] {
+  background: var(--accent-soft);
+  color: var(--accent-1);
 }
 .site-nav__brand {
   display: inline-flex;

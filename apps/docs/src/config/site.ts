@@ -209,45 +209,7 @@ export const sidebar: SidebarGroup[] = [
       { label: 'TearOffTabs 可撕离 Tab', href: '/components/tearofftab/' },
     ],
   },
-  {
-    label: '数据可视化',
-    items: [
-      { label: 'Sparkline 缩略走势', href: '/components/sparkline/' },
-      { label: 'LineChart 折线图', href: '/components/linechart/' },
-      { label: 'AreaChart 面积图', href: '/components/areachart/' },
-      { label: 'BarChart 柱状图', href: '/components/barchart/' },
-      { label: 'Histogram 直方图', href: '/components/histogram/' },
-      { label: 'StackedBar100 占比柱', href: '/components/stackedbar100/' },
-      { label: 'BulletChart 子弹图', href: '/components/bulletchart/' },
-      { label: 'CandlestickChart K 线图', href: '/components/candlestickchart/' },
-      { label: 'DonutChart 环形图', href: '/components/donutchart/' },
-      { label: 'FunnelChart 漏斗图', href: '/components/funnelchart/' },
-      { label: 'Treemap 矩形树图', href: '/components/treemap/' },
-      { label: 'SankeyDiagram 流向图', href: '/components/sankeydiagram/' },
-      { label: 'ScatterPlot 散点图', href: '/components/scatterplot/' },
-      { label: 'BoxPlot 箱线图', href: '/components/boxplot/' },
-      { label: 'RadarChart 雷达图', href: '/components/radarchart/' },
-      { label: 'RidgePlot 密度脊图', href: '/components/ridgeplot/' },
-      { label: 'Gauge 仪表盘', href: '/components/gauge/' },
-      { label: 'MetricCard 指标卡', href: '/components/metriccard/' },
-      { label: 'TimingBar 请求瀑布', href: '/components/timingbar/' },
-      { label: 'LatencyHeatmap 延迟热力图', href: '/components/latencyheatmap/' },
-      { label: 'ConnectionGraph 连接图', href: '/components/connectiongraph/' },
-      { label: 'ChartCrosshair 十字线', href: '/components/chartcrosshair/' },
-      { label: 'ChartToolbar 图表工具栏', href: '/components/charttoolbar/' },
-    ],
-  },
-  {
-    label: '模版 / 页面模块',
-    items: [
-      { label: 'ProtocolPane 协议面板', href: '/components/protocolpane/' },
-      { label: 'NetworkPane 网络面板', href: '/components/networkpane/' },
-      { label: 'SqlWorkbench SQL 工作台', href: '/components/sqlworkbench/' },
-      { label: 'TerminalPane 终端面板', href: '/components/terminalpane/' },
-      { label: 'CrashPane 崩溃面板', href: '/components/crashpane/' },
-      { label: 'PluginPane 插件面板', href: '/components/pluginpane/' },
-      { label: 'DomainPane API 调试', href: '/components/domainpane/' },
-      { label: 'OnboardingFlow 引导流', href: '/components/onboardingflow/' },
-    ],
-  },
+  /* 数据可视化 已迁到顶级页 /charts/，每张图仍有 /components/<chart>/ 详情。
+   * 模版 已迁到顶级页 /blocks/，每个壳仍有 /components/<pane>/ 详情。
+   * sidebar 不再列这两组。 */
 ];

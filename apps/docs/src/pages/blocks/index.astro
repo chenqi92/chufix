@@ -1,0 +1,80 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CategoryTabs from '~/components/CategoryTabs.astro';
+import BlockPreview from '~/components/BlockPreview.vue';
+import { blocks } from '~/blocks/registry';
+import { CATEGORIES } from '~/blocks/types';
+
+const grouped = CATEGORIES.map((cat) => ({
+  ...cat,
+  items: blocks.filter((b) => b.category === cat.id),
+}));
+const defaultCat = CATEGORIES[0].id;
+---
+
+<BaseLayout
+  title="Blocks 页面方案"
+  description="开箱即用的成品页面拼装：仪表盘 / 登录 / 错误页 / 工作台 / 设置 / 8 个模版壳。复制代码即可使用。"
+>
+  <div class="blocks-page">
+    <header class="blocks-hero">
+      <h1 class="blocks-hero__title">Blocks 页面方案</h1>
+      <p class="blocks-hero__lede">
+        ChuFix 不只是 atoms — 这里是把 atoms 拼成完整页面的"成品菜谱"。
+        每个 block 都包含完整 Vue 单文件 + 多文件分解（如有），点开看代码即可粘贴到自己应用里。
+      </p>
+    </header>
+
+    <CategoryTabs tabs={grouped.map((g) => ({ id: g.id, label: g.label }))} defaultId={defaultCat}>
+      {grouped.map((g) => (
+        <div data-cat-panel={g.id} data-active={g.id === defaultCat ? 'true' : 'false'}>
+          <p class="blocks-page__cat-desc">{g.description}</p>
+          <div class="cf-gallery">
+            {g.items.map((b) => (
+              <a class="cf-gallery-card" href={`/blocks/${b.id}/`}>
+                <div class="cf-gallery-card__preview cf-gallery-card__preview--scaled">
+                  <div class="cf-gallery-card__scaled-inner">
+                    <BlockPreview blockId={b.id} client:only="vue" />
+                  </div>
+                </div>
+                <div class="cf-gallery-card__body">
+                  <div class="cf-gallery-card__name">{b.name}</div>
+                  <div class="cf-gallery-card__desc">{b.description}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </CategoryTabs>
+  </div>
+</BaseLayout>
+
+<style>
+  .blocks-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .blocks-page__cat-desc {
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    margin: 0 0 14px;
+  }
+  /* gallery card preview gets a constrained scaled view of the live block */
+  .cf-gallery-card__preview--scaled {
+    height: 220px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+  }
+  .cf-gallery-card__scaled-inner {
+    width: 1280px;
+    transform-origin: top left;
+    transform: scale(0.32);
+    pointer-events: none;
+    background: var(--bg-0);
+    padding: 16px;
+  }
+</style>

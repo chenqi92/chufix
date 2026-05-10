@@ -1,0 +1,87 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BlockShowcase from '~/components/BlockShowcase.astro';
+import BlockPreview from '~/components/BlockPreview.vue';
+import { blocks } from '~/blocks/registry';
+import { CATEGORIES } from '~/blocks/types';
+
+export async function getStaticPaths() {
+  return blocks.map((b) => ({ params: { block: b.id }, props: { block: b } }));
+}
+
+const { block } = Astro.props;
+const cat = CATEGORIES.find((c) => c.id === block.category);
+---
+
+<BaseLayout title={block.name} description={block.description}>
+  <div class="block-detail">
+    <header class="block-detail__head">
+      <a href="/blocks/" class="block-detail__back">← 所有 Blocks</a>
+      <span class="block-detail__cat">{cat?.label ?? block.category}</span>
+      <h1>{block.name}</h1>
+      <p>{block.description}</p>
+    </header>
+
+    <BlockShowcase id={block.id} files={block.files} cli={block.cli} previewHeight={block.height ?? 480}>
+      <BlockPreview blockId={block.id} client:only="vue" />
+    </BlockShowcase>
+
+    <footer class="block-detail__foot">
+      <p>需要更多 blocks？提 issue 到 <a href="https://github.com/chenqi92/chufix" target="_blank" rel="noopener">chenqi92/chufix</a>，我们按需补。</p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .block-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .block-detail__head {
+    margin-bottom: 24px;
+  }
+  .block-detail__back {
+    display: inline-block;
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    text-decoration: none;
+    margin-bottom: 12px;
+  }
+  .block-detail__back:hover {
+    color: var(--fg-1);
+  }
+  .block-detail__cat {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    background: var(--accent-soft);
+    color: var(--accent-1);
+    font-size: var(--t-11);
+    font-weight: var(--w-medium);
+    margin-bottom: 8px;
+  }
+  .block-detail__head h1 {
+    margin: 0;
+    font-size: var(--t-22);
+    font-weight: var(--w-medium);
+    color: var(--fg-1);
+  }
+  .block-detail__head p {
+    margin: 8px 0 0;
+    color: var(--fg-2);
+    font-size: var(--t-14);
+    line-height: 1.6;
+  }
+  .block-detail__foot {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-1);
+    color: var(--fg-3);
+    font-size: var(--t-12);
+  }
+  .block-detail__foot a {
+    color: var(--accent-1);
+  }
+</style>

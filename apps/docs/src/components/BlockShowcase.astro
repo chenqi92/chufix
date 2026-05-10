@@ -1,0 +1,110 @@
+---
+import { Code } from 'astro:components';
+
+/**
+ * Multi-file code showcase for Blocks pages — preview + file-tab code view.
+ * Mirrors shadcn/ui blocks layout: Preview/Code toggle, then file tabs inside Code mode.
+ */
+export interface BlockFile {
+  name: string;
+  content: string;
+  lang: 'vue' | 'tsx' | 'ts' | 'js' | 'json' | 'css' | 'bash' | 'mdx';
+}
+interface Props {
+  /** Block id, used for installation hint. */
+  id: string;
+  files: BlockFile[];
+  /** Optional CLI install hint (e.g. `npx chufix add dashboard-overview`). */
+  cli?: string;
+  /** Optional preview frame height. */
+  previewHeight?: number | string;
+}
+const { id, files, cli, previewHeight } = Astro.props;
+const heightStyle =
+  previewHeight != null
+    ? typeof previewHeight === 'number'
+      ? `${previewHeight}px`
+      : previewHeight
+    : '480px';
+---
+
+<section class="cf-block" data-block-showcase data-block-id={id}>
+  <header class="cf-block__bar">
+    <div class="cf-block__modes" role="tablist" aria-label="预览 / 代码">
+      <button class="cf-block__mode" data-mode="preview" aria-selected="true">预览</button>
+      <button class="cf-block__mode" data-mode="code" aria-selected="false">代码</button>
+    </div>
+    {cli && (
+      <div class="cf-block__cli">
+        <code>{cli}</code>
+        <button class="cf-block__copy" type="button" data-copy={cli} title="复制 CLI 命令">复制</button>
+      </div>
+    )}
+  </header>
+
+  <div class="cf-block__body">
+    <div class="cf-block__preview" data-pane="preview" data-active="true" style={`min-height: ${heightStyle};`}>
+      <div class="cf-block__preview-frame">
+        <slot />
+      </div>
+    </div>
+    <div class="cf-block__code" data-pane="code" data-active="false">
+      <div class="cf-block__files" role="tablist" aria-label="代码文件">
+        {files.map((f, i) => (
+          <button
+            type="button"
+            role="tab"
+            class="cf-block__file"
+            data-file={f.name}
+            aria-selected={i === 0 ? 'true' : 'false'}
+          >
+            {f.name}
+          </button>
+        ))}
+      </div>
+      {files.map((f, i) => (
+        <div class="cf-block__filebody" data-filebody={f.name} data-active={i === 0 ? 'true' : 'false'}>
+          <button class="cf-block__copy cf-block__copy--code" data-copy={f.content}>复制</button>
+          <Code code={f.content} lang={f.lang as any} theme="github-dark" />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-block-showcase]').forEach((root) => {
+    const modeBtns = root.querySelectorAll<HTMLButtonElement>('.cf-block__mode');
+    const panes = root.querySelectorAll<HTMLElement>('[data-pane]');
+    const fileBtns = root.querySelectorAll<HTMLButtonElement>('.cf-block__file');
+    const fileBodies = root.querySelectorAll<HTMLElement>('[data-filebody]');
+
+    modeBtns.forEach((b) =>
+      b.addEventListener('click', () => {
+        const mode = b.dataset.mode!;
+        modeBtns.forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
+        panes.forEach((p) => (p.dataset.active = p.dataset.pane === mode ? 'true' : 'false'));
+      }),
+    );
+
+    fileBtns.forEach((b) =>
+      b.addEventListener('click', () => {
+        const f = b.dataset.file!;
+        fileBtns.forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
+        fileBodies.forEach((bd) => (bd.dataset.active = bd.dataset.filebody === f ? 'true' : 'false'));
+      }),
+    );
+
+    root.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
+      b.addEventListener('click', async () => {
+        const txt = b.dataset.copy ?? '';
+        try {
+          await navigator.clipboard.writeText(txt);
+          const orig = b.textContent;
+          b.textContent = '已复制';
+          setTimeout(() => (b.textContent = orig), 1500);
+        } catch {}
+      }),
+    );
+  });
+</script>

@@ -1,0 +1,123 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CategoryTabs from '~/components/CategoryTabs.astro';
+import ChartPreview from '~/components/ChartPreview.vue';
+
+const categories = [
+  {
+    id: 'time',
+    label: '时序',
+    desc: '时间维度上的趋势变化',
+    items: [
+      { key: 'linechart', name: 'LineChart 折线图', href: '/components/linechart/', desc: '多 series 折线，支持平滑曲线' },
+      { key: 'areachart', name: 'AreaChart 面积图', href: '/components/areachart/', desc: '面积图，支持堆叠模式' },
+      { key: 'sparkline', name: 'Sparkline 缩略走势', href: '/components/sparkline/', desc: '行内微缩走势线' },
+      { key: 'candlestickchart', name: 'CandlestickChart K 线', href: '/components/candlestickchart/', desc: 'OHLC 蜡烛图' },
+    ],
+  },
+  {
+    id: 'category',
+    label: '分类',
+    desc: '离散类别的数值比较',
+    items: [
+      { key: 'barchart', name: 'BarChart 柱状图', href: '/components/barchart/', desc: '单 series 垂直柱状图' },
+      { key: 'histogram', name: 'Histogram 直方图', href: '/components/histogram/', desc: '分箱直方图' },
+      { key: 'stackedbar100', name: 'StackedBar100 占比柱', href: '/components/stackedbar100/', desc: '横向 100% 堆叠柱' },
+      { key: 'bulletchart', name: 'BulletChart 子弹图', href: '/components/bulletchart/', desc: '单值进度 + 目标线 + 质量带' },
+    ],
+  },
+  {
+    id: 'composition',
+    label: '占比',
+    desc: '部分与整体的关系',
+    items: [
+      { key: 'donutchart', name: 'DonutChart 环形图', href: '/components/donutchart/', desc: '中空饼图，可放中心数值' },
+      { key: 'funnelchart', name: 'FunnelChart 漏斗图', href: '/components/funnelchart/', desc: '逐层收窄的转化漏斗' },
+      { key: 'treemap', name: 'Treemap 矩形树图', href: '/components/treemap/', desc: '层级矩形面积图' },
+      { key: 'sankeydiagram', name: 'SankeyDiagram 流向图', href: '/components/sankeydiagram/', desc: '节点 + 加权边的流向图' },
+    ],
+  },
+  {
+    id: 'multi',
+    label: '多维',
+    desc: '多变量分布与对比',
+    items: [
+      { key: 'scatterplot', name: 'ScatterPlot 散点图', href: '/components/scatterplot/', desc: '二维散点，按 group 分色' },
+      { key: 'boxplot', name: 'BoxPlot 箱线图', href: '/components/boxplot/', desc: '统计 5 数概要 + outliers' },
+      { key: 'radarchart', name: 'RadarChart 雷达图', href: '/components/radarchart/', desc: '多维度对比的多边形' },
+      { key: 'ridgeplot', name: 'RidgePlot 密度脊图', href: '/components/ridgeplot/', desc: '多组密度曲线垂直堆叠' },
+    ],
+  },
+  {
+    id: 'single',
+    label: '单值 / 性能',
+    desc: '单数值或性能瀑布',
+    items: [
+      { key: 'gauge', name: 'Gauge 仪表盘', href: '/components/gauge/', desc: '圆环型当前值仪表' },
+      { key: 'metriccard', name: 'MetricCard 指标卡', href: '/components/metriccard/', desc: '数值 + 涨跌 + sparkline' },
+      { key: 'timingbar', name: 'TimingBar 请求瀑布', href: '/components/timingbar/', desc: '横向请求阶段瀑布图' },
+      { key: 'latencyheatmap', name: 'LatencyHeatmap 延迟热力', href: '/components/latencyheatmap/', desc: '二维矩阵热力图' },
+      { key: 'connectiongraph', name: 'ConnectionGraph 连接图', href: '/components/connectiongraph/', desc: '节点 + 边的关系图' },
+    ],
+  },
+  {
+    id: 'tools',
+    label: '工具',
+    desc: '可嵌入到任何图表的辅助件',
+    items: [
+      { key: 'charttoolbar', name: 'ChartToolbar 图表工具栏', href: '/components/charttoolbar/', desc: '标题 + legend toggle + zoom/export' },
+      { key: 'chartcrosshair', name: 'ChartCrosshair 十字线', href: '/components/chartcrosshair/', desc: '可嵌入任意 SVG 的十字定位线' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Charts 数据可视化"
+  description="22 个纯 SVG 图表组件，按用法分 6 类。配色取自 --viz-1..8 token，色盲友好。"
+>
+  <div class="charts-page">
+    <header class="blocks-hero">
+      <h1 class="blocks-hero__title">Charts 数据可视化</h1>
+      <p class="blocks-hero__lede">
+        22 个纯 SVG 图表，零三方依赖，全部基于内部 _useScale / _arcPath / _polar 工具函数实现。
+        色板使用 <code>--viz-1..8</code> token，色盲友好，与 Chufix 主题切换联动。
+      </p>
+    </header>
+
+    <CategoryTabs tabs={categories.map(c => ({ id: c.id, label: c.label }))} defaultId={categories[0].id}>
+      {categories.map((c) => (
+        <div data-cat-panel={c.id} data-active={c.id === categories[0].id ? 'true' : 'false'}>
+          <p class="charts-page__cat-desc">{c.desc}</p>
+          <div class="cf-gallery">
+            {c.items.map((it) => (
+              <a class="cf-gallery-card" href={it.href}>
+                <div class="cf-gallery-card__preview">
+                  <ChartPreview chart={it.key} client:only="vue" />
+                </div>
+                <div class="cf-gallery-card__body">
+                  <div class="cf-gallery-card__name">{it.name}</div>
+                  <div class="cf-gallery-card__desc">{it.desc}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </CategoryTabs>
+  </div>
+</BaseLayout>
+
+<style>
+  .charts-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .charts-page__cat-desc {
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    margin: 0 0 14px;
+  }
+</style>

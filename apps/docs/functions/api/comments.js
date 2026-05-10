@@ -20,7 +20,59 @@ function getDb(env) {
 function isAdmin(request, env) {
   const token = env.CHUFIX_COMMENTS_ADMIN_TOKEN;
   if (!token) return false;
-  return request.headers.get('x-chufix-admin-token') === token;
+  if (request.headers.get('x-chufix-admin-token') === token) return true;
+  return hasValidAdminSession(request, token);
+}
+
+function getCookie(request, name) {
+  const cookie = request.headers.get('cookie') || '';
+  for (const part of cookie.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key === name) return rest.join('=');
+  }
+  return '';
+}
+
+function base64urlDecode(value) {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=');
+  return Uint8Array.from(atob(padded), (char) => char.charCodeAt(0));
+}
+
+function base64urlEncode(bytes) {
+  const binary = String.fromCharCode(...bytes);
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+async function signSessionPayload(payload, secret) {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    new TextEncoder().encode(payload),
+  );
+  return base64urlEncode(new Uint8Array(signature));
+}
+
+async function hasValidAdminSession(request, token) {
+  const session = getCookie(request, 'chufix_comments_session');
+  const [payload, signature] = session.split('.');
+  if (!payload || !signature) return false;
+  const expected = await signSessionPayload(payload, token);
+  if (signature !== expected) return false;
+
+  try {
+    const data = JSON.parse(new TextDecoder().decode(base64urlDecode(payload)));
+    return data.role === 'admin' && typeof data.exp === 'number' && data.exp > Date.now();
+  } catch {
+    return false;
+  }
 }
 
 async function ensureSchema(db) {
@@ -71,6 +123,8 @@ function mapComment(row) {
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    ipHash: row.ip_hash,
+    userAgent: row.user_agent,
   };
 }
 
@@ -81,38 +135,48 @@ export function onRequestOptions() {
 export async function onRequestGet({ request, env }) {
   const db = getDb(env);
   if (!db) {
-    return json(
-      { ok: false, code: 'COMMENTS_DB_NOT_BOUND', comments: [] },
-      { status: 501 },
-    );
+    return json({ ok: false, code: 'COMMENTS_DB_NOT_BOUND', comments: [] });
   }
 
   await ensureSchema(db);
 
   const url = new URL(request.url);
-  const admin = isAdmin(request, env);
+  const admin = await isAdmin(request, env);
+  const adminMode = admin && url.searchParams.get('admin') === '1';
   const pageId = cleanText(url.searchParams.get('pageId'), 180);
-  const status = admin
+  const requestedStatus = adminMode
     ? cleanText(url.searchParams.get('status') || 'pending', 24)
     : 'approved';
+  const status = ['pending', 'approved', 'rejected', 'all'].includes(requestedStatus)
+    ? requestedStatus
+    : 'pending';
 
-  if (!pageId && !admin) {
+  if (!pageId && !adminMode) {
     return json({ ok: false, error: 'pageId is required' }, { status: 400 });
   }
 
-  const query = admin && !pageId
-    ? db.prepare(`
-        SELECT * FROM comments
-        WHERE status = ?
-        ORDER BY created_at DESC
-        LIMIT 100
-      `).bind(status)
-    : db.prepare(`
-        SELECT * FROM comments
-        WHERE page_id = ? AND status = ?
-        ORDER BY created_at ASC
-        LIMIT 100
-      `).bind(pageId, status);
+  let query;
+  if (adminMode && !pageId && status === 'all') {
+    query = db.prepare(`
+      SELECT * FROM comments
+      ORDER BY created_at DESC
+      LIMIT 100
+    `);
+  } else if (adminMode && !pageId) {
+    query = db.prepare(`
+      SELECT * FROM comments
+      WHERE status = ?
+      ORDER BY created_at DESC
+      LIMIT 100
+    `).bind(status);
+  } else {
+    query = db.prepare(`
+      SELECT * FROM comments
+      WHERE page_id = ? AND status = ?
+      ORDER BY created_at ASC
+      LIMIT 100
+    `).bind(pageId, status);
+  }
 
   const { results } = await query.all();
   return json({ ok: true, comments: (results || []).map(mapComment) });
@@ -121,7 +185,7 @@ export async function onRequestGet({ request, env }) {
 export async function onRequestPost({ request, env }) {
   const db = getDb(env);
   if (!db) {
-    return json({ ok: false, code: 'COMMENTS_DB_NOT_BOUND' }, { status: 501 });
+    return json({ ok: false, code: 'COMMENTS_DB_NOT_BOUND' });
   }
 
   await ensureSchema(db);
@@ -136,11 +200,10 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'pageId, author and content are required' }, { status: 400 });
   }
 
-  const admin = isAdmin(request, env);
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
-  const role = admin ? 'admin' : 'user';
-  const status = admin ? 'approved' : 'pending';
+  const role = 'user';
+  const status = 'pending';
   const ipHash = await hashIp(request, env);
   const userAgent = cleanText(request.headers.get('user-agent'), 240);
 
@@ -181,9 +244,9 @@ export async function onRequestPost({ request, env }) {
 export async function onRequestPatch({ request, env }) {
   const db = getDb(env);
   if (!db) {
-    return json({ ok: false, code: 'COMMENTS_DB_NOT_BOUND' }, { status: 501 });
+    return json({ ok: false, code: 'COMMENTS_DB_NOT_BOUND' });
   }
-  if (!isAdmin(request, env)) {
+  if (!(await isAdmin(request, env))) {
     return json({ ok: false, error: 'Admin token required' }, { status: 403 });
   }
 
