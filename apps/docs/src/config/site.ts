@@ -69,6 +69,7 @@ export const sidebar: SidebarGroup[] = [
       c('PhoneInput', '电话号码', 'phoneinput'),
       c('Textarea', '多行', 'textarea'),
       c('Select', '选择器', 'select'),
+      c('TreeSelect', '树形选择', 'treeselect'),
       c('Switch', '开关', 'switch'),
       c('Checkbox', '复选框', 'checkbox'),
       c('Radio', '单选框', 'radio'),
@@ -85,6 +86,7 @@ export const sidebar: SidebarGroup[] = [
       c('Dropzone', '文件拖拽', 'dropzone'),
       c('FilePicker', '文件选择', 'filepicker'),
       c('ColorPicker', '颜色选择', 'colorpicker'),
+      c('IconPicker', '图标选择', 'iconpicker'),
       c('DatePicker', '日期选择', 'datepicker'),
       c('DateRangePicker', '日期范围', 'daterangepicker'),
       c('KVEditor', '键值编辑器', 'kveditor'),
@@ -98,6 +100,8 @@ export const sidebar: SidebarGroup[] = [
   {
     label: L('容器', 'Container'),
     items: [
+      c('Flex', '弹性布局', 'flex'),
+      c('Grid', '栅格', 'grid'),
       c('Card', '卡片', 'card'),
       c('PageHeader', '页头', 'pageheader'),
       c('AppShell', '应用脚手架', 'appshell'),
@@ -185,7 +189,7 @@ export const sidebar: SidebarGroup[] = [
       c('Divider', '分割线', 'divider'),
       c('Empty', '空状态', 'empty'),
       c('Progress', '进度', 'progress'),
-      c('Spinner', '加载', 'spinner'),
+      c('Spinner', '加载中', 'spinner'),
       c('Accordion', '折叠面板', 'accordion'),
       c('BackTop', '返回顶部', 'backtop'),
       c('Affix', '固钉', 'affix'),

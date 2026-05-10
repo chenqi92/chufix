@@ -1,0 +1,33 @@
+---
+title: TreeSelect
+description: A dropdown selector for tree data with search, multiple selection, clear, and disabled nodes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/treeselect/BasicVue.vue';
+
+## Basic Usage
+
+`CfTreeSelect` is designed for departments, permissions, resource directories, regions, and other hierarchical data.
+
+<DemoFrame
+  vueCode={`<CfTreeSelect v-model="value" :options="options" searchable clearable />`}
+  reactCode={`<CfTreeSelect value={value} options={options} searchable clearable onChange={setValue} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `options` | `TreeSelectNode[]` | `—` | Tree nodes |
+| `value` / `modelValue` | `string / string[]` | `—` | Current value |
+| `placeholder` | `string` | `请选择` | Empty placeholder |
+| `multiple` | `boolean` | `false` | Multiple selection |
+| `searchable` | `boolean` | `false` | Show search input |
+| `clearable` | `boolean` | `false` | Show clear button |
+| `disabled` | `boolean` | `false` | Disable the control |
+| `size` | `sm / md / lg` | `md` | Size |
+
+Events: Vue `update:modelValue` / `change(value, node)`, React `onChange(value, node)`.

@@ -35,12 +35,16 @@ import './styles/tearofftab.css';
 import './styles/templatepane.css';
 import './styles/charts.css';
 import './styles/input.css';
+import './styles/flex.css';
+import './styles/grid.css';
 import './styles/card.css';
 import './styles/switch.css';
 import './styles/checkbox.css';
 import './styles/radio.css';
 import './styles/textarea.css';
 import './styles/select.css';
+import './styles/treeselect.css';
+import './styles/iconpicker.css';
 import './styles/tooltip.css';
 import './styles/toast.css';
 import './styles/tag.css';
@@ -469,6 +473,18 @@ export type {
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
 
+export { default as CfFlex } from './flex/Flex.vue';
+export type {
+  FlexProps,
+  FlexDirection,
+  FlexAlign,
+  FlexJustify,
+  FlexGap,
+} from './flex/variants';
+
+export { default as CfGrid } from './grid/Grid.vue';
+export type { GridProps, GridGap, GridAlign, GridJustify } from './grid/variants';
+
 export { default as CfCard } from './card/Card.vue';
 export type { CardProps, CardVariant } from './card/variants';
 
@@ -509,6 +525,16 @@ export type {
   SelectValue,
 } from './select/variants';
 
+export { default as CfTreeSelect } from './treeselect/TreeSelect.vue';
+export type {
+  TreeSelectProps,
+  TreeSelectNode,
+  TreeSelectSize,
+} from './treeselect/variants';
+
+export { default as CfIconPicker } from './iconpicker/IconPicker.vue';
+export type { IconPickerProps, IconPickerSize } from './iconpicker/variants';
+
 export { default as CfTooltip } from './tooltip/Tooltip.vue';
 export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
 
@@ -536,7 +562,9 @@ export type {
 } from './avatar/variants';
 
 export { default as CfModal } from './modal/Modal.vue';
-export type { ModalProps, ModalSize } from './modal/variants';
+export type { ModalProps, ModalSize, ModalTone, FooterAlign } from './modal/variants';
+export { modal } from './modal/service';
+export type { ModalServiceOptions } from './modal/service';
 
 export { default as CfTabs } from './tabs/Tabs.vue';
 export { default as CfTabPanel } from './tabs/TabPanel.vue';

@@ -20,6 +20,7 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
   } = props;
 
   const confirmVariant = tone === 'danger' ? 'danger' : 'primary';
+  const modalTitle = typeof title === 'string' ? title : undefined;
 
   const handleCancel = () => {
     onOpenChange(false);
@@ -35,7 +36,7 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
     <Modal
       open={open}
       onOpenChange={handleOpenChange}
-      title={title}
+      header={modalTitle}
       size="sm"
       closeOnOverlay={closeOnOverlay}
       closeOnEsc={closeOnEsc}

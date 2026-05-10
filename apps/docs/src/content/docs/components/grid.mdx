@@ -1,0 +1,30 @@
+---
+title: Grid 栅格
+description: 自适应栅格布局组件，支持固定列数、最小卡片宽度、间距 token 与 dense 排布。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/grid/BasicVue.vue';
+
+## 基础用法
+
+`CfGrid` 默认使用 `repeat(auto-fit, minmax(...))`，适合统计卡、表单分栏、资源列表、blocks 预览等区域。
+
+<DemoFrame
+  vueCode={`<CfGrid :min-item-width="180" gap="md">...</CfGrid>`}
+  reactCode={`<CfGrid minItemWidth={180} gap="md">...</CfGrid>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | 渲染元素 |
+| `columns` | `number / string` | `—` | 固定列数或完整 CSS grid-template-columns |
+| `minItemWidth` | `number / string` | `220px` | 自适应模式下的最小项宽 |
+| `gap` | `none / xs / sm / md / lg / xl / number / string` | `md` | 间距 |
+| `align` | `start / center / end / stretch` | `stretch` | 单元格交叉轴对齐 |
+| `justify` | `start / center / end / stretch` | `stretch` | 单元格主轴对齐 |
+| `dense` | `boolean` | `false` | 启用 dense 自动填充 |

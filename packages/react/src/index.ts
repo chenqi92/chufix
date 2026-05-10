@@ -35,12 +35,16 @@ import './styles/tearofftab.css';
 import './styles/templatepane.css';
 import './styles/charts.css';
 import './styles/input.css';
+import './styles/flex.css';
+import './styles/grid.css';
 import './styles/card.css';
 import './styles/switch.css';
 import './styles/checkbox.css';
 import './styles/radio.css';
 import './styles/textarea.css';
 import './styles/select.css';
+import './styles/treeselect.css';
+import './styles/iconpicker.css';
 import './styles/tooltip.css';
 import './styles/toast.css';
 import './styles/tag.css';
@@ -480,6 +484,25 @@ export type {
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
 
+export { Flex as CfFlex } from './flex/Flex';
+export type {
+  FlexProps,
+  FlexOwnProps,
+  FlexDirection,
+  FlexAlign,
+  FlexJustify,
+  FlexGap,
+} from './flex/variants';
+
+export { Grid as CfGrid } from './grid/Grid';
+export type {
+  GridProps,
+  GridOwnProps,
+  GridGap,
+  GridAlign,
+  GridJustify,
+} from './grid/variants';
+
 export {
   Card as CfCard,
   CardHeader as CfCardHeader,
@@ -528,6 +551,21 @@ export type {
   SelectValue,
 } from './select/variants';
 
+export { TreeSelect as CfTreeSelect } from './treeselect/TreeSelect';
+export type {
+  TreeSelectProps,
+  TreeSelectOwnProps,
+  TreeSelectNode,
+  TreeSelectSize,
+} from './treeselect/variants';
+
+export { IconPicker as CfIconPicker } from './iconpicker/IconPicker';
+export type {
+  IconPickerProps,
+  IconPickerOwnProps,
+  IconPickerSize,
+} from './iconpicker/variants';
+
 export { Tooltip as CfTooltip } from './tooltip/Tooltip';
 export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
 
@@ -556,7 +594,10 @@ export type {
 } from './avatar/variants';
 
 export { Modal as CfModal } from './modal/Modal';
-export type { ModalProps, ModalSize } from './modal/variants';
+export type { ModalProps } from './modal/Modal';
+export type { ModalSize, ModalTone, FooterAlign } from './modal/variants';
+export { modal } from './modal/service';
+export type { ModalServiceOptions } from './modal/service';
 
 export { Tabs as CfTabs, TabPanel as CfTabPanel } from './tabs/Tabs';
 export type {

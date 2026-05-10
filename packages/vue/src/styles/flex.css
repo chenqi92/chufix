@@ -1,0 +1,37 @@
+.cf-flex {
+  --cf-flex-gap: var(--s-6);
+  display: flex;
+  gap: var(--cf-flex-gap);
+  min-width: 0;
+  font-family: var(--font-sans);
+}
+
+.cf-flex--inline { display: inline-flex; }
+.cf-flex--full { width: 100%; }
+
+.cf-flex--dir-row { flex-direction: row; }
+.cf-flex--dir-column { flex-direction: column; }
+.cf-flex--dir-row-reverse { flex-direction: row-reverse; }
+.cf-flex--dir-column-reverse { flex-direction: column-reverse; }
+.cf-flex--wrap { flex-wrap: wrap; }
+
+.cf-flex--align-start { align-items: flex-start; }
+.cf-flex--align-center { align-items: center; }
+.cf-flex--align-end { align-items: flex-end; }
+.cf-flex--align-stretch { align-items: stretch; }
+.cf-flex--align-baseline { align-items: baseline; }
+
+.cf-flex--justify-start { justify-content: flex-start; }
+.cf-flex--justify-center { justify-content: center; }
+.cf-flex--justify-end { justify-content: flex-end; }
+.cf-flex--justify-between { justify-content: space-between; }
+.cf-flex--justify-around { justify-content: space-around; }
+.cf-flex--justify-evenly { justify-content: space-evenly; }
+
+.cf-flex[style*='--cf-flex-gap'] {
+  gap: var(--cf-flex-gap);
+}
+.cf-flex:not([style*='--cf-flex-gap']) {
+  gap: var(--cf-flex-gap);
+}
+.cf-flex--gap-none { --cf-flex-gap: 0; }

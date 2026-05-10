@@ -1,0 +1,30 @@
+---
+title: Grid
+description: Responsive grid layout with fixed columns, minimum item width, spacing tokens, and dense placement.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/grid/BasicVue.vue';
+
+## Basic Usage
+
+`CfGrid` defaults to `repeat(auto-fit, minmax(...))`, making it a good fit for stat cards, form columns, resource lists, and block previews.
+
+<DemoFrame
+  vueCode={`<CfGrid :min-item-width="180" gap="md">...</CfGrid>`}
+  reactCode={`<CfGrid minItemWidth={180} gap="md">...</CfGrid>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | Rendered element |
+| `columns` | `number / string` | `—` | Fixed columns or full CSS grid-template-columns |
+| `minItemWidth` | `number / string` | `220px` | Minimum item width in responsive mode |
+| `gap` | `none / xs / sm / md / lg / xl / number / string` | `md` | Spacing |
+| `align` | `start / center / end / stretch` | `stretch` | Cell block-axis alignment |
+| `justify` | `start / center / end / stretch` | `stretch` | Cell inline-axis alignment |
+| `dense` | `boolean` | `false` | Enable dense placement |

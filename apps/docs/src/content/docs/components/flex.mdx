@@ -1,0 +1,31 @@
+---
+title: Flex 弹性布局
+description: 用组件化 API 管理 flex-direction、align、justify、gap 与 wrap，减少页面内联样式。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/flex/BasicVue.vue';
+
+## 基础用法
+
+`CfFlex` 适合按钮组、表单行、状态栏、卡片工具区等高频弹性布局。`gap` 支持 token 尺寸，也支持数字像素或任意 CSS 长度。
+
+<DemoFrame
+  vueCode={`<CfFlex align="center" justify="between" wrap gap="md">...</CfFlex>`}
+  reactCode={`<CfFlex align="center" justify="between" wrap gap="md">...</CfFlex>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | 渲染元素 |
+| `direction` | `row / column / row-reverse / column-reverse` | `row` | 主轴方向 |
+| `align` | `start / center / end / stretch / baseline` | `stretch` | 交叉轴对齐 |
+| `justify` | `start / center / end / between / around / evenly` | `start` | 主轴分布 |
+| `gap` | `none / xs / sm / md / lg / xl / number / string` | `md` | 间距 |
+| `wrap` | `boolean` | `false` | 是否换行 |
+| `inline` | `boolean` | `false` | 使用 `inline-flex` |
+| `full` | `boolean` | `false` | 宽度占满父级 |

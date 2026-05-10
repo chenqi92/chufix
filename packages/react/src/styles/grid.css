@@ -1,0 +1,24 @@
+.cf-grid {
+  --cf-grid-gap: var(--s-6);
+  --cf-grid-min: 220px;
+  --cf-grid-columns: repeat(auto-fit, minmax(min(100%, var(--cf-grid-min)), 1fr));
+  display: grid;
+  grid-template-columns: var(--cf-grid-columns);
+  gap: var(--cf-grid-gap);
+  min-width: 0;
+  font-family: var(--font-sans);
+}
+
+.cf-grid--dense {
+  grid-auto-flow: dense;
+}
+
+.cf-grid--align-start { align-items: start; }
+.cf-grid--align-center { align-items: center; }
+.cf-grid--align-end { align-items: end; }
+.cf-grid--align-stretch { align-items: stretch; }
+
+.cf-grid--justify-start { justify-items: start; }
+.cf-grid--justify-center { justify-items: center; }
+.cf-grid--justify-end { justify-items: end; }
+.cf-grid--justify-stretch { justify-items: stretch; }

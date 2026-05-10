@@ -117,3 +117,128 @@
   transform: translateY(8px) scale(0.98);
   opacity: 0;
 }
+
+/* ---- Header layout ---- */
+.cf-modal__header {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.cf-modal__tone-icon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cf-modal__title-block {
+  flex: 1;
+  min-width: 0;
+}
+.cf-modal__title {
+  margin: 0;
+  font-size: var(--t-14);
+  font-weight: var(--w-semibold);
+  color: var(--fg-1);
+}
+.cf-modal__desc {
+  margin: 2px 0 0;
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  font-weight: var(--w-regular);
+  line-height: 1.5;
+}
+
+/* ---- Tones ---- */
+.cf-modal--info     .cf-modal__tone-icon { background: var(--status-info-soft); color: var(--status-info); }
+.cf-modal--success  .cf-modal__tone-icon { background: var(--status-success-soft); color: var(--status-success); }
+.cf-modal--warning  .cf-modal__tone-icon { background: var(--status-warning-soft); color: var(--status-warning); }
+.cf-modal--error    .cf-modal__tone-icon { background: var(--status-error-soft); color: var(--status-error); }
+
+/* ---- Footer alignment ---- */
+.cf-modal__footer[data-align='start']         { justify-content: flex-start; }
+.cf-modal__footer[data-align='center']        { justify-content: center; }
+.cf-modal__footer[data-align='end']           { justify-content: flex-end; }
+.cf-modal__footer[data-align='space-between'] { justify-content: space-between; }
+
+.cf-modal__footer-btn {
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-13);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.cf-modal__footer-btn:hover:not(:disabled) { border-color: var(--line-2); background: var(--bg-2); }
+.cf-modal__footer-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.cf-modal__footer-btn--primary {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-modal__footer-btn--primary:hover:not(:disabled) {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+.cf-modal__footer-btn--danger {
+  background: var(--status-error);
+  border-color: var(--status-error);
+  color: var(--fg-on-accent);
+}
+.cf-modal__footer-btn--danger:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+.cf-modal__footer-btn--secondary { background: var(--bg-2); }
+.cf-modal__footer-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: cf-modal-spin 0.8s linear infinite;
+}
+@keyframes cf-modal-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Draggable / resizable ---- */
+.cf-modal__dialog.is-draggable .cf-modal__header {
+  cursor: move;
+  user-select: none;
+}
+.cf-modal__dialog.is-resizable {
+  resize: none; /* 我们用自己的 handle */
+}
+.cf-modal__resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+  background: linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 4px,
+    var(--line-2) 4px,
+    var(--line-2) 5px,
+    transparent 5px,
+    transparent 7px,
+    var(--line-2) 7px,
+    var(--line-2) 8px,
+    transparent 8px,
+    transparent 10px,
+    var(--line-2) 10px,
+    var(--line-2) 11px
+  );
+  z-index: 1;
+}

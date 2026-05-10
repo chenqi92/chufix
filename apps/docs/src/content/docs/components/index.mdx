@@ -5,7 +5,7 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
 
 ## 总览
 
-P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 151 + 组件**，覆盖了 ProtoForge 设计稿里
+P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 155 + 组件**，覆盖了 ProtoForge 设计稿里
 所有的视觉单元 — 表单 / 反馈 / 容器 / 导航 / 数据展示 / 编辑器 / 系统壳 / 多窗口 / 图表 / 模版。
 
 
@@ -14,7 +14,7 @@ P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 151 + 组件*
 <div class="cf-feature-grid">
   <a href="/components/icon/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Icon 图标</div>
-    <div class="cf-card__body">169 个内置 SVG 图标，类型化 name，React / Vue 组件直接内联渲染。</div>
+    <div class="cf-card__body">500+ 个内置 SVG 图标，类型化 name，React / Vue 组件直接内联渲染。</div>
   </a>
   <a href="/components/button/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Button 按钮</div>
@@ -43,6 +43,10 @@ P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 151 + 组件*
   <a href="/components/select/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Select 选择器</div>
     <div class="cf-card__body">options 配置式 API，clearable、键盘导航、disabled item。</div>
+  </a>
+  <a href="/components/treeselect/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TreeSelect 树形选择</div>
+    <div class="cf-card__body">树形数据下拉选择，支持搜索、多选、清空与禁用节点。</div>
   </a>
   <a href="/components/searchinput/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">SearchInput 搜索框</div>
@@ -92,6 +96,10 @@ P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 151 + 组件*
     <div class="cf-card__header">ColorPicker 颜色选择</div>
     <div class="cf-card__body">HSV 调色板 + 色相 / 透明度滑块 + HEX / RGB / HSL 输入 + 预设色块。</div>
   </a>
+  <a href="/components/iconpicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">IconPicker 图标选择</div>
+    <div class="cf-card__body">搜索并选择内置 SVG 图标，适合菜单配置、仪表盘和属性面板。</div>
+  </a>
   <a href="/components/datepicker/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">DatePicker 日期选择</div>
     <div class="cf-card__body">月历面板，日 / 月 / 年三视图切换，min/max/disabledDate 约束，可清除。</div>
@@ -125,6 +133,14 @@ P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 151 + 组件*
 ## 容器
 
 <div class="cf-feature-grid">
+  <a href="/components/flex/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Flex 弹性布局</div>
+    <div class="cf-card__body">组件化管理 direction / align / justify / gap / wrap，减少内联样式。</div>
+  </a>
+  <a href="/components/grid/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Grid 栅格</div>
+    <div class="cf-card__body">自适应栅格，支持固定列数、最小卡片宽度、间距 token 与 dense 排布。</div>
+  </a>
   <a href="/components/card/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Card 卡片</div>
     <div class="cf-card__body">3 种 variant、Header / Body / Footer 三段式、可交互整卡。</div>
@@ -329,7 +345,7 @@ P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 151 + 组件*
     <div class="cf-card__body">线性 / 圆形进度条，5 种语义色，支持不确定状态。</div>
   </a>
   <a href="/components/spinner/" class="cf-card cf-card--outlined cf-card--link">
-    <div class="cf-card__header">Spinner 加载</div>
+    <div class="cf-card__header">Spinner 加载中</div>
     <div class="cf-card__body">旋转环加载图标，3 档尺寸 × 6 种 tone，可选文字标签。</div>
   </a>
   <a href="/components/accordion/" class="cf-card cf-card--outlined cf-card--link">
