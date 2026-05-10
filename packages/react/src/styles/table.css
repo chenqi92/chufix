@@ -468,6 +468,79 @@
   color: var(--accent-1);
 }
 
+/* ---- Row drag handle ---- */
+.cf-table__cell--row-drag {
+  width: 28px;
+  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: var(--fg-3);
+}
+.cf-table__row-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  cursor: grab;
+  border-radius: var(--r-3);
+  user-select: none;
+  -webkit-user-drag: element;
+}
+.cf-table__row-drag-handle:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-table__row-drag-handle:active {
+  cursor: grabbing;
+}
+.cf-table__row.is-row-dragging {
+  opacity: 0.55;
+}
+.cf-table__row.is-row-drop-target > .cf-table__cell {
+  box-shadow: inset 0 2px 0 var(--accent-1);
+}
+
+/* ---- Inline edit ---- */
+.cf-table__cell--editable {
+  cursor: cell;
+}
+.cf-table__cell--editable:hover::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed var(--line-2);
+  border-radius: var(--r-3);
+  pointer-events: none;
+}
+.cf-table__cell--editing {
+  padding: 2px 4px !important;
+}
+.cf-table__edit-input {
+  width: 100%;
+  height: 100%;
+  padding: 6px 8px;
+  border: 2px solid var(--accent-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font: inherit;
+  outline: 0;
+  box-sizing: border-box;
+}
+.cf-table__edit-input:focus {
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* ---- Virtual padding rows ---- */
+.cf-table__row--virtual-pad {
+  background: transparent !important;
+}
+.cf-table__row--virtual-pad > td {
+  background: transparent !important;
+  border: 0 !important;
+}
+
 /* ---- Pagination ---- */
 .cf-table__pagination {
   display: flex;

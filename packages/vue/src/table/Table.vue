@@ -9,21 +9,25 @@
  *   `update:columnsState` 暴露给上层。也可全受控传入 `columnsState`。
  * - 不依赖任何第三方拖拽 / 虚拟滚动库。HTML5 DnD 处理列拖拽；指针事件处理 resize。
  */
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   aggregate,
+  arrayMove,
   compareCells,
   computeHeaderRows,
   defaultFilterMatch,
   defaultGlobalSearchMatch,
+  downloadCsv,
   flattenColumns,
   getCellValue,
   getRowKey,
   nextSortDirection,
+  rowsToCsv,
   tableClass,
   type SortDirection,
   type TableColumn,
   type TableColumnsState,
+  type TableEditType,
   type TablePagination,
   type TableProps,
   type TableSort,
@@ -45,6 +49,12 @@ const props = withDefaults(defineProps<TableProps<T>>(), {
   reorderable: false,
   showSummary: false,
   toolbar: 'none',
+  virtual: false,
+  rowHeight: 36,
+  overscan: 6,
+  rowReorderable: false,
+  exportable: false,
+  exportFileName: 'table',
 });
 
 const emit = defineEmits<{
@@ -56,7 +66,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | string[] | null): void;
   (e: 'update:columnsState', value: TableColumnsState): void;
   (e: 'update:expandedRowKeys', value: string[]): void;
+  (e: 'update:rows', value: T[]): void;
   (e: 'row-click', row: T, index: number): void;
+  (e: 'cell-edit', payload: { row: T; column: TableColumn<T>; oldValue: unknown; newValue: unknown; index: number }): void;
+  (e: 'row-reorder', payload: { from: number; to: number; rows: T[] }): void;
+  (e: 'export', csv: string): void;
 }>();
 
 /* ============================================================ */
@@ -709,16 +723,171 @@ function summaryCellOf(srow: TableSummaryRow<T>, col: TableColumn<T>): unknown {
 
 const showToolbar = computed(() => {
   if (props.toolbar === 'none') return false;
-  // 'auto'：开启了 search / hide / 任意一个相关能力时显示
+  // 'auto'：开启了 search / hide / export / 任意一个相关能力时显示
   return (
     props.globalSearch !== undefined ||
     props.defaultGlobalSearch !== undefined ||
     !!props.globalSearchFn ||
-    hideableColumns.value.length > 0
+    hideableColumns.value.length > 0 ||
+    props.exportable === true
   );
 });
 
-defineExpose({ patchColumnsState });
+/* ============================================================ */
+/*                        虚拟滚动                                 */
+/* ============================================================ */
+
+const scrollEl = ref<HTMLElement | null>(null);
+const scrollTop = ref(0);
+const viewportHeight = ref(0);
+
+function onScroll(ev: Event) {
+  const el = ev.target as HTMLElement;
+  scrollTop.value = el.scrollTop;
+}
+
+let resizeObs: ResizeObserver | null = null;
+onMounted(() => {
+  if (!scrollEl.value) return;
+  viewportHeight.value = scrollEl.value.clientHeight;
+  if (typeof ResizeObserver !== 'undefined') {
+    resizeObs = new ResizeObserver(() => {
+      if (scrollEl.value) viewportHeight.value = scrollEl.value.clientHeight;
+    });
+    resizeObs.observe(scrollEl.value);
+  }
+});
+onBeforeUnmount(() => {
+  resizeObs?.disconnect();
+  resizeObs = null;
+});
+
+const virtualWindow = computed(() => {
+  if (!props.virtual) {
+    return { start: 0, end: flatTreeRows.value.length, padTop: 0, padBottom: 0 };
+  }
+  const total = flatTreeRows.value.length;
+  const rh = props.rowHeight ?? 36;
+  const overscan = props.overscan ?? 6;
+  const visible = Math.ceil((viewportHeight.value || 400) / rh) + 1;
+  const start = Math.max(0, Math.floor(scrollTop.value / rh) - overscan);
+  const end = Math.min(total, start + visible + overscan * 2);
+  return {
+    start,
+    end,
+    padTop: start * rh,
+    padBottom: Math.max(0, (total - end) * rh),
+  };
+});
+
+const visibleFlatRows = computed(() => {
+  const { start, end } = virtualWindow.value;
+  if (!props.virtual) return flatTreeRows.value;
+  return flatTreeRows.value.slice(start, end);
+});
+
+/* ============================================================ */
+/*                        行拖拽换序                              */
+/* ============================================================ */
+
+const rowDragKey = ref<string | null>(null);
+const rowDragOverKey = ref<string | null>(null);
+
+function onRowDragStart(ev: DragEvent, key: string) {
+  if (!props.rowReorderable) return;
+  rowDragKey.value = key;
+  ev.dataTransfer?.setData('text/plain', key);
+  if (ev.dataTransfer) ev.dataTransfer.effectAllowed = 'move';
+}
+function onRowDragOver(ev: DragEvent, key: string) {
+  if (!rowDragKey.value || rowDragKey.value === key) return;
+  ev.preventDefault();
+  if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'move';
+  if (rowDragOverKey.value !== key) rowDragOverKey.value = key;
+}
+function onRowDrop(ev: DragEvent, key: string) {
+  ev.preventDefault();
+  const from = rowDragKey.value;
+  rowDragKey.value = null;
+  rowDragOverKey.value = null;
+  if (!from || from === key) return;
+  // 找到 from / to 在 props.rows 里的索引（仅限顶层）
+  const fromIdx = props.rows.findIndex((r, i) => getRowKey(r, i, props.rowKey) === from);
+  const toIdx = props.rows.findIndex((r, i) => getRowKey(r, i, props.rowKey) === key);
+  if (fromIdx === -1 || toIdx === -1) return;
+  const next = arrayMove(props.rows, fromIdx, toIdx);
+  emit('update:rows', next);
+  emit('row-reorder', { from: fromIdx, to: toIdx, rows: next });
+}
+
+/* ============================================================ */
+/*                        内联编辑                                */
+/* ============================================================ */
+
+interface EditingCell {
+  rowKey: string;
+  colKey: string;
+  draft: unknown;
+}
+const editing = ref<EditingCell | null>(null);
+const editInputRef = ref<HTMLInputElement | HTMLSelectElement | null>(null);
+
+function isCellEditable(row: T, col: TableColumn<T>, index: number): boolean {
+  const e = col.editable;
+  if (!e) return false;
+  if (typeof e === 'function') return e(row, index);
+  return true;
+}
+function beginEdit(row: T, col: TableColumn<T>, index: number, key: string) {
+  if (!isCellEditable(row, col, index)) return;
+  editing.value = {
+    rowKey: key,
+    colKey: col.key,
+    draft: getCellValue(row, col),
+  };
+  nextTick(() => editInputRef.value?.focus());
+}
+function commitEdit(row: T, col: TableColumn<T>, index: number) {
+  const ed = editing.value;
+  if (!ed) return;
+  const oldValue = getCellValue(row, col);
+  let newValue: unknown = ed.draft;
+  if (col.editType === 'number') {
+    newValue = newValue === '' || newValue == null ? null : Number(newValue);
+  }
+  if (col.editValidate && col.editValidate(newValue, row, index) === false) {
+    return; // 校验失败：保持编辑态
+  }
+  editing.value = null;
+  if (newValue !== oldValue) {
+    emit('cell-edit', { row, column: col, oldValue, newValue, index });
+  }
+}
+function cancelEdit() {
+  editing.value = null;
+}
+function onEditKeydown(ev: KeyboardEvent, row: T, col: TableColumn<T>, index: number) {
+  if (ev.key === 'Enter') {
+    ev.preventDefault();
+    commitEdit(row, col, index);
+  } else if (ev.key === 'Escape') {
+    ev.preventDefault();
+    cancelEdit();
+  }
+}
+
+/* ============================================================ */
+/*                        CSV 导出                                */
+/* ============================================================ */
+
+function doExport() {
+  // 导出过滤后的当前数据，但用最初的 columns 保留隐藏列也想要的话；这里走 renderLeafColumns
+  const csv = rowsToCsv(filteredRows.value, renderLeafColumns.value as TableColumn<T>[]);
+  emit('export', csv);
+  downloadCsv(csv, props.exportFileName ?? 'table');
+}
+
+defineExpose({ patchColumnsState, exportCsv: doExport });
 </script>
 
 <template>
@@ -767,13 +936,26 @@ defineExpose({ patchColumnsState });
             </label>
           </div>
         </div>
+        <button
+          v-if="exportable"
+          type="button"
+          class="cf-table__col-menu-trigger"
+          :title="emptyText === '暂无数据' ? '导出 CSV' : 'Export CSV'"
+          @click="doExport"
+        >
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path d="M8 1v9m0 0L4 6m4 4l4-4M2 13h12v2H2z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>{{ emptyText === '暂无数据' ? '导出' : 'Export' }}</span>
+        </button>
         <slot name="toolbar-right" />
       </div>
     </header>
 
-    <div class="cf-table__scroll" :style="scrollStyle">
+    <div ref="scrollEl" class="cf-table__scroll" :style="scrollStyle" @scroll="onScroll">
       <table class="cf-table__table">
         <colgroup>
+          <col v-if="rowReorderable" style="width: 28px;" />
           <col v-if="selectable === 'multiple'" style="width: 36px;" />
           <col v-if="expandable" style="width: 36px;" />
           <col
@@ -786,6 +968,11 @@ defineExpose({ patchColumnsState });
         <!-- 表头：支持多行 -->
         <thead class="cf-table__head">
           <tr v-for="(row, rowIdx) in headerRows" :key="rowIdx">
+            <th
+              v-if="rowIdx === 0 && rowReorderable"
+              class="cf-table__cell cf-table__cell--th cf-table__cell--row-drag"
+              :rowspan="headerRows.length"
+            />
             <th
               v-if="rowIdx === 0 && selectable === 'multiple'"
               class="cf-table__cell cf-table__cell--th cf-table__cell--check"
@@ -957,22 +1144,52 @@ defineExpose({ patchColumnsState });
           <tr v-if="!flatTreeRows.length" class="cf-table__row cf-table__row--empty">
             <td
               class="cf-table__cell"
-              :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0)"
+              :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)"
             >
               <slot name="empty">{{ emptyText }}</slot>
             </td>
           </tr>
 
-          <template v-for="(fr) in flatTreeRows" :key="fr.key">
+          <!-- 虚拟滚动顶部占位 -->
+          <tr v-if="virtual && virtualWindow.padTop > 0" class="cf-table__row cf-table__row--virtual-pad" aria-hidden="true">
+            <td :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)" :style="{ height: `${virtualWindow.padTop}px`, padding: 0, border: 0 }" />
+          </tr>
+
+          <template v-for="(fr) in visibleFlatRows" :key="fr.key">
             <tr
               class="cf-table__row"
               :class="[
                 selectedSet.has(fr.key) && 'is-selected',
                 selectable && 'is-clickable',
                 fr.level > 0 && 'is-tree-child',
+                rowDragOverKey === fr.key && 'is-row-drop-target',
+                rowDragKey === fr.key && 'is-row-dragging',
               ]"
+              :style="virtual ? { height: `${rowHeight}px` } : undefined"
               @click="selectable ? toggleRow(fr.key) : onRowClick(fr.row, fr.index)"
+              @dragover="rowReorderable && fr.level === 0 && onRowDragOver($event, fr.key)"
+              @drop="rowReorderable && fr.level === 0 && onRowDrop($event, fr.key)"
             >
+              <td v-if="rowReorderable" class="cf-table__cell cf-table__cell--row-drag">
+                <span
+                  v-if="fr.level === 0"
+                  class="cf-table__row-drag-handle"
+                  draggable="true"
+                  :aria-label="`拖动第 ${fr.index + 1} 行`"
+                  @click.stop
+                  @dragstart="onRowDragStart($event, fr.key)"
+                  @dragend="rowDragKey = null; rowDragOverKey = null;"
+                >
+                  <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true">
+                    <circle cx="4" cy="3" r="1" fill="currentColor" />
+                    <circle cx="8" cy="3" r="1" fill="currentColor" />
+                    <circle cx="4" cy="6" r="1" fill="currentColor" />
+                    <circle cx="8" cy="6" r="1" fill="currentColor" />
+                    <circle cx="4" cy="9" r="1" fill="currentColor" />
+                    <circle cx="8" cy="9" r="1" fill="currentColor" />
+                  </svg>
+                </span>
+              </td>
               <td v-if="selectable === 'multiple'" class="cf-table__cell cf-table__cell--check">
                 <input
                   type="checkbox"
@@ -1004,16 +1221,47 @@ defineExpose({ patchColumnsState });
                   alignClass(col),
                   fixedClass(col),
                   col.ellipsis && 'cf-table__cell--ellipsis',
+                  isCellEditable(fr.row, col, fr.index) && 'cf-table__cell--editable',
+                  editing?.rowKey === fr.key && editing?.colKey === col.key && 'cf-table__cell--editing',
                   cellClassOf(fr.row, col, fr.index),
                 ]"
                 :style="fixedStyle(col)"
+                @dblclick="beginEdit(fr.row, col, fr.index, fr.key)"
               >
                 <span
                   v-if="ci === 0 && fr.level > 0"
                   class="cf-table__tree-indent"
                   :style="{ paddingLeft: `${fr.level * (treeIndent ?? 16)}px` }"
                 />
+                <!-- 编辑态 -->
+                <template v-if="editing && editing.rowKey === fr.key && editing.colKey === col.key">
+                  <select
+                    v-if="col.editType === 'select' && col.editOptions"
+                    ref="editInputRef"
+                    class="cf-table__edit-input"
+                    :value="editing.draft as string | number | undefined"
+                    @click.stop
+                    @change="editing.draft = ($event.target as HTMLSelectElement).value; commitEdit(fr.row, col, fr.index)"
+                    @blur="commitEdit(fr.row, col, fr.index)"
+                    @keydown="onEditKeydown($event, fr.row, col, fr.index)"
+                  >
+                    <option v-for="opt in col.editOptions" :key="String(opt.value)" :value="opt.value">{{ opt.label }}</option>
+                  </select>
+                  <input
+                    v-else
+                    ref="editInputRef"
+                    class="cf-table__edit-input"
+                    :type="col.editType === 'number' ? 'number' : 'text'"
+                    :value="editing.draft as string | number | undefined"
+                    @click.stop
+                    @input="editing.draft = ($event.target as HTMLInputElement).value"
+                    @blur="commitEdit(fr.row, col, fr.index)"
+                    @keydown="onEditKeydown($event, fr.row, col, fr.index)"
+                  />
+                </template>
+                <!-- 默认渲染 -->
                 <slot
+                  v-else
                   :name="`cell:${col.key}`"
                   :row="fr.row"
                   :index="fr.index"
@@ -1036,12 +1284,16 @@ defineExpose({ patchColumnsState });
             >
               <td
                 class="cf-table__cell cf-table__expand-content"
-                :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + 1"
+                :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (rowReorderable ? 1 : 0) + 1"
               >
 	                <RenderInline :render="((_v: unknown, r: T, i: number) => expandRender!(r, i)) as any" :args="[undefined, fr.row, fr.index]" />
               </td>
             </tr>
           </template>
+          <!-- 虚拟滚动底部占位 -->
+          <tr v-if="virtual && virtualWindow.padBottom > 0" class="cf-table__row cf-table__row--virtual-pad" aria-hidden="true">
+            <td :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)" :style="{ height: `${virtualWindow.padBottom}px`, padding: 0, border: 0 }" />
+          </tr>
         </tbody>
 
         <!-- 总计行 -->
@@ -1052,6 +1304,7 @@ defineExpose({ patchColumnsState });
             class="cf-table__summary-row"
             :class="srow.className"
           >
+            <td v-if="rowReorderable" class="cf-table__cell cf-table__cell--row-drag" />
             <td v-if="selectable === 'multiple'" class="cf-table__cell cf-table__cell--check" />
             <td v-if="expandable" class="cf-table__cell cf-table__cell--expand" />
             <td

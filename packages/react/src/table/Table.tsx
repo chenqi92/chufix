@@ -10,20 +10,25 @@ import {
   useState,
   type CSSProperties,
   type DragEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent as ReactMouseEvent,
+  type MutableRefObject,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from 'react';
 import {
   aggregate,
+  arrayMove,
   compareCells,
   computeHeaderRows,
   defaultFilterMatch,
   defaultGlobalSearchMatch,
+  downloadCsv,
   flattenColumns,
   getCellValue,
   getRowKey,
   nextSortDirection,
+  rowsToCsv,
   tableClass,
   type SortDirection,
   type TableColumn,
@@ -46,6 +51,10 @@ export interface ReactTableProps<T extends Record<string, unknown> = Record<stri
   onColumnsStateChange?: (value: TableColumnsState) => void;
   onExpandedRowKeysChange?: (value: string[]) => void;
   onRowClick?: (row: T, index: number) => void;
+  onRowsChange?: (rows: T[]) => void;
+  onRowReorder?: (payload: { from: number; to: number; rows: T[] }) => void;
+  onCellEdit?: (payload: { row: T; column: TableColumn<T>; oldValue: unknown; newValue: unknown; index: number }) => void;
+  onExport?: (csv: string) => void;
   /** Header / cell render maps keyed by column.key. */
   renderHeader?: Record<string, (column: TableColumn<T>) => ReactNode>;
   renderCell?: Record<string, (ctx: { row: T; index: number; value: unknown }) => ReactNode>;
@@ -102,6 +111,12 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     showSummary = false,
     summary,
     toolbar = 'none',
+    virtual = false,
+    rowHeight = 36,
+    overscan = 6,
+    rowReorderable = false,
+    exportable = false,
+    exportFileName = 'table',
     className,
     onSortChange,
     onFiltersChange,
@@ -111,6 +126,10 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     onColumnsStateChange,
     onExpandedRowKeysChange,
     onRowClick,
+    onRowsChange,
+    onRowReorder,
+    onCellEdit,
+    onExport,
     renderHeader,
     renderCell,
     toolbarLeft,
@@ -564,7 +583,8 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     (globalSearch !== undefined ||
       defaultGlobalSearch !== undefined ||
       !!globalSearchFn ||
-      hideableColumns.length > 0);
+      hideableColumns.length > 0 ||
+      exportable === true);
 
   /* ---------------- close popups on outside click ---------------- */
   const rootRef = useRef<HTMLDivElement>(null);
@@ -579,6 +599,118 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, [openFilterKey, colMenuOpen]);
+
+  /* ---------------- virtual scroll ---------------- */
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    setViewportHeight(scrollRef.current.clientHeight);
+    if (typeof ResizeObserver === 'undefined') return;
+    const obs = new ResizeObserver(() => {
+      if (scrollRef.current) setViewportHeight(scrollRef.current.clientHeight);
+    });
+    obs.observe(scrollRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const virtualWindow = useMemo(() => {
+    if (!virtual) return { start: 0, end: flatTreeRows.length, padTop: 0, padBottom: 0 };
+    const total = flatTreeRows.length;
+    const visible = Math.ceil((viewportHeight || 400) / rowHeight) + 1;
+    const start = Math.max(0, Math.floor(scrollTop / rowHeight) - overscan);
+    const end = Math.min(total, start + visible + overscan * 2);
+    return {
+      start,
+      end,
+      padTop: start * rowHeight,
+      padBottom: Math.max(0, (total - end) * rowHeight),
+    };
+  }, [virtual, flatTreeRows.length, scrollTop, viewportHeight, rowHeight, overscan]);
+
+  const visibleFlatRows = useMemo(() => {
+    if (!virtual) return flatTreeRows;
+    return flatTreeRows.slice(virtualWindow.start, virtualWindow.end);
+  }, [virtual, flatTreeRows, virtualWindow.start, virtualWindow.end]);
+
+  /* ---------------- row reorder ---------------- */
+  const [rowDragKey, setRowDragKey] = useState<string | null>(null);
+  const [rowDragOverKey, setRowDragOverKey] = useState<string | null>(null);
+  const onRowDragStart = (ev: DragEvent, key: string) => {
+    if (!rowReorderable) return;
+    setRowDragKey(key);
+    ev.dataTransfer.setData('text/plain', key);
+    ev.dataTransfer.effectAllowed = 'move';
+  };
+  const onRowDragOver = (ev: DragEvent, key: string) => {
+    if (!rowDragKey || rowDragKey === key) return;
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = 'move';
+    if (rowDragOverKey !== key) setRowDragOverKey(key);
+  };
+  const onRowDrop = (ev: DragEvent, key: string) => {
+    ev.preventDefault();
+    const from = rowDragKey;
+    setRowDragKey(null);
+    setRowDragOverKey(null);
+    if (!from || from === key) return;
+    const fromIdx = rows.findIndex((r, i) => getRowKey(r, i, rowKey) === from);
+    const toIdx = rows.findIndex((r, i) => getRowKey(r, i, rowKey) === key);
+    if (fromIdx === -1 || toIdx === -1) return;
+    const next = arrayMove(rows, fromIdx, toIdx);
+    onRowsChange?.(next);
+    onRowReorder?.({ from: fromIdx, to: toIdx, rows: next });
+  };
+
+  /* ---------------- inline edit ---------------- */
+  interface EditingCell { rowKey: string; colKey: string; draft: unknown; }
+  const [editing, setEditing] = useState<EditingCell | null>(null);
+  const editInputRef = useRef<HTMLInputElement | HTMLSelectElement | null>(null);
+  useEffect(() => {
+    if (editing) editInputRef.current?.focus();
+  }, [editing]);
+
+  const isCellEditable = (row: T, col: TableColumn<T>, index: number): boolean => {
+    const e = col.editable;
+    if (!e) return false;
+    if (typeof e === 'function') return e(row, index);
+    return true;
+  };
+  const beginEdit = (row: T, col: TableColumn<T>, index: number, key: string) => {
+    if (!isCellEditable(row, col, index)) return;
+    setEditing({ rowKey: key, colKey: col.key, draft: getCellValue(row, col) });
+  };
+  const commitEdit = (row: T, col: TableColumn<T>, index: number) => {
+    if (!editing) return;
+    const oldValue = getCellValue(row, col);
+    let newValue: unknown = editing.draft;
+    if (col.editType === 'number') {
+      newValue = newValue === '' || newValue == null ? null : Number(newValue);
+    }
+    if (col.editValidate && col.editValidate(newValue, row, index) === false) return;
+    setEditing(null);
+    if (newValue !== oldValue) {
+      onCellEdit?.({ row, column: col, oldValue, newValue, index });
+    }
+  };
+  const cancelEdit = () => setEditing(null);
+  const onEditKeydown = (ev: ReactKeyboardEvent, row: T, col: TableColumn<T>, index: number) => {
+    if (ev.key === 'Enter') {
+      ev.preventDefault();
+      commitEdit(row, col, index);
+    } else if (ev.key === 'Escape') {
+      ev.preventDefault();
+      cancelEdit();
+    }
+  };
+
+  /* ---------------- CSV export ---------------- */
+  const doExport = () => {
+    const csv = rowsToCsv(filteredRows, renderLeafColumns as TableColumn<T>[]);
+    onExport?.(csv);
+    downloadCsv(csv, exportFileName ?? 'table');
+  };
 
   return (
     <div ref={rootRef} className={fullCls}>
@@ -630,14 +762,40 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                 )}
               </div>
             )}
+            {exportable && (
+              <button
+                type="button"
+                className="cf-table__col-menu-trigger"
+                title="Export CSV"
+                onClick={doExport}
+              >
+                <svg viewBox="0 0 16 16" width={14} height={14} aria-hidden>
+                  <path
+                    d="M8 1v9m0 0L4 6m4 4l4-4M2 13h12v2H2z"
+                    stroke="currentColor"
+                    strokeWidth={1.4}
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>Export</span>
+              </button>
+            )}
             {toolbarRight}
           </div>
         </header>
       )}
 
-      <div className="cf-table__scroll" style={scrollStyle}>
+      <div
+        ref={scrollRef}
+        className="cf-table__scroll"
+        style={scrollStyle}
+        onScroll={(e) => setScrollTop((e.target as HTMLDivElement).scrollTop)}
+      >
         <table className="cf-table__table">
           <colgroup>
+            {rowReorderable && <col style={{ width: 28 }} />}
             {selectable === 'multiple' && <col style={{ width: 36 }} />}
             {expandable && <col style={{ width: 36 }} />}
             {renderLeafColumns.map((col) => (
@@ -648,6 +806,12 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
           <thead className="cf-table__head">
             {headerRows.map((row, ri) => (
               <tr key={ri}>
+                {ri === 0 && rowReorderable && (
+                  <th
+                    className="cf-table__cell cf-table__cell--th cf-table__cell--row-drag"
+                    rowSpan={headerRows.length}
+                  />
+                )}
                 {ri === 0 && selectable === 'multiple' && (
                   <th
                     className="cf-table__cell cf-table__cell--th cf-table__cell--check"
@@ -863,35 +1027,81 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                   colSpan={
                     renderLeafColumns.length +
                     (selectable === 'multiple' ? 1 : 0) +
-                    (expandable ? 1 : 0)
+                    (expandable ? 1 : 0) +
+                    (rowReorderable ? 1 : 0)
                   }
                 >
                   {empty ?? emptyText}
                 </td>
               </tr>
             ) : (
-              flatTreeRows.map((fr) => (
-                <Row
-                  key={fr.key}
-                  fr={fr}
-                  cols={renderLeafColumns}
-                  selectable={selectable}
-                  selected={selectedSet.has(fr.key)}
-                  expandable={!!expandable}
-                  expanded={expandedSet.has(fr.key)}
-                  expandRender={expandRender}
-                  treeIndent={treeIndent}
-                  toggleRow={toggleRow}
-                  toggleExpand={toggleExpand}
-                  onRowClick={onRowClick}
-                  alignClass={alignClass}
-                  fixedClass={fixedClass}
-                  fixedStyle={fixedStyle}
-                  cellOf={cellOf}
-                  cellClassOf={cellClassOf}
-                  renderCell={renderCell}
-                />
-              ))
+              <>
+                {virtual && virtualWindow.padTop > 0 && (
+                  <tr className="cf-table__row cf-table__row--virtual-pad" aria-hidden>
+                    <td
+                      colSpan={
+                        renderLeafColumns.length +
+                        (selectable === 'multiple' ? 1 : 0) +
+                        (expandable ? 1 : 0) +
+                        (rowReorderable ? 1 : 0)
+                      }
+                      style={{ height: virtualWindow.padTop, padding: 0, border: 0 }}
+                    />
+                  </tr>
+                )}
+                {visibleFlatRows.map((fr) => (
+                  <Row
+                    key={fr.key}
+                    fr={fr}
+                    cols={renderLeafColumns}
+                    selectable={selectable}
+                    selected={selectedSet.has(fr.key)}
+                    expandable={!!expandable}
+                    expanded={expandedSet.has(fr.key)}
+                    expandRender={expandRender}
+                    treeIndent={treeIndent}
+                    toggleRow={toggleRow}
+                    toggleExpand={toggleExpand}
+                    onRowClick={onRowClick}
+                    alignClass={alignClass}
+                    fixedClass={fixedClass}
+                    fixedStyle={fixedStyle}
+                    cellOf={cellOf}
+                    cellClassOf={cellClassOf}
+                    renderCell={renderCell}
+                    virtual={virtual}
+                    rowHeight={rowHeight}
+                    rowReorderable={rowReorderable}
+                    rowDragKey={rowDragKey}
+                    rowDragOverKey={rowDragOverKey}
+                    onRowDragStart={onRowDragStart}
+                    onRowDragOver={onRowDragOver}
+                    onRowDrop={onRowDrop}
+                    setRowDragKey={setRowDragKey}
+                    setRowDragOverKey={setRowDragOverKey}
+                    editing={editing}
+                    isCellEditable={isCellEditable}
+                    beginEdit={beginEdit}
+                    commitEdit={commitEdit}
+                    onEditKeydown={onEditKeydown}
+                    setEditingDraft={(v) => setEditing((e) => (e ? { ...e, draft: v } : e))}
+                    editInputRef={editInputRef}
+                  />
+                ))}
+                {virtual && virtualWindow.padBottom > 0 && (
+                  <tr className="cf-table__row cf-table__row--virtual-pad" aria-hidden>
+                    <td
+                      colSpan={
+                        renderLeafColumns.length +
+                        (selectable === 'multiple' ? 1 : 0) +
+                        (expandable ? 1 : 0) +
+                        (rowReorderable ? 1 : 0)
+                      }
+                      style={{ height: virtualWindow.padBottom, padding: 0, border: 0 }}
+                    />
+                  </tr>
+                )}
+              </>
             )}
           </tbody>
 
@@ -902,6 +1112,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                   key={si}
                   className={['cf-table__summary-row', srow.className ?? ''].filter(Boolean).join(' ')}
                 >
+                  {rowReorderable && <td className="cf-table__cell cf-table__cell--row-drag" />}
                   {selectable === 'multiple' && <td className="cf-table__cell cf-table__cell--check" />}
                   {expandable && <td className="cf-table__cell cf-table__cell--expand" />}
                   {renderLeafColumns.map((col) => (
@@ -995,6 +1206,24 @@ interface RowProps<T> {
   cellOf: (row: T, col: TableColumn<T>, index: number) => ReactNode;
   cellClassOf: (row: T, col: TableColumn<T>, index: number) => string;
   renderCell?: Record<string, (ctx: { row: T; index: number; value: unknown }) => ReactNode>;
+  // virtual / row drag / inline edit
+  virtual: boolean;
+  rowHeight: number;
+  rowReorderable: boolean;
+  rowDragKey: string | null;
+  rowDragOverKey: string | null;
+  onRowDragStart: (ev: DragEvent, key: string) => void;
+  onRowDragOver: (ev: DragEvent, key: string) => void;
+  onRowDrop: (ev: DragEvent, key: string) => void;
+  setRowDragKey: (k: string | null) => void;
+  setRowDragOverKey: (k: string | null) => void;
+  editing: { rowKey: string; colKey: string; draft: unknown } | null;
+  isCellEditable: (row: T, col: TableColumn<T>, index: number) => boolean;
+  beginEdit: (row: T, col: TableColumn<T>, index: number, key: string) => void;
+  commitEdit: (row: T, col: TableColumn<T>, index: number) => void;
+  onEditKeydown: (ev: ReactKeyboardEvent, row: T, col: TableColumn<T>, index: number) => void;
+  setEditingDraft: (v: unknown) => void;
+  editInputRef: MutableRefObject<HTMLInputElement | HTMLSelectElement | null>;
 }
 
 function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
@@ -1008,11 +1237,42 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
           p.selected ? 'is-selected' : '',
           p.selectable ? 'is-clickable' : '',
           fr.level > 0 ? 'is-tree-child' : '',
+          p.rowDragOverKey === fr.key ? 'is-row-drop-target' : '',
+          p.rowDragKey === fr.key ? 'is-row-dragging' : '',
         ]
           .filter(Boolean)
           .join(' ')}
+        style={p.virtual ? { height: p.rowHeight } : undefined}
         onClick={() => (p.selectable ? p.toggleRow(fr.key) : p.onRowClick?.(row, fr.index))}
+        onDragOver={(e) => p.rowReorderable && fr.level === 0 && p.onRowDragOver(e, fr.key)}
+        onDrop={(e) => p.rowReorderable && fr.level === 0 && p.onRowDrop(e, fr.key)}
       >
+        {p.rowReorderable && (
+          <td className="cf-table__cell cf-table__cell--row-drag">
+            {fr.level === 0 && (
+              <span
+                className="cf-table__row-drag-handle"
+                draggable
+                aria-label={`Drag row ${fr.index + 1}`}
+                onClick={(e) => e.stopPropagation()}
+                onDragStart={(e) => p.onRowDragStart(e, fr.key)}
+                onDragEnd={() => {
+                  p.setRowDragKey(null);
+                  p.setRowDragOverKey(null);
+                }}
+              >
+                <svg viewBox="0 0 12 12" width={10} height={10} aria-hidden>
+                  <circle cx={4} cy={3} r={1} fill="currentColor" />
+                  <circle cx={8} cy={3} r={1} fill="currentColor" />
+                  <circle cx={4} cy={6} r={1} fill="currentColor" />
+                  <circle cx={8} cy={6} r={1} fill="currentColor" />
+                  <circle cx={4} cy={9} r={1} fill="currentColor" />
+                  <circle cx={8} cy={9} r={1} fill="currentColor" />
+                </svg>
+              </span>
+            )}
+          </td>
+        )}
         {p.selectable === 'multiple' && (
           <td className="cf-table__cell cf-table__cell--check">
             <input
@@ -1049,41 +1309,84 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
             )}
           </td>
         )}
-        {cols.map((col, ci) => (
-          <td
-            key={col.key}
-            className={[
-              'cf-table__cell',
-              p.alignClass(col),
-              p.fixedClass(col),
-              col.ellipsis ? 'cf-table__cell--ellipsis' : '',
-              p.cellClassOf(row, col, fr.index),
-            ]
-              .filter(Boolean)
-              .join(' ')}
-            style={p.fixedStyle(col)}
-          >
-            {ci === 0 && fr.level > 0 && (
-              <span
-                className="cf-table__tree-indent"
-                style={{ paddingLeft: `${fr.level * p.treeIndent}px` }}
-              />
-            )}
-            {p.renderCell?.[col.key]
-              ? p.renderCell[col.key]({
+        {cols.map((col, ci) => {
+          const editable = p.isCellEditable(row, col, fr.index);
+          const isEditing =
+            p.editing?.rowKey === fr.key && p.editing?.colKey === col.key;
+          return (
+            <td
+              key={col.key}
+              className={[
+                'cf-table__cell',
+                p.alignClass(col),
+                p.fixedClass(col),
+                col.ellipsis ? 'cf-table__cell--ellipsis' : '',
+                editable ? 'cf-table__cell--editable' : '',
+                isEditing ? 'cf-table__cell--editing' : '',
+                p.cellClassOf(row, col, fr.index),
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              style={p.fixedStyle(col)}
+              onDoubleClick={() => p.beginEdit(row, col, fr.index, fr.key)}
+            >
+              {ci === 0 && fr.level > 0 && (
+                <span
+                  className="cf-table__tree-indent"
+                  style={{ paddingLeft: `${fr.level * p.treeIndent}px` }}
+                />
+              )}
+              {isEditing ? (
+                col.editType === 'select' && col.editOptions ? (
+                  <select
+                    ref={(el) => { if (el) p.editInputRef.current = el; }}
+                    className="cf-table__edit-input"
+                    value={(p.editing?.draft as string | number | undefined) ?? ''}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => {
+                      p.setEditingDraft(e.target.value);
+                      // commit on change for select
+                      requestAnimationFrame(() => p.commitEdit(row, col, fr.index));
+                    }}
+                    onBlur={() => p.commitEdit(row, col, fr.index)}
+                    onKeyDown={(e) => p.onEditKeydown(e, row, col, fr.index)}
+                  >
+                    {col.editOptions.map((opt) => (
+                      <option key={String(opt.value)} value={opt.value as string | number}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    ref={(el) => { if (el) p.editInputRef.current = el; }}
+                    className="cf-table__edit-input"
+                    type={col.editType === 'number' ? 'number' : 'text'}
+                    value={(p.editing?.draft as string | number | undefined) ?? ''}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => p.setEditingDraft(e.target.value)}
+                    onBlur={() => p.commitEdit(row, col, fr.index)}
+                    onKeyDown={(e) => p.onEditKeydown(e, row, col, fr.index)}
+                  />
+                )
+              ) : p.renderCell?.[col.key] ? (
+                p.renderCell[col.key]({
                   row,
                   index: fr.index,
                   value: getCellValue(row, col),
                 })
-              : p.cellOf(row, col, fr.index)}
-          </td>
-        ))}
+              ) : (
+                p.cellOf(row, col, fr.index)
+              )}
+            </td>
+          );
+        })}
       </tr>
       {p.expandable && p.expandRender && p.expanded && !fr.hasChildren && (
         <tr className="cf-table__row cf-table__row--expand">
           <td
             className="cf-table__cell cf-table__expand-content"
-            colSpan={cols.length + (p.selectable === 'multiple' ? 1 : 0) + 1}
+            colSpan={cols.length + (p.selectable === 'multiple' ? 1 : 0) + (p.rowReorderable ? 1 : 0) + 1}
           >
             {p.expandRender(row, fr.index) as ReactNode}
           </td>

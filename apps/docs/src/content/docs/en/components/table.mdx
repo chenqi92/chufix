@@ -11,6 +11,10 @@ import ResizeReorderVue from '~/components/demos/table/ResizeReorderVue.vue';
 import PinVue from '~/components/demos/table/PinVue.vue';
 import ExpandTreeVue from '~/components/demos/table/ExpandTreeVue.vue';
 import SummarySearchVue from '~/components/demos/table/SummarySearchVue.vue';
+import VirtualVue from '~/components/demos/table/VirtualVue.vue';
+import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
+import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
+import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
 
 `CfTable` is one of the most feature-complete components in the library. Design choices:
 
@@ -85,6 +89,54 @@ Set `toolbar="auto"` to surface global search + column visibility menu. `column.
 
 `:default-pagination="{ page: 1, pageSize: 8 }"` is uncontrolled. For full control bind `pagination` to a current value and listen to `@update:pagination`.
 
+## Virtual scrolling
+
+With `virtual` enabled, the body only renders visible rows + an `overscan` buffer above/below — DOM count stays in the dozens. Requires every row to use a fixed `row-height` (default 36px). Combine with `:height` + `sticky-header`.
+
+<DemoFrame>
+  <VirtualVue client:load />
+</DemoFrame>
+
+A 50,000-row dataset renders ~30 `<tr>` elements at any time. Sort / filter / pinned columns / global search all keep working. **Note**: in virtual mode, `expandable` rows are also constrained to the row height — for rich expanded content prefer a Modal or disable virtual scrolling.
+
+## Row reorder
+
+`row-reorderable` adds a ⋮⋮ drag handle column on the left. Drag a row to reorder; `@update:rows` emits the new array. Use `@row-reorder` if you also want from/to indices.
+
+<DemoFrame>
+  <RowReorderVue client:load />
+</DemoFrame>
+
+Only top-level (level 0) rows are draggable; tree children stay put.
+
+## Inline editing
+
+Add `editable: true` to a column with optional `editType: 'text' | 'number' | 'select'`. Double-click a cell to enter edit mode:
+
+- `editValidate` rejects invalid values; on failure the cell stays in edit mode.
+- Commit: Enter / blur. Cancel: Esc.
+- `@cell-edit` emits `{ row, column, oldValue, newValue, index }` — the parent decides how to write back.
+
+<DemoFrame>
+  <InlineEditVue client:load />
+</DemoFrame>
+
+> The component never mutates `rows` directly: every commit goes through `cell-edit`, so you choose whether to apply locally, hit an API, or merge.
+
+## CSV export
+
+`exportable` renders an **Export** button in the toolbar. Clicking it downloads the **filtered** result. The CSV is UTF-8 with a BOM, so Excel opens it correctly without garbling.
+
+- Skip a column: `column.exportable: false`
+- Custom cell serialization: `column.exportRender(value, row, i) => string`
+- File name: `export-file-name`, defaults to `'table'`
+- Fully custom: `@export` gives you the CSV string — download or upload as you wish.
+- Imperative: the component exposes `exportCsv()` via `defineExpose`.
+
+<DemoFrame>
+  <CsvExportVue client:load />
+</DemoFrame>
+
 ## Server-side mode
 
 Once `pagination.total` is a number, the component **stops** doing client-side slicing. sort / filter / pagination changes are emitted as events and you fetch from the backend:
@@ -143,7 +195,13 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `reorderable` | `boolean` | `false` | Enable reorder globally |
 | `showSummary` | `boolean` | `false` | Auto-render a summary row from `column.summary` |
 | `summary` | `TableSummaryRow[]` | — | Extra manual summary rows |
-| `toolbar` | `'auto' \| 'none'` | `'none'` | Toolbar (search + column menu) |
+| `toolbar` | `'auto' \| 'none'` | `'none'` | Toolbar (search + column menu + export) |
+| `virtual` | `boolean` | `false` | Enable virtual scroll (requires `height` + fixed `rowHeight`) |
+| `rowHeight` | `number` | `36` | Per-row height in virtual mode (px) |
+| `overscan` | `number` | `6` | Extra rows above/below the viewport |
+| `rowReorderable` | `boolean` | `false` | Enable row drag-and-drop reorder |
+| `exportable` | `boolean` | `false` | Show CSV export button in toolbar |
+| `exportFileName` | `string` | `'table'` | Export file name (without extension) |
 
 ### `TableColumn`
 
@@ -170,6 +228,12 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `children` | `TableColumn[]` | Grouped headers |
 | `summary` | `'sum' \| 'avg' \| 'count' \| (rows) => any` | Aggregation |
 | `summaryRender` | `(value) => any` | Custom summary cell |
+| `editable` | `boolean \| (row, i) => boolean` | Whether this column is double-click editable |
+| `editType` | `'text' \| 'number' \| 'select'` | Editor type |
+| `editOptions` | `{label,value}[]` | Options for `select` editor |
+| `editValidate` | `(value, row, i) => boolean` | Reject commit if it returns `false` |
+| `exportable` | `boolean` | When `false`, column is skipped in CSV export |
+| `exportRender` | `(value, row, i) => string` | Cell stringification on export |
 | `cellClass` | `string \| (row, i) => string` | Cell class |
 
 ### Events / Slots
@@ -183,6 +247,9 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `update:modelValue` | `string \| string[] \| null` | Selected rows changed |
 | `update:columnsState` | `TableColumnsState` | Reorder / hide / resize |
 | `update:expandedRowKeys` | `string[]` | Expansion changed |
+| `update:rows` / `row-reorder` | `T[]` / `{from,to,rows}` | Row drag reorder |
+| `cell-edit` | `{row, column, oldValue, newValue, index}` | Inline cell commit |
+| `export` | `string` | CSV export hook (receives the CSV string) |
 | `row-click` | `(row, i)` | Row click (when not selectable) |
 | `#header:<key>` | — | Custom header node |
 | `#cell:<key>` | `{ row, index, value }` | Custom cell |

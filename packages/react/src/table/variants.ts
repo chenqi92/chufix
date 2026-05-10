@@ -18,6 +18,8 @@ export interface TableFilterOption {
   value: string | number | boolean;
 }
 
+export type TableEditType = 'text' | 'number' | 'select';
+
 export interface TableColumn<T = Record<string, unknown>> {
   /** 唯一 key（必填）。也用于 sort / filter / 列状态识别。*/
   key: string;
@@ -67,6 +69,22 @@ export interface TableColumn<T = Record<string, unknown>> {
   /** 'sum' / 'avg' / 'count' 自动聚合数字列；或传函数返回任意值。*/
   summary?: 'sum' | 'avg' | 'count' | ((rows: T[]) => unknown);
   summaryRender?: (value: unknown) => unknown;
+
+  /* —— 内联编辑 —— */
+  /** 列是否可编辑。可传函数细粒度控制。开启 editable 后双击单元格进入编辑。*/
+  editable?: boolean | ((row: T, index: number) => boolean);
+  /** 编辑器类型；缺省 'text'。*/
+  editType?: TableEditType;
+  /** select 类型的选项。*/
+  editOptions?: TableFilterOption[];
+  /** 编辑提交前的校验；返回 false 阻止提交并保留输入。*/
+  editValidate?: (value: unknown, row: T, index: number) => boolean;
+
+  /* —— 导出控制 —— */
+  /** false：导出 CSV 时跳过此列。*/
+  exportable?: boolean;
+  /** 导出时单元格的字符串化方式。缺省走 format / String(value)。*/
+  exportRender?: (value: unknown, row: T, index: number) => string;
 
   /* —— 杂项 —— */
   className?: string;
@@ -164,8 +182,25 @@ export interface TableProps<T = Record<string, unknown>> {
   /** 额外自定义总计行（在 auto summary 之后）。*/
   summary?: TableSummaryRow<T>[];
 
+  /* 虚拟滚动：针对 1k+ 行的性能模式 */
+  /** 启用虚拟滚动；要求 height 已设置，所有行使用固定 rowHeight。*/
+  virtual?: boolean;
+  /** 行高（px）。开启 virtual 后必须给。默认 36。*/
+  rowHeight?: number;
+  /** 上下额外渲染的行数（防止快速滚动闪白）。默认 6。*/
+  overscan?: number;
+
+  /* 行拖拽换序 */
+  rowReorderable?: boolean;
+
+  /* CSV 导出 */
+  /** true：工具栏自动出现 Export 按钮。*/
+  exportable?: boolean;
+  /** 导出文件名前缀，默认 'table'。*/
+  exportFileName?: string;
+
   /* 工具栏 */
-  /** 'auto'：根据开启的能力自动展示 search / column-visibility 按钮。*/
+  /** 'auto'：根据开启的能力自动展示 search / column-visibility / export 按钮。*/
   toolbar?: 'auto' | 'none';
 }
 
@@ -311,6 +346,59 @@ export function defaultGlobalSearchMatch<T = Record<string, unknown>>(
     if (v == null) return false;
     return String(v).toLowerCase().includes(q);
   });
+}
+
+/** 转 CSV 单元格：包含 , " \n 时套双引号并把内部 " 转义为 ""。*/
+export function escapeCsvCell(s: string): string {
+  if (/[",\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+  return s;
+}
+
+/** 把 rows + columns 序列化成 CSV 字符串。跳过 exportable: false 的列。*/
+export function rowsToCsv<T = Record<string, unknown>>(
+  rows: T[],
+  cols: TableColumn<T>[],
+): string {
+  const visible = cols.filter((c) => c.exportable !== false);
+  const head = visible.map((c) => escapeCsvCell(c.title ?? c.key)).join(',');
+  const body = rows.map((r, i) =>
+    visible
+      .map((c) => {
+        const raw = (r as Record<string, unknown>)[c.dataIndex ?? c.key];
+        let str: string;
+        if (c.exportRender) str = c.exportRender(raw, r, i);
+        else if (c.format) str = c.format(raw, r, i);
+        else if (raw == null) str = '';
+        else str = String(raw);
+        return escapeCsvCell(str);
+      })
+      .join(','),
+  );
+  return [head, ...body].join('\n');
+}
+
+/** 触发浏览器下载 CSV。*/
+export function downloadCsv(csv: string, fileName: string): void {
+  if (typeof window === 'undefined') return;
+  // 加上 BOM 让 Excel 识别 UTF-8
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName.endsWith('.csv') ? fileName : `${fileName}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+/** 数组按 from 移到 to（不可变）。*/
+export function arrayMove<T>(arr: T[], from: number, to: number): T[] {
+  if (from === to || from < 0 || to < 0 || from >= arr.length || to >= arr.length) return arr;
+  const next = [...arr];
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
 }
 
 /** 默认列过滤匹配。*/
