@@ -108,6 +108,7 @@ import './styles/image.css';
 import './styles/timeline.css';
 import './styles/timelinegantt.css';
 import './styles/pivot.css';
+import './styles/spreadsheet.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -1012,6 +1013,15 @@ export type {
   PivotResult,
 } from './pivot/variants';
 export { pivotCompute, aggregate as pivotAggregate } from './pivot/variants';
+
+export { Spreadsheet as CfSpreadsheet } from './spreadsheet/Spreadsheet';
+export type { SpreadsheetProps } from './spreadsheet/Spreadsheet';
+export type {
+  SpreadsheetSize,
+  CellPos,
+  CellRange,
+} from './spreadsheet/variants';
+export { toA1, colLetter, rangeToTSV, tsvToData } from './spreadsheet/variants';
 
 export { Result as CfResult } from './result/Result';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';

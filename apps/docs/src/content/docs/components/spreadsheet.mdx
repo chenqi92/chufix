@@ -1,0 +1,77 @@
+---
+title: Spreadsheet 表格编辑器
+description: A1 风格可编辑网格 —— 多选、键盘导航（方向键 / Tab / Enter / F2 / Delete）、Cmd+C/V 与系统剪贴板互通。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/spreadsheet/BasicVue.vue';
+import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
+
+## 基础用法
+
+`v-model` 绑定一个以 A1 字符串为 key 的扁平 `Record<string, string>`。组件给你一张可编辑的网格：
+
+- 单击一格 → 选中
+- 拖拽 / Shift+点击 → 选择区域
+- 双击 / Enter / F2 → 编辑当前格
+- 方向键 / Tab → 移动焦点
+- Delete / Backspace → 清空选区
+- Cmd/Ctrl + C / X / V → 与系统剪贴板互通 TSV
+
+<DemoFrame>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 与外部表格互通
+
+剪贴板格式是标准 TSV（tab 分隔的文本），所以可以直接和 Excel / Numbers / Google Sheets 互拷数据：
+
+<DemoFrame>
+  <ImportVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `modelValue` (Vue) / `modelValue` + `onChange` (React) | `Record<string, string>` | `{}` | A1 键值映射 |
+| `rows` | `number` | `20` | 行数 |
+| `cols` | `number` | `10` | 列数 |
+| `colWidth` | `number` | `120` | 单列像素宽度 |
+| `rowHeight` | `number` | `28` | 单行像素高度 |
+| `rowHeaderWidth` | `number` | `44` | 行号栏宽度 |
+| `readonly` | `boolean` | `false` | 只读模式（禁止编辑 / 删除 / 粘贴） |
+| `disableClipboard` | `boolean` | `false` | 关闭 Cmd+C / V 与系统剪贴板的桥接 |
+| `caption` | `string` | — | 顶部说明 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：
+
+- Vue: `@update:modelValue(next)` / `@cell-change({ cell, value })` / `@selection-change(range)`
+- React: `onChange` / `onCellChange` / `onSelectionChange`
+
+## 工具函数
+
+```ts
+import { toA1, colLetter, rangeToTSV, tsvToData } from '@chufix-design/vue';
+
+toA1(0, 0);        // 'A1'
+colLetter(27);     // 'AB'
+rangeToTSV(data, { start: { col: 0, row: 0 }, end: { col: 2, row: 4 } });
+tsvToData('1\t2\n3\t4', { col: 0, row: 0 }, { cols: 10, rows: 20 });
+```
+
+剪贴板桥接和工具函数都是纯函数，可以脱离组件直接复用。
+
+## 键盘表
+
+| 按键 | 行为 |
+| --- | --- |
+| `←` / `→` / `↑` / `↓` | 移动选区焦点（按住 Shift 扩展选区） |
+| `Tab` / `Shift+Tab` | 横向移动 |
+| `Enter` / `F2` | 编辑当前格；编辑中 Enter 提交并下移 |
+| `Esc` | 取消正在进行的编辑 |
+| `Delete` / `Backspace` | 清空选区内的所有单元格 |
+| 任意可见字符 | 直接进入编辑态并以该字符开头 |
+| `Cmd/Ctrl + C / X / V` | 与系统剪贴板互通 TSV |
+| `Cmd/Ctrl + A` | 全选 |

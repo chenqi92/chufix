@@ -126,6 +126,7 @@ export const sidebar: SidebarGroup[] = [
       c('Table', '表格', 'table'),
       c('DataGrid', '数据网格', 'datagrid'),
       c('Pivot', '透视表', 'pivot'),
+      c('Spreadsheet', '表格编辑器', 'spreadsheet'),
       c('TreeView', '树形列表', 'treeview'),
       c('Kbd', '键盘按键', 'kbd'),
       c('Link', '链接', 'link'),

@@ -1,0 +1,77 @@
+---
+title: Spreadsheet
+description: A1-style editable grid — multi-select, keyboard navigation (arrows / Tab / Enter / F2 / Delete), Cmd+C/V clipboard interop.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/spreadsheet/BasicVue.vue';
+import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
+
+## Basic usage
+
+`v-model` binds a flat `Record<string, string>` keyed by A1 strings. You get an editable grid where:
+
+- Click a cell → select
+- Drag / Shift+click → range selection
+- Double-click / Enter / F2 → edit
+- Arrow keys / Tab → move the focus
+- Delete / Backspace → clear the selection
+- Cmd/Ctrl + C / X / V → TSV roundtrip with the system clipboard
+
+<DemoFrame>
+  <BasicVue client:load />
+</DemoFrame>
+
+## External roundtrip
+
+The clipboard format is plain TSV (tab-separated text), so you can copy/paste directly between this grid and Excel / Numbers / Google Sheets:
+
+<DemoFrame>
+  <ImportVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` (Vue) / `modelValue` + `onChange` (React) | `Record<string, string>` | `{}` | A1 → value map |
+| `rows` | `number` | `20` | Row count |
+| `cols` | `number` | `10` | Column count |
+| `colWidth` | `number` | `120` | Pixel column width |
+| `rowHeight` | `number` | `28` | Pixel row height |
+| `rowHeaderWidth` | `number` | `44` | Row-number header width |
+| `readonly` | `boolean` | `false` | Disable edit / delete / paste |
+| `disableClipboard` | `boolean` | `false` | Disable system-clipboard bridging |
+| `caption` | `string` | — | Caption above the sheet |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+
+Events:
+
+- Vue: `@update:modelValue(next)` / `@cell-change({ cell, value })` / `@selection-change(range)`
+- React: `onChange` / `onCellChange` / `onSelectionChange`
+
+## Utilities
+
+```ts
+import { toA1, colLetter, rangeToTSV, tsvToData } from '@chufix-design/vue';
+
+toA1(0, 0);        // 'A1'
+colLetter(27);     // 'AB'
+rangeToTSV(data, { start: { col: 0, row: 0 }, end: { col: 2, row: 4 } });
+tsvToData('1\t2\n3\t4', { col: 0, row: 0 }, { cols: 10, rows: 20 });
+```
+
+These are pure functions you can use independently of the component.
+
+## Keyboard map
+
+| Key | Action |
+| --- | --- |
+| `← / → / ↑ / ↓` | Move the focus (hold Shift to extend the selection) |
+| `Tab` / `Shift+Tab` | Horizontal navigation |
+| `Enter` / `F2` | Edit current cell; while editing, Enter commits and moves down |
+| `Esc` | Cancel an in-flight edit |
+| `Delete` / `Backspace` | Clear all cells in the selection |
+| Any printable key | Start editing immediately, seeded with that character |
+| `Cmd/Ctrl + C / X / V` | Clipboard TSV bridge |
+| `Cmd/Ctrl + A` | Select all |
