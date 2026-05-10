@@ -101,7 +101,46 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  outline: none;
 }
+.cf-date__panel--with-presets {
+  flex-direction: row;
+  width: auto;
+  gap: 0;
+  padding: 0;
+}
+.cf-date__panel--with-presets .cf-date__main {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 280px;
+}
+.cf-date__panel--with-presets .cf-date__presets {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding: 8px 6px;
+  width: 100px;
+  border-right: 1px solid var(--line-1);
+  background: var(--bg-2);
+  border-radius: var(--r-6) 0 0 var(--r-6);
+  flex: none;
+}
+.cf-date__preset-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: var(--r-3);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-12);
+  cursor: pointer;
+}
+.cf-date__preset-btn:hover { background: var(--bg-3); }
 
 .cf-date__header {
   display: flex;
@@ -190,6 +229,29 @@
   color: var(--fg-3);
   cursor: not-allowed;
   text-decoration: line-through;
+}
+.cf-date__day.is-focused:not(.is-selected) {
+  box-shadow: inset 0 0 0 2px var(--accent-1);
+}
+
+/* week number column */
+.cf-date__weekdays.with-week-num {
+  grid-template-columns: 32px repeat(7, 1fr);
+}
+.cf-date__week-col-head { text-align: center; opacity: 0.6; }
+.cf-date__week-row {
+  display: grid;
+  grid-template-columns: 32px repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.cf-date__week-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
 }
 
 /* range states (used by DateRangePicker) */

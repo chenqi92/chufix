@@ -761,6 +761,7 @@ export type {
   DatePickerSize,
   DatePickerVariant,
   DatePickerView,
+  DatePickerPreset,
 } from './datepicker/variants';
 export type { DateLike } from './datepicker/date';
 

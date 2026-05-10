@@ -147,3 +147,21 @@ export const MONTH_LABELS_ZH = [
   '1 月', '2 月', '3 月', '4 月', '5 月', '6 月',
   '7 月', '8 月', '9 月', '10 月', '11 月', '12 月',
 ];
+
+export function getISOWeek(d: Date): number {
+  const target = new Date(d.valueOf());
+  const dayNr = (d.getDay() + 6) % 7;
+  target.setDate(target.getDate() - dayNr + 3);
+  const firstThursday = target.valueOf();
+  target.setMonth(0, 1);
+  if (target.getDay() !== 4) {
+    target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+  }
+  return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
+}
+
+export function addDays(d: Date, n: number): Date {
+  const x = new Date(d);
+  x.setDate(x.getDate() + n);
+  return x;
+}

@@ -1,12 +1,14 @@
 ---
 title: Date picker
-description: Input plus month-grid panel. Supports day/month/year views, min/max/disabledDate constraints, and clearing.
+description: Input + month-grid panel — day/month/year views, date bounds, quick presets, ISO week numbers, keyboard navigation.
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/datepicker/BasicVue.vue';
 import BoundsVue from '~/components/demos/datepicker/BoundsVue.vue';
 import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
+import PresetsVue from '~/components/demos/datepicker/PresetsVue.vue';
+import WeekNumberVue from '~/components/demos/datepicker/WeekNumberVue.vue';
 
 ## Basic usage
 
@@ -93,6 +95,34 @@ export default function Demo() {
   <FormatVue client:load />
 </DemoFrame>
 
+## Quick presets
+
+`presets` accepts an array of `{ label, value }`. The panel renders these as a left-side column. `value` may be a fixed `Date` / ISO string, or a function that returns one (re-evaluated on each click — perfect for relative dates like "Today" / "7 days ago").
+
+<DemoFrame>
+  <PresetsVue client:only="vue" />
+</DemoFrame>
+
+## ISO week numbers
+
+`show-week-number` adds a leading column of ISO 8601 week numbers (Monday-based) to the date grid.
+
+<DemoFrame>
+  <WeekNumberVue client:only="vue" />
+</DemoFrame>
+
+## Keyboard navigation
+
+When the panel is open:
+
+| Key | Action |
+| --- | --- |
+| `← / → / ↑ / ↓` | Move focus across the grid |
+| `PageUp` / `PageDown` | Previous / next month |
+| `Home` / `End` | Jump to start / end of month |
+| `Enter` | Pick the focused day |
+| `Esc` | Close the panel |
+
 ## API
 
 | Prop | Type | Default | Description |
@@ -109,5 +139,7 @@ export default function Demo() {
 | `disabledDate` | `(date: Date) => boolean` | `—` | Custom disable rule |
 | `weekStartsOn` | `0 \| 1` | `1` | 0 = Sunday-first, 1 = Monday-first |
 | `view` | `'day' \| 'month' \| 'year'` | `'day'` | Initial open view |
+| `showWeekNumber` | `boolean` | `false` | Add ISO week-number column before the day grid |
+| `presets` | `DatePickerPreset[]` | — | Quick-pick buttons: `{ label, value: Date \| string \| () => ... }` |
 
 Events: `update:modelValue` / `change` (React: `onChange(value, date)`, the second argument is `Date \| null`).
