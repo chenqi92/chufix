@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { switchClass, type SwitchProps } from './variants';
+import { switchClass, type SwitchChangeMeta, type SwitchProps } from './variants';
 
 const props = withDefaults(defineProps<SwitchProps>(), {
   modelValue: false,
@@ -11,7 +11,9 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
-  (e: 'change', value: boolean): void;
+  (e: 'change', value: boolean, meta: SwitchChangeMeta): void;
+  (e: 'focus', event: FocusEvent): void;
+  (e: 'blur', event: FocusEvent): void;
 }>();
 
 const cls = computed(() =>
@@ -28,7 +30,7 @@ function onChange(e: Event) {
   if (isInactive.value) return;
   const v = (e.target as HTMLInputElement).checked;
   emit('update:modelValue', v);
-  emit('change', v);
+  emit('change', v, { event: e, checked: v, name: props.name });
 }
 </script>
 
@@ -44,6 +46,8 @@ function onChange(e: Event) {
       role="switch"
       :aria-checked="modelValue"
       @change="onChange"
+      @focus="(event) => emit('focus', event)"
+      @blur="(event) => emit('blur', event)"
     />
     <span class="cf-switch__track">
       <span class="cf-switch__thumb" />

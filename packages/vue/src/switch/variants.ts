@@ -9,6 +9,12 @@ export interface SwitchProps {
   id?: string;
 }
 
+export interface SwitchChangeMeta {
+  event: Event;
+  checked: boolean;
+  name?: string;
+}
+
 export function switchClass(p: {
   size: SwitchSize;
   disabled: boolean;

@@ -1,11 +1,20 @@
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
 
 export interface CheckboxOwnProps {
   size?: CheckboxSize;
   indeterminate?: boolean;
+  onCheckedChange?: (checked: boolean, meta: CheckboxChangeMeta) => void;
   children?: ReactNode;
+}
+
+export interface CheckboxChangeMeta {
+  event: ChangeEvent<HTMLInputElement>;
+  checked: boolean;
+  indeterminate: boolean;
+  value: string;
+  name?: string;
 }
 
 export type CheckboxProps = CheckboxOwnProps &

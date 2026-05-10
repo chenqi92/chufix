@@ -7,6 +7,7 @@ import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/checkbox/BasicVue.vue';
 import SizesVue from '~/components/demos/checkbox/SizesVue.vue';
 import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
+import EventsVue from '~/components/demos/checkbox/EventsVue.vue';
 
 ## 基础用法
 
@@ -113,6 +114,34 @@ export default function Demo() {
   <IndeterminateVue client:load />
 </DemoFrame>
 
+## 事件与表单
+
+`change` 除了返回 checked，也会给出 `name / value / indeterminate` 等 meta，方便做权限矩阵、批量选择和原生表单提交。
+
+<DemoFrame
+  vueCode={`<CfCheckbox
+  v-model="checked"
+  name="permissions"
+  value="read"
+  :indeterminate="partial"
+  @change="(checked, meta) => console.log(checked, meta)"
+>
+  读取
+</CfCheckbox>`}
+  reactCode={`<CfCheckbox
+  checked={checked}
+  name="permissions"
+  value="read"
+  indeterminate={partial}
+  onCheckedChange={(checked, meta) => console.log(checked, meta)}
+  onChange={(event) => setChecked(event.target.checked)}
+>
+  读取
+</CfCheckbox>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
 ## API
 
 | Prop            | 类型                   | 默认值  | 说明                              |
@@ -120,3 +149,12 @@ export default function Demo() {
 | `size`          | `'sm' \| 'md' \| 'lg'` | `'md'`  | 整体尺寸                          |
 | `disabled`      | `boolean`              | `false` | 禁用                              |
 | `indeterminate` | `boolean`              | `false` | 半选状态（视觉态，不影响 checked）|
+| `name`          | `string`               | —       | 原生 input name                   |
+| `value`         | `string \| number`     | —       | 原生 input value                  |
+
+## Events
+
+| Vue 事件 | React 回调 | payload | 说明 |
+|---|---|---|---|
+| `change` | `onCheckedChange` | `(checked, { event, checked, indeterminate, value, name })` | 选中状态变化 |
+| `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | 原生焦点事件 |

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
-import { checkboxClass, type CheckboxProps } from './variants';
+import { checkboxClass, type CheckboxChangeMeta, type CheckboxProps } from './variants';
 
 const props = withDefaults(defineProps<CheckboxProps>(), {
   modelValue: false,
@@ -11,7 +11,9 @@ const props = withDefaults(defineProps<CheckboxProps>(), {
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
-  (e: 'change', value: boolean): void;
+  (e: 'change', value: boolean, meta: CheckboxChangeMeta): void;
+  (e: 'focus', event: FocusEvent): void;
+  (e: 'blur', event: FocusEvent): void;
 }>();
 
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -35,7 +37,13 @@ function onChange(e: Event) {
   if (props.disabled) return;
   const v = (e.target as HTMLInputElement).checked;
   emit('update:modelValue', v);
-  emit('change', v);
+  emit('change', v, {
+    event: e,
+    checked: v,
+    indeterminate: props.indeterminate,
+    value: props.value,
+    name: props.name,
+  });
 }
 </script>
 
@@ -52,6 +60,8 @@ function onChange(e: Event) {
       :value="value"
       :aria-checked="indeterminate ? 'mixed' : modelValue"
       @change="onChange"
+      @focus="(event) => emit('focus', event)"
+      @blur="(event) => emit('blur', event)"
     />
     <span class="cf-checkbox__box" aria-hidden="true">
       <svg
