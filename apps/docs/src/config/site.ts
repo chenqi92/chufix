@@ -48,6 +48,7 @@ export const sidebar: SidebarGroup[] = [
       { label: L('安装', 'Installation'), href: '/getting-started/installation/' },
       { label: L('纯 HTML / JS 用法', 'Plain HTML / JS'), href: '/getting-started/vanilla/' },
       { label: L('主题与 Tokens', 'Theming & tokens'), href: '/getting-started/theming/' },
+      { label: L('无障碍 a11y', 'Accessibility'), href: '/getting-started/accessibility/' },
     ],
   },
   {

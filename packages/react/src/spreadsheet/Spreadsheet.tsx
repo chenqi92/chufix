@@ -286,15 +286,21 @@ export function Spreadsheet(props: SpreadsheetProps) {
         ref={rootRef}
         className="cf-sheet__frame"
         tabIndex={0}
+        role="grid"
+        aria-rowcount={rows + 1}
+        aria-colcount={cols + 1}
+        aria-readonly={readonly || undefined}
+        aria-label={caption ?? '电子表格'}
         style={{ width: `${totalWidth}px` }}
         onKeyDown={onKeydown}
         onPaste={onPaste}
       >
-        <div className="cf-sheet__col-head" style={{ height: `${rowHeight}px` }}>
-          <div className="cf-sheet__corner" style={{ width: `${rowHeaderWidth}px` }} />
+        <div className="cf-sheet__col-head" role="row" style={{ height: `${rowHeight}px` }}>
+          <div className="cf-sheet__corner" role="columnheader" style={{ width: `${rowHeaderWidth}px` }} />
           {Array.from({ length: cols }).map((_, c) => (
             <div
               key={c}
+              role="columnheader"
               className={'cf-sheet__col-cell' + (selection.end.col === c ? ' is-active' : '')}
               style={{ width: `${colWidth}px` }}
             >
@@ -305,8 +311,15 @@ export function Spreadsheet(props: SpreadsheetProps) {
 
         <div className="cf-sheet__body" style={{ height: `${rows * rowHeight}px` }}>
           {Array.from({ length: rows }).map((_, r) => (
-            <div key={r} className="cf-sheet__row" style={{ height: `${rowHeight}px` }}>
+            <div
+              key={r}
+              role="row"
+              aria-rowindex={r + 2}
+              className="cf-sheet__row"
+              style={{ height: `${rowHeight}px` }}
+            >
               <div
+                role="rowheader"
                 className={'cf-sheet__row-head' + (selection.end.row === r ? ' is-active' : '')}
                 style={{ width: `${rowHeaderWidth}px` }}
               >
@@ -322,6 +335,10 @@ export function Spreadsheet(props: SpreadsheetProps) {
                 return (
                   <div
                     key={c}
+                    role="gridcell"
+                    aria-colindex={c + 2}
+                    aria-selected={inSelection(c, r) || undefined}
+                    aria-readonly={readonly || undefined}
                     className={cls}
                     style={{ width: `${colWidth}px` }}
                     onPointerDown={(e) => onCellPointerDown(e, c, r)}

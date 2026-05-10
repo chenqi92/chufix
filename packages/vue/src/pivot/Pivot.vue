@@ -32,6 +32,8 @@ function heatStyle(value: number | undefined): Record<string, string> {
   };
 }
 
+const clickable = computed(() => !!props.onCellClick);
+
 function onCellClick(row: string, col: string, value: number | undefined) {
   if (!props.onCellClick) return;
   props.onCellClick({
@@ -71,9 +73,14 @@ function onCellClick(row: string, col: string, value: number | undefined) {
               v-for="c in result.colKeys"
               :key="c"
               class="cf-pivot__cell"
-              :class="{ 'is-empty': result.cells[r][c] === undefined, 'is-clickable': !!onCellClick }"
+              :class="{ 'is-empty': result.cells[r][c] === undefined, 'is-clickable': clickable }"
               :style="heatStyle(result.cells[r][c])"
+              :role="clickable ? 'button' : undefined"
+              :tabindex="clickable ? 0 : undefined"
+              :aria-label="clickable ? `${r} × ${c}: ${formatCell(result.cells[r][c], r, c)}` : undefined"
               @click="onCellClick(r, c, result.cells[r][c])"
+              @keydown.enter.prevent="onCellClick(r, c, result.cells[r][c])"
+              @keydown.space.prevent="onCellClick(r, c, result.cells[r][c])"
             >
               {{ formatCell(result.cells[r][c], r, c) }}
             </td>

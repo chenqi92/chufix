@@ -1,0 +1,80 @@
+---
+title: Accessibility
+description: ChuFix accessibility baseline — focus rings, keyboard navigation, screen readers, reduced-motion, forced-colors, aria-* coverage.
+---
+
+Every ChuFix component is wrapped in this baseline a11y layer out of the box. If you've overridden styles, walk down the checklist to make sure you haven't undone the protections.
+
+## Focus ring
+
+[`packages/vue/src/styles/a11y.css`](https://github.com/chenqi92/chufix/blob/main/packages/vue/src/styles/a11y.css) declares a global rule:
+
+```css
+[class*='cf-']:where(button, a, [role='button'], [tabindex='0']):focus-visible:not(:disabled) {
+  box-shadow: var(--focus-ring);
+}
+```
+
+Any `cf-*` interactive control gets an accent focus ring as soon as the user lands on it via keyboard. Mouse clicks don't trigger it (relies on `:focus-visible`), so day-to-day use isn't visually noisy.
+
+## Keyboard map
+
+| Component | Key handlers |
+| --- | --- |
+| Modal / Drawer | `Tab` / `Shift+Tab` cycles focus inside; `Esc` closes the topmost; `Enter` triggers the default action |
+| Select / Combobox / Cascader | `↓ / ↑` move active; `Enter / Space` pick; `Esc` close; `Tab` close and hand focus back |
+| DatePicker | `← → ↑ ↓` move days; `PageUp/Down` change month; `Home / End` jump to month edge; `Enter` pick; `Esc` close |
+| Spreadsheet | `← → ↑ ↓` move selection; `Enter / F2` edit; `Tab / Shift+Tab` horizontal nav; `Cmd/Ctrl+C/X/V` clipboard; `Cmd/Ctrl+A` select all; `Delete` clear |
+| Pivot | With `onCellClick`, each cell becomes Tab-reachable and `Enter / Space` activates |
+| Table / DataGrid | Row-edit mode: `Esc` cancels; `Enter` commits. Column drag uses HTML5 DnD (announced by SR). |
+| Toaster / Snackbar | Close button is Tab-reachable; `aria-live` announces messages |
+
+## Screen readers
+
+- Every icon-only button carries an `aria-label` (close, clear, remove, prev, next).
+- Modal / Drawer use `role="dialog"` + `aria-modal="true"`; the title is `aria-labelledby`, the description `aria-describedby`.
+- Select / Combobox dropdowns are `role="listbox"`, options `role="option"`, with `aria-activedescendant` synced to the active option.
+- Spreadsheet uses `role="grid"` + `role="row"` per row + `role="gridcell"` per cell + `aria-rowindex` / `aria-colindex` / `aria-selected`.
+- Toast container is `role="status"`, each toast `aria-live="polite"` (errors use `assertive`).
+- Tooltip is `role="tooltip"` and wired via `aria-describedby`; keyboard focus also triggers it.
+
+For visually-hidden labels there's a `.cf-sr-only` utility (also in a11y.css):
+
+```html
+<button>
+  <svg aria-hidden="true">…</svg>
+  <span class="cf-sr-only">Delete this task</span>
+</button>
+```
+
+## prefers-reduced-motion
+
+When the user enables "reduce motion" at the OS level:
+
+- tokens.css collapses every `--dur-*` to `0ms`.
+- a11y.css further strips `animation-duration` / `transition-duration` from all `cf-*` elements, plus the modal/drawer slide/scale entry transforms.
+- Spinners and marquees are explicitly `animation: none`.
+
+If you've written wrapper animations, wrap them in `@media (prefers-reduced-motion: reduce)` for symmetry.
+
+## forced-colors (Windows high contrast)
+
+Under `forced-colors: active`:
+
+- All `cf-*` controls focus with `outline: 2px solid CanvasText` (system-driven), not OKLCH.
+- inputs / cards / modals / drawers / pivot / spreadsheet / gantt frames keep a `1px solid CanvasText` border so they aren't washed out.
+- Tag / Badge / StatusCodeBadge declare `forced-color-adjust: none` to preserve ChuFix's semantic colors (success / warning / error / info).
+
+## prefers-contrast: more
+
+When the user requests higher contrast, the soft border `--line-1` is aliased onto the strong `--line-2`. No component changes needed.
+
+## Self-audit
+
+Before shipping a new component or style override, run through:
+
+1. Tab / Shift+Tab across the page — every interactive element is reachable and the focus ring is visible.
+2. Hover ≠ focus: hovering shouldn't visually trigger focus styles and vice versa.
+3. Toggle `prefers-reduced-motion: reduce` (DevTools → Rendering → Emulate) — no slide/scale transforms remain.
+4. Toggle Windows high contrast (or Chromium's `forced-colors: active`) — borders and text stay visible.
+5. Run a screen reader (VoiceOver / NVDA) over the happy path — clear, no duplicate readings.

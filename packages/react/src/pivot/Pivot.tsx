@@ -83,19 +83,29 @@ export function Pivot<T extends Record<string, unknown> = Record<string, unknown
                     'cf-pivot__cell' +
                     (value === undefined ? ' is-empty' : '') +
                     (onCellClick ? ' is-clickable' : '');
+                  const click = () =>
+                    onCellClick?.({
+                      row: r,
+                      col: c,
+                      value: value ?? 0,
+                      rows: result.raw[r]?.[c] ?? [],
+                    });
                   return (
                     <td
                       key={c}
                       className={cls}
                       style={heatStyle(value)}
-                      onClick={() =>
-                        onCellClick?.({
-                          row: r,
-                          col: c,
-                          value: value ?? 0,
-                          rows: result.raw[r]?.[c] ?? [],
-                        })
-                      }
+                      role={onCellClick ? 'button' : undefined}
+                      tabIndex={onCellClick ? 0 : undefined}
+                      aria-label={onCellClick ? `${r} × ${c}: ${formatCell(value, r, c)}` : undefined}
+                      onClick={click}
+                      onKeyDown={(e) => {
+                        if (!onCellClick) return;
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          click();
+                        }
+                      }}
                     >
                       {formatCell(value, r, c)}
                     </td>

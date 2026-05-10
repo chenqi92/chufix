@@ -257,17 +257,23 @@ const selectionLabel = computed(() => {
       ref="rootRef"
       class="cf-sheet__frame"
       tabindex="0"
+      role="grid"
+      :aria-rowcount="rows + 1"
+      :aria-colcount="cols + 1"
+      :aria-readonly="readonly || undefined"
+      :aria-label="caption ?? '电子表格'"
       :style="{ width: `${totalWidth}px` }"
       @keydown="onKeydown"
       @paste="onPaste"
     >
       <!-- Column header -->
-      <div class="cf-sheet__col-head" :style="{ height: `${rowHeight}px` }">
-        <div class="cf-sheet__corner" :style="{ width: `${rowHeaderWidth}px` }"></div>
+      <div class="cf-sheet__col-head" role="row" :style="{ height: `${rowHeight}px` }">
+        <div class="cf-sheet__corner" role="columnheader" :style="{ width: `${rowHeaderWidth}px` }"></div>
         <div
           v-for="c in cols"
           :key="c"
           class="cf-sheet__col-cell"
+          role="columnheader"
           :class="{ 'is-active': selection.end.col === c - 1 }"
           :style="{ width: `${colWidth}px` }"
         >{{ colLetter(c - 1) }}</div>
@@ -279,10 +285,13 @@ const selectionLabel = computed(() => {
           v-for="r in rows"
           :key="r"
           class="cf-sheet__row"
+          role="row"
+          :aria-rowindex="r + 1"
           :style="{ height: `${rowHeight}px` }"
         >
           <div
             class="cf-sheet__row-head"
+            role="rowheader"
             :class="{ 'is-active': selection.end.row === r - 1 }"
             :style="{ width: `${rowHeaderWidth}px` }"
           >{{ r }}</div>
@@ -290,6 +299,10 @@ const selectionLabel = computed(() => {
             v-for="c in cols"
             :key="c"
             class="cf-sheet__cell"
+            role="gridcell"
+            :aria-colindex="c + 1"
+            :aria-selected="inSelection(c - 1, r - 1) || undefined"
+            :aria-readonly="readonly || undefined"
             :class="{
               'is-selected': inSelection(c - 1, r - 1),
               'is-anchor': isAnchor(c - 1, r - 1),

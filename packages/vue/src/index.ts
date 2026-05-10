@@ -1,4 +1,5 @@
 import '@chufix-design/tokens/tokens.css';
+import './styles/a11y.css';
 import './styles/icon.css';
 import './styles/statusillustration.css';
 import './styles/button.css';

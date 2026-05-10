@@ -1,0 +1,80 @@
+---
+title: 无障碍 a11y
+description: ChuFix 的无障碍基线 —— 焦点环、键盘导航、屏幕阅读器、reduced-motion、forced-colors、aria-* 一览。
+---
+
+ChuFix 的所有组件都会被这层基线 a11y 规则覆盖，开箱即用。如果你做了显式覆盖，按下面的列表逐项核对就行。
+
+## 焦点环（focus ring）
+
+在 [`packages/vue/src/styles/a11y.css`](https://github.com/chenqi92/chufix/blob/main/packages/vue/src/styles/a11y.css) 中定义了一条全局规则：
+
+```css
+[class*='cf-']:where(button, a, [role='button'], [tabindex='0']):focus-visible:not(:disabled) {
+  box-shadow: var(--focus-ring);
+}
+```
+
+意思是：任意 `cf-*` 前缀的可交互控件，键盘聚焦时一定会出现 accent 色焦点环。鼠标点击不会触发（依赖 `:focus-visible`），所以日常使用不会出现"按一下按钮被框住"那种烦人体验。
+
+## 键盘导航总览
+
+| 组件类别 | 关键键 |
+| --- | --- |
+| Modal / Drawer | `Tab` / `Shift+Tab` 在容器内循环、`Esc` 关闭最顶层、`Enter` 触发默认按钮 |
+| Select / Combobox / Cascader | `↓ / ↑` 移动 active、`Enter / Space` 选中、`Esc` 关闭、`Tab` 关闭并交还焦点 |
+| DatePicker | `← → ↑ ↓` 移动天，`PageUp/Down` 翻月，`Home / End` 跳到月首/末，`Enter` 选中，`Esc` 关闭 |
+| Spreadsheet | `← → ↑ ↓` 移动选区，`Enter / F2` 编辑，`Tab / Shift+Tab` 横向导航，`Cmd/Ctrl+C/X/V` 剪贴板，`Cmd/Ctrl+A` 全选，`Delete` 清空 |
+| Pivot | 启用 `onCellClick` 后，每个单元格可以 `Tab` 聚焦并 `Enter / Space` 触发 |
+| Table / DataGrid | 行内编辑模式下 `Esc` 取消、`Enter` 提交，列拖拽用 HTML5 DnD（屏幕阅读器可宣告） |
+| Toaster / Snackbar | 关闭按钮 `Tab` 可达，`aria-live` 实时播报 |
+
+## 屏幕阅读器
+
+- 所有有图标的纯图标按钮都带 `aria-label`（关闭、清除、移除、上一页、下一页）。
+- Modal / Drawer 使用 `role="dialog"` + `aria-modal="true"`；标题挂 `aria-labelledby`，描述挂 `aria-describedby`。
+- Select / Combobox 的下拉是 `role="listbox"`，options 是 `role="option"`，并联动 `aria-activedescendant`。
+- Spreadsheet 整体 `role="grid"` + 每行 `role="row"` + 每格 `role="gridcell"` + `aria-rowindex` / `aria-colindex` / `aria-selected`。
+- Toast 容器 `role="status"`，单条 `aria-live="polite"`（错误用 `assertive`）。
+- Tooltip 使用 `role="tooltip"` + `aria-describedby` 关联到触发元素，键盘聚焦也能触发。
+
+需要纯文字标签的地方，统一用 `.cf-sr-only` utility class（也在 a11y.css 里）：
+
+```html
+<button>
+  <svg aria-hidden="true">…</svg>
+  <span class="cf-sr-only">删除当前任务</span>
+</button>
+```
+
+## prefers-reduced-motion
+
+用户在系统层面打开"减少动效"后：
+
+- tokens.css 把所有 `--dur-*` 时长压成 `0ms`。
+- a11y.css 进一步给 `cf-*` 前缀清掉 `animation-duration` / `transition-duration` 与 modal/drawer 的 slide/scale 入场变换。
+- spinner、marquee 这类持续动画显式 `animation: none`。
+
+如果你写了自己的 wrapper 动画，请同样包裹一层 `@media (prefers-reduced-motion: reduce)` 来兜底。
+
+## forced-colors（Windows 高对比度）
+
+a11y.css 在 `forced-colors: active` 模式下：
+
+- 所有 `cf-*` 控件聚焦改用 `outline: 2px solid CanvasText`（系统取色），不再依赖 OKLCH。
+- input / card / modal / drawer / pivot / spreadsheet / gantt 强制带上 `1px solid CanvasText`，避免被高对比度模式漂白。
+- Tag / Badge / StatusCodeBadge 显式声明 `forced-color-adjust: none`，保留 chufix 自己的语义色（success / warning / error / info）。
+
+## prefers-contrast: more
+
+用户开启"提高对比度"时，把弱描边 `--line-1` 直接对齐到强描边 `--line-2`，整体看起来更分明。组件无需任何改动。
+
+## 自查清单
+
+新增组件或自定义样式时，至少跑一遍：
+
+1. 用 Tab / Shift+Tab 走一遍能否到达每一个交互元素，焦点环可见。
+2. 鼠标 hover ≠ 键盘 focus：hover 不应触发 focus 状态，反之亦然。
+3. `prefers-reduced-motion: reduce`（开发者工具 → Rendering → emulate）切到减少动效，没有 transform 滑入。
+4. Windows 高对比度（或 Chromium 的 `forced-colors: active` 模拟）下边框、文字仍可见。
+5. 屏幕阅读器宣读流畅、不重复 / 不遗漏（VoiceOver / NVDA 走一遍 happy path）。

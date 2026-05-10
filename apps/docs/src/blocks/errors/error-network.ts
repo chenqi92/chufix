@@ -6,7 +6,7 @@ import type { BlockMeta } from '../types';
 export const errorNetwork: BlockMeta = {
   id: 'error-network',
   name: 'Error Network 网络异常',
-  description: 'Result + 重试按钮（含 1.5s loading）+ 折叠诊断信息（CfDescriptionList）。',
+  description: 'Result + 网络状态大插画 + 重试按钮（含 1.5s loading）+ 折叠诊断信息。',
   category: 'errors',
   height: 580,
   Preview,
