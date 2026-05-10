@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfGauge, CfSparkline, CfLatencyHeatmap, CfStatusCodeBadge } from '@chufix/vue';
+import { CfGauge, CfSparkline, CfLatencyHeatmap, CfStatusCodeBadge } from '@chufix-design/vue';
 
 function rand(n: number, base: number, jit: number) {
   return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);

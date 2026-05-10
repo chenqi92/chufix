@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { iconNames, type IconName } from '@chufix/icons';
-import { CfIcon } from '@chufix/vue';
+import { iconNames, type IconName } from '@chufix-design/icons';
+import { CfIcon } from '@chufix-design/vue';
 
 type IconCategory = {
   id: string;

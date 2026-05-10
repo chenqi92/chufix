@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCalendar } from '@chufix/vue';
+import { CfCalendar } from '@chufix-design/vue';
 
 const date = ref<Date | null>(new Date());
 </script>

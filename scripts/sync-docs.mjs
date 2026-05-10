@@ -55,8 +55,8 @@ function sh(cmd) {
   console.log(`$ ${cmd}`);
   execSync(cmd, { cwd: repoRoot, stdio: 'inherit' });
 }
-sh('pnpm --filter @chufix/vue build');
-sh('pnpm --filter @chufix/react build');
+sh('pnpm --filter @chufix-design/vue build');
+sh('pnpm --filter @chufix-design/react build');
 
 /* ── 2. sync apps/docs/src → chufix-docs/src ── */
 const docsSrc = join(repoRoot, 'apps/docs/src');
@@ -100,7 +100,7 @@ const pkgs = [
 for (const { name, dirs } of pkgs) {
   const srcPkg = join(repoRoot, 'packages', name);
   const dstPkg = join(vendorRoot, name);
-  console.log(`• vendor @chufix/${name}: ${srcPkg} → ${dstPkg}`);
+  console.log(`• vendor @chufix-design/${name}: ${srcPkg} → ${dstPkg}`);
   mkdirSync(dstPkg, { recursive: true });
 
   for (const d of dirs) {
@@ -115,10 +115,10 @@ for (const { name, dirs } of pkgs) {
   );
   if (pkgJson.dependencies) {
     for (const [k, v] of Object.entries(pkgJson.dependencies)) {
-      if (k === '@chufix/tokens' && /^workspace:/.test(v)) {
+      if (k === '@chufix-design/tokens' && /^workspace:/.test(v)) {
         pkgJson.dependencies[k] = 'file:../tokens';
       }
-      if (k === '@chufix/icons' && /^workspace:/.test(v)) {
+      if (k === '@chufix-design/icons' && /^workspace:/.test(v)) {
         pkgJson.dependencies[k] = 'file:../icons';
       }
     }
@@ -136,7 +136,7 @@ for (const { name, dirs } of pkgs) {
  *      ".gitignore = dist" which matched every directory called dist anywhere,
  *      including vendor/{vue,react}/dist/. Result: dist files were never
  *      pushed and Cloudflare's build crashed with "Failed to resolve entry
- *      for package @chufix/vue". Catch the regression here. */
+ *      for package @chufix-design/vue". Catch the regression here. */
 {
   const giPath = join(deployRoot, '.gitignore');
   if (existsSync(giPath)) {
@@ -159,10 +159,10 @@ for (const { name, dirs } of pkgs) {
 /* ── 5. rewrite chufix-docs/package.json deps to file:./vendor/* ── */
 const deployPkgPath = join(deployRoot, 'package.json');
 const deployPkg = JSON.parse(readFileSync(deployPkgPath, 'utf8'));
-deployPkg.dependencies['@chufix/tokens'] = 'file:./vendor/tokens';
-deployPkg.dependencies['@chufix/icons'] = 'file:./vendor/icons';
-deployPkg.dependencies['@chufix/vue'] = 'file:./vendor/vue';
-deployPkg.dependencies['@chufix/react'] = 'file:./vendor/react';
+deployPkg.dependencies['@chufix-design/tokens'] = 'file:./vendor/tokens';
+deployPkg.dependencies['@chufix-design/icons'] = 'file:./vendor/icons';
+deployPkg.dependencies['@chufix-design/vue'] = 'file:./vendor/vue';
+deployPkg.dependencies['@chufix-design/react'] = 'file:./vendor/react';
 writeFileSync(deployPkgPath, JSON.stringify(deployPkg, null, 2) + '\n');
 
 console.log(`\nsync · done · deploy repo at ${deployRoot}`);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfJsonDiff } from '@chufix/vue';
+import { CfJsonDiff } from '@chufix-design/vue';
 
 const left = { id: 1, status: 'pending' };
 const right = { id: 1, status: 'approved', approvedBy: 'admin' };

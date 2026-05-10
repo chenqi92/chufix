@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfForm, CfFormField, CfInput, CfButton } from '@chufix/vue';
+import { CfForm, CfFormField, CfInput, CfButton } from '@chufix-design/vue';
 
 const name = ref('');
 const email = ref('');

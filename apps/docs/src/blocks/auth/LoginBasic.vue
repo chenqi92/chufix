@@ -7,7 +7,7 @@ import {
   CfCheckbox,
   CfLink,
   CfDivider,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const email = ref('');
 const password = ref('');

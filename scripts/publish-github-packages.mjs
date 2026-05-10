@@ -3,8 +3,8 @@
  * 把 packages/* 下所有非 private 包临时改 scope 后发布到 GitHub Packages。
  *
  * 规则：
- *   - 包名 @chufix/<x>     → @<owner>/chufix-<x>
- *   - 内部依赖 @chufix/<y>  → @<owner>/chufix-<y>（同步重写，避免 cross-registry）
+ *   - 包名 @chufix-design/<x>     → @<owner>/chufix-<x>
+ *   - 内部依赖 @chufix-design/<y>  → @<owner>/chufix-<y>（同步重写，避免 cross-registry）
  *   - publishConfig.registry 移除（让 npm 用环境里的 registry-url）
  *   - 已存在的版本会跳过（404 / 409 时不报错）
  *
@@ -27,15 +27,15 @@ const dirs = (await fs.readdir(root, { withFileTypes: true }))
   .map((d) => d.name);
 
 function rewriteName(name) {
-  if (!name.startsWith('@chufix/')) return name;
-  const flat = name.slice('@chufix/'.length);
+  if (!name.startsWith('@chufix-design/')) return name;
+  const flat = name.slice('@chufix-design/'.length);
   return `@${owner}/chufix-${flat}`;
 }
 
 function rewriteDeps(deps) {
   if (!deps) return;
   for (const k of Object.keys(deps)) {
-    if (k.startsWith('@chufix/')) {
+    if (k.startsWith('@chufix-design/')) {
       const v = deps[k];
       const newKey = rewriteName(k);
       deps[newKey] = v;

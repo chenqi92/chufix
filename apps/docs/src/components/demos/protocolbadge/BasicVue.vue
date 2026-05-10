@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfProtocolBadge } from '@chufix/vue';
+import { CfProtocolBadge } from '@chufix-design/vue';
 const protos = ['get','post','put','patch','del','head','opt','ws','mqtt','grpc','sse','gql'];
 </script>
 

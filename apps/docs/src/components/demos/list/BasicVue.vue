@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfList, type ListItem } from '@chufix/vue';
+import { CfList, type ListItem } from '@chufix-design/vue';
 
 const value = ref<string | string[] | null>('alice');
 const items: ListItem[] = [

@@ -8,7 +8,7 @@ import {
   CfTimeline,
   CfTag,
   CfStat,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const profile = [
   { label: '邮箱', value: 'jane.l@example.com' },

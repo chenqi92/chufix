@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDomainPane, CfTreeView, CfMethodBadge, CfStatusCodeBadge, CfKVEditor, CfDescriptionList } from '@chufix/vue';
+import { CfDomainPane, CfTreeView, CfMethodBadge, CfStatusCodeBadge, CfKVEditor, CfDescriptionList } from '@chufix-design/vue';
 import { ref } from 'vue';
 const collection = [
   { id: 'auth', label: 'auth/', children: [

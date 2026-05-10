@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfInput } from '@chufix/vue';
+import { CfInput } from '@chufix-design/vue';
 
 const search = ref('hello');
 const email = ref('not-an-email');

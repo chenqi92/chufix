@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfQRCode, CfInput } from '@chufix/vue';
+import { CfQRCode, CfInput } from '@chufix-design/vue';
 
 const value = ref('https://chufix.com');
 </script>

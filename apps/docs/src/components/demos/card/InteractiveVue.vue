@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCard } from '@chufix/vue';
+import { CfCard } from '@chufix-design/vue';
 
 const clicked = ref(0);
 </script>

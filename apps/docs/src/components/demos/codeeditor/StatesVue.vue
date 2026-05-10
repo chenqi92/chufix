@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCodeEditor } from '@chufix/vue';
+import { CfCodeEditor } from '@chufix-design/vue';
 const ro = ref(`# read-only 模式
 # 输入会被拦截，行号 + 灰底突出 readOnly 状态
 

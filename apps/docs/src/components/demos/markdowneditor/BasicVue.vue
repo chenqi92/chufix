@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfMarkdownEditor } from '@chufix/vue';
+import { CfMarkdownEditor } from '@chufix-design/vue';
 const md = ref(`# 标题一
 
 这是 **加粗**、*斜体*、\`inline code\` 与 [链接](https://chufix.com) 的示例。

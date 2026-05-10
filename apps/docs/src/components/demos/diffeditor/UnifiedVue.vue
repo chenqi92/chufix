@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDiffEditor } from '@chufix/vue';
+import { CfDiffEditor } from '@chufix-design/vue';
 const left = `function greet(name) {
   console.log('Hello ' + name);
   return null;

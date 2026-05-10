@@ -15,7 +15,7 @@ import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfTextarea } from '@chufix/vue';
+import { CfTextarea } from '@chufix-design/vue';
 
 const note = ref('');
 </script>
@@ -24,7 +24,7 @@ const note = ref('');
   <CfTextarea v-model="note" placeholder="说点什么…" :rows="3" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfTextarea } from '@chufix/react';
+import { CfTextarea } from '@chufix-design/react';
 
 export default function Demo() {
   const [note, setNote] = useState('');

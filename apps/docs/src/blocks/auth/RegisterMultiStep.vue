@@ -8,7 +8,7 @@ import {
   CfPasswordStrength,
   CfPhoneInput,
   CfCheckbox,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const steps = [
   { id: 'account', title: '账号' },

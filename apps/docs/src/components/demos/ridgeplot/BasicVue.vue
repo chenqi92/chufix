@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfRidgePlot } from '@chufix/vue';
+import { CfRidgePlot } from '@chufix-design/vue';
 function bell(center: number, n = 30) {
   return Array.from({ length: n }, (_, i) => {
     const x = (i - center) / 4;

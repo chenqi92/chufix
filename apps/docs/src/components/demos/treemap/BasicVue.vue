@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTreemap } from '@chufix/vue';
+import { CfTreemap } from '@chufix-design/vue';
 const nodes = [
   { name: 'react-dom', value: 1200 },
   { name: 'react', value: 720 },

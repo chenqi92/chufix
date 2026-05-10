@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDomainPane } from '@chufix/vue';
+import { CfDomainPane } from '@chufix-design/vue';
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTimingBar } from '@chufix/vue';
+import { CfTimingBar } from '@chufix-design/vue';
 // 真实场景：3 个并发 HTTP 请求
 const r1 = [
   { label: 'DNS', start: 0, end: 8, colorIndex: 6 },

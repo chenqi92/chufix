@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfVariableAwareInput } from '@chufix/vue';
+import { CfVariableAwareInput } from '@chufix-design/vue';
 const value = ref('{{base_url}}/users/{{user_id}}/orders?token={{trace_id}}');
 const known = ['base_url', 'user_id', 'auth_token'];
 </script>

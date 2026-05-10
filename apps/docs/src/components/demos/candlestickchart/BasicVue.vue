@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCandlestickChart } from '@chufix/vue';
+import { CfCandlestickChart } from '@chufix-design/vue';
 const data = [
   { open: 100, close: 108, high: 112, low: 98 },
   { open: 108, close: 105, high: 110, low: 103 },

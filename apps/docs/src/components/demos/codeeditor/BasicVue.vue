@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCodeEditor } from '@chufix/vue';
+import { CfCodeEditor } from '@chufix-design/vue';
 const code = ref(`function fizzbuzz(n: number) {
   for (let i = 1; i <= n; i++) {
     let out = '';

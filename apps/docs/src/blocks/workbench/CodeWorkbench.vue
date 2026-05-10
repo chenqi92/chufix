@@ -6,8 +6,8 @@ import {
   CfCodeEditor,
   CfAnsiText,
   CfStatusBar,
-} from '@chufix/vue';
-import type { DockGroup, TreeNode } from '@chufix/vue';
+} from '@chufix-design/vue';
+import type { DockGroup, TreeNode } from '@chufix-design/vue';
 
 const tree: TreeNode[] = [
   {

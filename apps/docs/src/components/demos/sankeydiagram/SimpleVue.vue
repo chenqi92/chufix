@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSankeyDiagram } from '@chufix/vue';
+import { CfSankeyDiagram } from '@chufix-design/vue';
 const nodes = [
   { id: 'a', name: '搜索引擎', layer: 0 },
   { id: 'b', name: '直接访问', layer: 0 },

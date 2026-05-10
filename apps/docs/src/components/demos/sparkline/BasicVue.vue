@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSparkline } from '@chufix/vue';
+import { CfSparkline } from '@chufix-design/vue';
 const trendUp = [3, 5, 4, 7, 6, 9, 11, 10, 13];
 const trendDown = [12, 11, 13, 9, 10, 7, 8, 5, 4];
 const flat = [6, 6, 7, 6, 7, 6, 6, 7, 6];

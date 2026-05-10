@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfScrollArea } from '@chufix/vue';
+import { CfScrollArea } from '@chufix-design/vue';
 
 const rows = Array.from({ length: 18 }, (_, r) => r);
 const cols = Array.from({ length: 12 }, (_, c) => c);

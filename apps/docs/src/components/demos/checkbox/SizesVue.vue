@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCheckbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix-design/vue';
 </script>
 
 <template>

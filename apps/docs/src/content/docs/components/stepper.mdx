@@ -15,7 +15,7 @@ import VerticalVue from '~/components/demos/stepper/VerticalVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfStepper, type StepItem } from '@chufix/vue';
+import { CfStepper, type StepItem } from '@chufix-design/vue';
 
 const current = ref(1);
 const items: StepItem[] = [
@@ -29,7 +29,7 @@ const items: StepItem[] = [
   <CfStepper :items="items" :current="current" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfStepper, type StepItem } from '@chufix/react';
+import { CfStepper, type StepItem } from '@chufix-design/react';
 
 const items: StepItem[] = [
   { title: '填写信息', description: '账号 / 邮箱 / 密码' },

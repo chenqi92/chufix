@@ -1,4 +1,4 @@
-import '@chufix/tokens/tokens.css';
+import '@chufix-design/tokens/tokens.css';
 import './styles/icon.css';
 import './styles/statusillustration.css';
 import './styles/button.css';
@@ -124,7 +124,7 @@ import './styles/qrcode.css';
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
  * their template and disambiguate against other UI libraries. Want short
- * names? Alias on import: `import { CfButton as Button } from '@chufix/vue'`. */
+ * names? Alias on import: `import { CfButton as Button } from '@chufix-design/vue'`. */
 
 export { default as CfButton } from './button/Button.vue';
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape } from './button/variants';
@@ -956,4 +956,4 @@ export type {
   IconSize,
   IconStrokeWidth,
 } from './icon/variants';
-export type { IconName } from '@chufix/icons';
+export type { IconName } from '@chufix-design/icons';

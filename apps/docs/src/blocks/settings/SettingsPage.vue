@@ -10,7 +10,7 @@ import {
   CfAvatar,
   CfDivider,
   CfSelect,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const name = ref('Jane Liu');
 const email = ref('jane.l@example.com');

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfButton, toast } from '@chufix/vue';
+import { CfButton, toast } from '@chufix-design/vue';
 
 type Pos =
   | 'top-right' | 'top-left' | 'top-center'

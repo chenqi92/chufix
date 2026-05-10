@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfResult } from '@chufix/vue';
+import { CfResult } from '@chufix-design/vue';
 </script>
 
 <template>

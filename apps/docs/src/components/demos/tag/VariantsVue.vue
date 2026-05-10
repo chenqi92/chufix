@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTag } from '@chufix/vue';
+import { CfTag } from '@chufix-design/vue';
 </script>
 
 <template>

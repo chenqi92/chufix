@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfConnectionGraph } from '@chufix/vue';
+import { CfConnectionGraph } from '@chufix-design/vue';
 const nodes = [
   { id: 'web', label: 'Web' },
   { id: 'api', label: 'API' },

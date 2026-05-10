@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfRadio, CfRadioGroup } from '@chufix/vue';
+import { CfRadio, CfRadioGroup } from '@chufix-design/vue';
 
 const flavor = ref('vanilla');
 </script>

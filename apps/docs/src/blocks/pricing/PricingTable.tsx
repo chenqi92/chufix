@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { CfButton, CfTag, CfSegmentedControl } from '@chufix/react';
+import { CfButton, CfTag, CfSegmentedControl } from '@chufix-design/react';
 
 const billingItems = [
   { label: '按月', value: 'monthly' },

@@ -6,7 +6,7 @@ import {
   CfCheckbox,
   CfLink,
   CfDivider,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 export function LoginBasic() {
   const [email, setEmail] = useState('');

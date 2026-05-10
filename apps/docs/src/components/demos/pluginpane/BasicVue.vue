@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfPluginPane } from '@chufix/vue';
+import { CfPluginPane } from '@chufix-design/vue';
 </script>
 
 <template>
@@ -7,7 +7,7 @@ import { CfPluginPane } from '@chufix/vue';
     <CfPluginPane>
       <template #panel-card><p style="color: var(--fg-2);">PluginCard 列表 / 网格视图。</p></template>
       <template #panel-manifest><pre style="font-family: var(--font-mono); font-size: 11px;">{
-  "name": "@chufix/plugin-foo",
+  "name": "@chufix-design/plugin-foo",
   "version": "1.0.0",
   "permissions": ["read:requests"]
 }</pre></template>

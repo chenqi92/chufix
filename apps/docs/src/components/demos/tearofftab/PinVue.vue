@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTearOffTabs, CfDetachedPanel } from '@chufix/vue';
+import { CfTearOffTabs, CfDetachedPanel } from '@chufix-design/vue';
 const tabs = ref([
   { id: 'orders', title: 'orders.ts', closable: true, modified: true },
   { id: 'login', title: 'login.ts', closable: true },

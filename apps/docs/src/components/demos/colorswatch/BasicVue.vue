@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfColorSwatch } from '@chufix/vue';
+import { CfColorSwatch } from '@chufix-design/vue';
 const picked = ref('var(--accent-1)');
 const colors = ['var(--accent-1)', 'var(--status-success)', 'var(--status-warning)', 'var(--status-error)', 'var(--proto-ws)', 'var(--proto-gql)'];
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfRating } from '@chufix/vue';
+import { CfRating } from '@chufix-design/vue';
 </script>
 
 <template>

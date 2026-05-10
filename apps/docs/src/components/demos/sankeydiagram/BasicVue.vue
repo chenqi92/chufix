@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSankeyDiagram } from '@chufix/vue';
+import { CfSankeyDiagram } from '@chufix-design/vue';
 const nodes = [
   { id: 'organic', name: 'Organic', layer: 0 },
   { id: 'paid', name: 'Paid', layer: 0 },

@@ -15,7 +15,7 @@ import SizesVue from '~/components/demos/combobox/SizesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfCombobox, type ComboboxOption } from '@chufix/vue';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/vue';
 
 const value = ref<string | number | null>('vue');
 const options: ComboboxOption[] = [
@@ -30,7 +30,7 @@ const options: ComboboxOption[] = [
   <CfCombobox v-model="value" :options="options" clearable />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfCombobox, type ComboboxOption } from '@chufix/react';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/react';
 
 const options: ComboboxOption[] = [
   { value: 'vue', label: 'Vue 3' },
@@ -54,7 +54,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfCombobox, type ComboboxOption } from '@chufix/vue';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/vue';
 
 const value = ref<string | number | null>(null);
 const options = ref<ComboboxOption[]>([
@@ -73,7 +73,7 @@ const options = ref<ComboboxOption[]>([
   />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfCombobox, type ComboboxOption } from '@chufix/react';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/react';
 
 export default function Demo() {
   const [value, setValue] = useState<string | number | null>(null);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfBoxPlot } from '@chufix/vue';
+import { CfBoxPlot } from '@chufix-design/vue';
 const data = [
   { label: 'p50', min: 80, q1: 95, median: 110, q3: 125, max: 145, outliers: [220] },
   { label: 'p75', min: 120, q1: 140, median: 165, q3: 195, max: 230, outliers: [340] },

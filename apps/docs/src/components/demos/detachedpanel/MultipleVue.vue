@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDetachedPanel, CfButton } from '@chufix/vue';
+import { CfDetachedPanel, CfButton } from '@chufix-design/vue';
 const a = ref(false);
 const b = ref(false);
 </script>

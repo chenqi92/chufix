@@ -9,7 +9,7 @@ import {
   CfSelect,
   CfDropdown,
   CfIconButton,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const inviteEmail = ref('');
 const inviteRole = ref('member');

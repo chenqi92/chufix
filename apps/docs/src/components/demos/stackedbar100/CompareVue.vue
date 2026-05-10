@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStackedBar100 } from '@chufix/vue';
+import { CfStackedBar100 } from '@chufix-design/vue';
 const browsers2024 = [
   { name: 'Chrome', value: 65 },
   { name: 'Safari', value: 18 },

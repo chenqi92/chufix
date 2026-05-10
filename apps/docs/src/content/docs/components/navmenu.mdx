@@ -15,7 +15,7 @@ import TriggerVue from '~/components/demos/navmenu/TriggerVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfNavMenu, type NavMenuItem } from '@chufix/vue';
+import { CfNavMenu, type NavMenuItem } from '@chufix-design/vue';
 
 const active = ref('products');
 const items: NavMenuItem[] = [
@@ -38,7 +38,7 @@ const items: NavMenuItem[] = [
 <template>
   <CfNavMenu :items="items" :active="active" />
 </template>`}
-  reactCode={`import { CfNavMenu, type NavMenuItem } from '@chufix/react';
+  reactCode={`import { CfNavMenu, type NavMenuItem } from '@chufix-design/react';
 
 const items: NavMenuItem[] = [/* ... */];
 

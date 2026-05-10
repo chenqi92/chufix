@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDateRangePicker, type DateRangeValue } from '@chufix/vue';
+import { CfDateRangePicker, type DateRangeValue } from '@chufix-design/vue';
 
 const value = ref<DateRangeValue>(['2026-05-01', '2026-05-12']);
 </script>

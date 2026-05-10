@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSearchInput } from '@chufix/vue';
+import { CfSearchInput } from '@chufix-design/vue';
 
 const q = ref('');
 function handleSearch(v: string) {

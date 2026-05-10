@@ -5,7 +5,7 @@ import {
   CfTreemap,
   CfStat,
   CfStackedBar100,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const sources = [
   { name: 'Search', value: 4280 },

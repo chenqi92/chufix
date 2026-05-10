@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfOnboardingFlow, CfStepper } from '@chufix/vue';
+import { CfOnboardingFlow, CfStepper } from '@chufix-design/vue';
 const steps = [
   { id: '1', title: '选择主题' },
   { id: '2', title: '导入数据' },

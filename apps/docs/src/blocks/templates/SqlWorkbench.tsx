@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CfSqlWorkbench, CfCodeEditor } from '@chufix/react';
+import { CfSqlWorkbench, CfCodeEditor } from '@chufix-design/react';
 
 export function SqlWorkbench() {
   const [sql, setSql] = useState("SELECT id, name FROM users WHERE created_at > now() - interval '1 day';");

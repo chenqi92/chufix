@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfNavMenu, type NavMenuItem } from '@chufix/vue';
+import { CfNavMenu, type NavMenuItem } from '@chufix-design/vue';
 
 const active = ref('products');
 const items: NavMenuItem[] = [

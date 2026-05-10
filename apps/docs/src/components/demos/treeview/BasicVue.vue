@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTreeView, type TreeNode } from '@chufix/vue';
+import { CfTreeView, type TreeNode } from '@chufix-design/vue';
 
 const selected = ref<string | null>('home');
 

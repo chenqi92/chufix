@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfEmpty, CfStatusIllustration } from '@chufix/vue';
+import { CfEmpty, CfStatusIllustration } from '@chufix-design/vue';
 </script>
 
 <template>

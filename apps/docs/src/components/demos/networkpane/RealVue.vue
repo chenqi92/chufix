@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfNetworkPane, CfTimingBar, CfStatusCodeBadge, CfDescriptionList } from '@chufix/vue';
+import { CfNetworkPane, CfTimingBar, CfStatusCodeBadge, CfDescriptionList } from '@chufix-design/vue';
 const r1 = [
   { label: 'DNS', start: 0, end: 8, colorIndex: 6 },
   { label: 'TLS', start: 8, end: 92, colorIndex: 2 },

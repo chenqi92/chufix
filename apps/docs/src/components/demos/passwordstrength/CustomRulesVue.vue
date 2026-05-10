@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfPasswordStrength } from '@chufix/vue';
+import { CfPasswordStrength } from '@chufix-design/vue';
 const pwd = ref('');
 const requirements = [
   { label: '12+ 位字符', test: (v: string) => v.length >= 12 },

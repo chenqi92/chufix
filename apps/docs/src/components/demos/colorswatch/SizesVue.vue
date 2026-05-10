@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfColorSwatch } from '@chufix/vue';
+import { CfColorSwatch } from '@chufix-design/vue';
 const c = 'var(--accent-1)';
 </script>
 

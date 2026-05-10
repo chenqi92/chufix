@@ -7,7 +7,7 @@ import {
   CfTextarea,
   CfSelect,
   CfButton,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const name = ref('');
 const email = ref('');

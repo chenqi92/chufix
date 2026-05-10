@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfKbd } from '@chufix/vue';
+import { CfKbd } from '@chufix-design/vue';
 </script>
 
 <template>

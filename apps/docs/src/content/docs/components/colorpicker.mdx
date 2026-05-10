@@ -15,7 +15,7 @@ import PanelVue from '~/components/demos/colorpicker/PanelVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfColorPicker } from '@chufix/vue';
+import { CfColorPicker } from '@chufix-design/vue';
 
 const value = ref('#3b82f6');
 </script>
@@ -24,7 +24,7 @@ const value = ref('#3b82f6');
   <CfColorPicker v-model="value" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfColorPicker } from '@chufix/react';
+import { CfColorPicker } from '@chufix-design/react';
 
 export default function Demo() {
   const [value, setValue] = useState('#3b82f6');

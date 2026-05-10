@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfGlobalSearch, CfButton } from '@chufix/vue';
+import { CfGlobalSearch, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 const results = [
   { id: '1', title: '/v1/orders', description: 'GET 列表所有订单', category: 'API', badge: 'GET', path: 'payments / orders' },

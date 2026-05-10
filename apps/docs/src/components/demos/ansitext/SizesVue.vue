@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAnsiText } from '@chufix/vue';
+import { CfAnsiText } from '@chufix-design/vue';
 const sample = '\x1b[1;32m✓\x1b[0m \x1b[1mtest passed\x1b[0m\n\x1b[2m  duration:\x1b[0m \x1b[36m12ms\x1b[0m\n\x1b[31m  expected\x1b[0m: \x1b[42m\x1b[30m foo \x1b[0m\n\x1b[31m  actual\x1b[0m  : \x1b[41m\x1b[37m bar \x1b[0m\n';
 </script>
 

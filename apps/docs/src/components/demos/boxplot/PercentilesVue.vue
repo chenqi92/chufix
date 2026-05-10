@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfBoxPlot } from '@chufix/vue';
+import { CfBoxPlot } from '@chufix-design/vue';
 const apis = [
   { label: '/login', min: 50, q1: 65, median: 80, q3: 110, max: 145, outliers: [220, 280] },
   { label: '/orders', min: 30, q1: 50, median: 75, q3: 110, max: 160, outliers: [320, 510] },

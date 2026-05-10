@@ -1,6 +1,6 @@
 {
-  "name": "@chufix/vue",
-  "version": "0.0.1",
+  "name": "@chufix-design/vue",
+  "version": "0.1.0",
   "description": "ChuFix UI for Vue 3 —— 初见即用的基础组件库",
   "license": "MIT",
   "author": "chenqi92",
@@ -53,8 +53,8 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "@chufix/icons": "workspace:*",
-    "@chufix/tokens": "workspace:*"
+    "@chufix-design/icons": "workspace:*",
+    "@chufix-design/tokens": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",

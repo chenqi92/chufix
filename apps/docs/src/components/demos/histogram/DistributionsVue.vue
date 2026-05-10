@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfHistogram } from '@chufix/vue';
+import { CfHistogram } from '@chufix-design/vue';
 const normal = [
   { label: '40-60', count: 2 },
   { label: '60-80', count: 8 },

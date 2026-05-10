@@ -1,4 +1,4 @@
-import { CfGauge, CfSparkline, CfLatencyHeatmap, CfStatusCodeBadge } from '@chufix/react';
+import { CfGauge, CfSparkline, CfLatencyHeatmap, CfStatusCodeBadge } from '@chufix-design/react';
 
 function rand(n: number, base: number, jit: number) {
   return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);

@@ -8,7 +8,7 @@ import {
   CfEmpty,
   CfInput,
   CfTextarea,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 type CommentStatus = 'pending' | 'approved' | 'rejected';
 type FilterStatus = CommentStatus | 'all';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfInputGroup, CfInput, CfButton, CfSelect } from '@chufix/vue';
+import { CfInputGroup, CfInput, CfButton, CfSelect } from '@chufix-design/vue';
 
 const protocol = ref('https');
 const host = ref('chufix.com');

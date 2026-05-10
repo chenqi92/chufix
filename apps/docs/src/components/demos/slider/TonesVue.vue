@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSlider } from '@chufix/vue';
+import { CfSlider } from '@chufix-design/vue';
 
 const a = ref(60);
 const b = ref(60);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfHistogram } from '@chufix/vue';
+import { CfHistogram } from '@chufix-design/vue';
 const bins = [
   { label: '0-50', count: 4 },
   { label: '50-100', count: 8 },

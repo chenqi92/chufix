@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSidebar, type SidebarEntry } from '@chufix/vue';
+import { CfSidebar, type SidebarEntry } from '@chufix-design/vue';
 
 const a = ref('overview');
 const b = ref('overview');

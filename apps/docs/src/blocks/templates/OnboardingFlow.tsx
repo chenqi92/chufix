@@ -1,4 +1,4 @@
-import { CfOnboardingFlow, CfStepper } from '@chufix/react';
+import { CfOnboardingFlow, CfStepper } from '@chufix-design/react';
 
 const steps = [
   { id: '1', title: '选择主题' },

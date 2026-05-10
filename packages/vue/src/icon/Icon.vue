@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue';
-import { iconSymbols } from '@chufix/icons';
+import { iconSymbols } from '@chufix-design/icons';
 import { iconClass, iconStyle, type IconProps } from './variants';
 
 const props = withDefaults(defineProps<IconProps>(), {

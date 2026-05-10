@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfNumberInput } from '@chufix/vue';
+import { CfNumberInput } from '@chufix-design/vue';
 
 const value = ref<number | null>(10);
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTitleBar } from '@chufix/vue';
+import { CfTitleBar } from '@chufix-design/vue';
 </script>
 
 <template>

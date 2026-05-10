@@ -1,5 +1,5 @@
 import { forwardRef, useId } from 'react';
-import { iconSymbols } from '@chufix/icons';
+import { iconSymbols } from '@chufix-design/icons';
 import { iconClass, iconStyle, type IconProps } from './variants';
 
 export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(props, ref) {

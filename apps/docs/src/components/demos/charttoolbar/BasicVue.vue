@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfChartToolbar } from '@chufix/vue';
+import { CfChartToolbar } from '@chufix-design/vue';
 const series = [
   { name: 'CPU', colorIndex: 0 },
   { name: 'Memory', colorIndex: 1 },

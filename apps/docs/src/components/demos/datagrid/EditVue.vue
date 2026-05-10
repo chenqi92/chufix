@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDataGrid, type DataGridColumn, type DataGridCellEdit } from '@chufix/vue';
+import { CfDataGrid, type DataGridColumn, type DataGridCellEdit } from '@chufix-design/vue';
 
 interface Row { id: string; name: string; role: string; level: number; }
 

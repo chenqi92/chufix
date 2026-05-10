@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { CfDropzone, type DropzoneFileStatus } from '@chufix/vue';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix-design/vue';
 
 const files = ref<File[]>([]);
 const statuses = ref<DropzoneFileStatus[]>([]);

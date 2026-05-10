@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfLink } from '@chufix/vue';
+import { CfLink } from '@chufix-design/vue';
 </script>
 
 <template>

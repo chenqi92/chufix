@@ -8,5 +8,6 @@ dist
 .env
 .env.*
 !.env.example
+CLAUDE.md
 claude.md
-!CLAUDE.md
+.claude/

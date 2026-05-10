@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSnackbar, CfButton } from '@chufix/vue';
+import { CfSnackbar, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 </script>
 

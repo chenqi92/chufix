@@ -1,4 +1,4 @@
-import { CfResult, CfButton, CfLink } from '@chufix/react';
+import { CfResult, CfButton, CfLink } from '@chufix-design/react';
 
 export function Error404() {
   return (

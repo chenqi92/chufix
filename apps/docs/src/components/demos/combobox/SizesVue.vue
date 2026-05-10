@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCombobox, type ComboboxOption } from '@chufix/vue';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/vue';
 
 const a = ref<string | number | null>(null);
 const b = ref<string | number | null>(null);

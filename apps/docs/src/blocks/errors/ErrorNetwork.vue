@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfResult, CfButton, CfStatusCodeBadge, CfDescriptionList } from '@chufix/vue';
+import { CfResult, CfButton, CfStatusCodeBadge, CfDescriptionList } from '@chufix-design/vue';
 const retrying = ref(false);
 async function retry() {
   retrying.value = true;

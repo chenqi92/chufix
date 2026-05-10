@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfGlobalSearch, CfButton } from '@chufix/vue';
+import { CfGlobalSearch, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 const results = Array.from({ length: 18 }, (_, i) => ({
   id: String(i),

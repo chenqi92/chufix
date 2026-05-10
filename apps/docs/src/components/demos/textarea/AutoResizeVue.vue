@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTextarea } from '@chufix/vue';
+import { CfTextarea } from '@chufix-design/vue';
 
 const draft = ref('试着多敲几行回车，框会自动撑高，没有滚动条。\n这是第二行。');
 </script>

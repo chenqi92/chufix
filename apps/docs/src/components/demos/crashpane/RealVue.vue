@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCrashPane, CfDropzone, CfBanner, CfButton } from '@chufix/vue';
+import { CfCrashPane, CfDropzone, CfBanner, CfButton } from '@chufix-design/vue';
 </script>
 
 <template>

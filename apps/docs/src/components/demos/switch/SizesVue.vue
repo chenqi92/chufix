@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSwitch } from '@chufix/vue';
+import { CfSwitch } from '@chufix-design/vue';
 
 const a = ref(true);
 const b = ref(false);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfRangeSlider } from '@chufix/vue';
+import { CfRangeSlider } from '@chufix-design/vue';
 const a = ref<[number, number]>([10, 50]);
 const b = ref<[number, number]>([30, 70]);
 const c = ref<[number, number]>([60, 90]);

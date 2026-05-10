@@ -15,7 +15,7 @@ import StatesVue from '~/components/demos/button/StatesVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { CfButton } from '@chufix/vue';
+import { CfButton } from '@chufix-design/vue';
 </script>
 
 <template>
@@ -25,7 +25,7 @@ import { CfButton } from '@chufix/vue';
   <CfButton variant="ghost">Ghost</CfButton>
   <CfButton variant="danger">Danger</CfButton>
 </template>`}
-  reactCode={`import { CfButton } from '@chufix/react';
+  reactCode={`import { CfButton } from '@chufix-design/react';
 
 export default function Demo() {
   return (
@@ -72,7 +72,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfButton } from '@chufix/vue';
+import { CfButton } from '@chufix-design/vue';
 
 const loading = ref(false);
 async function load() {
@@ -90,7 +90,7 @@ async function load() {
   <CfButton block>整行铺满（block）</CfButton>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfButton } from '@chufix/react';
+import { CfButton } from '@chufix-design/react';
 
 export default function Demo() {
   const [loading, setLoading] = useState(false);

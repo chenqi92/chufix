@@ -15,7 +15,7 @@ import StatesVue from '~/components/demos/switch/StatesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfSwitch } from '@chufix/vue';
+import { CfSwitch } from '@chufix-design/vue';
 
 const wifi = ref(true);
 </script>
@@ -24,7 +24,7 @@ const wifi = ref(true);
   <CfSwitch v-model="wifi">Wi-Fi {{ wifi ? '已开启' : '已关闭' }}</CfSwitch>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfSwitch } from '@chufix/react';
+import { CfSwitch } from '@chufix-design/react';
 
 export default function Demo() {
   const [wifi, setWifi] = useState(true);
@@ -58,7 +58,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfSwitch } from '@chufix/vue';
+import { CfSwitch } from '@chufix-design/vue';
 
 const sync = ref(false);
 const loading = ref(false);
@@ -78,7 +78,7 @@ async function toggle(v: boolean) {
   <CfSwitch :model-value="true" disabled>禁用 · 已开</CfSwitch>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfSwitch } from '@chufix/react';
+import { CfSwitch } from '@chufix-design/react';
 
 export default function Demo() {
   const [sync, setSync] = useState(false);

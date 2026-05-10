@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfContextMenu } from '@chufix/vue';
+import { CfContextMenu } from '@chufix-design/vue';
 const items = [
   { label: '复制', value: 'copy', shortcut: '⌘C' },
   { label: '剪切', value: 'cut', shortcut: '⌘X' },

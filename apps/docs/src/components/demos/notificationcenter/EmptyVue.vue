@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfNotificationCenter } from '@chufix/vue';
+import { CfNotificationCenter } from '@chufix-design/vue';
 </script>
 
 <template>

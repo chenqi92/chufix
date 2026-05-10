@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMarquee } from '@chufix/vue';
+import { CfMarquee } from '@chufix-design/vue';
 </script>
 
 <template>

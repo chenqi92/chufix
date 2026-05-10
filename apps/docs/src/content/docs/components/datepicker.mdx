@@ -15,7 +15,7 @@ import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfDatePicker } from '@chufix/vue';
+import { CfDatePicker } from '@chufix-design/vue';
 
 const value = ref<string | null>('2026-05-09');
 </script>
@@ -24,7 +24,7 @@ const value = ref<string | null>('2026-05-09');
   <CfDatePicker v-model="value" clearable />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfDatePicker } from '@chufix/react';
+import { CfDatePicker } from '@chufix-design/react';
 
 export default function Demo() {
   const [value, setValue] = useState<string | null>('2026-05-09');
@@ -41,7 +41,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfDatePicker } from '@chufix/vue';
+import { CfDatePicker } from '@chufix-design/vue';
 
 const value = ref<string | null>(null);
 const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
@@ -57,7 +57,7 @@ const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
   />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfDatePicker } from '@chufix/react';
+import { CfDatePicker } from '@chufix-design/react';
 
 const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
 

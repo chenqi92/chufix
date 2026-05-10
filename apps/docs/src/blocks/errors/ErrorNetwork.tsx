@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CfResult, CfButton, CfDescriptionList } from '@chufix/react';
+import { CfResult, CfButton, CfDescriptionList } from '@chufix-design/react';
 
 const debug = [
   { label: 'URL', value: 'https://api.protoforge.io/v1/orders' },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfLineChart } from '@chufix/vue';
+import { CfLineChart } from '@chufix-design/vue';
 const series = [{ name: 'CPU', data: [20, 35, 30, 50, 65, 45, 60, 75, 65, 80, 70, 85] }];
 </script>
 

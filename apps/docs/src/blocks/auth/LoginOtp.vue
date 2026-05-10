@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, watch } from 'vue';
-import { CfCard, CfButton, CfOtpInput, CfLink, CfPhoneInput } from '@chufix/vue';
+import { CfCard, CfButton, CfOtpInput, CfLink, CfPhoneInput } from '@chufix-design/vue';
 
 const phone = ref('138 0013 8000');
 const country = ref('CN');

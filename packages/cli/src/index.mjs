@@ -81,9 +81,9 @@ export async function run(argv) {
     }
     process.stdout.write(`\n已写入 ${block.files.length} 个文件到 ${path.relative(process.cwd(), out) || '.'}\n`);
     const langs = new Set(block.files.map((f) => f.lang));
-    const peers = ['@chufix/tokens'];
-    if (langs.has('vue')) peers.push('@chufix/vue');
-    if (langs.has('tsx')) peers.push('@chufix/react');
+    const peers = ['@chufix-design/tokens'];
+    if (langs.has('vue')) peers.push('@chufix-design/vue');
+    if (langs.has('tsx')) peers.push('@chufix-design/react');
     process.stdout.write(`记得安装 peer 依赖：pnpm add ${peers.join(' ')}\n`);
     return;
   }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { CfCheckbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix-design/vue';
 
 const apple = ref(true);
 const banana = ref(false);

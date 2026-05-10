@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfInputGroup, CfInput } from '@chufix/vue';
+import { CfInputGroup, CfInput } from '@chufix-design/vue';
 
 const price = ref('');
 const url = ref('');

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAccordion } from '@chufix/vue';
+import { CfAccordion } from '@chufix-design/vue';
 
 const items = [
   { value: 'a', title: '可点击的项', content: '正常展开 / 折叠。' },

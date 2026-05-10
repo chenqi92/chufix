@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { CfCard, CfButton, CfOtpInput, CfLink, CfPhoneInput } from '@chufix/react';
+import { CfCard, CfButton, CfOtpInput, CfLink, CfPhoneInput } from '@chufix-design/react';
 
 export function LoginOtp() {
   const [phone, setPhone] = useState('138 0013 8000');

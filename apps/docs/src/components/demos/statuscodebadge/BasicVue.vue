@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStatusCodeBadge } from '@chufix/vue';
+import { CfStatusCodeBadge } from '@chufix-design/vue';
 </script>
 
 <template>

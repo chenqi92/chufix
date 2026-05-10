@@ -1,13 +1,13 @@
-# @chufix/cli
+# @chufix-design/cli
 
 ChuFix UI CLI · 一键拉取 blocks 源码到本地项目。
 
 ## 使用
 
 ```bash
-npx @chufix/cli list
-npx @chufix/cli add billing-page
-npx @chufix/cli add billing-page --out ./src/components/billing
+npx @chufix-design/cli list
+npx @chufix-design/cli add billing-page
+npx @chufix-design/cli add billing-page --out ./src/components/billing
 ```
 
 ## 自定义注册表
@@ -15,8 +15,8 @@ npx @chufix/cli add billing-page --out ./src/components/billing
 环境变量或参数：
 
 ```bash
-CHUFIX_REGISTRY=http://localhost:4321/r npx @chufix/cli list
-npx @chufix/cli add billing-page --registry http://localhost:4321/r
+CHUFIX_REGISTRY=http://localhost:4321/r npx @chufix-design/cli list
+npx @chufix-design/cli add billing-page --registry http://localhost:4321/r
 ```
 
 ## 注册表协议

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfNetworkPane } from '@chufix/vue';
+import { CfNetworkPane } from '@chufix-design/vue';
 </script>
 
 <template>

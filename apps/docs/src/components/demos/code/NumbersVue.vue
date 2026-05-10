@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCodeBlock } from '@chufix/vue';
+import { CfCodeBlock } from '@chufix-design/vue';
 
 const code = `function fib(n) {
   if (n <= 1) return n;

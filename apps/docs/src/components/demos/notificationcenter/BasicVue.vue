@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfNotificationCenter } from '@chufix/vue';
+import { CfNotificationCenter } from '@chufix-design/vue';
 const items = ref([
   { id: '1', title: 'Build 成功', description: '#142 通过 · 1m 23s', tone: 'success' as const, timestamp: '刚刚' },
   { id: '2', title: 'Pipeline 警告', description: '3 条未使用导出', tone: 'warning' as const, timestamp: '5m', read: false },

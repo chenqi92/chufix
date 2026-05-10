@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCandlestickChart } from '@chufix/vue';
+import { CfCandlestickChart } from '@chufix-design/vue';
 const trendUp = [
   { open: 100, close: 105, high: 108, low: 98 },
   { open: 105, close: 112, high: 114, low: 103 },

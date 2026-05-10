@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfProtocolPane, CfTimeline, CfTreeView, CfDataGrid, CfStatusCodeBadge, CfList } from '@chufix/vue';
+import { CfProtocolPane, CfTimeline, CfTreeView, CfDataGrid, CfStatusCodeBadge, CfList } from '@chufix-design/vue';
 const sseEvents = [
   { id: '1', title: 'connection.established', time: '14:32:01', tone: 'success' as const },
   { id: '2', title: 'order.created · #1842', time: '14:32:08' },

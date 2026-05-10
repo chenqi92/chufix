@@ -1,4 +1,4 @@
-import { CfNetworkPane, CfTimingBar, CfStatusCodeBadge, CfDescriptionList } from '@chufix/react';
+import { CfNetworkPane, CfTimingBar, CfStatusCodeBadge, CfDescriptionList } from '@chufix-design/react';
 
 const r1 = [
   { label: 'DNS', start: 0, end: 8, colorIndex: 6 },

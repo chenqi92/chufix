@@ -1,4 +1,4 @@
-import { CfSparkline } from '@chufix/react';
+import { CfSparkline } from '@chufix-design/react';
 
 function r(n: number, base: number, jit: number) {
   return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);

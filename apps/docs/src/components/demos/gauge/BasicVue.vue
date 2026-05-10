@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfGauge } from '@chufix/vue';
+import { CfGauge } from '@chufix-design/vue';
 </script>
 
 <template>

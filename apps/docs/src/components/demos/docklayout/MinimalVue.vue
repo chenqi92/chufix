@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CfDockLayout } from '@chufix/vue';
-import type { DockGroup } from '@chufix/vue';
+import { CfDockLayout } from '@chufix-design/vue';
+import type { DockGroup } from '@chufix-design/vue';
 const layout: DockGroup = {
   id: 'root',
   orientation: 'vertical',

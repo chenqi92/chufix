@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { CfKVEditor, type KVRow } from '@chufix/vue';
+import { CfKVEditor, type KVRow } from '@chufix-design/vue';
 
 const headers = ref<KVRow[]>([
   { key: 'Authorization', value: 'Bearer xxx', enabled: true, description: '鉴权头，每次请求带上' },

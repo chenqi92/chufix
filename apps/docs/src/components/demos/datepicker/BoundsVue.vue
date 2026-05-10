@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDatePicker } from '@chufix/vue';
+import { CfDatePicker } from '@chufix-design/vue';
 
 const value = ref<string | null>(null);
 

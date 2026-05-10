@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfPageHeader, CfButton } from '@chufix/vue';
+import { CfPageHeader, CfButton } from '@chufix-design/vue';
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfButton, CfTag, CfSegmentedControl } from '@chufix/vue';
+import { CfButton, CfTag, CfSegmentedControl } from '@chufix-design/vue';
 
 const billing = ref<'monthly' | 'yearly'>('yearly');
 const billingItems = [

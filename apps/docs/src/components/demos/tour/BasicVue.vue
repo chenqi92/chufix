@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTour, CfButton, type TourStep } from '@chufix/vue';
+import { CfTour, CfButton, type TourStep } from '@chufix-design/vue';
 
 const open = ref(false);
 

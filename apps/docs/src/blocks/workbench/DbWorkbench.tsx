@@ -8,8 +8,8 @@ import {
   CfTabPanel,
   CfButton,
   CfStatusCodeBadge,
-} from '@chufix/react';
-import type { TreeNode } from '@chufix/react';
+} from '@chufix-design/react';
+import type { TreeNode } from '@chufix-design/react';
 
 const schema: TreeNode[] = [
   {

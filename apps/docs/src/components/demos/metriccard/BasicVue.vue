@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMetricCard } from '@chufix/vue';
+import { CfMetricCard } from '@chufix-design/vue';
 </script>
 
 <template>

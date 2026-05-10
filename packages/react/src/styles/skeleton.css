@@ -1,5 +1,5 @@
 /* Skeleton — shimmer block placeholders. Uses base .cf-skeleton class
- * already declared in @chufix/tokens (linear-gradient + animation).
+ * already declared in @chufix-design/tokens (linear-gradient + animation).
  * Here we add shape modifiers and a stacked-text helper. */
 
 .cf-skeleton { display: block; }

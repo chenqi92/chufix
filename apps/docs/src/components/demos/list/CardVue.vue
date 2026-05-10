@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfList, type ListItem } from '@chufix/vue';
+import { CfList, type ListItem } from '@chufix-design/vue';
 
 const items: ListItem[] = [
   { key: '1', label: '订单 #2026-001', description: '总额 ¥1,280 · 已支付' },

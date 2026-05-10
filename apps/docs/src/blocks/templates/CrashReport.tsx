@@ -1,4 +1,4 @@
-import { CfCrashPane, CfDropzone, CfBanner, CfButton } from '@chufix/react';
+import { CfCrashPane, CfDropzone, CfBanner, CfButton } from '@chufix-design/react';
 
 export function CrashReport() {
   return (

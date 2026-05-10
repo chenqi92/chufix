@@ -13,15 +13,15 @@
     "@astrojs/mdx": "^3.1.9",
     "@astrojs/react": "^3.6.2",
     "@astrojs/vue": "^4.5.3",
-    "@chufix/icons": "workspace:*",
-    "@chufix/react": "workspace:*",
-    "@chufix/tokens": "workspace:*",
-    "@chufix/vue": "workspace:*",
     "astro": "^4.16.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.33.5",
-    "vue": "^3.5.12"
+    "vue": "^3.5.12",
+    "@chufix-design/icons": "workspace:*",
+    "@chufix-design/react": "workspace:*",
+    "@chufix-design/tokens": "workspace:*",
+    "@chufix-design/vue": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

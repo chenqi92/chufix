@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfConfirmDialog, CfButton } from '@chufix/vue';
+import { CfConfirmDialog, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 const dangerOpen = ref(false);
 </script>

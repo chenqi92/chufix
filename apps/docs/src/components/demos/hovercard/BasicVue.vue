@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfHoverCard } from '@chufix/vue';
+import { CfHoverCard } from '@chufix-design/vue';
 </script>
 
 <template>

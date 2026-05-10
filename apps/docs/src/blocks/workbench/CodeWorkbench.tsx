@@ -5,8 +5,8 @@ import {
   CfCodeEditor,
   CfAnsiText,
   CfStatusBar,
-} from '@chufix/react';
-import type { DockGroup, TreeNode } from '@chufix/react';
+} from '@chufix-design/react';
+import type { DockGroup, TreeNode } from '@chufix-design/react';
 
 const tree: TreeNode[] = [
   {

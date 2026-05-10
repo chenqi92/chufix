@@ -8,7 +8,7 @@ import {
   CfSelect,
   CfDropdown,
   CfIconButton,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 const roleOptions = [
   { label: 'Owner', value: 'owner' },

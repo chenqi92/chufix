@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTagInput } from '@chufix/vue';
+import { CfTagInput } from '@chufix-design/vue';
 
 const tags = ref<string[]>(['vue', 'react']);
 </script>

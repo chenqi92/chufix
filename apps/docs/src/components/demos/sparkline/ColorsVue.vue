@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSparkline } from '@chufix/vue';
+import { CfSparkline } from '@chufix-design/vue';
 const data = Array.from({ length: 14 }, (_, i) => 5 + Math.sin(i / 2) * 4 + Math.random() * 2);
 const labels = ['indigo', 'amber', 'green', 'red', 'cyan', 'magenta', 'lime', 'azure'];
 </script>

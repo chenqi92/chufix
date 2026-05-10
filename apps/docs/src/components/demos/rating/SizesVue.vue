@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfRating } from '@chufix/vue';
+import { CfRating } from '@chufix-design/vue';
 
 const a = ref(3);
 const b = ref(3);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfMarkdownEditor } from '@chufix/vue';
+import { CfMarkdownEditor } from '@chufix-design/vue';
 const md = ref(`## 备注
 
 仅 **预览** 模式，content 不可编辑。`);

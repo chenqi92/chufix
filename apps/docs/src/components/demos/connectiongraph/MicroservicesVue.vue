@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfConnectionGraph } from '@chufix/vue';
+import { CfConnectionGraph } from '@chufix-design/vue';
 const nodes = [
   { id: 'gateway', label: 'Gateway', size: 12, colorIndex: 0 },
   { id: 'auth', label: 'Auth', size: 8, colorIndex: 1 },

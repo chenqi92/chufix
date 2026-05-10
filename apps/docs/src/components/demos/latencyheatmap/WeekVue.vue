@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfLatencyHeatmap } from '@chufix/vue';
+import { CfLatencyHeatmap } from '@chufix-design/vue';
 function row(peakHour: number) {
   return Array.from({ length: 24 }, (_, h) => {
     const dist = Math.abs(h - peakHour);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSplitter } from '@chufix/vue';
+import { CfSplitter } from '@chufix-design/vue';
 
 const size = ref(50);
 </script>

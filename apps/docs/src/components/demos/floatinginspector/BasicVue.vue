@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfFloatingInspector, CfButton } from '@chufix/vue';
+import { CfFloatingInspector, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 </script>
 

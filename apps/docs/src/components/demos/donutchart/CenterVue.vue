@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDonutChart } from '@chufix/vue';
+import { CfDonutChart } from '@chufix-design/vue';
 const segments = [
   { name: '已完成', value: 78 },
   { name: '进行中', value: 14, colorIndex: 4 },

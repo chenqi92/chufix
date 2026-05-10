@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfFunnelChart } from '@chufix/vue';
+import { CfFunnelChart } from '@chufix-design/vue';
 const goodConversion = [
   { label: '访问 100k', value: 100000 },
   { label: '注册 50k', value: 50000 },

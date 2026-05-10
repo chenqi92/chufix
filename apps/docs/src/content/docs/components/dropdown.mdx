@@ -12,8 +12,8 @@ import BasicVue from '~/components/demos/dropdown/BasicVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { CfButton, CfDropdown } from '@chufix/vue';
-import type { DropdownItem } from '@chufix/vue';
+import { CfButton, CfDropdown } from '@chufix-design/vue';
+import type { DropdownItem } from '@chufix-design/vue';
 
 const items: DropdownItem[] = [
   { key: 'profile', label: '个人资料' },
@@ -35,8 +35,8 @@ function onSelect(item: DropdownItem) {
     <CfButton variant="secondary">操作菜单 ▾</CfButton>
   </CfDropdown>
 </template>`}
-  reactCode={`import { CfButton, CfDropdown } from '@chufix/react';
-import type { DropdownItem } from '@chufix/react';
+  reactCode={`import { CfButton, CfDropdown } from '@chufix-design/react';
+import type { DropdownItem } from '@chufix-design/react';
 
 const items: DropdownItem[] = [
   { key: 'profile', label: '个人资料' },

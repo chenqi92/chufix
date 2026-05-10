@@ -7,7 +7,7 @@ import {
   CfStatusCodeBadge,
   CfBanner,
   CfStat,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const cols = [
   { key: 'date', title: '日期', dataIndex: 'date', width: 120 },

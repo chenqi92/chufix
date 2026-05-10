@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMetricCard } from '@chufix/vue';
+import { CfMetricCard } from '@chufix-design/vue';
 function rand(n: number, base: number, jitter: number) {
   return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jitter);
 }

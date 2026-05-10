@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDataGrid, type DataGridColumn } from '@chufix/vue';
+import { CfDataGrid, type DataGridColumn } from '@chufix-design/vue';
 
 interface Row { id: string; name: string; email: string; role: string; }
 

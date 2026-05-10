@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfColorPicker } from '@chufix/vue';
+import { CfColorPicker } from '@chufix-design/vue';
 
 const value = ref('#3b82f6');
 </script>

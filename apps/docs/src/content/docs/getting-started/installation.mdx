@@ -7,21 +7,21 @@ order: 1
 ## Vue 3
 
 ```bash
-npm i @chufix/vue
+npm i @chufix-design/vue
 ```
 
 ```ts
 // main.ts
 import { createApp } from 'vue';
 import App from './App.vue';
-import '@chufix/vue/style.css';
+import '@chufix-design/vue/style.css';
 
 createApp(App).mount('#app');
 ```
 
 ```vue
 <script setup lang="ts">
-import { CfButton } from '@chufix/vue';
+import { CfButton } from '@chufix-design/vue';
 </script>
 
 <template>
@@ -32,16 +32,16 @@ import { CfButton } from '@chufix/vue';
 ## React
 
 ```bash
-npm i @chufix/react
+npm i @chufix-design/react
 ```
 
 ```ts
 // main.tsx
-import '@chufix/react/style.css';
+import '@chufix-design/react/style.css';
 ```
 
 ```tsx
-import { CfButton } from '@chufix/react';
+import { CfButton } from '@chufix-design/react';
 
 export default () => <CfButton>Hello ChuFix</CfButton>;
 ```
@@ -60,7 +60,7 @@ npx chufix add button
 
 ```ts
 // tailwind.config.ts
-import preset from '@chufix/tokens/tailwind';
+import preset from '@chufix-design/tokens/tailwind';
 
 export default {
   presets: [preset],

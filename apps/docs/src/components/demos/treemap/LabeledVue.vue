@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTreemap } from '@chufix/vue';
+import { CfTreemap } from '@chufix-design/vue';
 const small = [
   { name: '依赖 A', value: 280 },
   { name: '依赖 B', value: 220 },

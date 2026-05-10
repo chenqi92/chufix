@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDonutChart } from '@chufix/vue';
+import { CfDonutChart } from '@chufix-design/vue';
 const segments = [
   { name: 'Chrome', value: 65 },
   { name: 'Safari', value: 18 },

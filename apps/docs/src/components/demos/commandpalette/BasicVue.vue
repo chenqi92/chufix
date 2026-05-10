@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCommandPalette, CfButton } from '@chufix/vue';
+import { CfCommandPalette, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 const items = [
   { id: 'new', label: 'New File', group: 'Commands', shortcut: '⌘N' },

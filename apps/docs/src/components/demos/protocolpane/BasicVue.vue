@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfProtocolPane } from '@chufix/vue';
+import { CfProtocolPane } from '@chufix-design/vue';
 </script>
 
 <template>

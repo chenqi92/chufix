@@ -308,7 +308,7 @@
 **重要决策**：图表全部**纯 SVG 自己画**，沿用 `--viz-1..8` token 色板，与项目"零三方依赖"原则一致。
 不引入 ECharts / Recharts / Chart.js。预期共享一个内部 `_useScale` / `_usePath` 工具层，22 个组件压在 3000 行内。
 
-可考虑做成独立子包 `@chufix/charts` 减少主包体积，但开发阶段先放主包共享 build，最后再决定是否拆分。
+可考虑做成独立子包 `@chufix-design/charts` 减少主包体积，但开发阶段先放主包共享 build，最后再决定是否拆分。
 
 ### P11.1 时序 (4)
 
@@ -369,7 +369,7 @@
 每完成一个组件：
 
 1. 按 `CLAUDE.md §13` 的 checklist 把 vue/react/styles/demos/mdx 全部到位
-2. 跑 `pnpm --filter @chufix/vue build && pnpm --filter @chufix/react build && pnpm tokens:check && pnpm --filter docs build`
+2. 跑 `pnpm --filter @chufix-design/vue build && pnpm --filter @chufix-design/react build && pnpm tokens:check && pnpm --filter docs build`
 3. 把这个文件里对应的 `- [ ]` 改成 `- [x]`
 4. `pnpm sync:docs` → `cd ../../chukit-docs && git add -A && git commit && git push`
 5. 主仓库一并 commit（包括 ROADMAP.md 的勾选）

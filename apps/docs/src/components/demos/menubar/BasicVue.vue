@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMenuBar } from '@chufix/vue';
+import { CfMenuBar } from '@chufix-design/vue';
 const menus = [
   {
     id: 'file', label: 'File',

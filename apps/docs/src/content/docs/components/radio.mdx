@@ -15,7 +15,7 @@ import SizesVue from '~/components/demos/radio/SizesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfRadio, CfRadioGroup } from '@chufix/vue';
+import { CfRadio, CfRadioGroup } from '@chufix-design/vue';
 
 const plan = ref<'free' | 'pro' | 'team'>('pro');
 </script>
@@ -28,7 +28,7 @@ const plan = ref<'free' | 'pro' | 'team'>('pro');
   </CfRadioGroup>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfRadio, CfRadioGroup } from '@chufix/react';
+import { CfRadio, CfRadioGroup } from '@chufix-design/react';
 
 export default function Demo() {
   const [plan, setPlan] = useState<'free' | 'pro' | 'team'>('pro');

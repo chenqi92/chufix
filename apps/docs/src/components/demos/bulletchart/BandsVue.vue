@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfBulletChart } from '@chufix/vue';
+import { CfBulletChart } from '@chufix-design/vue';
 </script>
 
 <template>

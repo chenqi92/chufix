@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAvatar, CfAvatarGroup } from '@chufix/vue';
+import { CfAvatar, CfAvatarGroup } from '@chufix-design/vue';
 </script>
 
 <template>

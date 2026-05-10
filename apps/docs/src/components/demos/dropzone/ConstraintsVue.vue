@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDropzone, type DropzoneRejection } from '@chufix/vue';
+import { CfDropzone, type DropzoneRejection } from '@chufix-design/vue';
 
 const files = ref<File[]>([]);
 const reasons: Record<string, string> = {

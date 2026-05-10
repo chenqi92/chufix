@@ -15,7 +15,7 @@ import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfSelect, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix-design/vue';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -30,7 +30,7 @@ const city = ref<string | null>('shanghai');
   <CfSelect v-model="city" :options="options" placeholder="选一个城市" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfSelect, type SelectOption } from '@chufix/react';
+import { CfSelect, type SelectOption } from '@chufix-design/react';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },

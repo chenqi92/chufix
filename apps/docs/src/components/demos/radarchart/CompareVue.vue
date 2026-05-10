@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfRadarChart } from '@chufix/vue';
+import { CfRadarChart } from '@chufix-design/vue';
 const axes = ['性能', '安全', '可维护', '可扩展', '兼容性', '生态'];
 const series = [
   { name: '当前架构', values: [70, 80, 65, 75, 60, 55], colorIndex: 0 },

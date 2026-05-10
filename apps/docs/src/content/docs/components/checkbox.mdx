@@ -15,7 +15,7 @@ import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfCheckbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix-design/vue';
 
 const agree = ref(false);
 </script>
@@ -24,7 +24,7 @@ const agree = ref(false);
   <CfCheckbox v-model="agree">我同意服务协议</CfCheckbox>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfCheckbox } from '@chufix/react';
+import { CfCheckbox } from '@chufix-design/react';
 
 export default function Demo() {
   const [agree, setAgree] = useState(false);
@@ -62,7 +62,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { computed, ref } from 'vue';
-import { CfCheckbox } from '@chufix/vue';
+import { CfCheckbox } from '@chufix-design/vue';
 
 const apple = ref(true);
 const banana = ref(false);
@@ -85,7 +85,7 @@ const indeterminate = computed(() => count.value > 0 && count.value < 3);
   <CfCheckbox v-model="cherry">樱桃</CfCheckbox>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfCheckbox } from '@chufix/react';
+import { CfCheckbox } from '@chufix-design/react';
 
 export default function Demo() {
   const [apple, setApple] = useState(true);

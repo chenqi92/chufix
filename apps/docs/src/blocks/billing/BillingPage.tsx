@@ -6,7 +6,7 @@ import {
   CfStatusCodeBadge,
   CfBanner,
   CfStat,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 const cols = [
   { key: 'date', title: '日期', dataIndex: 'date', width: 120 },

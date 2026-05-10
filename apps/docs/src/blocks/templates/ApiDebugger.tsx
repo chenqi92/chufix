@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CfDomainPane, CfTreeView, CfMethodBadge, CfStatusCodeBadge, CfKVEditor, CfDescriptionList } from '@chufix/react';
+import { CfDomainPane, CfTreeView, CfMethodBadge, CfStatusCodeBadge, CfKVEditor, CfDescriptionList } from '@chufix-design/react';
 
 const collection = [
   { id: 'auth', label: 'auth/', children: [

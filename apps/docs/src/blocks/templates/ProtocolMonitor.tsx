@@ -1,4 +1,4 @@
-import { CfProtocolPane, CfTreeView, CfDataGrid, CfList } from '@chufix/react';
+import { CfProtocolPane, CfTreeView, CfDataGrid, CfList } from '@chufix-design/react';
 
 const sseEvents = [
   { id: '1', title: 'connection.established', time: '14:32:01', tone: 'success' as const },

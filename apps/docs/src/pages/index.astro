@@ -41,7 +41,7 @@ import logo from '~/assets/chufix.png';
       <article class="cf-card cf-card--elevated">
         <div class="cf-card__header">两种用法</div>
         <div class="cf-card__body">
-          <code>npm i @chufix/vue</code> 当传统组件库用，或 <code>npx chufix add</code> 把源码直接拷进自己仓库。
+          <code>npm i @chufix-design/vue</code> 当传统组件库用，或 <code>npx chufix add</code> 把源码直接拷进自己仓库。
         </div>
       </article>
       <article class="cf-card cf-card--elevated">
@@ -61,7 +61,7 @@ import logo from '~/assets/chufix.png';
     </p>
     <DemoFrame
       vueCode={`<script setup lang="ts">
-import { CfButton } from '@chufix/vue';
+import { CfButton } from '@chufix-design/vue';
 </script>
 
 <template>
@@ -71,7 +71,7 @@ import { CfButton } from '@chufix/vue';
   <CfButton variant="ghost">幽灵</CfButton>
   <CfButton variant="danger">危险</CfButton>
 </template>`}
-      reactCode={`import { CfButton } from '@chufix/react';
+      reactCode={`import { CfButton } from '@chufix-design/react';
 
 export default () => (
   <>
@@ -83,8 +83,8 @@ export default () => (
   </>
 );`}
       cliCode={`# 任选其一
-npm i @chufix/vue
-npm i @chufix/react
+npm i @chufix-design/vue
+npm i @chufix-design/react
 
 # 或源码复制（拷贝到自己仓库）
 npx chufix add button`}

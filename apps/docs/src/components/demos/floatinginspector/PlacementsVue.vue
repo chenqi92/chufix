@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfFloatingInspector, CfButton } from '@chufix/vue';
-import type { InspectorPlacement } from '@chufix/vue';
+import { CfFloatingInspector, CfButton } from '@chufix-design/vue';
+import type { InspectorPlacement } from '@chufix-design/vue';
 const open = ref(true);
 const placement = ref<InspectorPlacement>('bottom-right');
 const placements: InspectorPlacement[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];

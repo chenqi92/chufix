@@ -7,7 +7,7 @@ import {
   CfPasswordStrength,
   CfPhoneInput,
   CfCheckbox,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 const steps = [
   { id: 'account', title: '账号' },

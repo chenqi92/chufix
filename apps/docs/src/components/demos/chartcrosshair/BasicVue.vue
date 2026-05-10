@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfChartCrosshair } from '@chufix/vue';
+import { CfChartCrosshair } from '@chufix-design/vue';
 const x = ref(180);
 const y = ref(60);
 function onMove(e: MouseEvent) {

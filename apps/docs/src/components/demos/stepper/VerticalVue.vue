@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStepper, type StepItem } from '@chufix/vue';
+import { CfStepper, type StepItem } from '@chufix-design/vue';
 
 const items: StepItem[] = [
   { title: '提交申请', description: '已于 2026-05-01 提交', status: 'done' },

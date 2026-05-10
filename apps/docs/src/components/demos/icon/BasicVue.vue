@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfIcon, type IconName } from '@chufix/vue';
+import { CfIcon, type IconName } from '@chufix-design/vue';
 
 const icons: IconName[] = [
   'search',

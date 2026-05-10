@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTimePicker } from '@chufix/vue';
+import { CfTimePicker } from '@chufix-design/vue';
 
 const t1 = ref<string | null>('09:30');
 const t2 = ref<string | null>(null);

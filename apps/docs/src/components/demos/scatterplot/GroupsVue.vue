@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfScatterPlot } from '@chufix/vue';
+import { CfScatterPlot } from '@chufix-design/vue';
 function gen(n: number, group: string, cx: number, cy: number, spread = 20) {
   return Array.from({ length: n }, () => ({
     x: cx + (Math.random() - 0.5) * spread,

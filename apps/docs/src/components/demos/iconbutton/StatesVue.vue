@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfIconButton } from '@chufix/vue';
+import { CfIconButton } from '@chufix-design/vue';
 const pinned = ref(true);
 const liked = ref(false);
 const star = `<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l1.9 4 4.4.4-3.3 3 .9 4.3L8 11.5 4.1 13.7l.9-4.3-3.3-3 4.4-.4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>`;

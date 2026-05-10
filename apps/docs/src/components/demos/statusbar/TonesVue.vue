@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStatusBar } from '@chufix/vue';
+import { CfStatusBar } from '@chufix-design/vue';
 const tones = ['default', 'accent', 'success', 'warning', 'error', 'info'] as const;
 const items = [
   { id: '1', label: '⎇ main' },

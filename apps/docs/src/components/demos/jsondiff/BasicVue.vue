@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfJsonDiff } from '@chufix/vue';
+import { CfJsonDiff } from '@chufix-design/vue';
 
 const left = {
   name: 'ChuFix',

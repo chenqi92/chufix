@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSplitButton } from '@chufix/vue';
+import { CfSplitButton } from '@chufix-design/vue';
 const items = [
   { label: 'Save', value: 'save' },
   { label: 'Save as draft', value: 'draft' },

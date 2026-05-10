@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSparkline, CfStat } from '@chufix/vue';
+import { CfSparkline, CfStat } from '@chufix-design/vue';
 
 function r(n: number, base: number, jit: number) {
   return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);

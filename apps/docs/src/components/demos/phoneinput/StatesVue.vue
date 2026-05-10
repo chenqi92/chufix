@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfPhoneInput } from '@chufix/vue';
+import { CfPhoneInput } from '@chufix-design/vue';
 const v1 = ref('138 0013 8000');
 const v2 = ref('invalid!!');
 const v3 = ref('555 123 4567');

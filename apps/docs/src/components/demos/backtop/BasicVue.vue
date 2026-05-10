@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfBackTop } from '@chufix/vue';
+import { CfBackTop } from '@chufix-design/vue';
 </script>
 
 <template>

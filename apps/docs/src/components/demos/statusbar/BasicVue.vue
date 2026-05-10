@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStatusBar } from '@chufix/vue';
+import { CfStatusBar } from '@chufix-design/vue';
 const left = [
   { id: 'branch', label: '⎇ main' },
   { id: 'sync', label: '↑ 0 ↓ 0' },

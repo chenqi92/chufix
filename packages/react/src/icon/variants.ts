@@ -1,5 +1,5 @@
 import type { CSSProperties, SVGAttributes } from 'react';
-import type { IconName } from '@chufix/icons';
+import type { IconName } from '@chufix-design/icons';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number | string;
 export type IconStrokeWidth = 1 | 1.25 | 1.5 | 1.75 | 2 | number;

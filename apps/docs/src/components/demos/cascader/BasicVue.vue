@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCascader, type CascaderOption } from '@chufix/vue';
+import { CfCascader, type CascaderOption } from '@chufix-design/vue';
 
 const options: CascaderOption[] = [
   {

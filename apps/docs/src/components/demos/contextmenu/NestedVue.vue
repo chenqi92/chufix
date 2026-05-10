@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfContextMenu } from '@chufix/vue';
+import { CfContextMenu } from '@chufix-design/vue';
 const items = [
   { label: '新建文件', value: 'newfile', shortcut: '⌘N' },
   { label: '新建文件夹', value: 'newdir', shortcut: '⌘⇧N' },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStatusIllustration } from '@chufix/vue';
+import { CfStatusIllustration } from '@chufix-design/vue';
 const variants = ['empty','search','upload','success','info','warning','error','not-found','forbidden','server-error'] as const;
 </script>
 

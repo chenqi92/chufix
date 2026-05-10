@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSidebar, CfButton, type SidebarEntry } from '@chufix/vue';
+import { CfSidebar, CfButton, type SidebarEntry } from '@chufix-design/vue';
 
 const active = ref('overview');
 const collapsed = ref(true);

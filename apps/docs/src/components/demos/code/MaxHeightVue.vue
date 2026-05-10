@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCodeBlock } from '@chufix/vue';
+import { CfCodeBlock } from '@chufix-design/vue';
 
 const lines = Array.from({ length: 30 }, (_, i) => `console.log('行 ${i + 1}');`);
 const code = lines.join('\n');

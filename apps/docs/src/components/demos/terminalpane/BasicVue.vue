@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTerminalPane, CfAnsiText } from '@chufix/vue';
+import { CfTerminalPane, CfAnsiText } from '@chufix-design/vue';
 const sample = '\x1b[32m✓\x1b[0m build succeeded\n\x1b[33m⚠\x1b[0m  warning: 3 unused exports\n\x1b[36m→\x1b[0m running tests…\n';
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfPagination } from '@chufix/vue';
+import { CfPagination } from '@chufix-design/vue';
 
 const page = ref(1);
 </script>

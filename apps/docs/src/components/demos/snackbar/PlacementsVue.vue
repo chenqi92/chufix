@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSnackbar, CfButton } from '@chufix/vue';
-import type { SnackbarPlacement } from '@chufix/vue';
+import { CfSnackbar, CfButton } from '@chufix-design/vue';
+import type { SnackbarPlacement } from '@chufix-design/vue';
 const open = ref(false);
 const placement = ref<SnackbarPlacement>('bottom-center');
 function show(p: SnackbarPlacement) {

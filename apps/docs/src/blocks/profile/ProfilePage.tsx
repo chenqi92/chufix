@@ -7,7 +7,7 @@ import {
   CfTimeline,
   CfTag,
   CfStat,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 const profile = [
   { label: '邮箱', value: 'jane.l@example.com' },

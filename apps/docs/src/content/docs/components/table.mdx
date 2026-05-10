@@ -13,7 +13,7 @@ import SelectionVue from '~/components/demos/table/SelectionVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { CfTable, type TableColumn } from '@chufix/vue';
+import { CfTable, type TableColumn } from '@chufix-design/vue';
 
 interface Order {
   id: string;
@@ -42,7 +42,7 @@ const columns: TableColumn<Order>[] = [
 <template>
   <CfTable :columns="columns" :rows="rows" row-key="id" variant="bordered" />
 </template>`}
-  reactCode={`import { CfTable, type TableColumn } from '@chufix/react';
+  reactCode={`import { CfTable, type TableColumn } from '@chufix-design/react';
 
 interface Order { id: string; customer: string; amount: number; status: string; date: string; }
 const rows: Order[] = [/* ... */];

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAccordion } from '@chufix/vue';
+import { CfAccordion } from '@chufix-design/vue';
 
 const items = [
   { value: 'a', title: '面板 A', content: '面板 A 的内容…' },

@@ -16,9 +16,9 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 > 本组件只渲染样式，不做语法高亮 — 如需高亮请在外部接 `shiki` / `highlight.js` 等并把高亮后的 HTML 通过 slot / `dangerouslySetInnerHTML` 传入（v0 暂不内置）。
 
 <DemoFrame
-  vueCode={`<p>用 <CfInlineCode>npm i @chufix/vue</CfInlineCode> 安装。</p>
+  vueCode={`<p>用 <CfInlineCode>npm i @chufix-design/vue</CfInlineCode> 安装。</p>
 <CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
-  reactCode={`<p>用 <CfInlineCode>npm i @chufix/react</CfInlineCode> 安装。</p>
+  reactCode={`<p>用 <CfInlineCode>npm i @chufix-design/react</CfInlineCode> 安装。</p>
 <CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
 >
   <BasicVue client:load />
@@ -29,10 +29,10 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 `<CfInlineCode>` 单独使用 — 把 `<code>` 包成等宽 + 浅色底 + 圆角的小标签。`size="sm"` 在密集文档里更小一档。
 
 <DemoFrame
-  vueCode={`<p>常用包：<CfInlineCode>@chufix/vue</CfInlineCode>、<CfInlineCode>@chufix/react</CfInlineCode>。</p>
+  vueCode={`<p>常用包：<CfInlineCode>@chufix-design/vue</CfInlineCode>、<CfInlineCode>@chufix-design/react</CfInlineCode>。</p>
 <p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
 <p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
-  reactCode={`<p>常用包：<CfInlineCode>@chufix/vue</CfInlineCode>、<CfInlineCode>@chufix/react</CfInlineCode>。</p>
+  reactCode={`<p>常用包：<CfInlineCode>@chufix-design/vue</CfInlineCode>、<CfInlineCode>@chufix-design/react</CfInlineCode>。</p>
 <p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
 <p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
 >

@@ -7,7 +7,7 @@ import {
   CfMethodBadge,
   CfStatusCodeBadge,
   CfStat,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 const series = [
   { name: '请求量', data: [1240, 1480, 1650, 2030, 2180, 2310, 2620, 2480, 2790, 3020, 3140, 3380] },

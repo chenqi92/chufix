@@ -17,9 +17,9 @@ order: 3
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- 1. design tokens（颜色、间距、字号、阴影、密度） -->
-    <link rel="stylesheet" href="https://unpkg.com/@chufix/tokens/src/tokens.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/tokens/src/tokens.css" />
     <!-- 2. 所有组件的 class 样式（聚合包） -->
-    <link rel="stylesheet" href="https://unpkg.com/@chufix/vue/dist/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/vue/dist/style.css" />
     <title>础件 demo</title>
   </head>
   <body>
@@ -28,7 +28,7 @@ order: 3
 </html>
 ```
 
-> 没发布 npm 之前，你也可以把 `@chufix/tokens/src/tokens.css` 和 `@chufix/vue/dist/style.css`（构建后的）拷到自己项目里直接 link。
+> 没发布 npm 之前，你也可以把 `@chufix-design/tokens/src/tokens.css` 和 `@chufix-design/vue/dist/style.css`（构建后的）拷到自己项目里直接 link。
 
 切主题：把 `<html>` 上的 `data-theme` 改成 `dark-cool` / `dark-warm` / `light` 任意一个就行。
 切密度：再加 `data-density="compact"`。
@@ -145,14 +145,14 @@ order: 3
 
 ### 路径 A：用 Vue 3 的 ESM CDN 引一下
 
-如果项目本身没构建工具但你又能接受加一行 `<script type="module">`，用 importmap 引 Vue 3 + `@chufix/vue`，跟用 jQuery 没区别：
+如果项目本身没构建工具但你又能接受加一行 `<script type="module">`，用 importmap 引 Vue 3 + `@chufix-design/vue`，跟用 jQuery 没区别：
 
 ```html
 <script type="importmap">
 {
   "imports": {
     "vue": "https://esm.sh/vue@3",
-    "@chufix/vue": "https://esm.sh/@chufix/vue@latest"
+    "@chufix-design/vue": "https://esm.sh/@chufix-design/vue@latest"
   }
 }
 </script>
@@ -164,7 +164,7 @@ order: 3
 
 <script type="module">
   import { createApp, ref } from 'vue';
-  import { CfButton, CfModal } from '@chufix/vue';
+  import { CfButton, CfModal } from '@chufix-design/vue';
 
   createApp({
     components: { CkButton: Button, CkModal: Modal },
@@ -176,7 +176,7 @@ order: 3
 </script>
 ```
 
-> 注意：`@chufix/vue` 包发布到 npm 后这条 esm.sh 链接才能用，未发布前先把 `dist/index.js` 自己 host 一份。
+> 注意：`@chufix-design/vue` 包发布到 npm 后这条 esm.sh 链接才能用，未发布前先把 `dist/index.js` 自己 host 一份。
 
 ### 路径 B：自己写一段最小 vanilla JS 兜底
 
@@ -215,8 +215,8 @@ CSS 里 `.cf-modal[data-state='open']` 已经处理了显示/隐藏与动画，�
 <html lang="zh-CN" data-theme="dark-cool">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://unpkg.com/@chufix/tokens/src/tokens.css" />
-    <link rel="stylesheet" href="https://unpkg.com/@chufix/vue/dist/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/tokens/src/tokens.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@chufix-design/vue/dist/style.css" />
     <title>础件 vanilla demo</title>
     <style>
       body { padding: 32px; max-width: 720px; margin: 0 auto; }

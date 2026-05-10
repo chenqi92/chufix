@@ -1,4 +1,4 @@
-import { CfPluginPane } from '@chufix/react';
+import { CfPluginPane } from '@chufix-design/react';
 
 export function PluginCenter() {
   return (
@@ -9,7 +9,7 @@ export function PluginCenter() {
           'panel-manifest': (
             <pre style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}>
 {`{
-  "name": "@chufix/plugin-foo",
+  "name": "@chufix-design/plugin-foo",
   "version": "1.0.0",
   "permissions": ["read:requests"]
 }`}

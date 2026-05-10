@@ -9,8 +9,8 @@ import {
   CfTabPanel,
   CfButton,
   CfStatusCodeBadge,
-} from '@chufix/vue';
-import type { TreeNode } from '@chufix/vue';
+} from '@chufix-design/vue';
+import type { TreeNode } from '@chufix-design/vue';
 
 const schema: TreeNode[] = [
   { id: 'public', label: 'public', children: [

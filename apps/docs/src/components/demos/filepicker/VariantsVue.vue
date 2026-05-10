@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfFilePicker } from '@chufix/vue';
+import { CfFilePicker } from '@chufix-design/vue';
 const a = ref<File[]>([]);
 const b = ref<File[]>([]);
 const c = ref<File[]>([]);

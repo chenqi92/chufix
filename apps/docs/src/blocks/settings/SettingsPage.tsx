@@ -9,7 +9,7 @@ import {
   CfAvatar,
   CfDivider,
   CfSelect,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 const langs = [
   { label: '简体中文', value: 'zh-CN' },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSqlWorkbench, CfCodeEditor } from '@chufix/vue';
+import { CfSqlWorkbench, CfCodeEditor } from '@chufix-design/vue';
 import { ref } from 'vue';
 const sql = ref('SELECT id, name FROM users WHERE created_at > now() - interval \'1 day\';');
 </script>

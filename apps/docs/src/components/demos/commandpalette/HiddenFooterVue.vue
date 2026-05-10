@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfCommandPalette, CfButton } from '@chufix/vue';
+import { CfCommandPalette, CfButton } from '@chufix-design/vue';
 const open = ref(false);
 const items = [
   { id: 'theme-dark', label: '切换到深色主题', group: '主题', shortcut: '⌘D' },

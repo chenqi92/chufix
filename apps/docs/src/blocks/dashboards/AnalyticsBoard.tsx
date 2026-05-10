@@ -4,7 +4,7 @@ import {
   CfTreemap,
   CfStat,
   CfStackedBar100,
-} from '@chufix/react';
+} from '@chufix-design/react';
 
 const sources = [
   { name: 'Search', value: 4280 },

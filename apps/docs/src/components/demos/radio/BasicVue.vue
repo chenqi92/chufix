@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfRadio, CfRadioGroup } from '@chufix/vue';
+import { CfRadio, CfRadioGroup } from '@chufix-design/vue';
 
 const plan = ref<'free' | 'pro' | 'team'>('pro');
 </script>

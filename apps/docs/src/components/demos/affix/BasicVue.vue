@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAffix, CfButton } from '@chufix/vue';
+import { CfAffix, CfButton } from '@chufix-design/vue';
 </script>
 
 <template>

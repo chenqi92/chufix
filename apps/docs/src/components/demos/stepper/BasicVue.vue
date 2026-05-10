@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfStepper, CfButton, type StepItem } from '@chufix/vue';
+import { CfStepper, CfButton, type StepItem } from '@chufix-design/vue';
 
 const current = ref(1);
 const items: StepItem[] = [

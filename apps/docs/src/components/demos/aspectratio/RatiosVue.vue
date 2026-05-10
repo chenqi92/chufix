@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAspectRatio } from '@chufix/vue';
+import { CfAspectRatio } from '@chufix-design/vue';
 
 const ratios = [
   { ratio: 21 / 9, label: '21 / 9', hint: '影院', tone: 'blue' },

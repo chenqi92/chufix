@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfToolbar, CfToolbarSeparator, CfIconButton, CfButton } from '@chufix/vue';
+import { CfToolbar, CfToolbarSeparator, CfIconButton, CfButton } from '@chufix-design/vue';
 </script>
 
 <template>

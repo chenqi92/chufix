@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTimingBar } from '@chufix/vue';
+import { CfTimingBar } from '@chufix-design/vue';
 const phases = [
   { label: 'DNS', start: 0, end: 12, colorIndex: 6 },
   { label: 'Connect', start: 12, end: 38, colorIndex: 0 },

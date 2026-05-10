@@ -14,7 +14,7 @@
    ```
 
    它会问：
-   - 这次改了哪些包（多选 `@chufix/vue` `@chufix/react` 等）
+   - 这次改了哪些包（多选 `@chufix-design/vue` `@chufix-design/react` 等）
    - 各包是 patch / minor / major
    - 一句话说明（会进 CHANGELOG）
 

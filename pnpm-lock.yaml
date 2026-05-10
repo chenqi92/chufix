@@ -32,16 +32,16 @@ importers:
       '@astrojs/vue':
         specifier: ^4.5.3
         version: 4.5.3(@types/node@24.12.2)(astro@4.16.19(@types/node@24.12.2)(rollup@4.60.3)(typescript@5.9.3))(rollup@4.60.3)(vue@3.5.34(typescript@5.9.3))
-      '@chufix/icons':
+      '@chufix-design/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@chufix/react':
+      '@chufix-design/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@chufix/tokens':
+      '@chufix-design/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@chufix/vue':
+      '@chufix-design/vue':
         specifier: workspace:*
         version: link:../../packages/vue
       astro:
@@ -72,7 +72,7 @@ importers:
 
   examples/vite-vue:
     dependencies:
-      '@chufix/vue':
+      '@chufix-design/vue':
         specifier: workspace:*
         version: link:../../packages/vue
       vue:
@@ -98,10 +98,10 @@ importers:
 
   packages/react:
     dependencies:
-      '@chufix/icons':
+      '@chufix-design/icons':
         specifier: workspace:*
         version: link:../icons
-      '@chufix/tokens':
+      '@chufix-design/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -128,10 +128,10 @@ importers:
 
   packages/vue:
     dependencies:
-      '@chufix/icons':
+      '@chufix-design/icons':
         specifier: workspace:*
         version: link:../icons
-      '@chufix/tokens':
+      '@chufix-design/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
