@@ -16,8 +16,8 @@ export const site = {
       en: 'ChuFix UI is now published on npm',
     },
     announcement: {
-      zh: '@chufix-design/{tokens,icons,vue,react,cli} 已发布 v0.1.0。文档与示例会持续补齐。',
-      en: '@chufix-design/{tokens,icons,vue,react,cli} v0.1.0 is live. Docs and examples are still expanding.',
+      zh: '@chufix-design/{tokens,icons,vue,react,cli} 已发布 v0.2.0。新增 TimelineGantt / Pivot / Spreadsheet,Modal·Drawer·Form·Select·DatePicker 全面深度增强,a11y 基线全面落地。',
+      en: '@chufix-design/{tokens,icons,vue,react,cli} v0.2.0 is live. New TimelineGantt / Pivot / Spreadsheet, deep upgrades to Modal · Drawer · Form · Select · DatePicker, plus a11y baseline.',
     },
   },
 };
