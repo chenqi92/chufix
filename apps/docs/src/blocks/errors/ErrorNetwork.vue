@@ -26,37 +26,52 @@ const debug = [
       <template #icon>
         <svg class="err-artwork" viewBox="0 0 420 220" role="img" aria-label="网络异常插画">
           <defs>
-            <linearGradient id="net-panel" x1="0" x2="1" y1="0" y2="1">
+            <linearGradient id="net-surface" x1="34" x2="386" y1="24" y2="196" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="var(--bg-1)" />
               <stop offset="100%" stop-color="var(--accent-soft)" />
             </linearGradient>
-            <linearGradient id="net-link" x1="76" x2="344" y1="120" y2="94" gradientUnits="userSpaceOnUse">
+            <linearGradient id="net-link" x1="70" x2="350" y1="128" y2="86" gradientUnits="userSpaceOnUse">
               <stop stop-color="var(--accent-1)" />
               <stop offset="1" stop-color="var(--status-error)" />
             </linearGradient>
+            <filter id="net-shadow" x="20" y="24" width="380" height="176" color-interpolation-filters="sRGB">
+              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="var(--shadow-color)" flood-opacity=".12" />
+            </filter>
           </defs>
-          <rect x="22" y="22" width="376" height="176" rx="22" fill="url(#net-panel)" stroke="var(--line-1)" />
-          <path d="M82 132 C128 78 172 86 210 112 S290 154 340 86" fill="none" stroke="url(#net-link)" stroke-width="5" stroke-linecap="round" stroke-dasharray="18 14" />
-          <g fill="var(--bg-1)" stroke="var(--line-2)" stroke-width="2">
-            <rect x="52" y="96" width="84" height="64" rx="14" />
-            <rect x="168" y="64" width="84" height="64" rx="14" />
-            <rect x="284" y="82" width="84" height="64" rx="14" />
+          <rect x="34" y="24" width="352" height="172" rx="28" fill="url(#net-surface)" stroke="var(--line-1)" />
+          <path
+            d="M112 128 C146 88 184 82 214 108 S278 148 318 84"
+            fill="none"
+            stroke="url(#net-link)"
+            stroke-width="5"
+            stroke-linecap="round"
+            stroke-dasharray="14 12"
+          />
+          <g filter="url(#net-shadow)">
+            <rect x="62" y="72" width="124" height="94" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <rect x="84" y="92" width="46" height="8" rx="4" fill="var(--accent-soft)" />
+            <rect x="84" y="112" width="78" height="8" rx="4" fill="var(--line-3)" />
+            <rect x="84" y="132" width="58" height="8" rx="4" fill="var(--line-3)" />
+            <circle cx="158" cy="96" r="5" fill="var(--status-success)" />
+            <circle cx="158" cy="116" r="5" fill="var(--status-error)" />
+            <circle cx="158" cy="136" r="5" fill="var(--status-warning)" />
           </g>
-          <g stroke="var(--line-3)" stroke-width="6" stroke-linecap="round">
-            <path d="M72 118 h42" />
-            <path d="M188 86 h42" />
-            <path d="M304 104 h42" />
-            <path d="M72 138 h26" />
-            <path d="M188 106 h30" />
-            <path d="M304 124 h24" />
+          <g filter="url(#net-shadow)">
+            <rect x="266" y="64" width="92" height="112" rx="20" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <rect x="288" y="88" width="48" height="10" rx="5" fill="var(--line-3)" />
+            <rect x="288" y="112" width="48" height="10" rx="5" fill="var(--line-3)" />
+            <rect x="288" y="136" width="34" height="10" rx="5" fill="var(--accent-soft)" />
+            <circle cx="336" cy="141" r="6" fill="var(--status-error)" />
           </g>
-          <g transform="translate(194 132)">
-            <circle cx="0" cy="0" r="32" fill="var(--bg-0)" stroke="var(--status-error)" stroke-width="5" />
-            <path d="M-12 -12 l24 24 M12 -12 l-24 24" stroke="var(--status-error)" stroke-width="5" stroke-linecap="round" />
+          <g filter="url(#net-shadow)">
+            <circle cx="226" cy="118" r="36" fill="var(--bg-0)" stroke="var(--status-error)" stroke-width="5" />
+            <path d="M212 104 l28 28 M240 104 l-28 28" stroke="var(--status-error)" stroke-width="6" stroke-linecap="round" />
           </g>
-          <rect x="140" y="38" width="140" height="30" rx="15" fill="var(--bg-0)" stroke="var(--line-2)" />
-          <circle cx="160" cy="53" r="5" fill="var(--status-error)" />
-          <text x="174" y="58" font-family="var(--font-mono)" font-size="13" fill="var(--fg-2)">offline endpoint</text>
+          <g filter="url(#net-shadow)">
+            <rect x="126" y="42" width="168" height="32" rx="16" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <circle cx="148" cy="58" r="5" fill="var(--status-error)" />
+            <text x="164" y="63" font-family="var(--font-mono)" font-size="13" fill="var(--fg-2)">connection lost</text>
+          </g>
         </svg>
       </template>
       <template #extra>

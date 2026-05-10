@@ -13,32 +13,44 @@ export function Error404() {
         icon={
           <svg className="err-artwork" style={artworkStyle} viewBox="0 0 420 220" role="img" aria-label="404 页面插画">
             <defs>
-              <linearGradient id="nf-panel" x1="0" x2="1" y1="0" y2="1">
+              <linearGradient id="nf-surface" x1="34" x2="386" y1="24" y2="196" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="var(--bg-1)" />
                 <stop offset="100%" stopColor="var(--accent-soft)" />
               </linearGradient>
-              <linearGradient id="nf-route" x1="72" x2="342" y1="142" y2="70" gradientUnits="userSpaceOnUse">
+              <linearGradient id="nf-line" x1="74" x2="344" y1="152" y2="74" gradientUnits="userSpaceOnUse">
                 <stop stopColor="var(--accent-1)" />
                 <stop offset="1" stopColor="var(--status-info)" />
               </linearGradient>
+              <filter id="nf-shadow" x="36" y="40" width="340" height="144" colorInterpolationFilters="sRGB">
+                <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="var(--shadow-color)" floodOpacity=".12" />
+              </filter>
             </defs>
-            <rect x="22" y="22" width="376" height="176" rx="22" fill="url(#nf-panel)" stroke="var(--line-1)" />
-            <path d="M72 144 C126 92 160 170 206 118 S286 70 344 82" fill="none" stroke="url(#nf-route)" strokeWidth="5" strokeLinecap="round" strokeDasharray="10 12" />
-            <g fill="var(--bg-1)" stroke="var(--line-2)">
-              <rect x="54" y="54" width="118" height="82" rx="12" />
-              <rect x="248" y="78" width="116" height="86" rx="12" />
+            <rect x="34" y="24" width="352" height="172" rx="28" fill="url(#nf-surface)" stroke="var(--line-1)" />
+            <path
+              d="M80 150 C116 104 156 158 190 118 S258 74 340 84"
+              fill="none"
+              stroke="url(#nf-line)"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeDasharray="12 12"
+            />
+            <g filter="url(#nf-shadow)">
+              <rect x="68" y="58" width="136" height="92" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+              <rect x="68" y="58" width="136" height="26" rx="18" fill="var(--bg-1)" stroke="var(--line-2)" />
+              <circle cx="88" cy="72" r="4.5" fill="var(--fg-3)" />
+              <circle cx="104" cy="72" r="4.5" fill="var(--fg-3)" />
+              <circle cx="120" cy="72" r="4.5" fill="var(--fg-3)" />
+              <rect x="88" y="102" width="76" height="8" rx="4" fill="var(--line-3)" />
+              <rect x="88" y="122" width="48" height="8" rx="4" fill="var(--accent-soft)" />
             </g>
-            <g fill="var(--fg-3)">
-              <circle cx="74" cy="74" r="4" />
-              <circle cx="88" cy="74" r="4" />
-              <circle cx="102" cy="74" r="4" />
+            <g filter="url(#nf-shadow)">
+              <rect x="250" y="76" width="106" height="92" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+              <text x="303" y="130" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="42" fontWeight="700" fill="var(--accent-1)">404</text>
             </g>
-            <path d="M76 102 h68 M76 120 h40" stroke="var(--line-3)" strokeWidth="6" strokeLinecap="round" />
-            <text x="286" y="128" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="42" fontWeight="700" fill="var(--accent-1)">404</text>
-            <g transform="translate(190 76)">
-              <rect width="62" height="62" rx="16" fill="var(--bg-0)" stroke="var(--line-2)" />
-              <path d="M22 22 c2-12 22-12 22 2 0 12-14 12-14 23" fill="none" stroke="var(--accent-1)" strokeWidth="5" strokeLinecap="round" />
-              <circle cx="31" cy="52" r="3.5" fill="var(--accent-1)" />
+            <g filter="url(#nf-shadow)">
+              <rect x="196" y="82" width="64" height="64" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+              <path d="M219 105 c2-13 23-13 23 2 0 12-14 12-14 24" fill="none" stroke="var(--accent-1)" strokeWidth="6" strokeLinecap="round" />
+              <circle cx="228" cy="137" r="3.8" fill="var(--accent-1)" />
             </g>
           </svg>
         }

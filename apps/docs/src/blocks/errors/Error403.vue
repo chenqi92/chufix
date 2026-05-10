@@ -13,28 +13,38 @@ import { CfResult, CfButton, CfBanner } from '@chufix-design/vue';
       <template #icon>
         <svg class="err-artwork" viewBox="0 0 420 220" role="img" aria-label="403 权限插画">
           <defs>
-            <linearGradient id="forbid-panel" x1="0" x2="1" y1="0" y2="1">
+            <linearGradient id="forbid-surface" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0%" stop-color="var(--bg-1)" />
               <stop offset="100%" stop-color="var(--accent-soft)" />
             </linearGradient>
-            <linearGradient id="forbid-lock" x1="0" x2="1">
+            <linearGradient id="forbid-shield" x1="0" x2="1" y1="0" y2="1">
               <stop stop-color="var(--status-warning)" />
               <stop offset="1" stop-color="var(--accent-1)" />
             </linearGradient>
+            <filter id="forbid-shadow" x="-20%" y="-20%" width="140%" height="150%">
+              <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="var(--fg-1)" flood-opacity=".10" />
+            </filter>
           </defs>
-          <rect x="22" y="22" width="376" height="176" rx="22" fill="url(#forbid-panel)" stroke="var(--line-1)" />
-          <rect x="58" y="58" width="160" height="104" rx="14" fill="var(--bg-1)" stroke="var(--line-2)" />
-          <path d="M82 88 h86 M82 112 h112 M82 136 h70" stroke="var(--line-3)" stroke-width="8" stroke-linecap="round" />
-          <g transform="translate(250 52)">
-            <path d="M60 12 l54 20 v40 c0 42-28 67-54 79-26-12-54-37-54-79V32z" fill="var(--bg-0)" stroke="var(--line-2)" />
-            <path d="M60 24 l40 15 v33 c0 28-18 47-40 58-22-11-40-30-40-58V39z" fill="var(--bg-2)" />
-            <rect x="36" y="72" width="48" height="42" rx="10" fill="url(#forbid-lock)" />
-            <path d="M46 72 v-14 c0-20 28-20 28 0v14" fill="none" stroke="var(--fg-on-accent, white)" stroke-width="6" stroke-linecap="round" />
-            <circle cx="60" cy="94" r="4" fill="var(--fg-on-accent, white)" />
+          <rect x="34" y="24" width="352" height="172" rx="28" fill="url(#forbid-surface)" stroke="var(--line-1)" />
+          <g filter="url(#forbid-shadow)">
+            <rect x="64" y="54" width="188" height="120" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <rect x="88" y="78" width="58" height="58" rx="18" fill="var(--bg-2)" stroke="var(--line-1)" />
+            <circle cx="117" cy="99" r="12" fill="var(--accent-soft)" stroke="var(--accent-1)" />
+            <path d="M99 147 c8-18 29-18 37 0" fill="none" stroke="var(--accent-1)" stroke-width="5" stroke-linecap="round" />
+            <rect x="164" y="80" width="58" height="8" rx="4" fill="var(--line-3)" />
+            <rect x="164" y="104" width="72" height="8" rx="4" fill="var(--bg-3)" />
+            <rect x="164" y="128" width="50" height="8" rx="4" fill="var(--bg-3)" />
           </g>
-          <g transform="translate(196 88)">
-            <circle cx="0" cy="0" r="25" fill="var(--bg-1)" stroke="var(--status-warning)" stroke-width="5" />
-            <path d="M-14 14 L14 -14" stroke="var(--status-warning)" stroke-width="5" stroke-linecap="round" />
+          <g filter="url(#forbid-shadow)">
+            <path d="M306 48 l62 24 v44 c0 40-27 64-62 78-35-14-62-38-62-78V72z" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <path d="M306 62 l45 17 v34 c0 28-18 44-45 56-27-12-45-28-45-56V79z" fill="var(--bg-2)" />
+            <rect x="282" y="110" width="48" height="42" rx="12" fill="url(#forbid-shield)" />
+            <path d="M292 110 v-12 c0-18 28-18 28 0v12" fill="none" stroke="var(--fg-on-accent, white)" stroke-width="6" stroke-linecap="round" />
+            <circle cx="306" cy="132" r="4" fill="var(--fg-on-accent, white)" />
+          </g>
+          <g filter="url(#forbid-shadow)">
+            <circle cx="252" cy="88" r="23" fill="var(--bg-0)" stroke="var(--status-warning)" stroke-width="4" />
+            <path d="M240 100 l24-24" stroke="var(--status-warning)" stroke-width="4" stroke-linecap="round" />
           </g>
         </svg>
       </template>

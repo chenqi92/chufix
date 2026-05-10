@@ -13,32 +13,38 @@ import { CfResult, CfButton, CfLink } from '@chufix-design/vue';
       <template #icon>
         <svg class="err-artwork" viewBox="0 0 420 220" role="img" aria-label="404 页面插画">
           <defs>
-            <linearGradient id="nf-panel" x1="0" x2="1" y1="0" y2="1">
+            <linearGradient id="nf-surface" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0%" stop-color="var(--bg-1)" />
               <stop offset="100%" stop-color="var(--accent-soft)" />
             </linearGradient>
-            <linearGradient id="nf-route" x1="72" x2="342" y1="142" y2="70" gradientUnits="userSpaceOnUse">
+            <linearGradient id="nf-line" x1="78" x2="335" y1="128" y2="92" gradientUnits="userSpaceOnUse">
               <stop stop-color="var(--accent-1)" />
-              <stop offset="1" stop-color="var(--status-info)" />
+              <stop offset="1" stop-color="var(--status-warning)" />
             </linearGradient>
+            <filter id="nf-shadow" x="-20%" y="-20%" width="140%" height="150%">
+              <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="var(--fg-1)" flood-opacity=".10" />
+            </filter>
           </defs>
-          <rect x="22" y="22" width="376" height="176" rx="22" fill="url(#nf-panel)" stroke="var(--line-1)" />
-          <path d="M72 144 C126 92 160 170 206 118 S286 70 344 82" fill="none" stroke="url(#nf-route)" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 12" />
-          <g fill="var(--bg-1)" stroke="var(--line-2)">
-            <rect x="54" y="54" width="118" height="82" rx="12" />
-            <rect x="248" y="78" width="116" height="86" rx="12" />
+          <rect x="34" y="24" width="352" height="172" rx="28" fill="url(#nf-surface)" stroke="var(--line-1)" />
+          <g filter="url(#nf-shadow)">
+            <rect x="72" y="54" width="210" height="118" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <path d="M72 84 h210" stroke="var(--line-1)" />
+            <circle cx="92" cy="70" r="4" fill="var(--line-3)" />
+            <circle cx="108" cy="70" r="4" fill="var(--line-3)" />
+            <circle cx="124" cy="70" r="4" fill="var(--line-3)" />
+            <rect x="94" y="106" width="76" height="10" rx="5" fill="var(--accent-soft)" />
+            <rect x="94" y="128" width="130" height="8" rx="4" fill="var(--bg-3)" />
+            <rect x="94" y="146" width="92" height="8" rx="4" fill="var(--bg-3)" />
           </g>
-          <g fill="var(--fg-3)">
-            <circle cx="74" cy="74" r="4" />
-            <circle cx="88" cy="74" r="4" />
-            <circle cx="102" cy="74" r="4" />
+          <path d="M118 142 C154 108 181 145 210 112 S264 74 326 93" fill="none" stroke="url(#nf-line)" stroke-width="4" stroke-linecap="round" stroke-dasharray="3 10" />
+          <g filter="url(#nf-shadow)">
+            <rect x="248" y="74" width="100" height="72" rx="18" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <text x="298" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="32" font-weight="700" fill="var(--accent-1)">404</text>
           </g>
-          <path d="M76 102 h68 M76 120 h40" stroke="var(--line-3)" stroke-width="6" stroke-linecap="round" />
-          <text x="286" y="128" text-anchor="middle" font-family="var(--font-mono)" font-size="42" font-weight="700" fill="var(--accent-1)">404</text>
-          <g transform="translate(190 76)">
-            <rect width="62" height="62" rx="16" fill="var(--bg-0)" stroke="var(--line-2)" />
-            <path d="M22 22 c2-12 22-12 22 2 0 12-14 12-14 23" fill="none" stroke="var(--accent-1)" stroke-width="5" stroke-linecap="round" />
-            <circle cx="31" cy="52" r="3.5" fill="var(--accent-1)" />
+          <g filter="url(#nf-shadow)">
+            <circle cx="210" cy="112" r="28" fill="var(--bg-0)" stroke="var(--line-2)" />
+            <path d="M200 105 c1-11 20-12 20 1 0 10-11 10-11 21" fill="none" stroke="var(--status-warning)" stroke-width="4.5" stroke-linecap="round" />
+            <circle cx="210" cy="135" r="3" fill="var(--status-warning)" />
           </g>
         </svg>
       </template>

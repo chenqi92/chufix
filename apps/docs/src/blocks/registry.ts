@@ -18,6 +18,8 @@ import { analyticsConsole } from './dashboards/analytics-console';
 import { loginBasic } from './auth/login-basic';
 import { loginOtp } from './auth/login-otp';
 import { registerMultistep } from './auth/register-multistep';
+import { deviceAuthorization } from './auth/device-authorization';
+import { authorizationCode } from './auth/authorization-code';
 
 import { error404 } from './errors/error-404';
 import { error403 } from './errors/error-403';
@@ -54,6 +56,8 @@ export const blocks: BlockMeta[] = [
   loginBasic,
   loginOtp,
   registerMultistep,
+  deviceAuthorization,
+  authorizationCode,
 
   error404,
   error403,
