@@ -106,6 +106,7 @@ import './styles/affix.css';
 import './styles/watermark.css';
 import './styles/image.css';
 import './styles/timeline.css';
+import './styles/timelinegantt.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -495,12 +496,23 @@ export type {
 } from './flex/variants';
 
 export { Grid as CfGrid } from './grid/Grid';
+export { Row as CfRow } from './grid/Row';
+export { Col as CfCol } from './grid/Col';
 export type {
   GridProps,
   GridOwnProps,
   GridGap,
   GridAlign,
   GridJustify,
+  RowProps,
+  RowOwnProps,
+  RowJustify,
+  RowAlign,
+  RowGutter,
+  ColProps,
+  ColOwnProps,
+  ColBreakpoint,
+  ColBreakpointConfig,
 } from './grid/variants';
 
 export {
@@ -965,6 +977,17 @@ export type {
   TimelineMode,
   TimelineDotColor,
 } from './timeline/variants';
+
+export { TimelineGantt as CfTimelineGantt } from './timelinegantt/TimelineGantt';
+export type { TimelineGanttProps } from './timelinegantt/TimelineGantt';
+export type {
+  GanttRow,
+  GanttBar,
+  GanttDependency,
+  GanttUnit,
+  GanttSize,
+  GanttBarChangeMeta,
+} from './timelinegantt/variants';
 
 export { Result as CfResult } from './result/Result';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';

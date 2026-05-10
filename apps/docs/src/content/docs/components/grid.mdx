@@ -1,6 +1,6 @@
 ---
 title: Grid 栅格
-description: 自适应栅格布局组件，支持固定列数、最小卡片宽度、间距 token 与 dense 排布。
+description: 24 栅格系统，基于 Row / Col 组织页面比例、间距、偏移和响应式布局。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
@@ -8,23 +8,51 @@ import BasicVue from '~/components/demos/grid/BasicVue.vue';
 
 ## 基础用法
 
-`CfGrid` 默认使用 `repeat(auto-fit, minmax(...))`，适合统计卡、表单分栏、资源列表、blocks 预览等区域。
+`CfRow` / `CfCol` 是 24 栅格系统：一行被划分为 24 份，`span=6` 占 25%，`span=8` 占 33.33%，`span=12` 占 50%。`gutter` 控制列间距与行间距，`offset` 控制左侧留白。
 
 <DemoFrame
-  vueCode={`<CfGrid :min-item-width="180" gap="md">...</CfGrid>`}
-  reactCode={`<CfGrid minItemWidth={180} gap="md">...</CfGrid>`}
+  vueCode={`<CfRow :gutter="[16, 16]">
+  <CfCol :span="6">25%</CfCol>
+  <CfCol :span="12">50%</CfCol>
+  <CfCol :span="6">25%</CfCol>
+</CfRow>`}
+  reactCode={`<CfRow gutter={[16, 16]}>
+  <CfCol span={6}>25%</CfCol>
+  <CfCol span={12}>50%</CfCol>
+  <CfCol span={6}>25%</CfCol>
+</CfRow>`}
 >
   <BasicVue client:load />
 </DemoFrame>
 
-## API
+## Row API
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `as` | `string / ElementType` | `div` | 渲染元素 |
-| `columns` | `number / string` | `—` | 固定列数或完整 CSS grid-template-columns |
-| `minItemWidth` | `number / string` | `220px` | 自适应模式下的最小项宽 |
-| `gap` | `none / xs / sm / md / lg / xl / number / string` | `md` | 间距 |
-| `align` | `start / center / end / stretch` | `stretch` | 单元格交叉轴对齐 |
-| `justify` | `start / center / end / stretch` | `stretch` | 单元格主轴对齐 |
-| `dense` | `boolean` | `false` | 启用 dense 自动填充 |
+| `gutter` | `number / string / [x, y]` | `0` | 水平 / 垂直间距 |
+| `justify` | `start / center / end / space-around / space-between / space-evenly` | `start` | 水平分布 |
+| `align` | `top / middle / bottom / stretch` | `top` | 垂直对齐 |
+| `wrap` | `boolean` | `true` | 是否换行 |
+
+## Col API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | 渲染元素 |
+| `span` | `number` | `24` | 占据列数，范围 0–24 |
+| `offset` | `number` | `0` | 左侧偏移列数 |
+| `push` | `number` | `0` | 向右移动列数 |
+| `pull` | `number` | `0` | 向左移动列数 |
+| `order` | `number` | `0` | flex 排序 |
+| `xs / sm / md / lg / xl / xxl` | `number / ColBreakpointConfig` | `—` | 响应式配置 |
+
+### ColBreakpointConfig
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `span` | `number` | 断点下占据列数 |
+| `offset` | `number` | 断点下左侧偏移 |
+| `push` | `number` | 断点下右移 |
+| `pull` | `number` | 断点下左移 |
+| `order` | `number` | 断点下排序 |

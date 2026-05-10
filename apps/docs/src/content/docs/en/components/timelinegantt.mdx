@@ -1,0 +1,85 @@
+---
+title: TimelineGantt
+description: Horizontal time axis + multi-row task bars — today marker, weekend tint, drag to move / resize, dependency arrows, group sections.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timelinegantt/BasicVue.vue';
+import EditableVue from '~/components/demos/timelinegantt/EditableVue.vue';
+import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
+
+## Basic usage
+
+`rows` is the array of task rows; each row's `bars` is the list of time spans on that row. `start` / `end` set the visible range, `day-width` controls the pixel width of one day, and today is marked with a vertical accent line.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Editable (drag + resize)
+
+With `editable`, bars become draggable; left/right handles appear for one-sided resize. Mutations are surfaced via the `@bar-change` event with `{ bar, row, next: { start, end }, meta }` so the host writes them back into its own model.
+
+<DemoFrame>
+  <EditableVue client:only="vue" />
+</DemoFrame>
+
+## Groups + dependencies
+
+A row may declare `group: string` — the component injects a section header in first-encounter order (synced between sidebar and body). `dependencies` is an array of bar-id pairs; the component draws an arrowed elbow line between the source's right edge and the target's left edge.
+
+<DemoFrame>
+  <GroupedVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `rows` | `GanttRow[]` | — | Task row array |
+| `start` / `end` | `DateLike` | — | Visible range (end-day inclusive) |
+| `unit` | `'day' \| 'week' \| 'month'` | `'day'` | Axis granularity (v1: affects label text only) |
+| `dayWidth` | `number` | `32` | Pixel width of one day |
+| `rowHeight` | `number` | `40` | Per-row height |
+| `labelWidth` | `number` | `200` | Left sidebar width |
+| `showToday` | `boolean` | `true` | Render today vertical line |
+| `dependencies` | `GanttDependency[]` | — | `{ from, to }` bar-id pairs |
+| `editable` | `boolean` | `false` | Drag-to-move and edge-resize |
+| `weekStartsOn` | `0 \| 1` | `1` | Sunday / Monday start (affects weekend detection) |
+| `caption` | `string` | — | Optional caption above the chart |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+
+### Types
+
+```ts
+interface GanttRow {
+  id: string;
+  label: string;
+  group?: string;
+  bars: GanttBar[];
+}
+
+interface GanttBar {
+  id: string;
+  start: DateLike;
+  end: DateLike;
+  label?: string;
+  color?: string;     // overrides default accent
+  progress?: number;  // 0–1 completion overlay
+  disabled?: boolean;
+}
+
+interface GanttDependency {
+  from: string;
+  to: string;
+}
+```
+
+### Events
+
+- Vue: `@bar-click(bar, row)` / `@row-click(row)` / `@bar-change({ bar, row, next, meta })`
+- React: `onBarClick` / `onRowClick` / `onBarChange`
+
+`meta.action` is one of `'move' | 'resize-start' | 'resize-end'`. `meta.prev` is the original `{ start, end }` before the drag began.

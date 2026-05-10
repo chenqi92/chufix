@@ -140,6 +140,7 @@ export const sidebar: SidebarGroup[] = [
       c('Carousel', '轮播', 'carousel'),
       c('Statistic', '统计数值', 'statistic'),
       c('Timeline', '时间轴', 'timeline'),
+      c('TimelineGantt', '甘特图', 'timelinegantt'),
       c('Marquee', '跑马灯', 'marquee'),
       c('ImagePreview', '大图预览', 'imagepreview'),
       c('Highlight', '文本高亮', 'highlight'),

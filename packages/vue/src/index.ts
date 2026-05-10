@@ -106,6 +106,7 @@ import './styles/affix.css';
 import './styles/watermark.css';
 import './styles/image.css';
 import './styles/timeline.css';
+import './styles/timelinegantt.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -483,7 +484,21 @@ export type {
 } from './flex/variants';
 
 export { default as CfGrid } from './grid/Grid.vue';
-export type { GridProps, GridGap, GridAlign, GridJustify } from './grid/variants';
+export { default as CfRow } from './grid/Row.vue';
+export { default as CfCol } from './grid/Col.vue';
+export type {
+  GridProps,
+  GridGap,
+  GridAlign,
+  GridJustify,
+  RowProps,
+  RowJustify,
+  RowAlign,
+  RowGutter,
+  ColProps,
+  ColBreakpoint,
+  ColBreakpointConfig,
+} from './grid/variants';
 
 export { default as CfCard } from './card/Card.vue';
 export type { CardProps, CardVariant } from './card/variants';
@@ -924,6 +939,17 @@ export type {
   TimelineMode,
   TimelineDotColor,
 } from './timeline/variants';
+
+export { default as CfTimelineGantt } from './timelinegantt/TimelineGantt.vue';
+export type {
+  TimelineGanttProps,
+  GanttRow,
+  GanttBar,
+  GanttDependency,
+  GanttUnit,
+  GanttSize,
+  GanttBarChangeMeta,
+} from './timelinegantt/variants';
 
 export { default as CfResult } from './result/Result.vue';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';

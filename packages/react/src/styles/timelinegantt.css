@@ -1,0 +1,247 @@
+/* ChuFix TimelineGantt — Gantt-style chart with day/week/month axis, draggable bars, dependencies. */
+
+.cf-gantt {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cf-gantt--sm { font-size: var(--t-12); }
+.cf-gantt--lg { font-size: var(--t-14); }
+
+.cf-gantt__caption {
+  margin: 0;
+  font-size: var(--t-12);
+  color: var(--fg-3);
+}
+
+.cf-gantt__frame {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+
+/* sidebar (sticky labels) */
+.cf-gantt__sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line-1);
+  background: var(--bg-2);
+}
+.cf-gantt__sidebar-head {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: var(--t-12);
+  font-weight: var(--w-semibold);
+  color: var(--fg-2);
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-3);
+}
+.cf-gantt__sidebar-body {
+  flex: 1;
+  overflow: hidden;
+}
+.cf-gantt__sidebar-group {
+  height: var(--gantt-row-h, 40px);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--line-1);
+}
+.cf-gantt__sidebar-row {
+  appearance: none;
+  border: 0;
+  border-bottom: 1px solid var(--line-1);
+  background: transparent;
+  width: 100%;
+  height: var(--gantt-row-h, 40px);
+  padding: 0 12px;
+  text-align: left;
+  font: inherit;
+  color: var(--fg-1);
+  cursor: pointer;
+}
+.cf-gantt__sidebar-row:hover { background: var(--bg-3); }
+
+/* viewport (scrollable) */
+.cf-gantt__viewport {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+}
+.cf-gantt__inner {
+  position: relative;
+}
+
+/* axis */
+.cf-gantt__axis {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-3);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.cf-gantt__axis-row {
+  display: flex;
+  height: 24px;
+}
+.cf-gantt__axis-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--t-11);
+  color: var(--fg-2);
+  border-right: 1px solid var(--line-1);
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+.cf-gantt__axis-cell--month {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+  background: var(--bg-2);
+}
+.cf-gantt__axis-cell--day { color: var(--fg-3); }
+.cf-gantt__axis-cell--day.is-weekend { color: var(--status-warning); background: var(--status-warning-soft); }
+.cf-gantt__axis-cell--day.is-today {
+  color: var(--accent-1);
+  background: var(--accent-soft);
+  font-weight: var(--w-semibold);
+}
+
+/* body grid */
+.cf-gantt__body {
+  position: relative;
+}
+.cf-gantt__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cf-gantt__grid-col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid var(--line-1);
+}
+.cf-gantt__grid-col.is-weekend {
+  background: oklch(50% 0 0 / 0.03);
+}
+
+.cf-gantt__today {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent-1);
+  z-index: 1;
+  pointer-events: none;
+}
+.cf-gantt__today::before {
+  content: 'today';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--accent-1);
+  background: var(--accent-soft);
+  padding: 0 4px;
+  border-radius: var(--r-2);
+}
+
+.cf-gantt__group-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--line-1);
+}
+
+.cf-gantt__row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid var(--line-1);
+}
+
+/* bars */
+.cf-gantt__bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 22px;
+  background: var(--accent-1);
+  border-radius: var(--r-3);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  color: var(--fg-on-accent);
+  font-size: var(--t-12);
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  z-index: 1;
+  box-shadow: 0 1px 2px oklch(0% 0 0 / 0.16);
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+.cf-gantt__bar:hover { filter: brightness(1.08); }
+.cf-gantt__bar.is-editable { cursor: grab; }
+.cf-gantt__bar.is-editable:active { cursor: grabbing; }
+.cf-gantt__bar.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: saturate(0.7);
+}
+
+.cf-gantt__bar-progress {
+  position: absolute;
+  inset: 0;
+  background: oklch(0% 0 0 / 0.22);
+  pointer-events: none;
+}
+
+.cf-gantt__bar-label {
+  position: relative;
+  z-index: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.cf-gantt__bar-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: ew-resize;
+  z-index: 2;
+}
+.cf-gantt__bar-handle:hover { background: oklch(100% 0 0 / 0.25); }
+.cf-gantt__bar-handle--start { left: 0; border-top-left-radius: var(--r-3); border-bottom-left-radius: var(--r-3); }
+.cf-gantt__bar-handle--end { right: 0; border-top-right-radius: var(--r-3); border-bottom-right-radius: var(--r-3); }
+
+/* dependency arrows */
+.cf-gantt__deps {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  color: var(--fg-3);
+  z-index: 1;
+}
