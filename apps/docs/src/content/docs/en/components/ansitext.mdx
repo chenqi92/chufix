@@ -1,0 +1,46 @@
+---
+title: AnsiText
+description: Parses ANSI escape sequences (\x1b[...m) and renders them as colored spans — display-only, no xterm.js dependency.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/ansitext/BasicVue.vue';
+
+## Basic usage
+
+Supports the basic 16 colors (foreground + background) plus the 8 bright colors and modifiers (bold / dim / italic / underline / inverse).
+Colors map to design tokens and follow the active theme; 24-bit truecolor escapes are not parsed.
+
+<DemoFrame
+  vueCode={`<CfAnsiText :text="terminalOutput" />`}
+  reactCode={`<CfAnsiText text={terminalOutput} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Three sizes
+
+`sm / md / lg` adjusts font size and line height — `sm` for compact toast logs, `lg` for terminal panels.
+
+import SizesVue from '~/components/demos/ansitext/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfAnsiText :text="log" size="sm" />
+<CfAnsiText :text="log" size="lg" />`}
+  reactCode={`<CfAnsiText text={log} size="sm" />
+<CfAnsiText text={log} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `text` | `string` | — | String containing ANSI escapes |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `wrap` | `boolean` | `true` | Soft line wrapping |
+| `preserveWhitespace` | `boolean` | `true` | `<pre>` behavior |
+
+Supported SGR codes: `0 1 2 3 4 7 22 23 24 27 30-37 39 40-47 49 90-97 100-107`.

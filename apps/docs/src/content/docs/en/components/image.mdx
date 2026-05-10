@@ -1,0 +1,34 @@
+---
+title: Image
+description: Image container with loading placeholder, error fallback, and lazy loading.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/image/BasicVue.vue';
+
+## Basic usage
+
+Shows a skeleton shimmer while loading; on `onerror` switches to `fallback` (or an error icon placeholder if none provided). `lazy` is on by default and uses native `loading="lazy"`.
+
+<DemoFrame
+  vueCode={`<CfImage src="/photo.jpg" alt="Scenery" :width="160" :height="100" rounded bordered />
+<CfImage src="/broken.jpg" alt="Failed to load" :width="160" :height="100" rounded bordered />`}
+  reactCode={`<CfImage src="/photo.jpg" alt="Scenery" width={160} height={100} rounded bordered />
+<CfImage src="/broken.jpg" alt="Failed to load" width={160} height={100} rounded bordered />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `src` | `string` | `—` | Image URL (required) |
+| `alt` | `string` | `''` | Alt text |
+| `width` / `height` | `number \| string` | `—` | Container size |
+| `fit` | `'cover' \| 'contain' \| 'fill' \| 'none' \| 'scale-down'` | `'cover'` | object-fit behavior |
+| `rounded` | `boolean` | `false` | Rounded container |
+| `bordered` | `boolean` | `false` | Outline border |
+| `fallback` | `string` | `—` | Fallback image URL on load failure |
+| `lazy` | `boolean` | `true` | Enable native lazy loading |
+| `loading` | `'lazy' \| 'eager'` | `—` | Force the `loading` attribute |

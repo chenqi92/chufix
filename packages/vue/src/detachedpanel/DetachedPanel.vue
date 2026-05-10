@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { DetachedPanelProps } from './variants';
 
 const props = withDefaults(defineProps<DetachedPanelProps>(), {
@@ -16,11 +16,19 @@ const emit = defineEmits<{
   (e: 'move', x: number, y: number): void;
 }>();
 
-const x = ref<number>(props.x ?? Math.max(window.innerWidth - 400, 20));
+function defaultX() {
+  return typeof window === 'undefined' ? 20 : Math.max(window.innerWidth - 400, 20);
+}
+
+const x = ref<number>(props.x ?? defaultX());
 const y = ref<number>(props.y ?? 80);
 const dragging = ref(false);
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+
+onMounted(() => {
+  if (typeof props.x !== 'number') x.value = defaultX();
+});
 
 watch(
   () => [props.x, props.y],

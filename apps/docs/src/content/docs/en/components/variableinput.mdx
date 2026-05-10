@@ -1,0 +1,45 @@
+---
+title: Variable-aware input
+description: Enhanced Input that auto-detects `{{var}}` template variables and highlights them; unknown variables get a red squiggle.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
+
+## Basic usage
+
+Implementation: a native input with transparent text underneath, plus an overlay of the same size rendering the highlighted text. Cursor positions stay perfectly aligned.
+Names listed in `variables` are treated as "known" and highlighted with accent; others are "unknown" and get a red squiggle.
+
+<DemoFrame
+  vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
+  reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Mixed state
+
+A demo combining known (accent highlight) and unknown (red squiggle) variables.
+
+import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
+
+<DemoFrame
+  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
+  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
+>
+  <InvalidVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | Input value |
+| `variables` | `string[]` | `[]` | List of known variable names |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `variant` | `'outline' \| 'filled'` | `'outline'` | |
+| `placeholder` / `disabled` / `error` | | | |
+
+> Autocomplete popup (typing `{{` triggers a candidate list) is planned for v2.

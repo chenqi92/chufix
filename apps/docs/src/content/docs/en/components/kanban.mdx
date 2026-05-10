@@ -1,0 +1,146 @@
+---
+title: Kanban
+description: Multi-column card board using native HTML5 drag-and-drop to move cards across columns; supports WIP limits and column accent colors.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/kanban/BasicVue.vue';
+import AccentVue from '~/components/demos/kanban/AccentVue.vue';
+import StaticVue from '~/components/demos/kanban/StaticVue.vue';
+
+## Basic usage
+
+`CfKanban` accepts a `KanbanColumn[]`, where each column has `id` / `title` / `cards`, and each card may have `title` / `description` / `tag` / `meta`.
+Drag a card onto another card or empty column to move it; on drop the component updates `modelValue` and fires `cardMove`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfKanban, type KanbanColumn } from '@chufix-design/vue';
+
+const board = ref<KanbanColumn[]>([
+  {
+    id: 'todo',
+    title: 'To do',
+    cards: [
+      { id: 'c1', title: 'Design login page', tag: 'design' },
+      { id: 'c2', title: 'Outline API fields', tag: 'backend' },
+    ],
+  },
+  {
+    id: 'doing',
+    title: 'In progress',
+    limit: 3,
+    cards: [{ id: 'c3', title: 'Integrate analytics SDK', tag: 'frontend', meta: '@alex' }],
+  },
+  {
+    id: 'done',
+    title: 'Done',
+    accent: 'oklch(70% 0.16 145)',
+    cards: [{ id: 'c4', title: 'Update README', meta: 'Yesterday' }],
+  },
+]);
+</script>
+
+<template>
+  <CfKanban v-model="board" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfKanban, type KanbanColumn } from '@chufix-design/react';
+
+export default function Demo() {
+  const [board, setBoard] = useState<KanbanColumn[]>([
+    {
+      id: 'todo',
+      title: 'To do',
+      cards: [
+        { id: 'c1', title: 'Design login page', tag: 'design' },
+        { id: 'c2', title: 'Outline API fields', tag: 'backend' },
+      ],
+    },
+    { id: 'doing', title: 'In progress', limit: 3, cards: [
+      { id: 'c3', title: 'Integrate analytics SDK', tag: 'frontend', meta: '@alex' },
+    ] },
+    { id: 'done', title: 'Done', accent: 'oklch(70% 0.16 145)', cards: [
+      { id: 'c4', title: 'Update README', meta: 'Yesterday' },
+    ] },
+  ]);
+  return <CfKanban value={board} onChange={setBoard} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Column limit and accent color
+
+`column.limit` shows as `used / limit` in the header (the number is a hint only — drops are not blocked). `column.accent` tints the header title — useful for visualizing semantics like "priority / status / owner".
+
+<DemoFrame
+  vueCode={`const board = ref<KanbanColumn[]>([
+  {
+    id: 'wip', title: 'In progress', limit: 2,
+    accent: 'oklch(70% 0.16 60)',
+    cards: [/* ... */],
+  },
+  // ...
+]);
+
+<CfKanban v-model="board" />`}
+  reactCode={`const [board, setBoard] = useState<KanbanColumn[]>([
+  {
+    id: 'wip', title: 'In progress', limit: 2,
+    accent: 'oklch(70% 0.16 60)',
+    cards: [/* ... */],
+  },
+  // ...
+]);
+
+<CfKanban value={board} onChange={setBoard} />`}
+>
+  <AccentVue client:load />
+</DemoFrame>
+
+## Disable drag
+
+`draggable={false}` turns off all interaction — a read-only board view. Cards still render from props; only the cursor and `dragstart` listeners are removed.
+
+<DemoFrame
+  vueCode={`<CfKanban v-model="board" :draggable="false" />`}
+  reactCode={`<CfKanban value={board} onChange={setBoard} draggable={false} />`}
+>
+  <StaticVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `KanbanColumn[]` | `[]` | Full board state |
+| `defaultValue` | `KanbanColumn[]` | `[]` | Uncontrolled initial value |
+| `draggable` | `boolean` | `true` | Enable HTML5 drag-and-drop |
+| `bordered` | `boolean` | `true` | Border |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+
+Events:
+
+- `onChange(cols)` / `update:modelValue` — any change to the board
+- `onCardMove({ cardId, from, to, toIndex })` / `card-move` — fires after a card moves; payload contains source column, target column, and destination index
+
+Type exports:
+
+```ts
+interface KanbanCard {
+  id: string;
+  title: string;
+  description?: string;
+  tag?: string;
+  meta?: string;
+}
+interface KanbanColumn {
+  id: string;
+  title: string;
+  cards: KanbanCard[];
+  limit?: number;
+  accent?: string;
+}
+```

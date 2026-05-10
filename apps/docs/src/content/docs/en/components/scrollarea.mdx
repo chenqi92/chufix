@@ -1,0 +1,78 @@
+---
+title: Scroll area
+description: Themed scrollbar container with scrollbar-gutter stable + overscroll-behavior contain. Supports Y / X / both axes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/scrollarea/BasicVue.vue';
+import HorizontalVue from '~/components/demos/scrollarea/HorizontalVue.vue';
+import BothVue from '~/components/demos/scrollarea/BothVue.vue';
+
+## Basic usage
+
+Wrap potentially overflowing content in `CfScrollArea` and limit `maxHeight` / `maxWidth` to trigger scrolling. The component handles:
+
+- `scrollbar-width: thin` / `scrollbar-gutter: stable` — avoids layout jitter when scrollbars appear / disappear
+- `overscroll-behavior: contain` — prevents scroll events from bubbling to the outer scroller
+- Themed webkit scrollbars (matching token colors)
+
+<DemoFrame
+  vueCode={`<CfScrollArea bordered :max-height="200" :max-width="420">
+  <ul>
+    <li v-for="i in 30" :key="i">Item {{ i }} — Lorem ipsum...</li>
+  </ul>
+</CfScrollArea>`}
+  reactCode={`<CfScrollArea bordered maxHeight={200} maxWidth={420}>
+  <ul>
+    {Array.from({ length: 30 }).map((_, i) => (
+      <li key={i}>Item {i + 1} — Lorem ipsum...</li>
+    ))}
+  </ul>
+</CfScrollArea>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Horizontal scroll
+
+`axis="x"` locks scrolling to the horizontal direction; suitable for long tag rows, table previews, command history, etc.
+
+<DemoFrame
+  vueCode={`<CfScrollArea bordered axis="x" :max-width="420">
+  <div style="display: flex; gap: 6px; white-space: nowrap;">
+    <span v-for="t in tags" :key="t">{{ t }}</span>
+  </div>
+</CfScrollArea>`}
+  reactCode={`<CfScrollArea bordered axis="x" maxWidth={420}>
+  <div style={{ display: 'flex', gap: 6, whiteSpace: 'nowrap' }}>
+    {tags.map((t) => <span key={t}>{t}</span>)}
+  </div>
+</CfScrollArea>`}
+>
+  <HorizontalVue client:load />
+</DemoFrame>
+
+## Both axes
+
+`axis="both"` — scrolls in both directions. Common in tables, matrices, and timelines.
+
+<DemoFrame
+  vueCode={`<CfScrollArea bordered axis="both" :max-width="420" :max-height="200">
+  <div>{/* 18 × 12 grid */}</div>
+</CfScrollArea>`}
+  reactCode={`<CfScrollArea bordered axis="both" maxWidth={420} maxHeight={200}>
+  <div>{/* 18 × 12 grid */}</div>
+</CfScrollArea>`}
+>
+  <BothVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `maxHeight` | `number \| string` | `—` | Container max height |
+| `maxWidth` | `number \| string` | `—` | Container max width |
+| `axis` | `'y' \| 'x' \| 'both'` | `'y'` | Scroll direction |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Scrollbar thickness (webkit only) |
+| `bordered` | `boolean` | `false` | Show outer border and rounded corners |

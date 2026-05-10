@@ -1,0 +1,49 @@
+---
+title: Context menu
+description: A menu opened by right-click. Supports separators, shortcuts, and danger items, and is automatically clamped within the viewport.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
+
+## Basic usage
+
+Wrap a target region. After a right-click triggers the `contextmenu` event, the menu is shown at the cursor position. `Esc` or clicking outside closes it.
+
+<DemoFrame
+  vueCode={`<CfContextMenu :items="items" @select="onPick">
+  <div>Right-click here</div>
+</CfContextMenu>`}
+  reactCode={`<CfContextMenu items={items} onSelect={onPick}>
+  <div>Right-click here</div>
+</CfContextMenu>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Disabled / danger / separator
+
+`disabled` greys an item out, `danger` turns it red, and `separator: true` draws a divider row.
+
+import NestedVue from '~/components/demos/contextmenu/NestedVue.vue';
+
+<DemoFrame
+  vueCode={`<CfContextMenu :items="items">…</CfContextMenu>`}
+  reactCode={`<CfContextMenu items={items}>…</CfContextMenu>`}
+>
+  <NestedVue client:load />
+</DemoFrame>
+
+## API
+
+`items: ContextMenuItem[]`. Each entry supports:
+
+| Field | Type | Description |
+|---|---|---|
+| `label` | `string` | Text |
+| `value` | `string` | Value emitted on select (falls back to label) |
+| `shortcut` | `string` | Right-aligned shortcut hint |
+| `disabled` | `boolean` | |
+| `danger` | `boolean` | Red styling |
+| `separator` | `boolean` | Divider row (other fields ignored) |

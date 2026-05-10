@@ -1,0 +1,80 @@
+---
+title: Code
+description: InlineCode for inline snippets + CodeBlock for multi-line blocks — with optional title, language tag, line numbers, copy button, and max scroll height.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/code/BasicVue.vue';
+import InlineVue from '~/components/demos/code/InlineVue.vue';
+import NumbersVue from '~/components/demos/code/NumbersVue.vue';
+import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
+
+## Basic usage
+
+`<CfInlineCode>` embeds small inline snippets (package names, commands). `<CfCodeBlock>` takes a `code` string and renders a multi-line block, with optional `title` / `language` / `showLineNumbers` / `copyable`.
+
+> This component handles styling only — it doesn't perform syntax highlighting. If you need highlighting, run `shiki` / `highlight.js` externally and pass the highlighted HTML in via a slot / `dangerouslySetInnerHTML` (not built-in for v0).
+
+<DemoFrame
+  vueCode={`<p>Install with <CfInlineCode>npm i @chufix-design/vue</CfInlineCode>.</p>
+<CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
+  reactCode={`<p>Install with <CfInlineCode>npm i @chufix-design/react</CfInlineCode>.</p>
+<CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Inline code
+
+`<CfInlineCode>` on its own — wraps `<code>` as a monospace pill with a tinted background and rounded corners. `size="sm"` gives a smaller variant for dense docs.
+
+<DemoFrame
+  vueCode={`<p>Common packages: <CfInlineCode>@chufix-design/vue</CfInlineCode>, <CfInlineCode>@chufix-design/react</CfInlineCode>.</p>
+<p>Command: <CfInlineCode>pnpm dev</CfInlineCode>.</p>
+<p>Small: <CfInlineCode size="sm">--config</CfInlineCode>.</p>`}
+  reactCode={`<p>Common packages: <CfInlineCode>@chufix-design/vue</CfInlineCode>, <CfInlineCode>@chufix-design/react</CfInlineCode>.</p>
+<p>Command: <CfInlineCode>pnpm dev</CfInlineCode>.</p>
+<p>Small: <CfInlineCode size="sm">--config</CfInlineCode>.</p>`}
+>
+  <InlineVue client:load />
+</DemoFrame>
+
+## Line numbers
+
+`showLineNumbers` shows line numbers on the left — handy for tutorials and walkthroughs.
+
+<DemoFrame
+  vueCode={`<CfCodeBlock :code="code" language="js" title="fib.js" show-line-numbers />`}
+  reactCode={`<CfCodeBlock code={code} language="js" title="fib.js" showLineNumbers />`}
+>
+  <NumbersVue client:load />
+</DemoFrame>
+
+## Limit max height
+
+`maxHeight` enables vertical scrolling so long blocks don't take over the page.
+
+<DemoFrame
+  vueCode={`<CfCodeBlock :code="code" language="js" title="long-output.js" show-line-numbers :max-height="200" />`}
+  reactCode={`<CfCodeBlock code={code} language="js" title="long-output.js" showLineNumbers maxHeight={200} />`}
+>
+  <MaxHeightVue client:load />
+</DemoFrame>
+
+## API · InlineCode
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `'sm' \| 'md'` | `'md'` | Size, relative to the parent font size |
+
+## API · CodeBlock
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `code` | `string` | required | Code content (use `\n` for line breaks) |
+| `language` | `string` | `—` | Language label on the right of the header |
+| `title` | `string \| ReactNode` | `—` | Title on the left of the header — typically a file name |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+| `showLineNumbers` | `boolean` | `false` | Whether to show line numbers |
+| `copyable` | `boolean` | `true` | Show the copy button in the header |
+| `maxHeight` | `number \| string` | `—` | Max height to enable vertical scrolling |

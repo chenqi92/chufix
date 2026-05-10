@@ -1,0 +1,51 @@
+---
+title: Split button
+description: A primary button + dropdown arrow combo for related actions.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
+
+## Basic usage
+
+The main button fires `click`; the arrow opens the dropdown; selecting an item fires `select(value, item)`.
+
+<DemoFrame
+  vueCode={`<CfSplitButton :items="items" @click="save" @select="onPick">
+  Save
+</CfSplitButton>`}
+  reactCode={`<CfSplitButton items={items} onClick={save} onSelect={(v) => onPick(v)}>
+  Save
+</CfSplitButton>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Sizes
+
+Three sizes follow the `--control-h` token.
+
+import SizesVue from '~/components/demos/splitbutton/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSplitButton size="sm" :items="items">Small</CfSplitButton>
+<CfSplitButton size="md" :items="items">Medium</CfSplitButton>
+<CfSplitButton size="lg" :items="items">Large</CfSplitButton>`}
+  reactCode={`<CfSplitButton size="sm" items={items}>Small</CfSplitButton>
+<CfSplitButton size="md" items={items}>Medium</CfSplitButton>
+<CfSplitButton size="lg" items={items}>Large</CfSplitButton>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'danger'` | `'primary'` | Reuses Button variants |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `items` | `SplitButtonItem[]` | — | Dropdown items `{ label, value, disabled?, danger? }` |
+| `disabled` / `loading` | `boolean` | `false` | |
+
+Events: `click` (main button), `select(value, item)` (dropdown item).

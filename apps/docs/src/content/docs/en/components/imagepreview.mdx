@@ -1,0 +1,37 @@
+---
+title: ImagePreview
+description: Full-screen image viewer with wheel zoom, mouse drag, and keyboard +/− / 0 / Esc controls.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/imagepreview/BasicVue.vue';
+
+## Basic usage
+
+Typically triggered from a thumbnail: set the thumbnail to `cursor: zoom-in` and toggle `open` to `true` on click.
+
+- Mouse wheel: zoom
+- Mouse drag: pan
+- Keyboard `+` / `-`: zoom
+- Keyboard `0`: reset to 100%
+- Keyboard `Esc`: close
+
+<DemoFrame
+  vueCode={`<img :src="thumbSrc" @click="open = true" style="cursor: zoom-in;" />
+<CfImagePreview v-model="open" :src="fullSrc" alt="Example" />`}
+  reactCode={`<img src={thumbSrc} onClick={() => setOpen(true)} style={{ cursor: 'zoom-in' }} />
+<CfImagePreview open={open} onOpenChange={setOpen} src={fullSrc} alt="Example" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `src` | `string` | `—` | Full image URL |
+| `alt` | `string` | `''` | Alt text |
+| `open` / `modelValue` | `boolean` | `—` | Controlled visibility |
+| `defaultOpen` | `boolean` | `false` | Uncontrolled initial visibility |
+
+Events: `onOpenChange(open)` / `onClose()`.

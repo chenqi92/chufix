@@ -1,0 +1,108 @@
+---
+title: Tag
+description: Tag — 3 variants, 6 tones, 3 sizes, closable, optional pill radius.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tag/BasicVue.vue';
+import VariantsVue from '~/components/demos/tag/VariantsVue.vue';
+import ClosableVue from '~/components/demos/tag/ClosableVue.vue';
+
+## Basic usage
+
+`tone` controls the semantic color, default `neutral` (gray). Other options: `primary` / `success` / `warning` / `danger` / `info`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfTag } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfTag>Default</CfTag>
+  <CfTag tone="primary">Primary</CfTag>
+  <CfTag tone="success">Success</CfTag>
+  <CfTag tone="warning">Warning</CfTag>
+  <CfTag tone="danger">Danger</CfTag>
+  <CfTag tone="info">Info</CfTag>
+</template>`}
+  reactCode={`import { CfTag } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfTag>Default</CfTag>
+      <CfTag tone="primary">Primary</CfTag>
+      <CfTag tone="success">Success</CfTag>
+      <CfTag tone="warning">Warning</CfTag>
+      <CfTag tone="danger">Danger</CfTag>
+      <CfTag tone="info">Info</CfTag>
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants, sizes, and radius
+
+`variant` is orthogonal to `tone`: solid / soft (default) / outline. `rounded` switches to a pill radius.
+
+<DemoFrame
+  vueCode={`<CfTag variant="solid" tone="primary">solid</CfTag>
+<CfTag variant="soft" tone="primary">soft</CfTag>
+<CfTag variant="outline" tone="primary">outline</CfTag>
+
+<CfTag size="sm" tone="success">sm</CfTag>
+<CfTag size="md" tone="success">md</CfTag>
+<CfTag size="lg" tone="success">lg</CfTag>
+<CfTag tone="success" rounded>rounded</CfTag>`}
+  reactCode={`<CfTag variant="solid" tone="primary">solid</CfTag>
+<CfTag variant="soft" tone="primary">soft</CfTag>
+<CfTag variant="outline" tone="primary">outline</CfTag>
+
+<CfTag size="sm" tone="success">sm</CfTag>
+<CfTag size="md" tone="success">md</CfTag>
+<CfTag size="lg" tone="success">lg</CfTag>
+<CfTag tone="success" rounded>rounded</CfTag>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Closable
+
+Enable `closable` to show an × button; clicking it fires `close` / `onClose`.
+
+<DemoFrame
+  vueCode={`<CfTag
+  v-for="t in tags"
+  :key="t"
+  tone="primary"
+  closable
+  @close="tags = tags.filter(x => x !== t)"
+>{{ t }}</CfTag>`}
+  reactCode={`{tags.map((t) => (
+  <CfTag
+    key={t}
+    tone="primary"
+    closable
+    onClose={() => setTags((xs) => xs.filter((x) => x !== t))}
+  >{t}</CfTag>
+))}`}
+>
+  <ClosableVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop       | Type                                                                     | Default     | Description                   |
+| ---------- | ------------------------------------------------------------------------ | ----------- | ----------------------------- |
+| `variant`  | `'solid' \| 'soft' \| 'outline'`                                         | `'soft'`    | Visual variant                |
+| `tone`     | `'neutral' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `'neutral'` | Semantic color                |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                                   | `'md'`      | Height and font size          |
+| `rounded`  | `boolean`                                                                | `false`     | Pill radius                   |
+| `closable` | `boolean`                                                                | `false`     | Show × close button           |
+
+### Slots / Children
+
+- **Vue**: default slot is the text; `leading` named slot for an icon.
+- **React**: `children` is the text; `leading` prop for an icon node.

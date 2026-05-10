@@ -1,0 +1,126 @@
+---
+title: Table
+description: Column-definition API with sorting, single/multi row selection, 3 variants, and custom rendering.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/table/BasicVue.vue';
+import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+
+## Basic usage
+
+`columns` defines the columns; each one needs at least `key` and `title`. `rows` is the data array; `rowKey` picks the field used as the unique key (a function works too). Click any header with `sortable: true` to cycle asc / desc / unsorted.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfTable, type TableColumn } from '@chufix-design/vue';
+
+interface Order {
+  id: string;
+  customer: string;
+  amount: number;
+  status: string;
+  date: string;
+}
+
+const rows: Order[] = [/* ... */];
+const columns: TableColumn<Order>[] = [
+  { key: 'id', title: 'Order #', sortable: true, width: 100 },
+  { key: 'customer', title: 'Customer', sortable: true },
+  {
+    key: 'amount',
+    title: 'Amount',
+    align: 'right',
+    sortable: true,
+    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
+  },
+  { key: 'status', title: 'Status' },
+  { key: 'date', title: 'Date', sortable: true },
+];
+</script>
+
+<template>
+  <CfTable :columns="columns" :rows="rows" row-key="id" variant="bordered" />
+</template>`}
+  reactCode={`import { CfTable, type TableColumn } from '@chufix-design/react';
+
+interface Order { id: string; customer: string; amount: number; status: string; date: string; }
+const rows: Order[] = [/* ... */];
+const columns: TableColumn<Order>[] = [
+  { key: 'id', title: 'Order #', sortable: true, width: 100 },
+  { key: 'customer', title: 'Customer', sortable: true },
+  {
+    key: 'amount',
+    title: 'Amount',
+    align: 'right',
+    sortable: true,
+    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
+  },
+  { key: 'status', title: 'Status' },
+  { key: 'date', title: 'Date', sortable: true },
+];
+
+export default function Demo() {
+  return <CfTable columns={columns} rows={rows} rowKey="id" variant="bordered" />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Selection and stripes
+
+`selectable="multiple"` adds a leading checkbox column with `v-model` bound to `string[]`; `selectable="single"` toggles single selection on row click with `v-model` bound to `string`. `variant="striped"` shades odd rows.
+
+<DemoFrame
+  vueCode={`<CfTable
+  v-model="selected"
+  :columns="columns"
+  :rows="rows"
+  row-key="id"
+  selectable="multiple"
+  variant="striped"
+/>`}
+  reactCode={`<CfTable
+  value={selected}
+  columns={columns}
+  rows={rows}
+  rowKey="id"
+  selectable="multiple"
+  variant="striped"
+  onChange={setSelected as any}
+/>`}
+>
+  <SelectionVue client:load />
+</DemoFrame>
+
+## API · Table
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `columns` | `TableColumn<T>[]` | `[]` | Column definitions |
+| `rows` | `T[]` | `[]` | Data array |
+| `rowKey` | `string \| ((row, i) => string)` | `index` | Row key field or function |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size + padding |
+| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | Visual mode |
+| `hoverable` | `boolean` | `true` | Highlight row on hover |
+| `emptyText` | `string \| ReactNode` | `'No data'` | Empty state text |
+| `loading` | `boolean` | `false` | Loading state (semi-transparent + non-interactive) |
+| `sort` / `defaultSort` | `TableSort` | `—` | Controlled / uncontrolled sort |
+| `selectable` | `'single' \| 'multiple'` | `—` | Row selection mode |
+| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | `null` | Selected row key(s) |
+
+Events: `update:sort` / `sort-change` / `update:modelValue` / `row-click` (React: `onSortChange` / `onChange` / `onRowClick`).
+Slots (Vue): `cell:<key>` / `header:<key>` / `empty`; React uses `column.render` for custom cell rendering.
+
+## API · TableColumn
+
+| Prop | Type | Description |
+|---|---|---|
+| `key` | `string` | Column unique identifier |
+| `title` | `string \| ReactNode` | Header |
+| `dataIndex` | `string` | Data field; falls back to `key` |
+| `width` | `number \| string` | Column width |
+| `align` | `'left' \| 'center' \| 'right'` | Alignment (right enables tabular-nums) |
+| `sortable` | `boolean` | Whether the column is sortable |
+| `format` | `(value, row, i) => string` | String formatter |
+| `render` | `(value, row, i) => ReactNode` | Custom cell render (React) |

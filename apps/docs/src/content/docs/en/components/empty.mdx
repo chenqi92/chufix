@@ -1,0 +1,126 @@
+---
+title: Empty
+description: Placeholder for empty lists, tables, or search results. Supports an action button and three sizes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/empty/BasicVue.vue';
+import TextVue from '~/components/demos/empty/TextVue.vue';
+import ActionVue from '~/components/demos/empty/ActionVue.vue';
+import SizesVue from '~/components/demos/empty/SizesVue.vue';
+import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
+
+## Basic usage
+
+Without any props, shows the default icon and "No data".
+
+<DemoFrame
+  vueCode={`<CfEmpty />`}
+  reactCode={`<CfEmpty />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Custom text
+
+`title` is the main message, `description` is the secondary message. Both are available as a prop or a slot of the same name.
+
+<DemoFrame
+  vueCode={`<CfEmpty
+  title="No projects yet"
+  description="Create your first project to get started with ChuFix."
+/>`}
+  reactCode={`<CfEmpty
+  title="No projects yet"
+  description="Create your first project to get started with ChuFix."
+/>`}
+>
+  <TextVue client:load />
+</DemoFrame>
+
+## Action button
+
+The `action` slot (Vue) / `action` prop (React) is for a navigation or "create" button — give the user a path back from the empty state.
+
+<DemoFrame
+  vueCode={`<CfEmpty title="No projects yet" description="Create your first project to get started with ChuFix.">
+  <template #action>
+    <CfButton variant="primary" size="sm">+ New project</CfButton>
+  </template>
+</CfEmpty>`}
+  reactCode={`<CfEmpty
+  title="No projects yet"
+  description="Create your first project to get started with ChuFix."
+  action={<CfButton variant="primary" size="sm">+ New project</CfButton>}
+/>`}
+>
+  <ActionVue client:load />
+</DemoFrame>
+
+## Status illustrations
+
+The default icon comes from `CfStatusIllustration`. You can swap it for search, upload, error, etc. via the `icon` slot (Vue) / `icon` prop (React).
+
+<DemoFrame
+  vueCode={`<CfEmpty title="No matching results" description="Try a different keyword or clear the filters.">
+  <template #icon>
+    <CfStatusIllustration variant="search" />
+  </template>
+</CfEmpty>
+
+<CfEmpty title="No files yet" description="Drop files here, or click to upload.">
+  <template #icon>
+    <CfStatusIllustration variant="upload" />
+  </template>
+</CfEmpty>`}
+  reactCode={`<CfEmpty
+  title="No matching results"
+  description="Try a different keyword or clear the filters."
+  icon={<CfStatusIllustration variant="search" />}
+/>
+
+<CfEmpty
+  title="No files yet"
+  description="Drop files here, or click to upload."
+  icon={<CfStatusIllustration variant="upload" />}
+/>`}
+>
+  <IllustrationsVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` — `sm` (inline placeholder), `md` (default), `lg` (full-page empty state).
+
+<DemoFrame
+  vueCode={`<CfEmpty size="sm" />
+<CfEmpty size="md" />
+<CfEmpty size="lg" />`}
+  reactCode={`<CfEmpty size="sm" />
+<CfEmpty size="md" />
+<CfEmpty size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | `'No data'` | Main message |
+| `description` | `string` | — | Secondary message |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Overall size |
+
+### Slots / children
+
+- `icon` — replace the default SVG icon
+- `title` / `description` — replace the text nodes (the same-named props also work)
+- `action` — action button area
+
+### CfStatusIllustration
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'empty' \| 'search' \| 'upload' \| 'success' \| 'info' \| 'warning' \| 'error' \| 'not-found' \| 'forbidden' \| 'server-error'` | `'empty'` | Status illustration type |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Illustration size |
+| `title` | `string` | — | Used as the accessible name when provided; treated as decorative when omitted |

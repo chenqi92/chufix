@@ -1,0 +1,45 @@
+---
+title: Phone input
+description: Country code dropdown + number input. Ships with 12 common countries; override via countries.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
+
+## Basic usage
+
+The country segment has its own background; the dropdown supports fuzzy search. The component does not perform E.164 validation — wire up libphonenumber or similar on the consumer side.
+
+<DemoFrame
+  vueCode={`<CfPhoneInput v-model="phone" v-model:country="country" />`}
+  reactCode={`<CfPhoneInput value={phone} onChange={setPhone} country={country} onCountryChange={setCountry} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Sizes / error / disabled
+
+`error` switches to a red border; `disabled` greys the whole control.
+
+import StatesVue from '~/components/demos/phoneinput/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfPhoneInput v-model="v" :error="true" />
+<CfPhoneInput v-model="v" disabled />`}
+  reactCode={`<CfPhoneInput value={v} onChange={setV} error />
+<CfPhoneInput value={v} onChange={setV} disabled />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | Local number segment |
+| `country` | `string` | `'CN'` | ISO 3166-1 alpha-2 |
+| `countries` | `CountryCode[]` | `defaultCountries` (12 items) | Custom country list |
+| `size` / `placeholder` / `disabled` / `error` | | | |
+
+`CountryCode = { code: string; dial: string; label: string }`

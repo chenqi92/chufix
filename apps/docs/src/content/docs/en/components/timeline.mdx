@@ -1,0 +1,37 @@
+---
+title: Timeline
+description: Sequential event stream with dots, connectors, and timestamps. Common in changelogs, audit trails, and release notes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timeline/BasicVue.vue';
+
+## Basic usage
+
+Each entry in `items` is a node. `color` controls the dot color (`primary` / `success` / `warning` / `danger` / `neutral`).
+
+<DemoFrame
+  vueCode={`<CfTimeline :items="items" />`}
+  reactCode={`<CfTimeline items={items} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `TimelineItem[]` | `—` | Node list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Node font size and dot size |
+| `mode` | `'left' \| 'right' \| 'alternate'` | `'left'` | Content position relative to the connector |
+| `reverse` | `boolean` | `false` | Reverse order (newest first) |
+
+### TimelineItem
+
+| Field | Type | Description |
+|---|---|---|
+| `key` | `string \| number` | Unique key, used for v-for / map key |
+| `title` | `string` | Main title |
+| `content` | `string` | Detailed description |
+| `time` | `string` | Timestamp text |
+| `color` | `'primary' \| 'success' \| 'warning' \| 'danger' \| 'neutral'` | Dot color |

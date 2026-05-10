@@ -1,0 +1,59 @@
+---
+title: Tear-off tab
+description: Drag a tab past the threshold to fire a tear-off event; the consumer decides whether to spawn a DetachedPanel or a new window.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tearofftab/BasicVue.vue';
+
+## Basic usage
+
+Standard tabs plus a drag gesture. When the vertical drag distance exceeds `tearThreshold` (default 60px), `tear-off(id, item, x, y)` fires.
+The component itself does not create windows or panels — the consumer decides the behavior.
+
+<DemoFrame
+  vueCode={`<CfTearOffTabs
+  :tabs="tabs"
+  v-model="active"
+  @tear-off="(id) => spawnPanel(id)"
+  @close="(id) => removeTab(id)"
+>
+  <template #content-orders>orders.ts content</template>
+</CfTearOffTabs>`}
+  reactCode={`<CfTearOffTabs
+  tabs={tabs}
+  value={active}
+  onChange={setActive}
+  onTearOff={(id) => spawnPanel(id)}
+  onClose={(id) => removeTab(id)}
+  slots={{ 'content-orders': <pre>orders.ts</pre> }}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Tear-off into a DetachedPanel
+
+Spawn the torn-off tab into a DetachedPanel immediately; reattach it back when the panel is closed.
+
+import PinVue from '~/components/demos/tearofftab/PinVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTearOffTabs ... @tear-off="tearOff" />
+<CfDetachedPanel ... @update:open="reattach" />`}
+  reactCode={`<CfTearOffTabs ... onTearOff={tearOff} />
+<CfDetachedPanel ... onOpenChange={reattach} />`}
+>
+  <PinVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tabs` | `TearOffTabItem[]` | — | `{ id, title, contentKey?, modified?, closable? }` |
+| `modelValue` / `value` | `string` | first tab | Active tab id |
+| `tearThreshold` | `number` | `60` | Vertical drag distance that triggers tear-off |
+
+Events: `update:modelValue` / `tear-off(id, item, x, y)` / `close(id, item)`.

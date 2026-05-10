@@ -1,0 +1,87 @@
+---
+title: Number input
+description: Numeric input with +/− stepper buttons, min/max/step constraints, arrow-key stepping, and auto clamp.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/numberinput/BasicVue.vue';
+import PrecisionVue from '~/components/demos/numberinput/PrecisionVue.vue';
+import SizesVue from '~/components/demos/numberinput/SizesVue.vue';
+import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
+
+## Basic usage
+
+Bind to `number | null` — `null` represents empty, distinct from "not filled in". `min` / `max` constrain the value, with auto-clamp on blur.
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="value" :min="0" :max="100" />`}
+  reactCode={`<CfNumberInput value={value} onChange={setValue} min={0} max={100} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Step and precision
+
+`step` is the unit per button click / keystroke; a fractional step infers `precision` automatically (`step=0.05` → 2 decimal places). You can also pass `precision` explicitly to force the number of digits. When the value is `null`, the placeholder text is shown.
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="ratio" :step="0.05" :min="0" :max="1" />
+<CfNumberInput v-model="price" :step="0.1" :precision="2" />
+<CfNumberInput v-model="optional" placeholder="Leave blank for unlimited" />`}
+  reactCode={`<CfNumberInput value={ratio} onChange={setRatio} step={0.05} min={0} max={1} />
+<CfNumberInput value={price} onChange={setPrice} step={0.1} precision={2} />
+<CfNumberInput value={optional} onChange={setOptional} placeholder="Leave blank for unlimited" />`}
+>
+  <PrecisionVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` controls control height, consistent with Input / Select — `sm` compact, `md` default, `lg` large for touch.
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="a" size="sm" />
+<CfNumberInput v-model="b" size="md" />
+<CfNumberInput v-model="c" size="lg" />`}
+  reactCode={`<CfNumberInput value={a} onChange={setA} size="sm" />
+<CfNumberInput value={b} onChange={setB} size="md" />
+<CfNumberInput value={c} onChange={setC} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Hide steppers / disabled
+
+`hideSteppers` hides the right-side +/− buttons but keeps keyboard stepping — cleaner inside tables or compact forms. `disabled` blocks all interaction.
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="a" />
+<CfNumberInput v-model="b" hide-steppers />
+<CfNumberInput :model-value="42" disabled />`}
+  reactCode={`<CfNumberInput value={a} onChange={setA} />
+<CfNumberInput value={b} onChange={setB} hideSteppers />
+<CfNumberInput value={42} disabled />`}
+>
+  <NoSteppersVue client:load />
+</DemoFrame>
+
+## Keyboard interaction
+
+- `↑` / `↓` — step by `step`
+- `Enter` — commit and clamp
+- Blur — auto-clamp to [min, max]; out-of-range input is corrected
+- Non-numeric characters are blocked (keeps `-` / `.` as signs)
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number \| null` | `null` | Current value; `null` is empty |
+| `min` | `number` | — | Minimum |
+| `max` | `number` | — | Maximum |
+| `step` | `number` | `1` | Step |
+| `precision` | `number` | inferred | Decimal places; inferred from step when omitted |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Height |
+| `hideSteppers` | `boolean` | `false` | Hide +/− buttons (keyboard stepping still works) |
+| `placeholder` | `string` | `—` | Placeholder text (shown when value is `null`) |
+| `disabled` | `boolean` | `false` | Disabled |

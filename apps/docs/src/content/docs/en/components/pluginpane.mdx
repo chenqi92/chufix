@@ -1,0 +1,39 @@
+---
+title: Plugin pane
+description: Plugin center pane with Card / Manifest / Permission / Marketplace tabs.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pluginpane/BasicVue.vue';
+
+## Basic usage
+
+4 predefined tabs (ids: `card`, `manifest`, `permission`, `marketplace`). Each tab's content is filled in by the consumer via the named slot
+`#panel-{tabId}` (Vue) / `slots["panel-{tabId}"]` (React). You can also override the default list via the `tabs` prop.
+
+Source: [`plugins.html`](https://github.com/chenqi92/chufix-design).
+
+<DemoFrame
+  vueCode={`<CfPluginPane>
+  <template #panel-card>...</template>
+  <template #panel-manifest>...</template>
+</CfPluginPane>`}
+  reactCode={`<CfPluginPane slots={{
+  'panel-card': <PanelA />,
+  'panel-manifest': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | First tab id | Active tab |
+| `tabs` | `TemplatePaneTab[]` | preset | Custom tab list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+The preset tab id lists are exported as constants `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS`, ready to reuse when customizing `tabs`.
+
+> Template components are a thin semantic wrapper over [`CfTabs`](/components/tabs/). If you don't need a predefined tab set, use CfTabs directly.

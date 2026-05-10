@@ -1,0 +1,43 @@
+---
+title: MetricCard
+description: Value + unit + delta + embedded sparkline trend.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/metriccard/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props; pure SVG rendering with no third-party chart library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfMetricCard ... />`}
+  reactCode={`<CfMetricCard ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Grid layout
+
+Pair with `grid-template-columns: repeat(auto-fit, minmax(...))` for adaptive density.
+
+import GridVue from '~/components/demos/metriccard/GridVue.vue';
+
+<DemoFrame
+  vueCode={`<CfMetricCard label="…" value="…" :delta="…" :trend="[…]" />`}
+  reactCode={`<CfMetricCard label="…" value="…" delta={…} trend={[…]} />`}
+>
+  <GridVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | `—` | Small top label |
+| `value` | `string \| number` | `—` | Main value |
+| `unit` | `string` | `—` | Unit (after the value) |
+| `delta` | `number` | `—` | Percentage change; tinted by sign |
+| `trend` | `number[]` | `—` | Embedded sparkline data |

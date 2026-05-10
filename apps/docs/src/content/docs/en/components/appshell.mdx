@@ -1,0 +1,137 @@
+---
+title: AppShell
+description: A header + sidebar + main + aside + footer CSS Grid layout — a recommended starting point for full-app scaffolding.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/appshell/BasicVue.vue';
+import WithAsideVue from '~/components/demos/appshell/WithAsideVue.vue';
+import VariantsVue from '~/components/demos/appshell/VariantsVue.vue';
+
+## Basic usage
+
+`AppShell` fixes the most common layout regions: a sticky header, a left sidebar, an optional right aside, the main area, and a footer. Each region is a named slot / prop — leaving it empty omits the region.
+
+The sidebar width is controlled via `sidebarWidth` (number, px); `sidebarCollapsed=true` shrinks the sidebar to zero width while keeping its DOM, which is convenient for responsive toggling.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfAppShell, CfButton } from '@chufix-design/vue';
+
+const collapsed = ref(false);
+</script>
+
+<template>
+  <CfAppShell :sidebar-collapsed="collapsed" :sidebar-width="180">
+    <template #header>
+      <CfButton size="sm" variant="tertiary" @click="collapsed = !collapsed">
+        {{ collapsed ? 'Expand sidebar' : 'Collapse sidebar' }}
+      </CfButton>
+      <strong>My App</strong>
+    </template>
+    <template #sidebar>
+      <nav>Navigation list</nav>
+    </template>
+    <template #footer>© ChuFix</template>
+    <div>Main content</div>
+  </CfAppShell>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfAppShell, CfButton } from '@chufix-design/react';
+
+export default function Demo() {
+  const [collapsed, setCollapsed] = useState(false);
+  return (
+    <CfAppShell
+      sidebarCollapsed={collapsed}
+      sidebarWidth={180}
+      header={
+        <>
+          <CfButton size="sm" variant="tertiary" onClick={() => setCollapsed((v) => !v)}>
+            {collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          </CfButton>
+          <strong>My App</strong>
+        </>
+      }
+      sidebar={<nav>Navigation list</nav>}
+      footer={<>© ChuFix</>}
+    >
+      <div>Main content</div>
+    </CfAppShell>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Layout regions
+
+```
+┌──────────────────────────────────────────┐
+│             header (sticky)              │
+├────────┬──────────────────┬──────────────┤
+│        │                  │              │
+│ side-  │      main        │   aside      │
+│ bar    │                  │  (right col) │
+│        │                  │              │
+├────────┴──────────────────┴──────────────┤
+│                  footer                  │
+└──────────────────────────────────────────┘
+```
+
+- `header` defaults to `position: sticky; top: 0` and stays pinned while the main area scrolls
+- `sidebar` / `aside` / `main` each have their own `overflow-y: auto` and scroll independently; all use `overscroll-behavior: contain` to prevent scroll chaining
+- The whole shell uses `display: grid`, with regions defined by `grid-template-areas`
+
+## With a right aside
+
+The `aside` slot enables the rightmost column — useful for detail panels, outlines, or tip rails. `asideWidth` controls its width.
+
+<DemoFrame
+  vueCode={`<CfAppShell :sidebar-width="160" :aside-width="200">
+  <template #header>Header</template>
+  <template #sidebar>Left navigation</template>
+  <template #aside>Right aside</template>
+  <template #footer>Footer</template>
+  <div>Main content</div>
+</CfAppShell>`}
+  reactCode={`<CfAppShell
+  sidebarWidth={160}
+  asideWidth={200}
+  header={<>Header</>}
+  sidebar={<>Left navigation</>}
+  aside={<>Right aside</>}
+  footer={<>Footer</>}
+>
+  <div>Main content</div>
+</CfAppShell>`}
+>
+  <WithAsideVue client:load />
+</DemoFrame>
+
+## Three density variants
+
+`variant` controls the overall font size / spacing tier — `default` / `condensed` (compact admin) / `spacious` (landing pages or large screens).
+
+<DemoFrame
+  vueCode={`<CfAppShell variant="condensed">…</CfAppShell>
+<CfAppShell variant="spacious">…</CfAppShell>`}
+  reactCode={`<CfAppShell variant="condensed">…</CfAppShell>
+<CfAppShell variant="spacious">…</CfAppShell>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'default' \| 'condensed' \| 'spacious'` | `'default'` | Overall font size tier |
+| `sidebarWidth` | `number` | `240` | Sidebar width (px) |
+| `headerHeight` | `number` | `auto` | Fixed header height (px); auto-fits content when omitted |
+| `bordered` | `boolean` | `true` | Whether the sidebar shows a right border |
+| `sidebarCollapsed` | `boolean` | `false` | Whether to collapse the sidebar (visual width 0) |
+
+Vue slots: `header` / `sidebar` / `aside` / `footer` / default (main).
+React accepts the same names as `ReactNode` props; main content goes through `children`.

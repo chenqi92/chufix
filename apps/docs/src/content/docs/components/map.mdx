@@ -1,0 +1,64 @@
+---
+title: Map 地图
+description: 轻量矢量地图容器，支持 marker、polygon overlay、route、缩放与交互事件。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/map/BasicVue.vue';
+
+## 基础用法
+
+`Map` 先提供零依赖的矢量地图底座：坐标使用 0–100 的归一化空间，适合机房平面图、园区拓扑、区域监控、网络节点图等后台系统场景。
+标记、区域覆盖物、路线都可以交互，点击覆盖物时会触发 `overlay-click`，点击标记会触发 `marker-click`，点击空白地图会触发 `map-click`。
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfMap
+  :markers="markers"
+  :overlays="overlays"
+  :routes="routes"
+  @marker-click="onMarkerClick"
+  @overlay-click="onOverlayClick"
+  @map-click="onMapClick"
+/>`}
+  reactCode={`<CfMap
+  markers={markers}
+  overlays={overlays}
+  routes={routes}
+  onMarkerClick={onMarkerClick}
+  onOverlayClick={onOverlayClick}
+  onMapClick={onMapClick}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `markers` | `MapMarker[]` | `[]` | 标记点，字段为 `id / label / x / y / tone? / value? / disabled?` |
+| `overlays` | `MapOverlay[]` | `[]` | 多边形覆盖物，`interactive` 为 `true` 时支持点击与键盘触发 |
+| `routes` | `MapRoute[]` | `[]` | 折线路线，支持 `tone` 与 `dashed` |
+| `height` | `number \| string` | `360` | 地图高度 |
+| `center` | `{ x: number; y: number }` | `{ x: 50, y: 50 }` | 视口中心点 |
+| `zoom` | `number` | `1` | 初始缩放级别 |
+| `minZoom` / `maxZoom` | `number` | `0.7 / 2.4` | 缩放边界 |
+| `showGrid` | `boolean` | `true` | 是否显示地图网格 |
+| `showLabels` | `boolean` | `true` | 是否显示 marker label |
+| `controls` | `boolean` | `true` | 是否显示缩放 / 重置控件 |
+| `activeId` | `string` | `—` | 高亮 marker 或 overlay |
+
+## Events
+
+| Vue 事件 | React 回调 | payload | 说明 |
+|---|---|---|---|
+| `marker-click` | `onMarkerClick` | `{ marker, nativeEvent }` | 点击或键盘激活 marker |
+| `marker-enter` / `marker-leave` | `onMarkerEnter` / `onMarkerLeave` | `{ marker, nativeEvent }` | marker hover 状态 |
+| `overlay-click` | `onOverlayClick` | `{ overlay, nativeEvent }` | 点击或键盘激活交互覆盖物 |
+| `map-click` | `onMapClick` | `{ point, nativeEvent }` | 点击地图空白区域，返回归一化坐标 |
+| `viewport-change` | `onViewportChange` | `{ center, zoom }` | 点击缩放 / 重置控件后触发 |
+
+## 设计说明
+
+这个版本故意不绑定具体地图服务，优先把 UI 库应该有的“覆盖物、事件、状态、可访问性”能力打实。后续如果接入 Leaflet / Mapbox，可以保留同一组 `markers / overlays / events` API，只把渲染适配到真实瓦片或 WebGL 地图。

@@ -1,0 +1,76 @@
+---
+title: Segmented control
+description: Semantic alias export of the Tabs segmented variant — purpose-built for view / time-range switching.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/segmented/BasicVue.vue';
+import SizesVue from '~/components/demos/segmented/SizesVue.vue';
+import AlignVue from '~/components/demos/segmented/AlignVue.vue';
+
+## Basic usage
+
+`CfSegmentedControl` is equivalent to `<CfTabs variant="segmented" />` with a more intuitive export name; the API matches Tabs' `value` / `items` / `size` / `align`.
+
+<DemoFrame
+  vueCode={`<CfSegmentedControl
+  v-model="view"
+  :items="[
+    { value: 'list', label: 'List' },
+    { value: 'card', label: 'Card' },
+    { value: 'kanban', label: 'Kanban' },
+  ]"
+/>`}
+  reactCode={`<CfSegmentedControl
+  value={view}
+  onChange={setView}
+  items={[
+    { value: 'list', label: 'List' },
+    { value: 'card', label: 'Card' },
+    { value: 'kanban', label: 'Kanban' },
+  ]}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+<DemoFrame
+  vueCode={`<CfSegmentedControl v-model="a" :items="items" size="sm" />
+<CfSegmentedControl v-model="b" :items="items" size="md" />
+<CfSegmentedControl v-model="c" :items="items" size="lg" />`}
+  reactCode={`<CfSegmentedControl value={a} onChange={setA} items={items} size="sm" />
+<CfSegmentedControl value={b} onChange={setB} items={items} size="md" />
+<CfSegmentedControl value={c} onChange={setC} items={items} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Four alignments
+
+`align` — `start` (default) / `center` / `end` / `stretch` (distribute width to fill the parent container).
+
+<DemoFrame
+  vueCode={`<CfSegmentedControl v-model="a" :items="items" align="start" />
+<CfSegmentedControl v-model="b" :items="items" align="center" />
+<CfSegmentedControl v-model="c" :items="items" align="end" />
+<CfSegmentedControl v-model="d" :items="items" align="stretch" />`}
+  reactCode={`<CfSegmentedControl value={a} onChange={setA} items={items} align="start" />
+<CfSegmentedControl value={b} onChange={setB} items={items} align="center" />
+<CfSegmentedControl value={c} onChange={setC} items={items} align="end" />
+<CfSegmentedControl value={d} onChange={setD} items={items} align="stretch" />`}
+>
+  <AlignVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `—` | Currently selected value |
+| `items` | `SegmentedItem[]` | `[]` | `{ value, label, disabled? }` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | `'start'` | Alignment |
+
+If you need line / pill styles or multi-view switching, use [Tabs](/components/tabs/) directly.

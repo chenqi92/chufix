@@ -1,0 +1,130 @@
+---
+title: Combobox
+description: A typeable variant of Select — typing filters the options, with optional "create new" support.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/combobox/BasicVue.vue';
+import CreateVue from '~/components/demos/combobox/CreateVue.vue';
+import SizesVue from '~/components/demos/combobox/SizesVue.vue';
+
+## Basic usage
+
+Pass `options` and bind the current value via `v-model`. Type to filter once open; `↑↓` moves the highlight, `Enter` selects, `Esc` closes.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/vue';
+
+const value = ref<string | number | null>('vue');
+const options: ComboboxOption[] = [
+  { value: 'vue', label: 'Vue 3' },
+  { value: 'react', label: 'React 18' },
+  { value: 'svelte', label: 'Svelte 5' },
+  { value: 'solid', label: 'SolidJS' },
+];
+</script>
+
+<template>
+  <CfCombobox v-model="value" :options="options" clearable />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/react';
+
+const options: ComboboxOption[] = [
+  { value: 'vue', label: 'Vue 3' },
+  { value: 'react', label: 'React 18' },
+  { value: 'svelte', label: 'Svelte 5' },
+  { value: 'solid', label: 'SolidJS' },
+];
+
+export default function Demo() {
+  const [value, setValue] = useState<string | number | null>('vue');
+  return <CfCombobox value={value} options={options} clearable onChange={setValue} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Allow create
+
+When `allow-create` is on, typing something that doesn't match shows a "Create 'xxx'" entry at the bottom of the menu; pressing `Enter` or clicking it submits the typed text as a new value. `@create` (Vue) / `onCreate` (React) fires alongside.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/vue';
+
+const value = ref<string | number | null>(null);
+const options = ref<ComboboxOption[]>([
+  { value: 'frontend', label: 'Frontend' },
+  { value: 'backend', label: 'Backend' },
+]);
+</script>
+
+<template>
+  <CfCombobox
+    v-model="value"
+    :options="options"
+    allow-create
+    clearable
+    @create="(v) => options.push({ value: v.toLowerCase(), label: v })"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfCombobox, type ComboboxOption } from '@chufix-design/react';
+
+export default function Demo() {
+  const [value, setValue] = useState<string | number | null>(null);
+  const [options, setOptions] = useState<ComboboxOption[]>([
+    { value: 'frontend', label: 'Frontend' },
+    { value: 'backend', label: 'Backend' },
+  ]);
+  return (
+    <CfCombobox
+      value={value}
+      options={options}
+      allowCreate
+      clearable
+      onChange={setValue}
+      onCreate={(v) =>
+        setOptions((arr) => [...arr, { value: v.toLowerCase(), label: v }])
+      }
+    />
+  );
+}`}
+>
+  <CreateVue client:load />
+</DemoFrame>
+
+## Sizes
+
+<DemoFrame
+  vueCode={`<CfCombobox size="sm" :options="options" />
+<CfCombobox size="md" :options="options" />
+<CfCombobox size="lg" :options="options" />`}
+  reactCode={`<CfCombobox size="sm" options={options} />
+<CfCombobox size="md" options={options} />
+<CfCombobox size="lg" options={options} />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string \| number \| null` | `null` | Current value |
+| `options` | `ComboboxOption[]` | `[]` | List of `{ value, label, disabled? }` |
+| `placeholder` | `string` | `'Select or type'` | Placeholder text |
+| `variant` | `'outline' \| 'filled' \| 'ghost'` | `'outline'` | Visual mode |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `disabled` | `boolean` | `false` | Disabled |
+| `clearable` | `boolean` | `false` | Show a clear button |
+| `error` | `boolean` | `false` | Error state |
+| `allowCreate` | `boolean` | `false` | Whether typed input can be submitted as a new value |
+| `filter` | `(query, option) => boolean` | Default matches label and value substrings | Custom filter function |
+| `emptyText` | `string` | `'No matches'` | Placeholder when there are no results |
+
+Events: `update:modelValue` / `change` / `create` (React: `onChange` / `onCreate`).

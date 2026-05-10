@@ -1,0 +1,43 @@
+---
+title: 100% stacked bar
+description: Horizontal 100% stacked bar — well suited to share-of-total breakdowns.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props and rendered as pure SVG, with no third-party charting dependency.
+Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfStackedBar100 ... />`}
+  reactCode={`<CfStackedBar100 ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Trend comparison
+
+Stacking bars from multiple years makes share migration easy to read.
+
+import CompareVue from '~/components/demos/stackedbar100/CompareVue.vue';
+
+<DemoFrame
+  vueCode={`<CfStackedBar100 :segments="seg2024" />
+<CfStackedBar100 :segments="seg2025" />`}
+  reactCode={`<CfStackedBar100 segments={seg2024} />
+<CfStackedBar100 segments={seg2025} />`}
+>
+  <CompareVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `segments` | `StackedBar100Series[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `height` | `number` | `24` |  |
+| `showLegend` | `boolean` | `true` |  |

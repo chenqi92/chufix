@@ -1,0 +1,60 @@
+---
+title: 组件能力审计
+description: 对照主流组件库整理 ChuFix UI 的覆盖缺口、事件补齐方向与迭代优先级。
+---
+
+## 对照来源
+
+这份审计用来指导后续补齐工作，不追求逐项复制，而是判断 ChuFix 作为工程型组件库是否具备足够完整的「状态、事件、可组合性」。
+
+- [Ant Design Components Overview](https://ant.design/components/overview/)：基础、布局、导航、数据录入、数据展示、反馈等完整分类。
+- [Element Plus Overview](https://element-plus.org/en-US/component/overview)：包含 Config Provider、Upload、TreeSelect、Virtualized Table / Tree / Select、Loading、Message 等常见工程能力。
+- [Material UI Components](https://mui.com/material-ui/all-components/)：强调输入、数据展示、反馈、导航、布局、Utils 的基础构件。
+- [Leaflet API reference](https://leafletjs.com/reference)：Map / Marker / Path 等交互对象都继承事件能力，地图和覆盖物点击是地图类组件的核心能力。
+
+## 覆盖判断
+
+ChuFix 已经覆盖大部分基础表单、反馈、导航、数据展示、编辑器、图表与系统壳层组件。当前最明显的问题不只是「有没有组件」，而是很多组件还停留在视觉/静态展示阶段，缺少完整事件、受控/非受控模式、键盘交互、空态/禁用/错误/加载态、多示例与 API 表格。
+
+## P0 缺口
+
+| 能力 | 当前状态 | 处理方向 |
+|---|---|---|
+| `ConfigProvider` | 缺少 | 统一 theme、locale、size、zIndex、portal container |
+| `Space / Stack / Flex / Grid` | 缺少基础布局原子 | 让 docs 与业务页面减少临时 CSS |
+| `Typography / Text` | 缺少 | 标题、正文、弱文本、代码、可复制文本 |
+| `Upload` | Dropzone / FilePicker 已有，但 Upload 流程不足 | 补上传队列、beforeUpload、customRequest、onProgress、onSuccess、onError |
+| `TreeSelect` | Cascader / TreeView 已有，组合缺口 | 多选、搜索、半选、展开状态、异步节点 |
+| `Loading / Message / Notification` | Spinner / Toast / Snackbar 有，统一服务式 API 不足 | 提供可命令式调用的全局反馈 |
+| `Popconfirm` | ConfirmDialog 有，但轻量确认缺口 | Tooltip + confirm action，适合表格行操作 |
+
+## P1 缺口
+
+| 能力 | 当前状态 | 处理方向 |
+|---|---|---|
+| `Map` | 已新增基础矢量版本 | 后续接入瓦片/真实坐标/弹层/拖拽选择 |
+| `VirtualizedTable / VirtualizedTree / VirtualizedSelect` | DataGrid / TreeView / Select 有基础版 | 大数据性能专项 |
+| `ButtonGroup / ToggleButton` | Button / Segmented 有近似能力 | 补按钮组语义、互斥/多选、toolbar 场景 |
+| `Portal / ClickAwayListener / FocusTrap` | 分散在 Modal 等组件内部 | 抽成基础工具，减少 overlay bug |
+| `Masonry / ImageList` | 缺少 | 内容型展示能力 |
+
+## 事件补齐规则
+
+每个可交互组件都应检查下面几类事件：
+
+- 值变化：`update:modelValue` / `onChange`、`onInput`、`onClear`、`onSubmit`。
+- 选择状态：`select`、`deselect`、`active-change`、`expanded-change`。
+- 生命周期：`open-change`、`visible-change`、`before-close`、`after-open`。
+- 交互细节：`focus`、`blur`、`keydown`、`contextmenu`、`drag-start`、`drag-end`。
+- 异步流程：`before-upload`、`progress`、`success`、`error`、`retry`。
+
+## 本轮样板
+
+`Map` 作为第一批样板，已经覆盖：
+
+- marker / overlay / route 三类图层。
+- `marker-click`、`overlay-click`、`map-click`、`viewport-change`。
+- 键盘激活 marker / overlay。
+- 高亮态、禁用态、缩放与重置控件。
+
+后续每个组件优化时，都按 `能力缺口 -> API/事件 -> demo -> 文档 API 表 -> 浏览器验证` 的流程推进。

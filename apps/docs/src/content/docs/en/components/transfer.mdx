@@ -1,0 +1,38 @@
+---
+title: Transfer
+description: Two lists with arrows in between to move items between "available" and "selected". Common for permission assignment and field selection.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/transfer/BasicVue.vue';
+
+## Basic usage
+
+`dataSource` is the full set; `v-model` / `value` is the array of selected keys. Each column has a select-all / invert checkbox; the arrow buttons move the current column's checked items to the other side. `searchable` adds a search box on top of each column.
+
+<DemoFrame
+  vueCode={`<CfTransfer :data-source="data" v-model="target" searchable />`}
+  reactCode={`<CfTransfer dataSource={data} value={target} onChange={setTarget} searchable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataSource` | `TransferItem[]` | `—` | Full item list |
+| `value` / `modelValue` | `string[]` | `—` | Controlled "selected" key array |
+| `defaultValue` | `string[]` | `[]` | Uncontrolled initial selected keys |
+| `titles` | `[string, string]` | `['Available', 'Selected']` | Titles for the two columns |
+| `searchable` | `boolean` | `false` | Show search boxes |
+
+### TransferItem
+
+| Field | Type | Description |
+|---|---|---|
+| `key` | `string` | Unique key |
+| `label` | `string` | Display text |
+| `disabled` | `boolean` | Disabled, cannot be checked or moved |
+
+Events: `onChange(keys)` — fired when the selected keys array changes.

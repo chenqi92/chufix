@@ -1,0 +1,110 @@
+---
+title: Card
+description: Card container — 3 variants, optional whole-card interaction, and a header / body / footer three-part structure.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/card/BasicVue.vue';
+import VariantsVue from '~/components/demos/card/VariantsVue.vue';
+import SectionsVue from '~/components/demos/card/SectionsVue.vue';
+import InteractiveVue from '~/components/demos/card/InteractiveVue.vue';
+
+## Basic usage
+
+The simplest Card just renders the default slot (Vue) / children (React), wrapping content in a bordered container.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfCard } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfCard>
+    <p>A minimal card with just the default slot.</p>
+  </CfCard>
+</template>`}
+  reactCode={`import { CfCard } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <CfCard>
+      <p>A minimal card that just renders children.</p>
+    </CfCard>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants
+
+Three variants for different information levels: `outlined` (default border) / `elevated` (with shadow) / `filled` (light gray fill).
+
+<DemoFrame
+  vueCode={`<CfCard variant="outlined">…</CfCard>
+<CfCard variant="elevated">…</CfCard>
+<CfCard variant="filled">…</CfCard>`}
+  reactCode={`<CfCard variant="outlined">…</CfCard>
+<CfCard variant="elevated">…</CfCard>
+<CfCard variant="filled">…</CfCard>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Three-part structure
+
+Vue uses named slots `header` / `footer`; React uses subcomponents `CardHeader` / `CardBody` / `CardFooter`. Any section is optional.
+
+<DemoFrame
+  vueCode={`<CfCard variant="elevated">
+  <template #header>Project settings</template>
+  <p>Card body goes here.</p>
+  <template #footer>
+    <CfButton size="sm" variant="tertiary">Cancel</CfButton>
+    <CfButton size="sm">Save</CfButton>
+  </template>
+</CfCard>`}
+  reactCode={`import { CfButton, CfCard, CfCardHeader, CfCardBody, CfCardFooter } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <CfCard variant="elevated">
+      <CfCardHeader>Project settings</CfCardHeader>
+      <CfCardBody>
+        <p>Card body goes here.</p>
+      </CfCardBody>
+      <CfCardFooter>
+        <CfButton size="sm" variant="tertiary">Cancel</CfButton>
+        <CfButton size="sm">Save</CfButton>
+      </CfCardFooter>
+    </CfCard>
+  );
+}`}
+>
+  <SectionsVue client:load />
+</DemoFrame>
+
+## Whole-card clickable
+
+Enabling `interactive` turns the entire card into a button — `role="button"` + `tabindex="0"` are added automatically, and pressing Enter triggers `click`.
+
+<DemoFrame
+  vueCode={`<CfCard variant="outlined" interactive @click="clicked++">
+  <template #header>Whole card clickable</template>
+  <p>Clicked {{ clicked }} times</p>
+</CfCard>`}
+  reactCode={`<CfCard variant="outlined" interactive onClick={() => setClicked(c => c + 1)}>
+  <CfCardHeader>Whole card clickable</CfCardHeader>
+  <CfCardBody>Clicked {clicked} times</CfCardBody>
+</CfCard>`}
+>
+  <InteractiveVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | Type                                         | Default      | Description                            |
+| ------------- | -------------------------------------------- | ------------ | ------------------------------- |
+| `variant`     | `'outlined' \| 'elevated' \| 'filled'`       | `'outlined'` | Visual variant                  |
+| `interactive` | `boolean`                                    | `false`      | Turn the card into a button (focus / hover)   |
+| `as`          | `string` (Vue)                               | `'div'`      | HTML tag to render               |

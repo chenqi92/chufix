@@ -1,0 +1,44 @@
+---
+title: File picker
+description: Button-triggered file dialog with a built-in selected file list. Distinct from Dropzone (drag-and-drop area).
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/filepicker/BasicVue.vue';
+
+## Basic usage
+
+`multiple` for multi-select; `accept` for MIME / extension filtering. Selected files appear as chips next to the button — remove individually or clear all at once.
+
+<DemoFrame
+  vueCode={`<CfFilePicker v-model="files" multiple accept="image/*,application/json" />`}
+  reactCode={`<CfFilePicker value={files} onChange={setFiles} multiple accept="image/*" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Variant / size / disabled
+
+`variant="plain"` removes the button border for a link-style trigger. `disabled` disables the whole control.
+
+import VariantsVue from '~/components/demos/filepicker/VariantsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfFilePicker v-model="files" variant="plain" size="lg" multiple />`}
+  reactCode={`<CfFilePicker value={files} onChange={setFiles} variant="plain" size="lg" multiple />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `File[]` | `[]` | |
+| `multiple` | `boolean` | `false` | |
+| `accept` | `string` | — | Same as native `<input type=file>` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `variant` | `'outline' \| 'plain'` | `'outline'` | |
+| `disabled` / `showFiles` | `boolean` | `false` / `true` | |
+| `buttonText` / `emptyText` | `string` | `'Choose files'` / `'No file selected'` | |

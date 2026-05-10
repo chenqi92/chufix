@@ -1,0 +1,139 @@
+---
+title: Form
+description: Form wrapper — unifies labels, required asterisks, hints, and error display, and integrates every existing input.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/form/BasicVue.vue';
+import LayoutVue from '~/components/demos/form/LayoutVue.vue';
+import ValidationVue from '~/components/demos/form/ValidationVue.vue';
+import ComplexVue from '~/components/demos/form/ComplexVue.vue';
+
+## Basic usage
+
+`<CfForm>` provides the layout context and `<CfFormField>` wraps each form item, rendering its label, required asterisk, and hint / error text uniformly. Validation is the consumer's responsibility — the component simply displays `error` and turns the control's border red.
+
+<DemoFrame
+  vueCode={`<CfForm layout="vertical">
+  <CfFormField label="Name">
+    <CfInput v-model="name" placeholder="Jane Doe" />
+  </CfFormField>
+  <CfFormField label="Email" hint="Used for sign-in">
+    <CfInput v-model="email" type="email" />
+  </CfFormField>
+  <CfButton>Submit</CfButton>
+</CfForm>`}
+  reactCode={`<CfForm layout="vertical">
+  <CfFormField label="Name">
+    <CfInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Doe" />
+  </CfFormField>
+  <CfFormField label="Email" hint="Used for sign-in">
+    <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
+  </CfFormField>
+  <CfButton>Submit</CfButton>
+</CfForm>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Three layouts
+
+`layout` decides how the label and control are arranged:
+
+- `vertical` (default) — label above the control, the most common form layout
+- `horizontal` — label and control on the same row, paired with `labelWidth` for alignment
+- `inline` — fields packed onto a single row, useful for search bars and toolbars
+
+<DemoFrame
+  vueCode={`<CfForm layout="vertical">…</CfForm>
+<CfForm layout="horizontal" :label-width="80">…</CfForm>
+<CfForm layout="inline">…</CfForm>`}
+  reactCode={`<CfForm layout="vertical">…</CfForm>
+<CfForm layout="horizontal" labelWidth={80}>…</CfForm>
+<CfForm layout="inline">…</CfForm>`}
+>
+  <LayoutVue client:load />
+</DemoFrame>
+
+## Validation and errors
+
+`required` adds a red asterisk after the label. `hint` shows a hint below the control. When `error` is non-empty, the control border turns red and the error text replaces the hint. Validation logic (sync / async / third-party libraries) is fully owned by the parent — the component only displays `error`.
+
+<DemoFrame
+  vueCode={`function submit() {
+  errors.value = {};
+  if (!name.value.trim()) errors.value.name = 'Name is required';
+  if (!email.value.includes('@')) errors.value.email = 'Invalid email';
+}
+
+<CfForm layout="vertical">
+  <CfFormField label="Name" required :error="errors.name">
+    <CfInput v-model="name" />
+  </CfFormField>
+  <CfFormField label="Email" required hint="Used for sign-in" :error="errors.email">
+    <CfInput v-model="email" type="email" />
+  </CfFormField>
+  <CfButton @click="submit">Submit</CfButton>
+</CfForm>`}
+  reactCode={`function submit() {
+  const next: Record<string, string> = {};
+  if (!name.trim()) next.name = 'Name is required';
+  if (!email.includes('@')) next.email = 'Invalid email';
+  setErrors(next);
+}
+
+<CfForm layout="vertical">
+  <CfFormField label="Name" required error={errors.name}>
+    <CfInput value={name} onChange={(e) => setName(e.target.value)} />
+  </CfFormField>
+  <CfFormField label="Email" required hint="Used for sign-in" error={errors.email}>
+    <CfInput value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
+  </CfFormField>
+  <CfButton onClick={submit}>Submit</CfButton>
+</CfForm>`}
+>
+  <ValidationVue client:load />
+</DemoFrame>
+
+## Complex form
+
+A real-world form combining Input / Select / Textarea / Button.
+
+<DemoFrame
+  vueCode={`<CfForm layout="vertical">
+  <CfFormField label="Name" required><CfInput v-model="name" /></CfFormField>
+  <CfFormField label="Email" required hint="Used for sign-in"><CfInput v-model="email" type="email" /></CfFormField>
+  <CfFormField label="Role"><CfSelect v-model="role" :options="roles" /></CfFormField>
+  <CfFormField label="Bio"><CfTextarea v-model="bio" :rows="3" /></CfFormField>
+  <CfButton>Submit</CfButton>
+</CfForm>`}
+  reactCode={`<CfForm layout="vertical">
+  <CfFormField label="Name" required><CfInput ... /></CfFormField>
+  <CfFormField label="Email" required hint="Used for sign-in"><CfInput ... type="email" /></CfFormField>
+  <CfFormField label="Role"><CfSelect value={role} onChange={setRole} options={roles} /></CfFormField>
+  <CfFormField label="Bio"><CfTextarea value={bio} rows={3} ... /></CfFormField>
+  <CfButton>Submit</CfButton>
+</CfForm>`}
+>
+  <ComplexVue client:load />
+</DemoFrame>
+
+## API · Form props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `layout` | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` | Overall layout |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Default size (visual placeholder for now; not yet wired to control sizes) |
+| `labelWidth` | `number \| string` | `—` | Horizontal layout only; fixed label width |
+| `disabled` | `boolean` | `false` | Disable globally (not yet wired to controls; pass through manually) |
+
+## API · FormField props
+
+| Prop | Type | Description |
+|---|---|---|
+| `label` | `string \| ReactNode` | Label text |
+| `required` | `boolean` | Show required asterisk |
+| `hint` | `string \| ReactNode` | Hint text below the control |
+| `error` | `string \| ReactNode` | Error text; turns the control border red when non-empty |
+| `for` (Vue) / `htmlFor` (React) | `string` | Custom input id; auto-generated if omitted |
+| `layout` | `FormLayout` | Override the parent Form layout for this field |

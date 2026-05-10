@@ -1,0 +1,39 @@
+---
+title: BoxPlot
+description: Five-number statistical summary with outliers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/boxplot/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props and rendered as plain SVG — no third-party charting library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfBoxPlot ... />`}
+  reactCode={`<CfBoxPlot ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## API latency distribution
+
+Four APIs with p25 / median / p75 + outliers; vertical lines show the full min-max range.
+
+import PercentilesVue from '~/components/demos/boxplot/PercentilesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBoxPlot :data="apis" />`}
+  reactCode={`<CfBoxPlot data={apis} />`}
+>
+  <PercentilesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `BoxStat[]` | `—` | &#123; label, min, q1, median, q3, max, outliers? &#125;[] |

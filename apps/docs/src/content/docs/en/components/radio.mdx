@@ -1,0 +1,106 @@
+---
+title: Radio
+description: Radio + RadioGroup pair — mutually exclusive selection with full keyboard support.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/radio/BasicVue.vue';
+import DirectionVue from '~/components/demos/radio/DirectionVue.vue';
+import SizesVue from '~/components/demos/radio/SizesVue.vue';
+
+## Basic usage
+
+`RadioGroup` injects `value`, `name`, `size`, and `disabled` into its children via `provide` / `Context`. When any child becomes selected it fires `update:modelValue` / `onChange`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfRadio, CfRadioGroup } from '@chufix-design/vue';
+
+const plan = ref<'free' | 'pro' | 'team'>('pro');
+</script>
+
+<template>
+  <CfRadioGroup v-model="plan" name="plan">
+    <CfRadio value="free">Free</CfRadio>
+    <CfRadio value="pro">Pro</CfRadio>
+    <CfRadio value="team">Team</CfRadio>
+  </CfRadioGroup>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfRadio, CfRadioGroup } from '@chufix-design/react';
+
+export default function Demo() {
+  const [plan, setPlan] = useState<'free' | 'pro' | 'team'>('pro');
+  return (
+    <CfRadioGroup value={plan} name="plan" onChange={(v) => setPlan(v as any)}>
+      <CfRadio value="free">Free</CfRadio>
+      <CfRadio value="pro">Pro</CfRadio>
+      <CfRadio value="team">Team</CfRadio>
+    </CfRadioGroup>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Layout direction
+
+`direction="column"` lays the options out vertically. Useful when you have many options or longer labels.
+
+<DemoFrame
+  vueCode={`<CfRadioGroup v-model="flavor" direction="column">
+  <CfRadio value="vanilla">Vanilla</CfRadio>
+  <CfRadio value="chocolate">Chocolate</CfRadio>
+  <CfRadio value="strawberry" disabled>Strawberry (out of stock)</CfRadio>
+  <CfRadio value="matcha">Matcha</CfRadio>
+</CfRadioGroup>`}
+  reactCode={`<CfRadioGroup value={flavor} direction="column" onChange={setFlavor}>
+  <CfRadio value="vanilla">Vanilla</CfRadio>
+  <CfRadio value="chocolate">Chocolate</CfRadio>
+  <CfRadio value="strawberry" disabled>Strawberry (out of stock)</CfRadio>
+  <CfRadio value="matcha">Matcha</CfRadio>
+</CfRadioGroup>`}
+>
+  <DirectionVue client:load />
+</DemoFrame>
+
+## Sizes
+
+Set `size` on `RadioGroup` to apply it to every child.
+
+<DemoFrame
+  vueCode={`<CfRadioGroup size="sm" v-model="a">
+  <CfRadio value="s">Small</CfRadio>
+  <CfRadio value="t">Tiny</CfRadio>
+</CfRadioGroup>
+<CfRadioGroup size="md" v-model="b">…</CfRadioGroup>
+<CfRadioGroup size="lg" v-model="c">…</CfRadioGroup>`}
+  reactCode={`<CfRadioGroup size="sm" value={a} onChange={setA}>
+  <CfRadio value="s">Small</CfRadio>
+  <CfRadio value="t">Tiny</CfRadio>
+</CfRadioGroup>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+### RadioGroup
+
+| Prop        | Type                                  | Default | Description                          |
+| ----------- | ------------------------------------- | ------- | ------------------------------------ |
+| `value`     | `string \| number \| boolean \| null` | `null`  | Currently selected value             |
+| `name`      | `string`                              | —       | Forwarded to the underlying input for form submission |
+| `size`      | `'sm' \| 'md' \| 'lg'`                | `'md'`  | Group size                           |
+| `disabled`  | `boolean`                             | `false` | Disable the whole group              |
+| `direction` | `'row' \| 'column'`                   | `'row'` | Layout direction                     |
+
+### Radio
+
+| Prop       | Type                                  | Default | Description                                    |
+| ---------- | ------------------------------------- | ------- | ---------------------------------------------- |
+| `value`    | `string \| number \| boolean \| null` | —       | The item's value                               |
+| `disabled` | `boolean`                             | `false` | Disable this item only (combined with RadioGroup.disabled) |
+
+> Radio can also be used standalone outside a RadioGroup, managing its own `v-model` / `checked + onChange`.

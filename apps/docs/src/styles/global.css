@@ -224,8 +224,29 @@ kbd {
     overflow: visible;
   }
   .site-sidebar { display: none; }
-  .site-nav__inner { grid-template-columns: 1fr auto; }
+  .site-nav__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    padding: 0 0.875rem;
+  }
+  .site-nav__brand {
+    min-width: 0;
+  }
+  .site-nav__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .site-nav__menu {
+    display: none;
+  }
   .site-nav__search { display: none; }
+  .site-nav__actions {
+    gap: 0.25rem;
+  }
+  .site-nav__actions .cf-btn span {
+    display: none;
+  }
 }
 
 .site-sidebar {
@@ -463,6 +484,23 @@ kbd {
 .cf-prose tbody tr:last-child td { border-bottom: 0; }
 .cf-prose th { font-weight: var(--w-semibold); font-size: var(--t-12); }
 
+@media (max-width: 760px) {
+  .cf-prose {
+    min-width: 0;
+  }
+  .cf-prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .cf-prose th,
+  .cf-prose td {
+    min-width: 5.5rem;
+    white-space: normal;
+  }
+}
+
 .cf-prose hr {
   border: 0;
   border-top: 1px solid var(--line-1);
@@ -661,6 +699,41 @@ a.cf-card .cf-card__header,
   transition: padding-bottom var(--dur-base) var(--ease-out);
 }
 
+.cf-demo--compact .cf-demo__preview {
+  padding: 1.25rem;
+}
+
+.cf-demo--wide .cf-demo__preview,
+.cf-demo:has(
+  .cf-codeeditor,
+  .cf-diffeditor,
+  .cf-markdowneditor,
+  .cf-regexbuilder,
+  .cf-ansitext,
+  .cf-datagrid,
+  .cf-table,
+  .cf-appshell,
+  .cf-splitter,
+  .cf-dock,
+  .cf-docklayout,
+  .cf-domainpane,
+  .cf-networkpane,
+  .cf-protocolpane,
+  .cf-sqlworkbench,
+  .cf-terminalpane,
+  .cf-crashpane,
+  .cf-pluginpane,
+  .cf-kanban,
+  .cf-calendar,
+  .cf-map,
+  .cf-transfer,
+  .cf-jsonviewer,
+  .cf-jsondiff,
+  .cf-scrollarea
+) .cf-demo__preview {
+  padding: 1.5rem;
+}
+
 .cf-demo[data-floating-open='true'] {
   z-index: 5;
 }
@@ -697,6 +770,69 @@ a.cf-card .cf-card__header,
   min-width: 0;
   width: auto;
   max-width: 100%;
+}
+
+.cf-demo--wide .cf-demo__pane-content,
+.cf-demo:has(
+  .cf-codeeditor,
+  .cf-diffeditor,
+  .cf-markdowneditor,
+  .cf-regexbuilder,
+  .cf-ansitext,
+  .cf-datagrid,
+  .cf-table,
+  .cf-appshell,
+  .cf-splitter,
+  .cf-dock,
+  .cf-docklayout,
+  .cf-domainpane,
+  .cf-networkpane,
+  .cf-protocolpane,
+  .cf-sqlworkbench,
+  .cf-terminalpane,
+  .cf-crashpane,
+  .cf-pluginpane,
+  .cf-kanban,
+  .cf-calendar,
+  .cf-map,
+  .cf-transfer,
+  .cf-jsonviewer,
+  .cf-jsondiff,
+  .cf-scrollarea
+) .cf-demo__pane-content {
+  align-items: stretch;
+  width: 100%;
+}
+
+.cf-demo--wide .cf-demo__pane-content > *,
+.cf-demo:has(
+  .cf-codeeditor,
+  .cf-diffeditor,
+  .cf-markdowneditor,
+  .cf-regexbuilder,
+  .cf-ansitext,
+  .cf-datagrid,
+  .cf-table,
+  .cf-appshell,
+  .cf-splitter,
+  .cf-dock,
+  .cf-docklayout,
+  .cf-domainpane,
+  .cf-networkpane,
+  .cf-protocolpane,
+  .cf-sqlworkbench,
+  .cf-terminalpane,
+  .cf-crashpane,
+  .cf-pluginpane,
+  .cf-kanban,
+  .cf-calendar,
+  .cf-map,
+  .cf-transfer,
+  .cf-jsonviewer,
+  .cf-jsondiff,
+  .cf-scrollarea
+) .cf-demo__pane-content > * {
+  width: 100%;
 }
 
 .demo-row {

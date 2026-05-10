@@ -1,0 +1,83 @@
+---
+title: Search input
+description: Input preset with a search icon, clear button, and optional shortcut hint. Pressing Enter fires the search event.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/searchinput/BasicVue.vue';
+import ShortcutVue from '~/components/demos/searchinput/ShortcutVue.vue';
+import SizesVue from '~/components/demos/searchinput/SizesVue.vue';
+import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
+
+## Basic usage
+
+A fixed search icon on the left; when the value is non-empty an × clear button appears on the right and clicking it clears and fires `clear`. Enter fires `search(value)`.
+
+<DemoFrame
+  vueCode={`<CfSearchInput
+  v-model="q"
+  placeholder="Search docs…"
+  @search="(v) => console.log(v)"
+/>`}
+  reactCode={`<CfSearchInput
+  value={q}
+  onChange={setQ}
+  placeholder="Search docs…"
+  onSearch={(v) => console.log(v)}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Shortcut hint
+
+`shortcut` mounts a `kbd` hint at the far right. Often paired with a page-level listener on `Ctrl K` / `⌘K` to focus the search box.
+
+<DemoFrame
+  vueCode={`<CfSearchInput v-model="q" placeholder="Press Ctrl K to focus" shortcut="Ctrl K" />`}
+  reactCode={`<CfSearchInput value={q} onChange={setQ} placeholder="Press Ctrl K to focus" shortcut="Ctrl K" />`}
+>
+  <ShortcutVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` matches Input / Select — `sm` / `md` (default) / `lg`.
+
+<DemoFrame
+  vueCode={`<CfSearchInput v-model="a" size="sm" />
+<CfSearchInput v-model="b" size="md" />
+<CfSearchInput v-model="c" size="lg" />`}
+  reactCode={`<CfSearchInput value={a} onChange={setA} size="sm" />
+<CfSearchInput value={b} onChange={setB} size="md" />
+<CfSearchInput value={c} onChange={setC} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Disabled
+
+`disabled` greys the control and ignores clicks.
+
+<DemoFrame
+  vueCode={`<CfSearchInput model-value="(disabled)" disabled />`}
+  reactCode={`<CfSearchInput value="(disabled)" disabled />`}
+>
+  <DisabledVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `''` | Current value |
+| `placeholder` | `string` | `'Search…'` | Placeholder hint |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Height |
+| `disabled` | `boolean` | `false` | Disabled |
+| `clearable` | `boolean` | `true` | Show clear button (when value is non-empty) |
+| `shortcut` | `string` | — | Right-side kbd hint text |
+
+Events:
+
+- Vue: `@update:modelValue`, `@search`, `@clear`
+- React: `onChange`, `onSearch`, `onClear`

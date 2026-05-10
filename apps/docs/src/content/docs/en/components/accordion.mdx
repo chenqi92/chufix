@@ -1,0 +1,114 @@
+---
+title: Accordion
+description: Single or multi-expand modes, three border styles (bordered / flush / separated), with per-item disable.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/accordion/BasicVue.vue';
+import VariantsVue from '~/components/demos/accordion/VariantsVue.vue';
+import MultipleVue from '~/components/demos/accordion/MultipleVue.vue';
+import DisabledVue from '~/components/demos/accordion/DisabledVue.vue';
+
+## Basic usage
+
+Each `items` entry is `{ value, title, content?, disabled? }`. The default `mode="single"` keeps only one panel open at a time — clicking the active item collapses it.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfAccordion } from '@chufix-design/vue';
+
+const items = [
+  { value: 'q1', title: 'Question 1', content: 'Answer 1…' },
+  { value: 'q2', title: 'Question 2', content: 'Answer 2…' },
+  { value: 'q3', title: 'Question 3', content: 'Answer 3…' },
+];
+</script>
+
+<template>
+  <CfAccordion :items="items" mode="single" />
+</template>`}
+  reactCode={`import { CfAccordion } from '@chufix-design/react';
+
+const items = [
+  { value: 'q1', title: 'Question 1', content: 'Answer 1…' },
+  { value: 'q2', title: 'Question 2', content: 'Answer 2…' },
+  { value: 'q3', title: 'Question 3', content: 'Answer 3…' },
+];
+
+<CfAccordion items={items} mode="single" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Border variants
+
+- `bordered` — outer frame with separators between items (default)
+- `flush` — no outer frame, only thin lines between items, blends into the page
+- `separated` — every item is an independent card with spacing for clearer block hierarchy
+
+<DemoFrame
+  vueCode={`<CfAccordion :items="items" variant="bordered" />
+<CfAccordion :items="items" variant="flush" />
+<CfAccordion :items="items" variant="separated" />`}
+  reactCode={`<CfAccordion items={items} variant="bordered" />
+<CfAccordion items={items} variant="flush" />
+<CfAccordion items={items} variant="separated" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Multiple panels
+
+`mode="multiple"` allows several panels to be open at once — `modelValue` / `defaultOpen` becomes a `string[]`. Common in FAQ pages or filter sidebars.
+
+<DemoFrame
+  vueCode={`<CfAccordion
+  :items="items"
+  mode="multiple"
+  variant="separated"
+  :default-open="['q1', 'q3']"
+/>`}
+  reactCode={`<CfAccordion
+  items={items}
+  mode="multiple"
+  variant="separated"
+  defaultValue={['q1', 'q3']}
+/>`}
+>
+  <MultipleVue client:load />
+</DemoFrame>
+
+## Disabled item + default open
+
+Set `item.disabled = true` to make a single panel unclickable. `defaultOpen` (Vue) / `defaultValue` (React) controls the initially expanded item.
+
+<DemoFrame
+  vueCode={`const items = [
+  { value: 'a', title: 'Clickable item', content: 'Expands and collapses normally.' },
+  { value: 'b', title: 'Disabled item — locked', content: 'This item is locked.', disabled: true },
+  { value: 'c', title: 'Clickable item', content: 'Expands and collapses normally.' },
+];
+
+<CfAccordion :items="items" :default-open="'a'" />`}
+  reactCode={`const items = [
+  { value: 'a', title: 'Clickable item', content: 'Expands and collapses normally.' },
+  { value: 'b', title: 'Disabled item — locked', content: 'This item is locked.', disabled: true },
+  { value: 'c', title: 'Clickable item', content: 'Expands and collapses normally.' },
+];
+
+<CfAccordion items={items} defaultValue="a" />`}
+>
+  <DisabledVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `Array<{ value, title, content?, disabled? }>` | `[]` | Panel list |
+| `mode` | `'single' \| 'multiple'` | `'single'` | Single open vs. multiple open |
+| `variant` | `'bordered' \| 'flush' \| 'separated'` | `'bordered'` | Border style |
+| `modelValue` (Vue) / `value` (React) | `string \| string[]` | — | Controlled current expansion |
+| `defaultOpen` (Vue) / `defaultValue` (React) | `string \| string[]` | — | Uncontrolled initial expansion |
+
+> When `mode="single"` the controlled / uncontrolled value is `string`; when `mode="multiple"` it is `string[]`.

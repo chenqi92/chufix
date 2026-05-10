@@ -5,8 +5,9 @@ interface Props {
   vueCode?: string;
   reactCode?: string;
   cliCode?: string;
+  variant?: 'default' | 'wide' | 'compact';
 }
-const { vueCode, reactCode, cliCode } = Astro.props;
+const { vueCode, reactCode, cliCode, variant = 'default' } = Astro.props;
 
 const codeTabs: Array<{ key: 'vue' | 'react' | 'cli'; label: string; code: string; lang: string }> = [];
 if (vueCode) codeTabs.push({ key: 'vue', label: 'Vue', code: vueCode, lang: 'vue' });
@@ -14,7 +15,7 @@ if (reactCode) codeTabs.push({ key: 'react', label: 'React', code: reactCode, la
 if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bash' });
 ---
 
-<div class="cf-demo" data-demo-frame>
+<div class:list={['cf-demo', variant !== 'default' && `cf-demo--${variant}`]} data-demo-frame>
   <div class="cf-demo__preview">
     <div class="cf-demo__pane-content">
       <slot />

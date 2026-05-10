@@ -1,0 +1,54 @@
+---
+title: Detached panel
+description: Draggable floating panel teleported to body. Use with TearOffTab / DockLayout's detach action.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/detachedpanel/BasicVue.vue';
+
+## Basic usage
+
+Hold the header to drag it; `resizable` enables the browser-native resize handle. To turn it into a separate window in Tauri / Electron, just spawn a new BrowserWindow / WebView in the
+`tear-off` event.
+
+<DemoFrame
+  vueCode={`<CfDetachedPanel v-model:open="open" title="Inspector" :width="320">
+  <div>Panel content…</div>
+</CfDetachedPanel>`}
+  reactCode={`<CfDetachedPanel open={open} onOpenChange={setOpen} title="Inspector" width={320}>
+  <div>Panel content…</div>
+</CfDetachedPanel>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Multiple panels
+
+Multiple DetachedPanels can be open simultaneously; layer them explicitly via `zIndex`. `resizable=true` enables the browser-native resize handle.
+
+import MultipleVue from '~/components/demos/detachedpanel/MultipleVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDetachedPanel v-model:open="a" :width="280" />
+<CfDetachedPanel v-model:open="b" resizable />`}
+  reactCode={`<CfDetachedPanel open={a} onOpenChange={setA} width={280} />
+<CfDetachedPanel open={b} onOpenChange={setB} resizable />`}
+>
+  <MultipleVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` / `v-model:open` | `boolean` | `false` | |
+| `title` | `string` | — | Header title |
+| `x` / `y` | `number` | auto | Initial position |
+| `width` / `height` | `number \| string` | `360 / 240` | |
+| `resizable` | `boolean` | `false` | Enable native resize handle |
+| `closable` | `boolean` | `true` | |
+| `to` | `string` | `'body'` | Teleport target |
+| `zIndex` | `number` | — | |
+
+Events: `update:open` / `move(x, y)`.

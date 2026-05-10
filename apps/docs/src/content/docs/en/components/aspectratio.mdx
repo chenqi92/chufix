@@ -1,0 +1,74 @@
+---
+title: AspectRatio
+description: Container that locks its child to a fixed aspect ratio (via CSS aspect-ratio) — handy for image, video, or iframe placeholders.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/aspectratio/BasicVue.vue';
+import RatiosVue from '~/components/demos/aspectratio/RatiosVue.vue';
+import ImageVue from '~/components/demos/aspectratio/ImageVue.vue';
+
+## Basic usage
+
+`ratio` is a number (width / height). Width follows the parent element; height is computed via CSS `aspect-ratio`.
+
+<DemoFrame
+  vueCode={`<CfAspectRatio :ratio="16 / 9">
+  <div>16 / 9 content</div>
+</CfAspectRatio>`}
+  reactCode={`<CfAspectRatio ratio={16 / 9}>
+  <div>16 / 9 content</div>
+</CfAspectRatio>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Common ratios
+
+A visual reference for video, card thumbnails, portrait avatars, vertical video, and so on.
+
+<DemoFrame
+  vueCode={`<CfAspectRatio :ratio="21 / 9">…</CfAspectRatio>
+<CfAspectRatio :ratio="16 / 9">…</CfAspectRatio>
+<CfAspectRatio :ratio="4 / 3">…</CfAspectRatio>
+<CfAspectRatio :ratio="1">…</CfAspectRatio>
+<CfAspectRatio :ratio="3 / 4">…</CfAspectRatio>
+<CfAspectRatio :ratio="9 / 16">…</CfAspectRatio>`}
+  reactCode={`<CfAspectRatio ratio={21 / 9}>…</CfAspectRatio>
+<CfAspectRatio ratio={16 / 9}>…</CfAspectRatio>
+<CfAspectRatio ratio={4 / 3}>…</CfAspectRatio>
+<CfAspectRatio ratio={1}>…</CfAspectRatio>
+<CfAspectRatio ratio={3 / 4}>…</CfAspectRatio>
+<CfAspectRatio ratio={9 / 16}>…</CfAspectRatio>`}
+>
+  <RatiosVue client:load />
+</DemoFrame>
+
+## Children fill automatically
+
+Child nodes are stretched with `position: absolute; inset: 0`. Common `<img>` / `<video>` / `<iframe>` elements default to `width: 100%; height: 100%; object-fit: cover` — works out of the box.
+
+<DemoFrame
+  vueCode={`<CfAspectRatio :ratio="16 / 9">
+  <img src="cover.jpg" alt="Cover" />
+</CfAspectRatio>
+
+<CfAspectRatio :ratio="16 / 9">
+  <iframe src="https://www.youtube.com/embed/..." allowfullscreen />
+</CfAspectRatio>`}
+  reactCode={`<CfAspectRatio ratio={16 / 9}>
+  <img src="cover.jpg" alt="Cover" />
+</CfAspectRatio>
+
+<CfAspectRatio ratio={16 / 9}>
+  <iframe src="https://www.youtube.com/embed/..." allowFullScreen />
+</CfAspectRatio>`}
+>
+  <ImageVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `ratio` | `number` | `16 / 9` | Width / height ratio. Common values: `21/9` `16/9` `4/3` `1` `3/4` `9/16` |

@@ -1,0 +1,60 @@
+---
+title: ColorSwatch
+description: A single color sample, commonly used inside palettes — supports a selected ring and an "add" button variant.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/colorswatch/BasicVue.vue';
+
+## Basic usage
+
+Any CSS color (including tokens like `var(--accent-1)`). `selected` shows a selection ring; `add` switches to a dashed + plus-icon placeholder.
+
+<DemoFrame
+  vueCode={`<CfColorSwatch color="var(--accent-1)" :selected="true" />
+<CfColorSwatch color="var(--status-success)" />
+<CfColorSwatch color="#dc3545" />
+<CfColorSwatch add label="Add color" />`}
+  reactCode={`<CfColorSwatch color="var(--accent-1)" selected />
+<CfColorSwatch color="var(--status-success)" />
+<CfColorSwatch color="#dc3545" />
+<CfColorSwatch add label="Add color" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Size / shape / state
+
+3 sizes, square / round shapes, with selectable and disabled states.
+
+import SizesVue from '~/components/demos/colorswatch/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfColorSwatch size="sm" color="var(--accent-1)" />
+<CfColorSwatch size="md" color="var(--accent-1)" />
+<CfColorSwatch size="lg" color="var(--accent-1)" />
+<CfColorSwatch shape="round" color="var(--accent-1)" />
+<CfColorSwatch :selected="true" color="var(--accent-1)" />
+<CfColorSwatch disabled color="var(--accent-1)" />`}
+  reactCode={`<CfColorSwatch size="sm" color="var(--accent-1)" />
+<CfColorSwatch size="md" color="var(--accent-1)" />
+<CfColorSwatch size="lg" color="var(--accent-1)" />
+<CfColorSwatch shape="round" color="var(--accent-1)" />
+<CfColorSwatch selected color="var(--accent-1)" />
+<CfColorSwatch disabled color="var(--accent-1)" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `color` | `string` | — | Any CSS color or token |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 18 / 24 / 32 px |
+| `shape` | `'square' \| 'round'` | `'square'` | |
+| `selected` | `boolean` | `false` | Selection ring |
+| `add` | `boolean` | `false` | Add-placeholder (dashed + plus) |
+| `disabled` | `boolean` | `false` | |
+| `label` | `string` | — | Custom aria-label |

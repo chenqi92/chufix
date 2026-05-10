@@ -1,0 +1,155 @@
+---
+title: Drawer
+description: Edge-anchored Modal variant — slides in from any side with built-in portal, focus trap, scroll lock, and Esc-to-close.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/drawer/BasicVue.vue';
+import PlacementVue from '~/components/demos/drawer/PlacementVue.vue';
+import SizesVue from '~/components/demos/drawer/SizesVue.vue';
+import NoCloseVue from '~/components/demos/drawer/NoCloseVue.vue';
+
+## Basic usage
+
+`v-model:open` (Vue) / `open + onOpenChange` (React) for two-way binding. Drawer shares Modal's portal, focus trap, body scroll lock, and Esc-to-close infrastructure.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfButton, CfDrawer } from '@chufix-design/vue';
+
+const open = ref(false);
+</script>
+
+<template>
+  <CfButton @click="open = true">Open drawer</CfButton>
+  <CfDrawer v-model:open="open" title="Basic drawer">
+    <p>Slides in from the right. Press Esc or click the overlay to close.</p>
+    <template #footer>
+      <CfButton variant="ghost" @click="open = false">Cancel</CfButton>
+      <CfButton @click="open = false">OK</CfButton>
+    </template>
+  </CfDrawer>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfButton, CfDrawer } from '@chufix-design/react';
+
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <CfButton onClick={() => setOpen(true)}>Open drawer</CfButton>
+      <CfDrawer
+        open={open}
+        onOpenChange={setOpen}
+        title="Basic drawer"
+        footer={
+          <>
+            <CfButton variant="ghost" onClick={() => setOpen(false)}>Cancel</CfButton>
+            <CfButton onClick={() => setOpen(false)}>OK</CfButton>
+          </>
+        }
+      >
+        <p>Slides in from the right.</p>
+      </CfDrawer>
+    </>
+  );
+}`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Four placements
+
+`placement` decides which side the drawer slides in from — right (default, the most common detail sidebar), left (mobile navigation), top, or bottom (transient action panel, IME-style).
+
+<DemoFrame
+  vueCode={`<CfDrawer v-model:open="right" title="Right drawer" placement="right" />
+<CfDrawer v-model:open="left" title="Left drawer" placement="left" />
+<CfDrawer v-model:open="top" title="Top drawer" placement="top" />
+<CfDrawer v-model:open="bottom" title="Bottom drawer" placement="bottom" />`}
+  reactCode={`<CfDrawer open={right} onOpenChange={setRight} title="Right drawer" placement="right" />
+<CfDrawer open={left} onOpenChange={setLeft} title="Left drawer" placement="left" />
+<CfDrawer open={top} onOpenChange={setTop} title="Top drawer" placement="top" />
+<CfDrawer open={bottom} onOpenChange={setBottom} title="Bottom drawer" placement="bottom" />`}
+>
+  <PlacementVue client:only="vue" />
+</DemoFrame>
+
+## Five sizes
+
+`size` controls the drawer's width (left/right placement) or height (top/bottom placement) — `sm`, `md` (default), `lg`, `xl`, or `full` (full screen).
+
+<DemoFrame
+  vueCode={`<CfDrawer v-model:open="sm" title="size = sm" size="sm" />
+<CfDrawer v-model:open="md" title="size = md" size="md" />
+<CfDrawer v-model:open="lg" title="size = lg" size="lg" />
+<CfDrawer v-model:open="xl" title="size = xl" size="xl" />
+<CfDrawer v-model:open="full" title="size = full" size="full" />`}
+  reactCode={`<CfDrawer open={sm} onOpenChange={setSm} title="size = sm" size="sm" />
+<CfDrawer open={md} onOpenChange={setMd} title="size = md" size="md" />
+<CfDrawer open={lg} onOpenChange={setLg} title="size = lg" size="lg" />
+<CfDrawer open={xl} onOpenChange={setXl} title="size = xl" size="xl" />
+<CfDrawer open={full} onOpenChange={setFull} title="size = full" size="full" />`}
+>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
+## Lock the close paths
+
+For forms and long flows you sometimes don't want accidental dismissal. Set all three switches to `false` so the user must explicitly submit or cancel via the footer buttons:
+
+- `closeOnOverlay={false}` — clicking the overlay won't close
+- `closeOnEsc={false}` — Esc won't close
+- `showClose={false}` — hide the top-right close button
+
+<DemoFrame
+  vueCode={`<CfDrawer
+  v-model:open="open"
+  title="Form in progress"
+  :close-on-overlay="false"
+  :close-on-esc="false"
+  :show-close="false"
+>
+  <template #footer>
+    <CfButton variant="ghost" @click="open = false">Cancel</CfButton>
+    <CfButton @click="open = false">Submit</CfButton>
+  </template>
+</CfDrawer>`}
+  reactCode={`<CfDrawer
+  open={open}
+  onOpenChange={setOpen}
+  title="Form in progress"
+  closeOnOverlay={false}
+  closeOnEsc={false}
+  showClose={false}
+  footer={
+    <>
+      <CfButton variant="ghost" onClick={() => setOpen(false)}>Cancel</CfButton>
+      <CfButton onClick={() => setOpen(false)}>Submit</CfButton>
+    </>
+  }
+/>`}
+>
+  <NoCloseVue client:only="vue" />
+</DemoFrame>
+
+## API · Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | `false` | Whether the drawer is open. Vue uses `v-model:open`; React uses `open + onOpenChange` |
+| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Slide-in direction |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Width for left/right, height for top/bottom |
+| `title` | `string` | `—` | Title text, equivalent to the named slot `header` |
+| `closeOnOverlay` | `boolean` | `true` | Close on overlay click |
+| `closeOnEsc` | `boolean` | `true` | Close on Esc |
+| `showClose` | `boolean` | `true` | Top-right close button |
+
+## API · Slots / children
+
+| Name | Description |
+|---|---|
+| `default` | Drawer body content |
+| `header` | Custom header area; overrides `title` |
+| `footer` | Footer action area, typically Cancel / OK buttons |

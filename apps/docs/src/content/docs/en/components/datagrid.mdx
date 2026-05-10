@@ -1,0 +1,147 @@
+---
+title: Data grid
+description: Heavy-duty table with column resize, double-click cell editing, and a sticky header. Built for back-office and data-maintenance workflows.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/datagrid/BasicVue.vue';
+import ResizeVue from '~/components/demos/datagrid/ResizeVue.vue';
+import EditVue from '~/components/demos/datagrid/EditVue.vue';
+import StickyVue from '~/components/demos/datagrid/StickyVue.vue';
+
+## Basic usage
+
+`CfDataGrid` extends [Table](/components/table/)'s column definition with column resizing, cell editing, and a sticky header. The minimal form — configure `columns` + `rows` + `rowKey` — is identical to Table.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDataGrid, type DataGridColumn } from '@chufix-design/vue';
+
+interface Row { id: string; name: string; role: string; level: number; }
+
+const rows = ref<Row[]>([
+  { id: '1', name: 'Alice Chen', role: 'Frontend', level: 3 },
+  // ...
+]);
+const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60, sortable: true },
+  { key: 'name', title: 'Name', width: 140, sortable: true },
+  { key: 'role', title: 'Role', width: 100 },
+  { key: 'level', title: 'Level', width: 80, align: 'right', sortable: true },
+];
+</script>
+
+<template>
+  <CfDataGrid :columns="columns" :rows="rows" row-key="id" />
+</template>`}
+  reactCode={`import { CfDataGrid, type DataGridColumn } from '@chufix-design/react';
+
+interface Row { id: string; name: string; role: string; level: number; }
+const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60, sortable: true },
+  { key: 'name', title: 'Name', width: 140, sortable: true },
+  { key: 'role', title: 'Role', width: 100 },
+  { key: 'level', title: 'Level', width: 80, align: 'right', sortable: true },
+];
+
+<CfDataGrid columns={columns} rows={rows} rowKey="id" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Column resize
+
+Set `resizable: true` on a column to let users drag its right edge to change the width. `minWidth` caps the lower bound so a column can't be dragged out of sight. Each release fires the `columnResize(col, width)` event, which you can use to persist the user's column-width preferences.
+
+<DemoFrame
+  vueCode={`const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60 },
+  { key: 'name', title: 'Name', width: 140, resizable: true, minWidth: 80 },
+  { key: 'email', title: 'Email', width: 220, resizable: true, minWidth: 120 },
+  { key: 'role', title: 'Role', width: 100, resizable: true },
+];
+
+<CfDataGrid :columns="columns" :rows="rows" row-key="id" />`}
+  reactCode={`const columns: DataGridColumn<Row>[] = [
+  { key: 'id', title: 'ID', width: 60 },
+  { key: 'name', title: 'Name', width: 140, resizable: true, minWidth: 80 },
+  { key: 'email', title: 'Email', width: 220, resizable: true, minWidth: 120 },
+  { key: 'role', title: 'Role', width: 100, resizable: true },
+];
+
+<CfDataGrid columns={columns} rows={rows} rowKey="id" />`}
+>
+  <ResizeVue client:load />
+</DemoFrame>
+
+## Cell editing
+
+Set `editable: true` on a column to enable double-click-to-edit inline mode. Enter commits and fires `cellEdit(edit)`; Esc cancels. The callback receives `{ row, column, value }` so you can write the change back to the data source.
+
+<DemoFrame
+  vueCode={`function onEdit(edit: DataGridCellEdit<Row>) {
+  const target = rows.value.find((r) => r.id === edit.row.id);
+  if (!target) return;
+  const key = edit.column.dataIndex ?? edit.column.key;
+  (target as any)[key] = key === 'level' ? Number(edit.value) : edit.value;
+}
+
+<CfDataGrid :columns="columns" :rows="rows" row-key="id" @cell-edit="onEdit" />`}
+  reactCode={`function onEdit(edit: DataGridCellEdit<Row>) {
+  setRows((arr) =>
+    arr.map((r) =>
+      r.id === edit.row.id
+        ? { ...r, [edit.column.dataIndex ?? edit.column.key]: edit.value }
+        : r,
+    ),
+  );
+}
+
+<CfDataGrid columns={columns} rows={rows} rowKey="id" onCellEdit={onEdit} />`}
+>
+  <EditVue client:load />
+</DemoFrame>
+
+## Bounded height with sticky header
+
+Pass `maxHeight` to enable vertical scrolling — the header sticks to the top of the container. Combined with `selectable="multiple"`, this works well for browsing large datasets.
+
+<DemoFrame
+  vueCode={`<CfDataGrid
+  :columns="columns"
+  :rows="rows"
+  row-key="id"
+  :max-height="280"
+  selectable="multiple"
+/>`}
+  reactCode={`<CfDataGrid
+  columns={columns}
+  rows={rows}
+  rowKey="id"
+  maxHeight={280}
+  selectable="multiple"
+/>`}
+>
+  <StickyVue client:load />
+</DemoFrame>
+
+## API · DataGrid
+
+Inherits all column props from [Table](/components/table/) (`title` / `width` / `align` / `sortable` / `dataIndex`, etc.) and adds:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `maxHeight` | `number \| string` | `—` | Container max height; enables sticky thead and vertical scroll |
+| `onCellEdit` (React) / `cell-edit` (Vue) | `(edit) => void` | `—` | Cell edit commit callback |
+| `onColumnResize` / `column-resize` | `(col, width) => void` | `—` | Column-width change callback |
+
+`DataGridColumn` adds to `TableColumn`:
+
+| Prop | Type | Description |
+|---|---|---|
+| `resizable` | `boolean` | Whether the column can be drag-resized |
+| `minWidth` | `number` | Minimum drag width |
+| `editable` | `boolean` | Whether to enable double-click inline editing |
+
+> The current version does not bundle virtual scroll or column drag-reordering. For datasets larger than 1000 rows, paginate or slice in the layer above and feed the slice into `rows`.

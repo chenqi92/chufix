@@ -120,6 +120,7 @@ import './styles/timerangepicker.css';
 import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
+import './styles/map.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -949,6 +950,20 @@ export type { TourProps, TourStep, TourPlacement } from './tour/variants';
 
 export { default as CfQRCode } from './qrcode/QRCode.vue';
 export type { QRCodeProps, QrEcc } from './qrcode/variants';
+
+export { default as CfMap } from './map/Map.vue';
+export type {
+  MapProps,
+  MapCoord,
+  MapMarker,
+  MapOverlay,
+  MapRoute,
+  MapViewport,
+  MapMarkerEvent,
+  MapOverlayEvent,
+  MapCanvasEvent,
+  MapTone,
+} from './map/variants';
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {

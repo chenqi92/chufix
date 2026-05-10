@@ -1,0 +1,113 @@
+---
+title: Popover
+description: An interactive variant of Tooltip — hosts arbitrary rich content, forms, and buttons; auto-flips near screen edges.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/popover/BasicVue.vue';
+import TriggersVue from '~/components/demos/popover/TriggersVue.vue';
+import PlacementVue from '~/components/demos/popover/PlacementVue.vue';
+import WidthVue from '~/components/demos/popover/WidthVue.vue';
+
+## Basic usage
+
+Unlike Tooltip, Popover supports any interactive content (inputs, buttons, lists). Click outside or press Esc to close; hovering into the popover does not close it.
+
+<DemoFrame
+  vueCode={`<CfPopover placement="bottom">
+  <CfButton variant="secondary">Click to expand</CfButton>
+  <template #content>
+    <strong>Quick actions</strong>
+    <CfInput placeholder="Search…" size="sm" />
+    <CfButton size="sm">Apply</CfButton>
+  </template>
+</CfPopover>`}
+  reactCode={`<CfPopover
+  placement="bottom"
+  content={
+    <div>
+      <strong>Quick actions</strong>
+      <CfInput placeholder="Search…" size="sm" />
+      <CfButton size="sm">Apply</CfButton>
+    </div>
+  }
+>
+  <CfButton variant="secondary">Click to expand</CfButton>
+</CfPopover>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Triggers
+
+`trigger` controls how the popover opens:
+
+- `click` (default) — click the trigger to open, click again or click outside to close
+- `hover` — opens on hover, closes after a delay when the cursor leaves
+- `manual` — fully controlled by the parent via `open`
+
+<DemoFrame
+  vueCode={`<CfPopover trigger="click"><CfButton>click</CfButton><template #content>…</template></CfPopover>
+<CfPopover trigger="hover"><CfButton>hover</CfButton><template #content>…</template></CfPopover>
+<CfPopover trigger="manual" :open="manualOpen" @update:open="(v) => manualOpen = v">
+  <CfButton @click="manualOpen = !manualOpen">manual</CfButton>
+  <template #content>…</template>
+</CfPopover>`}
+  reactCode={`<CfPopover trigger="click" content={...}><CfButton>click</CfButton></CfPopover>
+<CfPopover trigger="hover" content={...}><CfButton>hover</CfButton></CfPopover>
+<CfPopover trigger="manual" open={open} onOpenChange={setOpen} content={...}>
+  <CfButton onClick={() => setOpen(!open)}>manual</CfButton>
+</CfPopover>`}
+>
+  <TriggersVue client:only="vue" />
+</DemoFrame>
+
+## Four placements
+
+`placement` — `top` / `bottom` (default) / `left` / `right`. Auto-flips to the opposite side when there isn't enough room.
+
+<DemoFrame
+  vueCode={`<CfPopover placement="top">…</CfPopover>
+<CfPopover placement="bottom">…</CfPopover>
+<CfPopover placement="left">…</CfPopover>
+<CfPopover placement="right">…</CfPopover>`}
+  reactCode={`<CfPopover placement="top">…</CfPopover>
+<CfPopover placement="bottom">…</CfPopover>
+<CfPopover placement="left">…</CfPopover>
+<CfPopover placement="right">…</CfPopover>`}
+>
+  <PlacementVue client:only="vue" />
+</DemoFrame>
+
+## Fixed width
+
+`width` gives the popover a fixed width (number or CSS string); omit to size to content. Useful for multi-column content or precise layout.
+
+<DemoFrame
+  vueCode={`<CfPopover placement="bottom"><CfButton>Auto</CfButton></CfPopover>
+<CfPopover placement="bottom" :width="320"><CfButton>Fixed 320</CfButton></CfPopover>`}
+  reactCode={`<CfPopover placement="bottom" content={...}><CfButton>Auto</CfButton></CfPopover>
+<CfPopover placement="bottom" width={320} content={...}><CfButton>Fixed 320</CfButton></CfPopover>`}
+>
+  <WidthVue client:only="vue" />
+</DemoFrame>
+
+## API · Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | `—` | Used in controlled mode together with `update:open` / `onOpenChange` |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Preferred placement; auto-flips when there isn't enough room |
+| `trigger` | `'click' \| 'hover' \| 'manual'` | `'click'` | Trigger mode |
+| `offset` | `number` | `8` | Gap to the trigger element (px) |
+| `closeOnOutside` | `boolean` | `true` | Close on outside click (ignored when `manual`) |
+| `closeOnEsc` | `boolean` | `true` | Close on Esc |
+| `width` | `number \| string` | `—` | Fixed width; omit to size to content |
+| `disabled` | `boolean` | `false` | Disable the trigger |
+
+## API · Slots / children
+
+| Name | Description |
+|---|---|
+| `default` (children) | Trigger element |
+| `content` | Popover panel content (React uses the `content` prop) |

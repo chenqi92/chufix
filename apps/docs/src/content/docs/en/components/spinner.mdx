@@ -1,0 +1,78 @@
+---
+title: Spinner
+description: Spinning ring loader — 3 sizes × 6 tones, with an optional text label that doubles as aria-label.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/spinner/BasicVue.vue';
+import SizesVue from '~/components/demos/spinner/SizesVue.vue';
+import TonesVue from '~/components/demos/spinner/TonesVue.vue';
+import LabelVue from '~/components/demos/spinner/LabelVue.vue';
+
+## Basic usage
+
+With no props, renders the default size and primary color.
+
+<DemoFrame
+  vueCode={`<CfSpinner />`}
+  reactCode={`<CfSpinner />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` — `sm` for inline text, `md` default, `lg` for modal-level loading hints.
+
+<DemoFrame
+  vueCode={`<CfSpinner size="sm" />
+<CfSpinner size="md" />
+<CfSpinner size="lg" />`}
+  reactCode={`<CfSpinner size="sm" />
+<CfSpinner size="md" />
+<CfSpinner size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Six tones
+
+`tone` controls the stroke color — `primary` (default) / `success` / `warning` / `danger` / `info` / `neutral`. Semantically aligned with `--accent-*` / `--status-*` / `--fg-*` tokens.
+
+<DemoFrame
+  vueCode={`<CfSpinner tone="primary" />
+<CfSpinner tone="success" />
+<CfSpinner tone="warning" />
+<CfSpinner tone="danger" />
+<CfSpinner tone="info" />
+<CfSpinner tone="neutral" />`}
+  reactCode={`<CfSpinner tone="primary" />
+<CfSpinner tone="success" />
+<CfSpinner tone="warning" />
+<CfSpinner tone="danger" />
+<CfSpinner tone="info" />
+<CfSpinner tone="neutral" />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## Text label
+
+`label` adds readable text to the right and is also set as `aria-label` for screen readers.
+
+<DemoFrame
+  vueCode={`<CfSpinner label="Loading…" />
+<CfSpinner size="lg" tone="success" label="Saving" />`}
+  reactCode={`<CfSpinner label="Loading…" />
+<CfSpinner size="lg" tone="success" label="Saving" />`}
+>
+  <LabelVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `tone` | `'primary' \| 'success' \| 'warning' \| 'danger' \| 'info' \| 'neutral'` | `'primary'` | Color |
+| `label` | `string` | — | Text label + aria-label |

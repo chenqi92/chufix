@@ -1,0 +1,89 @@
+---
+title: List
+description: General-purpose list with single / multi selection, grouping, card style, and custom render.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/list/BasicVue.vue';
+import GroupedVue from '~/components/demos/list/GroupedVue.vue';
+import CardVue from '~/components/demos/list/CardVue.vue';
+
+## Single select
+
+`selectable="single"` turns the list into a single-select control; `v-model` binds a `string`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfList, type ListItem } from '@chufix-design/vue';
+
+const value = ref<string | null>('alice');
+const items: ListItem[] = [
+  { key: 'alice', label: 'Alice Chen', description: 'Frontend engineer · Shanghai' },
+  { key: 'bob',   label: 'Bob Wang',   description: 'Backend engineer · Beijing' },
+  { key: 'carol', label: 'Carol Liu',  description: 'Designer · Shenzhen', disabled: true },
+  { key: 'dave',  label: 'Dave Zhang', description: 'Product manager · Hangzhou' },
+];
+</script>
+
+<template>
+  <CfList v-model="value" selectable="single" :items="items" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfList, type ListItem } from '@chufix-design/react';
+
+const items: ListItem[] = [/* ... */];
+
+export default function Demo() {
+  const [value, setValue] = useState<string>('alice');
+  return (
+    <CfList
+      value={value}
+      selectable="single"
+      items={items}
+      onChange={(v) => setValue(v as string)}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Multi select with grouping
+
+Each `ListItem` can declare a `group`; items sharing a group are clustered together with a group title. With `selectable="multiple"`, `v-model` binds `string[]`.
+
+<DemoFrame
+  vueCode={`<CfList v-model="value" selectable="multiple" :items="items" />`}
+  reactCode={`<CfList value={value} selectable="multiple" items={items} onChange={setValue as any} />`}
+>
+  <GroupedVue client:load />
+</DemoFrame>
+
+## Card style
+
+`variant="card"` renders each item as its own card with built-in spacing and corners — ideal for individual entries like orders or notifications.
+
+<DemoFrame
+  vueCode={`<CfList :items="items" variant="card" :bordered="false" />`}
+  reactCode={`<CfList items={items} variant="card" bordered={false} />`}
+>
+  <CardVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `ListItem[]` | `[]` | Data array |
+| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | `null` | Selected item(s); type depends on `selectable` |
+| `selectable` | `'single' \| 'multiple' \| undefined` | `—` | Selection mode; omit for no selection |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `variant` | `'default' \| 'divided' \| 'card'` | `'default'` | Visual mode |
+| `bordered` | `boolean` | `true` | Outer border |
+| `hoverable` | `boolean` | `true` | Highlight on hover |
+| `emptyText` | `string \| ReactNode` | `'No data'` | Empty state text |
+
+`ListItem`: `{ key, label?, description?, leading?, trailing?, disabled?, group?, ...extra }`.
+Events: `update:modelValue` / `select` (React: `onChange` / `onSelect`).
+Slots: default slot (Vue) or `renderItem` (React) can fully override row rendering.

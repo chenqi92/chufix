@@ -1,0 +1,92 @@
+---
+title: Date range picker
+description: Side-by-side two-month panel; two clicks confirm the range. Supports hover preview, min/max/disabledDate, and last 7/30/90 day presets.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/daterangepicker/BasicVue.vue';
+import BoundsVue from '~/components/demos/daterangepicker/BoundsVue.vue';
+import VariantsVue from '~/components/demos/daterangepicker/VariantsVue.vue';
+import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vue';
+
+## Basic usage
+
+`v-model` binds a `[start, end]` tuple where each element is a `'YYYY-MM-DD'` string or `null`. The first click sets the start; hovering over the target day previews a highlight, and a second click confirms the end. If the second click is earlier than the first, they are swapped automatically.
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker v-model="value" clearable />`}
+  reactCode={`<CfDateRangePicker value={value} onChange={setValue} clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Bounds and quick presets
+
+`minDate` / `maxDate` work like in DatePicker; `disabledDate` is also supported. The panel includes built-in "last 7 / 30 / 90 days" shortcut buttons at the bottom — clicking one applies the range and closes the panel.
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker
+  v-model="value"
+  min-date="2026-01-01"
+  max-date="2026-12-31"
+  clearable
+  :placeholder="['Start', 'End']"
+/>`}
+  reactCode={`<CfDateRangePicker
+  value={value}
+  minDate="2026-01-01"
+  maxDate="2026-12-31"
+  clearable
+  placeholder={['Start', 'End']}
+  onChange={(v) => setValue(v)}
+/>`}
+>
+  <BoundsVue client:load />
+</DemoFrame>
+
+## Three trigger variants
+
+`variant` controls the trigger input's visual style — `outline` (default, with border), `filled` (solid), or `ghost` (transparent, border on hover).
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker v-model="a" variant="outline" />
+<CfDateRangePicker v-model="b" variant="filled" />
+<CfDateRangePicker v-model="c" variant="ghost" />`}
+  reactCode={`<CfDateRangePicker value={a} onChange={setA} variant="outline" />
+<CfDateRangePicker value={b} onChange={setB} variant="filled" />
+<CfDateRangePicker value={c} onChange={setC} variant="ghost" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Custom placeholder and separator
+
+`placeholder` is a `[startPlaceholder, endPlaceholder]` tuple. `separator` controls the connector word between start and end (default "to").
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker v-model="a" :placeholder="['Start date', 'End date']" separator="to" />
+<CfDateRangePicker v-model="b" :placeholder="['Start', 'End']" separator="—" />`}
+  reactCode={`<CfDateRangePicker value={a} placeholder={['Start date', 'End date']} separator="to" />
+<CfDateRangePicker value={b} placeholder={['Start', 'End']} separator="—" />`}
+>
+  <PlaceholderVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `[string \| null, string \| null]` | `[null, null]` | Start/end date tuple |
+| `format` | `string` | `'YYYY-MM-DD'` | Display format |
+| `placeholder` | `[string, string]` | `['Start date', 'End date']` | Start/end placeholders |
+| `separator` | `string` | `'to'` | Connector word between start and end |
+| `variant` | `'outline' \| 'filled' \| 'ghost'` | `'outline'` | Trigger visual variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `disabled` | `boolean` | `false` | Disabled |
+| `clearable` | `boolean` | `false` | Show clear button |
+| `error` | `boolean` | `false` | Error state |
+| `minDate` / `maxDate` | `DateLike` | `—` | Selectable range |
+| `disabledDate` | `(date: Date) => boolean` | `—` | Custom disable rule |
+| `weekStartsOn` | `0 \| 1` | `1` | 0 = Sunday-first, 1 = Monday-first |
+
+Events: `update:modelValue` / `change(start, end)` (React: `onChange(value, start, end)`).

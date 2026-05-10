@@ -1,0 +1,56 @@
+---
+title: Dock layout
+description: Recursive split + tabbed-pane shell for desktop application layouts. v1 is declarative; v2 will add drag-to-rearrange.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/docklayout/BasicVue.vue';
+
+## Basic usage
+
+The layout is declared as a tree of `DockGroup` nodes: each group either has `children` (further splits) or `panels` (a tabbed area).
+Content is provided through the named slot `panel-{id}` (Vue) / `slots["panel-{id}"]` (React).
+
+<DemoFrame
+  vueCode={`<CfDockLayout :layout="layout">
+  <template #panel-orders>… orders.ts content …</template>
+  <template #panel-login>… login.ts content …</template>
+  <template #panel-terminal>… terminal content …</template>
+</CfDockLayout>`}
+  reactCode={`<CfDockLayout layout={layout} slots={{
+  'panel-orders': <pre>orders.ts</pre>,
+  'panel-login': <pre>login.ts</pre>,
+  'panel-terminal': <Terminal />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Minimal layout (no nesting)
+
+A single group with multiple panels = a plain tabbed view, equivalent to `CfTabs`. If you only need tab switching, use `CfTabs` directly — it's lighter.
+
+import MinimalVue from '~/components/demos/docklayout/MinimalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDockLayout :layout="{ id: 'r', orientation: 'vertical', panels: [...] }" />`}
+  reactCode={`<CfDockLayout layout={{ id: "r", orientation: "vertical", panels: [...] }} />`}
+>
+  <MinimalVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `layout` | `DockGroup` | — | Layout description tree |
+| `active` | `Record<groupId, panelId>` | `{}` | Active tab id per group |
+
+`DockGroup`: `{ id, orientation: 'horizontal' \| 'vertical', children?: DockGroup[], panels?: DockPanel[], size? }`
+
+`DockPanel`: `{ id, title, contentKey?, closable?, detachable?, size?, collapsed? }`
+
+Events: `active-change(groupId, panelId)` / `panel-close(...)` / `panel-detach(...)`.
+
+> v1 limitations: splitter resize and drag-to-rearrange are not yet supported; planned for v2.

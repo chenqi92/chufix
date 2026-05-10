@@ -1,0 +1,34 @@
+---
+title: Carousel
+description: Horizontal carousel for images or custom content, with autoplay, looping, indicators, and prev/next controls.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/carousel/BasicVue.vue';
+
+## Basic usage
+
+`items` accepts an `{ src, alt }` list to render images; `autoplay` plus `interval` advances slides automatically and pauses on hover.
+
+<DemoFrame
+  vueCode={`<CfCarousel :items="items" autoplay :interval="3000" />`}
+  reactCode={`<CfCarousel items={items} autoplay interval={3000} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `CarouselItem[]` | `—` | Carousel item list |
+| `value` / `modelValue` | `number` | `—` | Controlled current index |
+| `defaultValue` | `number` | `0` | Uncontrolled initial index |
+| `autoplay` | `boolean` | `false` | Autoplay |
+| `interval` | `number` | `4000` | Autoplay interval (ms) |
+| `loop` | `boolean` | `true` | Loop playback |
+| `controls` | `boolean` | `true` | Show prev/next buttons |
+| `indicators` | `boolean` | `true` | Show bottom indicators |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Viewport height tier |
+
+Events: `onChange(index)` — fires when the current index changes.

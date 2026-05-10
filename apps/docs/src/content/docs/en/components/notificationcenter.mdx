@@ -1,0 +1,55 @@
+---
+title: NotificationCenter
+description: Notification history panel with unread count, mark-all-read, and clear controls.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/notificationcenter/BasicVue.vue';
+
+## Basic usage
+
+Each notification is structured data: `{ id, title, description?, tone?, timestamp?, read?, actionLabel? }`.
+Unread items show a colored dot on the left.
+
+<DemoFrame
+  vueCode={`<CfNotificationCenter
+  :items="items"
+  @item-action="onAction"
+  @mark-all-read="markAllRead"
+  @clear-all="clearAll"
+/>`}
+  reactCode={`<CfNotificationCenter
+  items={items}
+  onItemAction={onAction}
+  onMarkAllRead={markAllRead}
+  onClearAll={clearAll}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Empty state
+
+When `items: []`, `emptyText` is shown; replace with custom copy as needed.
+
+import EmptyVue from '~/components/demos/notificationcenter/EmptyVue.vue';
+
+<DemoFrame
+  vueCode={`<CfNotificationCenter :items="[]" empty-text="You're all caught up" />`}
+  reactCode={`<CfNotificationCenter items={[]} emptyText="You're all caught up" />`}
+>
+  <EmptyVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `NotificationItem[]` | — | |
+| `open` | `boolean` | `true` | Visibility |
+| `showMarkAllRead` / `showClearAll` | `boolean` | `true` | |
+| `emptyText` | `string` | `'No notifications'` | |
+| `maxHeight` | `number \| string` | `480` | Scroll area height |
+
+Events: `item-click` / `item-action` / `mark-all-read` / `clear-all` / `close`.

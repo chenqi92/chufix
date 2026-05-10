@@ -1,0 +1,29 @@
+---
+title: Countdown
+description: Counts down to a target timestamp. Supports format strings with DD/HH/mm/ss/SSS placeholders.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/countdown/BasicVue.vue';
+
+## Basic usage
+
+`target` accepts a timestamp (ms), a `Date`, or any string parseable by `Date.parse`. `format` controls the display style; `onFinish` fires when it hits zero.
+
+<DemoFrame
+  vueCode={`<CfCountDown :target="target" format="HH:mm:ss" size="lg" @finish="onDone" />`}
+  reactCode={`<CfCountDown target={target} format="HH:mm:ss" size="lg" onFinish={onDone} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `target` | `number \| Date \| string` | `—` | Target time; counter resets to zero when reached |
+| `format` | `string` | `'HH:mm:ss'` | Tokens: DD HH mm ss SSS |
+| `interval` | `number` | `1000` | Tick interval (ms); set to 100 for 100ms precision |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size tier |
+
+Events: `onFinish()` when reaching zero, `onChange(remaining)` on each tick.

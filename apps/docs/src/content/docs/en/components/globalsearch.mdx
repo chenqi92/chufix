@@ -1,0 +1,55 @@
+---
+title: Global search
+description: Full-screen application-level search overlay with category chips, grouped lists, and path / badge / shortcut display.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/globalsearch/BasicVue.vue';
+
+## Basic usage
+
+Differences from [CommandPalette](/components/commandpalette/): this component is a full-screen overlay (`paddingTop 8vh`) with built-in category filter chips and a three-column title/path/badge layout.
+Use it for "application spotlight" use cases; the command palette is for "Cmd+K command search".
+
+<DemoFrame
+  vueCode={`<CfGlobalSearch
+  :open="open"
+  :results="results"
+  @update:open="setOpen"
+  @select="onSelect"
+/>`}
+  reactCode={`<CfGlobalSearch
+  open={open}
+  onOpenChange={setOpen}
+  results={results}
+  onSelect={onSelect}
+/>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Category filter
+
+18 results across 5 categories. Click a top chip to filter; the chip row is hidden automatically when there is at most one category.
+
+import CategoriesVue from '~/components/demos/globalsearch/CategoriesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfGlobalSearch ... :show-categories="true" />`}
+  reactCode={`<CfGlobalSearch ... showCategories />`}
+>
+  <CategoriesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` / `v-model:open` | `boolean` | — | |
+| `results` | `GlobalSearchResult[]` | — | `{ id, title, description?, category, badge?, path?, shortcut?, keywords?, disabled? }` |
+| `placeholder` / `emptyText` | | | |
+| `showCategories` | `boolean` | `true` | Top category chips |
+| `closeOnSelect` | `boolean` | `true` | |
+
+Keyboard: `up/down` navigate, `enter` select, `Esc` close.

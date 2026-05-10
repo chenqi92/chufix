@@ -1,0 +1,47 @@
+---
+title: Hover card
+description: Long-delay (700ms) rich preview card. Suited to hover previews for usernames, variables, requests, and other rich-info targets.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
+
+## Basic usage
+
+Wrap any trigger element; place the card body in the `content` slot. Delays and placement are configurable.
+
+<DemoFrame
+  vueCode={`<CfHoverCard placement="bottom">
+  <span>@jane.l</span>
+  <template #content>…</template>
+</CfHoverCard>`}
+  reactCode={`<CfHoverCard placement="bottom" trigger={<span>@jane.l</span>}>
+  …
+</CfHoverCard>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Four placements
+
+`top / bottom / left / right` — placement is computed automatically. The demo here uses a 200ms short delay for ease of viewing.
+
+import PlacementsVue from '~/components/demos/hovercard/PlacementsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfHoverCard placement="top">…</CfHoverCard>`}
+  reactCode={`<CfHoverCard placement="top" trigger={…}>…</CfHoverCard>`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Placement |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 220 / 280 / 360 px |
+| `openDelay` | `number` | `700` | Show delay in ms |
+| `closeDelay` | `number` | `200` | Hide delay in ms (avoids flicker) |
+| `disabled` | `boolean` | `false` | |

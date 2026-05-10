@@ -1,0 +1,69 @@
+---
+title: JsonDiff
+description: Line-level LCS diff between two JSON values; tinted by add / del / eq, like git diff.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/jsondiff/BasicVue.vue';
+import NoNumbersVue from '~/components/demos/jsondiff/NoNumbersVue.vue';
+import SizesVue from '~/components/demos/jsondiff/SizesVue.vue';
+
+## Basic usage
+
+`CfJsonDiff` runs `JSON.stringify` on `left` / `right` to produce two multi-line strings, then computes a longest-common-subsequence diff.
+- Added line: green background, `+` prefix
+- Removed line: red background, `-` prefix
+- Common line: transparent background, ` ` prefix
+
+Suited to config version comparison, audit diffs, and API response replay.
+
+<DemoFrame
+  vueCode={`<CfJsonDiff :left="left" :right="right" />`}
+  reactCode={`<CfJsonDiff left={left} right={right} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Hide line numbers
+
+Line numbers are on by default. In embedded docs or comment threads they can be noisy — turn them off and keep just the diff text.
+
+<DemoFrame
+  vueCode={`<CfJsonDiff :left="before" :right="after" :line-numbers="false" />`}
+  reactCode={`<CfJsonDiff left={before} right={after} lineNumbers={false} />`}
+>
+  <NoNumbersVue client:load />
+</DemoFrame>
+
+## Sizes
+
+Three font sizes consistent with the rest of the JSON family.
+
+<DemoFrame
+  vueCode={`<CfJsonDiff :left="left" :right="right" size="sm" />
+<CfJsonDiff :left="left" :right="right" size="md" />
+<CfJsonDiff :left="left" :right="right" size="lg" />`}
+  reactCode={`<CfJsonDiff left={left} right={right} size="sm" />
+<CfJsonDiff left={left} right={right} size="md" />
+<CfJsonDiff left={left} right={right} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `left` | `unknown` | `—` | Old value, rendered as removed lines |
+| `right` | `unknown` | `—` | New value, rendered as added lines |
+| `lineNumbers` | `boolean` | `true` | Show line numbers |
+| `bordered` | `boolean` | `true` | Border |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+| `className` | `string` | `—` | Forwarded to root `<pre>` |
+
+Type exports:
+
+```ts
+type DiffOp = 'eq' | 'add' | 'del';
+interface DiffLine { op: DiffOp; text: string; depth: number; }
+```

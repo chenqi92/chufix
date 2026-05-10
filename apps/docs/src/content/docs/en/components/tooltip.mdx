@@ -1,0 +1,96 @@
+---
+title: Tooltip
+description: Lightweight hint popup — 4 placements, auto-flip near viewport edges, hover and focus triggers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tooltip/BasicVue.vue';
+import PlacementsVue from '~/components/demos/tooltip/PlacementsVue.vue';
+import AdvancedVue from '~/components/demos/tooltip/AdvancedVue.vue';
+
+## Basic usage
+
+Wrap any trigger element. Shows on hover or keyboard focus, hides on mouse leave or blur. The tooltip renders into `<body>` via Teleport / Portal so it isn't clipped by parent `overflow`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfButton, CfTooltip } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfTooltip content="Shown on hover or keyboard focus">
+    <CfButton variant="tertiary">Hover me</CfButton>
+  </CfTooltip>
+</template>`}
+  reactCode={`import { CfButton, CfTooltip } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <CfTooltip content="Shown on hover or keyboard focus">
+      <CfButton variant="tertiary">Hover me</CfButton>
+    </CfTooltip>
+  );
+}`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Placements
+
+`placement` sets the preferred direction. When the preferred side doesn't fit (near a viewport edge) it auto-flips to the opposite side.
+
+<DemoFrame
+  vueCode={`<CfTooltip content="Top" placement="top"><CfButton>Top</CfButton></CfTooltip>
+<CfTooltip content="Bottom" placement="bottom"><CfButton>Bottom</CfButton></CfTooltip>
+<CfTooltip content="Left" placement="left"><CfButton>Left</CfButton></CfTooltip>
+<CfTooltip content="Right" placement="right"><CfButton>Right</CfButton></CfTooltip>`}
+  reactCode={`<CfTooltip content="Top" placement="top"><CfButton>Top</CfButton></CfTooltip>
+<CfTooltip content="Bottom" placement="bottom"><CfButton>Bottom</CfButton></CfTooltip>
+<CfTooltip content="Left" placement="left"><CfButton>Left</CfButton></CfTooltip>
+<CfTooltip content="Right" placement="right"><CfButton>Right</CfButton></CfTooltip>`}
+>
+  <PlacementsVue client:only="vue" />
+</DemoFrame>
+
+## Delay and long text
+
+`delay` controls the wait before showing (ms). `maxWidth` caps the width and wraps overflow.
+
+<DemoFrame
+  vueCode={`<CfTooltip content="0 delay" :delay="0">
+  <CfButton>No delay</CfButton>
+</CfTooltip>
+
+<CfTooltip content="500ms" :delay="500">
+  <CfButton>500ms</CfButton>
+</CfTooltip>
+
+<CfTooltip content="Long content wraps automatically..." :max-width="220">
+  <CfButton>Long text</CfButton>
+</CfTooltip>`}
+  reactCode={`<CfTooltip content="0 delay" delay={0}>
+  <CfButton>No delay</CfButton>
+</CfTooltip>
+
+<CfTooltip content="500ms" delay={500}>
+  <CfButton>500ms</CfButton>
+</CfTooltip>
+
+<CfTooltip content="Long content wraps automatically..." maxWidth={220}>
+  <CfButton>Long text</CfButton>
+</CfTooltip>`}
+>
+  <AdvancedVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop        | Type                                       | Default | Description                                |
+| ----------- | ------------------------------------------ | ------- | ------------------------------------------ |
+| `content`   | `string` (Vue) / `ReactNode` (React)       | —       | Popup content; Vue also accepts `#content` slot |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'`   | `'top'` | Preferred side; auto-flips on overflow     |
+| `delay`     | `number`                                   | `100`   | Show delay (ms)                            |
+| `hideDelay` | `number`                                   | `80`    | Hide delay to avoid flicker                |
+| `disabled`  | `boolean`                                  | `false` | Hide entirely                              |
+| `offset`    | `number`                                   | `8`     | Gap between trigger and popup (px)         |
+| `maxWidth`  | `number \| string`                         | —       | Cap the width; wrap overflow               |

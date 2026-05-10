@@ -1,0 +1,148 @@
+---
+title: Dropzone
+description: File picker that accepts both drag and click, with built-in file list, progress bar, and reject callback.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/dropzone/BasicVue.vue';
+import ConstraintsVue from '~/components/demos/dropzone/ConstraintsVue.vue';
+import ProgressVue from '~/components/demos/dropzone/ProgressVue.vue';
+
+## Basic usage
+
+`v-model` binds a `File[]`. Drag files into the dashed border, or click the area to open the file dialog. Selected files appear in a compact list with size and a remove button per row.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDropzone } from '@chufix-design/vue';
+
+const files = ref<File[]>([]);
+</script>
+
+<template>
+  <CfDropzone v-model="files" hint="Drop files here or click to select; multi-file supported" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDropzone } from '@chufix-design/react';
+
+export default function Demo() {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+    <CfDropzone
+      value={files}
+      hint="Drop files here or click to select; multi-file supported"
+      onChange={setFiles}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Constraints and reject callback
+
+`accept` / `maxSize` / `maxFiles` define what's accepted. Any rejected file is reported through the `reject` (Vue) / `onReject` (React) callback with a specific reason (`'too-large' | 'too-many' | 'wrong-type' | 'duplicate'`).
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDropzone, type DropzoneRejection } from '@chufix-design/vue';
+
+const files = ref<File[]>([]);
+
+function onReject(items: DropzoneRejection[]) {
+  // handle as needed, e.g. show a Toast
+}
+</script>
+
+<template>
+  <CfDropzone
+    v-model="files"
+    accept="image/*"
+    :max-size="1024 * 1024"
+    :max-files="3"
+    hint="Images only, up to 1 MB each, max 3 files"
+    @reject="onReject"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDropzone, type DropzoneRejection } from '@chufix-design/react';
+
+export default function Demo() {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+    <CfDropzone
+      value={files}
+      accept="image/*"
+      maxSize={1024 * 1024}
+      maxFiles={3}
+      hint="Images only, up to 1 MB each, max 3 files"
+      onChange={setFiles}
+      onReject={(items: DropzoneRejection[]) => console.warn(items)}
+    />
+  );
+}`}
+>
+  <ConstraintsVue client:load />
+</DemoFrame>
+
+## Upload progress
+
+Pass external upload state via `statuses` (Vue / React); its length must match `modelValue` / `value`. `status` is `'pending' | 'uploading' | 'success' | 'error'`; `progress` is 0–100; `error` is shown only when `status === 'error'`.
+
+The demo below fakes uploads with `setTimeout`. In a real project, wire `statuses` to the progress events of `fetch` / `XHR`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix-design/vue';
+
+const files = ref<File[]>([]);
+const statuses = ref<DropzoneFileStatus[]>([]);
+
+watch(files, (next) => {
+  statuses.value = next.map((_, i) =>
+    statuses.value[i] ?? { progress: 0, status: 'pending' }
+  );
+});
+</script>
+
+<template>
+  <CfDropzone v-model="files" :statuses="statuses" />
+</template>`}
+  reactCode={`import { useState, useEffect } from 'react';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix-design/react';
+
+export default function Demo() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [statuses, setStatuses] = useState<DropzoneFileStatus[]>([]);
+  useEffect(() => {
+    setStatuses((prev) =>
+      files.map((_, i) => prev[i] ?? { progress: 0, status: 'pending' })
+    );
+  }, [files]);
+  return <CfDropzone value={files} statuses={statuses} onChange={setFiles} />;
+}`}
+>
+  <ProgressVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `File[]` | `[]` | Current files |
+| `accept` | `string` | `—` | Same as `<input>`'s `accept`, comma-separated; supports `image/*` and `.ext` |
+| `multiple` | `boolean` | `true` | Single / multi-select; `false` makes a new selection replace the previous value |
+| `maxSize` | `number` | `—` | Max bytes per file |
+| `maxFiles` | `number` | `—` | Max total count |
+| `disabled` | `boolean` | `false` | Disabled |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `hint` | `string` | `—` | Subtitle text |
+| `statuses` | `DropzoneFileStatus[]` | `—` | Per-file status array: `{ progress, status, error }` |
+| `hideList` | `boolean` | `false` | Skip the built-in file list and render your own |
+
+Events: `update:modelValue` / `change` / `reject` / `remove` (React: `onChange` / `onReject` / `onRemove`).
+
+Slots: the default slot replaces the title area; `#icon` replaces the default upload illustration (default comes from `CfStatusIllustration variant="upload"`).

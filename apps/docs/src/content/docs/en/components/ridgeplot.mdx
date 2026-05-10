@@ -1,0 +1,40 @@
+---
+title: Ridge plot
+description: Vertically stacked density curves across multiple groups.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props and rendered as pure SVG, with no third-party charting dependency.
+Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfRidgePlot ... />`}
+  reactCode={`<CfRidgePlot ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Multimodal distributions
+
+Stacking multiple bells produces bimodal distributions, common when crossing seasons or user cohorts with secondary peaks.
+
+import SeasonsVue from '~/components/demos/ridgeplot/SeasonsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRidgePlot :rows="rows" :overlap="0.5" />`}
+  reactCode={`<CfRidgePlot rows={rows} overlap={0.5} />`}
+>
+  <SeasonsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `rows` | `RidgeRow[]` | `—` | &#123; label, density: number[], colorIndex? &#125;[] |
+| `overlap` | `0..1` | `0.6` | Inter-row overlap ratio |

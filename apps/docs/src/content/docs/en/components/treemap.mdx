@@ -1,0 +1,42 @@
+---
+title: Treemap
+description: Hierarchical rectangle area chart, single-level slice-and-dice layout.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/treemap/BasicVue.vue';
+
+## Basic usage
+
+Data comes in via props; rendered as pure SVG with no third-party charting dependency.
+Colors come from the `--viz-1..8` tokens, colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfTreemap ... />`}
+  reactCode={`<CfTreemap ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Label visibility
+
+`showLabels=false` shows only color blocks — useful for thumbnail layouts. Text only appears when a rectangle is large enough (w>50, h>20).
+
+import LabeledVue from '~/components/demos/treemap/LabeledVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTreemap :nodes="nodes" />
+<CfTreemap :nodes="nodes" :show-labels="false" />`}
+  reactCode={`<CfTreemap nodes={nodes} />
+<CfTreemap nodes={nodes} showLabels={false} />`}
+>
+  <LabeledVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `nodes` | `TreemapNode[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `width / height` | `number` | `480 / 240` |  |

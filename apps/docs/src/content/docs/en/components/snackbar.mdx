@@ -1,0 +1,59 @@
+---
+title: Snackbar
+description: Single-line pill notification with a built-in action button (e.g. Undo); supports 6 placements.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/snackbar/BasicVue.vue';
+
+## Basic usage
+
+Differs from `Toast`: single-line, pill-shaped, with an action. Common use case: an "Undo" after deletion.
+
+<DemoFrame
+  vueCode={`<CfSnackbar
+  v-model:open="open"
+  tone="success"
+  message="Deleted login.request"
+  action-label="Undo"
+  action-shortcut="⌘Z"
+  @action="undo"
+/>`}
+  reactCode={`<CfSnackbar
+  open={open}
+  onOpenChange={setOpen}
+  tone="success"
+  message="Deleted login.request"
+  actionLabel="Undo"
+  actionShortcut="⌘Z"
+  onAction={undo}
+/>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Six placements
+
+Default is `bottom-center`; `top-right` is a common alternative (doesn't cover bottom content).
+
+import PlacementsVue from '~/components/demos/snackbar/PlacementsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSnackbar v-model:open="open" placement="bottom-right" message="…" />`}
+  reactCode={`<CfSnackbar open={open} onOpenChange={setOpen} placement="bottom-right" message="…" />`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` / `v-model:open` | `boolean` | — | |
+| `tone` | `'default' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'default'` | Includes an icon |
+| `placement` | `'bottom-center' \| 'bottom-left' \| 'bottom-right' \| 'top-center' \| 'top-left' \| 'top-right'` | `'bottom-center'` | |
+| `duration` | `number` | `5000` | ms; 0 disables auto-close |
+| `actionLabel` | `string` | — | Action button copy |
+| `actionShortcut` | `string` | — | Shortcut hint shown to the right of the action |
+| `showDismiss` | `boolean` | `true` | Show × button |

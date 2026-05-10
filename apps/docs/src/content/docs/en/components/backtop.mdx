@@ -1,0 +1,33 @@
+---
+title: BackTop
+description: Floating button that appears after scrolling past a threshold and smooth-scrolls back to the top.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/backtop/BasicVue.vue';
+
+## Basic usage
+
+`target` specifies the container to monitor and scroll (CSS selector); omit it to listen on `window`. `visibilityHeight` is how many pixels of scroll must occur before the button appears.
+
+<DemoFrame
+  vueCode={`<div class="scroll-root" style="height: 600px; overflow-y: auto;">
+  <p v-for="i in 24" :key="i">Paragraph {{ i }}…</p>
+  <CfBackTop target=".scroll-root" :visibility-height="120" />
+</div>`}
+  reactCode={`<div className="scroll-root" style={{ height: 600, overflowY: 'auto' }}>
+  {Array.from({ length: 24 }, (_, i) => <p key={i}>Paragraph {i + 1}…</p>)}
+  <CfBackTop target=".scroll-root" visibilityHeight={120} />
+</div>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `visibilityHeight` | `number` | `200` | Button becomes visible after scrolling past this value |
+| `target` | `string` | `—` | Container selector to monitor; omit to listen on `window` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
+| `duration` | `number` | `320` | Smooth scroll duration (ms) |

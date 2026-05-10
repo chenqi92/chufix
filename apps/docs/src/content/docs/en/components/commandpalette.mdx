@@ -1,0 +1,55 @@
+---
+title: Command palette
+description: Cmd+K global command search with grouped lists, character match highlighting, and keyboard navigation.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/commandpalette/BasicVue.vue';
+
+## Basic usage
+
+Each entry in `items` can carry a `group` for automatic grouping and a `shortcut` for the right-aligned hint. Typed characters fuzzy-match against `label / description / keywords`, and matched characters are bolded in the accent color.
+
+<DemoFrame
+  vueCode={`<CfCommandPalette
+  :open="open"
+  :items="items"
+  @update:open="(v) => open = v"
+  @select="(id) => onPick(id)"
+/>`}
+  reactCode={`<CfCommandPalette
+  open={open}
+  onOpenChange={setOpen}
+  items={items}
+  onSelect={(id) => onPick(id)}
+/>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Hide the footer
+
+`hide-footer` hides the bottom "up/down to navigate, enter to select, Esc to close" hint to save vertical space.
+
+import HiddenFooterVue from '~/components/demos/commandpalette/HiddenFooterVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCommandPalette ... hide-footer />`}
+  reactCode={`<CfCommandPalette ... hideFooter />`}
+>
+  <HiddenFooterVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` / `v-model:open` | `boolean` | — | |
+| `items` | `CommandPaletteItem[]` | — | `{ id, label, description?, group?, shortcut?, keywords?, disabled? }` |
+| `placeholder` | `string` | `'Search commands, requests, settings…'` | |
+| `emptyText` | `string` | `'No matches'` | |
+| `closeOnSelect` | `boolean` | `true` | |
+| `hideFooter` | `boolean` | `false` | |
+
+Keyboard: `up/down` navigate, `enter` select, `Esc` close.

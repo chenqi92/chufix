@@ -1,6 +1,5 @@
 ---
 import CategoryTabs from '~/components/CategoryTabs.astro';
-import BlockPreview from '~/components/BlockPreview.vue';
 import { blocks } from '~/blocks/registry';
 import { CATEGORIES } from '~/blocks/types';
 import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
@@ -18,6 +17,16 @@ const grouped = CATEGORIES.map((cat) => ({
   items: blocks.filter((b) => b.category === cat.id),
 }));
 const defaultCat = CATEGORIES[0].id;
+
+function previewKind(category: string) {
+  if (category === 'dashboards') return 'dashboard';
+  if (category === 'auth') return 'auth';
+  if (category === 'errors') return 'error';
+  if (category === 'workbench') return 'workbench';
+  if (category === 'pricing' || category === 'billing') return 'billing';
+  if (category === 'team' || category === 'settings' || category === 'profile') return 'settings';
+  return 'workspace';
+}
 ---
 
 <div class="blocks-page">
@@ -33,9 +42,38 @@ const defaultCat = CATEGORIES[0].id;
         <div class="cf-gallery">
           {g.items.map((b) => (
             <a class="cf-gallery-card" href={prefixHref(`/blocks/${b.id}/`, locale)}>
-              <div class="cf-gallery-card__preview cf-gallery-card__preview--scaled">
-                <div class="cf-gallery-card__scaled-inner">
-                  <BlockPreview blockId={b.id} client:only="vue" />
+              <div class:list={['cf-gallery-card__preview', 'block-thumb', `block-thumb--${previewKind(b.category)}`]} aria-hidden="true">
+                <div class="block-thumb__window">
+                  <div class="block-thumb__topbar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <i>{b.files[0]?.name ?? b.id}</i>
+                  </div>
+                  <div class="block-thumb__body">
+                    <aside class="block-thumb__rail">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </aside>
+                    <main class="block-thumb__main">
+                      <div class="block-thumb__hero">
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <div class="block-thumb__grid">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <div class="block-thumb__rows">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </main>
+                  </div>
                 </div>
               </div>
               <div class="cf-gallery-card__body">
@@ -62,18 +100,134 @@ const defaultCat = CATEGORIES[0].id;
     font-size: var(--t-12);
     margin: 0 0 14px;
   }
-  .cf-gallery-card__preview--scaled {
-    height: 220px;
-    overflow: hidden;
-    padding: 0;
-    position: relative;
+  .block-thumb {
+    min-height: 230px;
+    padding: 14px;
+    align-items: stretch;
+    justify-content: stretch;
+    background:
+      linear-gradient(180deg, color-mix(in oklch, var(--bg-inset), var(--accent-soft) 18%), var(--bg-inset)),
+      var(--bg-inset);
   }
-  .cf-gallery-card__scaled-inner {
-    width: 1280px;
-    transform-origin: top left;
-    transform: scale(0.32);
-    pointer-events: none;
+  .block-thumb__window {
+    width: 100%;
+    min-height: 202px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-6);
     background: var(--bg-0);
-    padding: 16px;
+    box-shadow: var(--shadow-1);
+  }
+  .block-thumb__topbar {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--line-1);
+    background: var(--bg-1);
+  }
+  .block-thumb__topbar span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--line-2);
+  }
+  .block-thumb__topbar i {
+    margin-left: 6px;
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-style: normal;
+    white-space: nowrap;
+  }
+  .block-thumb__body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    min-height: 0;
+  }
+  .block-thumb__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 10px;
+    border-right: 1px solid var(--line-1);
+    background: var(--bg-2);
+  }
+  .block-thumb__rail span,
+  .block-thumb__hero span,
+  .block-thumb__grid span,
+  .block-thumb__rows span {
+    display: block;
+    border-radius: var(--r-3);
+    background: color-mix(in oklch, var(--accent-1), var(--bg-2) 74%);
+  }
+  .block-thumb__rail span {
+    height: 8px;
+  }
+  .block-thumb__rail span:nth-child(1) { width: 42px; }
+  .block-thumb__rail span:nth-child(2) { width: 34px; opacity: 0.65; }
+  .block-thumb__rail span:nth-child(3) { width: 48px; opacity: 0.45; }
+  .block-thumb__main {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 12px;
+    padding: 14px;
+  }
+  .block-thumb__hero {
+    display: grid;
+    gap: 7px;
+  }
+  .block-thumb__hero span:nth-child(1) { width: 52%; height: 12px; }
+  .block-thumb__hero span:nth-child(2) { width: 72%; height: 8px; opacity: 0.55; }
+  .block-thumb__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .block-thumb__grid span {
+    min-height: 44px;
+    background: var(--bg-1);
+    border: 1px solid var(--line-1);
+  }
+  .block-thumb__rows {
+    display: grid;
+    gap: 6px;
+  }
+  .block-thumb__rows span {
+    height: 7px;
+    opacity: 0.5;
+  }
+  .block-thumb__rows span:nth-child(2) { width: 82%; }
+  .block-thumb__rows span:nth-child(3) { width: 64%; }
+  .block-thumb--dashboard .block-thumb__grid span:nth-child(1),
+  .block-thumb--billing .block-thumb__grid span:nth-child(2),
+  .block-thumb--workbench .block-thumb__rail,
+  .block-thumb--settings .block-thumb__hero span:nth-child(1) {
+    background: color-mix(in oklch, var(--accent-soft), var(--bg-1) 42%);
+  }
+  .block-thumb--auth .block-thumb__body {
+    grid-template-columns: 1fr;
+  }
+  .block-thumb--auth .block-thumb__rail {
+    display: none;
+  }
+  .block-thumb--auth .block-thumb__main {
+    max-width: 210px;
+    width: 76%;
+    justify-self: center;
+    align-self: center;
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-6);
+    background: var(--bg-1);
+  }
+  .block-thumb--error .block-thumb__grid {
+    grid-template-columns: 1fr;
+  }
+  .block-thumb--error .block-thumb__grid span {
+    min-height: 86px;
   }
 </style>

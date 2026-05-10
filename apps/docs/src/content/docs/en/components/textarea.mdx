@@ -1,0 +1,101 @@
+---
+title: Textarea
+description: Multi-line input — same color system as Input, with auto-resize, character count, and resize control.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/textarea/BasicVue.vue';
+import CountVue from '~/components/demos/textarea/CountVue.vue';
+import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
+
+## Basic usage
+
+Shares the same colors as Input. `rows` sets the initial row count; users can drag the bottom-right corner to resize.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfTextarea } from '@chufix-design/vue';
+
+const note = ref('');
+</script>
+
+<template>
+  <CfTextarea v-model="note" placeholder="Say something…" :rows="3" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfTextarea } from '@chufix-design/react';
+
+export default function Demo() {
+  const [note, setNote] = useState('');
+  return (
+    <CfTextarea
+      value={note}
+      onChange={(e) => setNote(e.target.value)}
+      placeholder="Say something…"
+      rows={3}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Character count
+
+`maxlength` enforces an upper bound (native limit). `show-count` displays the current character count in the bottom-right. Going over turns it red (though `maxlength` blocks input first).
+
+<DemoFrame
+  vueCode={`<CfTextarea
+  v-model="bio"
+  placeholder="Bio (max 50 chars)"
+  :rows="3"
+  :maxlength="50"
+  show-count
+/>`}
+  reactCode={`<CfTextarea
+  value={bio}
+  onChange={(e) => setBio(e.target.value)}
+  placeholder="Bio (max 50 chars)"
+  rows={3}
+  maxLength={50}
+  showCount
+/>`}
+>
+  <CountVue client:load />
+</DemoFrame>
+
+## Auto-resize
+
+`auto-resize` makes the box grow with the content and hides the resize handle. Good when row count is unpredictable (comments, notes).
+
+<DemoFrame
+  vueCode={`<CfTextarea
+  v-model="draft"
+  variant="filled"
+  auto-resize
+  placeholder="Auto-resizing textarea"
+/>`}
+  reactCode={`<CfTextarea
+  value={draft}
+  onChange={(e) => setDraft(e.target.value)}
+  variant="filled"
+  autoResize
+  placeholder="Auto-resizing textarea"
+/>`}
+>
+  <AutoResizeVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop         | Type                                            | Default      | Description                                |
+| ------------ | ----------------------------------------------- | ------------ | ------------------------------------------ |
+| `variant`    | `'outline' \| 'filled' \| 'ghost'`              | `'outline'`  | Visual variant, matches Input              |
+| `size`       | `'sm' \| 'md' \| 'lg'`                          | `'md'`       | Font size / padding                        |
+| `rows`       | `number`                                        | `3`          | Initial row count                          |
+| `resize`     | `'none' \| 'vertical' \| 'horizontal' \| 'both'`| `'vertical'` | User-resize behavior                       |
+| `autoResize` | `boolean`                                       | `false`      | Auto-fit height to content (overrides `resize`) |
+| `error`      | `boolean`                                       | `false`      | Error border / focus ring                  |
+| `maxlength`  | `number`                                        | —            | Character cap (`maxLength` in React)       |
+| `showCount`  | `boolean`                                       | `false`      | Show character count in the bottom-right   |

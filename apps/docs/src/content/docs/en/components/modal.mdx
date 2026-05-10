@@ -1,0 +1,112 @@
+---
+title: Modal
+description: Modal dialog — built-in portal, focus trap, scroll lock, ESC / overlay close, enter/exit animations.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/modal/BasicVue.vue';
+import SizesVue from '~/components/demos/modal/SizesVue.vue';
+import BehaviorVue from '~/components/demos/modal/BehaviorVue.vue';
+
+## Basic usage
+
+`v-model:open` / `open + onOpenChange` for two-way binding. The component handles portal-to-body, focus trap, body scroll lock, Esc close, overlay close, and fade + scale enter/exit animations internally.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfButton, CfModal } from '@chufix-design/vue';
+
+const open = ref(false);
+</script>
+
+<template>
+  <CfButton @click="open = true">Open modal</CfButton>
+  <CfModal v-model:open="open" title="Confirm action">
+    <p>This is a minimal modal.</p>
+    <template #footer>
+      <CfButton variant="ghost" @click="open = false">Cancel</CfButton>
+      <CfButton @click="open = false">Confirm</CfButton>
+    </template>
+  </CfModal>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfButton, CfModal } from '@chufix-design/react';
+
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <CfButton onClick={() => setOpen(true)}>Open modal</CfButton>
+      <CfModal
+        open={open}
+        onOpenChange={setOpen}
+        title="Confirm action"
+        footer={
+          <>
+            <CfButton variant="ghost" onClick={() => setOpen(false)}>Cancel</CfButton>
+            <CfButton onClick={() => setOpen(false)}>Confirm</CfButton>
+          </>
+        }
+      >
+        <p>This is a minimal modal.</p>
+      </CfModal>
+    </>
+  );
+}`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Sizes
+
+`size` controls the maximum width. `full` nearly covers the viewport (still keeps an outer margin), suited for setting panels packed with form fields.
+
+<DemoFrame
+  vueCode={`<CfModal v-model:open="open" size="sm">…</CfModal>
+<CfModal v-model:open="open" size="md">…</CfModal>
+<CfModal v-model:open="open" size="lg">…</CfModal>
+<CfModal v-model:open="open" size="xl">…</CfModal>
+<CfModal v-model:open="open" size="full">…</CfModal>`}
+  reactCode={`<CfModal open={open} onOpenChange={setOpen} size="sm">…</CfModal>
+<CfModal open={open} onOpenChange={setOpen} size="md">…</CfModal>
+…
+<CfModal open={open} onOpenChange={setOpen} size="full">…</CfModal>`}
+>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
+## Close behavior
+
+By default any of these closes the modal: overlay click, Esc, top-right ×. Each can be disabled individually via `closeOnOverlay` / `closeOnEsc` / `showClose`.
+
+<DemoFrame
+  vueCode={`<CfModal v-model:open="a" :close-on-overlay="false">
+  Overlay click does nothing; close with Esc or footer buttons only.
+</CfModal>
+
+<CfModal v-model:open="b" :show-close="false">
+  No top-right ×.
+</CfModal>`}
+  reactCode={`<CfModal open={a} onOpenChange={setA} closeOnOverlay={false}>…</CfModal>
+<CfModal open={b} onOpenChange={setB} showClose={false}>…</CfModal>`}
+>
+  <BehaviorVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop             | Type                                              | Default  | Description                       |
+| ---------------- | ------------------------------------------------- | -------- | --------------------------------- |
+| `open`           | `boolean`                                         | `false`  | Controlled visibility             |
+| `size`           | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'`          | `'md'`   | Max width tier                    |
+| `title`          | `string`                                          | —        | Renders into the default header (overridable via slot) |
+| `closeOnOverlay` | `boolean`                                         | `true`   | Close on overlay click            |
+| `closeOnEsc`     | `boolean`                                         | `true`   | Close on Esc                      |
+| `showClose`      | `boolean`                                         | `true`   | Show top-right × button           |
+| `to`             | `string \| Element`                               | `'body'` | Teleport / Portal target          |
+
+### Slots / Children
+
+- **Vue**: three named slots — `header` / default / `footer`.
+- **React**: `title` or `header` props + children + `footer` prop.

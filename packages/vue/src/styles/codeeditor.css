@@ -4,6 +4,7 @@
 .cf-codeeditor {
   display: flex;
   align-items: stretch;
+  width: 100%;
   border: 1px solid var(--line-2);
   border-radius: var(--r-6);
   background: var(--bg-inset);

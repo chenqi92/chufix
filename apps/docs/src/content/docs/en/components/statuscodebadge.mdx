@@ -1,0 +1,38 @@
+---
+title: Status code badge
+description: HTTP status code badge, auto-colored by 1xx / 2xx / 3xx / 4xx / 5xx, with optional reason text.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statuscodebadge/BasicVue.vue';
+
+## Basic usage
+
+`reason` is optional and renders after the number. Border + soft background give two redundant signals so colorblind users can still identify the status class by number.
+
+<DemoFrame
+  vueCode={`<CfStatusCodeBadge :code="200" reason="OK" />
+<CfStatusCodeBadge :code="404" reason="Not Found" />
+<CfStatusCodeBadge :code="500" reason="Internal" />`}
+  reactCode={`<CfStatusCodeBadge code={200} reason="OK" />
+<CfStatusCodeBadge code={404} reason="Not Found" />
+<CfStatusCodeBadge code={500} reason="Internal" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `code` | `number` | — | HTTP status code |
+| `reason` | `string` | — | Optional reason phrase |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+| Class | Range | Color token |
+|---|---|---|
+| 1xx | 100–199 | `--status-info` |
+| 2xx | 200–299 | `--status-success` |
+| 3xx | 300–399 | `--status-info` |
+| 4xx | 400–499 | `--status-warning` |
+| 5xx | 500–599 | `--status-error` |

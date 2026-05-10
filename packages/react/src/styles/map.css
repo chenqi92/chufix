@@ -1,0 +1,169 @@
+.cf-map {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  height: var(--cf-map-height, 360px);
+  overflow: hidden;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-inset);
+  color: var(--fg-2);
+  font-family: var(--font-sans);
+}
+
+.cf-map__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+}
+
+.cf-map__water {
+  fill: color-mix(in oklch, var(--accent-soft), var(--bg-inset) 45%);
+}
+
+.cf-map__grid-line {
+  stroke: color-mix(in oklch, var(--line-1), transparent 28%);
+  stroke-width: 0.25;
+}
+
+.cf-map__land {
+  fill: var(--bg-1);
+  stroke: var(--line-1);
+  stroke-width: 0.45;
+  filter: drop-shadow(0 3px 4px color-mix(in oklch, var(--fg-1), transparent 88%));
+}
+
+.cf-map__land--secondary {
+  fill: color-mix(in oklch, var(--bg-1), var(--accent-soft) 34%);
+}
+
+.cf-map__overlay {
+  fill: var(--accent-soft);
+  stroke: var(--accent-1);
+  stroke-width: 0.65;
+  opacity: 0.8;
+  transition: opacity var(--dur-fast) var(--ease-out), stroke-width var(--dur-fast) var(--ease-out);
+}
+
+.cf-map__overlay--success { fill: var(--status-success-soft); stroke: var(--status-success); }
+.cf-map__overlay--warning { fill: var(--status-warning-soft); stroke: var(--status-warning); }
+.cf-map__overlay--error { fill: var(--status-error-soft); stroke: var(--status-error); }
+.cf-map__overlay--info { fill: var(--accent-soft); stroke: var(--accent-1); }
+
+.cf-map__overlay.is-interactive {
+  cursor: pointer;
+}
+
+.cf-map__overlay.is-interactive:hover,
+.cf-map__overlay.is-active,
+.cf-map__overlay:focus-visible {
+  opacity: 1;
+  stroke-width: 1;
+  outline: none;
+}
+
+.cf-map__route {
+  stroke: var(--accent-1);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.78;
+}
+
+.cf-map__route--success { stroke: var(--status-success); }
+.cf-map__route--warning { stroke: var(--status-warning); }
+.cf-map__route--error { stroke: var(--status-error); }
+.cf-map__route--info { stroke: var(--accent-1); }
+.cf-map__route.is-dashed { stroke-dasharray: 2 1.4; }
+
+.cf-map__marker {
+  cursor: pointer;
+  color: var(--accent-1);
+  outline: none;
+}
+
+.cf-map__marker--success { color: var(--status-success); }
+.cf-map__marker--warning { color: var(--status-warning); }
+.cf-map__marker--error { color: var(--status-error); }
+.cf-map__marker--info { color: var(--accent-1); }
+
+.cf-map__marker.is-disabled {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity);
+}
+
+.cf-map__marker-halo {
+  fill: currentColor;
+  opacity: 0.18;
+  transition: r var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.cf-map__marker-dot {
+  fill: currentColor;
+  stroke: var(--bg-0);
+  stroke-width: 0.75;
+}
+
+.cf-map__marker:hover .cf-map__marker-halo,
+.cf-map__marker.is-active .cf-map__marker-halo,
+.cf-map__marker:focus-visible .cf-map__marker-halo {
+  r: 6.2;
+  opacity: 0.28;
+}
+
+.cf-map__marker-label,
+.cf-map__marker-value {
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg-0);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+  fill: var(--fg-1);
+  font-size: 3px;
+  font-weight: var(--w-semibold);
+  pointer-events: none;
+}
+
+.cf-map__marker-value {
+  fill: var(--fg-2);
+  font-family: var(--font-mono);
+  font-size: 2.6px;
+  font-weight: var(--w-medium);
+}
+
+.cf-map__controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  background: color-mix(in oklch, var(--bg-0), transparent 8%);
+  box-shadow: var(--shadow-1);
+}
+
+.cf-map__control {
+  appearance: none;
+  min-width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: var(--r-3);
+  background: transparent;
+  color: var(--fg-2);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  font-weight: var(--w-semibold);
+  cursor: pointer;
+}
+
+.cf-map__control:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+
+.cf-map__control--reset {
+  padding: 0 8px;
+}

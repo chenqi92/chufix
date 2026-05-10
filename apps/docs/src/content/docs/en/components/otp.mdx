@@ -1,0 +1,117 @@
+---
+title: OtpInput
+description: One-time password input cells — auto-advance to the next cell, Backspace, and full-string paste distribution.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/otp/BasicVue.vue';
+import LengthsVue from '~/components/demos/otp/LengthsVue.vue';
+import TypesVue from '~/components/demos/otp/TypesVue.vue';
+import SeparatorVue from '~/components/demos/otp/SeparatorVue.vue';
+import SizesVue from '~/components/demos/otp/SizesVue.vue';
+
+## Basic usage
+
+`length` sets the number of cells. After typing, focus auto-advances; pasting a full string distributes characters across the remaining cells.
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="code" :length="6" />`}
+  reactCode={`<CfOtpInput value={code} onChange={setCode} length={6} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Length
+
+`length` is any integer — 4-digit PIN, 6-digit OTP (default), 8-digit long code.
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="a" :length="4" />
+<CfOtpInput v-model="b" :length="6" />
+<CfOtpInput v-model="c" :length="8" />`}
+  reactCode={`<CfOtpInput value={a} onChange={setA} length={4} />
+<CfOtpInput value={b} onChange={setB} length={6} />
+<CfOtpInput value={c} onChange={setC} length={8} />`}
+>
+  <LengthsVue client:load />
+</DemoFrame>
+
+## Character set
+
+`type` — `numeric` (default, 0–9 only) / `alphanumeric` (letters + digits). Characters not in the set are stripped on paste.
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="a" :length="6" type="numeric" />
+<CfOtpInput v-model="b" :length="6" type="alphanumeric" />`}
+  reactCode={`<CfOtpInput value={a} onChange={setA} length={6} type="numeric" />
+<CfOtpInput value={b} onChange={setB} length={6} type="alphanumeric" />`}
+>
+  <TypesVue client:load />
+</DemoFrame>
+
+## Separator + autoFocus + complete
+
+`separatorAt` inserts a separator after the Nth cell (visual grouping; commonly 3 / 4). `autoFocus` focuses the first cell on mount. When all cells are filled, `complete` / `onComplete` fires — handy for submitting the code immediately.
+
+<DemoFrame
+  vueCode={`<CfOtpInput
+  v-model="code"
+  :length="6"
+  :separator-at="3"
+  auto-focus
+  @complete="(v) => completed = v"
+/>`}
+  reactCode={`<CfOtpInput
+  value={code}
+  onChange={setCode}
+  length={6}
+  separatorAt={3}
+  autoFocus
+  onComplete={setCompleted}
+/>`}
+>
+  <SeparatorVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` — `sm` compact, `md` default, `lg` mobile-friendly.
+
+<DemoFrame
+  vueCode={`<CfOtpInput v-model="a" :length="6" size="sm" />
+<CfOtpInput v-model="b" :length="6" size="md" />
+<CfOtpInput v-model="c" :length="6" size="lg" />`}
+  reactCode={`<CfOtpInput value={a} onChange={setA} length={6} size="sm" />
+<CfOtpInput value={b} onChange={setB} length={6} size="md" />
+<CfOtpInput value={c} onChange={setC} length={6} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Keyboard interaction
+
+| Key | Behavior |
+|---|---|
+| Character key | Writes to the current cell and auto-advances |
+| `Backspace` | Clears the current cell if non-empty; otherwise moves back |
+| `←` / `→` | Move focus between cells |
+| Paste | Distributes the string across remaining cells; extras are dropped |
+
+## API · Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `''` | Current value |
+| `length` | `number` | `6` | Cell count |
+| `type` | `'numeric' \| 'alphanumeric'` | `'numeric'` | Allowed character set |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Cell size |
+| `disabled` | `boolean` | `false` | Disabled |
+| `autoFocus` | `boolean` | `false` | Focus the first cell on mount |
+| `separatorAt` | `number` | `—` | Insert a separator after the Nth cell (e.g. `3` after the 3rd) |
+
+## API · Events
+
+| Event | Payload | Description |
+|---|---|---|
+| `update:modelValue` (Vue) / `onChange` (React) | `(value: string)` | Fires on any cell change |
+| `complete` (Vue) / `onComplete` (React) | `(value: string)` | Fires when all cells are filled |

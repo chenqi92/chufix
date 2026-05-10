@@ -1,0 +1,74 @@
+---
+title: JsonViewer
+description: Collapsible JSON tree viewer; values colored by type, with depth expansion and type badges.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/jsonviewer/BasicVue.vue';
+import DepthVue from '~/components/demos/jsonviewer/DepthVue.vue';
+import TypesVue from '~/components/demos/jsonviewer/TypesVue.vue';
+
+## Basic usage
+
+`CfJsonViewer` accepts any JS value as `data`. Objects and arrays render as collapsible nodes; leaves are colored by type — strings green, numbers orange, booleans purple, null/undefined gray italic. Click the leading triangle to expand / collapse.
+
+<DemoFrame
+  vueCode={`<CfJsonViewer :data="data" />`}
+  reactCode={`<CfJsonViewer data={data} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Depth and type badges
+
+`defaultExpandDepth` controls how many levels are expanded initially (0 = all collapsed, 1 = top level only, 2 = two levels …). `showTypes` appends a small `string` / `number` / `boolean` badge after each leaf — useful when debugging schemas.
+
+<DemoFrame
+  vueCode={`<CfJsonViewer
+  :data="data"
+  :default-expand-depth="3"
+  show-types
+/>`}
+  reactCode={`<CfJsonViewer
+  data={data}
+  defaultExpandDepth={3}
+  showTypes
+/>`}
+>
+  <DepthVue client:load />
+</DemoFrame>
+
+## All types example
+
+The dataset below covers all seven types — `string` / `number` / `boolean` / `null` / `undefined` / `array` / `object` — so each one's coloring and collapse behavior is visible at a glance.
+
+<DemoFrame
+  vueCode={`<CfJsonViewer :data="data" :default-expand-depth="2" show-types />`}
+  reactCode={`<CfJsonViewer data={data} defaultExpandDepth={2} showTypes />`}
+>
+  <TypesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `unknown` | `—` | The JSON-like value to render; any JS object |
+| `defaultExpandDepth` | `number` | `1` | Initial expand depth |
+| `showTypes` | `boolean` | `false` | Show a type badge next to each leaf |
+| `bordered` | `boolean` | `true` | Border |
+| `lineNumbers` | `boolean` | `false` | Reserved — line number toggle |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+
+Type exports:
+
+```ts
+type JsonValueType =
+  | 'null'
+  | 'undefined'
+  | 'boolean'
+  | 'number'
+  | 'string'
+  | 'array'
+  | 'object';
+```

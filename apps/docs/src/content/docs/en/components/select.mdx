@@ -1,0 +1,107 @@
+---
+title: Select
+description: Dropdown picker — array-style options API with clearable, keyboard navigation, and disabled items.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/select/BasicVue.vue';
+import VariantsVue from '~/components/demos/select/VariantsVue.vue';
+import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+
+## Basic usage
+
+Pass options via the `options` array; each item must have at least `value` and `label`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSelect, type SelectOption } from '@chufix-design/vue';
+
+const options: SelectOption[] = [
+  { value: 'beijing', label: 'Beijing' },
+  { value: 'shanghai', label: 'Shanghai' },
+  { value: 'guangzhou', label: 'Guangzhou' },
+];
+
+const city = ref<string | null>('shanghai');
+</script>
+
+<template>
+  <CfSelect v-model="city" :options="options" placeholder="Pick a city" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSelect, type SelectOption } from '@chufix-design/react';
+
+const options: SelectOption[] = [
+  { value: 'beijing', label: 'Beijing' },
+  { value: 'shanghai', label: 'Shanghai' },
+  { value: 'guangzhou', label: 'Guangzhou' },
+];
+
+export default function Demo() {
+  const [city, setCity] = useState<string | null>('shanghai');
+  return (
+    <CfSelect
+      value={city}
+      options={options}
+      placeholder="Pick a city"
+      onChange={(v) => setCity(v as string | null)}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants
+
+Three variants matching Input: `outline` (default) / `filled` / `ghost`.
+
+<DemoFrame
+  vueCode={`<CfSelect v-model="v1" :options="options" variant="outline" />
+<CfSelect v-model="v2" :options="options" variant="filled" />
+<CfSelect v-model="v3" :options="options" variant="ghost" />`}
+  reactCode={`<CfSelect value={v1} options={options} variant="outline" onChange={setV1} />
+<CfSelect value={v2} options={options} variant="filled" onChange={setV2} />
+<CfSelect value={v3} options={options} variant="ghost" onChange={setV3} />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## States and clearable
+
+`clearable` shows × once a value is selected; `disabled` disables the whole control; `error` switches to the error border color. An individual option can set `disabled: true` to be skipped.
+
+<DemoFrame
+  vueCode={`<CfSelect v-model="a" :options="options" placeholder="Clearable" clearable />
+<CfSelect v-model="b" :options="options" placeholder="Disabled" disabled />
+<CfSelect v-model="b" :options="options" placeholder="Error state" error />`}
+  reactCode={`<CfSelect value={a} options={options} clearable onChange={setA} />
+<CfSelect value={b} options={options} disabled />
+<CfSelect value={b} options={options} error />`}
+>
+  <AdvancedVue client:load />
+</DemoFrame>
+
+## Keyboard interaction
+
+| Key               | Behavior                                |
+| ----------------- | --------------------------------------- |
+| `↓` / `↑`         | Open menu / move active item            |
+| `Enter` / `Space` | Open menu / select active item          |
+| `Esc`             | Close menu                              |
+| `Tab`             | Close menu and return focus to browser  |
+
+## API
+
+| Prop          | Type                               | Default      | Description                             |
+| ------------- | ---------------------------------- | ------------ | --------------------------------------- |
+| `options`     | `SelectOption[]`                   | `[]`         | Options array, `{ value, label, disabled? }` |
+| `placeholder` | `string`                           | `'Select'`   | Shown when nothing is selected          |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'` | `'outline'`  | Visual variant                          |
+| `size`        | `'sm' \| 'md' \| 'lg'`             | `'md'`       | Overall size                            |
+| `clearable`   | `boolean`                          | `false`      | Show clear button when something is selected |
+| `disabled`    | `boolean`                          | `false`      | Disable the whole control               |
+| `error`       | `boolean`                          | `false`      | Error state                             |
+
+> The current implementation uses `position: absolute` for the popup. If a parent's `overflow: hidden` clips the menu, a Portal version will be added later.

@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<{
 });
 
 const api = '/api/comments';
+const apiEnabled = !import.meta.env.DEV || import.meta.env.PUBLIC_ENABLE_COMMENTS_API === 'true';
 const loading = ref(true);
 const posting = ref(false);
 const unavailable = ref(false);
@@ -143,7 +144,14 @@ function quickSendEmoji(emoji: string) {
   submit(emoji);
 }
 
-onMounted(loadComments);
+onMounted(() => {
+  if (!apiEnabled) {
+    unavailable.value = true;
+    loading.value = false;
+    return;
+  }
+  loadComments();
+});
 </script>
 
 <template>

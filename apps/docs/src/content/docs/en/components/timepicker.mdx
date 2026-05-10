@@ -1,0 +1,34 @@
+---
+title: Time picker
+description: "Trigger plus a three-column scroll panel for picking time. Supports HH:mm:ss, and pairs with DatePicker for date + time use cases."
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timepicker/BasicVue.vue';
+
+## Basic usage
+
+`v-model` / `value` is a string in `HH:mm` (or `HH:mm:ss` when `showSeconds` is on). `clearable` shows a clear button.
+
+<DemoFrame
+  vueCode={`<CfTimePicker v-model="t1" clearable />
+<CfTimePicker v-model="t2" show-seconds clearable />`}
+  reactCode={`<CfTimePicker value={t1} onChange={setT1} clearable />
+<CfTimePicker value={t2} onChange={setT2} showSeconds clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` / `modelValue` | `string \| null` | `—` | Controlled value, format `HH:mm` or `HH:mm:ss` |
+| `defaultValue` | `string \| null` | `null` | Uncontrolled initial value |
+| `placeholder` | `string` | `'Select time'` | Placeholder when empty |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Trigger size |
+| `disabled` | `boolean` | `false` | Disabled |
+| `clearable` | `boolean` | `false` | Show clear button |
+| `showSeconds` | `boolean` | `false` | Show seconds column; output becomes `HH:mm:ss` |
+
+Events: `onChange(value)` — fired when the time changes.

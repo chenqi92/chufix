@@ -1,0 +1,40 @@
+---
+title: Timing bar
+description: Horizontal request-phase waterfall, one segment per phase.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
+
+## Basic usage
+
+Data comes in via props; rendered as pure SVG with no third-party charting dependency.
+Colors come from the `--viz-1..8` tokens, colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfTimingBar ... />`}
+  reactCode={`<CfTimingBar ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Real waterfall scenario
+
+Three concurrent HTTP requests with their timings stitched together: DNS / Connect / TLS / Wait / Receive each in its own color.
+
+import RealVue from '~/components/demos/timingbar/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTimingBar :phases="phases" />`}
+  reactCode={`<CfTimingBar phases={phases} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `phases` | `TimingPhase[]` | `—` | &#123; label, start, end, colorIndex? &#125;[] (ms) |
+| `showAxis` | `boolean` | `true` | Bottom segment labels |

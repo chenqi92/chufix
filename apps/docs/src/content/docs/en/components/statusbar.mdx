@@ -1,0 +1,46 @@
+---
+title: Status bar
+description: Editor footer bar. Three slots (left / center / right) with 6 semantic tones.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statusbar/BasicVue.vue';
+
+## Basic usage
+
+Pass items as arrays via `leftItems` / `centerItems` / `rightItems`, or override with named slots
+(Vue: `#left/#center/#right`) / slot props (React: `leftSlot/centerSlot/rightSlot`).
+The whole bar can be tinted via `tone` (e.g. `error`); individual items can also set their own tone.
+
+<DemoFrame
+  vueCode={`<CfStatusBar :left-items="left" :center-items="center" :right-items="right" />`}
+  reactCode={`<CfStatusBar leftItems={left} centerItems={center} rightItems={right} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Tones
+
+`tone` tints the whole bar. For example, `error` turns the bar red to indicate a build failure.
+
+import TonesVue from '~/components/demos/statusbar/TonesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfStatusBar :tone="'error'" :left-items="items" />`}
+  reactCode={`<CfStatusBar tone="error" leftItems={items} />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `'sm' \| 'md'` | `'md'` | 20 / 24 px height |
+| `tone` | `'default' \| 'accent' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'default'` | Whole-bar tint |
+| `leftItems` / `centerItems` / `rightItems` | `StatusBarItem[]` | `[]` | |
+
+`StatusBarItem`: `{ id, label, tone?, shortcut?, disabled? }`.
+
+Events: `item-click(id, item)`.

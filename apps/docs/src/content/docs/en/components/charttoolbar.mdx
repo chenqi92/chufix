@@ -1,0 +1,43 @@
+---
+title: ChartToolbar
+description: Chart header bar — title + legend toggles + zoom / export / refresh buttons.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props and rendered as plain SVG — no third-party charting library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfChartToolbar ... />`}
+  reactCode={`<CfChartToolbar ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Live interaction
+
+Click a legend chip to toggle a series; the LineChart below redraws in real time.
+
+import InteractiveVue from '~/components/demos/charttoolbar/InteractiveVue.vue';
+
+<DemoFrame
+  vueCode={`<CfChartToolbar :series="series" @series-toggle="toggle" />
+<CfLineChart :series="visibleSeries" />`}
+  reactCode={`<CfChartToolbar series={series} onSeriesToggle={toggle} />
+<CfLineChart series={visibleSeries} />`}
+>
+  <InteractiveVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title / subtitle` | `string` | `—` | Title and description |
+| `series` | `LegendSeries[]` | `—` | &#123; name, colorIndex, hidden? &#125;[]; clicking a legend item triggers toggle |
+| `showZoom / showExport / showRefresh` | `boolean` | `false` | Show button slots |

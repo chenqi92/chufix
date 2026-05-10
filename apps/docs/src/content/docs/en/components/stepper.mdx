@@ -1,0 +1,102 @@
+---
+title: Stepper
+description: Multi-step progress indicator with horizontal/vertical layout, 3 variants, and clickable steps.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/stepper/BasicVue.vue';
+import VariantsVue from '~/components/demos/stepper/VariantsVue.vue';
+import VerticalVue from '~/components/demos/stepper/VerticalVue.vue';
+
+## Basic usage
+
+Each item in `items` needs at least a `title`. `current` is the index of the current step (0-based). Items with index less than `current` are marked `done`, equal is `current`, greater is `pending`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfStepper, type StepItem } from '@chufix-design/vue';
+
+const current = ref(1);
+const items: StepItem[] = [
+  { title: 'Fill in info', description: 'Username / email / password' },
+  { title: 'Verify email', description: 'Click the link in the email' },
+  { title: 'Done', description: 'Ready to use' },
+];
+</script>
+
+<template>
+  <CfStepper :items="items" :current="current" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfStepper, type StepItem } from '@chufix-design/react';
+
+const items: StepItem[] = [
+  { title: 'Fill in info', description: 'Username / email / password' },
+  { title: 'Verify email', description: 'Click the link in the email' },
+  { title: 'Done', description: 'Ready to use' },
+];
+
+export default function Demo() {
+  const [current, setCurrent] = useState(1);
+  return <CfStepper items={items} current={current} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants
+
+`numbered` (default) shows step numbers; `dots` is minimal dots; `minimal` is transparent with a border.
+
+<DemoFrame
+  vueCode={`<CfStepper :items="items" :current="2" variant="numbered" />
+<CfStepper :items="items" :current="2" variant="dots" />
+<CfStepper :items="items" :current="2" variant="minimal" />`}
+  reactCode={`<CfStepper items={items} current={2} variant="numbered" />
+<CfStepper items={items} current={2} variant="dots" />
+<CfStepper items={items} current={2} variant="minimal" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Vertical with explicit status
+
+`orientation="vertical"` lays out steps vertically. Each item can specify `status: 'done' | 'current' | 'pending' | 'error'`, overriding the value inferred from `current`.
+
+<DemoFrame
+  vueCode={`<CfStepper
+  orientation="vertical"
+  :items="[
+    { title: 'Submit application', description: 'Submitted on 2026-05-01', status: 'done' },
+    { title: 'Under review', description: 'Account manager replies within 2 days', status: 'current' },
+    { title: 'Sign contract' },
+    { title: 'Activate account', status: 'error' },
+  ]"
+/>`}
+  reactCode={`<CfStepper
+  orientation="vertical"
+  items={[
+    { title: 'Submit application', description: 'Submitted on 2026-05-01', status: 'done' },
+    { title: 'Under review', description: 'Account manager replies within 2 days', status: 'current' },
+    { title: 'Sign contract' },
+    { title: 'Activate account', status: 'error' },
+  ]}
+/>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `StepItem[]` | `[]` | Step array |
+| `current` | `number` | `0` | Current step index (0-based) |
+| `variant` | `'numbered' \| 'dots' \| 'minimal'` | `'numbered'` | Visual mode |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `clickable` | `boolean` | `false` | Whether steps can be clicked; pair with the `change` event |
+
+`StepItem`: `{ key?, title, description?, status?, disabled? }`.
+Events: `change(index, item)` (React: `onChange`).

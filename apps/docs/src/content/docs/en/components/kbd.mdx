@@ -1,0 +1,80 @@
+---
+title: Kbd
+description: Tiny typographic control for showing keyboard shortcuts; supports key combos, custom separators, and 3 sizes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/kbd/BasicVue.vue';
+import CombosVue from '~/components/demos/kbd/CombosVue.vue';
+import SingleVue from '~/components/demos/kbd/SingleVue.vue';
+import SizesVue from '~/components/demos/kbd/SizesVue.vue';
+
+## Basic usage
+
+The `keys` array renders multiple individual `<kbd>` elements joined by `separator` (default `+`).
+
+<DemoFrame
+  vueCode={`<CfKbd :keys="['Ctrl', 'K']" />`}
+  reactCode={`<CfKbd keys={['Ctrl', 'K']} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Combos and custom separator
+
+`separator` is configurable — for example use a space to express "press, then press the next key" (vim style).
+
+<DemoFrame
+  vueCode={`<CfKbd :keys="['⌘', 'N']" />
+<CfKbd :keys="['Ctrl', 'W']" />
+<CfKbd :keys="['Ctrl', 'Shift', 'P']" />
+<CfKbd :keys="['Esc', ':', 'q']" separator=" " />`}
+  reactCode={`<CfKbd keys={['⌘', 'N']} />
+<CfKbd keys={['Ctrl', 'W']} />
+<CfKbd keys={['Ctrl', 'Shift', 'P']} />
+<CfKbd keys={['Esc', ':', 'q']} separator=" " />`}
+>
+  <CombosVue client:load />
+</DemoFrame>
+
+## Single key (slot usage)
+
+Omit `keys` and put the key name in the default slot / children — fits the "single key" case.
+
+<DemoFrame
+  vueCode={`<CfKbd>Caps Lock</CfKbd>
+<CfKbd>Tab</CfKbd>
+<CfKbd>Esc</CfKbd>
+<CfKbd>Enter</CfKbd>
+<CfKbd>Space</CfKbd>`}
+  reactCode={`<CfKbd>Caps Lock</CfKbd>
+<CfKbd>Tab</CfKbd>
+<CfKbd>Esc</CfKbd>
+<CfKbd>Enter</CfKbd>
+<CfKbd>Space</CfKbd>`}
+>
+  <SingleVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` — `sm` for inline notes, `md` default, `lg` for landing-page emphasis.
+
+<DemoFrame
+  vueCode={`<CfKbd :keys="['Ctrl', 'K']" size="sm" />
+<CfKbd :keys="['Ctrl', 'K']" size="md" />
+<CfKbd :keys="['Ctrl', 'K']" size="lg" />`}
+  reactCode={`<CfKbd keys={['Ctrl', 'K']} size="sm" />
+<CfKbd keys={['Ctrl', 'K']} size="md" />
+<CfKbd keys={['Ctrl', 'K']} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `keys` | `string[]` | `[]` | Combo array; each entry renders as one `<kbd>` |
+| `separator` | `string` | `'+'` | Separator between multiple keys |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |

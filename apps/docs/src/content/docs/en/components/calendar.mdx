@@ -1,0 +1,77 @@
+---
+title: Calendar
+description: Embedded month-view calendar with week numbers, configurable week start, min/max range, and three sizes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/calendar/BasicVue.vue';
+import WeekVue from '~/components/demos/calendar/WeekVue.vue';
+import RangeVue from '~/components/demos/calendar/RangeVue.vue';
+import SizesVue from '~/components/demos/calendar/SizesVue.vue';
+
+## Basic usage
+
+`CfCalendar` is a standalone month-view calendar — unlike [DatePicker](/components/datepicker/), it sits inline on the page rather than floating in a popover. The selected date is exposed via `v-model` (Vue) or `value` + `onChange` (React). Click `‹` `›` to switch months; click a date to select it.
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="date" />`}
+  reactCode={`<CfCalendar value={date} onChange={setDate} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Week start + week numbers
+
+`weekStartsOn` controls which day each row starts on: `1` for Monday (default), `0` for Sunday. `showWeekNumbers` adds a leftmost column of ISO week numbers — common in scheduling and project-management dashboards.
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="a" :week-starts-on="1" show-week-numbers />
+<CfCalendar v-model="b" :week-starts-on="0" />`}
+  reactCode={`<CfCalendar value={a} onChange={setA} weekStartsOn={1} showWeekNumbers />
+<CfCalendar value={b} onChange={setB} weekStartsOn={0} />`}
+>
+  <WeekVue client:load />
+</DemoFrame>
+
+## Restrict selectable range
+
+`min` / `max` define the selectable range. Dates outside it are dimmed and don't respond to clicks. The example below locks selection between the start of this month and the end of next month.
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="date" :min="min" :max="max" />`}
+  reactCode={`<CfCalendar value={date} onChange={setDate} min={min} max={max} />`}
+>
+  <RangeVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+The overall font size is controlled by `size`: `sm` / `md` (default) / `lg`. Cell heights scale with the font size.
+
+<DemoFrame
+  vueCode={`<CfCalendar v-model="a" size="sm" />
+<CfCalendar v-model="b" size="md" />
+<CfCalendar v-model="c" size="lg" />`}
+  reactCode={`<CfCalendar value={a} onChange={setA} size="sm" />
+<CfCalendar value={b} onChange={setB} size="md" />
+<CfCalendar value={c} onChange={setC} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `Date \| null` | `null` | Currently selected date |
+| `defaultValue` | `Date \| null` | `null` | Uncontrolled initial value |
+| `month` | `Date` | `current month` | Controlled displayed month |
+| `defaultMonth` | `Date` | — | Uncontrolled initial displayed month |
+| `min` / `max` | `Date` | `—` | Selectable range endpoints (inclusive) |
+| `weekStartsOn` | `0 \| 1` | `1` | 0 = Sunday, 1 = Monday |
+| `showWeekNumbers` | `boolean` | `false` | Show the ISO week-number column |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Overall font size |
+| `disabled` | `boolean` | `false` | Disable all interactions |
+| `className` | `string` | `—` | Forwarded to the root container |
+
+Events: `onChange(date)` / `update:modelValue` fires on date selection; `onMonthChange(month)` / `update:month` fires when the displayed month changes.

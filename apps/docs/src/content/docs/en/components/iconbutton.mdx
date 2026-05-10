@@ -1,0 +1,80 @@
+---
+title: IconButton
+description: Square icon-only button. Requires aria-label. Common in toolbars, table column actions, and input suffixes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/iconbutton/BasicVue.vue';
+
+## Basic usage
+
+Three variants (`default` / `primary` / `danger`), three sizes (`sm` / `md` / `lg`), and shapes `square` / `round`.
+
+`pressed` drives toggle behavior (pin / bookmark) and automatically sets `aria-pressed`.
+
+<DemoFrame
+  vueCode={`<CfIconButton aria-label="Save" variant="primary">
+  <svg viewBox="0 0 16 16" fill="none">…</svg>
+</CfIconButton>
+<CfIconButton aria-label="Delete" variant="danger">…</CfIconButton>
+<CfIconButton aria-label="Pin" :pressed="true">…</CfIconButton>`}
+  reactCode={`<CfIconButton aria-label="Save" variant="primary"><Icon /></CfIconButton>
+<CfIconButton aria-label="Delete" variant="danger"><Icon /></CfIconButton>
+<CfIconButton aria-label="Pin" pressed><Icon /></CfIconButton>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Sizes and shapes
+
+Three sizes (`sm` 26 / `md` 32 / `lg` 38 px). `shape="round"` switches to a circular pill.
+
+import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfIconButton size="sm" aria-label="Star" />
+<CfIconButton size="md" aria-label="Star" />
+<CfIconButton size="lg" aria-label="Star" />
+<CfIconButton shape="round" aria-label="Round" />`}
+  reactCode={`<CfIconButton size="sm" aria-label="Star" />
+<CfIconButton size="md" aria-label="Star" />
+<CfIconButton size="lg" aria-label="Star" />
+<CfIconButton shape="round" aria-label="Round" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## States
+
+`pressed` toggles selected state (auto-sets `aria-pressed`); `loading` and `disabled` show a spinner and disabled style respectively.
+
+import StatesVue from '~/components/demos/iconbutton/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfIconButton :pressed="true" aria-label="Pin" />
+<CfIconButton variant="danger" :pressed="true" aria-label="Favorite" />
+<CfIconButton loading aria-label="Loading" />
+<CfIconButton disabled aria-label="Disabled" />`}
+  reactCode={`<CfIconButton pressed aria-label="Pin" />
+<CfIconButton variant="danger" pressed aria-label="Favorite" />
+<CfIconButton loading aria-label="Loading" />
+<CfIconButton disabled aria-label="Disabled" />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'default' \| 'primary' \| 'danger'` | `'default'` | Visual variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `shape` | `'square' \| 'round'` | `'square'` | Shape |
+| `pressed` | `boolean` | `false` | Toggle state, outputs `aria-pressed` |
+| `loading` | `boolean` | `false` | Show spinner |
+| `disabled` | `boolean` | `false` | Disabled |
+| Default slot / `children` | — | — | Icon content |
+| `badge` slot / `badge` prop | — | — | Top-right badge |
+
+> **a11y**: `aria-label` is required, otherwise screen readers cannot announce the button's purpose.

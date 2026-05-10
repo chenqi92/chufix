@@ -1,0 +1,604 @@
+---
+title: Components
+description: The full catalog of components currently shipped by ChuFix UI and their status.
+---
+
+## Overview
+
+P0–P11 + 8 templates + 22 data visualization components are all materialized, **151+ components total**, covering every visual unit in the ProtoForge design — form / feedback / container / navigation / data display / editor / system shell / multi-window / chart / template.
+
+
+## Form
+
+<div class="cf-feature-grid">
+  <a href="/components/icon/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Icon</div>
+    <div class="cf-card__body">169 built-in SVG icons with typed names, inlined directly by React / Vue components.</div>
+  </a>
+  <a href="/components/button/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Button</div>
+    <div class="cf-card__body">5 variants, 3 sizes, 2 semantic tones, loading state.</div>
+  </a>
+  <a href="/components/input/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Input</div>
+    <div class="cf-card__body">3 variants, 3 sizes; clearable, prefix/suffix, error state.</div>
+  </a>
+  <a href="/components/switch/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Switch</div>
+    <div class="cf-card__body">Native input role=switch semantics preserved; supports loading and disabled states.</div>
+  </a>
+  <a href="/components/checkbox/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Checkbox</div>
+    <div class="cf-card__body">3 sizes, indeterminate state, native input semantics preserved.</div>
+  </a>
+  <a href="/components/radio/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Radio</div>
+    <div class="cf-card__body">Radio + RadioGroup combo, mutually exclusive, keyboard reachable.</div>
+  </a>
+  <a href="/components/textarea/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Textarea</div>
+    <div class="cf-card__body">Same color system as Input; autoResize, character count, resize control.</div>
+  </a>
+  <a href="/components/select/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Select</div>
+    <div class="cf-card__body">Config-driven options API; clearable, keyboard navigation, disabled items.</div>
+  </a>
+  <a href="/components/searchinput/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">SearchInput</div>
+    <div class="cf-card__body">Preset search icon + clear button + optional shortcut hint.</div>
+  </a>
+  <a href="/components/numberinput/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">NumberInput</div>
+    <div class="cf-card__body">+/− stepper, min/max/step constraints, arrow keys, auto clamp.</div>
+  </a>
+  <a href="/components/slider/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Slider</div>
+    <div class="cf-card__body">Single-value range drag; ticks, bubbles, full ←→↑↓ keyboard support.</div>
+  </a>
+  <a href="/components/inputgroup/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">InputGroup</div>
+    <div class="cf-card__body">Compose Input/Button/Select/static labels into a single control with shared outer radius and border.</div>
+  </a>
+  <a href="/components/otp/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">OtpInput</div>
+    <div class="cf-card__body">Fixed-cell numeric input with auto-advance, Backspace, and full-string paste distribution.</div>
+  </a>
+  <a href="/components/form/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Form</div>
+    <div class="cf-card__body">Form wrapper that unifies label / hint / error display and adopts existing inputs.</div>
+  </a>
+  <a href="/components/combobox/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Combobox</div>
+    <div class="cf-card__body">Editable variant of Select; type to filter, optionally allow new entries.</div>
+  </a>
+  <a href="/components/taginput/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TagInput</div>
+    <div class="cf-card__body">Multi-tag input control; Enter to add, Backspace to remove, paste for bulk import, validation.</div>
+  </a>
+  <a href="/components/dropzone/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Dropzone</div>
+    <div class="cf-card__body">Drag and click double trigger; built-in file list, progress bar, and reject callback.</div>
+  </a>
+  <a href="/components/kveditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">KVEditor</div>
+    <div class="cf-card__body">Edit HTTP headers / query params / env vars; toggle column and description column optional.</div>
+  </a>
+  <a href="/components/mention/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Mention</div>
+    <div class="cf-card__body">Type @ in a textarea to trigger a candidate dropdown; ↑↓ Enter / Tab to select.</div>
+  </a>
+  <a href="/components/colorpicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ColorPicker</div>
+    <div class="cf-card__body">HSV palette + hue / alpha sliders + HEX / RGB / HSL inputs + preset swatches.</div>
+  </a>
+  <a href="/components/datepicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DatePicker</div>
+    <div class="cf-card__body">Month panel with day / month / year view switch; min/max/disabledDate constraints, clearable.</div>
+  </a>
+  <a href="/components/daterangepicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DateRangePicker</div>
+    <div class="cf-card__body">Side-by-side dual months, hover preview, last 7 / 30 / 90 day quick presets.</div>
+  </a>
+  <a href="/components/calendar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Calendar</div>
+    <div class="cf-card__body">Embedded month view with optional week numbers; shares date utils with DatePicker.</div>
+  </a>
+  <a href="/components/cascader/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Cascader</div>
+    <div class="cf-card__body">Column-by-column expand picker for multi-level options; path selection for region / department / category.</div>
+  </a>
+  <a href="/components/timepicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TimePicker</div>
+    <div class="cf-card__body">Trigger + three-column scrolling panel for hour / minute / second; HH:mm and HH:mm:ss precisions.</div>
+  </a>
+  <a href="/components/transfer/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Transfer</div>
+    <div class="cf-card__body">Two-column list with arrows in between; move items between "available / selected" with search.</div>
+  </a>
+  <a href="/components/timerangepicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TimeRangePicker</div>
+    <div class="cf-card__body">Two TimePickers combined to pick a "start – end" time range.</div>
+  </a>
+</div>
+
+## Container
+
+<div class="cf-feature-grid">
+  <a href="/components/card/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Card</div>
+    <div class="cf-card__body">3 variants; Header / Body / Footer three-section layout; clickable whole card.</div>
+  </a>
+  <a href="/components/pageheader/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">PageHeader</div>
+    <div class="cf-card__body">All-in-one page header with title + description + breadcrumb + actions + toolbar + tabs.</div>
+  </a>
+  <a href="/components/appshell/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">AppShell</div>
+    <div class="cf-card__body">CSS Grid layout for header + sidebar + main + aside + footer; site-wide scaffold.</div>
+  </a>
+  <a href="/components/splitter/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Splitter</div>
+    <div class="cf-card__body">Drag the divider to resize panels on either side; horizontal and vertical, keyboard reachable.</div>
+  </a>
+</div>
+
+## Data display
+
+<div class="cf-feature-grid">
+  <a href="/components/tag/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Tag</div>
+    <div class="cf-card__body">3 variants, 5 tones, 3 sizes; closable and rounded.</div>
+  </a>
+  <a href="/components/badge/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Badge</div>
+    <div class="cf-card__body">Standalone pill or anchored to a child's corner; dot/count forms, overflow shows +.</div>
+  </a>
+  <a href="/components/avatar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Avatar</div>
+    <div class="cf-card__body">Image / initials / icon with automatic fallback; AvatarGroup overlapping layout.</div>
+  </a>
+  <a href="/components/list/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">List</div>
+    <div class="cf-card__body">General-purpose list; single / multi select, grouping, card style, custom render.</div>
+  </a>
+  <a href="/components/descriptionlist/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DescriptionList</div>
+    <div class="cf-card__body">dt / dd style key-value display; horizontal or vertical, multi-column, optional border.</div>
+  </a>
+  <a href="/components/stat/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Stat / KPI</div>
+    <div class="cf-card__body">Metric card with number + label + trend; dashboard staple.</div>
+  </a>
+  <a href="/components/table/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Table</div>
+    <div class="cf-card__body">Column-definition API; sorting, row selection, 3 variants, custom render.</div>
+  </a>
+  <a href="/components/datagrid/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DataGrid</div>
+    <div class="cf-card__body">Heavy-duty grid — column drag-resize, double-click cell editing, sticky header scroll.</div>
+  </a>
+  <a href="/components/treeview/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TreeView</div>
+    <div class="cf-card__body">Nested tree display; single / checkbox (with cascade) selection, expand / collapse, custom icons.</div>
+  </a>
+  <a href="/components/kbd/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Kbd</div>
+    <div class="cf-card__body">Tiny typographic control for shortcuts; supports key combos and custom separators.</div>
+  </a>
+  <a href="/components/link/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Link</div>
+    <div class="cf-card__body">4 variants; auto-detects external links, can be disabled, design-consistent style.</div>
+  </a>
+  <a href="/components/code/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Code</div>
+    <div class="cf-card__body">InlineCode + CodeBlock; supports title, language tag, line numbers, copy button.</div>
+  </a>
+  <a href="/components/aspectratio/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">AspectRatio</div>
+    <div class="cf-card__body">Container that locks the child's aspect ratio; image / video / iframe placeholder.</div>
+  </a>
+  <a href="/components/rating/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Rating</div>
+    <div class="cf-card__body">Star rating with integer / half-star precision; readonly / disabled, optional value display.</div>
+  </a>
+  <a href="/components/toc/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Toc</div>
+    <div class="cf-card__body">Article side table of contents; depth-based indent, manual or scroll-aware tracking.</div>
+  </a>
+  <a href="/components/scrollarea/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ScrollArea</div>
+    <div class="cf-card__body">Themed scrollbar container; gutter stable + overscroll contain.</div>
+  </a>
+  <a href="/components/jsonviewer/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">JsonViewer</div>
+    <div class="cf-card__body">Collapsible JSON tree view; values colored by type, deep-expand and type badges supported.</div>
+  </a>
+  <a href="/components/jsondiff/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">JsonDiff</div>
+    <div class="cf-card__body">Line-level LCS diff between two JSON values; tinted by add / del / eq.</div>
+  </a>
+  <a href="/components/kanban/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Kanban</div>
+    <div class="cf-card__body">Multi-column card board; HTML5 drag to move cards across columns, WIP limit and accent color per column.</div>
+  </a>
+  <a href="/components/image/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Image</div>
+    <div class="cf-card__body">Image container with shimmer loading placeholder, error fallback, and native lazy loading.</div>
+  </a>
+  <a href="/components/carousel/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Carousel</div>
+    <div class="cf-card__body">Horizontal carousel for images or custom content; autoplay, loop, indicators, prev/next controls.</div>
+  </a>
+  <a href="/components/statistic/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Statistic</div>
+    <div class="cf-card__body">Large number + thousand separators / prefix-suffix / countdown; top-of-dashboard metric.</div>
+  </a>
+  <a href="/components/timeline/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Timeline</div>
+    <div class="cf-card__body">Sequential event stream with dot / line / timestamp; changelog and audit trail.</div>
+  </a>
+  <a href="/components/marquee/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Marquee</div>
+    <div class="cf-card__body">Horizontal continuous scroll for announcements / tickers / logo walls; pauses on hover.</div>
+  </a>
+  <a href="/components/imagepreview/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ImagePreview</div>
+    <div class="cf-card__body">Full-screen image viewer with wheel zoom + mouse drag + keyboard +/− / 0 / Esc controls.</div>
+  </a>
+  <a href="/components/highlight/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Highlight</div>
+    <div class="cf-card__body">Highlight matched keywords inside long text; for search result lists and hit markers.</div>
+  </a>
+  <a href="/components/textellipsis/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TextEllipsis</div>
+    <div class="cf-card__body">Multi-line text overflow ellipsis with optional "expand/collapse"; the button only appears when actually truncated.</div>
+  </a>
+  <a href="/components/countdown/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CountDown</div>
+    <div class="cf-card__body">Standalone countdown supporting DD/HH/mm/ss/SSS placeholders; zero-out callback.</div>
+  </a>
+  <a href="/components/calendarheatmap/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CalendarHeatmap</div>
+    <div class="cf-card__body">52 weeks × 7 days grid colored by intensity; activity / contribution stats.</div>
+  </a>
+  <a href="/components/qrcode/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">QRCode</div>
+    <div class="cf-card__body">Pure client-side, zero-dependency encoder; auto picks version 1–40, 4 error-correction levels.</div>
+  </a>
+</div>
+
+## Navigation
+
+<div class="cf-feature-grid">
+  <a href="/components/tabs/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Tabs</div>
+    <div class="cf-card__body">line / segmented / pill variants; controlled and uncontrolled; items array API.</div>
+  </a>
+  <a href="/components/breadcrumb/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Breadcrumb</div>
+    <div class="cf-card__body">Current location trail; last item is non-clickable, separator is customizable.</div>
+  </a>
+  <a href="/components/pagination/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Pagination</div>
+    <div class="cf-card__body">Number buttons + prev/next + jump input; auto-calculated ellipses.</div>
+  </a>
+  <a href="/components/dropdown/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Dropdown</div>
+    <div class="cf-card__body">Items array API; full ↑↓ Enter Esc keyboard support; groups and danger items.</div>
+  </a>
+  <a href="/components/stepper/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Stepper</div>
+    <div class="cf-card__body">Multi-step flow progress; 3 variants, horizontal or vertical, clickable to switch.</div>
+  </a>
+  <a href="/components/sidebar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Sidebar</div>
+    <div class="cf-card__body">Vertical primary navigation; groups, nested submenus, badges, collapsible icon mode.</div>
+  </a>
+  <a href="/components/navmenu/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">NavMenu</div>
+    <div class="cf-card__body">Top horizontal navigation; each item can attach a rich panel (multi-column links + descriptions).</div>
+  </a>
+  <a href="/components/segmented/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">SegmentedControl</div>
+    <div class="cf-card__body">Semantic alias for Tabs segmented variant; for view / time-period switching.</div>
+  </a>
+  <a href="/components/anchor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Anchor</div>
+    <div class="cf-card__body">Explicit anchor list; highlights the current section while scrolling, smooth scrolls on click.</div>
+  </a>
+</div>
+
+## Layout and state
+
+<div class="cf-feature-grid">
+  <a href="/components/divider/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Divider</div>
+    <div class="cf-card__body">Horizontal / vertical divider; 3 line styles, optional label and position.</div>
+  </a>
+  <a href="/components/empty/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Empty</div>
+    <div class="cf-card__body">Placeholder for empty lists / tables / search results; optional icon and action button.</div>
+  </a>
+  <a href="/components/progress/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Progress</div>
+    <div class="cf-card__body">Linear / circular progress; 5 semantic tones, indeterminate state.</div>
+  </a>
+  <a href="/components/spinner/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Spinner</div>
+    <div class="cf-card__body">Spinning ring loading icon; 3 sizes × 6 tones, optional text label.</div>
+  </a>
+  <a href="/components/accordion/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Accordion</div>
+    <div class="cf-card__body">Single / multi-expand modes; 3 border styles (bordered / flush / separated).</div>
+  </a>
+  <a href="/components/backtop/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BackTop</div>
+    <div class="cf-card__body">Sticky button that appears past a scroll threshold; smooth-scrolls to the container top.</div>
+  </a>
+  <a href="/components/affix/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Affix</div>
+    <div class="cf-card__body">Switches an element to fixed positioning when it scrolls past; for toolbars / anchors / submit bars.</div>
+  </a>
+  <a href="/components/watermark/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Watermark</div>
+    <div class="cf-card__body">Overlay tilted, repeated text watermark on a content container to trace leaks.</div>
+  </a>
+  <a href="/components/floatbutton/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">FloatButton</div>
+    <div class="cf-card__body">Round button anchored to a viewport corner; supports tooltip and badge.</div>
+  </a>
+  <a href="/components/infinitescroll/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">InfiniteScroll</div>
+    <div class="cf-card__body">Auto-loads the next page when scrolled to the bottom; based on IntersectionObserver.</div>
+  </a>
+  <a href="/components/tour/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Tour</div>
+    <div class="cf-card__body">Step-by-step highlight on key UI elements + explanation popover for new-feature onboarding.</div>
+  </a>
+</div>
+
+## Feedback and overlays
+
+<div class="cf-feature-grid">
+  <a href="/components/modal/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Modal</div>
+    <div class="cf-card__body">Built-in portal, focus trap, scroll lock, ESC / mask close, enter/exit animations.</div>
+  </a>
+  <a href="/components/tooltip/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Tooltip</div>
+    <div class="cf-card__body">4 placements; auto edge-avoidance; hover and focus dual trigger; non-blocking.</div>
+  </a>
+  <a href="/components/toast/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Toast</div>
+    <div class="cf-card__body">Imperative API + single-mount Toaster; 5 semantics, 6 positions, auto-dismiss.</div>
+  </a>
+  <a href="/components/alert/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Alert</div>
+    <div class="cf-card__body">4 tones × 3 variants; inline static message with title, icon, and close button.</div>
+  </a>
+  <a href="/components/skeleton/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Skeleton</div>
+    <div class="cf-card__body">text / circle / rect shapes; shimmer animation; multi-line text placeholder helper.</div>
+  </a>
+  <a href="/components/drawer/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Drawer</div>
+    <div class="cf-card__body">Edge-anchored variant of Modal; slides from any side. Shares portal / focus trap / scroll lock.</div>
+  </a>
+  <a href="/components/popover/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Popover</div>
+    <div class="cf-card__body">Interactive variant of Tooltip; supports any rich content, forms, and buttons.</div>
+  </a>
+  <a href="/components/banner/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Banner</div>
+    <div class="cf-card__body">Full-width top notice; 6 tones × 2 variants, closable, can stick to top.</div>
+  </a>
+  <a href="/components/result/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Result</div>
+    <div class="cf-card__body">Full-page feedback for success / failure / error states; supports 404 / 403 / 500 placeholders.</div>
+  </a>
+</div>
+
+## Editor
+
+<div class="cf-feature-grid">
+  <a href="/components/codeeditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CodeEditor</div>
+    <div class="cf-card__body">Lightweight code editing container: textarea + line numbers + Tab indent. For full syntax / completion, plug in Monaco / CodeMirror.</div>
+  </a>
+  <a href="/components/diffeditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DiffEditor</div>
+    <div class="cf-card__body">Line-level LCS diff; split / unified modes; line numbers + +/- markers.</div>
+  </a>
+  <a href="/components/markdowneditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">MarkdownEditor</div>
+    <div class="cf-card__body">Built-in minimal markdown renderer; split / edit / preview modes.</div>
+  </a>
+  <a href="/components/regexbuilder/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">RegexBuilder</div>
+    <div class="cf-card__body">Live-compile + match testing; friendly error messages; flags toggled via chips.</div>
+  </a>
+  <a href="/components/ansitext/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">AnsiText</div>
+    <div class="cf-card__body">Parses ANSI escape sequences and renders colored spans; pure display, no xterm.js dependency.</div>
+  </a>
+</div>
+
+## System shell
+
+<div class="cf-feature-grid">
+  <a href="/components/titlebar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TitleBar</div>
+    <div class="cf-card__body">Desktop-app window title bar. macOS-style traffic-light + centered title; Windows / Linux-style min/max/close + left-aligned.</div>
+  </a>
+  <a href="/components/statusbar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">StatusBar</div>
+    <div class="cf-card__body">Editor bottom bar. Three slots (left / center / right); 6 semantic tones.</div>
+  </a>
+  <a href="/components/menubar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">MenuBar</div>
+    <div class="cf-card__body">App-top menu bar (File / Edit / View style); shortcuts, separators, danger items.</div>
+  </a>
+  <a href="/components/notificationcenter/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">NotificationCenter</div>
+    <div class="cf-card__body">Notification history panel with unread count, mark-all-read, and clear controls.</div>
+  </a>
+  <a href="/components/globalsearch/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">GlobalSearch</div>
+    <div class="cf-card__body">Full-screen overlay app-level search; category switch + grouped list + path / badge / shortcut.</div>
+  </a>
+</div>
+
+## Multi-window layout
+
+<div class="cf-feature-grid">
+  <a href="/components/docklayout/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DockLayout</div>
+    <div class="cf-card__body">Recursive split + tabbed pane shell for desktop apps. v1 declarative; v2 adds drag-rearrange.</div>
+  </a>
+  <a href="/components/detachedpanel/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DetachedPanel</div>
+    <div class="cf-card__body">Draggable floating panel teleported to body; pairs with TearOffTab / DockLayout's detach action.</div>
+  </a>
+  <a href="/components/floatinginspector/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">FloatingInspector</div>
+    <div class="cf-card__body">Corner-anchored collapsible inspector panel; for performance monitoring / debug overlays.</div>
+  </a>
+  <a href="/components/tearofftab/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TearOffTabs</div>
+    <div class="cf-card__body">Fires a tear-off event when a tab is dragged past a threshold; consumer decides whether to spawn DetachedPanel or a new window.</div>
+  </a>
+</div>
+
+## Data visualization
+
+<div class="cf-feature-grid">
+  <a href="/components/sparkline/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Sparkline</div>
+    <div class="cf-card__body">Inline mini trend line; common as the trend line on a KPI card.</div>
+  </a>
+  <a href="/components/linechart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">LineChart</div>
+    <div class="cf-card__body">Multi-series line chart; smooth curves, gridlines, x/y axis labels.</div>
+  </a>
+  <a href="/components/areachart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">AreaChart</div>
+    <div class="cf-card__body">Area chart with stacked mode and smooth curve support.</div>
+  </a>
+  <a href="/components/barchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BarChart</div>
+    <div class="cf-card__body">Single-series vertical bar chart.</div>
+  </a>
+  <a href="/components/histogram/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Histogram</div>
+    <div class="cf-card__body">Binned histogram, one bar per bin.</div>
+  </a>
+  <a href="/components/stackedbar100/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">StackedBar100</div>
+    <div class="cf-card__body">Horizontal 100% stacked bars; suited to share-of-total distributions.</div>
+  </a>
+  <a href="/components/bulletchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BulletChart</div>
+    <div class="cf-card__body">Single-value progress bar + target line + qualitative bands.</div>
+  </a>
+  <a href="/components/candlestickchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CandlestickChart</div>
+    <div class="cf-card__body">OHLC candlestick chart; green up / red down; wick + body.</div>
+  </a>
+  <a href="/components/donutchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DonutChart</div>
+    <div class="cf-card__body">Hollow pie chart; can host a value/label in the center.</div>
+  </a>
+  <a href="/components/funnelchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">FunnelChart</div>
+    <div class="cf-card__body">Layer-by-layer narrowing conversion funnel; absolute values per layer.</div>
+  </a>
+  <a href="/components/treemap/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Treemap</div>
+    <div class="cf-card__body">Hierarchical area-rectangle chart; single-level slice-and-dice layout.</div>
+  </a>
+  <a href="/components/sankeydiagram/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">SankeyDiagram</div>
+    <div class="cf-card__body">Node + weighted-edge flow diagram; node height = flow.</div>
+  </a>
+  <a href="/components/scatterplot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ScatterPlot</div>
+    <div class="cf-card__body">2D scatter; can be tinted by group.</div>
+  </a>
+  <a href="/components/boxplot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BoxPlot</div>
+    <div class="cf-card__body">Five-number summary + outliers for statistical distribution.</div>
+  </a>
+  <a href="/components/radarchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">RadarChart</div>
+    <div class="cf-card__body">Multi-axis polygon chart for comparing dimensions; supports multiple series.</div>
+  </a>
+  <a href="/components/ridgeplot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">RidgePlot</div>
+    <div class="cf-card__body">Vertically stacked density curves for multiple groups.</div>
+  </a>
+  <a href="/components/gauge/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Gauge</div>
+    <div class="cf-card__body">Ring-shaped current-value gauge; 4 tones.</div>
+  </a>
+  <a href="/components/metriccard/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">MetricCard</div>
+    <div class="cf-card__body">Value + unit + delta + embedded sparkline trend.</div>
+  </a>
+  <a href="/components/timingbar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TimingBar</div>
+    <div class="cf-card__body">Horizontal request waterfall with one segment per phase.</div>
+  </a>
+  <a href="/components/latencyheatmap/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">LatencyHeatmap</div>
+    <div class="cf-card__body">2D matrix heatmap; green→yellow→red OKLCH hue lerp.</div>
+  </a>
+  <a href="/components/connectiongraph/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ConnectionGraph</div>
+    <div class="cf-card__body">Node + edge graph; default circular equidistant layout.</div>
+  </a>
+  <a href="/components/chartcrosshair/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ChartCrosshair</div>
+    <div class="cf-card__body">Crosshair locator + tooltip helper that drops into any SVG chart.</div>
+  </a>
+  <a href="/components/charttoolbar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ChartToolbar</div>
+    <div class="cf-card__body">Chart-header toolbar: title + legend toggle + zoom/export/refresh buttons.</div>
+  </a>
+</div>
+
+## Templates / page modules
+
+<div class="cf-feature-grid">
+  <a href="/components/protocolpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ProtocolPane</div>
+    <div class="cf-card__body">Protocol monitor shell with SSE / MQTT / Kafka / gRPC tabs.</div>
+  </a>
+  <a href="/components/networkpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">NetworkPane</div>
+    <div class="cf-card__body">Network capture pane with HAR / Hex / PCAP / Cert / Cookie tabs.</div>
+  </a>
+  <a href="/components/sqlworkbench/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">SqlWorkbench</div>
+    <div class="cf-card__body">SQL workbench shell with Editor / Console / History tabs.</div>
+  </a>
+  <a href="/components/terminalpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TerminalPane</div>
+    <div class="cf-card__body">Terminal pane shell with Terminal / Output / CommandLine tabs.</div>
+  </a>
+  <a href="/components/crashpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CrashPane</div>
+    <div class="cf-card__body">Crash Dialog / Stack Trace / Dump Uploader / Safe Mode tabs.</div>
+  </a>
+  <a href="/components/pluginpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">PluginPane</div>
+    <div class="cf-card__body">Plugin center pane with Card / Manifest / Permission / Marketplace tabs.</div>
+  </a>
+  <a href="/components/domainpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DomainPane</div>
+    <div class="cf-card__body">API debugging pane with Collection / Request / Response / Mock / Workflow tabs.</div>
+  </a>
+  <a href="/components/onboardingflow/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">OnboardingFlow</div>
+    <div class="cf-card__body">Onboarding flow shell with First-Run Wizard / Hotspot Tour / Full Flow tabs.</div>
+  </a>
+</div>
