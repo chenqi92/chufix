@@ -541,6 +541,47 @@
   border: 0 !important;
 }
 
+/* ---- Cell selection (Excel-style) ---- */
+.cf-table__cell--cell-selected {
+  background: var(--accent-soft) !important;
+  box-shadow: inset 0 0 0 1px var(--accent-1);
+  user-select: none;
+}
+.cf-table__cell--cell-selected.cf-table__cell--editable:hover::after {
+  display: none;
+}
+
+/* ---- Column virtual padding ---- */
+.cf-table__col-pad {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+/* ---- Dark theme nuances ---- */
+[data-theme='dark-cool'] .cf-table__resize-handle:hover::after,
+[data-theme='dark-cool'] .cf-table__resize-handle.is-active::after,
+[data-theme='dark-warm'] .cf-table__resize-handle:hover::after,
+[data-theme='dark-warm'] .cf-table__resize-handle.is-active::after {
+  background: var(--accent-2);
+  box-shadow: 0 0 6px var(--accent-soft);
+}
+[data-theme='dark-cool'] .cf-table__cell--th.is-drop-target,
+[data-theme='dark-warm'] .cf-table__cell--th.is-drop-target {
+  box-shadow: inset 3px 0 0 var(--accent-2);
+  background: var(--accent-soft);
+}
+[data-theme='dark-cool'] .cf-table__row.is-row-drop-target > .cf-table__cell,
+[data-theme='dark-warm'] .cf-table__row.is-row-drop-target > .cf-table__cell {
+  box-shadow: inset 0 2px 0 var(--accent-2);
+  background: var(--accent-soft);
+}
+[data-theme='dark-cool'] .cf-table__edit-input,
+[data-theme='dark-warm'] .cf-table__edit-input {
+  background: var(--bg-2);
+  border-color: var(--accent-2);
+}
+
 /* ---- Pagination ---- */
 .cf-table__pagination {
   display: flex;

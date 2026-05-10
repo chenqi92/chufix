@@ -154,6 +154,93 @@ kbd {
 [data-theme='dark-warm'] .theme-toggle__sun {
   display: inline-block;
 }
+.theme-switcher {
+  position: relative;
+}
+.theme-switcher__trigger {
+  position: relative;
+}
+.theme-switcher__trigger::after {
+  content: '';
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--bg-0);
+  border-radius: 50%;
+  background: var(--accent-1);
+}
+.theme-switcher__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: var(--z-popover);
+  width: 220px;
+  padding: 10px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-1);
+  box-shadow: var(--shadow-3);
+}
+.theme-switcher__menu[hidden] {
+  display: none;
+}
+.theme-switcher__group + .theme-switcher__group {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-1);
+}
+.theme-switcher__label {
+  margin: 0 0 6px;
+  color: var(--fg-3);
+  font-size: var(--t-11);
+  font-weight: var(--w-semibold);
+}
+.theme-switcher__option,
+.theme-switcher__swatch {
+  width: 100%;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: var(--r-4);
+  background: transparent;
+  color: var(--fg-2);
+  font: inherit;
+  font-size: var(--t-13);
+  text-align: left;
+  cursor: pointer;
+}
+.theme-switcher__option {
+  padding: 0 8px;
+}
+.theme-switcher__option:hover,
+.theme-switcher__swatch:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+.theme-switcher__option[aria-checked='true'],
+.theme-switcher__swatch[aria-checked='true'] {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.theme-switcher__swatch {
+  padding: 0 8px 0 6px;
+}
+.theme-switcher__swatch::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 0.12);
+}
+.theme-switcher__swatch--blue::before { background: oklch(54% 0.16 250); }
+.theme-switcher__swatch--emerald::before { background: oklch(52% 0.14 155); }
+.theme-switcher__swatch--violet::before { background: oklch(56% 0.17 305); }
+.theme-switcher__swatch--amber::before { background: oklch(58% 0.14 78); }
+.theme-switcher__swatch--rose::before { background: oklch(55% 0.18 20); }
 
 .site-announcement {
   border-bottom: 1px solid var(--line-1);

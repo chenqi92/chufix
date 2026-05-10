@@ -46,10 +46,11 @@
 /* Gallery grids (used in /charts and /blocks index pages) */
 .cf-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 16px;
 }
 .cf-gallery-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line-1);
@@ -67,15 +68,30 @@
 }
 .cf-gallery-card__preview {
   background: var(--bg-inset);
-  padding: 16px;
-  min-height: 140px;
+  padding: 18px;
+  min-height: 190px;
+  aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid var(--line-1);
+  overflow: hidden;
+}
+.cf-gallery-card__preview > * {
+  max-width: 100%;
+}
+.cf-gallery-card__preview svg {
+  max-width: 100%;
+  height: auto;
 }
 .cf-gallery-card__body {
+  display: block;
   padding: 12px 14px;
+  color: inherit;
+  text-decoration: none;
+}
+.cf-gallery-card__body:hover {
+  text-decoration: none;
 }
 .cf-gallery-card__name {
   font-size: var(--t-14);

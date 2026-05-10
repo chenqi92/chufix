@@ -191,6 +191,114 @@
   --shadow-color: 240 12% 30%;
 }
 
+/* ---------- ACCENT PALETTES ----------
+   Accent palettes are theme-neutral tokens. Set data-accent on the same root
+   element as data-theme, e.g. <html data-theme="light" data-accent="emerald">.
+   Components consume --accent-* and --viz-1, so they follow automatically. */
+[data-accent='blue'] {
+  --accent-1: oklch(54% 0.16 250);
+  --accent-2: oklch(48% 0.16 250);
+  --accent-3: oklch(44% 0.15 250);
+  --accent-soft: oklch(54% 0.16 250 / 0.1);
+  --proto-grpc: oklch(48% 0.16 250);
+  --viz-1: oklch(54% 0.16 250);
+  --selection-bg: oklch(54% 0.16 250 / 0.2);
+}
+[data-accent='emerald'] {
+  --accent-1: oklch(52% 0.14 155);
+  --accent-2: oklch(46% 0.14 155);
+  --accent-3: oklch(42% 0.13 155);
+  --accent-soft: oklch(52% 0.14 155 / 0.1);
+  --proto-grpc: oklch(48% 0.14 155);
+  --viz-1: oklch(52% 0.14 155);
+  --selection-bg: oklch(52% 0.14 155 / 0.2);
+}
+[data-accent='violet'] {
+  --accent-1: oklch(56% 0.17 305);
+  --accent-2: oklch(50% 0.17 305);
+  --accent-3: oklch(45% 0.16 305);
+  --accent-soft: oklch(56% 0.17 305 / 0.1);
+  --proto-grpc: oklch(50% 0.17 305);
+  --viz-1: oklch(56% 0.17 305);
+  --selection-bg: oklch(56% 0.17 305 / 0.2);
+}
+[data-accent='amber'] {
+  --accent-1: oklch(58% 0.14 78);
+  --accent-2: oklch(50% 0.14 78);
+  --accent-3: oklch(44% 0.13 78);
+  --accent-soft: oklch(58% 0.14 78 / 0.12);
+  --fg-on-accent: oklch(18% 0.02 78);
+  --proto-grpc: oklch(56% 0.14 78);
+  --viz-1: oklch(58% 0.14 78);
+  --selection-bg: oklch(58% 0.14 78 / 0.24);
+}
+[data-accent='rose'] {
+  --accent-1: oklch(55% 0.18 20);
+  --accent-2: oklch(49% 0.18 20);
+  --accent-3: oklch(44% 0.17 20);
+  --accent-soft: oklch(55% 0.18 20 / 0.1);
+  --proto-grpc: oklch(54% 0.18 20);
+  --viz-1: oklch(55% 0.18 20);
+  --selection-bg: oklch(55% 0.18 20 / 0.2);
+}
+
+[data-theme='dark'][data-accent='blue'],
+[data-theme='dark-cool'][data-accent='blue'],
+[data-theme='dark-warm'][data-accent='blue'] {
+  --accent-1: oklch(68% 0.15 250);
+  --accent-2: oklch(74% 0.15 250);
+  --accent-3: oklch(62% 0.14 250);
+  --accent-soft: oklch(68% 0.15 250 / 0.16);
+  --proto-grpc: oklch(68% 0.15 250);
+  --viz-1: oklch(68% 0.15 250);
+  --selection-bg: oklch(68% 0.15 250 / 0.32);
+}
+[data-theme='dark'][data-accent='emerald'],
+[data-theme='dark-cool'][data-accent='emerald'],
+[data-theme='dark-warm'][data-accent='emerald'] {
+  --accent-1: oklch(70% 0.14 155);
+  --accent-2: oklch(76% 0.14 155);
+  --accent-3: oklch(62% 0.13 155);
+  --accent-soft: oklch(70% 0.14 155 / 0.16);
+  --proto-grpc: oklch(70% 0.14 155);
+  --viz-1: oklch(70% 0.14 155);
+  --selection-bg: oklch(70% 0.14 155 / 0.32);
+}
+[data-theme='dark'][data-accent='violet'],
+[data-theme='dark-cool'][data-accent='violet'],
+[data-theme='dark-warm'][data-accent='violet'] {
+  --accent-1: oklch(70% 0.16 305);
+  --accent-2: oklch(76% 0.16 305);
+  --accent-3: oklch(62% 0.15 305);
+  --accent-soft: oklch(70% 0.16 305 / 0.16);
+  --proto-grpc: oklch(70% 0.16 305);
+  --viz-1: oklch(70% 0.16 305);
+  --selection-bg: oklch(70% 0.16 305 / 0.32);
+}
+[data-theme='dark'][data-accent='amber'],
+[data-theme='dark-cool'][data-accent='amber'],
+[data-theme='dark-warm'][data-accent='amber'] {
+  --accent-1: oklch(76% 0.14 78);
+  --accent-2: oklch(82% 0.14 78);
+  --accent-3: oklch(68% 0.13 78);
+  --accent-soft: oklch(76% 0.14 78 / 0.16);
+  --fg-on-accent: oklch(18% 0.02 78);
+  --proto-grpc: oklch(76% 0.14 78);
+  --viz-1: oklch(76% 0.14 78);
+  --selection-bg: oklch(76% 0.14 78 / 0.32);
+}
+[data-theme='dark'][data-accent='rose'],
+[data-theme='dark-cool'][data-accent='rose'],
+[data-theme='dark-warm'][data-accent='rose'] {
+  --accent-1: oklch(70% 0.18 20);
+  --accent-2: oklch(76% 0.18 20);
+  --accent-3: oklch(62% 0.17 20);
+  --accent-soft: oklch(70% 0.18 20 / 0.16);
+  --proto-grpc: oklch(70% 0.18 20);
+  --viz-1: oklch(70% 0.18 20);
+  --selection-bg: oklch(70% 0.18 20 / 0.32);
+}
+
 /* ---------- TYPOGRAPHY ---------- */
 :root {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',

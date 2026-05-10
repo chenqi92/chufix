@@ -15,9 +15,9 @@ const dict = {
     'site.description': '础件 ChuFix UI · 初见即用的基础组件库，Vue 3 与 React 双框架同源，纯 HTML/JS 项目也能直接用 CSS 类名。',
     'site.brand.line': '础件 · 双框架同源 · CSS 变量主题 · 可装包也可拷源码 · 纯 HTML/JS 也能用',
 
-    'nav.menu.components': 'Components',
-    'nav.menu.charts': 'Charts',
-    'nav.menu.blocks': 'Blocks',
+    'nav.menu.components': '组件',
+    'nav.menu.charts': '图表',
+    'nav.menu.blocks': '页面方案',
     'nav.search.placeholder': '搜索文档…',
     'nav.search.kbd': 'Ctrl K',
     'nav.github': 'GitHub',

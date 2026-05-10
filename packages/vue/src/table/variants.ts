@@ -86,6 +86,12 @@ export interface TableColumn<T = Record<string, unknown>> {
   /** 导出时单元格的字符串化方式。缺省走 format / String(value)。*/
   exportRender?: (value: unknown, row: T, index: number) => string;
 
+  /* —— 自动行合并 —— */
+  /** 连续相同值的行自动合并（rowSpan）。
+   *   - true / 'consecutive'：按 cell value 严格相等
+   *   - 函数：(curRow, prevRow) => 是否合并 */
+  mergeRows?: boolean | 'consecutive' | ((cur: T, prev: T) => boolean);
+
   /* —— 杂项 —— */
   className?: string;
   cellClass?: string | ((row: T, index: number) => string);
@@ -198,6 +204,27 @@ export interface TableProps<T = Record<string, unknown>> {
   exportable?: boolean;
   /** 导出文件名前缀，默认 'table'。*/
   exportFileName?: string;
+
+  /* 列状态持久化 */
+  /** localStorage key（不要写入前缀，组件会自动加 'cf-table:' 命名空间）。
+   *  设了 persistKey 后：第一次挂载从 localStorage 读取 columnsState；之后每次变化写回。*/
+  persistKey?: string;
+
+  /* 服务端模式防抖 */
+  /** 全局搜索 / 过滤改动透传给上层时的防抖（ms）。0 表示同步触发。*/
+  serverDebounce?: number;
+
+  /* 单元格选区 */
+  /** 启用 Excel 风格的单元格选区：单击 / Shift 单击扩展矩形 / Ctrl-Cmd C 拷贝 TSV。*/
+  cellSelectable?: boolean;
+
+  /* 列虚拟化（适合 100+ 列） */
+  /** 启用列虚拟化。建议同时为列指定 width（缺省按 colWidth 估算）。*/
+  colVirtual?: boolean;
+  /** 列虚拟化时的默认列宽（px）。*/
+  colWidth?: number;
+  /** 列虚拟化的左右额外渲染列数。*/
+  colOverscan?: number;
 
   /* 工具栏 */
   /** 'auto'：根据开启的能力自动展示 search / column-visibility / export 按钮。*/

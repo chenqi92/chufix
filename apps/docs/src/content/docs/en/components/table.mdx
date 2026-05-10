@@ -15,6 +15,10 @@ import VirtualVue from '~/components/demos/table/VirtualVue.vue';
 import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
 import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
 import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
+import PersistVue from '~/components/demos/table/PersistVue.vue';
+import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
+import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
+import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
 
 `CfTable` is one of the most feature-complete components in the library. Design choices:
 
@@ -137,6 +141,65 @@ Add `editable: true` to a column with optional `editType: 'text' | 'number' | 's
   <CsvExportVue client:load />
 </DemoFrame>
 
+## Persist column state
+
+Setting `persistKey="<key>"` makes the table write the current `columnsState` (hidden / order / widths) to `localStorage['cf-table:<key>']` and restore it on next mount.
+
+<DemoFrame>
+  <PersistVue client:load />
+</DemoFrame>
+
+When fully controlled (you pass `:columns-state`), persistence is skipped — you decide where to save it.
+
+## Auto rowSpan merge
+
+Add `mergeRows: true` to a column and consecutive cells with equal values are merged into a single rowSpan. For finer control pass a function: `mergeRows: (cur, prev) => cur.groupId === prev.groupId`.
+
+<DemoFrame>
+  <MergeRowsVue client:load />
+</DemoFrame>
+
+Merges never cross tree levels (different `parentKey` rows are not joined).
+
+## Cell selection + one-tap copy
+
+`cell-selectable` makes the table behave like Excel:
+
+- Click a cell → select it
+- Shift-click / mouse drag → rectangular selection
+- <kbd>Ctrl/⌘ + C</kbd> → copies as TSV to the clipboard, ready to paste into Excel / Numbers / Google Sheets
+
+<DemoFrame>
+  <CellSelectVue client:load />
+</DemoFrame>
+
+`column.format` is honored — what you see is what you copy.
+
+## Column virtualization (bidirectional)
+
+When you have 100+ columns of simple cells (think 2-D matrices), enabling `col-virtual` + a default `col-width` virtualizes the horizontal axis too. Combine with `virtual` for full bidirectional virtual scrolling.
+
+<DemoFrame>
+  <ColVirtualVue client:load />
+</DemoFrame>
+
+200 rows × 121 columns = 24,200 cells, but the actual DOM stays under ~800 nodes. Note: `column.fixed` still pins columns, but try to keep total fixed width under one third of the viewport so the visible area isn't crowded.
+
+## Server-side debounce
+
+Typing in the search box or filter dropdown shouldn't pound your backend on every keystroke. Pass `:server-debounce="300"` (ms) to delay `update:globalSearch` and `update:filters` until the input is idle. Other signals (sort click, page change) are explicit clicks and remain synchronous.
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :pagination="{ page, pageSize, total }"
+  :server-debounce="300"
+  @update:globalSearch="(q) => loadData({ search: q })"
+  @update:filters="(f) => loadData({ filters: f })"
+/>
+```
+
 ## Server-side mode
 
 Once `pagination.total` is a number, the component **stops** doing client-side slicing. sort / filter / pagination changes are emitted as events and you fetch from the backend:
@@ -202,6 +265,12 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `rowReorderable` | `boolean` | `false` | Enable row drag-and-drop reorder |
 | `exportable` | `boolean` | `false` | Show CSV export button in toolbar |
 | `exportFileName` | `string` | `'table'` | Export file name (without extension) |
+| `persistKey` | `string` | — | Persist `columnsState` in localStorage under this key |
+| `serverDebounce` | `number` | `0` | Debounce (ms) for `update:globalSearch` / `update:filters` |
+| `cellSelectable` | `boolean` | `false` | Excel-style cell selection + Ctrl/⌘+C copy as TSV |
+| `colVirtual` | `boolean` | `false` | Enable column virtualization (recommended for 100+ columns) |
+| `colWidth` | `number` | `120` | Default column width when virtualizing (px) |
+| `colOverscan` | `number` | `4` | Extra columns rendered on each side |
 
 ### `TableColumn`
 
@@ -228,6 +297,7 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `children` | `TableColumn[]` | Grouped headers |
 | `summary` | `'sum' \| 'avg' \| 'count' \| (rows) => any` | Aggregation |
 | `summaryRender` | `(value) => any` | Custom summary cell |
+| `mergeRows` | `boolean \| 'consecutive' \| (cur, prev) => boolean` | Auto-merge rowSpan for consecutive equal cells |
 | `editable` | `boolean \| (row, i) => boolean` | Whether this column is double-click editable |
 | `editType` | `'text' \| 'number' \| 'select'` | Editor type |
 | `editOptions` | `{label,value}[]` | Options for `select` editor |

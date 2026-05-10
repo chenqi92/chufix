@@ -55,6 +55,11 @@ const props = withDefaults(defineProps<TableProps<T>>(), {
   rowReorderable: false,
   exportable: false,
   exportFileName: 'table',
+  serverDebounce: 0,
+  cellSelectable: false,
+  colVirtual: false,
+  colWidth: 120,
+  colOverscan: 4,
 });
 
 const emit = defineEmits<{
@@ -440,7 +445,7 @@ function setFilterValue(key: string, value: unknown) {
     delete next[key];
   }
   if (props.filters === undefined) internalFilters.value = next;
-  emit('update:filters', next);
+  emitFilters(next);
   // 过滤后重置到第 1 页
   const p = activePagination.value;
   if (p && !isServerPagination.value && p.page !== 1) {
@@ -468,7 +473,7 @@ function setNumberRangeFilter(key: string, field: 'min' | 'max', raw: string) {
 
 function setGlobalSearch(v: string) {
   if (props.globalSearch === undefined) internalSearch.value = v;
-  emit('update:globalSearch', v);
+  emitGlobalSearch(v);
   const p = activePagination.value;
   if (p && !isServerPagination.value && p.page !== 1) {
     setPagination({ ...p, page: 1 });
@@ -887,7 +892,277 @@ function doExport() {
   downloadCsv(csv, props.exportFileName ?? 'table');
 }
 
-defineExpose({ patchColumnsState, exportCsv: doExport });
+/* ============================================================ */
+/*               列状态持久化（localStorage）                    */
+/* ============================================================ */
+
+const STORAGE_PREFIX = 'cf-table:';
+onMounted(() => {
+  if (!props.persistKey || typeof localStorage === 'undefined') return;
+  if (props.columnsState !== undefined) return; // 受控时不读
+  try {
+    const raw = localStorage.getItem(STORAGE_PREFIX + props.persistKey);
+    if (raw) internalColumnsState.value = JSON.parse(raw);
+  } catch {}
+});
+watch(
+  () => activeColumnsState.value,
+  (v) => {
+    if (!props.persistKey || typeof localStorage === 'undefined') return;
+    try {
+      localStorage.setItem(STORAGE_PREFIX + props.persistKey, JSON.stringify(v));
+    } catch {}
+  },
+  { deep: true },
+);
+
+/* ============================================================ */
+/*                  服务端模式防抖（search/filter）              */
+/* ============================================================ */
+
+let searchDebounce: number | null = null;
+let filterDebounce: number | null = null;
+
+function emitGlobalSearch(v: string) {
+  if (!props.serverDebounce) {
+    emit('update:globalSearch', v);
+    return;
+  }
+  if (searchDebounce) clearTimeout(searchDebounce);
+  searchDebounce = window.setTimeout(() => {
+    emit('update:globalSearch', v);
+    searchDebounce = null;
+  }, props.serverDebounce);
+}
+function emitFilters(next: Record<string, unknown>) {
+  if (!props.serverDebounce) {
+    emit('update:filters', next);
+    return;
+  }
+  if (filterDebounce) clearTimeout(filterDebounce);
+  filterDebounce = window.setTimeout(() => {
+    emit('update:filters', next);
+    filterDebounce = null;
+  }, props.serverDebounce);
+}
+onBeforeUnmount(() => {
+  if (searchDebounce) clearTimeout(searchDebounce);
+  if (filterDebounce) clearTimeout(filterDebounce);
+});
+
+/* ============================================================ */
+/*               自动 rowSpan 合并（mergeRows）                   */
+/* ============================================================ */
+
+interface MergeInfo { hidden: boolean; rowSpan: number; }
+const cellMerges = computed<Map<number, Map<string, MergeInfo>>>(() => {
+  const out = new Map<number, Map<string, MergeInfo>>();
+  const flat = flatTreeRows.value;
+  if (!flat.length) return out;
+  for (const col of renderLeafColumns.value) {
+    if (!col.mergeRows) continue;
+    const eq = (cur: T, prev: T): boolean => {
+      if (typeof col.mergeRows === 'function') return col.mergeRows(cur, prev);
+      return getCellValue(cur, col) === getCellValue(prev, col);
+    };
+    let i = 0;
+    while (i < flat.length) {
+      let span = 1;
+      for (let j = i + 1; j < flat.length; j++) {
+        // 树形子行不合并
+        if (flat[j].level !== flat[i].level || flat[j].parentKey !== flat[i].parentKey) break;
+        if (!eq(flat[j].row, flat[i].row)) break;
+        span++;
+      }
+      if (span > 1) {
+        const m = out.get(i) ?? new Map();
+        m.set(col.key, { hidden: false, rowSpan: span });
+        out.set(i, m);
+        for (let k = 1; k < span; k++) {
+          const m2 = out.get(i + k) ?? new Map();
+          m2.set(col.key, { hidden: true, rowSpan: 0 });
+          out.set(i + k, m2);
+        }
+      }
+      i += span;
+    }
+  }
+  return out;
+});
+
+function mergeInfoOf(rowIdx: number, colKey: string): MergeInfo | undefined {
+  return cellMerges.value.get(rowIdx)?.get(colKey);
+}
+
+/* ============================================================ */
+/*                    单元格选区 + 拷贝                          */
+/* ============================================================ */
+
+interface CellSelection {
+  startRow: number;
+  startCol: number;
+  endRow: number;
+  endCol: number;
+}
+const cellSelection = ref<CellSelection | null>(null);
+const cellAnchor = ref<{ row: number; col: number } | null>(null);
+
+function inSelection(rowIdx: number, colIdx: number): boolean {
+  const s = cellSelection.value;
+  if (!s) return false;
+  const r1 = Math.min(s.startRow, s.endRow);
+  const r2 = Math.max(s.startRow, s.endRow);
+  const c1 = Math.min(s.startCol, s.endCol);
+  const c2 = Math.max(s.startCol, s.endCol);
+  return rowIdx >= r1 && rowIdx <= r2 && colIdx >= c1 && colIdx <= c2;
+}
+function onCellMouseDown(rowIdx: number, colIdx: number, ev: MouseEvent) {
+  if (!props.cellSelectable) return;
+  if (ev.shiftKey && cellAnchor.value) {
+    cellSelection.value = {
+      startRow: cellAnchor.value.row,
+      startCol: cellAnchor.value.col,
+      endRow: rowIdx,
+      endCol: colIdx,
+    };
+    return;
+  }
+  cellAnchor.value = { row: rowIdx, col: colIdx };
+  cellSelection.value = { startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx };
+}
+function onCellMouseEnter(rowIdx: number, colIdx: number, ev: MouseEvent) {
+  if (!props.cellSelectable) return;
+  // 只在按下鼠标时扩展选区
+  if (ev.buttons !== 1 || !cellAnchor.value) return;
+  cellSelection.value = {
+    startRow: cellAnchor.value.row,
+    startCol: cellAnchor.value.col,
+    endRow: rowIdx,
+    endCol: colIdx,
+  };
+}
+
+function copySelectionToClipboard() {
+  const s = cellSelection.value;
+  if (!s) return;
+  const r1 = Math.min(s.startRow, s.endRow);
+  const r2 = Math.max(s.startRow, s.endRow);
+  const c1 = Math.min(s.startCol, s.endCol);
+  const c2 = Math.max(s.startCol, s.endCol);
+  const lines: string[] = [];
+  for (let r = r1; r <= r2; r++) {
+    const fr = flatTreeRows.value[r];
+    if (!fr) continue;
+    const cells: string[] = [];
+    for (let c = c1; c <= c2; c++) {
+      const col = renderLeafColumns.value[c];
+      if (!col) continue;
+      const v = getCellValue(fr.row, col);
+      const str = col.format ? col.format(v, fr.row, fr.index) : v == null ? '' : String(v);
+      // 替换 tab / newline 防止破坏 TSV
+      cells.push(str.replace(/\t/g, ' ').replace(/\r?\n/g, ' '));
+    }
+    lines.push(cells.join('\t'));
+  }
+  const tsv = lines.join('\n');
+  if (typeof navigator !== 'undefined' && navigator.clipboard) {
+    navigator.clipboard.writeText(tsv).catch(() => {});
+  }
+}
+
+function onKeyDown(ev: KeyboardEvent) {
+  if (!props.cellSelectable) return;
+  if ((ev.ctrlKey || ev.metaKey) && (ev.key === 'c' || ev.key === 'C')) {
+    if (cellSelection.value) {
+      ev.preventDefault();
+      copySelectionToClipboard();
+    }
+  }
+}
+onMounted(() => {
+  if (typeof window !== 'undefined') window.addEventListener('keydown', onKeyDown);
+});
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') window.removeEventListener('keydown', onKeyDown);
+});
+
+/* ============================================================ */
+/*                       列虚拟化                                 */
+/* ============================================================ */
+
+const scrollLeft = ref(0);
+const viewportWidth = ref(0);
+
+function onScrollExtended(ev: Event) {
+  const el = ev.target as HTMLElement;
+  scrollTop.value = el.scrollTop;
+  scrollLeft.value = el.scrollLeft;
+}
+
+let widthObs: ResizeObserver | null = null;
+onMounted(() => {
+  if (!scrollEl.value) return;
+  viewportWidth.value = scrollEl.value.clientWidth;
+  if (typeof ResizeObserver !== 'undefined') {
+    widthObs = new ResizeObserver(() => {
+      if (scrollEl.value) {
+        viewportWidth.value = scrollEl.value.clientWidth;
+      }
+    });
+    widthObs.observe(scrollEl.value);
+  }
+});
+onBeforeUnmount(() => {
+  widthObs?.disconnect();
+  widthObs = null;
+});
+
+const columnLefts = computed<number[]>(() => {
+  const out: number[] = [];
+  let acc = 0;
+  // 选择 / 展开 / 拖把柄列也占位
+  if (props.rowReorderable) acc += 28;
+  if (props.selectable === 'multiple') acc += 36;
+  if (props.expandable) acc += 36;
+  for (const c of renderLeafColumns.value) {
+    out.push(acc);
+    acc += widthOf(c) ?? props.colWidth ?? 120;
+  }
+  out.push(acc);
+  return out;
+});
+
+const colWindow = computed(() => {
+  if (!props.colVirtual) {
+    return { start: 0, end: renderLeafColumns.value.length, padLeft: 0, padRight: 0 };
+  }
+  const lefts = columnLefts.value;
+  const total = renderLeafColumns.value.length;
+  const sl = scrollLeft.value;
+  const vw = viewportWidth.value || 800;
+  // 二分找第一个 lefts[i] > scrollLeft 的位置
+  let start = 0;
+  for (let i = total - 1; i >= 0; i--) {
+    if (lefts[i] <= sl) { start = i; break; }
+  }
+  start = Math.max(0, start - (props.colOverscan ?? 4));
+  let end = start;
+  while (end < total && lefts[end] - lefts[start] < vw + (props.colOverscan ?? 4) * (props.colWidth ?? 120)) end++;
+  end = Math.min(total, end + (props.colOverscan ?? 4));
+  return {
+    start,
+    end,
+    padLeft: lefts[start] - lefts[0],
+    padRight: lefts[total] - lefts[end],
+  };
+});
+
+const visibleColumns = computed(() => {
+  if (!props.colVirtual) return renderLeafColumns.value;
+  return renderLeafColumns.value.slice(colWindow.value.start, colWindow.value.end);
+});
+
+defineExpose({ patchColumnsState, exportCsv: doExport, copySelection: copySelectionToClipboard });
 </script>
 
 <template>
@@ -952,7 +1227,7 @@ defineExpose({ patchColumnsState, exportCsv: doExport });
       </div>
     </header>
 
-    <div ref="scrollEl" class="cf-table__scroll" :style="scrollStyle" @scroll="onScroll">
+    <div ref="scrollEl" class="cf-table__scroll" :class="cellSelectable && 'is-cell-selectable'" :style="scrollStyle" @scroll="onScrollExtended">
       <table class="cf-table__table">
         <colgroup>
           <col v-if="rowReorderable" style="width: 28px;" />
@@ -1215,6 +1490,7 @@ defineExpose({ patchColumnsState, exportCsv: doExport });
               </td>
               <td
                 v-for="(col, ci) in renderLeafColumns"
+                v-show="!mergeInfoOf(fr.index, col.key)?.hidden"
                 :key="col.key"
                 class="cf-table__cell"
                 :class="[
@@ -1223,10 +1499,14 @@ defineExpose({ patchColumnsState, exportCsv: doExport });
                   col.ellipsis && 'cf-table__cell--ellipsis',
                   isCellEditable(fr.row, col, fr.index) && 'cf-table__cell--editable',
                   editing?.rowKey === fr.key && editing?.colKey === col.key && 'cf-table__cell--editing',
+                  cellSelectable && inSelection(fr.index, ci) && 'cf-table__cell--cell-selected',
                   cellClassOf(fr.row, col, fr.index),
                 ]"
                 :style="fixedStyle(col)"
+                :rowspan="mergeInfoOf(fr.index, col.key)?.rowSpan"
                 @dblclick="beginEdit(fr.row, col, fr.index, fr.key)"
+                @mousedown="onCellMouseDown(fr.index, ci, $event)"
+                @mouseenter="onCellMouseEnter(fr.index, ci, $event)"
               >
                 <span
                   v-if="ci === 0 && fr.level > 0"

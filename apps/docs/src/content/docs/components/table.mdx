@@ -15,6 +15,10 @@ import VirtualVue from '~/components/demos/table/VirtualVue.vue';
 import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
 import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
 import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
+import PersistVue from '~/components/demos/table/PersistVue.vue';
+import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
+import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
+import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
 
 `CfTable` 是组件库里功能最完整的"主力"组件之一。设计取舍：
 
@@ -137,6 +141,65 @@ import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
   <CsvExportVue client:load />
 </DemoFrame>
 
+## 列状态持久化
+
+`persistKey="<key>"` 让组件把当前 `columnsState`（隐藏 / 顺序 / 宽度）写到 `localStorage['cf-table:<key>']`，下次访问自动恢复。
+
+<DemoFrame>
+  <PersistVue client:load />
+</DemoFrame>
+
+完全受控时（外部传 `:columns-state`）会跳过自动读写，这时由你决定怎么持久化。
+
+## 自动 rowSpan 合并
+
+给某列加 `mergeRows: true`，连续相同值的单元格会自动合并 rowSpan。需要更细粒度的合并条件可以传函数：`mergeRows: (cur, prev) => cur.groupId === prev.groupId`。
+
+<DemoFrame>
+  <MergeRowsVue client:load />
+</DemoFrame>
+
+合并不会跨树形层级（不同 `parentKey` 的子行不会被合并到一起）。
+
+## 单元格选区 + 一键复制
+
+`cell-selectable` 让表格行为接近 Excel：
+
+- 单击单元格 → 选中
+- Shift 单击 / 鼠标拖动 → 矩形选区
+- <kbd>Ctrl/⌘ + C</kbd> → 复制为 TSV 到剪贴板，可以直接粘到 Excel / Numbers / Google Sheets
+
+<DemoFrame>
+  <CellSelectVue client:load />
+</DemoFrame>
+
+`column.format` 会被尊重 —— 复制出去的就是显示的字符串。
+
+## 列虚拟化（双向虚拟化）
+
+100+ 列且每列内容简单（如二维数据矩阵）时，启用 `col-virtual` + 默认 `col-width` 让横向滚动也只渲染可见列；和 `virtual` 一起开就是双向虚拟化。
+
+<DemoFrame>
+  <ColVirtualVue client:load />
+</DemoFrame>
+
+200 行 × 121 列 = 24200 单元格，DOM 实际不到 800 个节点。注意：列虚拟化下 `column.fixed` 仍然钉住，但要求被钉的列总宽不要超过视口的 1/3，否则可视区会很拥挤。
+
+## 服务端模式 · 防抖
+
+输入框 / 过滤面板的状态变化每一帧都触发会把后端打爆。给 `:server-debounce="300"`（ms）让 `update:globalSearch` 与 `update:filters` 在静默 300ms 后才发出。其它信号（点排序 / 翻页）是显式点击，不需要防抖，所以保持同步触发。
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :pagination="{ page, pageSize, total }"
+  :server-debounce="300"
+  @update:globalSearch="(q) => loadData({ search: q })"
+  @update:filters="(f) => loadData({ filters: f })"
+/>
+```
+
 ## 服务端模式
 
 只要 `pagination.total` 是个数字，组件就**不**自己做客户端 slice：sort / filter / pagination 都通过事件抛给上层，由你去请求服务端：
@@ -202,6 +265,12 @@ import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
 | `rowReorderable` | `boolean` | `false` | 启用行拖拽换序（最左侧出现拖把柄） |
 | `exportable` | `boolean` | `false` | 工具栏出现 CSV 导出按钮 |
 | `exportFileName` | `string` | `'table'` | 导出文件名（不含扩展名） |
+| `persistKey` | `string` | — | localStorage 自动持久化 columnsState 的 key |
+| `serverDebounce` | `number` | `0` | 全局搜索 / 过滤事件的防抖（ms） |
+| `cellSelectable` | `boolean` | `false` | Excel 风格单元格选区 + Ctrl/⌘+C 复制 TSV |
+| `colVirtual` | `boolean` | `false` | 启用列虚拟化（推荐 100+ 列时开启） |
+| `colWidth` | `number` | `120` | 列虚拟化的默认列宽（px） |
+| `colOverscan` | `number` | `4` | 列虚拟化左右额外渲染的列数 |
 
 ### `TableColumn`
 
@@ -228,6 +297,7 @@ import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
 | `children` | `TableColumn[]` | 多行表头分组 |
 | `summary` | `'sum' \| 'avg' \| 'count' \| (rows) => any` | 总计聚合 |
 | `summaryRender` | `(value) => any` | 总计单元格自定义渲染 |
+| `mergeRows` | `boolean \| 'consecutive' \| (cur, prev) => boolean` | 连续相同值自动合并 rowSpan |
 | `editable` | `boolean \| (row, i) => boolean` | 该列是否可双击编辑 |
 | `editType` | `'text' \| 'number' \| 'select'` | 编辑器类型 |
 | `editOptions` | `{label,value}[]` | `select` 模式选项 |

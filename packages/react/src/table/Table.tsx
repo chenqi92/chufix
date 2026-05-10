@@ -117,6 +117,12 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     rowReorderable = false,
     exportable = false,
     exportFileName = 'table',
+    persistKey,
+    serverDebounce = 0,
+    cellSelectable = false,
+    colVirtual = false,
+    colWidth = 120,
+    colOverscan = 4,
     className,
     onSortChange,
     onFiltersChange,
@@ -370,7 +376,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     const next = { ...activeFilters, [key]: value };
     if (value == null || value === '' || (Array.isArray(value) && !value.length)) delete next[key];
     if (filters === undefined) setInternalFilters(next);
-    onFiltersChange?.(next);
+    emitFiltersOut(next);
     if (activePagination && !isServerPagination && activePagination.page !== 1) {
       setPagination({ ...activePagination, page: 1 });
     }
@@ -379,7 +385,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
   /* ---------------- search ---------------- */
   const setGlobalSearch = (v: string) => {
     if (globalSearch === undefined) setInternalSearch(v);
-    onGlobalSearchChange?.(v);
+    emitGlobalSearchOut(v);
     if (activePagination && !isServerPagination && activePagination.page !== 1) {
       setPagination({ ...activePagination, page: 1 });
     }
@@ -712,6 +718,239 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     downloadCsv(csv, exportFileName ?? 'table');
   };
 
+  /* ---------------- localStorage persistence ---------------- */
+  const STORAGE_PREFIX = 'cf-table:';
+  // 初次挂载读取
+  useEffect(() => {
+    if (!persistKey || typeof localStorage === 'undefined') return;
+    if (columnsState !== undefined) return;
+    try {
+      const raw = localStorage.getItem(STORAGE_PREFIX + persistKey);
+      if (raw) setInternalColumnsState(JSON.parse(raw));
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [persistKey]);
+  // 变化时写回
+  useEffect(() => {
+    if (!persistKey || typeof localStorage === 'undefined') return;
+    try {
+      localStorage.setItem(STORAGE_PREFIX + persistKey, JSON.stringify(activeColumnsState));
+    } catch {}
+  }, [persistKey, activeColumnsState]);
+
+  /* ---------------- server debounce wrappers ---------------- */
+  const searchTimerRef = useRef<number | null>(null);
+  const filterTimerRef = useRef<number | null>(null);
+  useEffect(
+    () => () => {
+      if (searchTimerRef.current) window.clearTimeout(searchTimerRef.current);
+      if (filterTimerRef.current) window.clearTimeout(filterTimerRef.current);
+    },
+    [],
+  );
+  const emitGlobalSearchOut = (v: string) => {
+    if (!serverDebounce) {
+      onGlobalSearchChange?.(v);
+      return;
+    }
+    if (searchTimerRef.current) window.clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = window.setTimeout(() => {
+      onGlobalSearchChange?.(v);
+      searchTimerRef.current = null;
+    }, serverDebounce);
+  };
+  const emitFiltersOut = (next: Record<string, unknown>) => {
+    if (!serverDebounce) {
+      onFiltersChange?.(next);
+      return;
+    }
+    if (filterTimerRef.current) window.clearTimeout(filterTimerRef.current);
+    filterTimerRef.current = window.setTimeout(() => {
+      onFiltersChange?.(next);
+      filterTimerRef.current = null;
+    }, serverDebounce);
+  };
+
+  /* ---------------- mergeRows (auto rowSpan) ---------------- */
+  interface MergeInfo { hidden: boolean; rowSpan: number; }
+  const cellMerges = useMemo<Map<number, Map<string, MergeInfo>>>(() => {
+    const out = new Map<number, Map<string, MergeInfo>>();
+    if (!flatTreeRows.length) return out;
+    for (const col of renderLeafColumns) {
+      if (!col.mergeRows) continue;
+      const eq = (cur: T, prev: T): boolean => {
+        if (typeof col.mergeRows === 'function') return col.mergeRows(cur, prev);
+        return getCellValue(cur, col) === getCellValue(prev, col);
+      };
+      let i = 0;
+      while (i < flatTreeRows.length) {
+        let span = 1;
+        for (let j = i + 1; j < flatTreeRows.length; j++) {
+          if (
+            flatTreeRows[j].level !== flatTreeRows[i].level ||
+            flatTreeRows[j].parentKey !== flatTreeRows[i].parentKey
+          )
+            break;
+          if (!eq(flatTreeRows[j].row, flatTreeRows[i].row)) break;
+          span++;
+        }
+        if (span > 1) {
+          const m = out.get(i) ?? new Map();
+          m.set(col.key, { hidden: false, rowSpan: span });
+          out.set(i, m);
+          for (let k = 1; k < span; k++) {
+            const m2 = out.get(i + k) ?? new Map();
+            m2.set(col.key, { hidden: true, rowSpan: 0 });
+            out.set(i + k, m2);
+          }
+        }
+        i += span;
+      }
+    }
+    return out;
+  }, [flatTreeRows, renderLeafColumns]);
+  const mergeInfoOf = (rowIdx: number, colKey: string): MergeInfo | undefined =>
+    cellMerges.get(rowIdx)?.get(colKey);
+
+  /* ---------------- cell selection + copy ---------------- */
+  interface CellSelection { startRow: number; startCol: number; endRow: number; endCol: number; }
+  const [cellSelection, setCellSelection] = useState<CellSelection | null>(null);
+  const cellAnchorRef = useRef<{ row: number; col: number } | null>(null);
+  const inSelection = (rowIdx: number, colIdx: number): boolean => {
+    if (!cellSelection) return false;
+    const r1 = Math.min(cellSelection.startRow, cellSelection.endRow);
+    const r2 = Math.max(cellSelection.startRow, cellSelection.endRow);
+    const c1 = Math.min(cellSelection.startCol, cellSelection.endCol);
+    const c2 = Math.max(cellSelection.startCol, cellSelection.endCol);
+    return rowIdx >= r1 && rowIdx <= r2 && colIdx >= c1 && colIdx <= c2;
+  };
+  const onCellMouseDown = (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => {
+    if (!cellSelectable) return;
+    if (ev.shiftKey && cellAnchorRef.current) {
+      setCellSelection({
+        startRow: cellAnchorRef.current.row,
+        startCol: cellAnchorRef.current.col,
+        endRow: rowIdx,
+        endCol: colIdx,
+      });
+      return;
+    }
+    cellAnchorRef.current = { row: rowIdx, col: colIdx };
+    setCellSelection({ startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx });
+  };
+  const onCellMouseEnter = (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => {
+    if (!cellSelectable || ev.buttons !== 1 || !cellAnchorRef.current) return;
+    setCellSelection({
+      startRow: cellAnchorRef.current.row,
+      startCol: cellAnchorRef.current.col,
+      endRow: rowIdx,
+      endCol: colIdx,
+    });
+  };
+  const copySelectionToClipboard = () => {
+    if (!cellSelection) return;
+    const r1 = Math.min(cellSelection.startRow, cellSelection.endRow);
+    const r2 = Math.max(cellSelection.startRow, cellSelection.endRow);
+    const c1 = Math.min(cellSelection.startCol, cellSelection.endCol);
+    const c2 = Math.max(cellSelection.startCol, cellSelection.endCol);
+    const lines: string[] = [];
+    for (let r = r1; r <= r2; r++) {
+      const fr = flatTreeRows[r];
+      if (!fr) continue;
+      const cells: string[] = [];
+      for (let c = c1; c <= c2; c++) {
+        const col = renderLeafColumns[c];
+        if (!col) continue;
+        const v = getCellValue(fr.row, col);
+        const str = col.format ? col.format(v, fr.row, fr.index) : v == null ? '' : String(v);
+        cells.push(str.replace(/\t/g, ' ').replace(/\r?\n/g, ' '));
+      }
+      lines.push(cells.join('\t'));
+    }
+    const tsv = lines.join('\n');
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(tsv).catch(() => {});
+    }
+  };
+  useEffect(() => {
+    if (!cellSelectable) return;
+    const handler = (ev: KeyboardEvent) => {
+      if ((ev.ctrlKey || ev.metaKey) && (ev.key === 'c' || ev.key === 'C')) {
+        if (cellSelection) {
+          ev.preventDefault();
+          copySelectionToClipboard();
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cellSelectable, cellSelection]);
+
+  /* ---------------- column virtualization ---------------- */
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(0);
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    setViewportWidth(scrollRef.current.clientWidth);
+    if (typeof ResizeObserver === 'undefined') return;
+    const obs = new ResizeObserver(() => {
+      if (scrollRef.current) setViewportWidth(scrollRef.current.clientWidth);
+    });
+    obs.observe(scrollRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const columnLefts = useMemo<number[]>(() => {
+    const out: number[] = [];
+    let acc = 0;
+    if (rowReorderable) acc += 28;
+    if (selectable === 'multiple') acc += 36;
+    if (expandable) acc += 36;
+    for (const c of renderLeafColumns) {
+      out.push(acc);
+      acc += widthOf(c) ?? colWidth ?? 120;
+    }
+    out.push(acc);
+    return out;
+  }, [renderLeafColumns, rowReorderable, selectable, expandable, colWidth]);
+
+  const colWindow = useMemo(() => {
+    if (!colVirtual) {
+      return { start: 0, end: renderLeafColumns.length, padLeft: 0, padRight: 0 };
+    }
+    const lefts = columnLefts;
+    const total = renderLeafColumns.length;
+    const sl = scrollLeft;
+    const vw = viewportWidth || 800;
+    let start = 0;
+    for (let i = total - 1; i >= 0; i--) {
+      if (lefts[i] <= sl) {
+        start = i;
+        break;
+      }
+    }
+    start = Math.max(0, start - (colOverscan ?? 4));
+    let end = start;
+    while (
+      end < total &&
+      lefts[end] - lefts[start] < vw + (colOverscan ?? 4) * (colWidth ?? 120)
+    )
+      end++;
+    end = Math.min(total, end + (colOverscan ?? 4));
+    return {
+      start,
+      end,
+      padLeft: lefts[start] - lefts[0],
+      padRight: lefts[total] - lefts[end],
+    };
+  }, [colVirtual, columnLefts, renderLeafColumns.length, scrollLeft, viewportWidth, colOverscan, colWidth]);
+
+  const visibleColumns = useMemo(() => {
+    if (!colVirtual) return renderLeafColumns;
+    return renderLeafColumns.slice(colWindow.start, colWindow.end);
+  }, [colVirtual, renderLeafColumns, colWindow.start, colWindow.end]);
+
   return (
     <div ref={rootRef} className={fullCls}>
       {showToolbar && (
@@ -789,9 +1028,15 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
 
       <div
         ref={scrollRef}
-        className="cf-table__scroll"
+        className={['cf-table__scroll', cellSelectable ? 'is-cell-selectable' : '']
+          .filter(Boolean)
+          .join(' ')}
         style={scrollStyle}
-        onScroll={(e) => setScrollTop((e.target as HTMLDivElement).scrollTop)}
+        onScroll={(e) => {
+          const el = e.target as HTMLDivElement;
+          setScrollTop(el.scrollTop);
+          setScrollLeft(el.scrollLeft);
+        }}
       >
         <table className="cf-table__table">
           <colgroup>
@@ -1053,7 +1298,10 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                   <Row
                     key={fr.key}
                     fr={fr}
-                    cols={renderLeafColumns}
+                    cols={visibleColumns}
+                    fullColIndex={(c) => renderLeafColumns.indexOf(c)}
+                    padLeft={colWindow.padLeft}
+                    padRight={colWindow.padRight}
                     selectable={selectable}
                     selected={selectedSet.has(fr.key)}
                     expandable={!!expandable}
@@ -1086,6 +1334,11 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                     onEditKeydown={onEditKeydown}
                     setEditingDraft={(v) => setEditing((e) => (e ? { ...e, draft: v } : e))}
                     editInputRef={editInputRef}
+                    mergeInfoOf={mergeInfoOf}
+                    cellSelectable={cellSelectable}
+                    inSelection={inSelection}
+                    onCellMouseDown={onCellMouseDown}
+                    onCellMouseEnter={onCellMouseEnter}
                   />
                 ))}
                 {virtual && virtualWindow.padBottom > 0 && (
@@ -1191,6 +1444,9 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
 interface RowProps<T> {
   fr: FlatRow<T>;
   cols: TableColumn<T>[];
+  fullColIndex: (col: TableColumn<T>) => number;
+  padLeft: number;
+  padRight: number;
   selectable?: 'single' | 'multiple';
   selected: boolean;
   expandable: boolean;
@@ -1224,6 +1480,12 @@ interface RowProps<T> {
   onEditKeydown: (ev: ReactKeyboardEvent, row: T, col: TableColumn<T>, index: number) => void;
   setEditingDraft: (v: unknown) => void;
   editInputRef: MutableRefObject<HTMLInputElement | HTMLSelectElement | null>;
+  // mergeRows / cell selection
+  mergeInfoOf: (rowIdx: number, colKey: string) => { hidden: boolean; rowSpan: number } | undefined;
+  cellSelectable: boolean;
+  inSelection: (rowIdx: number, colIdx: number) => boolean;
+  onCellMouseDown: (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => void;
+  onCellMouseEnter: (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => void;
 }
 
 function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
@@ -1309,10 +1571,17 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
             )}
           </td>
         )}
+        {p.padLeft > 0 && (
+          <td className="cf-table__col-pad" style={{ width: p.padLeft }} />
+        )}
         {cols.map((col, ci) => {
+          const fullCi = p.fullColIndex(col);
+          const merge = p.mergeInfoOf(fr.index, col.key);
+          if (merge?.hidden) return null;
           const editable = p.isCellEditable(row, col, fr.index);
           const isEditing =
             p.editing?.rowKey === fr.key && p.editing?.colKey === col.key;
+          const selected = p.cellSelectable && p.inSelection(fr.index, fullCi);
           return (
             <td
               key={col.key}
@@ -1323,12 +1592,16 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
                 col.ellipsis ? 'cf-table__cell--ellipsis' : '',
                 editable ? 'cf-table__cell--editable' : '',
                 isEditing ? 'cf-table__cell--editing' : '',
+                selected ? 'cf-table__cell--cell-selected' : '',
                 p.cellClassOf(row, col, fr.index),
               ]
                 .filter(Boolean)
                 .join(' ')}
               style={p.fixedStyle(col)}
+              rowSpan={merge?.rowSpan && merge.rowSpan > 1 ? merge.rowSpan : undefined}
               onDoubleClick={() => p.beginEdit(row, col, fr.index, fr.key)}
+              onMouseDown={(e) => p.onCellMouseDown(fr.index, fullCi, e)}
+              onMouseEnter={(e) => p.onCellMouseEnter(fr.index, fullCi, e)}
             >
               {ci === 0 && fr.level > 0 && (
                 <span
@@ -1381,6 +1654,9 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
             </td>
           );
         })}
+        {p.padRight > 0 && (
+          <td className="cf-table__col-pad" style={{ width: p.padRight }} />
+        )}
       </tr>
       {p.expandable && p.expandRender && p.expanded && !fr.hasChildren && (
         <tr className="cf-table__row cf-table__row--expand">

@@ -6,7 +6,7 @@ function rand(n: number, base: number, jitter: number) {
 </script>
 
 <template>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; width: 100%;">
     <CfMetricCard label="今日 PV" value="12,420" unit="" :delta="8.4" :trend="rand(20, 65, 30)" />
     <CfMetricCard label="活跃用户" value="3,180" :delta="-2.1" :trend="rand(20, 80, 20)" />
     <CfMetricCard label="付费转化" value="6.2" unit="%" :delta="0.4" :trend="rand(20, 55, 15)" />
