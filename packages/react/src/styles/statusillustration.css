@@ -8,6 +8,7 @@
   height: auto;
   display: block;
   flex: none;
+  margin-inline: auto;
   color: var(--fg-3);
 }
 

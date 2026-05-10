@@ -217,6 +217,10 @@
 
 .cf-block__code {
   background: var(--bg-1);
+  padding: 12px;
+}
+.cf-block__code .cf-code-workspace {
+  box-shadow: none;
 }
 .cf-block__code-shell {
   display: grid;

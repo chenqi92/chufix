@@ -15,7 +15,8 @@ const rootClass = computed(() => emptyClass({ size: props.size! }));
   <div :class="rootClass" role="status">
     <div class="cf-empty__icon">
       <slot name="icon">
-        <StatusIllustration variant="empty" />
+        <img v-if="image" class="cf-empty__image" :src="image" :alt="imageAlt ?? ''" />
+        <StatusIllustration v-else variant="empty" />
       </slot>
     </div>
     <div class="cf-empty__title">

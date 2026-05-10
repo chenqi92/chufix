@@ -9,6 +9,7 @@ import TextVue from '~/components/demos/empty/TextVue.vue';
 import ActionVue from '~/components/demos/empty/ActionVue.vue';
 import SizesVue from '~/components/demos/empty/SizesVue.vue';
 import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
+import ImageVue from '~/components/demos/empty/ImageVue.vue';
 
 ## 基础用法
 
@@ -88,6 +89,34 @@ import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
   <IllustrationsVue client:load />
 </DemoFrame>
 
+## 自定义图片
+
+整页空状态可以直接传 `image`，适合接入品牌插画、AI 生成图片、业务 SVG 或 CDN 图片；小图标则继续用 `icon` slot / prop。
+
+<DemoFrame
+  vueCode={`<CfEmpty
+  title="还没有发布记录"
+  description="可以用 image 传入产品自己的插画。"
+  :image="image"
+  image-alt=""
+  size="lg"
+>
+  <template #action>
+    <CfButton variant="primary" size="sm">创建发布记录</CfButton>
+  </template>
+</CfEmpty>`}
+  reactCode={`<CfEmpty
+  title="还没有发布记录"
+  description="可以用 image 传入产品自己的插画。"
+  image={image}
+  imageAlt=""
+  size="lg"
+  action={<CfButton variant="primary" size="sm">创建发布记录</CfButton>}
+/>`}
+>
+  <ImageVue client:load />
+</DemoFrame>
+
 ## 三档尺寸
 
 `size` —— `sm`（行内 inline 占位）/ `md` 默认 / `lg` 整页空状态。
@@ -110,6 +139,8 @@ import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
 | `title` | `string` | `'暂无数据'` | 主文案 |
 | `description` | `string` | — | 副文案 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 整体尺寸 |
+| `image` | `string` | — | 自定义图片 URL / data URL |
+| `imageAlt` | `string` | `''` | 图片替代文本；装饰图保持空字符串 |
 
 ### 插槽 / Children
 

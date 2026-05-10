@@ -1,7 +1,7 @@
 ---
-import { Code } from 'astro:components';
 import { getLocaleFromUrl } from '~/i18n/utils';
 import { t } from '~/i18n/strings';
+import DocCodeWorkspace from './DocCodeWorkspace.astro';
 
 /**
  * Multi-file code showcase for Blocks pages — preview + file-tab code view.
@@ -25,16 +25,6 @@ const heightStyle =
       ? `${previewHeight}px`
       : previewHeight
     : '480px';
-const fileEntries = files.map((f) => {
-  const parts = f.name.split('/');
-  const fileName = parts.at(-1) ?? f.name;
-  const ext = fileName.includes('.') ? fileName.split('.').at(-1) ?? f.lang : f.lang;
-  return {
-    ...f,
-    fileName,
-    ext: ext.toUpperCase(),
-  };
-});
 ---
 
 <section class="cf-block" data-block-showcase data-block-id={id}>
@@ -58,42 +48,7 @@ const fileEntries = files.map((f) => {
       </div>
     </div>
     <div class="cf-block__code" data-pane="code" data-active="false">
-      <div class="cf-block__code-shell">
-        <aside class="cf-block__files" aria-label={t(locale, 'block.aria.files')}>
-          <div class="cf-block__tree-head">project</div>
-          <div class="cf-block__folder" aria-hidden="true">
-            <span class="cf-block__folder-icon">src</span>
-            <span>blocks/{id}</span>
-          </div>
-          <div class="cf-block__file-list" role="tablist" aria-label={t(locale, 'block.aria.codeFiles')}>
-            {fileEntries.map((f, i) => (
-              <button
-                type="button"
-                role="tab"
-                class="cf-block__file"
-                data-file={f.name}
-                aria-selected={i === 0 ? 'true' : 'false'}
-              >
-                <span class="cf-block__file-ext">{f.ext}</span>
-                <span class="cf-block__file-name">{f.fileName}</span>
-              </button>
-            ))}
-          </div>
-        </aside>
-        <div class="cf-block__editor">
-          {fileEntries.map((f, i) => (
-            <div class="cf-block__filebody" data-filebody={f.name} data-active={i === 0 ? 'true' : 'false'}>
-              <div class="cf-block__code-head">
-                <span>{f.name}</span>
-                <button class="cf-block__copy cf-block__copy--code" data-copy={f.content} data-copy-label={t(locale, 'block.copy.copy')} data-copied-label={t(locale, 'block.copy.copied')}>{t(locale, 'block.copy.copy')}</button>
-              </div>
-              <div class="cf-block__code-scroll">
-                <Code code={f.content} lang={f.lang as any} theme="github-dark" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <DocCodeWorkspace files={files} title={`${id} source`} rootLabel={`blocks/${id}`} height="min(720px, 72vh)" />
     </div>
   </div>
 </section>
@@ -102,22 +57,12 @@ const fileEntries = files.map((f) => {
   document.querySelectorAll<HTMLElement>('[data-block-showcase]').forEach((root) => {
     const modeBtns = root.querySelectorAll<HTMLButtonElement>('.cf-block__mode');
     const panes = root.querySelectorAll<HTMLElement>('[data-pane]');
-    const fileBtns = root.querySelectorAll<HTMLButtonElement>('.cf-block__file');
-    const fileBodies = root.querySelectorAll<HTMLElement>('[data-filebody]');
 
     modeBtns.forEach((b) =>
       b.addEventListener('click', () => {
         const mode = b.dataset.mode!;
         modeBtns.forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
         panes.forEach((p) => (p.dataset.active = p.dataset.pane === mode ? 'true' : 'false'));
-      }),
-    );
-
-    fileBtns.forEach((b) =>
-      b.addEventListener('click', () => {
-        const f = b.dataset.file!;
-        fileBtns.forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
-        fileBodies.forEach((bd) => (bd.dataset.active = bd.dataset.filebody === f ? 'true' : 'false'));
       }),
     );
 

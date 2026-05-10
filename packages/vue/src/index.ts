@@ -107,6 +107,7 @@ import './styles/watermark.css';
 import './styles/image.css';
 import './styles/timeline.css';
 import './styles/timelinegantt.css';
+import './styles/pivot.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -849,10 +850,24 @@ export type { LinkProps, LinkVariant, LinkSize } from './link/variants';
 
 export { default as CfInlineCode } from './code/InlineCode.vue';
 export { default as CfCodeBlock } from './code/CodeBlock.vue';
+export { default as CfCodeWorkspace } from './code/CodeWorkspace.vue';
 export type {
   InlineCodeProps,
   CodeBlockProps,
   CodeBlockSize,
+  CodeBlockTone,
+  CodeWorkspaceFile,
+  CodeWorkspaceProps,
+  CodeTreeItem,
+} from './code/variants';
+export {
+  buildCodeTree,
+  codeFileId,
+  codeFileLanguage,
+  detectLanguageFromName,
+  escapeHtml as escapeCodeHtml,
+  highlightCode,
+  normalizeCodeIndent,
 } from './code/variants';
 
 export { default as CfAspectRatio } from './aspectratio/AspectRatio.vue';
@@ -950,6 +965,15 @@ export type {
   GanttSize,
   GanttBarChangeMeta,
 } from './timelinegantt/variants';
+
+export { default as CfPivot } from './pivot/Pivot.vue';
+export type {
+  PivotProps,
+  PivotAggregator,
+  PivotSize,
+  PivotResult,
+} from './pivot/variants';
+export { pivotCompute, aggregate as pivotAggregate } from './pivot/variants';
 
 export { default as CfResult } from './result/Result.vue';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';

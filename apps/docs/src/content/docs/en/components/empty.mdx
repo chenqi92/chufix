@@ -9,6 +9,7 @@ import TextVue from '~/components/demos/empty/TextVue.vue';
 import ActionVue from '~/components/demos/empty/ActionVue.vue';
 import SizesVue from '~/components/demos/empty/SizesVue.vue';
 import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
+import ImageVue from '~/components/demos/empty/ImageVue.vue';
 
 ## Basic usage
 
@@ -88,6 +89,29 @@ The default icon comes from `CfStatusIllustration`. You can swap it for search, 
   <IllustrationsVue client:load />
 </DemoFrame>
 
+## Custom image
+
+For full-page empty states, pass `image` to use a product illustration, generated image, business SVG, or CDN image. For compact icons, keep using the `icon` slot / prop.
+
+<DemoFrame
+  vueCode={`<CfEmpty
+  title="No releases yet"
+  description="Pass image for a product-specific illustration."
+  :image="image"
+  image-alt=""
+  size="lg"
+/>`}
+  reactCode={`<CfEmpty
+  title="No releases yet"
+  description="Pass image for a product-specific illustration."
+  image={image}
+  imageAlt=""
+  size="lg"
+/>`}
+>
+  <ImageVue client:load />
+</DemoFrame>
+
 ## Three sizes
 
 `size` — `sm` (inline placeholder), `md` (default), `lg` (full-page empty state).
@@ -110,6 +134,8 @@ The default icon comes from `CfStatusIllustration`. You can swap it for search, 
 | `title` | `string` | `'No data'` | Main message |
 | `description` | `string` | — | Secondary message |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Overall size |
+| `image` | `string` | — | Custom image URL / data URL |
+| `imageAlt` | `string` | `''` | Image alt text; keep empty for decorative images |
 
 ### Slots / children
 

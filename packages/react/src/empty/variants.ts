@@ -4,6 +4,8 @@ export interface EmptyProps {
   title?: React.ReactNode;
   description?: React.ReactNode;
   size?: EmptySize;
+  image?: string;
+  imageAlt?: string;
   icon?: React.ReactNode;
   action?: React.ReactNode;
   children?: React.ReactNode;

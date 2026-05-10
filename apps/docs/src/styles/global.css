@@ -1027,11 +1027,80 @@ a.cf-card .cf-card__header,
 .cf-demo__code-body {
   display: none;
   flex-direction: column;
+  padding: 12px;
+  background: var(--bg-inset);
   border-top: 1px solid var(--line-1);
   border-radius: 0 0 var(--r-8) var(--r-8);
 }
 .cf-demo__code-section[data-collapsed='false'] .cf-demo__code-body {
   display: flex;
+}
+
+.cf-demo__code-body .cf-code-workspace {
+  min-height: 360px;
+  box-shadow: none;
+}
+
+.cf-doc-code__panel {
+  display: none;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.cf-doc-code__panel[data-active='true'] {
+  display: flex;
+}
+.cf-doc-code__scroll {
+  min-height: 0;
+  height: 100%;
+  overflow: auto;
+}
+.cf-doc-code pre,
+.cf-doc-code pre.astro-code {
+  min-height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 14px 0;
+  background: transparent !important;
+  overflow: visible;
+  font-size: var(--t-12);
+  line-height: 1.6;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+.cf-doc-code pre code {
+  display: block;
+  min-width: 100%;
+  width: max-content;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.cf-doc-code pre.astro-code .line {
+  display: block;
+  min-height: 1.6em;
+  padding: 0 1.25rem;
+  white-space: pre;
+  line-height: inherit;
+}
+.cf-doc-code.has-numbers pre.astro-code {
+  counter-reset: cf-code-line;
+}
+.cf-doc-code.has-numbers pre.astro-code .line {
+  counter-increment: cf-code-line;
+  padding-left: 0;
+}
+.cf-doc-code.has-numbers pre.astro-code .line::before {
+  content: counter(cf-code-line);
+  display: inline-block;
+  width: 3.5rem;
+  padding-right: 0.85rem;
+  color: color-mix(in oklch, currentColor, transparent 58%);
+  text-align: right;
+  user-select: none;
 }
 
 .cf-demo__code-bar {

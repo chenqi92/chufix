@@ -107,6 +107,7 @@ import './styles/watermark.css';
 import './styles/image.css';
 import './styles/timeline.css';
 import './styles/timelinegantt.css';
+import './styles/pivot.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -887,10 +888,24 @@ export { Link as CfLink } from './link/Link';
 export type { LinkProps, LinkVariant, LinkSize } from './link/variants';
 
 export { InlineCode as CfInlineCode, CodeBlock as CfCodeBlock } from './code/Code';
+export { CodeWorkspace as CfCodeWorkspace } from './code/CodeWorkspace';
 export type {
   InlineCodeProps,
   CodeBlockProps,
   CodeBlockSize,
+  CodeBlockTone,
+  CodeWorkspaceFile,
+  CodeWorkspaceProps,
+  CodeTreeItem,
+} from './code/variants';
+export {
+  buildCodeTree,
+  codeFileId,
+  codeFileLanguage,
+  detectLanguageFromName,
+  escapeHtml as escapeCodeHtml,
+  highlightCode,
+  normalizeCodeIndent,
 } from './code/variants';
 
 export { AspectRatio as CfAspectRatio } from './aspectratio/AspectRatio';
@@ -988,6 +1003,15 @@ export type {
   GanttSize,
   GanttBarChangeMeta,
 } from './timelinegantt/variants';
+
+export { Pivot as CfPivot } from './pivot/Pivot';
+export type {
+  PivotProps,
+  PivotAggregator,
+  PivotSize,
+  PivotResult,
+} from './pivot/variants';
+export { pivotCompute, aggregate as pivotAggregate } from './pivot/variants';
 
 export { Result as CfResult } from './result/Result';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';

@@ -16,6 +16,10 @@ export interface StatusIllustrationProps {
   variant?: StatusIllustrationVariant;
   size?: StatusIllustrationSize;
   title?: string;
+  /**
+   * Extra class for layout overrides. The SVG is centered by default so
+   * standalone demos and empty states keep the icon visually balanced.
+   */
   className?: string;
 }
 

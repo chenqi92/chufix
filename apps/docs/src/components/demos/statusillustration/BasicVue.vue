@@ -4,10 +4,38 @@ const variants = ['empty','search','upload','success','info','warning','error','
 </script>
 
 <template>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; align-items: center;">
-    <div v-for="v in variants" :key="v" style="text-align: center;">
+  <div class="status-illustration-demo">
+    <div v-for="v in variants" :key="v" class="status-illustration-demo__item">
       <CfStatusIllustration :variant="v" />
-      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); margin-top: 4px;">{{ v }}</div>
+      <div class="status-illustration-demo__label">{{ v }}</div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.status-illustration-demo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 12px;
+}
+
+.status-illustration-demo__item {
+  min-height: 124px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-5);
+  background: color-mix(in oklch, var(--bg-1), transparent 8%);
+}
+
+.status-illustration-demo__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  text-align: center;
+}
+</style>
