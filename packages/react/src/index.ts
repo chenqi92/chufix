@@ -665,11 +665,15 @@ export type {
 } from './slider/variants';
 
 export { Drawer as CfDrawer } from './drawer/Drawer';
+export type { DrawerProps } from './drawer/Drawer';
 export type {
-  DrawerProps,
   DrawerPlacement,
   DrawerSize,
+  DrawerTone,
+  DrawerFooterAlign,
 } from './drawer/variants';
+export { drawer } from './drawer/service';
+export type { DrawerServiceOptions } from './drawer/service';
 
 export { Popover as CfPopover } from './popover/Popover';
 export type {

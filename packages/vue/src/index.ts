@@ -637,7 +637,11 @@ export type {
   DrawerProps,
   DrawerPlacement,
   DrawerSize,
+  DrawerTone,
+  DrawerFooterAlign,
 } from './drawer/variants';
+export { drawer } from './drawer/service';
+export type { DrawerServiceOptions } from './drawer/service';
 
 export { default as CfPopover } from './popover/Popover.vue';
 export type {
