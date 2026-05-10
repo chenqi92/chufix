@@ -10,6 +10,40 @@ type IconCategory = {
   names: IconName[];
 };
 
+type IconMotion = 'spin' | 'pulse' | 'bounce';
+
+type MotionPreset = {
+  id: IconMotion;
+  label: string;
+  hint: string;
+  name: IconName;
+  color: string;
+};
+
+const motionPresets: MotionPreset[] = [
+  {
+    id: 'spin',
+    label: 'spin',
+    hint: '加载 / 同步 / 处理中',
+    name: 'loader',
+    color: 'var(--accent-1)',
+  },
+  {
+    id: 'pulse',
+    label: 'pulse',
+    hint: '在线 / 活跃 / 需要关注',
+    name: 'circle',
+    color: 'var(--status-success)',
+  },
+  {
+    id: 'bounce',
+    label: 'bounce',
+    hint: '向下引导 / 下一步',
+    name: 'arrow-down',
+    color: 'var(--status-warning)',
+  },
+];
+
 const categories: IconCategory[] = [
   {
     id: 'direction',
@@ -149,6 +183,12 @@ const allCategories = computed<IconCategory[]>(() => [
     hint: '当前内置图标',
     names: iconNames,
   },
+  {
+    id: 'motion',
+    label: '动态 SVG',
+    hint: '内置 motion 动效预设',
+    names: [],
+  },
   ...normalizedCategories,
   ...(uncategorizedNames.length
     ? [{
@@ -165,6 +205,7 @@ const selectedCategory = computed(() => (
 ));
 
 const filteredIcons = computed(() => {
+  if (activeCategory.value === 'motion') return [];
   const keyword = query.value.trim().toLowerCase();
   const names = selectedCategory.value.names;
 
@@ -173,6 +214,7 @@ const filteredIcons = computed(() => {
 });
 
 const visibleSections = computed(() => {
+  if (activeCategory.value === 'motion') return [];
   const keyword = query.value.trim().toLowerCase();
   const source = activeCategory.value === 'all' && !keyword ? normalizedCategories : [selectedCategory.value];
 
@@ -186,23 +228,60 @@ const visibleSections = computed(() => {
     .filter((category) => category.names.length > 0);
 });
 
+const filteredMotionPresets = computed(() => {
+  const keyword = query.value.trim().toLowerCase();
+  if (activeCategory.value !== 'all' && activeCategory.value !== 'motion') return [];
+  if (!keyword) return motionPresets;
+  return motionPresets.filter((item) => (
+    item.id.includes(keyword) ||
+    item.name.includes(keyword) ||
+    item.label.includes(keyword) ||
+    item.hint.toLowerCase().includes(keyword) ||
+    '动态 svg motion animation animated'.includes(keyword)
+  ));
+});
+
+const hasResults = computed(() => filteredIcons.value.length > 0 || filteredMotionPresets.value.length > 0);
+
 const copiedSnippet = computed(() => (
-  copied.value ? `<CfIcon name="${copied.value}" />` : '<CfIcon name="search" />'
+  copied.value || '<CfIcon name="search" />'
 ));
 
 function categoryCount(category: IconCategory) {
+  if (category.id === 'motion') return motionPresets.length;
   const keyword = query.value.trim().toLowerCase();
   if (!keyword) return category.names.length;
   return category.names.filter((name) => name.includes(keyword)).length;
 }
 
+function iconSnippet(name: IconName) {
+  return `<CfIcon name="${name}" />`;
+}
+
+function motionSnippet(item: MotionPreset) {
+  return `<CfIcon name="${item.name}" motion="${item.id}" />`;
+}
+
 async function copyIcon(name: IconName) {
-  const snippet = `<CfIcon name="${name}" />`;
+  const snippet = iconSnippet(name);
   try {
     await navigator.clipboard.writeText(snippet);
-    copied.value = name;
+    copied.value = snippet;
     window.setTimeout(() => {
-      if (copied.value === name) copied.value = '';
+      if (copied.value === snippet) copied.value = '';
+    }, 1400);
+  } catch {
+    copied.value = '';
+  }
+}
+
+async function copyMotion(item: MotionPreset) {
+  const snippet = motionSnippet(item);
+  try {
+    await navigator.clipboard.writeText(snippet);
+    copied.value = snippet;
+    window.setTimeout(() => {
+      if (copied.value === snippet) copied.value = '';
     }, 1400);
   } catch {
     copied.value = '';
@@ -240,7 +319,38 @@ async function copyIcon(name: IconName) {
       </button>
     </div>
 
-    <div v-if="filteredIcons.length" class="icon-gallery__sections">
+    <div v-if="hasResults" class="icon-gallery__sections">
+      <section v-if="filteredMotionPresets.length" class="icon-gallery__section">
+        <div class="icon-gallery__section-head">
+          <div>
+            <h3>动态 SVG</h3>
+            <p>基于同一套内联 SVG 图标，叠加 motion 预设；支持减少动画偏好。</p>
+          </div>
+          <span>{{ filteredMotionPresets.length }} 个</span>
+        </div>
+
+        <div class="icon-gallery__motion-grid">
+          <button
+            v-for="item in filteredMotionPresets"
+            :key="item.id"
+            class="icon-gallery__motion-item"
+            type="button"
+            :aria-label="`复制 ${motionSnippet(item)}`"
+            @click="copyMotion(item)"
+          >
+            <span class="icon-gallery__motion-preview" :style="{ color: item.color }">
+              <CfIcon :name="item.name" :motion="item.id" size="xl" />
+            </span>
+            <span class="icon-gallery__motion-body">
+              <strong>{{ item.label }}</strong>
+              <em>{{ item.hint }}</em>
+              <code>{{ motionSnippet(item) }}</code>
+            </span>
+            <span class="icon-gallery__copy">{{ copied === motionSnippet(item) ? '已复制' : '复制 motion' }}</span>
+          </button>
+        </div>
+      </section>
+
       <section
         v-for="section in visibleSections"
         :key="section.id"
@@ -267,7 +377,7 @@ async function copyIcon(name: IconName) {
               <CfIcon :name="name" size="xl" />
             </span>
             <span class="icon-gallery__name">{{ name }}</span>
-            <span class="icon-gallery__copy">{{ copied === name ? '已复制' : '复制 CfIcon' }}</span>
+            <span class="icon-gallery__copy">{{ copied === iconSnippet(name) ? '已复制' : '复制 CfIcon' }}</span>
           </button>
         </div>
       </section>
@@ -426,6 +536,12 @@ async function copyIcon(name: IconName) {
   gap: 8px;
 }
 
+.icon-gallery__motion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
 .icon-gallery__item {
   display: grid;
   min-width: 0;
@@ -443,13 +559,31 @@ async function copyIcon(name: IconName) {
   text-align: center;
 }
 
-.icon-gallery__item:hover {
+.icon-gallery__motion-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-1);
+  color: var(--fg-2);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.icon-gallery__item:hover,
+.icon-gallery__motion-item:hover {
   border-color: var(--accent-1);
   background: var(--bg-2);
   color: var(--fg-1);
 }
 
-.icon-gallery__preview {
+.icon-gallery__preview,
+.icon-gallery__motion-preview {
   display: grid;
   width: 38px;
   height: 38px;
@@ -458,6 +592,37 @@ async function copyIcon(name: IconName) {
   border-radius: var(--r-6);
   background: var(--bg-inset);
   color: var(--fg-1);
+}
+
+.icon-gallery__motion-body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.icon-gallery__motion-body strong {
+  color: var(--fg-1);
+  font-size: var(--t-13);
+  line-height: 1.25;
+}
+
+.icon-gallery__motion-body em {
+  overflow: hidden;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+  font-style: normal;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-gallery__motion-body code {
+  overflow: hidden;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon-gallery__name {
@@ -477,6 +642,10 @@ async function copyIcon(name: IconName) {
 }
 
 .icon-gallery__item:hover .icon-gallery__copy {
+  color: var(--accent-1);
+}
+
+.icon-gallery__motion-item:hover .icon-gallery__copy {
   color: var(--accent-1);
 }
 
@@ -501,6 +670,18 @@ async function copyIcon(name: IconName) {
 
   .icon-gallery__grid {
     grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  }
+
+  .icon-gallery__motion-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .icon-gallery__motion-item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .icon-gallery__motion-item > .icon-gallery__copy {
+    grid-column: 2;
   }
 }
 </style>

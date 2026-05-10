@@ -23,6 +23,10 @@ import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
 import PasteVue from '~/components/demos/table/PasteVue.vue';
 import HistoryVue from '~/components/demos/table/HistoryVue.vue';
 import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
+import RowEditVue from '~/components/demos/table/RowEditVue.vue';
+import BatchVue from '~/components/demos/table/BatchVue.vue';
+import PinnedRowsVue from '~/components/demos/table/PinnedRowsVue.vue';
+import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `CfTable` 是组件库里功能最完整的"主力"组件之一。设计取舍：
 
@@ -235,6 +239,42 @@ import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
 
 注意：`getRowHeight` 必须**纯函数**，组件会在每次行数变化时重算累计偏移。如果高度真的需要等 DOM 渲染后才知道，目前的建议是先返回一个估值，DOM 测量完成后再 `setState` 改回真实值；后续会出 `auto-row-height` 模式自动用 ResizeObserver。
 
+## 行编辑模式
+
+把 `edit-mode="row"` 打开，双击任意行进入整行编辑：所有 `editable` 列同时变为 input，行尾单独多出一行 Save / Cancel 按钮。Enter 提交、Esc 取消，校验失败保留编辑态。
+
+<DemoFrame>
+  <RowEditVue client:load />
+</DemoFrame>
+
+每个 cell 改动都通过 `@cell-edit` 事件抛出（与单格编辑一致），业务方决定是否调接口、是否合并提交。组件不 mutate `rows`。
+
+## 批量操作工具栏
+
+`batch-actions` + `selectable="multiple"`：选中至少一行后，表头上方出现 sticky 的批量操作条，自带 计数 / 导出选中 / 清空，可以通过 `#batch-actions` 插槽塞自定义按钮（接到 `selectedKeys`）。
+
+<DemoFrame>
+  <BatchVue client:load />
+</DemoFrame>
+
+## 冻结行
+
+`pinned-row-keys` 的列表里所有 rowKey 会置顶并 sticky 到表体顶部，下面的内容滚动时它们一直可见。常用于"自选"、"高优先级"等需要永远先看到的行。
+
+<DemoFrame>
+  <PinnedRowsVue client:load />
+</DemoFrame>
+
+## auto-row-height
+
+`virtual` 默认按固定 rowHeight。如果 row 内容确实需要等浏览器渲染才能知道高度（富文本、图片、嵌套布局），开启 `auto-row-height`：组件内置 ResizeObserver 监听每个可见行的真实高度并写回累积偏移表。
+
+<DemoFrame>
+  <AutoHeightVue client:load />
+</DemoFrame>
+
+第一次渲染会用 `rowHeight` 作为估值；测量完成后 padTop / padBottom 自动重算。比手写 `getRowHeight` 函数更省心，但代价是首次滚动可能短暂看到滚动条抖动（系统校准位移）。
+
 ## 服务端模式 · 防抖
 
 输入框 / 过滤面板的状态变化每一帧都触发会把后端打爆。给 `:server-debounce="300"`（ms）让 `update:globalSearch` 与 `update:filters` 在静默 300ms 后才发出。其它信号（点排序 / 翻页）是显式点击，不需要防抖，所以保持同步触发。
@@ -326,6 +366,10 @@ import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
 | `historyEnabled` | `boolean` | `false` | 启用快照栈：sort/filter/search/page/columnsState 全部入栈 |
 | `historyDepth` | `number` | `50` | 历史栈最大深度 |
 | `getRowHeight` | `(index) => number` | — | 虚拟滚动下指定每行高度，用于变高行 |
+| `editMode` | `'cell' \| 'row'` | `'cell'` | `'row'` 时双击整行进入编辑，所有 editable 列同时变 input |
+| `batchActions` | `boolean` | `false` | 多选状态下顶部出 sticky 操作条 |
+| `pinnedRowKeys` | `string[]` | — | 这些 rowKey 对应的行置顶 sticky |
+| `autoRowHeight` | `boolean` | `false` | ResizeObserver 自动测量变高行 |
 
 ### `TableColumn`
 

@@ -1063,6 +1063,21 @@ function inSelection(rowIdx: number, colIdx: number): boolean {
   const c2 = Math.max(s.startCol, s.endCol);
   return rowIdx >= r1 && rowIdx <= r2 && colIdx >= c1 && colIdx <= c2;
 }
+function selectionEdges(rowIdx: number, colIdx: number): string {
+  const s = cellSelection.value;
+  if (!s) return '';
+  const r1 = Math.min(s.startRow, s.endRow);
+  const r2 = Math.max(s.startRow, s.endRow);
+  const c1 = Math.min(s.startCol, s.endCol);
+  const c2 = Math.max(s.startCol, s.endCol);
+  if (rowIdx < r1 || rowIdx > r2 || colIdx < c1 || colIdx > c2) return '';
+  const out: string[] = [];
+  if (rowIdx === r1) out.push('cf-table__cell--sel-top');
+  if (rowIdx === r2) out.push('cf-table__cell--sel-bottom');
+  if (colIdx === c1) out.push('cf-table__cell--sel-left');
+  if (colIdx === c2) out.push('cf-table__cell--sel-right');
+  return out.join(' ');
+}
 function onCellMouseDown(rowIdx: number, colIdx: number, ev: MouseEvent) {
   if (!props.cellSelectable) return;
   if (ev.shiftKey && cellAnchor.value) {
@@ -1229,10 +1244,14 @@ const rowOffsets = computed<number[]>(() => {
   return out;
 });
 
-const totalRowsHeight = computed(() => rowOffsets.value[rowOffsets.value.length - 1] ?? 0);
+// 选用：autoRowHeight 模式下走 rowOffsetsAuto；否则走 rowOffsets
+const effectiveOffsets = computed<number[]>(() =>
+  props.autoRowHeight ? rowOffsetsAuto.value : rowOffsets.value,
+);
+const totalRowsHeight = computed(() => effectiveOffsets.value[effectiveOffsets.value.length - 1] ?? 0);
 
 function findRowAtOffset(offset: number): number {
-  const arr = rowOffsets.value;
+  const arr = effectiveOffsets.value;
   let lo = 0;
   let hi = arr.length - 1;
   while (lo < hi) {
@@ -1243,7 +1262,7 @@ function findRowAtOffset(offset: number): number {
   return lo;
 }
 
-// 用 rowOffsets 重算 virtualWindow（覆盖前面 rowHeight 简单乘法）
+// 用 effectiveOffsets 重算 virtualWindow（覆盖前面 rowHeight 简单乘法）
 const virtualWindowVar = computed(() => {
   if (!props.virtual) {
     return { start: 0, end: flatTreeRows.value.length, padTop: 0, padBottom: 0 };
@@ -1257,8 +1276,8 @@ const virtualWindowVar = computed(() => {
   return {
     start,
     end,
-    padTop: rowOffsets.value[start] ?? 0,
-    padBottom: Math.max(0, totalRowsHeight.value - (rowOffsets.value[end] ?? totalRowsHeight.value)),
+    padTop: effectiveOffsets.value[start] ?? 0,
+    padBottom: Math.max(0, totalRowsHeight.value - (effectiveOffsets.value[end] ?? totalRowsHeight.value)),
   };
 });
 
@@ -1431,12 +1450,185 @@ onBeforeUnmount(() => {
   if (typeof window !== 'undefined') window.removeEventListener('keydown', onHistoryKeydown);
 });
 
+/* ============================================================ */
+/*                        行编辑模式                              */
+/* ============================================================ */
+
+interface EditingRow { rowKey: string; draft: Record<string, unknown>; }
+const editingRow = ref<EditingRow | null>(null);
+
+function isRowEditing(key: string): boolean {
+  return editingRow.value?.rowKey === key;
+}
+function beginRowEdit(row: T, index: number, key: string) {
+  if (props.editMode !== 'row') return;
+  // 把当前行所有 editable 列的值快照到 draft
+  const draft: Record<string, unknown> = {};
+  for (const col of renderLeafColumns.value) {
+    if (isCellEditable(row, col, index)) {
+      draft[col.key] = getCellValue(row, col);
+    }
+  }
+  editingRow.value = { rowKey: key, draft };
+}
+function setRowEditDraft(colKey: string, value: unknown) {
+  if (!editingRow.value) return;
+  editingRow.value = {
+    ...editingRow.value,
+    draft: { ...editingRow.value.draft, [colKey]: value },
+  };
+}
+function commitRowEdit(row: T, index: number) {
+  const ed = editingRow.value;
+  if (!ed) return;
+  // 校验所有列；任一失败 → 不提交
+  for (const col of renderLeafColumns.value) {
+    if (!(col.key in ed.draft)) continue;
+    let v = ed.draft[col.key];
+    if (col.editType === 'number') {
+      v = v === '' || v == null ? null : Number(v);
+    }
+    if (col.editValidate && col.editValidate(v, row, index) === false) return;
+  }
+  // 逐列发 cell-edit 事件，让外部聚合处理
+  for (const col of renderLeafColumns.value) {
+    if (!(col.key in ed.draft)) continue;
+    const oldValue = getCellValue(row, col);
+    let newValue = ed.draft[col.key];
+    if (col.editType === 'number') {
+      newValue = newValue === '' || newValue == null ? null : Number(newValue);
+    }
+    if (oldValue !== newValue) {
+      emit('cell-edit', { row, column: col, oldValue, newValue, index });
+    }
+  }
+  editingRow.value = null;
+}
+function cancelRowEdit() {
+  editingRow.value = null;
+}
+
+/* ============================================================ */
+/*                        批量操作工具栏                          */
+/* ============================================================ */
+
+const selectedCount = computed(() => selectedSet.value.size);
+const showBatchBar = computed(
+  () => props.batchActions === true && props.selectable === 'multiple' && selectedCount.value > 0,
+);
+function clearSelection() {
+  emit('update:modelValue', []);
+}
+function exportSelected() {
+  const keys = selectedSet.value;
+  const sub = filteredRows.value.filter((r, i) => keys.has(getRowKey(r, i, props.rowKey)));
+  const csv = rowsToCsv(sub, renderLeafColumns.value as TableColumn<T>[]);
+  emit('export', csv);
+  downloadCsv(csv, (props.exportFileName ?? 'table') + '-selected');
+}
+
+/* ============================================================ */
+/*                        冻结行（pinned rows）                   */
+/* ============================================================ */
+
+const pinnedSet = computed(() => new Set(props.pinnedRowKeys ?? []));
+
+// 把 flatTreeRows 重排：pinned 在前，其他保持原顺序
+const flatTreeRowsPinned = computed(() => {
+  if (!pinnedSet.value.size) return flatTreeRows.value;
+  const pinned: typeof flatTreeRows.value = [];
+  const rest: typeof flatTreeRows.value = [];
+  for (const fr of flatTreeRows.value) {
+    if (pinnedSet.value.has(fr.key)) pinned.push(fr);
+    else rest.push(fr);
+  }
+  return [...pinned, ...rest];
+});
+
+function isPinnedRow(key: string): boolean {
+  return pinnedSet.value.has(key);
+}
+
+function pinnedTopOffset(idx: number): number {
+  // pinned 行的累计高度
+  if (!pinnedSet.value.size) return 0;
+  let acc = 0;
+  for (let i = 0; i < idx; i++) {
+    const fr = flatTreeRowsPinned.value[i];
+    if (!fr || !pinnedSet.value.has(fr.key)) break;
+    acc += rowHeightOf(i);
+  }
+  return acc;
+}
+
+/* ============================================================ */
+/*                       autoRowHeight                           */
+/* ============================================================ */
+
+const autoHeights = ref<Map<string, number>>(new Map());
+const rowElRefs = new Map<string, HTMLElement>();
+let autoObs: ResizeObserver | null = null;
+
+function rowElRef(key: string, el: Element | null) {
+  if (!props.autoRowHeight) return;
+  if (el && el instanceof HTMLElement) {
+    rowElRefs.set(key, el);
+    autoObs?.observe(el);
+  } else {
+    const old = rowElRefs.get(key);
+    if (old) autoObs?.unobserve(old);
+    rowElRefs.delete(key);
+  }
+}
+
+onMounted(() => {
+  if (!props.autoRowHeight || typeof ResizeObserver === 'undefined') return;
+  autoObs = new ResizeObserver((entries) => {
+    let changed = false;
+    const next = new Map(autoHeights.value);
+    for (const ent of entries) {
+      const el = ent.target as HTMLElement;
+      const key = el.dataset.rowKey;
+      if (!key) continue;
+      const h = ent.contentRect.height + 1; // +1 为 border
+      if (next.get(key) !== h) {
+        next.set(key, h);
+        changed = true;
+      }
+    }
+    if (changed) autoHeights.value = next;
+  });
+});
+onBeforeUnmount(() => {
+  autoObs?.disconnect();
+  autoObs = null;
+  rowElRefs.clear();
+});
+
+// autoRowHeight 模式下，rowOffsets 改用实测 + 估值兜底
+const rowOffsetsAuto = computed<number[]>(() => {
+  const out: number[] = [0];
+  const total = flatTreeRows.value.length;
+  if (!props.autoRowHeight) return rowOffsets.value;
+  let acc = 0;
+  for (let i = 0; i < total; i++) {
+    const k = flatTreeRows.value[i].key;
+    const measured = autoHeights.value.get(k);
+    acc += measured ?? props.rowHeight ?? 36;
+    out.push(acc);
+  }
+  return out;
+});
+
 defineExpose({
   patchColumnsState,
   exportCsv: doExport,
   copySelection: copySelectionToClipboard,
   undo,
   redo,
+  beginRowEdit,
+  commitRowEdit,
+  cancelRowEdit,
 });
 </script>
 
@@ -1501,6 +1693,18 @@ defineExpose({
         <slot name="toolbar-right" />
       </div>
     </header>
+
+    <!-- 批量操作工具栏 -->
+    <div v-if="showBatchBar" class="cf-table__batch-bar">
+      <div>
+        已选中 <span class="cf-table__batch-count">{{ selectedCount }}</span> 行
+      </div>
+      <div class="cf-table__batch-actions">
+        <slot name="batch-actions" :selected-keys="Array.from(selectedSet)" :clear="clearSelection" :export-selected="exportSelected" />
+        <button type="button" class="cf-table__batch-btn" @click="exportSelected">导出选中</button>
+        <button type="button" class="cf-table__batch-btn" @click="clearSelection">清空</button>
+      </div>
+    </div>
 
     <div ref="scrollEl" class="cf-table__scroll" :class="cellSelectable && 'is-cell-selectable'" :style="scrollStyle" @scroll="onScrollExtended">
       <table class="cf-table__table">
@@ -1714,9 +1918,14 @@ defineExpose({
                 fr.level > 0 && 'is-tree-child',
                 rowDragOverKey === fr.key && `is-row-drop-target is-row-drop-${rowDropPos}`,
                 rowDragKey === fr.key && 'is-row-dragging',
+                isPinnedRow(fr.key) && 'is-pinned',
+                isRowEditing(fr.key) && 'is-row-editing',
               ]"
-              :style="virtual ? { height: `${rowHeightOf(fr.index)}px` } : undefined"
+              :data-row-key="fr.key"
+              :ref="autoRowHeight ? ((el: any) => rowElRef(fr.key, el)) : undefined"
+              :style="autoRowHeight ? undefined : (virtual ? { height: `${rowHeightOf(fr.index)}px` } : undefined)"
               @click="selectable ? toggleRow(fr.key) : onRowClick(fr.row, fr.index)"
+              @dblclick="editMode === 'row' && beginRowEdit(fr.row, fr.index, fr.key)"
               @dragover="rowReorderable && onRowDragOver($event, fr.key)"
               @drop="rowReorderable && onRowDrop($event, fr.key)"
             >
@@ -1774,7 +1983,7 @@ defineExpose({
                   col.ellipsis && 'cf-table__cell--ellipsis',
                   isCellEditable(fr.row, col, fr.index) && 'cf-table__cell--editable',
                   editing?.rowKey === fr.key && editing?.colKey === col.key && 'cf-table__cell--editing',
-                  cellSelectable && inSelection(fr.index, ci) && 'cf-table__cell--cell-selected',
+                  cellSelectable && inSelection(fr.index, ci) && `cf-table__cell--cell-selected ${selectionEdges(fr.index, ci)}`,
                   cellClassOf(fr.row, col, fr.index),
                 ]"
                 :style="fixedStyle(col)"
@@ -1814,6 +2023,28 @@ defineExpose({
                     @keydown="onEditKeydown($event, fr.row, col, fr.index)"
                   />
                 </template>
+                <!-- 行编辑模式 -->
+                <template v-else-if="isRowEditing(fr.key) && isCellEditable(fr.row, col, fr.index)">
+                  <select
+                    v-if="col.editType === 'select' && col.editOptions"
+                    class="cf-table__edit-input"
+                    :value="(editingRow!.draft[col.key] as string | number | undefined) ?? ''"
+                    @click.stop
+                    @change="setRowEditDraft(col.key, ($event.target as HTMLSelectElement).value)"
+                  >
+                    <option v-for="opt in col.editOptions" :key="String(opt.value)" :value="opt.value">{{ opt.label }}</option>
+                  </select>
+                  <input
+                    v-else
+                    class="cf-table__edit-input"
+                    :type="col.editType === 'number' ? 'number' : 'text'"
+                    :value="(editingRow!.draft[col.key] as string | number | undefined) ?? ''"
+                    @click.stop
+                    @input="setRowEditDraft(col.key, ($event.target as HTMLInputElement).value)"
+                    @keydown.enter="commitRowEdit(fr.row, fr.index)"
+                    @keydown.esc="cancelRowEdit"
+                  />
+                </template>
                 <!-- 默认渲染 -->
                 <slot
                   v-else
@@ -1830,6 +2061,22 @@ defineExpose({
                   </component>
                   <template v-else>{{ cellOf(fr.row, col, fr.index) }}</template>
                 </slot>
+              </td>
+            </tr>
+            <!-- 行编辑保存 / 取消按钮（占一行） -->
+            <tr
+              v-if="editMode === 'row' && isRowEditing(fr.key)"
+              class="cf-table__row cf-table__row--edit-actions"
+            >
+              <td
+                class="cf-table__cell"
+                :colspan="renderLeafColumns.length + (selectable === 'multiple' ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)"
+                style="padding: 6px 12px; background: var(--accent-soft);"
+              >
+                <div class="cf-table__row-edit-actions" style="float: right;">
+                  <button type="button" class="cf-table__row-edit-btn cf-table__row-edit-btn--save" @click.stop="commitRowEdit(fr.row, fr.index)">保存</button>
+                  <button type="button" class="cf-table__row-edit-btn cf-table__row-edit-btn--cancel" @click.stop="cancelRowEdit">取消</button>
+                </div>
               </td>
             </tr>
             <!-- expand row -->

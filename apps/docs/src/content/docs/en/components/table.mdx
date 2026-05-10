@@ -23,6 +23,10 @@ import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
 import PasteVue from '~/components/demos/table/PasteVue.vue';
 import HistoryVue from '~/components/demos/table/HistoryVue.vue';
 import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
+import RowEditVue from '~/components/demos/table/RowEditVue.vue';
+import BatchVue from '~/components/demos/table/BatchVue.vue';
+import PinnedRowsVue from '~/components/demos/table/PinnedRowsVue.vue';
+import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `CfTable` is one of the most feature-complete components in the library. Design choices:
 
@@ -235,6 +239,42 @@ On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a st
 
 `getRowHeight` should be a pure function — the component recomputes offsets when row count changes. If real heights are only known after rendering, return an estimate first and update once measured. A future `auto-row-height` mode will wire ResizeObserver in for you.
 
+## Row-level edit mode
+
+Set `edit-mode="row"` and double-click any row to enter row-edit mode: every `editable` column becomes an input simultaneously, and a Save / Cancel row appears below. Enter commits, Esc cancels. Validation failure keeps the row in edit mode.
+
+<DemoFrame>
+  <RowEditVue client:load />
+</DemoFrame>
+
+Each cell change still emits `@cell-edit` (same as cell mode); the parent decides whether to commit individually or batch them.
+
+## Batch action toolbar
+
+`batch-actions` + `selectable="multiple"`: when at least one row is selected, a sticky bar appears above the table — built-in count / Export selected / Clear, plus a `#batch-actions` slot for custom buttons (which receives `selectedKeys`).
+
+<DemoFrame>
+  <BatchVue client:load />
+</DemoFrame>
+
+## Pinned rows
+
+`pinned-row-keys` lifts those rows to the top and makes them sticky inside the scroll container. Useful for "watchlist" / "high priority" rows that should always stay visible.
+
+<DemoFrame>
+  <PinnedRowsVue client:load />
+</DemoFrame>
+
+## auto-row-height
+
+`virtual` defaults to a fixed `rowHeight`. When row content really needs to render before height is known (rich text, images, nested layout), enable `auto-row-height`: the component runs ResizeObserver on every visible row and writes measured heights back into the offset table.
+
+<DemoFrame>
+  <AutoHeightVue client:load />
+</DemoFrame>
+
+The first paint uses `rowHeight` as an estimate; once measurements arrive, padTop / padBottom are recomputed. Less code than hand-writing `getRowHeight`, but the very first scroll may see a tiny scrollbar jitter while the system calibrates.
+
 ## Server-side debounce
 
 Typing in the search box or filter dropdown shouldn't pound your backend on every keystroke. Pass `:server-debounce="300"` (ms) to delay `update:globalSearch` and `update:filters` until the input is idle. Other signals (sort click, page change) are explicit clicks and remain synchronous.
@@ -326,6 +366,10 @@ Once `pagination.total` is a number, the component **stops** doing client-side s
 | `historyEnabled` | `boolean` | `false` | Snapshot stack for undo / redo across sort/filter/search/page/columnsState |
 | `historyDepth` | `number` | `50` | Max snapshots kept |
 | `getRowHeight` | `(index) => number` | — | Per-row height in virtual mode for variable-height rows |
+| `editMode` | `'cell' \| 'row'` | `'cell'` | `'row'` enters whole-row edit on double-click |
+| `batchActions` | `boolean` | `false` | Sticky batch action bar when rows are selected |
+| `pinnedRowKeys` | `string[]` | — | Row keys pinned to the top via sticky |
+| `autoRowHeight` | `boolean` | `false` | ResizeObserver auto-measures variable-height rows |
 
 ### `TableColumn`
 

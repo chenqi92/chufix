@@ -62,6 +62,8 @@ export interface ReactTableProps<T extends Record<string, unknown> = Record<stri
   onCellPaste?: (payload: { applied: number; skipped: number }) => void;
   onExport?: (csv: string) => void;
   onHistoryChange?: (payload: { canUndo: boolean; canRedo: boolean }) => void;
+  /** Slot-equivalent: render extra batch action buttons. */
+  batchSlot?: (ctx: { selectedKeys: string[]; clear: () => void; exportSelected: () => void }) => ReactNode;
   /** Header / cell render maps keyed by column.key. */
   renderHeader?: Record<string, (column: TableColumn<T>) => ReactNode>;
   renderCell?: Record<string, (ctx: { row: T; index: number; value: unknown }) => ReactNode>;
@@ -135,6 +137,10 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     historyEnabled = false,
     historyDepth = 50,
     getRowHeight,
+    editMode = 'cell',
+    batchActions = false,
+    pinnedRowKeys,
+    autoRowHeight = false,
     className,
     onSortChange,
     onFiltersChange,
@@ -151,6 +157,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     onCellPaste,
     onExport,
     onHistoryChange,
+    batchSlot,
     renderHeader,
     renderCell,
     toolbarLeft,
@@ -867,6 +874,20 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     const c2 = Math.max(cellSelection.startCol, cellSelection.endCol);
     return rowIdx >= r1 && rowIdx <= r2 && colIdx >= c1 && colIdx <= c2;
   };
+  const selectionEdges = (rowIdx: number, colIdx: number): string => {
+    if (!cellSelection) return '';
+    const r1 = Math.min(cellSelection.startRow, cellSelection.endRow);
+    const r2 = Math.max(cellSelection.startRow, cellSelection.endRow);
+    const c1 = Math.min(cellSelection.startCol, cellSelection.endCol);
+    const c2 = Math.max(cellSelection.startCol, cellSelection.endCol);
+    if (rowIdx < r1 || rowIdx > r2 || colIdx < c1 || colIdx > c2) return '';
+    const out: string[] = [];
+    if (rowIdx === r1) out.push('cf-table__cell--sel-top');
+    if (rowIdx === r2) out.push('cf-table__cell--sel-bottom');
+    if (colIdx === c1) out.push('cf-table__cell--sel-left');
+    if (colIdx === c2) out.push('cf-table__cell--sel-right');
+    return out.join(' ');
+  };
   const onCellMouseDown = (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => {
     if (!cellSelectable) return;
     if (ev.shiftKey && cellAnchorRef.current) {
@@ -1030,8 +1051,8 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     return {
       start,
       end,
-      padTop: rowOffsets[start] ?? 0,
-      padBottom: Math.max(0, totalRowsHeight - (rowOffsets[end] ?? totalRowsHeight)),
+      padTop: effectiveRowOffsets[start] ?? 0,
+      padBottom: Math.max(0, totalRowsHeight - (effectiveRowOffsets[end] ?? totalRowsHeight)),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [virtual, flatTreeRows.length, scrollTop, viewportHeight, rowOffsets, totalRowsHeight, overscan]);
@@ -1198,6 +1219,113 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [historyEnabled]);
 
+  /* ---------------- row edit mode ---------------- */
+  interface EditingRow { rowKey: string; draft: Record<string, unknown>; }
+  const [editingRow, setEditingRow] = useState<EditingRow | null>(null);
+  const isRowEditing = (key: string) => editingRow?.rowKey === key;
+  const beginRowEdit = (row: T, index: number, key: string) => {
+    if (editMode !== 'row') return;
+    const draft: Record<string, unknown> = {};
+    for (const col of renderLeafColumns) {
+      if (isCellEditable(row, col, index)) draft[col.key] = getCellValue(row, col);
+    }
+    setEditingRow({ rowKey: key, draft });
+  };
+  const setRowEditDraft = (colKey: string, value: unknown) => {
+    setEditingRow((er) => (er ? { ...er, draft: { ...er.draft, [colKey]: value } } : er));
+  };
+  const commitRowEdit = (row: T, index: number) => {
+    if (!editingRow) return;
+    for (const col of renderLeafColumns) {
+      if (!(col.key in editingRow.draft)) continue;
+      let v: unknown = editingRow.draft[col.key];
+      if (col.editType === 'number') v = v === '' || v == null ? null : Number(v);
+      if (col.editValidate && col.editValidate(v, row, index) === false) return;
+    }
+    for (const col of renderLeafColumns) {
+      if (!(col.key in editingRow.draft)) continue;
+      const oldValue = getCellValue(row, col);
+      let newValue: unknown = editingRow.draft[col.key];
+      if (col.editType === 'number') newValue = newValue === '' || newValue == null ? null : Number(newValue);
+      if (oldValue !== newValue) {
+        onCellEdit?.({ row, column: col, oldValue, newValue, index });
+      }
+    }
+    setEditingRow(null);
+  };
+  const cancelRowEdit = () => setEditingRow(null);
+
+  /* ---------------- batch action toolbar ---------------- */
+  const selectedCount = selectedSet.size;
+  const showBatchBar = batchActions === true && selectable === 'multiple' && selectedCount > 0;
+  const clearSelection = () => onSelectChange?.([]);
+  const exportSelected = () => {
+    const keys = selectedSet;
+    const sub = filteredRows.filter((r, i) => keys.has(getRowKey(r, i, rowKey)));
+    const csv = rowsToCsv(sub, renderLeafColumns as TableColumn<T>[]);
+    onExport?.(csv);
+    downloadCsv(csv, (exportFileName ?? 'table') + '-selected');
+  };
+
+  /* ---------------- pinned rows ---------------- */
+  const pinnedSet = useMemo(() => new Set(pinnedRowKeys ?? []), [pinnedRowKeys]);
+  const isPinnedRow = (key: string) => pinnedSet.has(key);
+
+  /* ---------------- autoRowHeight via ResizeObserver ---------------- */
+  const [autoHeights, setAutoHeights] = useState<Map<string, number>>(new Map());
+  const rowElRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const autoObsRef = useRef<ResizeObserver | null>(null);
+
+  useEffect(() => {
+    if (!autoRowHeight || typeof ResizeObserver === 'undefined') return;
+    autoObsRef.current = new ResizeObserver((entries) => {
+      let changed = false;
+      const next = new Map(autoHeights);
+      for (const ent of entries) {
+        const el = ent.target as HTMLElement;
+        const key = el.dataset.rowKey;
+        if (!key) continue;
+        const h = ent.contentRect.height + 1;
+        if (next.get(key) !== h) {
+          next.set(key, h);
+          changed = true;
+        }
+      }
+      if (changed) setAutoHeights(next);
+    });
+    return () => {
+      autoObsRef.current?.disconnect();
+      autoObsRef.current = null;
+      rowElRefs.current.clear();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRowHeight]);
+
+  const rowElRef = (key: string) => (el: HTMLTableRowElement | null) => {
+    if (!autoRowHeight) return;
+    const old = rowElRefs.current.get(key);
+    if (el) {
+      rowElRefs.current.set(key, el);
+      autoObsRef.current?.observe(el);
+    } else if (old) {
+      autoObsRef.current?.unobserve(old);
+      rowElRefs.current.delete(key);
+    }
+  };
+
+  // 当 autoRowHeight 启用时，覆盖 rowOffsets 用实测值
+  const effectiveRowOffsets = useMemo<number[]>(() => {
+    if (!autoRowHeight) return rowOffsets;
+    const out: number[] = [0];
+    let acc = 0;
+    for (let i = 0; i < flatTreeRows.length; i++) {
+      const k = flatTreeRows[i].key;
+      acc += autoHeights.get(k) ?? rowHeight;
+      out.push(acc);
+    }
+    return out;
+  }, [autoRowHeight, rowOffsets, flatTreeRows, autoHeights, rowHeight]);
+
   return (
     <div ref={rootRef} className={fullCls}>
       {showToolbar && (
@@ -1271,6 +1399,27 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
             {toolbarRight}
           </div>
         </header>
+      )}
+
+      {showBatchBar && (
+        <div className="cf-table__batch-bar">
+          <div>
+            Selected <span className="cf-table__batch-count">{selectedCount}</span> rows
+          </div>
+          <div className="cf-table__batch-actions">
+            {batchSlot?.({
+              selectedKeys: Array.from(selectedSet) as string[],
+              clear: clearSelection,
+              exportSelected,
+            })}
+            <button type="button" className="cf-table__batch-btn" onClick={exportSelected}>
+              Export selected
+            </button>
+            <button type="button" className="cf-table__batch-btn" onClick={clearSelection}>
+              Clear
+            </button>
+          </div>
+        </div>
       )}
 
       <div
@@ -1586,6 +1735,16 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                     mergeInfoOf={mergeInfoOf}
                     cellSelectable={cellSelectable}
                     inSelection={inSelection}
+                    selectionEdges={selectionEdges}
+                    isPinned={isPinnedRow(fr.key)}
+                    isRowEditing={isRowEditing(fr.key)}
+                    rowDraft={editingRow?.draft ?? {}}
+                    beginRowEdit={beginRowEdit}
+                    setRowEditDraft={setRowEditDraft}
+                    commitRowEdit={commitRowEdit}
+                    cancelRowEdit={cancelRowEdit}
+                    editMode={editMode}
+                    rowElRef={autoRowHeight ? rowElRef(fr.key) : null}
                     onCellMouseDown={onCellMouseDown}
                     onCellMouseEnter={onCellMouseEnter}
                   />
@@ -1735,8 +1894,20 @@ interface RowProps<T> {
   mergeInfoOf: (rowIdx: number, colKey: string) => { hidden: boolean; rowSpan: number } | undefined;
   cellSelectable: boolean;
   inSelection: (rowIdx: number, colIdx: number) => boolean;
+  selectionEdges: (rowIdx: number, colIdx: number) => string;
   onCellMouseDown: (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => void;
   onCellMouseEnter: (rowIdx: number, colIdx: number, ev: ReactMouseEvent) => void;
+  // pinned / row edit
+  isPinned: boolean;
+  isRowEditing: boolean;
+  rowDraft: Record<string, unknown>;
+  beginRowEdit?: (row: T, index: number, key: string) => void;
+  setRowEditDraft: (colKey: string, v: unknown) => void;
+  commitRowEdit: (row: T, index: number) => void;
+  cancelRowEdit: () => void;
+  editMode: 'cell' | 'row';
+  // auto height
+  rowElRef: ((el: HTMLTableRowElement | null) => void) | null;
 }
 
 function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
@@ -1745,6 +1916,8 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
   return (
     <>
       <tr
+        ref={p.rowElRef ?? undefined}
+        data-row-key={fr.key}
         className={[
           'cf-table__row',
           p.selected ? 'is-selected' : '',
@@ -1752,11 +1925,14 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
           fr.level > 0 ? 'is-tree-child' : '',
           p.rowDragOverKey === fr.key ? `is-row-drop-target is-row-drop-${p.rowDropPos}` : '',
           p.rowDragKey === fr.key ? 'is-row-dragging' : '',
+          p.isPinned ? 'is-pinned' : '',
+          p.isRowEditing ? 'is-row-editing' : '',
         ]
           .filter(Boolean)
           .join(' ')}
-        style={p.virtual ? { height: p.rowHeight } : undefined}
+        style={p.virtual && !p.rowElRef ? { height: p.rowHeight } : undefined}
         onClick={() => (p.selectable ? p.toggleRow(fr.key) : p.onRowClick?.(row, fr.index))}
+        onDoubleClick={() => p.editMode === 'row' && p.beginRowEdit?.(row, fr.index, fr.key)}
         onDragOver={(e) => p.rowReorderable && p.onRowDragOver(e, fr.key)}
         onDrop={(e) => p.rowReorderable && p.onRowDrop(e, fr.key)}
       >
@@ -1833,6 +2009,7 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
           const isEditing =
             p.editing?.rowKey === fr.key && p.editing?.colKey === col.key;
           const selected = p.cellSelectable && p.inSelection(fr.index, fullCi);
+          const edges = selected ? p.selectionEdges(fr.index, fullCi) : '';
           return (
             <td
               key={col.key}
@@ -1843,7 +2020,7 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
                 col.ellipsis ? 'cf-table__cell--ellipsis' : '',
                 editable ? 'cf-table__cell--editable' : '',
                 isEditing ? 'cf-table__cell--editing' : '',
-                selected ? 'cf-table__cell--cell-selected' : '',
+                selected ? `cf-table__cell--cell-selected ${edges}` : '',
                 p.cellClassOf(row, col, fr.index),
               ]
                 .filter(Boolean)
@@ -1869,7 +2046,6 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => {
                       p.setEditingDraft(e.target.value);
-                      // commit on change for select
                       requestAnimationFrame(() => p.commitEdit(row, col, fr.index));
                     }}
                     onBlur={() => p.commitEdit(row, col, fr.index)}
@@ -1893,6 +2069,33 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
                     onKeyDown={(e) => p.onEditKeydown(e, row, col, fr.index)}
                   />
                 )
+              ) : p.isRowEditing && editable ? (
+                col.editType === 'select' && col.editOptions ? (
+                  <select
+                    className="cf-table__edit-input"
+                    value={(p.rowDraft[col.key] as string | number | undefined) ?? ''}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => p.setRowEditDraft(col.key, e.target.value)}
+                  >
+                    {col.editOptions.map((opt) => (
+                      <option key={String(opt.value)} value={opt.value as string | number}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    className="cf-table__edit-input"
+                    type={col.editType === 'number' ? 'number' : 'text'}
+                    value={(p.rowDraft[col.key] as string | number | undefined) ?? ''}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => p.setRowEditDraft(col.key, e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') p.commitRowEdit(row, fr.index);
+                      else if (e.key === 'Escape') p.cancelRowEdit();
+                    }}
+                  />
+                )
               ) : p.renderCell?.[col.key] ? (
                 p.renderCell[col.key]({
                   row,
@@ -1909,6 +2112,38 @@ function Row<T extends Record<string, unknown>>(p: RowProps<T>) {
           <td className="cf-table__col-pad" style={{ width: p.padRight }} />
         )}
       </tr>
+      {p.editMode === 'row' && p.isRowEditing && (
+        <tr className="cf-table__row cf-table__row--edit-actions">
+          <td
+            className="cf-table__cell"
+            colSpan={cols.length + (p.selectable === 'multiple' ? 1 : 0) + (p.rowReorderable ? 1 : 0) + (p.expandable ? 1 : 0)}
+            style={{ padding: '6px 12px', background: 'var(--accent-soft)' }}
+          >
+            <div className="cf-table__row-edit-actions" style={{ float: 'right' }}>
+              <button
+                type="button"
+                className="cf-table__row-edit-btn cf-table__row-edit-btn--save"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  p.commitRowEdit(row, fr.index);
+                }}
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                className="cf-table__row-edit-btn cf-table__row-edit-btn--cancel"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  p.cancelRowEdit();
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </td>
+        </tr>
+      )}
       {p.expandable && p.expandRender && p.expanded && !fr.hasChildren && (
         <tr className="cf-table__row cf-table__row--expand">
           <td

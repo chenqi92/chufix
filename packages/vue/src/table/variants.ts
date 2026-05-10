@@ -224,6 +224,23 @@ export interface TableProps<T = Record<string, unknown>> {
    *  默认 false。*/
   cellPastable?: boolean;
 
+  /* 编辑模式 */
+  /** 'cell'（默认）双击单元格进入；'row' 双击整行进入，所有 editable 列同时变为 input，统一 Save / Cancel。*/
+  editMode?: 'cell' | 'row';
+
+  /* 批量操作工具栏（依赖 selectable: 'multiple'） */
+  /** 选中多行后顶部出现一条 sticky 操作条；自带 计数 + 清空 + 导出选中。*/
+  batchActions?: boolean;
+
+  /* 行级置顶 */
+  /** 这些 rowKey 对应的行会置顶并 sticky；多行按数组顺序堆叠。*/
+  pinnedRowKeys?: string[];
+
+  /* 自动测高 */
+  /** 启用 ResizeObserver 自动测每行真实高度，覆盖 rowHeight / getRowHeight。
+   *  适合复杂富文本 / 不固定渲染内容场景。*/
+  autoRowHeight?: boolean;
+
   /* 历史撤销 */
   /** 启用 sort / filter / search / pagination / columnsState 的快照栈，支持 Cmd/Ctrl+Z 撤销。*/
   historyEnabled?: boolean;
