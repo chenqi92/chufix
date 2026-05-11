@@ -24,6 +24,8 @@ const statusLabel = site.status.label[locale];
 const announceTitle = site.status.announcementTitle[locale];
 const announceBody = site.status.announcement[locale];
 const updatedLabel = t(locale, 'announce.updated');
+const closeAnnouncementLabel = locale === 'en' ? 'Dismiss announcement' : '关闭公告';
+const announcementStorageKey = `chufix:announcement:${site.status.updatedAt}`;
 ---
 
 <!doctype html>
@@ -40,14 +42,49 @@ const updatedLabel = t(locale, 'announce.updated');
   </head>
   <body>
     <SiteNav />
-    <aside class="site-announcement" aria-label={announceTitle}>
+    <aside
+      class="site-announcement"
+      aria-label={announceTitle}
+      data-site-announcement
+      data-announcement-key={announcementStorageKey}
+    >
       <div class="site-announcement__inner">
         <span class="site-announcement__badge">{statusLabel}</span>
         <strong>{announceTitle}</strong>
         <span>{announceBody}</span>
         <span class="site-announcement__date">{updatedLabel} {site.status.updatedAt}</span>
+        <button
+          class="site-announcement__close"
+          type="button"
+          aria-label={closeAnnouncementLabel}
+          title={closeAnnouncementLabel}
+          data-site-announcement-close
+        >
+          ×
+        </button>
       </div>
     </aside>
+    <script is:inline>
+      (() => {
+        const announcement = document.querySelector('[data-site-announcement]');
+        const close = document.querySelector('[data-site-announcement-close]');
+        const key = announcement?.getAttribute('data-announcement-key');
+        if (!announcement || !close || !key) return;
+        try {
+          if (localStorage.getItem(key) === 'hidden') {
+            announcement.hidden = true;
+          }
+          close.addEventListener('click', () => {
+            localStorage.setItem(key, 'hidden');
+            announcement.hidden = true;
+          });
+        } catch {
+          close.addEventListener('click', () => {
+            announcement.hidden = true;
+          });
+        }
+      })();
+    </script>
     <slot />
     <CfToaster client:only="vue" position="top-right" />
   </body>

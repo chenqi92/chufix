@@ -316,9 +316,33 @@ kbd {
   color: var(--fg-2);
   white-space: nowrap;
 }
+.site-announcement__close {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-left: 0.1rem;
+  border: 0;
+  border-radius: var(--r-3);
+  background: transparent;
+  color: var(--fg-2);
+  font: inherit;
+  font-size: var(--t-18);
+  line-height: 1;
+  cursor: pointer;
+}
+.site-announcement__close:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+.site-announcement__close:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-inset);
+}
 @media (max-width: 760px) {
   .site-announcement__date {
-    width: 100%;
+    flex: 1 1 auto;
     margin-left: 0;
   }
 }

@@ -20,7 +20,21 @@
 }
 .cf-vinput:focus-within {
   border-color: var(--accent-1);
+  box-shadow: none;
+}
+.cf-vinput::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow: var(--focus-ring-inset);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity var(--dur-fast) linear;
+}
+.cf-vinput:focus-within::after {
+  opacity: 1;
 }
 .cf-vinput.is-error {
   border-color: var(--status-error);

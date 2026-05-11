@@ -46,7 +46,7 @@
 
 .cf-taginput.is-error { border-color: var(--status-error); }
 .cf-taginput.is-error.is-focused {
-  box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
+  box-shadow: 0 0 0 2px var(--status-error);
 }
 
 .cf-taginput--filled {

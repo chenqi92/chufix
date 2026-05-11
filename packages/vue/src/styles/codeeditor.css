@@ -2,6 +2,7 @@
  * Lightweight textarea host; bring your own syntax highlighter via overlay. */
 
 .cf-codeeditor {
+  position: relative;
   display: flex;
   align-items: stretch;
   width: 100%;
@@ -17,7 +18,21 @@
 }
 .cf-codeeditor:focus-within {
   border-color: var(--accent-1);
+  box-shadow: none;
+}
+.cf-codeeditor::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow: var(--focus-ring-inset);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity var(--dur-fast) linear;
+}
+.cf-codeeditor:focus-within::after {
+  opacity: 1;
 }
 .cf-codeeditor.is-readonly {
   background: var(--bg-2);

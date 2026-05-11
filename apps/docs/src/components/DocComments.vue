@@ -30,6 +30,11 @@ const T = isEn
       title: 'Discussion',
       unavailableTitle: 'Comments backend not configured',
       unavailableBody: 'This page has the comments module wired up. Once Cloudflare Pages Functions and the D1 binding are configured, submissions will land in the moderation queue.',
+      unavailableDevBody: 'Local Astro dev does not run Pages Functions by default. Use Cloudflare Pages, wrangler pages dev, or set PUBLIC_ENABLE_COMMENTS_API=true when testing the deployed API.',
+      unavailableRouteBody: 'The current deployment cannot find /api/comments. Check that Cloudflare Pages is deploying apps/docs and includes the Functions directory.',
+      unavailableDbBody: 'The current deployment cannot read CHUFIX_COMMENTS_DB. Bind D1 in the same Production/Preview environment and redeploy the site.',
+      unavailableHttpBody: 'The comments API responded but is not healthy. Open /api/comments-health on this deployment for the current binding status.',
+      unavailableNetworkBody: 'The comments API could not be reached from this page. Check the deployed domain and Pages Functions logs.',
       placeholderNick: 'Nickname',
       placeholderBody: 'Share suggestions, questions, or usage feedback',
       emojiLabel: 'Quick emoji reply',
@@ -53,6 +58,11 @@ const T = isEn
       title: '讨论',
       unavailableTitle: '评论接口尚未启用',
       unavailableBody: '当前页面已经预留评论模块。配置 Cloudflare Pages Functions 和 D1 绑定后，用户评论会进入待审核队列。',
+      unavailableDevBody: '本地 Astro dev 默认不会运行 Pages Functions。请使用 Cloudflare Pages、wrangler pages dev，或在测试已部署接口时设置 PUBLIC_ENABLE_COMMENTS_API=true。',
+      unavailableRouteBody: '当前部署找不到 /api/comments。请确认 Cloudflare Pages 部署的是 apps/docs，并且 Functions 目录已被包含。',
+      unavailableDbBody: '当前部署没有读到 CHUFIX_COMMENTS_DB。请在同一个 Production/Preview 环境绑定 D1，并重新部署站点。',
+      unavailableHttpBody: '评论 API 有响应但状态异常。可以打开当前部署的 /api/comments-health 查看绑定状态。',
+      unavailableNetworkBody: '当前页面无法访问评论 API。请检查部署域名和 Pages Functions 日志。',
       placeholderNick: '昵称',
       placeholderBody: '留下建议、问题或使用反馈',
       emojiLabel: '快捷 emoji 评论',
@@ -85,6 +95,7 @@ const apiEnabled = !import.meta.env.DEV || import.meta.env.PUBLIC_ENABLE_COMMENT
 const loading = ref(true);
 const posting = ref(false);
 const unavailable = ref(false);
+const unavailableBody = ref(T.unavailableBody);
 const notice = ref('');
 const comments = ref<CommentItem[]>([]);
 const author = ref('');
@@ -126,6 +137,12 @@ function normalize(items: CommentItem[]) {
   return roots;
 }
 
+function markUnavailable(message: string) {
+  unavailable.value = true;
+  unavailableBody.value = message;
+  comments.value = [];
+}
+
 async function loadComments() {
   loading.value = true;
   notice.value = '';
@@ -134,25 +151,25 @@ async function loadComments() {
       headers: { accept: 'application/json' },
     });
     if (res.status === 404 || res.status === 501) {
-      unavailable.value = true;
-      comments.value = [];
+      markUnavailable(T.unavailableRouteBody);
       return;
     }
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      markUnavailable(T.unavailableHttpBody);
+      return;
+    }
     const data = await res.json() as {
       ok?: boolean;
       code?: string;
       comments?: CommentItem[];
     };
     if (data.ok === false && data.code === 'COMMENTS_DB_NOT_BOUND') {
-      unavailable.value = true;
-      comments.value = [];
+      markUnavailable(T.unavailableDbBody);
       return;
     }
     comments.value = normalize(data.comments ?? []);
   } catch {
-    unavailable.value = true;
-    comments.value = [];
+    markUnavailable(T.unavailableNetworkBody);
   } finally {
     loading.value = false;
   }
@@ -176,7 +193,11 @@ async function submit(overrideContent?: string, parentId?: string) {
         content: nextContent,
       }),
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json().catch(() => null) as { code?: string } | null;
+    if (!res.ok) {
+      if (data?.code === 'COMMENTS_DB_NOT_BOUND') markUnavailable(T.unavailableDbBody);
+      throw new Error(`HTTP ${res.status}`);
+    }
     if (!overrideContent && parentId) replyContent.value = '';
     if (!overrideContent && !parentId) content.value = '';
     if (parentId) replyingTo.value = '';
@@ -206,7 +227,7 @@ function startReply(id: string) {
 
 onMounted(() => {
   if (!apiEnabled) {
-    unavailable.value = true;
+    markUnavailable(T.unavailableDevBody);
     loading.value = false;
     return;
   }
@@ -225,7 +246,7 @@ onMounted(() => {
     </header>
 
     <CfAlert v-if="unavailable" tone="warning" variant="soft" :title="T.unavailableTitle">
-      {{ T.unavailableBody }}
+      {{ unavailableBody }}
     </CfAlert>
 
     <form class="doc-comments__form" @submit.prevent="submit()">

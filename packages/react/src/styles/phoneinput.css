@@ -16,7 +16,21 @@
 .cf-phoneinput.is-open,
 .cf-phoneinput:focus-within {
   border-color: var(--accent-1);
+  box-shadow: none;
+}
+.cf-phoneinput::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow: var(--focus-ring-inset);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) linear;
+}
+.cf-phoneinput.is-open::after,
+.cf-phoneinput:focus-within::after {
+  opacity: 1;
 }
 .cf-phoneinput.is-error {
   border-color: var(--status-error);

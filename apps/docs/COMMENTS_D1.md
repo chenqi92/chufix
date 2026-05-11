@@ -51,6 +51,16 @@ D1 database: chufix-comments
 
 Then redeploy the Pages project.
 
+Cloudflare attaches bindings to a deployment when that deployment is created. If you add or change the D1 binding after a deploy, trigger a new Production deployment. Preview deployments have their own binding environment, so add the same binding under Preview if you are testing a preview URL.
+
+After deployment, open:
+
+```txt
+https://your-domain.example/api/comments-health
+```
+
+Expected healthy response includes `"dbBound":true`. If it is `false`, the deployed Functions worker cannot see `CHUFIX_COMMENTS_DB` in that environment. If the route is 404, Pages is not deploying `apps/docs/functions` from the expected root directory.
+
 ## Apply schema
 
 For production:

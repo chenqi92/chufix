@@ -70,8 +70,8 @@
   --viz-8: oklch(70% 0.1 230);
   --fg-on-viz: oklch(98% 0.005 260);
 
-  /* focus · 2-ring composite */
-  --focus-ring: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--accent-1);
+  /* focus · single ring avoids uneven clipped edges in dense containers */
+  --focus-ring: 0 0 0 2px var(--accent-1);
   --focus-ring-inset: inset 0 0 0 2px var(--accent-1);
 
   /* selection · brand-tinted */
@@ -171,7 +171,7 @@
   --viz-8: oklch(54% 0.1 230);
   --fg-on-viz: oklch(98% 0.005 260);
 
-  --focus-ring: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--accent-1);
+  --focus-ring: 0 0 0 2px var(--accent-1);
   --focus-ring-inset: inset 0 0 0 2px var(--accent-1);
 
   --selection-bg: oklch(54% 0.16 263 / 0.2);

@@ -1,4 +1,7 @@
 import type { Locale } from '~/i18n/strings';
+import vuePackage from '../../../../packages/vue/package.json';
+
+const componentVersion = vuePackage.version;
 
 export const site = {
   title: 'ChuFix UI',
@@ -6,7 +9,7 @@ export const site = {
   github: 'https://github.com/chenqi92/chufix',
   docsRepo: 'https://github.com/chenqi92/chufix/tree/main/apps/docs',
   npm: 'https://www.npmjs.com/org/chufix-design',
-  version: '0.2.1',
+  version: componentVersion,
   status: {
     label: { zh: '开发预览', en: 'Preview' },
     updatedAt: '2026-05-10',
@@ -16,8 +19,8 @@ export const site = {
       en: 'ChuFix UI is now published on npm',
     },
     announcement: {
-      zh: '@chufix-design/{tokens,icons,vue,react,cli} 已发布 v0.2.1。新增授权 Blocks 与状态插画优化，TimelineGantt / Pivot / Spreadsheet 等能力持续增强。',
-      en: '@chufix-design/{tokens,icons,vue,react,cli} v0.2.1 is live with new auth blocks, refined state artwork, and ongoing TimelineGantt / Pivot / Spreadsheet upgrades.',
+      zh: '@chufix-design/{tokens,icons,vue,react,cli} 已发布。新增授权 Blocks 与状态插画优化，TimelineGantt / Pivot / Spreadsheet 等能力持续增强。',
+      en: '@chufix-design/{tokens,icons,vue,react,cli} is live with new auth blocks, refined state artwork, and ongoing TimelineGantt / Pivot / Spreadsheet upgrades.',
     },
   },
 };
