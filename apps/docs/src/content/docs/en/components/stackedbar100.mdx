@@ -5,6 +5,7 @@ description: Horizontal 100% stacked bar — well suited to share-of-total break
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
+import BasicVueSource from '~/components/demos/stackedbar100/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfStackedBar100 ... />`}
   reactCode={`<CfStackedBar100 ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 Stacking bars from multiple years makes share migration easy to read.
 
 import CompareVue from '~/components/demos/stackedbar100/CompareVue.vue';
+import CompareVueSource from '~/components/demos/stackedbar100/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfStackedBar100 :segments="seg2024" />
 <CfStackedBar100 :segments="seg2025" />`}
   reactCode={`<CfStackedBar100 segments={seg2024} />
 <CfStackedBar100 segments={seg2025} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 

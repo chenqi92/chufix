@@ -5,6 +5,7 @@ description: 中空饼图，可在中心放数值/标签。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/donutchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/donutchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/donutchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfDonutChart ... />`}
   reactCode={`<CfDonutChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,6 +26,7 @@ import BasicVue from '~/components/demos/donutchart/BasicVue.vue';
 `thickness` 控制环厚度（同 `size` 时，越厚越偏饼图，越薄越偏 ring）。
 
 import CenterVue from '~/components/demos/donutchart/CenterVue.vue';
+import CenterVueSource from '~/components/demos/donutchart/CenterVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfDonutChart :segments="data" :thickness="14" center-value="78%" center-label="完成率" />
@@ -32,7 +35,8 @@ import CenterVue from '~/components/demos/donutchart/CenterVue.vue';
   reactCode={`<CfDonutChart segments={data} thickness={14} centerValue="78%" centerLabel="完成率" />
 <CfDonutChart segments={data} thickness={22} />
 <CfDonutChart segments={data} thickness={32} />`}
->
+
+  vueSource={CenterVueSource}>
   <CenterVue client:load />
 </DemoFrame>
 

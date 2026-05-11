@@ -5,8 +5,11 @@ description: Article side TOC, indented by depth. Supports manual selection or a
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toc/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toc/BasicVue.vue?raw';
 import NestedVue from '~/components/demos/toc/NestedVue.vue';
+import NestedVueSource from '~/components/demos/toc/NestedVue.vue?raw';
 import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
+import MaxDepthVueSource from '~/components/demos/toc/MaxDepthVue.vue?raw';
 
 ## Basic usage
 
@@ -19,7 +22,8 @@ import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
   title="On this page"
 />`}
   reactCode={`<CfToc items={items} activeId="install" title="On this page" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +45,8 @@ import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
   reactCode={`const items: TocItem[] = [/* ... */];
 
 <CfToc items={items} />`}
->
+
+  vueSource={NestedVueSource}>
   <NestedVue client:load />
 </DemoFrame>
 
@@ -54,7 +59,8 @@ import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
 <CfToc :items="items" :max-depth="4" />`}
   reactCode={`<CfToc items={items} maxDepth={2} />
 <CfToc items={items} maxDepth={4} />`}
->
+
+  vueSource={MaxDepthVueSource}>
   <MaxDepthVue client:load />
 </DemoFrame>
 

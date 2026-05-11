@@ -5,6 +5,7 @@ description: Hierarchical rectangle area chart, single-level slice-and-dice layo
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treemap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treemap/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens, colorblind-friendly.
 <DemoFrame
   vueCode={`<CfTreemap ... />`}
   reactCode={`<CfTreemap ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ Colors come from the `--viz-1..8` tokens, colorblind-friendly.
 `showLabels=false` shows only color blocks — useful for thumbnail layouts. Text only appears when a rectangle is large enough (w>50, h>20).
 
 import LabeledVue from '~/components/demos/treemap/LabeledVue.vue';
+import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTreemap :nodes="nodes" />
 <CfTreemap :nodes="nodes" :show-labels="false" />`}
   reactCode={`<CfTreemap nodes={nodes} />
 <CfTreemap nodes={nodes} showLabels={false} />`}
->
+
+  vueSource={LabeledVueSource}>
   <LabeledVue client:load />
 </DemoFrame>
 

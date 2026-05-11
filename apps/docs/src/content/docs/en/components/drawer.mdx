@@ -5,20 +5,30 @@ description: Edge-anchored sliding panel — 4 placements, tone variants, resiza
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/drawer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/drawer/BasicVue.vue?raw';
 import PlacementVue from '~/components/demos/drawer/PlacementVue.vue';
+import PlacementVueSource from '~/components/demos/drawer/PlacementVue.vue?raw';
 import SizesVue from '~/components/demos/drawer/SizesVue.vue';
+import SizesVueSource from '~/components/demos/drawer/SizesVue.vue?raw';
 import NoCloseVue from '~/components/demos/drawer/NoCloseVue.vue';
+import NoCloseVueSource from '~/components/demos/drawer/NoCloseVue.vue?raw';
 import TonesVue from '~/components/demos/drawer/TonesVue.vue';
+import TonesVueSource from '~/components/demos/drawer/TonesVue.vue?raw';
 import AsyncVue from '~/components/demos/drawer/AsyncVue.vue';
+import AsyncVueSource from '~/components/demos/drawer/AsyncVue.vue?raw';
 import ResizableVue from '~/components/demos/drawer/ResizableVue.vue';
+import ResizableVueSource from '~/components/demos/drawer/ResizableVue.vue?raw';
 import ServiceVue from '~/components/demos/drawer/ServiceVue.vue';
+import ServiceVueSource from '~/components/demos/drawer/ServiceVue.vue?raw';
 import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
+import NoMaskVueSource from '~/components/demos/drawer/NoMaskVue.vue?raw';
 
 ## Basic usage
 
 `v-model:open` (Vue) / `open + onOpenChange` (React) two-way binding. Drawer shares Modal's portal / focus trap / body scroll lock / ESC-close infrastructure.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -26,7 +36,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `placement` controls the slide-in edge — right (default, the most common detail panel) / left (mobile nav) / top / bottom (playground-style ad-hoc workspace).
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PlacementVueSource}>
   <PlacementVue client:only="vue" />
 </DemoFrame>
 
@@ -34,7 +45,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `size` controls width (left/right placement) or height (top/bottom). Available presets: `sm` / `md` (default) / `lg` / `xl` / `full`. `width` / `height` accept custom pixel values.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SizesVueSource}>
   <SizesVue client:only="vue" />
 </DemoFrame>
 
@@ -42,7 +54,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `tone="info | success | warning | error"` adds a circular tone icon + accent color in the header. With `tone="error"` the default OK button automatically switches to danger red.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={TonesVueSource}>
   <TonesVue client:only="vue" />
 </DemoFrame>
 
@@ -50,7 +63,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 Pass `okText` / `cancelText` and the component renders the default footer buttons. `onBeforeOk` accepts an async function — return `false` or throw to keep the dialog open and restore the loading state; resolve normally to close and emit `@ok`.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncVueSource}>
   <AsyncVue client:only="vue" />
 </DemoFrame>
 
@@ -58,7 +72,8 @@ Pass `okText` / `cancelText` and the component renders the default footer button
 
 `resizable` turns the inner edge into a drag handle — users can resize horizontally (left/right drawers) or vertically (top/bottom drawers). Min size 240×160.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ResizableVueSource}>
   <ResizableVue client:only="vue" />
 </DemoFrame>
 
@@ -66,7 +81,8 @@ Pass `okText` / `cancelText` and the component renders the default footer button
 
 Default `mask=true` renders an overlay and locks body scroll. Setting `mask={false}` floats the drawer above the page without overlay or scroll lock — ideal for persistent reference panels or live logs.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={NoMaskVueSource}>
   <NoMaskVue client:only="vue" />
 </DemoFrame>
 
@@ -80,7 +96,8 @@ For long forms or in-progress flows you may want to prevent accidental close. Se
 
 While async (`onBeforeOk` in flight) every close path is blocked automatically.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={NoCloseVueSource}>
   <NoCloseVue client:only="vue" />
 </DemoFrame>
 
@@ -102,7 +119,8 @@ const ok = await drawer.confirm({
 });
 ```
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ServiceVueSource}>
   <ServiceVue client:only="vue" />
 </DemoFrame>
 

@@ -5,14 +5,18 @@ description: 2D aggregation table — sum / avg / count / min / max aggregators,
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pivot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pivot/BasicVue.vue?raw';
 import HeatmapVue from '~/components/demos/pivot/HeatmapVue.vue';
+import HeatmapVueSource from '~/components/demos/pivot/HeatmapVue.vue?raw';
 import DrillDownVue from '~/components/demos/pivot/DrillDownVue.vue';
+import DrillDownVueSource from '~/components/demos/pivot/DrillDownVue.vue?raw';
 
 ## Basic usage
 
 Group a flat array of objects by `rowField` (rows) and `colField` (columns), aggregating `valueField`. Row totals, column totals, and grand total are computed automatically.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -20,7 +24,8 @@ Group a flat array of objects by `rowField` (rows) and `colField` (columns), agg
 
 With `heatmap`, each cell is shaded with a translucent accent color proportional to its value (larger = deeper). Combined with different `aggregator` settings it gives an at-a-glance distribution view.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={HeatmapVueSource}>
   <HeatmapVue client:load />
 </DemoFrame>
 
@@ -28,7 +33,8 @@ With `heatmap`, each cell is shaded with a translucent accent color proportional
 
 `onCellClick` receives `{ row, col, value, rows }` — `rows` is every source record that fell into this cell, ideal for triggering a drawer or modal with the underlying detail.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={DrillDownVueSource}>
   <DrillDownVue client:load />
 </DemoFrame>
 

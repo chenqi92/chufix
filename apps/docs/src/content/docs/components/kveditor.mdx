@@ -5,8 +5,11 @@ description: 用于编辑 HTTP headers / query params / 环境变量等键值对
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/kveditor/BasicVue.vue?raw';
 import HeadersVue from '~/components/demos/kveditor/HeadersVue.vue';
+import HeadersVueSource from '~/components/demos/kveditor/HeadersVue.vue?raw';
 import StatesVue from '~/components/demos/kveditor/StatesVue.vue';
+import StatesVueSource from '~/components/demos/kveditor/StatesVue.vue?raw';
 
 ## 基础用法
 
@@ -47,7 +50,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -71,7 +75,8 @@ export default function Demo() {
   showToggle
   showDescription
 />`}
->
+
+  vueSource={HeadersVueSource}>
   <HeadersVue client:load />
 </DemoFrame>
 
@@ -84,7 +89,8 @@ export default function Demo() {
 <CfKVEditor :model-value="env" disabled />`}
   reactCode={`<CfKVEditor value={env} readonly />
 <CfKVEditor value={env} disabled />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

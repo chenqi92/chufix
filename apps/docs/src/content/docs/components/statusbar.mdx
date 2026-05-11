@@ -5,6 +5,7 @@ description: 编辑器底栏。三段（左 / 中 / 右）槽位，6 种语义�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statusbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statusbar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -15,7 +16,8 @@ slot prop（React: `leftSlot/centerSlot/rightSlot`）替换。
 <DemoFrame
   vueCode={`<CfStatusBar :left-items="left" :center-items="center" :right-items="right" />`}
   reactCode={`<CfStatusBar leftItems={left} centerItems={center} rightItems={right} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -25,11 +27,13 @@ slot prop（React: `leftSlot/centerSlot/rightSlot`）替换。
 `tone` 整条染色，例如 `error` 让整条标红示意 build failed。
 
 import TonesVue from '~/components/demos/statusbar/TonesVue.vue';
+import TonesVueSource from '~/components/demos/statusbar/TonesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfStatusBar :tone="'error'" :left-items="items" />`}
   reactCode={`<CfStatusBar tone="error" leftItems={items} />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 

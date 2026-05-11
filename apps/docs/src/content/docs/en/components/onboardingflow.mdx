@@ -5,6 +5,7 @@ description: Onboarding flow shell with First-Run Wizard / Hotspot Tour / Full F
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/onboardingflow/BasicVue.vue';
+import BasicVueSource from '~/components/demos/onboardingflow/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`onboarding.html`](https://github.com/chenqi92/chufix-design).
   'panel-wizard': <PanelA />,
   'panel-hotspot': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

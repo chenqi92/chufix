@@ -5,9 +5,13 @@ description: 二态开关 —— 3 种尺寸、loading 与 disabled 态，原生
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/switch/BasicVue.vue';
+import BasicVueSource from '~/components/demos/switch/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/switch/SizesVue.vue';
+import SizesVueSource from '~/components/demos/switch/SizesVue.vue?raw';
 import StatesVue from '~/components/demos/switch/StatesVue.vue';
+import StatesVueSource from '~/components/demos/switch/StatesVue.vue?raw';
 import EventsVue from '~/components/demos/switch/EventsVue.vue';
+import EventsVueSource from '~/components/demos/switch/EventsVue.vue?raw';
 
 ## 基础用法
 
@@ -35,7 +39,8 @@ export default function Demo() {
     </CfSwitch>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -48,7 +53,8 @@ export default function Demo() {
   reactCode={`<CfSwitch size="sm">Small</CfSwitch>
 <CfSwitch size="md">Medium</CfSwitch>
 <CfSwitch size="lg">Large</CfSwitch>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -101,7 +107,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 
@@ -136,7 +143,8 @@ export default function Demo() {
 >
   自动同步
 </CfSwitch>`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 

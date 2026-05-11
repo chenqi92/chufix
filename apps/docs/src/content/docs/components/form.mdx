@@ -5,18 +5,26 @@ description: 表单封装层 —— 三种布局、规则校验、异步 validat
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/form/BasicVue.vue';
+import BasicVueSource from '~/components/demos/form/BasicVue.vue?raw';
 import LayoutVue from '~/components/demos/form/LayoutVue.vue';
+import LayoutVueSource from '~/components/demos/form/LayoutVue.vue?raw';
 import ValidationVue from '~/components/demos/form/ValidationVue.vue';
+import ValidationVueSource from '~/components/demos/form/ValidationVue.vue?raw';
 import ComplexVue from '~/components/demos/form/ComplexVue.vue';
+import ComplexVueSource from '~/components/demos/form/ComplexVue.vue?raw';
 import RulesVue from '~/components/demos/form/RulesVue.vue';
+import RulesVueSource from '~/components/demos/form/RulesVue.vue?raw';
 import AsyncRuleVue from '~/components/demos/form/AsyncRuleVue.vue';
+import AsyncRuleVueSource from '~/components/demos/form/AsyncRuleVue.vue?raw';
 import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
+import ImperativeVueSource from '~/components/demos/form/ImperativeVue.vue?raw';
 
 ## 基础用法
 
 `<CfForm>` 提供布局上下文，`<CfFormField>` 包裹每一个表单项，统一渲染 label、必填星号、提示 / 错误文案。最简形式只是个布局封装。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -28,7 +36,8 @@ import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
 - `horizontal` —— label 与控件同行，配合 `labelWidth` 对齐
 - `inline` —— 所有字段挤在一行，常用于搜索条 / 工具栏
 
-<DemoFrame>
+<DemoFrame
+  vueSource={LayoutVueSource}>
   <LayoutVue client:load />
 </DemoFrame>
 
@@ -36,7 +45,8 @@ import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
 
 最直接的用法：父组件自己写校验逻辑，把错误文案塞进每个字段的 `error` 属性。这种模式不依赖 Form 的内置 validator，适合你已经在用 zod / valibot / yup 等库的项目。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ValidationVueSource}>
   <ValidationVue client:load />
 </DemoFrame>
 
@@ -60,7 +70,8 @@ const rules: Record<string, FieldRules> = {
 };
 ```
 
-<DemoFrame>
+<DemoFrame
+  vueSource={RulesVueSource}>
   <RulesVue client:load />
 </DemoFrame>
 
@@ -68,7 +79,8 @@ const rules: Record<string, FieldRules> = {
 
 `validator` 可以返回 Promise — 典型场景是"用户名是否被占用"这种需要查后端的校验。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncRuleVueSource}>
   <AsyncRuleVue client:load />
 </DemoFrame>
 
@@ -86,7 +98,8 @@ const rules: Record<string, FieldRules> = {
 
 提交时如果有错，组件会自动滚动到第一个出错字段并 focus，可通过 `:scroll-to-error="false"` 关闭。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ImperativeVueSource}>
   <ImperativeVue client:load />
 </DemoFrame>
 
@@ -94,7 +107,8 @@ const rules: Record<string, FieldRules> = {
 
 混合 Input / Select / Textarea / Button 的真实表单模板。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ComplexVueSource}>
   <ComplexVue client:load />
 </DemoFrame>
 

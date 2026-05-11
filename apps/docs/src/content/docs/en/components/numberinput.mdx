@@ -5,9 +5,13 @@ description: Numeric input with +/− stepper buttons, min/max/step constraints,
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/numberinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/numberinput/BasicVue.vue?raw';
 import PrecisionVue from '~/components/demos/numberinput/PrecisionVue.vue';
+import PrecisionVueSource from '~/components/demos/numberinput/PrecisionVue.vue?raw';
 import SizesVue from '~/components/demos/numberinput/SizesVue.vue';
+import SizesVueSource from '~/components/demos/numberinput/SizesVue.vue?raw';
 import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
+import NoSteppersVueSource from '~/components/demos/numberinput/NoSteppersVue.vue?raw';
 
 ## Basic usage
 
@@ -16,7 +20,8 @@ Bind to `number | null` — `null` represents empty, distinct from "not filled i
 <DemoFrame
   vueCode={`<CfNumberInput v-model="value" :min="0" :max="100" />`}
   reactCode={`<CfNumberInput value={value} onChange={setValue} min={0} max={100} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -31,7 +36,8 @@ Bind to `number | null` — `null` represents empty, distinct from "not filled i
   reactCode={`<CfNumberInput value={ratio} onChange={setRatio} step={0.05} min={0} max={1} />
 <CfNumberInput value={price} onChange={setPrice} step={0.1} precision={2} />
 <CfNumberInput value={optional} onChange={setOptional} placeholder="Leave blank for unlimited" />`}
->
+
+  vueSource={PrecisionVueSource}>
   <PrecisionVue client:load />
 </DemoFrame>
 
@@ -46,7 +52,8 @@ Bind to `number | null` — `null` represents empty, distinct from "not filled i
   reactCode={`<CfNumberInput value={a} onChange={setA} size="sm" />
 <CfNumberInput value={b} onChange={setB} size="md" />
 <CfNumberInput value={c} onChange={setC} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -61,7 +68,8 @@ Bind to `number | null` — `null` represents empty, distinct from "not filled i
   reactCode={`<CfNumberInput value={a} onChange={setA} />
 <CfNumberInput value={b} onChange={setB} hideSteppers />
 <CfNumberInput value={42} disabled />`}
->
+
+  vueSource={NoSteppersVueSource}>
   <NoSteppersVue client:load />
 </DemoFrame>
 

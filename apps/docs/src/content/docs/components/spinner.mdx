@@ -5,9 +5,13 @@ description: 旋转环加载图标，3 档尺寸 × 6 种 tone，可选文字标
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/spinner/BasicVue.vue';
+import BasicVueSource from '~/components/demos/spinner/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/spinner/SizesVue.vue';
+import SizesVueSource from '~/components/demos/spinner/SizesVue.vue?raw';
 import TonesVue from '~/components/demos/spinner/TonesVue.vue';
+import TonesVueSource from '~/components/demos/spinner/TonesVue.vue?raw';
 import LabelVue from '~/components/demos/spinner/LabelVue.vue';
+import LabelVueSource from '~/components/demos/spinner/LabelVue.vue?raw';
 
 ## 基础用法
 
@@ -16,7 +20,8 @@ import LabelVue from '~/components/demos/spinner/LabelVue.vue';
 <DemoFrame
   vueCode={`<CfSpinner />`}
   reactCode={`<CfSpinner />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -31,7 +36,8 @@ import LabelVue from '~/components/demos/spinner/LabelVue.vue';
   reactCode={`<CfSpinner size="sm" />
 <CfSpinner size="md" />
 <CfSpinner size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -52,7 +58,8 @@ import LabelVue from '~/components/demos/spinner/LabelVue.vue';
 <CfSpinner tone="danger" />
 <CfSpinner tone="info" />
 <CfSpinner tone="neutral" />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -65,7 +72,8 @@ import LabelVue from '~/components/demos/spinner/LabelVue.vue';
 <CfSpinner size="lg" tone="success" label="保存中" />`}
   reactCode={`<CfSpinner label="正在加载…" />
 <CfSpinner size="lg" tone="success" label="保存中" />`}
->
+
+  vueSource={LabelVueSource}>
   <LabelVue client:load />
 </DemoFrame>
 

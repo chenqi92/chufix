@@ -5,8 +5,11 @@ description: Tabs with three visual variants. Controlled / uncontrolled, items-a
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tabs/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tabs/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/tabs/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/tabs/VariantsVue.vue?raw';
 import SizesVue from '~/components/demos/tabs/SizesVue.vue';
+import SizesVueSource from '~/components/demos/tabs/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -59,7 +62,8 @@ export default function Demo() {
     </CfTabs>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -74,7 +78,8 @@ export default function Demo() {
   reactCode={`<CfTabs value={a} onChange={setA} items={items} variant="line" />
 <CfTabs value={b} onChange={setB} items={items} variant="segmented" />
 <CfTabs value={c} onChange={setC} items={items} variant="pill" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -89,7 +94,8 @@ export default function Demo() {
   reactCode={`<CfTabs items={items} size="sm" defaultValue="one" />
 <CfTabs items={items} size="md" defaultValue="one" />
 <CfTabs items={items} size="lg" defaultValue="one" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Full-screen application-level search overlay with category chips, g
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/globalsearch/BasicVue.vue';
+import BasicVueSource from '~/components/demos/globalsearch/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -24,7 +25,8 @@ Use it for "application spotlight" use cases; the command palette is for "Cmd+K 
   results={results}
   onSelect={onSelect}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -34,11 +36,13 @@ Use it for "application spotlight" use cases; the command palette is for "Cmd+K 
 18 results across 5 categories. Click a top chip to filter; the chip row is hidden automatically when there is at most one category.
 
 import CategoriesVue from '~/components/demos/globalsearch/CategoriesVue.vue';
+import CategoriesVueSource from '~/components/demos/globalsearch/CategoriesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfGlobalSearch ... :show-categories="true" />`}
   reactCode={`<CfGlobalSearch ... showCategories />`}
->
+
+  vueSource={CategoriesVueSource}>
   <CategoriesVue client:load />
 </DemoFrame>
 

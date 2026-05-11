@@ -5,6 +5,7 @@ description: Vertically stacked density curves across multiple groups.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/ridgeplot/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfRidgePlot ... />`}
   reactCode={`<CfRidgePlot ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 Stacking multiple bells produces bimodal distributions, common when crossing seasons or user cohorts with secondary peaks.
 
 import SeasonsVue from '~/components/demos/ridgeplot/SeasonsVue.vue';
+import SeasonsVueSource from '~/components/demos/ridgeplot/SeasonsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRidgePlot :rows="rows" :overlap="0.5" />`}
   reactCode={`<CfRidgePlot rows={rows} overlap={0.5} />`}
->
+
+  vueSource={SeasonsVueSource}>
   <SeasonsVue client:load />
 </DemoFrame>
 

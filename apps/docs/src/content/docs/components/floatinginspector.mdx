@@ -5,6 +5,7 @@ description: 角落锚定的可折叠检查器面板，常用于性能监视、�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/floatinginspector/BasicVue.vue';
+import BasicVueSource from '~/components/demos/floatinginspector/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -26,7 +27,8 @@ import BasicVue from '~/components/demos/floatinginspector/BasicVue.vue';
 >
   <ul>...</ul>
 </CfFloatingInspector>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -36,11 +38,13 @@ import BasicVue from '~/components/demos/floatinginspector/BasicVue.vue';
 4 种 placement 切换效果；点击"关闭"演示 onOpenChange。
 
 import PlacementsVue from '~/components/demos/floatinginspector/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/floatinginspector/PlacementsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfFloatingInspector v-model:open="open" :placement="'top-right'" />`}
   reactCode={`<CfFloatingInspector open={open} onOpenChange={setOpen} placement="top-right" />`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:load />
 </DemoFrame>
 

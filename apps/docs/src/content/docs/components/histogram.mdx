@@ -5,6 +5,7 @@ description: 分箱直方图，每个 bin 一个柱。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/histogram/BasicVue.vue';
+import BasicVueSource from '~/components/demos/histogram/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/histogram/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfHistogram ... />`}
   reactCode={`<CfHistogram ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/histogram/BasicVue.vue';
 正态分布 / 长尾分布对比 — 长尾时建议用对数刻度的 bin label。
 
 import DistributionsVue from '~/components/demos/histogram/DistributionsVue.vue';
+import DistributionsVueSource from '~/components/demos/histogram/DistributionsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfHistogram :bins="bins" />`}
   reactCode={`<CfHistogram bins={bins} />`}
->
+
+  vueSource={DistributionsVueSource}>
   <DistributionsVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Collection / Request / Response / Mock / Workflow 5 个 tab 的 API
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/domainpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/domainpane/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/domainpane/BasicVue.vue';
   'panel-collection': <PanelA />,
   'panel-request': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,11 +34,13 @@ import BasicVue from '~/components/demos/domainpane/BasicVue.vue';
 5 个 tab 拼出一个 Postman 雏形：CfTreeView 集合 / CfMethodBadge + CfKVEditor 请求 / CfStatusCodeBadge + CfDescriptionList 响应。
 
 import RealVue from '~/components/demos/domainpane/RealVue.vue';
+import RealVueSource from '~/components/demos/domainpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfDomainPane>...</CfDomainPane>`}
   reactCode={`<CfDomainPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

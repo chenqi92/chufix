@@ -5,6 +5,7 @@ description: Area chart with stacked mode and smooth-curve support.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/areachart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/areachart/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 <DemoFrame
   vueCode={`<CfAreaChart ... />`}
   reactCode={`<CfAreaChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -25,11 +27,13 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 which is suitable for showing composition; the default `false` overlays the series for trend comparison.
 
 import StackedVue from '~/components/demos/areachart/StackedVue.vue';
+import StackedVueSource from '~/components/demos/areachart/StackedVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfAreaChart :series="series" stacked smooth />`}
   reactCode={`<CfAreaChart series={series} stacked smooth />`}
->
+
+  vueSource={StackedVueSource}>
   <StackedVue client:load />
 </DemoFrame>
 

@@ -5,9 +5,13 @@ description: Heavy-duty table with column resize, double-click cell editing, and
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/datagrid/BasicVue.vue';
+import BasicVueSource from '~/components/demos/datagrid/BasicVue.vue?raw';
 import ResizeVue from '~/components/demos/datagrid/ResizeVue.vue';
+import ResizeVueSource from '~/components/demos/datagrid/ResizeVue.vue?raw';
 import EditVue from '~/components/demos/datagrid/EditVue.vue';
+import EditVueSource from '~/components/demos/datagrid/EditVue.vue?raw';
 import StickyVue from '~/components/demos/datagrid/StickyVue.vue';
+import StickyVueSource from '~/components/demos/datagrid/StickyVue.vue?raw';
 
 ## Basic usage
 
@@ -46,7 +50,8 @@ const columns: DataGridColumn<Row>[] = [
 ];
 
 <CfDataGrid columns={columns} rows={rows} rowKey="id" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -71,7 +76,8 @@ Set `resizable: true` on a column to let users drag its right edge to change the
 ];
 
 <CfDataGrid columns={columns} rows={rows} rowKey="id" />`}
->
+
+  vueSource={ResizeVueSource}>
   <ResizeVue client:load />
 </DemoFrame>
 
@@ -99,7 +105,8 @@ Set `editable: true` on a column to enable double-click-to-edit inline mode. Ent
 }
 
 <CfDataGrid columns={columns} rows={rows} rowKey="id" onCellEdit={onEdit} />`}
->
+
+  vueSource={EditVueSource}>
   <EditVue client:load />
 </DemoFrame>
 
@@ -122,7 +129,8 @@ Pass `maxHeight` to enable vertical scrolling — the header sticks to the top o
   maxHeight={280}
   selectable="multiple"
 />`}
->
+
+  vueSource={StickyVueSource}>
   <StickyVue client:load />
 </DemoFrame>
 

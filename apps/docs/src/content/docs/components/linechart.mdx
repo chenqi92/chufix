@@ -5,6 +5,7 @@ description: 多 series 折线图，支持平滑曲线、网格线、x/y 轴标�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/linechart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/linechart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/linechart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfLineChart ... />`}
   reactCode={`<CfLineChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -25,11 +27,13 @@ import BasicVue from '~/components/demos/linechart/BasicVue.vue';
 不会过冲（不会出现拐点处的"半圆"鼓包）。
 
 import SmoothVue from '~/components/demos/linechart/SmoothVue.vue';
+import SmoothVueSource from '~/components/demos/linechart/SmoothVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfLineChart :series="series" smooth />`}
   reactCode={`<CfLineChart series={series} smooth />`}
->
+
+  vueSource={SmoothVueSource}>
   <SmoothVue client:load />
 </DemoFrame>
 
@@ -38,11 +42,13 @@ import SmoothVue from '~/components/demos/linechart/SmoothVue.vue';
 最多支持 8 条同时显示，配色按 `--viz-1..8` 依次循环。
 
 import MultiSeriesVue from '~/components/demos/linechart/MultiSeriesVue.vue';
+import MultiSeriesVueSource from '~/components/demos/linechart/MultiSeriesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfLineChart :series="series" smooth />`}
   reactCode={`<CfLineChart series={series} smooth />`}
->
+
+  vueSource={MultiSeriesVueSource}>
   <MultiSeriesVue client:load />
 </DemoFrame>
 

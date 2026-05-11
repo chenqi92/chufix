@@ -5,6 +5,7 @@ description: Encode text / URL into an SVG QR code, fully client-side and zero-d
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
+import BasicVueSource from '~/components/demos/qrcode/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfQRCode :value="value" :size="160" ecc="M" />`}
   reactCode={`<CfQRCode value={value} size={160} ecc="M" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

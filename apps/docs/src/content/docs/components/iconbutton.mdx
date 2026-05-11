@@ -5,6 +5,7 @@ description: 仅图标的方形按钮，必须配 aria-label；常用于 toolbar
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/iconbutton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/iconbutton/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/iconbutton/BasicVue.vue';
   reactCode={`<CfIconButton aria-label="保存" variant="primary"><Icon /></CfIconButton>
 <CfIconButton aria-label="删除" variant="danger"><Icon /></CfIconButton>
 <CfIconButton aria-label="固定" pressed><Icon /></CfIconButton>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -31,6 +33,7 @@ import BasicVue from '~/components/demos/iconbutton/BasicVue.vue';
 3 档尺寸（`sm` 26 / `md` 32 / `lg` 38 px）。`shape="round"` 切到圆形（pill）。
 
 import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
+import SizesVueSource from '~/components/demos/iconbutton/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfIconButton size="sm" aria-label="星标" />
@@ -41,7 +44,8 @@ import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
 <CfIconButton size="md" aria-label="星标" />
 <CfIconButton size="lg" aria-label="星标" />
 <CfIconButton shape="round" aria-label="圆形" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -50,6 +54,7 @@ import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
 `pressed` 切换 toggle 状态（自动设 `aria-pressed`），`loading` 与 `disabled` 分别给出 spinner 与禁用样式。
 
 import StatesVue from '~/components/demos/iconbutton/StatesVue.vue';
+import StatesVueSource from '~/components/demos/iconbutton/StatesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfIconButton :pressed="true" aria-label="固定" />
@@ -60,7 +65,8 @@ import StatesVue from '~/components/demos/iconbutton/StatesVue.vue';
 <CfIconButton variant="danger" pressed aria-label="收藏" />
 <CfIconButton loading aria-label="加载中" />
 <CfIconButton disabled aria-label="禁用" />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

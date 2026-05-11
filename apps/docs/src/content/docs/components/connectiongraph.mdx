@@ -5,6 +5,7 @@ description: 节点 + 边的关系图，节点未指定坐标时自动均匀放�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/connectiongraph/BasicVue.vue';
+import BasicVueSource from '~/components/demos/connectiongraph/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/connectiongraph/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfConnectionGraph ... />`}
   reactCode={`<CfConnectionGraph ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/connectiongraph/BasicVue.vue';
 7 个服务、7 条连线，展示典型 gateway 分发模式。
 
 import MicroservicesVue from '~/components/demos/connectiongraph/MicroservicesVue.vue';
+import MicroservicesVueSource from '~/components/demos/connectiongraph/MicroservicesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfConnectionGraph :nodes="nodes" :edges="edges" />`}
   reactCode={`<CfConnectionGraph nodes={nodes} edges={edges} />`}
->
+
+  vueSource={MicroservicesVueSource}>
   <MicroservicesVue client:load />
 </DemoFrame>
 

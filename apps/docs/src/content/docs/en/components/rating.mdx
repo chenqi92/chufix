@@ -5,9 +5,13 @@ description: Star rating control — integer or half-star precision, read-only a
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/rating/BasicVue.vue';
+import BasicVueSource from '~/components/demos/rating/BasicVue.vue?raw';
 import HalfVue from '~/components/demos/rating/HalfVue.vue';
+import HalfVueSource from '~/components/demos/rating/HalfVue.vue?raw';
 import StatesVue from '~/components/demos/rating/StatesVue.vue';
+import StatesVueSource from '~/components/demos/rating/StatesVue.vue?raw';
 import SizesVue from '~/components/demos/rating/SizesVue.vue';
+import SizesVueSource from '~/components/demos/rating/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -16,7 +20,8 @@ The simplest form — 5 integer stars with hover preview and click to commit.
 <DemoFrame
   vueCode={`<CfRating v-model="value" />`}
   reactCode={`<CfRating value={value} onChange={setValue} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -27,7 +32,8 @@ The simplest form — 5 integer stars with hover preview and click to commit.
 <DemoFrame
   vueCode={`<CfRating v-model="value" allow-half show-value />`}
   reactCode={`<CfRating value={value} onChange={setValue} allowHalf showValue />`}
->
+
+  vueSource={HalfVueSource}>
   <HalfVue client:load />
 </DemoFrame>
 
@@ -40,7 +46,8 @@ The simplest form — 5 integer stars with hover preview and click to commit.
 <CfRating :model-value="2" disabled />`}
   reactCode={`<CfRating value={4} readonly showValue />
 <CfRating value={2} disabled />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 
@@ -55,7 +62,8 @@ The simplest form — 5 integer stars with hover preview and click to commit.
   reactCode={`<CfRating value={a} onChange={setA} size="sm" showValue />
 <CfRating value={b} onChange={setB} size="md" showValue />
 <CfRating value={c} onChange={setC} size="lg" showValue />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

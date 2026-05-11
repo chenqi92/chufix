@@ -5,9 +5,13 @@ description: Number buttons + prev/next + jump input; auto-calculated page ellip
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pagination/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pagination/BasicVue.vue?raw';
 import ExtrasVue from '~/components/demos/pagination/ExtrasVue.vue';
+import ExtrasVueSource from '~/components/demos/pagination/ExtrasVue.vue?raw';
 import SiblingsVue from '~/components/demos/pagination/SiblingsVue.vue';
+import SiblingsVueSource from '~/components/demos/pagination/SiblingsVue.vue?raw';
 import SizesVue from '~/components/demos/pagination/SizesVue.vue';
+import SizesVueSource from '~/components/demos/pagination/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -16,7 +20,8 @@ Pass `total` (item count) and `pageSize` (per page); the component derives the p
 <DemoFrame
   vueCode={`<CfPagination v-model="page" :total="80" :page-size="10" />`}
   reactCode={`<CfPagination value={page} onChange={setPage} total={80} pageSize={10} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -40,7 +45,8 @@ Pass `total` (item count) and `pageSize` (per page); the component derives the p
   showTotal
   showJumper
 />`}
->
+
+  vueSource={ExtrasVueSource}>
   <ExtrasVue client:load />
 </DemoFrame>
 
@@ -55,7 +61,8 @@ Pass `total` (item count) and `pageSize` (per page); the component derives the p
   reactCode={`<CfPagination value={a} onChange={setA} total={500} pageSize={10} siblingCount={0} />
 <CfPagination value={b} onChange={setB} total={500} pageSize={10} siblingCount={1} />
 <CfPagination value={c} onChange={setC} total={500} pageSize={10} siblingCount={2} />`}
->
+
+  vueSource={SiblingsVueSource}>
   <SiblingsVue client:load />
 </DemoFrame>
 
@@ -70,7 +77,8 @@ Pass `total` (item count) and `pageSize` (per page); the component derives the p
   reactCode={`<CfPagination value={a} onChange={setA} total={120} pageSize={10} size="sm" />
 <CfPagination value={b} onChange={setB} total={120} pageSize={10} size="md" />
 <CfPagination value={c} onChange={setC} total={120} pageSize={10} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

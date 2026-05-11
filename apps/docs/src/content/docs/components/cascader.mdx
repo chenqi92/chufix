@@ -5,6 +5,7 @@ description: 多级选项的逐列展开选择器，路径式选取，常用于�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/cascader/BasicVue.vue';
+import BasicVueSource from '~/components/demos/cascader/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/cascader/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCascader v-model="value" :options="options" clearable />`}
   reactCode={`<CfCascader value={value} onChange={setValue} options={options} clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

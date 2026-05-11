@@ -5,6 +5,7 @@ description: 一年 52 周 × 7 天的方格热力图，按数值强度显示密
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/calendarheatmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/calendarheatmap/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/calendarheatmap/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCalendarHeatmap :data="data" />`}
   reactCode={`<CfCalendarHeatmap data={data} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

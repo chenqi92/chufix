@@ -4,8 +4,11 @@ import DocCodeWorkspace from './DocCodeWorkspace.astro';
 
 interface Props {
   vueCode?: string;
+  vueSource?: string;
   reactCode?: string;
+  reactSource?: string;
   cliCode?: string;
+  cliSource?: string;
   variant?: 'default' | 'wide' | 'compact';
   codeLayout?: 'tabs' | 'workspace';
 }
@@ -16,12 +19,24 @@ type DocCodeFile = {
   content: string;
   lang: 'vue' | 'tsx' | 'bash';
 };
-const { vueCode, reactCode, cliCode, variant = 'default', codeLayout = 'tabs' } = Astro.props;
+const {
+  vueCode,
+  vueSource,
+  reactCode,
+  reactSource,
+  cliCode,
+  cliSource,
+  variant = 'default',
+  codeLayout = 'tabs',
+} = Astro.props;
 
 const codeTabs: DocCodeFile[] = [];
-if (vueCode) codeTabs.push({ id: 'vue', label: 'Vue', name: 'src/App.vue', content: vueCode, lang: 'vue' });
-if (reactCode) codeTabs.push({ id: 'react', label: 'React', name: 'src/App.tsx', content: reactCode, lang: 'tsx' });
-if (cliCode) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh', content: cliCode, lang: 'bash' });
+const vueContent = vueSource ?? vueCode;
+const reactContent = reactSource ?? reactCode;
+const cliContent = cliSource ?? cliCode;
+if (vueContent) codeTabs.push({ id: 'vue', label: 'Vue', name: 'src/App.vue', content: vueContent, lang: 'vue' });
+if (reactContent) codeTabs.push({ id: 'react', label: 'React', name: 'src/App.tsx', content: reactContent, lang: 'tsx' });
+if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh', content: cliContent, lang: 'bash' });
 ---
 
 <div class:list={['cf-demo', variant !== 'default' && `cf-demo--${variant}`]} data-demo-frame>

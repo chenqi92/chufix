@@ -5,6 +5,7 @@ description: 多行文本溢出时显示省略号，可选「展开 / 收起」�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/textellipsis/BasicVue.vue';
+import BasicVueSource from '~/components/demos/textellipsis/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/textellipsis/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTextEllipsis :text="long" :rows="2" expandable />`}
   reactCode={`<CfTextEllipsis text={long} rows={2} expandable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

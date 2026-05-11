@@ -5,6 +5,7 @@ description: Live compile + match testing with friendly error messages; flags to
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/regexbuilder/BasicVue.vue';
+import BasicVueSource from '~/components/demos/regexbuilder/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -28,7 +29,8 @@ If the pattern fails to compile, the native `SyntaxError.message` is shown.
   testText={text}
   onTestTextChange={setText}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -38,11 +40,13 @@ If the pattern fails to compile, the native `SyntaxError.message` is shown.
 Intentionally enter an invalid pattern (e.g. an unbalanced bracket) and the error message renders in a red box below the input.
 
 import ErrorVue from '~/components/demos/regexbuilder/ErrorVue.vue';
+import ErrorVueSource from '~/components/demos/regexbuilder/ErrorVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRegexBuilder :pattern="'([unbalanced'" />`}
   reactCode={`<CfRegexBuilder pattern="([unbalanced" />`}
->
+
+  vueSource={ErrorVueSource}>
   <ErrorVue client:load />
 </DemoFrame>
 

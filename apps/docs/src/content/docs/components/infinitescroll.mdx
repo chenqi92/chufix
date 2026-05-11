@@ -5,6 +5,7 @@ description: 滚动到底部时自动触发加载下一页，基于 Intersection
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/infinitescroll/BasicVue.vue';
+import BasicVueSource from '~/components/demos/infinitescroll/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/infinitescroll/BasicVue.vue';
   reactCode={`<CfInfiniteScroll loading={loading} finished={finished} onLoad={loadMore}>
   <ul>...</ul>
 </CfInfiniteScroll>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

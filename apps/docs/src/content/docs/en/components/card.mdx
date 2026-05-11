@@ -5,9 +5,13 @@ description: Card container — 3 variants, optional whole-card interaction, and
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/card/BasicVue.vue';
+import BasicVueSource from '~/components/demos/card/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/card/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/card/VariantsVue.vue?raw';
 import SectionsVue from '~/components/demos/card/SectionsVue.vue';
+import SectionsVueSource from '~/components/demos/card/SectionsVue.vue?raw';
 import InteractiveVue from '~/components/demos/card/InteractiveVue.vue';
+import InteractiveVueSource from '~/components/demos/card/InteractiveVue.vue?raw';
 
 ## Basic usage
 
@@ -32,7 +36,8 @@ export default function Demo() {
     </CfCard>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -47,7 +52,8 @@ Three variants for different information levels: `outlined` (default border) / `
   reactCode={`<CfCard variant="outlined">…</CfCard>
 <CfCard variant="elevated">…</CfCard>
 <CfCard variant="filled">…</CfCard>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -80,7 +86,8 @@ export default function Demo() {
     </CfCard>
   );
 }`}
->
+
+  vueSource={SectionsVueSource}>
   <SectionsVue client:load />
 </DemoFrame>
 
@@ -97,7 +104,8 @@ Enabling `interactive` turns the entire card into a button — `role="button"` +
   <CfCardHeader>Whole card clickable</CfCardHeader>
   <CfCardBody>Clicked {clicked} times</CfCardBody>
 </CfCard>`}
->
+
+  vueSource={InteractiveVueSource}>
   <InteractiveVue client:load />
 </DemoFrame>
 

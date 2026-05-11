@@ -5,6 +5,7 @@ description: "Trigger plus a three-column scroll panel for picking time. Support
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timepicker/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -15,7 +16,8 @@ import BasicVue from '~/components/demos/timepicker/BasicVue.vue';
 <CfTimePicker v-model="t2" show-seconds clearable />`}
   reactCode={`<CfTimePicker value={t1} onChange={setT1} clearable />
 <CfTimePicker value={t2} onChange={setT2} showSeconds clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

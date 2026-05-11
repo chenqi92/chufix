@@ -5,10 +5,15 @@ description: Single-value slider — 3 sizes × 4 tones, with step, ticks, curre
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/slider/BasicVue.vue';
+import BasicVueSource from '~/components/demos/slider/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/slider/TonesVue.vue';
+import TonesVueSource from '~/components/demos/slider/TonesVue.vue?raw';
 import SizesVue from '~/components/demos/slider/SizesVue.vue';
+import SizesVueSource from '~/components/demos/slider/SizesVue.vue?raw';
 import StepsVue from '~/components/demos/slider/StepsVue.vue';
+import StepsVueSource from '~/components/demos/slider/StepsVue.vue?raw';
 import DisabledVue from '~/components/demos/slider/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/slider/DisabledVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +22,8 @@ The simplest form — a continuous value from 0 to 100. Drag the thumb with the 
 <DemoFrame
   vueCode={`<CfSlider v-model="value" show-value />`}
   reactCode={`<CfSlider value={value} onChange={setValue} showValue />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -34,7 +40,8 @@ The simplest form — a continuous value from 0 to 100. Drag the thumb with the 
 <CfSlider value={b} onChange={setB} tone="success" showValue />
 <CfSlider value={c} onChange={setC} tone="warning" showValue />
 <CfSlider value={d} onChange={setD} tone="danger" showValue />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -49,7 +56,8 @@ The simplest form — a continuous value from 0 to 100. Drag the thumb with the 
   reactCode={`<CfSlider value={a} onChange={setA} size="sm" />
 <CfSlider value={b} onChange={setB} size="md" />
 <CfSlider value={c} onChange={setC} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -64,7 +72,8 @@ The simplest form — a continuous value from 0 to 100. Drag the thumb with the 
 <CfSlider v-model="percent" :step="10" ticks show-value />`}
   reactCode={`<CfSlider value={stars} onChange={setStars} min={0} max={5} step={1} ticks showValue />
 <CfSlider value={percent} onChange={setPercent} step={10} ticks showValue />`}
->
+
+  vueSource={StepsVueSource}>
   <StepsVue client:load />
 </DemoFrame>
 
@@ -75,7 +84,8 @@ The simplest form — a continuous value from 0 to 100. Drag the thumb with the 
 <DemoFrame
   vueCode={`<CfSlider :model-value="50" disabled show-value />`}
   reactCode={`<CfSlider value={50} disabled showValue />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 

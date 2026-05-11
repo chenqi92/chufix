@@ -5,6 +5,7 @@ description: Node-and-edge relationship graph. Nodes without explicit coordinate
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/connectiongraph/BasicVue.vue';
+import BasicVueSource from '~/components/demos/connectiongraph/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfConnectionGraph ... />`}
   reactCode={`<CfConnectionGraph ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 Seven services and seven edges showing a typical gateway dispatch pattern.
 
 import MicroservicesVue from '~/components/demos/connectiongraph/MicroservicesVue.vue';
+import MicroservicesVueSource from '~/components/demos/connectiongraph/MicroservicesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfConnectionGraph :nodes="nodes" :edges="edges" />`}
   reactCode={`<CfConnectionGraph nodes={nodes} edges={edges} />`}
->
+
+  vueSource={MicroservicesVueSource}>
   <MicroservicesVue client:load />
 </DemoFrame>
 

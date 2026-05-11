@@ -5,9 +5,13 @@ description: Spinning ring loader — 3 sizes × 6 tones, with an optional text 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/spinner/BasicVue.vue';
+import BasicVueSource from '~/components/demos/spinner/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/spinner/SizesVue.vue';
+import SizesVueSource from '~/components/demos/spinner/SizesVue.vue?raw';
 import TonesVue from '~/components/demos/spinner/TonesVue.vue';
+import TonesVueSource from '~/components/demos/spinner/TonesVue.vue?raw';
 import LabelVue from '~/components/demos/spinner/LabelVue.vue';
+import LabelVueSource from '~/components/demos/spinner/LabelVue.vue?raw';
 
 ## Basic usage
 
@@ -16,7 +20,8 @@ With no props, renders the default size and primary color.
 <DemoFrame
   vueCode={`<CfSpinner />`}
   reactCode={`<CfSpinner />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -31,7 +36,8 @@ With no props, renders the default size and primary color.
   reactCode={`<CfSpinner size="sm" />
 <CfSpinner size="md" />
 <CfSpinner size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -52,7 +58,8 @@ With no props, renders the default size and primary color.
 <CfSpinner tone="danger" />
 <CfSpinner tone="info" />
 <CfSpinner tone="neutral" />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -65,7 +72,8 @@ With no props, renders the default size and primary color.
 <CfSpinner size="lg" tone="success" label="Saving" />`}
   reactCode={`<CfSpinner label="Loading…" />
 <CfSpinner size="lg" tone="success" label="Saving" />`}
->
+
+  vueSource={LabelVueSource}>
   <LabelVue client:load />
 </DemoFrame>
 

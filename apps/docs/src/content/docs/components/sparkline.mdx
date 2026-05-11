@@ -5,6 +5,7 @@ description: 行内微缩走势线，常用于 KPI 卡的趋势线。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sparkline/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfSparkline ... />`}
   reactCode={`<CfSparkline ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
 通过 `colorIndex`（0..7）选 `--viz-1..8` 任一色号，色盲友好且与图表系列色统一。
 
 import ColorsVue from '~/components/demos/sparkline/ColorsVue.vue';
+import ColorsVueSource from '~/components/demos/sparkline/ColorsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSparkline :data="data" :color-index="0" filled smooth />
 <CfSparkline :data="data" :color-index="3" filled smooth />`}
   reactCode={`<CfSparkline data={data} colorIndex={0} filled smooth />
 <CfSparkline data={data} colorIndex={3} filled smooth />`}
->
+
+  vueSource={ColorsVueSource}>
   <ColorsVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: 分步高亮关键 UI 元素 + 解释气泡，新功能上线时引
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tour/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tour/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/tour/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTour v-model="open" :steps="steps" />`}
   reactCode={`<CfTour open={open} onOpenChange={setOpen} steps={steps} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

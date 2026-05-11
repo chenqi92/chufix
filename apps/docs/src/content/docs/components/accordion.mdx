@@ -5,9 +5,13 @@ description: 单展开 / 多展开两种模式，3 种边框样式（bordered / 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/accordion/BasicVue.vue';
+import BasicVueSource from '~/components/demos/accordion/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/accordion/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/accordion/VariantsVue.vue?raw';
 import MultipleVue from '~/components/demos/accordion/MultipleVue.vue';
+import MultipleVueSource from '~/components/demos/accordion/MultipleVue.vue?raw';
 import DisabledVue from '~/components/demos/accordion/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/accordion/DisabledVue.vue?raw';
 
 ## 基础用法
 
@@ -36,7 +40,8 @@ const items = [
 ];
 
 <CfAccordion items={items} mode="single" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -53,7 +58,8 @@ const items = [
   reactCode={`<CfAccordion items={items} variant="bordered" />
 <CfAccordion items={items} variant="flush" />
 <CfAccordion items={items} variant="separated" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -74,7 +80,8 @@ const items = [
   variant="separated"
   defaultValue={['q1', 'q3']}
 />`}
->
+
+  vueSource={MultipleVueSource}>
   <MultipleVue client:load />
 </DemoFrame>
 
@@ -97,7 +104,8 @@ const items = [
 ];
 
 <CfAccordion items={items} defaultValue="a" />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 

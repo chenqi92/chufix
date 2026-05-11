@@ -5,6 +5,7 @@ description: Ring-style current-value gauge with four tones.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/gauge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/gauge/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfGauge ... />`}
   reactCode={`<CfGauge ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,6 +26,7 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 `sweep` controls the size of the ring opening (180 = half circle, 270 = three-quarter, 360 = full circle).
 
 import SweepVue from '~/components/demos/gauge/SweepVue.vue';
+import SweepVueSource from '~/components/demos/gauge/SweepVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfGauge :value="42" :sweep="180" label="180°" unit="%" />
@@ -32,7 +35,8 @@ import SweepVue from '~/components/demos/gauge/SweepVue.vue';
   reactCode={`<CfGauge value={42} sweep={180} label="180°" unit="%" />
 <CfGauge value={60} sweep={270} label="270°" unit="%" />
 <CfGauge value={78} sweep={360} label="360°" unit="%" />`}
->
+
+  vueSource={SweepVueSource}>
   <SweepVue client:load />
 </DemoFrame>
 

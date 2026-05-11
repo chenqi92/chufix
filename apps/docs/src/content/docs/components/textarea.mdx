@@ -5,8 +5,11 @@ description: 多行输入 —— 与 Input 同色系，支持自动撑高、字�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/textarea/BasicVue.vue';
+import BasicVueSource from '~/components/demos/textarea/BasicVue.vue?raw';
 import CountVue from '~/components/demos/textarea/CountVue.vue';
+import CountVueSource from '~/components/demos/textarea/CountVue.vue?raw';
 import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
+import AutoResizeVueSource from '~/components/demos/textarea/AutoResizeVue.vue?raw';
 
 ## 基础用法
 
@@ -37,7 +40,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -61,7 +65,8 @@ export default function Demo() {
   maxLength={50}
   showCount
 />`}
->
+
+  vueSource={CountVueSource}>
   <CountVue client:load />
 </DemoFrame>
 
@@ -83,7 +88,8 @@ export default function Demo() {
   autoResize
   placeholder="自动撑高的多行输入"
 />`}
->
+
+  vueSource={AutoResizeVueSource}>
   <AutoResizeVue client:load />
 </DemoFrame>
 

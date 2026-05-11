@@ -5,8 +5,11 @@ description: General-purpose list with single / multi selection, grouping, card 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/list/BasicVue.vue';
+import BasicVueSource from '~/components/demos/list/BasicVue.vue?raw';
 import GroupedVue from '~/components/demos/list/GroupedVue.vue';
+import GroupedVueSource from '~/components/demos/list/GroupedVue.vue?raw';
 import CardVue from '~/components/demos/list/CardVue.vue';
+import CardVueSource from '~/components/demos/list/CardVue.vue?raw';
 
 ## Single select
 
@@ -45,7 +48,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -56,7 +60,8 @@ Each `ListItem` can declare a `group`; items sharing a group are clustered toget
 <DemoFrame
   vueCode={`<CfList v-model="value" selectable="multiple" :items="items" />`}
   reactCode={`<CfList value={value} selectable="multiple" items={items} onChange={setValue as any} />`}
->
+
+  vueSource={GroupedVueSource}>
   <GroupedVue client:load />
 </DemoFrame>
 
@@ -67,7 +72,8 @@ Each `ListItem` can declare a `group`; items sharing a group are clustered toget
 <DemoFrame
   vueCode={`<CfList :items="items" variant="card" :bordered="false" />`}
   reactCode={`<CfList items={items} variant="card" bordered={false} />`}
->
+
+  vueSource={CardVueSource}>
   <CardVue client:load />
 </DemoFrame>
 

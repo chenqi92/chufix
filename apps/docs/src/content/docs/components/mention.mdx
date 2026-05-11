@@ -5,8 +5,11 @@ description: 多行文本输入器，输入触发字符（默认 @）弹出候�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/mention/BasicVue.vue';
+import BasicVueSource from '~/components/demos/mention/BasicVue.vue?raw';
 import TriggerVue from '~/components/demos/mention/TriggerVue.vue';
+import TriggerVueSource from '~/components/demos/mention/TriggerVue.vue?raw';
 import StatesVue from '~/components/demos/mention/StatesVue.vue';
+import StatesVueSource from '~/components/demos/mention/StatesVue.vue?raw';
 
 ## 基础用法
 
@@ -44,7 +47,8 @@ export default function Demo() {
   ];
   return <CfMention value={text} onChange={setText} options={options} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -66,7 +70,8 @@ export default function Demo() {
   options={tags}
   placeholder="输入 # 选择标签"
 />`}
->
+
+  vueSource={TriggerVueSource}>
   <TriggerVue client:load />
 </DemoFrame>
 
@@ -79,7 +84,8 @@ export default function Demo() {
 <CfMention :model-value="sample" :options="options" disabled />`}
   reactCode={`<CfMention value={sample} options={options} readonly />
 <CfMention value={sample} options={options} disabled />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

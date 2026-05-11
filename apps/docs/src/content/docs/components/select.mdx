@@ -5,13 +5,21 @@ description: 下拉选择 —— 单/多选、可搜索、分组、loading 异�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/select/BasicVue.vue';
+import BasicVueSource from '~/components/demos/select/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/select/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/select/VariantsVue.vue?raw';
 import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+import AdvancedVueSource from '~/components/demos/select/AdvancedVue.vue?raw';
 import EventsVue from '~/components/demos/select/EventsVue.vue';
+import EventsVueSource from '~/components/demos/select/EventsVue.vue?raw';
 import MultiVue from '~/components/demos/select/MultiVue.vue';
+import MultiVueSource from '~/components/demos/select/MultiVue.vue?raw';
 import SearchVue from '~/components/demos/select/SearchVue.vue';
+import SearchVueSource from '~/components/demos/select/SearchVue.vue?raw';
 import GroupVue from '~/components/demos/select/GroupVue.vue';
+import GroupVueSource from '~/components/demos/select/GroupVue.vue?raw';
 import AsyncLoadVue from '~/components/demos/select/AsyncLoadVue.vue';
+import AsyncLoadVueSource from '~/components/demos/select/AsyncLoadVue.vue?raw';
 
 ## 基础用法
 
@@ -54,7 +62,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -69,7 +78,8 @@ export default function Demo() {
   reactCode={`<CfSelect value={v1} options={options} variant="outline" onChange={setV1} />
 <CfSelect value={v2} options={options} variant="filled" onChange={setV2} />
 <CfSelect value={v3} options={options} variant="ghost" onChange={setV3} />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -84,7 +94,8 @@ export default function Demo() {
   reactCode={`<CfSelect value={a} options={options} clearable onChange={setA} />
 <CfSelect value={b} options={options} disabled />
 <CfSelect value={b} options={options} error />`}
->
+
+  vueSource={AdvancedVueSource}>
   <AdvancedVue client:load />
 </DemoFrame>
 
@@ -115,7 +126,8 @@ export default function Demo() {
   onOpenChange={(open) => console.log('open', open)}
   onActiveChange={(option, index) => console.log(option, index)}
 />`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 
@@ -123,7 +135,8 @@ export default function Demo() {
 
 `multiple` 让 model 变成数组，触发器渲染为可移除的 tag 组。`maxTagCount` 把多余的 tag 收成 `+N` 胶囊。退格键删除最后一个 tag。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={MultiVueSource}>
   <MultiVue client:only="vue" />
 </DemoFrame>
 
@@ -131,7 +144,8 @@ export default function Demo() {
 
 `searchable` 在菜单顶部加一个输入框，按 label 实时过滤。和 multiple 可叠加 —— 像传统 multi-select 一样组合使用。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SearchVueSource}>
   <SearchVue client:only="vue" />
 </DemoFrame>
 
@@ -139,7 +153,8 @@ export default function Demo() {
 
 给 option 加 `group: string`，组件自动按 group 渲染分组标题（顺序按 group 首次出现的次序）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={GroupVueSource}>
   <GroupVue client:only="vue" />
 </DemoFrame>
 
@@ -147,7 +162,8 @@ export default function Demo() {
 
 `loading=true` 时触发器变为禁用并展示 spinner，菜单内显示 "加载中…"。结合 onMounted / SWR / TanStack Query 等数据源使用。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncLoadVueSource}>
   <AsyncLoadVue client:only="vue" />
 </DemoFrame>
 

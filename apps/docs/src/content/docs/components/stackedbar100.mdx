@@ -5,6 +5,7 @@ description: 横向 100% 堆叠柱，适合占比分布。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
+import BasicVueSource from '~/components/demos/stackedbar100/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfStackedBar100 ... />`}
   reactCode={`<CfStackedBar100 ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/stackedbar100/BasicVue.vue';
 把多年份的占比柱叠在一起，能直观看出份额迁移。
 
 import CompareVue from '~/components/demos/stackedbar100/CompareVue.vue';
+import CompareVueSource from '~/components/demos/stackedbar100/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfStackedBar100 :segments="seg2024" />
 <CfStackedBar100 :segments="seg2025" />`}
   reactCode={`<CfStackedBar100 segments={seg2024} />
 <CfStackedBar100 segments={seg2025} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Plugin center pane with Card / Manifest / Permission / Marketplace 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pluginpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pluginpane/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`plugins.html`](https://github.com/chenqi92/chufix-design).
   'panel-card': <PanelA />,
   'panel-manifest': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

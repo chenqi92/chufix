@@ -5,6 +5,7 @@ description: Tab 拖拽超过阈值时触发 tear-off 事件；消费方决定�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tearofftab/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tearofftab/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -28,7 +29,8 @@ import BasicVue from '~/components/demos/tearofftab/BasicVue.vue';
   onClose={(id) => removeTab(id)}
   slots={{ 'content-orders': <pre>orders.ts</pre> }}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -38,13 +40,15 @@ import BasicVue from '~/components/demos/tearofftab/BasicVue.vue';
 把撕下的 tab 即刻 spawn 成 DetachedPanel；关闭面板时把 tab 还原回去。
 
 import PinVue from '~/components/demos/tearofftab/PinVue.vue';
+import PinVueSource from '~/components/demos/tearofftab/PinVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTearOffTabs ... @tear-off="tearOff" />
 <CfDetachedPanel ... @update:open="reattach" />`}
   reactCode={`<CfTearOffTabs ... onTearOff={tearOff} />
 <CfDetachedPanel ... onOpenChange={reattach} />`}
->
+
+  vueSource={PinVueSource}>
   <PinVue client:load />
 </DemoFrame>
 

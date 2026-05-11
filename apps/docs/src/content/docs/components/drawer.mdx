@@ -5,20 +5,30 @@ description: 边缘锚定的滑入面板 —— 4 个方向、tone 变体、可�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/drawer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/drawer/BasicVue.vue?raw';
 import PlacementVue from '~/components/demos/drawer/PlacementVue.vue';
+import PlacementVueSource from '~/components/demos/drawer/PlacementVue.vue?raw';
 import SizesVue from '~/components/demos/drawer/SizesVue.vue';
+import SizesVueSource from '~/components/demos/drawer/SizesVue.vue?raw';
 import NoCloseVue from '~/components/demos/drawer/NoCloseVue.vue';
+import NoCloseVueSource from '~/components/demos/drawer/NoCloseVue.vue?raw';
 import TonesVue from '~/components/demos/drawer/TonesVue.vue';
+import TonesVueSource from '~/components/demos/drawer/TonesVue.vue?raw';
 import AsyncVue from '~/components/demos/drawer/AsyncVue.vue';
+import AsyncVueSource from '~/components/demos/drawer/AsyncVue.vue?raw';
 import ResizableVue from '~/components/demos/drawer/ResizableVue.vue';
+import ResizableVueSource from '~/components/demos/drawer/ResizableVue.vue?raw';
 import ServiceVue from '~/components/demos/drawer/ServiceVue.vue';
+import ServiceVueSource from '~/components/demos/drawer/ServiceVue.vue?raw';
 import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
+import NoMaskVueSource from '~/components/demos/drawer/NoMaskVue.vue?raw';
 
 ## 基础用法
 
 `v-model:open` (Vue) / `open + onOpenChange` (React) 双向绑定。Drawer 共用 Modal 的 portal / focus trap / body 滚动锁 / Esc 关闭基础设施。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -26,7 +36,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `placement` 决定从哪一边滑入 — 右（默认，最常见的详情侧栏）/ 左（移动端导航）/ 顶 / 底（playground 风格的临时操作）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PlacementVueSource}>
   <PlacementVue client:only="vue" />
 </DemoFrame>
 
@@ -34,7 +45,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `size` 控制抽屉宽度（左右 placement）或高度（上下 placement） — `sm` / `md`（默认）/ `lg` / `xl` / `full`（全屏）。`width` / `height` 也可以传具体像素值覆盖档位。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SizesVueSource}>
   <SizesVue client:only="vue" />
 </DemoFrame>
 
@@ -42,7 +54,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `tone="info | success | warning | error"` 给 header 加一个圆形 tone 图标 + 强调色。`tone="error"` 时默认 OK 按钮自动切到 danger 红。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={TonesVueSource}>
   <TonesVue client:only="vue" />
 </DemoFrame>
 
@@ -50,7 +63,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 直接传 `okText` / `cancelText`，组件渲染默认按钮组。`onBeforeOk` 接异步函数：返回 false / 抛错 → 阻止关闭并恢复 loading 态；正常 resolve → 关闭并发 `@ok` 事件。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncVueSource}>
   <AsyncVue client:only="vue" />
 </DemoFrame>
 
@@ -58,7 +72,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 `resizable` 让抽屉的内边缘变成拖拽把手 —— 用户可以横向（左右抽屉）或纵向（上下抽屉）调整尺寸。最小 240×160。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ResizableVueSource}>
   <ResizableVue client:only="vue" />
 </DemoFrame>
 
@@ -66,7 +81,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 默认 `mask=true` 渲染遮罩并锁定 body 滚动。设置 `mask={false}` 后抽屉浮在原页面之上，遮罩不渲染、滚动也不锁，适合"参考资料"、"实时日志"这类常驻面板。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={NoMaskVueSource}>
   <NoMaskVue client:only="vue" />
 </DemoFrame>
 
@@ -80,7 +96,8 @@ import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 异步态（`onBeforeOk` 进行中）会自动屏蔽所有关闭路径，不需要手动控制。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={NoCloseVueSource}>
   <NoCloseVue client:only="vue" />
 </DemoFrame>
 
@@ -102,7 +119,8 @@ const ok = await drawer.confirm({
 });
 ```
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ServiceVueSource}>
   <ServiceVue client:only="vue" />
 </DemoFrame>
 

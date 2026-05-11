@@ -5,10 +5,15 @@ description: inline 静态消息条 —— 4 种 tone × 3 种 variant，可带�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/alert/BasicVue.vue';
+import BasicVueSource from '~/components/demos/alert/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/alert/TonesVue.vue';
+import TonesVueSource from '~/components/demos/alert/TonesVue.vue?raw';
 import VariantsVue from '~/components/demos/alert/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/alert/VariantsVue.vue?raw';
 import ClosableVue from '~/components/demos/alert/ClosableVue.vue';
+import ClosableVueSource from '~/components/demos/alert/ClosableVue.vue?raw';
 import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
+import NoIconVueSource from '~/components/demos/alert/NoIconVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +22,8 @@ import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
 <DemoFrame
   vueCode={`<CfAlert tone="info" title="一条信息">这是一段补充说明。</CfAlert>`}
   reactCode={`<CfAlert tone="info" title="一条信息">这是一段补充说明。</CfAlert>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -34,7 +40,8 @@ import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
 <CfAlert tone="success" title="保存成功">绿色</CfAlert>
 <CfAlert tone="warning" title="磁盘空间不足">黄色</CfAlert>
 <CfAlert tone="error" title="无法连接到服务">红色</CfAlert>`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -49,7 +56,8 @@ import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
   reactCode={`<CfAlert tone="success" variant="soft">soft</CfAlert>
 <CfAlert tone="success" variant="outline">outline</CfAlert>
 <CfAlert tone="success" variant="solid">solid</CfAlert>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -66,7 +74,8 @@ import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
   右侧出现 × 按钮。
 </CfAlert>
 <CfAlert tone="info" closable>无 title 的关闭式 alert。</CfAlert>`}
->
+
+  vueSource={ClosableVueSource}>
   <ClosableVue client:load />
 </DemoFrame>
 
@@ -79,7 +88,8 @@ import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
 <CfAlert tone="success" :icon="false">仅一行文字</CfAlert>`}
   reactCode={`<CfAlert tone="info" icon={false} title="无图标版本">更紧凑</CfAlert>
 <CfAlert tone="success" icon={false}>仅一行文字</CfAlert>`}
->
+
+  vueSource={NoIconVueSource}>
   <NoIconVue client:load />
 </DemoFrame>
 

@@ -5,8 +5,11 @@ description: 5 种 variant、3 种尺寸、3 种形状、loading 与 disabled �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/button/BasicVue.vue';
+import BasicVueSource from '~/components/demos/button/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/button/SizesVue.vue';
+import SizesVueSource from '~/components/demos/button/SizesVue.vue?raw';
 import StatesVue from '~/components/demos/button/StatesVue.vue';
+import StatesVueSource from '~/components/demos/button/StatesVue.vue?raw';
 
 ## 基础用法
 
@@ -38,7 +41,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -61,7 +65,8 @@ export default function Demo() {
 <CfButton shape="default">默认圆角</CfButton>
 <CfButton shape="pill">Pill</CfButton>
 <CfButton shape="square" aria-label="设置">⚙</CfButton>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -110,7 +115,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Sequential event stream with dots, connectors, and timestamps. Comm
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timeline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timeline/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ Each entry in `items` is a node. `color` controls the dot color (`primary` / `su
 <DemoFrame
   vueCode={`<CfTimeline :items="items" />`}
   reactCode={`<CfTimeline items={items} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

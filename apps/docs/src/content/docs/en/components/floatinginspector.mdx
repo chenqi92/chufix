@@ -5,6 +5,7 @@ description: Corner-anchored, collapsible inspector panel — useful for perform
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/floatinginspector/BasicVue.vue';
+import BasicVueSource from '~/components/demos/floatinginspector/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -26,7 +27,8 @@ Anchored to one of the four corners; `offset` controls the distance from the edg
 >
   <ul>...</ul>
 </CfFloatingInspector>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -36,11 +38,13 @@ Anchored to one of the four corners; `offset` controls the distance from the edg
 Toggle through all four placements; click "close" to demo `onOpenChange`.
 
 import PlacementsVue from '~/components/demos/floatinginspector/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/floatinginspector/PlacementsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfFloatingInspector v-model:open="open" :placement="'top-right'" />`}
   reactCode={`<CfFloatingInspector open={open} onOpenChange={setOpen} placement="top-right" />`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:load />
 </DemoFrame>
 

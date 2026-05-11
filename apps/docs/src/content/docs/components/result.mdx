@@ -5,7 +5,9 @@ description: 操作完成 / 失败 / 异常状态的整页反馈，适合提交�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/result/BasicVue.vue';
+import BasicVueSource from '~/components/demos/result/BasicVue.vue?raw';
 import StatusesVue from '~/components/demos/result/StatusesVue.vue';
+import StatusesVueSource from '~/components/demos/result/StatusesVue.vue?raw';
 
 ## 基础用法
 
@@ -27,7 +29,8 @@ import StatusesVue from '~/components/demos/result/StatusesVue.vue';
     <CfButton variant="tertiary">再交一份</CfButton>
   </>}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -42,7 +45,8 @@ import StatusesVue from '~/components/demos/result/StatusesVue.vue';
   reactCode={`<CfResult status="404" size="sm" description="页面可能已移动或被删除。" />
 <CfResult status="403" size="sm" description="当前账号没有访问权限。" />
 <CfResult status="500" size="sm" description="服务暂时不可用，请稍后重试。" />`}
->
+
+  vueSource={StatusesVueSource}>
   <StatusesVue client:load />
 </DemoFrame>
 

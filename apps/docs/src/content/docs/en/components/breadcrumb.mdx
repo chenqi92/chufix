@@ -5,8 +5,11 @@ description: Location-trail navigation; the last item is the current page (not c
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/breadcrumb/BasicVue.vue';
+import BasicVueSource from '~/components/demos/breadcrumb/BasicVue.vue?raw';
 import SeparatorsVue from '~/components/demos/breadcrumb/SeparatorsVue.vue';
+import SeparatorsVueSource from '~/components/demos/breadcrumb/SeparatorsVue.vue?raw';
 import LongVue from '~/components/demos/breadcrumb/LongVue.vue';
+import LongVueSource from '~/components/demos/breadcrumb/LongVue.vue?raw';
 
 ## Basic usage
 
@@ -27,7 +30,8 @@ Each `items` entry is `{ label, href? }`. The last entry is rendered as the curr
 ];
 
 <CfBreadcrumb items={items} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -44,7 +48,8 @@ Each `items` entry is `{ label, href? }`. The last entry is rendered as the curr
 <CfBreadcrumb items={items} separator="›" />
 <CfBreadcrumb items={items} separator="·" />
 <CfBreadcrumb items={items} separator="→" />`}
->
+
+  vueSource={SeparatorsVueSource}>
   <SeparatorsVue client:load />
 </DemoFrame>
 
@@ -63,7 +68,8 @@ For deeper hierarchies the leading items become clickable links and the last is 
 
 <CfBreadcrumb :items="items" separator="›" />`}
   reactCode={`<CfBreadcrumb items={items} separator="›" />`}
->
+
+  vueSource={LongVueSource}>
   <LongVue client:load />
 </DemoFrame>
 

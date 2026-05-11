@@ -5,6 +5,7 @@ description: Highlight matched keywords inside long text. Useful for search resu
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/highlight/BasicVue.vue';
+import BasicVueSource from '~/components/demos/highlight/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/highlight/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfHighlight :text="text" :match="q" />`}
   reactCode={`<CfHighlight text={text} match={q} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

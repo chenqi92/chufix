@@ -5,6 +5,7 @@ description: 节点 + 加权边的流向图，节点高度 = 流量。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sankeydiagram/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sankeydiagram/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/sankeydiagram/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfSankeyDiagram ... />`}
   reactCode={`<CfSankeyDiagram ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/sankeydiagram/BasicVue.vue';
 搜索引擎 / 直接访问 → 产品列表 / 详情 → 加购 / 支付 三层流向。
 
 import SimpleVue from '~/components/demos/sankeydiagram/SimpleVue.vue';
+import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSankeyDiagram :nodes="n" :links="l" />`}
   reactCode={`<CfSankeyDiagram nodes={n} links={l} />`}
->
+
+  vueSource={SimpleVueSource}>
   <SimpleVue client:load />
 </DemoFrame>
 

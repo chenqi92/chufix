@@ -5,9 +5,13 @@ description: 标题 + 描述 + 面包屑 + 操作区 + 工具栏 + 标签页一�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pageheader/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pageheader/BasicVue.vue?raw';
 import WithTabsVue from '~/components/demos/pageheader/WithTabsVue.vue';
+import WithTabsVueSource from '~/components/demos/pageheader/WithTabsVue.vue?raw';
 import SizesVue from '~/components/demos/pageheader/SizesVue.vue';
+import SizesVueSource from '~/components/demos/pageheader/SizesVue.vue?raw';
 import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
+import NoBorderVueSource from '~/components/demos/pageheader/NoBorderVue.vue?raw';
 
 ## 基础用法
 
@@ -47,7 +51,8 @@ import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
     </>
   }
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -76,7 +81,8 @@ import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
   actions={<><CfButton size="sm" variant="tertiary">分享</CfButton><CfButton size="sm" variant="primary">部署</CfButton></>}
   tabs={<CfTabs value={tab} items={items} onChange={setTab} />}
 />`}
->
+
+  vueSource={WithTabsVueSource}>
   <WithTabsVue client:load />
 </DemoFrame>
 
@@ -91,7 +97,8 @@ import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
   reactCode={`<CfPageHeader title="size = sm" description="紧凑头部" size="sm" />
 <CfPageHeader title="size = md" description="默认尺寸" size="md" />
 <CfPageHeader title="size = lg" description="落地页强调" size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -110,7 +117,8 @@ import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
   description="bordered=false 把底部分隔线去掉"
   bordered={false}
 />`}
->
+
+  vueSource={NoBorderVueSource}>
   <NoBorderVue client:load />
 </DemoFrame>
 

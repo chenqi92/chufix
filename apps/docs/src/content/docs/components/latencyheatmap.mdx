@@ -5,6 +5,7 @@ description: 二维矩阵热力图，绿→黄→红 OKLCH 色相 lerp。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/latencyheatmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/latencyheatmap/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/latencyheatmap/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfLatencyHeatmap ... />`}
   reactCode={`<CfLatencyHeatmap ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/latencyheatmap/BasicVue.vue';
 行 = 周一到周日，列 = 小时。颜色映射到 `oklch(70% 0.16 H)` 中 H 从 152（绿）→ 78（黄）→ 22（红）。
 
 import WeekVue from '~/components/demos/latencyheatmap/WeekVue.vue';
+import WeekVueSource from '~/components/demos/latencyheatmap/WeekVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfLatencyHeatmap :data="data" :row-labels="days" :col-labels="hours" />`}
   reactCode={`<CfLatencyHeatmap data={data} rowLabels={days} colLabels={hours} />`}
->
+
+  vueSource={WeekVueSource}>
   <WeekVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: 倒数到一个目标时间戳，支持 DD/HH/mm/ss/SSS 占位的�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/countdown/BasicVue.vue';
+import BasicVueSource from '~/components/demos/countdown/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/countdown/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCountDown :target="target" format="HH:mm:ss" size="lg" @finish="onDone" />`}
   reactCode={`<CfCountDown target={target} format="HH:mm:ss" size="lg" onFinish={onDone} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

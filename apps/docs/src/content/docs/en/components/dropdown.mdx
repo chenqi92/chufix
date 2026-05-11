@@ -5,6 +5,7 @@ description: Dropdown menu — Popover + list + keyboard navigation. Supports gr
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/dropdown/BasicVue.vue';
+import BasicVueSource from '~/components/demos/dropdown/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -59,7 +60,8 @@ export default function Demo() {
     </CfDropdown>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 

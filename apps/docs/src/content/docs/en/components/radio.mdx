@@ -5,8 +5,11 @@ description: Radio + RadioGroup pair — mutually exclusive selection with full 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/radio/BasicVue.vue';
+import BasicVueSource from '~/components/demos/radio/BasicVue.vue?raw';
 import DirectionVue from '~/components/demos/radio/DirectionVue.vue';
+import DirectionVueSource from '~/components/demos/radio/DirectionVue.vue?raw';
 import SizesVue from '~/components/demos/radio/SizesVue.vue';
+import SizesVueSource from '~/components/demos/radio/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -40,7 +43,8 @@ export default function Demo() {
     </CfRadioGroup>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -61,7 +65,8 @@ export default function Demo() {
   <CfRadio value="strawberry" disabled>Strawberry (out of stock)</CfRadio>
   <CfRadio value="matcha">Matcha</CfRadio>
 </CfRadioGroup>`}
->
+
+  vueSource={DirectionVueSource}>
   <DirectionVue client:load />
 </DemoFrame>
 
@@ -80,7 +85,8 @@ Set `size` on `RadioGroup` to apply it to every child.
   <CfRadio value="s">Small</CfRadio>
   <CfRadio value="t">Tiny</CfRadio>
 </CfRadioGroup>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

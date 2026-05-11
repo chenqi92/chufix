@@ -5,6 +5,7 @@ description: Overlay tilted, repeating text watermarks on a content container. U
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/watermark/BasicVue.vue';
+import BasicVueSource from '~/components/demos/watermark/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -23,7 +24,8 @@ import BasicVue from '~/components/demos/watermark/BasicVue.vue';
     <p>The watermark covers the whole container, tiled and tilted.</p>
   </div>
 </CfWatermark>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

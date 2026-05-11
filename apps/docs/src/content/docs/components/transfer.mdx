@@ -5,6 +5,7 @@ description: 两栏列表 + 中间箭头，把元素在「可选」与「已选�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/transfer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/transfer/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/transfer/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTransfer :data-source="data" v-model="target" searchable />`}
   reactCode={`<CfTransfer dataSource={data} value={target} onChange={setTarget} searchable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

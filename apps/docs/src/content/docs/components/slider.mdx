@@ -5,11 +5,17 @@ description: 单值范围滑块，3 档尺寸 × 4 种 tone，支持 step、刻�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/slider/BasicVue.vue';
+import BasicVueSource from '~/components/demos/slider/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/slider/TonesVue.vue';
+import TonesVueSource from '~/components/demos/slider/TonesVue.vue?raw';
 import SizesVue from '~/components/demos/slider/SizesVue.vue';
+import SizesVueSource from '~/components/demos/slider/SizesVue.vue?raw';
 import StepsVue from '~/components/demos/slider/StepsVue.vue';
+import StepsVueSource from '~/components/demos/slider/StepsVue.vue?raw';
 import DisabledVue from '~/components/demos/slider/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/slider/DisabledVue.vue?raw';
 import EventsVue from '~/components/demos/slider/EventsVue.vue';
+import EventsVueSource from '~/components/demos/slider/EventsVue.vue?raw';
 
 ## 基础用法
 
@@ -18,7 +24,8 @@ import EventsVue from '~/components/demos/slider/EventsVue.vue';
 <DemoFrame
   vueCode={`<CfSlider v-model="value" show-value />`}
   reactCode={`<CfSlider value={value} onChange={setValue} showValue />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,7 +42,8 @@ import EventsVue from '~/components/demos/slider/EventsVue.vue';
 <CfSlider value={b} onChange={setB} tone="success" showValue />
 <CfSlider value={c} onChange={setC} tone="warning" showValue />
 <CfSlider value={d} onChange={setD} tone="danger" showValue />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -50,7 +58,8 @@ import EventsVue from '~/components/demos/slider/EventsVue.vue';
   reactCode={`<CfSlider value={a} onChange={setA} size="sm" />
 <CfSlider value={b} onChange={setB} size="md" />
 <CfSlider value={c} onChange={setC} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -65,7 +74,8 @@ import EventsVue from '~/components/demos/slider/EventsVue.vue';
 <CfSlider v-model="percent" :step="10" ticks show-value />`}
   reactCode={`<CfSlider value={stars} onChange={setStars} min={0} max={5} step={1} ticks showValue />
 <CfSlider value={percent} onChange={setPercent} step={10} ticks showValue />`}
->
+
+  vueSource={StepsVueSource}>
   <StepsVue client:load />
 </DemoFrame>
 
@@ -76,7 +86,8 @@ import EventsVue from '~/components/demos/slider/EventsVue.vue';
 <DemoFrame
   vueCode={`<CfSlider :model-value="50" disabled show-value />`}
   reactCode={`<CfSlider value={50} disabled showValue />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 
@@ -101,7 +112,8 @@ import EventsVue from '~/components/demos/slider/EventsVue.vue';
   onChange={(value, meta) => preview(value, meta.source)}
   onChangeEnd={(value, meta) => save(value, meta.source)}
 />`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 

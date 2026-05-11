@@ -5,6 +5,7 @@ description: 下拉菜单 —— Popover + 列表 + 键盘导航。支持分组�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/dropdown/BasicVue.vue';
+import BasicVueSource from '~/components/demos/dropdown/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -59,7 +60,8 @@ export default function Demo() {
     </CfDropdown>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 

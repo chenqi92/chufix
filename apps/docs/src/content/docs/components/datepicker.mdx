@@ -5,10 +5,15 @@ description: 输入框 + 月历面板 —— 日 / 月 / 年三视图、约束�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/datepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/datepicker/BasicVue.vue?raw';
 import BoundsVue from '~/components/demos/datepicker/BoundsVue.vue';
+import BoundsVueSource from '~/components/demos/datepicker/BoundsVue.vue?raw';
 import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
+import FormatVueSource from '~/components/demos/datepicker/FormatVue.vue?raw';
 import PresetsVue from '~/components/demos/datepicker/PresetsVue.vue';
+import PresetsVueSource from '~/components/demos/datepicker/PresetsVue.vue?raw';
 import WeekNumberVue from '~/components/demos/datepicker/WeekNumberVue.vue';
+import WeekNumberVueSource from '~/components/demos/datepicker/WeekNumberVue.vue?raw';
 
 ## 基础用法
 
@@ -32,7 +37,8 @@ export default function Demo() {
   const [value, setValue] = useState<string | null>('2026-05-09');
   return <CfDatePicker value={value} clearable onChange={(v) => setValue(v)} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -76,7 +82,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BoundsVueSource}>
   <BoundsVue client:load />
 </DemoFrame>
 
@@ -91,7 +98,8 @@ export default function Demo() {
   reactCode={`<CfDatePicker value={a} format="YYYY-MM-DD" onChange={(v) => setA(v)} />
 <CfDatePicker value={b} format="YYYY 年 M 月 D 日" onChange={(v) => setB(v)} />
 <CfDatePicker value={c} format="DD/MM/YYYY" onChange={(v) => setC(v)} />`}
->
+
+  vueSource={FormatVueSource}>
   <FormatVue client:load />
 </DemoFrame>
 
@@ -99,7 +107,8 @@ export default function Demo() {
 
 `presets` 接受一个 `{ label, value }` 数组，在面板左侧渲染一列预设按钮。`value` 可以是固定 Date / ISO 字符串，或是一个返回它们的函数（每次点击重新求值，适合"今天" / "7 天前"这类相对日期）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PresetsVueSource}>
   <PresetsVue client:only="vue" />
 </DemoFrame>
 
@@ -107,7 +116,8 @@ export default function Demo() {
 
 `show-week-number` 在日期网格左侧加一列 ISO 8601 周数（周一为一周起点）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={WeekNumberVueSource}>
   <WeekNumberVue client:only="vue" />
 </DemoFrame>
 

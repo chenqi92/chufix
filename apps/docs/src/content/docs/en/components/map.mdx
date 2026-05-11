@@ -5,6 +5,7 @@ description: Lightweight vector map container with marker, polygon overlay, rout
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/map/BasicVue.vue';
+import BasicVueSource from '~/components/demos/map/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -28,7 +29,8 @@ import BasicVue from '~/components/demos/map/BasicVue.vue';
   onOverlayClick={onOverlayClick}
   onMapClick={onMapClick}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

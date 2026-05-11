@@ -5,6 +5,7 @@ description: 在内容容器上叠加倾斜重复的文字水印，用于敏感�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/watermark/BasicVue.vue';
+import BasicVueSource from '~/components/demos/watermark/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -23,7 +24,8 @@ import BasicVue from '~/components/demos/watermark/BasicVue.vue';
     <p>水印覆盖整个容器，倾斜重复渲染。</p>
   </div>
 </CfWatermark>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

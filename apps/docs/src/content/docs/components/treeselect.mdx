@@ -5,6 +5,7 @@ description: 把树形数据放进下拉选择器，支持搜索、多选、清�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treeselect/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treeselect/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/treeselect/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTreeSelect v-model="value" :options="options" searchable clearable />`}
   reactCode={`<CfTreeSelect value={value} options={options} searchable clearable onChange={setValue} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

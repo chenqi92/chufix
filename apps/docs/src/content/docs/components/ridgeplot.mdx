@@ -5,6 +5,7 @@ description: 多组密度曲线垂直堆叠。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/ridgeplot/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfRidgePlot ... />`}
   reactCode={`<CfRidgePlot ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/ridgeplot/BasicVue.vue';
 把多个 bell 叠加可得到双峰分布，常见于跨季节、跨用户群的二次集中点。
 
 import SeasonsVue from '~/components/demos/ridgeplot/SeasonsVue.vue';
+import SeasonsVueSource from '~/components/demos/ridgeplot/SeasonsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRidgePlot :rows="rows" :overlap="0.5" />`}
   reactCode={`<CfRidgePlot rows={rows} overlap={0.5} />`}
->
+
+  vueSource={SeasonsVueSource}>
   <SeasonsVue client:load />
 </DemoFrame>
 

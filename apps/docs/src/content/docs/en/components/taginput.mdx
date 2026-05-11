@@ -5,9 +5,13 @@ description: Multi-tag input — Enter to add, Backspace to delete, paste to bul
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/taginput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/taginput/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/taginput/TonesVue.vue';
+import TonesVueSource from '~/components/demos/taginput/TonesVue.vue?raw';
 import SeparatorsVue from '~/components/demos/taginput/SeparatorsVue.vue';
+import SeparatorsVueSource from '~/components/demos/taginput/SeparatorsVue.vue?raw';
 import MaxValidateVue from '~/components/demos/taginput/MaxValidateVue.vue';
+import MaxValidateVueSource from '~/components/demos/taginput/MaxValidateVue.vue?raw';
 
 ## Basic usage
 
@@ -31,7 +35,8 @@ export default function Demo() {
   const [tags, setTags] = useState<string[]>(['vue', 'react']);
   return <CfTagInput value={tags} placeholder="Type and press Enter" onChange={setTags} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -50,7 +55,8 @@ export default function Demo() {
 <CfTagInput value={c} tone="success" onChange={setC} />
 <CfTagInput value={d} tone="warning" onChange={setD} />
 <CfTagInput value={e} tone="danger"  onChange={setE} />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -70,7 +76,8 @@ export default function Demo() {
   placeholder="Enter / comma / space all separate"
   onChange={setTags}
 />`}
->
+
+  vueSource={SeparatorsVueSource}>
   <SeparatorsVue client:load />
 </DemoFrame>
 
@@ -114,7 +121,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={MaxValidateVueSource}>
   <MaxValidateVue client:load />
 </DemoFrame>
 

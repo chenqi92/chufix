@@ -5,9 +5,13 @@ description: Input preset with a search icon, clear button, and optional shortcu
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/searchinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/searchinput/BasicVue.vue?raw';
 import ShortcutVue from '~/components/demos/searchinput/ShortcutVue.vue';
+import ShortcutVueSource from '~/components/demos/searchinput/ShortcutVue.vue?raw';
 import SizesVue from '~/components/demos/searchinput/SizesVue.vue';
+import SizesVueSource from '~/components/demos/searchinput/SizesVue.vue?raw';
 import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/searchinput/DisabledVue.vue?raw';
 
 ## Basic usage
 
@@ -25,7 +29,8 @@ A fixed search icon on the left; when the value is non-empty an × clear button 
   placeholder="Search docs…"
   onSearch={(v) => console.log(v)}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,7 +41,8 @@ A fixed search icon on the left; when the value is non-empty an × clear button 
 <DemoFrame
   vueCode={`<CfSearchInput v-model="q" placeholder="Press Ctrl K to focus" shortcut="Ctrl K" />`}
   reactCode={`<CfSearchInput value={q} onChange={setQ} placeholder="Press Ctrl K to focus" shortcut="Ctrl K" />`}
->
+
+  vueSource={ShortcutVueSource}>
   <ShortcutVue client:load />
 </DemoFrame>
 
@@ -51,7 +57,8 @@ A fixed search icon on the left; when the value is non-empty an × clear button 
   reactCode={`<CfSearchInput value={a} onChange={setA} size="sm" />
 <CfSearchInput value={b} onChange={setB} size="md" />
 <CfSearchInput value={c} onChange={setC} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -62,7 +69,8 @@ A fixed search icon on the left; when the value is non-empty an × clear button 
 <DemoFrame
   vueCode={`<CfSearchInput model-value="(disabled)" disabled />`}
   reactCode={`<CfSearchInput value="(disabled)" disabled />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 

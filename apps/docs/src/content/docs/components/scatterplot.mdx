@@ -5,6 +5,7 @@ description: 二维散点，可按 group 分色。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/scatterplot/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfScatterPlot ... />`}
   reactCode={`<CfScatterPlot ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
 点的 `group` 字段决定颜色，未传则归到 `default`。
 
 import GroupsVue from '~/components/demos/scatterplot/GroupsVue.vue';
+import GroupsVueSource from '~/components/demos/scatterplot/GroupsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfScatterPlot :data="points" />`}
   reactCode={`<CfScatterPlot data={points} />`}
->
+
+  vueSource={GroupsVueSource}>
   <GroupsVue client:load />
 </DemoFrame>
 

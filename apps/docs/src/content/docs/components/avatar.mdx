@@ -5,9 +5,13 @@ description: 头像 —— 图片 / 缩写 / 图标三态自动 fallback，5 尺
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/avatar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/avatar/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/avatar/SizesVue.vue';
+import SizesVueSource from '~/components/demos/avatar/SizesVue.vue?raw';
 import FallbackVue from '~/components/demos/avatar/FallbackVue.vue';
+import FallbackVueSource from '~/components/demos/avatar/FallbackVue.vue?raw';
 import GroupVue from '~/components/demos/avatar/GroupVue.vue';
+import GroupVueSource from '~/components/demos/avatar/GroupVue.vue?raw';
 
 ## 基础用法
 
@@ -36,7 +40,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -61,7 +66,8 @@ export default function Demo() {
 
 <CfAvatar shape="circle" name="Bob Smith" />
 <CfAvatar shape="square" name="Bob Smith" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -84,7 +90,8 @@ export default function Demo() {
 <CfAvatar name="anna lee smith" />
 <CfAvatar fallback="🐱" />
 <CfAvatar><UserSvg /></CfAvatar>`}
->
+
+  vueSource={FallbackVueSource}>
   <FallbackVue client:load />
 </DemoFrame>
 
@@ -119,7 +126,8 @@ export default function Demo() {
   <CfAvatar size="sm" name="Cici" />
   <CfAvatar size="sm" fallback="+12" />
 </CfAvatarGroup>`}
->
+
+  vueSource={GroupVueSource}>
   <GroupVue client:load />
 </DemoFrame>
 

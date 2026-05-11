@@ -5,6 +5,7 @@ description: 显式列出页面锚点的侧栏，滚动时高亮当前可见小�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/anchor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/anchor/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/anchor/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfAnchor :items="items" :offset-top="0" />`}
   reactCode={`<CfAnchor items={items} offsetTop={0} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

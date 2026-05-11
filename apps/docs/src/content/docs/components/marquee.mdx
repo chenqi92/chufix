@@ -5,6 +5,7 @@ description: 横向匀速滚动的文字或元素，常用于公告条 / 滚动�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/marquee/BasicVue.vue';
+import BasicVueSource from '~/components/demos/marquee/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/marquee/BasicVue.vue';
   reactCode={`<CfMarquee duration={20}>
   📢 系统将于今晚 23:00 进行升级维护...
 </CfMarquee>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

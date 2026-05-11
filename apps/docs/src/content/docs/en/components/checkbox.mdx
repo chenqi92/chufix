@@ -5,8 +5,11 @@ description: Checkbox — 3 sizes, indeterminate state, with native input semant
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/checkbox/BasicVue.vue';
+import BasicVueSource from '~/components/demos/checkbox/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/checkbox/SizesVue.vue';
+import SizesVueSource from '~/components/demos/checkbox/SizesVue.vue?raw';
 import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
+import IndeterminateVueSource from '~/components/demos/checkbox/IndeterminateVue.vue?raw';
 
 ## Basic usage
 
@@ -34,7 +37,8 @@ export default function Demo() {
     </CfCheckbox>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -51,7 +55,8 @@ export default function Demo() {
 <CfCheckbox size="lg" defaultChecked>lg checked</CfCheckbox>
 <CfCheckbox disabled>Disabled</CfCheckbox>
 <CfCheckbox disabled defaultChecked>Disabled checked</CfCheckbox>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -109,7 +114,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={IndeterminateVueSource}>
   <IndeterminateVue client:load />
 </DemoFrame>
 

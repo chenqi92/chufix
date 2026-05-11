@@ -5,8 +5,11 @@ description: 多列卡片看板，使用原生 HTML5 拖拽在列间移动卡片
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/kanban/BasicVue.vue';
+import BasicVueSource from '~/components/demos/kanban/BasicVue.vue?raw';
 import AccentVue from '~/components/demos/kanban/AccentVue.vue';
+import AccentVueSource from '~/components/demos/kanban/AccentVue.vue?raw';
 import StaticVue from '~/components/demos/kanban/StaticVue.vue';
+import StaticVueSource from '~/components/demos/kanban/StaticVue.vue?raw';
 
 ## 基础用法
 
@@ -67,7 +70,8 @@ export default function Demo() {
   ]);
   return <CfKanban value={board} onChange={setBoard} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -96,7 +100,8 @@ export default function Demo() {
 ]);
 
 <CfKanban value={board} onChange={setBoard} />`}
->
+
+  vueSource={AccentVueSource}>
   <AccentVue client:load />
 </DemoFrame>
 
@@ -107,7 +112,8 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfKanban v-model="board" :draggable="false" />`}
   reactCode={`<CfKanban value={board} onChange={setBoard} draggable={false} />`}
->
+
+  vueSource={StaticVueSource}>
   <StaticVue client:load />
 </DemoFrame>
 

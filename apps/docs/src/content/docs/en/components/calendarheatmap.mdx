@@ -5,6 +5,7 @@ description: 52-week × 7-day grid heatmap colored by intensity — handy for ac
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/calendarheatmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/calendarheatmap/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/calendarheatmap/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCalendarHeatmap :data="data" />`}
   reactCode={`<CfCalendarHeatmap data={data} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

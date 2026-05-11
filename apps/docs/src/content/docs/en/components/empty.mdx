@@ -5,11 +5,17 @@ description: Placeholder for empty lists, tables, or search results. Supports an
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/empty/BasicVue.vue';
+import BasicVueSource from '~/components/demos/empty/BasicVue.vue?raw';
 import TextVue from '~/components/demos/empty/TextVue.vue';
+import TextVueSource from '~/components/demos/empty/TextVue.vue?raw';
 import ActionVue from '~/components/demos/empty/ActionVue.vue';
+import ActionVueSource from '~/components/demos/empty/ActionVue.vue?raw';
 import SizesVue from '~/components/demos/empty/SizesVue.vue';
+import SizesVueSource from '~/components/demos/empty/SizesVue.vue?raw';
 import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
+import IllustrationsVueSource from '~/components/demos/empty/IllustrationsVue.vue?raw';
 import ImageVue from '~/components/demos/empty/ImageVue.vue';
+import ImageVueSource from '~/components/demos/empty/ImageVue.vue?raw';
 
 ## Basic usage
 
@@ -18,7 +24,8 @@ Without any props, shows the default icon and "No data".
 <DemoFrame
   vueCode={`<CfEmpty />`}
   reactCode={`<CfEmpty />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,7 +42,8 @@ Without any props, shows the default icon and "No data".
   title="No projects yet"
   description="Create your first project to get started with ChuFix."
 />`}
->
+
+  vueSource={TextVueSource}>
   <TextVue client:load />
 </DemoFrame>
 
@@ -54,7 +62,8 @@ The `action` slot (Vue) / `action` prop (React) is for a navigation or "create" 
   description="Create your first project to get started with ChuFix."
   action={<CfButton variant="primary" size="sm">+ New project</CfButton>}
 />`}
->
+
+  vueSource={ActionVueSource}>
   <ActionVue client:load />
 </DemoFrame>
 
@@ -85,7 +94,8 @@ The default icon comes from `CfStatusIllustration`. You can swap it for search, 
   description="Drop files here, or click to upload."
   icon={<CfStatusIllustration variant="upload" />}
 />`}
->
+
+  vueSource={IllustrationsVueSource}>
   <IllustrationsVue client:load />
 </DemoFrame>
 
@@ -108,7 +118,8 @@ For full-page empty states, pass `image` to use a product illustration, generate
   imageAlt=""
   size="lg"
 />`}
->
+
+  vueSource={ImageVueSource}>
   <ImageVue client:load />
 </DemoFrame>
 
@@ -123,7 +134,8 @@ For full-page empty states, pass `image` to use a product illustration, generate
   reactCode={`<CfEmpty size="sm" />
 <CfEmpty size="md" />
 <CfEmpty size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

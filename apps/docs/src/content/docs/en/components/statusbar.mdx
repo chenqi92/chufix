@@ -5,6 +5,7 @@ description: Editor footer bar. Three slots (left / center / right) with 6 seman
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statusbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statusbar/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -15,7 +16,8 @@ The whole bar can be tinted via `tone` (e.g. `error`); individual items can also
 <DemoFrame
   vueCode={`<CfStatusBar :left-items="left" :center-items="center" :right-items="right" />`}
   reactCode={`<CfStatusBar leftItems={left} centerItems={center} rightItems={right} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -25,11 +27,13 @@ The whole bar can be tinted via `tone` (e.g. `error`); individual items can also
 `tone` tints the whole bar. For example, `error` turns the bar red to indicate a build failure.
 
 import TonesVue from '~/components/demos/statusbar/TonesVue.vue';
+import TonesVueSource from '~/components/demos/statusbar/TonesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfStatusBar :tone="'error'" :left-items="items" />`}
   reactCode={`<CfStatusBar tone="error" leftItems={items} />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 

@@ -5,8 +5,11 @@ description: 文章侧边目录，按 depth 缩进，可手动指定或自动（
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toc/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toc/BasicVue.vue?raw';
 import NestedVue from '~/components/demos/toc/NestedVue.vue';
+import NestedVueSource from '~/components/demos/toc/NestedVue.vue?raw';
 import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
+import MaxDepthVueSource from '~/components/demos/toc/MaxDepthVue.vue?raw';
 
 ## 基础用法
 
@@ -19,7 +22,8 @@ import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
   title="本页目录"
 />`}
   reactCode={`<CfToc items={items} activeId="install" title="本页目录" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +45,8 @@ import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
   reactCode={`const items: TocItem[] = [/* ... */];
 
 <CfToc items={items} />`}
->
+
+  vueSource={NestedVueSource}>
   <NestedVue client:load />
 </DemoFrame>
 
@@ -54,7 +59,8 @@ import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
 <CfToc :items="items" :max-depth="4" />`}
   reactCode={`<CfToc items={items} maxDepth={2} />
 <CfToc items={items} maxDepth={4} />`}
->
+
+  vueSource={MaxDepthVueSource}>
   <MaxDepthVue client:load />
 </DemoFrame>
 

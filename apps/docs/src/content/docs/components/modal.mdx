@@ -5,19 +5,28 @@ description: 弹窗 —— 内置 portal、focus trap、滚动锁、tone 变体�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/modal/BasicVue.vue';
+import BasicVueSource from '~/components/demos/modal/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/modal/SizesVue.vue';
+import SizesVueSource from '~/components/demos/modal/SizesVue.vue?raw';
 import BehaviorVue from '~/components/demos/modal/BehaviorVue.vue';
+import BehaviorVueSource from '~/components/demos/modal/BehaviorVue.vue?raw';
 import TonesVue from '~/components/demos/modal/TonesVue.vue';
+import TonesVueSource from '~/components/demos/modal/TonesVue.vue?raw';
 import AsyncVue from '~/components/demos/modal/AsyncVue.vue';
+import AsyncVueSource from '~/components/demos/modal/AsyncVue.vue?raw';
 import DraggableVue from '~/components/demos/modal/DraggableVue.vue';
+import DraggableVueSource from '~/components/demos/modal/DraggableVue.vue?raw';
 import ServiceVue from '~/components/demos/modal/ServiceVue.vue';
+import ServiceVueSource from '~/components/demos/modal/ServiceVue.vue?raw';
 import StackedVue from '~/components/demos/modal/StackedVue.vue';
+import StackedVueSource from '~/components/demos/modal/StackedVue.vue?raw';
 
 ## 基础用法
 
 `v-model:open` / `open + onOpenChange` 双向绑定。组件内部自动处理：portal 到 body、focus trap、body 滚动锁、Esc 关闭、遮罩关闭、进出 fade + scale 动画。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -25,7 +34,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 `size` 控制弹窗最大宽度。`full` 几乎铺满视口；`width` / `min-height` 可自定义具体像素。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SizesVueSource}>
   <SizesVue client:only="vue" />
 </DemoFrame>
 
@@ -33,7 +43,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 默认任何操作都能关闭：遮罩点击、Esc、右上角 ×。可以通过 `closeOnOverlay` / `closeOnEsc` / `showClose` 单独禁用。异步态（`onBeforeOk` 进行中）会自动屏蔽所有关闭路径。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BehaviorVueSource}>
   <BehaviorVue client:only="vue" />
 </DemoFrame>
 
@@ -41,7 +52,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 `tone="info | success | warning | error"` 给 header 加一个圆形 tone 图标 + 强调色。`tone="error"` 时默认 OK 按钮自动切到 danger 红。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={TonesVueSource}>
   <TonesVue client:only="vue" />
 </DemoFrame>
 
@@ -49,7 +61,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 直接传 `okText` / `cancelText`，组件渲染默认按钮组。`onBeforeOk` 接异步函数：返回 false / 抛错 → 阻止关闭并恢复 loading 态；正常 resolve → 关闭并发 `@ok` 事件。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncVueSource}>
   <AsyncVue client:only="vue" />
 </DemoFrame>
 
@@ -57,7 +70,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 `draggable` 让标题栏变成拖手柄；`resizable` 在右下角加一个对角线缩放把柄。两个能力都用 PointerEvent 实现，0 第三方依赖。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={DraggableVueSource}>
   <DraggableVue client:only="vue" />
 </DemoFrame>
 
@@ -79,7 +93,8 @@ const ok = await modal.confirm({
 if (ok) modal.success({ title: '已提交' });
 ```
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ServiceVueSource}>
   <ServiceVue client:only="vue" />
 </DemoFrame>
 
@@ -97,7 +112,8 @@ if (ok) modal.success({ title: '已提交' });
 
 每打开一个 Modal，组件内部把它的 close 函数压进栈，z-index 自动 +10；Esc 只关最顶层；关闭后从栈里弹出。所以你可以在 modal 里再触发 modal，不用关心层级。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={StackedVueSource}>
   <StackedVue client:only="vue" />
 </DemoFrame>
 

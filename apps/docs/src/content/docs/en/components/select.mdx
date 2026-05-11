@@ -5,13 +5,21 @@ description: Dropdown picker — single/multi, searchable, grouped, async loadin
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/select/BasicVue.vue';
+import BasicVueSource from '~/components/demos/select/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/select/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/select/VariantsVue.vue?raw';
 import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+import AdvancedVueSource from '~/components/demos/select/AdvancedVue.vue?raw';
 import EventsVue from '~/components/demos/select/EventsVue.vue';
+import EventsVueSource from '~/components/demos/select/EventsVue.vue?raw';
 import MultiVue from '~/components/demos/select/MultiVue.vue';
+import MultiVueSource from '~/components/demos/select/MultiVue.vue?raw';
 import SearchVue from '~/components/demos/select/SearchVue.vue';
+import SearchVueSource from '~/components/demos/select/SearchVue.vue?raw';
 import GroupVue from '~/components/demos/select/GroupVue.vue';
+import GroupVueSource from '~/components/demos/select/GroupVue.vue?raw';
 import AsyncLoadVue from '~/components/demos/select/AsyncLoadVue.vue';
+import AsyncLoadVueSource from '~/components/demos/select/AsyncLoadVue.vue?raw';
 
 ## Basic usage
 
@@ -54,7 +62,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -69,7 +78,8 @@ Three variants matching Input: `outline` (default) / `filled` / `ghost`.
   reactCode={`<CfSelect value={v1} options={options} variant="outline" onChange={setV1} />
 <CfSelect value={v2} options={options} variant="filled" onChange={setV2} />
 <CfSelect value={v3} options={options} variant="ghost" onChange={setV3} />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -84,7 +94,8 @@ Three variants matching Input: `outline` (default) / `filled` / `ghost`.
   reactCode={`<CfSelect value={a} options={options} clearable onChange={setA} />
 <CfSelect value={b} options={options} disabled />
 <CfSelect value={b} options={options} error />`}
->
+
+  vueSource={AdvancedVueSource}>
   <AdvancedVue client:load />
 </DemoFrame>
 
@@ -115,7 +126,8 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
   onOpenChange={(open) => console.log('open', open)}
   onActiveChange={(option, index) => console.log(option, index)}
 />`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 
@@ -123,7 +135,8 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
 
 `multiple` turns the model into an array; the trigger renders removable tag chips. `maxTagCount` collapses overflow into a `+N` pill. Backspace removes the last tag.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={MultiVueSource}>
   <MultiVue client:only="vue" />
 </DemoFrame>
 
@@ -131,7 +144,8 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
 
 `searchable` adds an input atop the menu that filters by label in real time. Stacks with `multiple` for traditional multi-select UX.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SearchVueSource}>
   <SearchVue client:only="vue" />
 </DemoFrame>
 
@@ -139,7 +153,8 @@ Beyond value changes, `Select` exposes events for open state, active option, cle
 
 Add `group: string` to an option and the component renders a section header per group (in first-encounter order).
 
-<DemoFrame>
+<DemoFrame
+  vueSource={GroupVueSource}>
   <GroupVue client:only="vue" />
 </DemoFrame>
 
@@ -147,7 +162,8 @@ Add `group: string` to an option and the component renders a section header per 
 
 When `loading=true` the trigger is disabled and shows a spinner; the menu shows "Loading…". Pair with onMounted / SWR / TanStack Query.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncLoadVueSource}>
   <AsyncLoadVue client:only="vue" />
 </DemoFrame>
 

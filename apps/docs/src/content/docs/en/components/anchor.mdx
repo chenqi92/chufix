@@ -5,6 +5,7 @@ description: Sidebar that lists page anchors explicitly, highlights the section 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/anchor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/anchor/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/anchor/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfAnchor :items="items" :offset-top="0" />`}
   reactCode={`<CfAnchor items={items} offsetTop={0} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

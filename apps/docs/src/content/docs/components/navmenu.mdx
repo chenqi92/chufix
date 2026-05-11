@@ -5,8 +5,11 @@ description: 顶部水平导航栏，每一项可挂富面板（多列链接 + �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/navmenu/BasicVue.vue';
+import BasicVueSource from '~/components/demos/navmenu/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/navmenu/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/navmenu/VariantsVue.vue?raw';
 import TriggerVue from '~/components/demos/navmenu/TriggerVue.vue';
+import TriggerVueSource from '~/components/demos/navmenu/TriggerVue.vue?raw';
 
 ## 基础用法
 
@@ -43,7 +46,8 @@ const items: NavMenuItem[] = [
 const items: NavMenuItem[] = [/* ... */];
 
 <CfNavMenu items={items} active="products" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -60,7 +64,8 @@ const items: NavMenuItem[] = [/* ... */];
   reactCode={`<CfNavMenu items={items} active={a} variant="underline" />
 <CfNavMenu items={items} active={b} variant="pill" />
 <CfNavMenu items={items} active={c} variant="minimal" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -73,7 +78,8 @@ const items: NavMenuItem[] = [/* ... */];
 <CfNavMenu :items="items" :active="b" trigger="click" />`}
   reactCode={`<CfNavMenu items={items} active={a} trigger="hover" />
 <CfNavMenu items={items} active={b} trigger="click" />`}
->
+
+  vueSource={TriggerVueSource}>
   <TriggerVue client:load />
 </DemoFrame>
 

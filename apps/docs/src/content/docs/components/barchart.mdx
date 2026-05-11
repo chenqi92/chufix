@@ -5,6 +5,7 @@ description: 单 series 垂直柱状图。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/barchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/barchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/barchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfBarChart ... />`}
   reactCode={`<CfBarChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/barchart/BasicVue.vue';
 `colorIndex` 0..7 直接选 `--viz-1..8`。
 
 import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
+import SeriesColorVueSource from '~/components/demos/barchart/SeriesColorVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfBarChart :data="data" :color-index="0" />
 <CfBarChart :data="data" :color-index="3" />`}
   reactCode={`<CfBarChart data={data} colorIndex={0} />
 <CfBarChart data={data} colorIndex={3} />`}
->
+
+  vueSource={SeriesColorVueSource}>
   <SeriesColorVue client:load />
 </DemoFrame>
 
@@ -39,11 +43,13 @@ import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
 需要较长分类名、排行或对比列表时，使用 `orientation="horizontal"`。
 
 import HorizontalVue from '~/components/demos/barchart/HorizontalVue.vue';
+import HorizontalVueSource from '~/components/demos/barchart/HorizontalVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfBarChart :data="data" :labels="labels" orientation="horizontal" />`}
   reactCode={`<CfBarChart data={data} labels={labels} orientation="horizontal" />`}
->
+
+  vueSource={HorizontalVueSource}>
   <HorizontalVue client:load />
 </DemoFrame>
 

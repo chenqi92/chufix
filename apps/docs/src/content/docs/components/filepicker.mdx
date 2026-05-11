@@ -5,6 +5,7 @@ description: 按钮触发文件选择对话框，自带选中文件列表。区�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/filepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/filepicker/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/filepicker/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfFilePicker v-model="files" multiple accept="image/*,application/json" />`}
   reactCode={`<CfFilePicker value={files} onChange={setFiles} multiple accept="image/*" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -23,11 +25,13 @@ import BasicVue from '~/components/demos/filepicker/BasicVue.vue';
 `variant="plain"` 取消按钮边框，作为链接式触发；`disabled` 全局禁用。
 
 import VariantsVue from '~/components/demos/filepicker/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/filepicker/VariantsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfFilePicker v-model="files" variant="plain" size="lg" multiple />`}
   reactCode={`<CfFilePicker value={files} onChange={setFiles} variant="plain" size="lg" multiple />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 

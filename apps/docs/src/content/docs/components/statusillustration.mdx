@@ -5,6 +5,7 @@ description: 一组语义状态插图（empty / search / upload / success / 404 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statusillustration/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
 <CfStatusIllustration variant="upload" />
 <CfStatusIllustration variant="success" />
 <CfStatusIllustration variant="not-found" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,6 +34,7 @@ import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
 `size` 控制 illustration 比例。常用 sm 在 inline 提示，md 默认，lg 在整页 Result。
 
 import SizesVue from '~/components/demos/statusillustration/SizesVue.vue';
+import SizesVueSource from '~/components/demos/statusillustration/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfStatusIllustration size="sm" />
@@ -40,7 +43,8 @@ import SizesVue from '~/components/demos/statusillustration/SizesVue.vue';
   reactCode={`<CfStatusIllustration size="sm" />
 <CfStatusIllustration size="md" />
 <CfStatusIllustration size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

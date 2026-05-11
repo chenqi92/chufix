@@ -5,6 +5,7 @@ description: Enhanced Input that auto-detects `{{var}}` template variables and h
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/variableinput/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Names listed in `variables` are treated as "known" and highlighted with accent; 
 <DemoFrame
   vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
   reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Names listed in `variables` are treated as "known" and highlighted with accent; 
 A demo combining known (accent highlight) and unknown (red squiggle) variables.
 
 import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
+import InvalidVueSource from '~/components/demos/variableinput/InvalidVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
   reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
->
+
+  vueSource={InvalidVueSource}>
   <InvalidVue client:load />
 </DemoFrame>
 

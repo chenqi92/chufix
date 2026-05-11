@@ -5,6 +5,7 @@ description: 单个颜色样本，常用于调色板。支持选中环、新增�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/colorswatch/BasicVue.vue';
+import BasicVueSource from '~/components/demos/colorswatch/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -19,7 +20,8 @@ import BasicVue from '~/components/demos/colorswatch/BasicVue.vue';
 <CfColorSwatch color="var(--status-success)" />
 <CfColorSwatch color="#dc3545" />
 <CfColorSwatch add label="添加颜色" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -29,6 +31,7 @@ import BasicVue from '~/components/demos/colorswatch/BasicVue.vue';
 3 档尺寸，square / round 两种形状，可选中、可禁用。
 
 import SizesVue from '~/components/demos/colorswatch/SizesVue.vue';
+import SizesVueSource from '~/components/demos/colorswatch/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfColorSwatch size="sm" color="var(--accent-1)" />
@@ -43,7 +46,8 @@ import SizesVue from '~/components/demos/colorswatch/SizesVue.vue';
 <CfColorSwatch shape="round" color="var(--accent-1)" />
 <CfColorSwatch selected color="var(--accent-1)" />
 <CfColorSwatch disabled color="var(--accent-1)" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

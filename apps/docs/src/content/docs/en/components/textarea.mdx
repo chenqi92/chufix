@@ -5,8 +5,11 @@ description: Multi-line input — same color system as Input, with auto-resize, 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/textarea/BasicVue.vue';
+import BasicVueSource from '~/components/demos/textarea/BasicVue.vue?raw';
 import CountVue from '~/components/demos/textarea/CountVue.vue';
+import CountVueSource from '~/components/demos/textarea/CountVue.vue?raw';
 import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
+import AutoResizeVueSource from '~/components/demos/textarea/AutoResizeVue.vue?raw';
 
 ## Basic usage
 
@@ -37,7 +40,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -61,7 +65,8 @@ export default function Demo() {
   maxLength={50}
   showCount
 />`}
->
+
+  vueSource={CountVueSource}>
   <CountVue client:load />
 </DemoFrame>
 
@@ -83,7 +88,8 @@ export default function Demo() {
   autoResize
   placeholder="Auto-resizing textarea"
 />`}
->
+
+  vueSource={AutoResizeVueSource}>
   <AutoResizeVue client:load />
 </DemoFrame>
 

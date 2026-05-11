@@ -5,8 +5,11 @@ description: 多步流程进度条，支持横竖两种方向、3 种 variant、
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/stepper/BasicVue.vue';
+import BasicVueSource from '~/components/demos/stepper/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/stepper/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/stepper/VariantsVue.vue?raw';
 import VerticalVue from '~/components/demos/stepper/VerticalVue.vue';
+import VerticalVueSource from '~/components/demos/stepper/VerticalVue.vue?raw';
 
 ## 基础用法
 
@@ -41,7 +44,8 @@ export default function Demo() {
   const [current, setCurrent] = useState(1);
   return <CfStepper items={items} current={current} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -56,7 +60,8 @@ export default function Demo() {
   reactCode={`<CfStepper items={items} current={2} variant="numbered" />
 <CfStepper items={items} current={2} variant="dots" />
 <CfStepper items={items} current={2} variant="minimal" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -83,7 +88,8 @@ export default function Demo() {
     { title: '账户激活', status: 'error' },
   ]}
 />`}
->
+
+  vueSource={VerticalVueSource}>
   <VerticalVue client:load />
 </DemoFrame>
 

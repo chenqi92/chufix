@@ -5,6 +5,7 @@ description: 大字号数字展示 + 千分位 / 前后缀 / 倒计时，常用�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statistic/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statistic/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/statistic/BasicVue.vue';
   reactCode={`<CfStatistic label="今日访问" value={12384} />
 <CfStatistic label="收入" value={84520.42} prefix="¥" precision={2} />
 <CfStatistic label="转化率" value={3.2} suffix="%" precision={1} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

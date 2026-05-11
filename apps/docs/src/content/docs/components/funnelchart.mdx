@@ -5,6 +5,7 @@ description: 逐层收窄的转化漏斗，每层显示绝对值。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/funnelchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfFunnelChart ... />`}
   reactCode={`<CfFunnelChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
 健康漏斗（每段流失 30-50%）vs 流失严重漏斗（92% 直接流失）。
 
 import CompareVue from '~/components/demos/funnelchart/CompareVue.vue';
+import CompareVueSource from '~/components/demos/funnelchart/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfFunnelChart :steps="good" />
 <CfFunnelChart :steps="bad" />`}
   reactCode={`<CfFunnelChart steps={good} />
 <CfFunnelChart steps={bad} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 

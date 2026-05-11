@@ -5,6 +5,7 @@ description: Drag a tab past the threshold to fire a tear-off event; the consume
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tearofftab/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tearofftab/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -28,7 +29,8 @@ The component itself does not create windows or panels — the consumer decides 
   onClose={(id) => removeTab(id)}
   slots={{ 'content-orders': <pre>orders.ts</pre> }}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -38,13 +40,15 @@ The component itself does not create windows or panels — the consumer decides 
 Spawn the torn-off tab into a DetachedPanel immediately; reattach it back when the panel is closed.
 
 import PinVue from '~/components/demos/tearofftab/PinVue.vue';
+import PinVueSource from '~/components/demos/tearofftab/PinVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTearOffTabs ... @tear-off="tearOff" />
 <CfDetachedPanel ... @update:open="reattach" />`}
   reactCode={`<CfTearOffTabs ... onTearOff={tearOff} />
 <CfDetachedPanel ... onOpenChange={reattach} />`}
->
+
+  vueSource={PinVueSource}>
   <PinVue client:load />
 </DemoFrame>
 

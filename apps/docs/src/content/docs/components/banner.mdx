@@ -5,9 +5,13 @@ description: 顶部全宽通告条 —— 6 种 tone × 2 种 variant，可关�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/banner/BasicVue.vue';
+import BasicVueSource from '~/components/demos/banner/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/banner/TonesVue.vue';
+import TonesVueSource from '~/components/demos/banner/TonesVue.vue?raw';
 import SolidVue from '~/components/demos/banner/SolidVue.vue';
+import SolidVueSource from '~/components/demos/banner/SolidVue.vue?raw';
 import ActionVue from '~/components/demos/banner/ActionVue.vue';
+import ActionVueSource from '~/components/demos/banner/ActionVue.vue?raw';
 
 ## 基础用法
 
@@ -20,7 +24,8 @@ import ActionVue from '~/components/demos/banner/ActionVue.vue';
   reactCode={`<CfBanner tone="info">
   系统将于今晚 22:00 - 22:30 进行维护，部分功能可能不可用。
 </CfBanner>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +46,8 @@ import ActionVue from '~/components/demos/banner/ActionVue.vue';
 <CfBanner tone="danger">danger</CfBanner>
 <CfBanner tone="accent">accent</CfBanner>
 <CfBanner tone="neutral">neutral</CfBanner>`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -64,7 +70,8 @@ import ActionVue from '~/components/demos/banner/ActionVue.vue';
 >
   新版本 v2.0 上线 — 全新主题与三套密度
 </CfBanner>`}
->
+
+  vueSource={SolidVueSource}>
   <SolidVue client:load />
 </DemoFrame>
 
@@ -86,7 +93,8 @@ import ActionVue from '~/components/demos/banner/ActionVue.vue';
 >
   存储空间已使用 86%，请尽快清理或升级配额。
 </CfBanner>`}
->
+
+  vueSource={ActionVueSource}>
   <ActionVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: 图表头部工具条：标题 + legend 切换 + zoom/export/refres
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/charttoolbar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfChartToolbar ... />`}
   reactCode={`<CfChartToolbar ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
 legend chip 点击 toggle 隐藏 series；下方 LineChart 实时联动重画。
 
 import InteractiveVue from '~/components/demos/charttoolbar/InteractiveVue.vue';
+import InteractiveVueSource from '~/components/demos/charttoolbar/InteractiveVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfChartToolbar :series="series" @series-toggle="toggle" />
 <CfLineChart :series="visibleSeries" />`}
   reactCode={`<CfChartToolbar series={series} onSeriesToggle={toggle} />
 <CfLineChart series={visibleSeries} />`}
->
+
+  vueSource={InteractiveVueSource}>
   <InteractiveVue client:load />
 </DemoFrame>
 

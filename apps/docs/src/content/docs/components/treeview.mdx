@@ -5,9 +5,13 @@ description: 嵌套树形展示，支持单选 / 复选框（带级联）、展�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treeview/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treeview/BasicVue.vue?raw';
 import CheckableVue from '~/components/demos/treeview/CheckableVue.vue';
+import CheckableVueSource from '~/components/demos/treeview/CheckableVue.vue?raw';
 import SizesVue from '~/components/demos/treeview/SizesVue.vue';
+import SizesVueSource from '~/components/demos/treeview/SizesVue.vue?raw';
 import NoLineVue from '~/components/demos/treeview/NoLineVue.vue';
+import NoLineVueSource from '~/components/demos/treeview/NoLineVue.vue?raw';
 
 ## 基础用法
 
@@ -66,7 +70,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -85,7 +90,8 @@ export default function Demo() {
 
 {/* 关闭级联 */}
 <CfTreeView nodes={nodes} value={checked} onChange={setChecked} checkable cascade={false} />`}
->
+
+  vueSource={CheckableVueSource}>
   <CheckableVue client:load />
 </DemoFrame>
 
@@ -100,7 +106,8 @@ export default function Demo() {
   reactCode={`<CfTreeView size="sm" nodes={nodes} />
 <CfTreeView size="md" nodes={nodes} />
 <CfTreeView size="lg" nodes={nodes} />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -111,7 +118,8 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfTreeView :nodes="nodes" :show-line="false" />`}
   reactCode={`<CfTreeView nodes={nodes} showLine={false} />`}
->
+
+  vueSource={NoLineVueSource}>
   <NoLineVue client:load />
 </DemoFrame>
 

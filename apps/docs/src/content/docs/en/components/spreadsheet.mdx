@@ -5,7 +5,9 @@ description: A1-style editable grid — multi-select, keyboard navigation (arrow
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/spreadsheet/BasicVue.vue';
+import BasicVueSource from '~/components/demos/spreadsheet/BasicVue.vue?raw';
 import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
+import ImportVueSource from '~/components/demos/spreadsheet/ImportVue.vue?raw';
 
 ## Basic usage
 
@@ -18,7 +20,8 @@ import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
 - Delete / Backspace → clear the selection
 - Cmd/Ctrl + C / X / V → TSV roundtrip with the system clipboard
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -26,7 +29,8 @@ import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
 
 The clipboard format is plain TSV (tab-separated text), so you can copy/paste directly between this grid and Excel / Numbers / Google Sheets:
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ImportVueSource}>
   <ImportVue client:load />
 </DemoFrame>
 

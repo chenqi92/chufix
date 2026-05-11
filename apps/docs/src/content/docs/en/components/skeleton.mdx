@@ -5,10 +5,15 @@ description: Placeholder elements for loading states — three shapes, shimmer a
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/skeleton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/skeleton/BasicVue.vue?raw';
 import ShapesVue from '~/components/demos/skeleton/ShapesVue.vue';
+import ShapesVueSource from '~/components/demos/skeleton/ShapesVue.vue?raw';
 import TextVue from '~/components/demos/skeleton/TextVue.vue';
+import TextVueSource from '~/components/demos/skeleton/TextVue.vue?raw';
 import StaticVue from '~/components/demos/skeleton/StaticVue.vue';
+import StaticVueSource from '~/components/demos/skeleton/StaticVue.vue?raw';
 import CardVue from '~/components/demos/skeleton/CardVue.vue';
+import CardVueSource from '~/components/demos/skeleton/CardVue.vue?raw';
 
 ## Basic usage
 
@@ -29,7 +34,8 @@ The most common combination — a circular avatar plus two text lines. `width` /
     <CfSkeleton shape="text" width={200} />
   </div>
 </div>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -44,7 +50,8 @@ The most common combination — a circular avatar plus two text lines. `width` /
   reactCode={`<CfSkeleton shape="text" width={240} />
 <CfSkeleton shape="circle" width={48} height={48} />
 <CfSkeleton shape="rect" height={80} />`}
->
+
+  vueSource={ShapesVueSource}>
   <ShapesVue client:load />
 </DemoFrame>
 
@@ -55,7 +62,8 @@ When `lines > 1` and `shape="text"`, multiple lines render with the last line sh
 <DemoFrame
   vueCode={`<CfSkeleton shape="text" :lines="4" />`}
   reactCode={`<CfSkeleton shape="text" lines={4} />`}
->
+
+  vueSource={TextVueSource}>
   <TextVue client:load />
 </DemoFrame>
 
@@ -68,7 +76,8 @@ When `lines > 1` and `shape="text"`, multiple lines render with the last line sh
 <CfSkeleton shape="rect" :height="40" static />`}
   reactCode={`<CfSkeleton shape="rect" height={40} />
 <CfSkeleton shape="rect" height={40} static />`}
->
+
+  vueSource={StaticVueSource}>
   <StaticVue client:load />
 </DemoFrame>
 
@@ -99,7 +108,8 @@ Combine multiple shapes to mimic the structure of a real card — cover image + 
   </div>
   <CfSkeleton shape="text" lines={3} />
 </div>`}
->
+
+  vueSource={CardVueSource}>
   <CardVue client:load />
 </DemoFrame>
 

@@ -5,10 +5,15 @@ description: Input + month-grid panel — day/month/year views, date bounds, qui
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/datepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/datepicker/BasicVue.vue?raw';
 import BoundsVue from '~/components/demos/datepicker/BoundsVue.vue';
+import BoundsVueSource from '~/components/demos/datepicker/BoundsVue.vue?raw';
 import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
+import FormatVueSource from '~/components/demos/datepicker/FormatVue.vue?raw';
 import PresetsVue from '~/components/demos/datepicker/PresetsVue.vue';
+import PresetsVueSource from '~/components/demos/datepicker/PresetsVue.vue?raw';
 import WeekNumberVue from '~/components/demos/datepicker/WeekNumberVue.vue';
+import WeekNumberVueSource from '~/components/demos/datepicker/WeekNumberVue.vue?raw';
 
 ## Basic usage
 
@@ -32,7 +37,8 @@ export default function Demo() {
   const [value, setValue] = useState<string | null>('2026-05-09');
   return <CfDatePicker value={value} clearable onChange={(v) => setValue(v)} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -76,7 +82,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BoundsVueSource}>
   <BoundsVue client:load />
 </DemoFrame>
 
@@ -91,7 +98,8 @@ export default function Demo() {
   reactCode={`<CfDatePicker value={a} format="YYYY-MM-DD" onChange={(v) => setA(v)} />
 <CfDatePicker value={b} format="YYYY 年 M 月 D 日" onChange={(v) => setB(v)} />
 <CfDatePicker value={c} format="DD/MM/YYYY" onChange={(v) => setC(v)} />`}
->
+
+  vueSource={FormatVueSource}>
   <FormatVue client:load />
 </DemoFrame>
 
@@ -99,7 +107,8 @@ export default function Demo() {
 
 `presets` accepts an array of `{ label, value }`. The panel renders these as a left-side column. `value` may be a fixed `Date` / ISO string, or a function that returns one (re-evaluated on each click — perfect for relative dates like "Today" / "7 days ago").
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PresetsVueSource}>
   <PresetsVue client:only="vue" />
 </DemoFrame>
 
@@ -107,7 +116,8 @@ export default function Demo() {
 
 `show-week-number` adds a leading column of ISO 8601 week numbers (Monday-based) to the date grid.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={WeekNumberVueSource}>
   <WeekNumberVue client:only="vue" />
 </DemoFrame>
 

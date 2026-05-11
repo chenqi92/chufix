@@ -5,6 +5,7 @@ description: 在长文本中高亮匹配的关键字，常用于搜索结果列�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/highlight/BasicVue.vue';
+import BasicVueSource from '~/components/demos/highlight/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/highlight/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfHighlight :text="text" :match="q" />`}
   reactCode={`<CfHighlight text={text} match={q} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

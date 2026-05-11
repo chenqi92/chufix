@@ -5,6 +5,7 @@ description: 横向请求阶段瀑布图，每段一个 phase。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timingbar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTimingBar ... />`}
   reactCode={`<CfTimingBar ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
 3 个并发 HTTP 请求的 timing 拼接：DNS / Connect / TLS / Wait / Receive 各色。
 
 import RealVue from '~/components/demos/timingbar/RealVue.vue';
+import RealVueSource from '~/components/demos/timingbar/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTimingBar :phases="phases" />`}
   reactCode={`<CfTimingBar phases={phases} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Hollow pie chart that can show a value or label in the center.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/donutchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/donutchart/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfDonutChart ... />`}
   reactCode={`<CfDonutChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,6 +26,7 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 `thickness` controls the ring thickness (with the same `size`, thicker is more pie-like, thinner is more ring-like).
 
 import CenterVue from '~/components/demos/donutchart/CenterVue.vue';
+import CenterVueSource from '~/components/demos/donutchart/CenterVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfDonutChart :segments="data" :thickness="14" center-value="78%" center-label="Completion" />
@@ -32,7 +35,8 @@ import CenterVue from '~/components/demos/donutchart/CenterVue.vue';
   reactCode={`<CfDonutChart segments={data} thickness={14} centerValue="78%" centerLabel="Completion" />
 <CfDonutChart segments={data} thickness={22} />
 <CfDonutChart segments={data} thickness={32} />`}
->
+
+  vueSource={CenterVueSource}>
   <CenterVue client:load />
 </DemoFrame>
 

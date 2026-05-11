@@ -5,6 +5,7 @@ description: Full-screen image viewer with wheel zoom, mouse drag, and keyboard 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/imagepreview/BasicVue.vue';
+import BasicVueSource from '~/components/demos/imagepreview/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -21,7 +22,8 @@ Typically triggered from a thumbnail: set the thumbnail to `cursor: zoom-in` and
 <CfImagePreview v-model="open" :src="fullSrc" alt="Example" />`}
   reactCode={`<img src={thumbSrc} onClick={() => setOpen(true)} style={{ cursor: 'zoom-in' }} />
 <CfImagePreview open={open} onOpenChange={setOpen} src={fullSrc} alt="Example" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

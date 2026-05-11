@@ -5,6 +5,7 @@ description: 统计分布的 5 数概要 + outliers。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/boxplot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/boxplot/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/boxplot/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfBoxPlot ... />`}
   reactCode={`<CfBoxPlot ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/boxplot/BasicVue.vue';
 4 个 API 的 p25/median/p75 + outliers，竖线显示完整 min-max 范围。
 
 import PercentilesVue from '~/components/demos/boxplot/PercentilesVue.vue';
+import PercentilesVueSource from '~/components/demos/boxplot/PercentilesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfBoxPlot :data="apis" />`}
   reactCode={`<CfBoxPlot data={apis} />`}
->
+
+  vueSource={PercentilesVueSource}>
   <PercentilesVue client:load />
 </DemoFrame>
 

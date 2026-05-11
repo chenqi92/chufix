@@ -5,6 +5,7 @@ description: 内置最小 markdown 渲染器，支持 split / edit / preview 三
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/markdowneditor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/markdowneditor/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/markdowneditor/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfMarkdownEditor v-model="md" :mode="mode" @update:mode="setMode" />`}
   reactCode={`<CfMarkdownEditor value={md} onChange={setMd} mode={mode} onModeChange={setMode} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/markdowneditor/BasicVue.vue';
 配置 `readOnly` 和 `size="sm"` 用作小型预览面板（如 commit message preview）。
 
 import SizesVue from '~/components/demos/markdowneditor/SizesVue.vue';
+import SizesVueSource from '~/components/demos/markdowneditor/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfMarkdownEditor v-model="md" mode="preview" size="sm" read-only />`}
   reactCode={`<CfMarkdownEditor value={md} onChange={set} mode="preview" size="sm" readOnly />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

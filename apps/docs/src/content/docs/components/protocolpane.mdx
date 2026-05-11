@@ -5,6 +5,7 @@ description: SSE / MQTT / Kafka / gRPC 4 个 tab 的协议监视器外壳。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/protocolpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/protocolpane/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/protocolpane/BasicVue.vue';
   'panel-sse': <PanelA />,
   'panel-mqtt': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,6 +34,7 @@ import BasicVue from '~/components/demos/protocolpane/BasicVue.vue';
 替换占位文字，4 个 tab 各放一个具体可视化：SSE 时间轴 / MQTT 主题树 / Kafka partition 表 / gRPC 方法列表。
 
 import RealVue from '~/components/demos/protocolpane/RealVue.vue';
+import RealVueSource from '~/components/demos/protocolpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfProtocolPane>
@@ -41,7 +44,8 @@ import RealVue from '~/components/demos/protocolpane/RealVue.vue';
   <template #panel-grpc><CfList ... /></template>
 </CfProtocolPane>`}
   reactCode={`<CfProtocolPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

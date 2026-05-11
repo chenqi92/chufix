@@ -5,10 +5,15 @@ description: Inline static message bar — 4 tones × 3 variants, with optional 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/alert/BasicVue.vue';
+import BasicVueSource from '~/components/demos/alert/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/alert/TonesVue.vue';
+import TonesVueSource from '~/components/demos/alert/TonesVue.vue?raw';
 import VariantsVue from '~/components/demos/alert/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/alert/VariantsVue.vue?raw';
 import ClosableVue from '~/components/demos/alert/ClosableVue.vue';
+import ClosableVueSource from '~/components/demos/alert/ClosableVue.vue?raw';
 import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
+import NoIconVueSource from '~/components/demos/alert/NoIconVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +22,8 @@ Minimal form — a line of text with a status icon and an optional title.
 <DemoFrame
   vueCode={`<CfAlert tone="info" title="A message">Here is some additional context.</CfAlert>`}
   reactCode={`<CfAlert tone="info" title="A message">Here is some additional context.</CfAlert>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -34,7 +40,8 @@ Minimal form — a line of text with a status icon and an optional title.
 <CfAlert tone="success" title="Saved successfully">Green</CfAlert>
 <CfAlert tone="warning" title="Disk space is low">Yellow</CfAlert>
 <CfAlert tone="error" title="Cannot connect to the service">Red</CfAlert>`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -49,7 +56,8 @@ Minimal form — a line of text with a status icon and an optional title.
   reactCode={`<CfAlert tone="success" variant="soft">soft</CfAlert>
 <CfAlert tone="success" variant="outline">outline</CfAlert>
 <CfAlert tone="success" variant="solid">solid</CfAlert>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -66,7 +74,8 @@ Minimal form — a line of text with a status icon and an optional title.
   An × button appears on the right.
 </CfAlert>
 <CfAlert tone="info" closable>A closable alert without a title.</CfAlert>`}
->
+
+  vueSource={ClosableVueSource}>
   <ClosableVue client:load />
 </DemoFrame>
 
@@ -79,7 +88,8 @@ Minimal form — a line of text with a status icon and an optional title.
 <CfAlert tone="success" :icon="false">Just a single line</CfAlert>`}
   reactCode={`<CfAlert tone="info" icon={false} title="No-icon variant">More compact</CfAlert>
 <CfAlert tone="success" icon={false}>Just a single line</CfAlert>`}
->
+
+  vueSource={NoIconVueSource}>
   <NoIconVue client:load />
 </DemoFrame>
 

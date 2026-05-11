@@ -5,10 +5,15 @@ description: InlineCode 行内代码 + CodeBlock 多行代码块；可加标题�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/code/BasicVue.vue';
+import BasicVueSource from '~/components/demos/code/BasicVue.vue?raw';
 import InlineVue from '~/components/demos/code/InlineVue.vue';
+import InlineVueSource from '~/components/demos/code/InlineVue.vue?raw';
 import NumbersVue from '~/components/demos/code/NumbersVue.vue';
+import NumbersVueSource from '~/components/demos/code/NumbersVue.vue?raw';
 import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
+import MaxHeightVueSource from '~/components/demos/code/MaxHeightVue.vue?raw';
 import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
+import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
 
 ## 基础用法
 
@@ -21,7 +26,8 @@ import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
 <CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
   reactCode={`<p>用 <CfInlineCode>npm i @chufix-design/react</CfInlineCode> 安装。</p>
 <CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,7 +42,8 @@ import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
   reactCode={`<p>常用包：<CfInlineCode>@chufix-design/vue</CfInlineCode>、<CfInlineCode>@chufix-design/react</CfInlineCode>。</p>
 <p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
 <p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
->
+
+  vueSource={InlineVueSource}>
   <InlineVue client:load />
 </DemoFrame>
 
@@ -47,7 +54,8 @@ import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
 <DemoFrame
   vueCode={`<CfCodeBlock :code="code" language="js" title="fib.js" show-line-numbers />`}
   reactCode={`<CfCodeBlock code={code} language="js" title="fib.js" showLineNumbers />`}
->
+
+  vueSource={NumbersVueSource}>
   <NumbersVue client:load />
 </DemoFrame>
 
@@ -58,7 +66,8 @@ import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
 <DemoFrame
   vueCode={`<CfCodeBlock :code="code" language="js" title="long-output.js" show-line-numbers :max-height="200" />`}
   reactCode={`<CfCodeBlock code={code} language="js" title="long-output.js" showLineNumbers maxHeight={200} />`}
->
+
+  vueSource={MaxHeightVueSource}>
   <MaxHeightVue client:load />
 </DemoFrame>
 
@@ -86,7 +95,8 @@ import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
   height={430}
   trimIndent
 />`}
->
+
+  vueSource={WorkspaceVueSource}>
   <WorkspaceVue client:load />
 </DemoFrame>
 

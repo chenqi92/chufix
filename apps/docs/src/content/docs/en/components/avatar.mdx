@@ -5,9 +5,13 @@ description: Avatar with three-stage fallback (image → initials → icon), 5 s
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/avatar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/avatar/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/avatar/SizesVue.vue';
+import SizesVueSource from '~/components/demos/avatar/SizesVue.vue?raw';
 import FallbackVue from '~/components/demos/avatar/FallbackVue.vue';
+import FallbackVueSource from '~/components/demos/avatar/FallbackVue.vue?raw';
 import GroupVue from '~/components/demos/avatar/GroupVue.vue';
+import GroupVueSource from '~/components/demos/avatar/GroupVue.vue?raw';
 
 ## Basic usage
 
@@ -36,7 +40,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -61,7 +66,8 @@ Five sizes (`xs` / `sm` / `md` / `lg` / `xl`) and two shapes (`circle` / `square
 
 <CfAvatar shape="circle" name="Bob Smith" />
 <CfAvatar shape="square" name="Bob Smith" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -84,7 +90,8 @@ The second example points at a non-existent `src` and falls back to initials com
 <CfAvatar name="anna lee smith" />
 <CfAvatar fallback="🐱" />
 <CfAvatar><UserSvg /></CfAvatar>`}
->
+
+  vueSource={FallbackVueSource}>
   <FallbackVue client:load />
 </DemoFrame>
 
@@ -119,7 +126,8 @@ The second example points at a non-existent `src` and falls back to initials com
   <CfAvatar size="sm" name="Cici" />
   <CfAvatar size="sm" fallback="+12" />
 </CfAvatarGroup>`}
->
+
+  vueSource={GroupVueSource}>
   <GroupVue client:load />
 </DemoFrame>
 

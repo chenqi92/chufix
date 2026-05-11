@@ -5,6 +5,7 @@ description: 圆环型当前值仪表，4 种 tone。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/gauge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/gauge/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/gauge/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfGauge ... />`}
   reactCode={`<CfGauge ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,6 +26,7 @@ import BasicVue from '~/components/demos/gauge/BasicVue.vue';
 `sweep` 决定圆环开口大小（180=半圆 270=三分之三 360=整圆）。
 
 import SweepVue from '~/components/demos/gauge/SweepVue.vue';
+import SweepVueSource from '~/components/demos/gauge/SweepVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfGauge :value="42" :sweep="180" label="180°" unit="%" />
@@ -32,7 +35,8 @@ import SweepVue from '~/components/demos/gauge/SweepVue.vue';
   reactCode={`<CfGauge value={42} sweep={180} label="180°" unit="%" />
 <CfGauge value={60} sweep={270} label="270°" unit="%" />
 <CfGauge value={78} sweep={360} label="360°" unit="%" />`}
->
+
+  vueSource={SweepVueSource}>
   <SweepVue client:load />
 </DemoFrame>
 

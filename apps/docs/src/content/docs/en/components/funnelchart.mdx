@@ -5,6 +5,7 @@ description: Step-by-step narrowing conversion funnel with absolute values per s
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/funnelchart/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfFunnelChart ... />`}
   reactCode={`<CfFunnelChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 A healthy funnel (30–50% drop per step) versus a leaky funnel (92% drop right after the first step).
 
 import CompareVue from '~/components/demos/funnelchart/CompareVue.vue';
+import CompareVueSource from '~/components/demos/funnelchart/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfFunnelChart :steps="good" />
 <CfFunnelChart :steps="bad" />`}
   reactCode={`<CfFunnelChart steps={good} />
 <CfFunnelChart steps={bad} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 

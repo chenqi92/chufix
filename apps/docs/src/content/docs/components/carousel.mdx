@@ -5,6 +5,7 @@ description: 横向轮播图片或自定义内容，支持自动播放、循环�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/carousel/BasicVue.vue';
+import BasicVueSource from '~/components/demos/carousel/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/carousel/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCarousel :items="items" autoplay :interval="3000" />`}
   reactCode={`<CfCarousel items={items} autoplay interval={3000} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

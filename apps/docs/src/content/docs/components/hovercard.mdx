@@ -5,6 +5,7 @@ description: 长延迟（700ms）的丰富预览卡，适合用户名、变量�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
+import BasicVueSource from '~/components/demos/hovercard/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -18,7 +19,8 @@ import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
   reactCode={`<CfHoverCard placement="bottom" trigger={<span>@jane.l</span>}>
   …
 </CfHoverCard>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -28,11 +30,13 @@ import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
 `top / bottom / left / right` 自动计算位置；这里用 200ms 短延迟方便演示。
 
 import PlacementsVue from '~/components/demos/hovercard/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/hovercard/PlacementsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfHoverCard placement="top">…</CfHoverCard>`}
   reactCode={`<CfHoverCard placement="top" trigger={…}>…</CfHoverCard>`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:load />
 </DemoFrame>
 

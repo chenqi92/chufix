@@ -5,6 +5,7 @@ description: Inline micro trend line, often used as the trend indicator on KPI c
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sparkline/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfSparkline ... />`}
   reactCode={`<CfSparkline ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 `colorIndex` (0..7) picks any color in `--viz-1..8` — colorblind-friendly and aligned with chart series colors.
 
 import ColorsVue from '~/components/demos/sparkline/ColorsVue.vue';
+import ColorsVueSource from '~/components/demos/sparkline/ColorsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSparkline :data="data" :color-index="0" filled smooth />
 <CfSparkline :data="data" :color-index="3" filled smooth />`}
   reactCode={`<CfSparkline data={data} colorIndex={0} filled smooth />
 <CfSparkline data={data} colorIndex={3} filled smooth />`}
->
+
+  vueSource={ColorsVueSource}>
   <ColorsVue client:load />
 </DemoFrame>
 

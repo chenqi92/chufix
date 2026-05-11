@@ -5,6 +5,7 @@ description: 层级矩形面积图，slice-and-dice 单层布局。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treemap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treemap/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/treemap/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTreemap ... />`}
   reactCode={`<CfTreemap ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/treemap/BasicVue.vue';
 `showLabels=false` 时只展示色块，适合微缩组合。仅当矩形足够大（w>50, h>20）时才显示文字。
 
 import LabeledVue from '~/components/demos/treemap/LabeledVue.vue';
+import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTreemap :nodes="nodes" />
 <CfTreemap :nodes="nodes" :show-labels="false" />`}
   reactCode={`<CfTreemap nodes={nodes} />
 <CfTreemap nodes={nodes} showLabels={false} />`}
->
+
+  vueSource={LabeledVueSource}>
   <LabeledVue client:load />
 </DemoFrame>
 

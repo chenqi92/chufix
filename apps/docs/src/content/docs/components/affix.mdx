@@ -5,6 +5,7 @@ description: 当滚动经过元素时让其切换为固定定位，常用于工�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/affix/BasicVue.vue';
+import BasicVueSource from '~/components/demos/affix/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/affix/BasicVue.vue';
     <div className="toolbar">这一行会在滚动到顶部时吸住</div>
   </CfAffix>
 </div>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

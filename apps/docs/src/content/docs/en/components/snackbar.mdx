@@ -5,6 +5,7 @@ description: Single-line pill notification with a built-in action button (e.g. U
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/snackbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/snackbar/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -28,7 +29,8 @@ Differs from `Toast`: single-line, pill-shaped, with an action. Common use case:
   actionShortcut="⌘Z"
   onAction={undo}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -38,11 +40,13 @@ Differs from `Toast`: single-line, pill-shaped, with an action. Common use case:
 Default is `bottom-center`; `top-right` is a common alternative (doesn't cover bottom content).
 
 import PlacementsVue from '~/components/demos/snackbar/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/snackbar/PlacementsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSnackbar v-model:open="open" placement="bottom-right" message="…" />`}
   reactCode={`<CfSnackbar open={open} onOpenChange={setOpen} placement="bottom-right" message="…" />`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:load />
 </DemoFrame>
 

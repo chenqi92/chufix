@@ -5,6 +5,7 @@ description: 滚动超过阈值后浮现的固定按钮，点击平滑回到容�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/backtop/BasicVue.vue';
+import BasicVueSource from '~/components/demos/backtop/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -19,7 +20,8 @@ import BasicVue from '~/components/demos/backtop/BasicVue.vue';
   {Array.from({ length: 24 }, (_, i) => <p key={i}>第 {i + 1} 段内容…</p>)}
   <CfBackTop target=".scroll-root" visibilityHeight={120} />
 </div>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

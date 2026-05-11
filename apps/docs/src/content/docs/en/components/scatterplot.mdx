@@ -5,6 +5,7 @@ description: Two-dimensional scatter chart, colored by group.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/scatterplot/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfScatterPlot ... />`}
   reactCode={`<CfScatterPlot ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
 A point's `group` field decides its color; if omitted, it falls into `default`.
 
 import GroupsVue from '~/components/demos/scatterplot/GroupsVue.vue';
+import GroupsVueSource from '~/components/demos/scatterplot/GroupsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfScatterPlot :data="points" />`}
   reactCode={`<CfScatterPlot data={points} />`}
->
+
+  vueSource={GroupsVueSource}>
   <GroupsVue client:load />
 </DemoFrame>
 

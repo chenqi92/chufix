@@ -5,8 +5,11 @@ description: Semantic alias export of the Tabs segmented variant — purpose-bui
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/segmented/BasicVue.vue';
+import BasicVueSource from '~/components/demos/segmented/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/segmented/SizesVue.vue';
+import SizesVueSource from '~/components/demos/segmented/SizesVue.vue?raw';
 import AlignVue from '~/components/demos/segmented/AlignVue.vue';
+import AlignVueSource from '~/components/demos/segmented/AlignVue.vue?raw';
 
 ## Basic usage
 
@@ -30,7 +33,8 @@ import AlignVue from '~/components/demos/segmented/AlignVue.vue';
     { value: 'kanban', label: 'Kanban' },
   ]}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -43,7 +47,8 @@ import AlignVue from '~/components/demos/segmented/AlignVue.vue';
   reactCode={`<CfSegmentedControl value={a} onChange={setA} items={items} size="sm" />
 <CfSegmentedControl value={b} onChange={setB} items={items} size="md" />
 <CfSegmentedControl value={c} onChange={setC} items={items} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -60,7 +65,8 @@ import AlignVue from '~/components/demos/segmented/AlignVue.vue';
 <CfSegmentedControl value={b} onChange={setB} items={items} align="center" />
 <CfSegmentedControl value={c} onChange={setC} items={items} align="end" />
 <CfSegmentedControl value={d} onChange={setD} items={items} align="stretch" />`}
->
+
+  vueSource={AlignVueSource}>
   <AlignVue client:load />
 </DemoFrame>
 

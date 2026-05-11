@@ -5,6 +5,7 @@ description: 解析 ANSI 转义序列（\x1b[...m）渲染为彩色 span，纯�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/ansitext/BasicVue.vue';
+import BasicVueSource from '~/components/demos/ansitext/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/ansitext/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfAnsiText :text="terminalOutput" />`}
   reactCode={`<CfAnsiText text={terminalOutput} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/ansitext/BasicVue.vue';
 `sm / md / lg` 调整字号与行距，常用于 toast 内紧凑日志（sm）vs 终端面板（lg）。
 
 import SizesVue from '~/components/demos/ansitext/SizesVue.vue';
+import SizesVueSource from '~/components/demos/ansitext/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfAnsiText :text="log" size="sm" />
 <CfAnsiText :text="log" size="lg" />`}
   reactCode={`<CfAnsiText text={log} size="sm" />
 <CfAnsiText text={log} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

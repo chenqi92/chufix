@@ -5,6 +5,7 @@ description: Square icon-only button. Requires aria-label. Common in toolbars, t
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/iconbutton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/iconbutton/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -21,7 +22,8 @@ Three variants (`default` / `primary` / `danger`), three sizes (`sm` / `md` / `l
   reactCode={`<CfIconButton aria-label="Save" variant="primary"><Icon /></CfIconButton>
 <CfIconButton aria-label="Delete" variant="danger"><Icon /></CfIconButton>
 <CfIconButton aria-label="Pin" pressed><Icon /></CfIconButton>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -31,6 +33,7 @@ Three variants (`default` / `primary` / `danger`), three sizes (`sm` / `md` / `l
 Three sizes (`sm` 26 / `md` 32 / `lg` 38 px). `shape="round"` switches to a circular pill.
 
 import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
+import SizesVueSource from '~/components/demos/iconbutton/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfIconButton size="sm" aria-label="Star" />
@@ -41,7 +44,8 @@ import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
 <CfIconButton size="md" aria-label="Star" />
 <CfIconButton size="lg" aria-label="Star" />
 <CfIconButton shape="round" aria-label="Round" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -50,6 +54,7 @@ import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
 `pressed` toggles selected state (auto-sets `aria-pressed`); `loading` and `disabled` show a spinner and disabled style respectively.
 
 import StatesVue from '~/components/demos/iconbutton/StatesVue.vue';
+import StatesVueSource from '~/components/demos/iconbutton/StatesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfIconButton :pressed="true" aria-label="Pin" />
@@ -60,7 +65,8 @@ import StatesVue from '~/components/demos/iconbutton/StatesVue.vue';
 <CfIconButton variant="danger" pressed aria-label="Favorite" />
 <CfIconButton loading aria-label="Loading" />
 <CfIconButton disabled aria-label="Disabled" />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

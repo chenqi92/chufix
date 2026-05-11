@@ -5,6 +5,7 @@ description: 顺序事件流，每条带圆点 / 连线 / 时间戳，常用于�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timeline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timeline/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/timeline/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTimeline :items="items" />`}
   reactCode={`<CfTimeline items={items} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

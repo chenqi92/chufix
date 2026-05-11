@@ -5,8 +5,11 @@ description: header + sidebar + main + aside + footer 的 CSS Grid 布局，整�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/appshell/BasicVue.vue';
+import BasicVueSource from '~/components/demos/appshell/BasicVue.vue?raw';
 import WithAsideVue from '~/components/demos/appshell/WithAsideVue.vue';
+import WithAsideVueSource from '~/components/demos/appshell/WithAsideVue.vue?raw';
 import VariantsVue from '~/components/demos/appshell/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/appshell/VariantsVue.vue?raw';
 
 ## 基础用法
 
@@ -61,7 +64,8 @@ export default function Demo() {
     </CfAppShell>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -106,7 +110,8 @@ export default function Demo() {
 >
   <div>主内容区</div>
 </CfAppShell>`}
->
+
+  vueSource={WithAsideVueSource}>
   <WithAsideVue client:load />
 </DemoFrame>
 
@@ -119,7 +124,8 @@ export default function Demo() {
 <CfAppShell variant="spacious">…</CfAppShell>`}
   reactCode={`<CfAppShell variant="condensed">…</CfAppShell>
 <CfAppShell variant="spacious">…</CfAppShell>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 

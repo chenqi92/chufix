@@ -5,6 +5,7 @@ description: Terminal pane shell with three tabs — Terminal / Output / Command
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/terminalpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/terminalpane/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`terminal.html`](https://github.com/chenqi92/chufix-design).
   'panel-terminal': <PanelA />,
   'panel-output': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

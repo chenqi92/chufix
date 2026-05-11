@@ -5,8 +5,11 @@ description: 标签 —— 3 种 variant、6 种 tone、3 种尺寸，可关闭�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tag/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tag/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/tag/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/tag/VariantsVue.vue?raw';
 import ClosableVue from '~/components/demos/tag/ClosableVue.vue';
+import ClosableVueSource from '~/components/demos/tag/ClosableVue.vue?raw';
 
 ## 基础用法
 
@@ -39,7 +42,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -64,7 +68,8 @@ export default function Demo() {
 <CfTag size="md" tone="success">md</CfTag>
 <CfTag size="lg" tone="success">lg</CfTag>
 <CfTag tone="success" rounded>rounded</CfTag>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -88,7 +93,8 @@ export default function Demo() {
     onClose={() => setTags((xs) => xs.filter((x) => x !== t))}
   >{t}</CfTag>
 ))}`}
->
+
+  vueSource={ClosableVueSource}>
   <ClosableVue client:load />
 </DemoFrame>
 

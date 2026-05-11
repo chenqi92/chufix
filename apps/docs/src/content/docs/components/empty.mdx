@@ -5,11 +5,17 @@ description: 列表 / 表格 / 搜索结果为空时的占位组件，可带操�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/empty/BasicVue.vue';
+import BasicVueSource from '~/components/demos/empty/BasicVue.vue?raw';
 import TextVue from '~/components/demos/empty/TextVue.vue';
+import TextVueSource from '~/components/demos/empty/TextVue.vue?raw';
 import ActionVue from '~/components/demos/empty/ActionVue.vue';
+import ActionVueSource from '~/components/demos/empty/ActionVue.vue?raw';
 import SizesVue from '~/components/demos/empty/SizesVue.vue';
+import SizesVueSource from '~/components/demos/empty/SizesVue.vue?raw';
 import IllustrationsVue from '~/components/demos/empty/IllustrationsVue.vue';
+import IllustrationsVueSource from '~/components/demos/empty/IllustrationsVue.vue?raw';
 import ImageVue from '~/components/demos/empty/ImageVue.vue';
+import ImageVueSource from '~/components/demos/empty/ImageVue.vue?raw';
 
 ## 基础用法
 
@@ -18,7 +24,8 @@ import ImageVue from '~/components/demos/empty/ImageVue.vue';
 <DemoFrame
   vueCode={`<CfEmpty />`}
   reactCode={`<CfEmpty />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,7 +42,8 @@ import ImageVue from '~/components/demos/empty/ImageVue.vue';
   title="还没有项目"
   description="创建你的第一个项目来开始使用础件。"
 />`}
->
+
+  vueSource={TextVueSource}>
   <TextVue client:load />
 </DemoFrame>
 
@@ -54,7 +62,8 @@ import ImageVue from '~/components/demos/empty/ImageVue.vue';
   description="创建你的第一个项目来开始使用础件。"
   action={<CfButton variant="primary" size="sm">+ 新建项目</CfButton>}
 />`}
->
+
+  vueSource={ActionVueSource}>
   <ActionVue client:load />
 </DemoFrame>
 
@@ -85,7 +94,8 @@ import ImageVue from '~/components/demos/empty/ImageVue.vue';
   description="拖拽文件到这里，或点击上传。"
   icon={<CfStatusIllustration variant="upload" />}
 />`}
->
+
+  vueSource={IllustrationsVueSource}>
   <IllustrationsVue client:load />
 </DemoFrame>
 
@@ -113,7 +123,8 @@ import ImageVue from '~/components/demos/empty/ImageVue.vue';
   size="lg"
   action={<CfButton variant="primary" size="sm">创建发布记录</CfButton>}
 />`}
->
+
+  vueSource={ImageVueSource}>
   <ImageVue client:load />
 </DemoFrame>
 
@@ -128,7 +139,8 @@ import ImageVue from '~/components/demos/empty/ImageVue.vue';
   reactCode={`<CfEmpty size="sm" />
 <CfEmpty size="md" />
 <CfEmpty size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

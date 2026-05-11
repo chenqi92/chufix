@@ -5,6 +5,7 @@ description: First-Run Wizard / Hotspot Tour / Full Flow 3 个 tab 的引导流�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/onboardingflow/BasicVue.vue';
+import BasicVueSource from '~/components/demos/onboardingflow/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/onboardingflow/BasicVue.vue';
   'panel-wizard': <PanelA />,
   'panel-hotspot': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

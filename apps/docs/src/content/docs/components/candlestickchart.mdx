@@ -5,6 +5,7 @@ description: OHLC 蜡烛图，涨绿跌红，wick + body。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/candlestickchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/candlestickchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/candlestickchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCandlestickChart ... />`}
   reactCode={`<CfCandlestickChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/candlestickchart/BasicVue.vue';
 红绿涨跌染色由 `close >= open` 自动判定，wick 与 body 同色。
 
 import UpDownVue from '~/components/demos/candlestickchart/UpDownVue.vue';
+import UpDownVueSource from '~/components/demos/candlestickchart/UpDownVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfCandlestickChart :data="ohlc" />`}
   reactCode={`<CfCandlestickChart data={ohlc} />`}
->
+
+  vueSource={UpDownVueSource}>
   <UpDownVue client:load />
 </DemoFrame>
 

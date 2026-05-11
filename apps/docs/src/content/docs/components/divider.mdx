@@ -5,9 +5,13 @@ description: 横 / 竖分割线，3 种线型，可带标签和位置控制。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/divider/BasicVue.vue';
+import BasicVueSource from '~/components/demos/divider/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/divider/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/divider/VariantsVue.vue?raw';
 import AlignVue from '~/components/demos/divider/AlignVue.vue';
+import AlignVueSource from '~/components/demos/divider/AlignVue.vue?raw';
 import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
+import VerticalVueSource from '~/components/demos/divider/VerticalVue.vue?raw';
 
 ## 基础用法
 
@@ -20,7 +24,8 @@ import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
   reactCode={`<p>第一段</p>
 <CfDivider />
 <p>第二段</p>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,7 +40,8 @@ import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
   reactCode={`<CfDivider variant="solid">solid 实线</CfDivider>
 <CfDivider variant="dashed">dashed 虚线</CfDivider>
 <CfDivider variant="dotted">dotted 点线</CfDivider>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -50,7 +56,8 @@ import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
   reactCode={`<CfDivider align="start">左对齐</CfDivider>
 <CfDivider align="center">居中</CfDivider>
 <CfDivider align="end">右对齐</CfDivider>`}
->
+
+  vueSource={AlignVueSource}>
   <AlignVue client:load />
 </DemoFrame>
 
@@ -69,7 +76,8 @@ import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
 <span>中间</span>
 <CfDivider orientation="vertical" variant="dashed" />
 <span>右侧</span>`}
->
+
+  vueSource={VerticalVueSource}>
   <VerticalVue client:load />
 </DemoFrame>
 

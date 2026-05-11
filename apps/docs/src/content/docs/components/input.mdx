@@ -5,10 +5,15 @@ description: 单行输入 —— 3 种 variant、3 种尺寸、错误态、可�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/input/BasicVue.vue';
+import BasicVueSource from '~/components/demos/input/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/input/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/input/VariantsVue.vue?raw';
 import SizesVue from '~/components/demos/input/SizesVue.vue';
+import SizesVueSource from '~/components/demos/input/SizesVue.vue?raw';
 import StatesVue from '~/components/demos/input/StatesVue.vue';
+import StatesVueSource from '~/components/demos/input/StatesVue.vue?raw';
 import AffixVue from '~/components/demos/input/AffixVue.vue';
+import AffixVueSource from '~/components/demos/input/AffixVue.vue?raw';
 
 ## 基础用法
 
@@ -38,7 +43,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -53,7 +59,8 @@ export default function Demo() {
   reactCode={`<CfInput variant="outline" placeholder="outline · 默认" />
 <CfInput variant="filled" placeholder="filled · 灰色填充" />
 <CfInput variant="ghost" placeholder="ghost · 无边框，聚焦才出现" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -66,7 +73,8 @@ export default function Demo() {
   reactCode={`<CfInput size="sm" placeholder="Small" />
 <CfInput size="md" placeholder="Medium" />
 <CfInput size="lg" placeholder="Large" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -114,7 +122,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 
@@ -148,7 +157,8 @@ export default function Demo() {
   placeholder="搜索…"
   prefix={<SearchIcon />}
 />`}
->
+
+  vueSource={AffixVueSource}>
   <AffixVue client:load />
 </DemoFrame>
 

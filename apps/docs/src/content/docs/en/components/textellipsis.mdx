@@ -5,6 +5,7 @@ description: Multi-line text truncation with ellipsis and an optional Expand / C
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/textellipsis/BasicVue.vue';
+import BasicVueSource from '~/components/demos/textellipsis/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ Built on CSS `-webkit-line-clamp`. With `expandable`, a ResizeObserver detects o
 <DemoFrame
   vueCode={`<CfTextEllipsis :text="long" :rows="2" expandable />`}
   reactCode={`<CfTextEllipsis text={long} rows={2} expandable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

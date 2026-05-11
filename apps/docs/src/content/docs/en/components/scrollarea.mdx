@@ -5,8 +5,11 @@ description: Themed scrollbar container with scrollbar-gutter stable + overscrol
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/scrollarea/BasicVue.vue';
+import BasicVueSource from '~/components/demos/scrollarea/BasicVue.vue?raw';
 import HorizontalVue from '~/components/demos/scrollarea/HorizontalVue.vue';
+import HorizontalVueSource from '~/components/demos/scrollarea/HorizontalVue.vue?raw';
 import BothVue from '~/components/demos/scrollarea/BothVue.vue';
+import BothVueSource from '~/components/demos/scrollarea/BothVue.vue?raw';
 
 ## Basic usage
 
@@ -29,7 +32,8 @@ Wrap potentially overflowing content in `CfScrollArea` and limit `maxHeight` / `
     ))}
   </ul>
 </CfScrollArea>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -48,7 +52,8 @@ Wrap potentially overflowing content in `CfScrollArea` and limit `maxHeight` / `
     {tags.map((t) => <span key={t}>{t}</span>)}
   </div>
 </CfScrollArea>`}
->
+
+  vueSource={HorizontalVueSource}>
   <HorizontalVue client:load />
 </DemoFrame>
 
@@ -63,7 +68,8 @@ Wrap potentially overflowing content in `CfScrollArea` and limit `maxHeight` / `
   reactCode={`<CfScrollArea bordered axis="both" maxWidth={420} maxHeight={200}>
   <div>{/* 18 × 12 grid */}</div>
 </CfScrollArea>`}
->
+
+  vueSource={BothVueSource}>
   <BothVue client:load />
 </DemoFrame>
 

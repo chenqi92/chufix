@@ -5,6 +5,7 @@ description: 多维度对比的多边形图，支持多 series。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/radarchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfRadarChart ... />`}
   reactCode={`<CfRadarChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
 3 套方案在 6 维度上的对比，颜色循环 `--viz-*`。
 
 import CompareVue from '~/components/demos/radarchart/CompareVue.vue';
+import CompareVueSource from '~/components/demos/radarchart/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRadarChart :axes="axes" :series="threeSeries" />`}
   reactCode={`<CfRadarChart axes={axes} series={threeSeries} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 

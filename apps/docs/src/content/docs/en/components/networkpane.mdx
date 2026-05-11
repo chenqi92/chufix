@@ -5,6 +5,7 @@ description: Network capture pane with HAR / Hex / PCAP / Cert / Cookie tabs.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/networkpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/networkpane/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`network.html`](https://github.com/chenqi92/chufix-design).
   'panel-har': <PanelA />,
   'panel-hex': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,6 +34,7 @@ Source: [`network.html`](https://github.com/chenqi92/chufix-design).
 Each of the 5 tabs hosts a corresponding atom: HAR Timeline uses CfTimingBar; the Hex Viewer uses `pre` + monospace font; cert fields use CfDescriptionList.
 
 import RealVue from '~/components/demos/networkpane/RealVue.vue';
+import RealVueSource from '~/components/demos/networkpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfNetworkPane>
@@ -39,7 +42,8 @@ import RealVue from '~/components/demos/networkpane/RealVue.vue';
   ...
 </CfNetworkPane>`}
   reactCode={`<CfNetworkPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Crosshair locator + tooltip helper that can be embedded inside any 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/chartcrosshair/BasicVue.vue';
+import BasicVueSource from '~/components/demos/chartcrosshair/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 <DemoFrame
   vueCode={`<CfChartCrosshair ... />`}
   reactCode={`<CfChartCrosshair ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

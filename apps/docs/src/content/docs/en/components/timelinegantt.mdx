@@ -5,14 +5,18 @@ description: Horizontal time axis + multi-row task bars — today marker, weeken
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timelinegantt/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timelinegantt/BasicVue.vue?raw';
 import EditableVue from '~/components/demos/timelinegantt/EditableVue.vue';
+import EditableVueSource from '~/components/demos/timelinegantt/EditableVue.vue?raw';
 import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
+import GroupedVueSource from '~/components/demos/timelinegantt/GroupedVue.vue?raw';
 
 ## Basic usage
 
 `rows` is the array of task rows; each row's `bars` is the list of time spans on that row. `start` / `end` set the visible range, `day-width` controls the pixel width of one day, and today is marked with a vertical accent line.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -20,7 +24,8 @@ import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
 
 With `editable`, bars become draggable; left/right handles appear for one-sided resize. Mutations are surfaced via the `@bar-change` event with `{ bar, row, next: { start, end }, meta }` so the host writes them back into its own model.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={EditableVueSource}>
   <EditableVue client:only="vue" />
 </DemoFrame>
 
@@ -28,7 +33,8 @@ With `editable`, bars become draggable; left/right handles appear for one-sided 
 
 A row may declare `group: string` — the component injects a section header in first-encounter order (synced between sidebar and body). `dependencies` is an array of bar-id pairs; the component draws an arrowed elbow line between the source's right edge and the target's left edge.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={GroupedVueSource}>
   <GroupedVue client:only="vue" />
 </DemoFrame>
 

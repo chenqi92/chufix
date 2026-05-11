@@ -5,6 +5,7 @@ description: HTTP status code badge, auto-colored by 1xx / 2xx / 3xx / 4xx / 5xx
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statuscodebadge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statuscodebadge/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/statuscodebadge/BasicVue.vue';
   reactCode={`<CfStatusCodeBadge code={200} reason="OK" />
 <CfStatusCodeBadge code={404} reason="Not Found" />
 <CfStatusCodeBadge code={500} reason="Internal" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: 触发器 + 三列滚动面板的时间选择器，支持时分秒�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timepicker/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -15,7 +16,8 @@ import BasicVue from '~/components/demos/timepicker/BasicVue.vue';
 <CfTimePicker v-model="t2" show-seconds clearable />`}
   reactCode={`<CfTimePicker value={t1} onChange={setT1} clearable />
 <CfTimePicker value={t2} onChange={setT2} showSeconds clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

@@ -5,8 +5,11 @@ description: File picker that accepts both drag and click, with built-in file li
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/dropzone/BasicVue.vue';
+import BasicVueSource from '~/components/demos/dropzone/BasicVue.vue?raw';
 import ConstraintsVue from '~/components/demos/dropzone/ConstraintsVue.vue';
+import ConstraintsVueSource from '~/components/demos/dropzone/ConstraintsVue.vue?raw';
 import ProgressVue from '~/components/demos/dropzone/ProgressVue.vue';
+import ProgressVueSource from '~/components/demos/dropzone/ProgressVue.vue?raw';
 
 ## Basic usage
 
@@ -36,7 +39,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -83,7 +87,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={ConstraintsVueSource}>
   <ConstraintsVue client:load />
 </DemoFrame>
 
@@ -124,7 +129,8 @@ export default function Demo() {
   }, [files]);
   return <CfDropzone value={files} statuses={statuses} onChange={setFiles} />;
 }`}
->
+
+  vueSource={ProgressVueSource}>
   <ProgressVue client:load />
 </DemoFrame>
 

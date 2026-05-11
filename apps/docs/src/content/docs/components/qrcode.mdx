@@ -5,6 +5,7 @@ description: 把文本 / URL 编码为二维码 SVG，纯客户端零依赖（By
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
+import BasicVueSource from '~/components/demos/qrcode/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfQRCode :value="value" :size="160" ecc="M" />`}
   reactCode={`<CfQRCode value={value} size={160} ecc="M" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

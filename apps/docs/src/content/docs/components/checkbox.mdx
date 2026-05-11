@@ -5,9 +5,13 @@ description: 多选框 —— 3 种尺寸、indeterminate 半选状态，原生 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/checkbox/BasicVue.vue';
+import BasicVueSource from '~/components/demos/checkbox/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/checkbox/SizesVue.vue';
+import SizesVueSource from '~/components/demos/checkbox/SizesVue.vue?raw';
 import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
+import IndeterminateVueSource from '~/components/demos/checkbox/IndeterminateVue.vue?raw';
 import EventsVue from '~/components/demos/checkbox/EventsVue.vue';
+import EventsVueSource from '~/components/demos/checkbox/EventsVue.vue?raw';
 
 ## 基础用法
 
@@ -35,7 +39,8 @@ export default function Demo() {
     </CfCheckbox>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -52,7 +57,8 @@ export default function Demo() {
 <CfCheckbox size="lg" defaultChecked>lg 已选</CfCheckbox>
 <CfCheckbox disabled>禁用</CfCheckbox>
 <CfCheckbox disabled defaultChecked>禁用已选</CfCheckbox>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -110,7 +116,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={IndeterminateVueSource}>
   <IndeterminateVue client:load />
 </DemoFrame>
 
@@ -138,7 +145,8 @@ export default function Demo() {
 >
   读取
 </CfCheckbox>`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 

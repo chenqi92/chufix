@@ -5,9 +5,13 @@ description: Full-width announcement bar — 6 tones × 2 variants, dismissible 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/banner/BasicVue.vue';
+import BasicVueSource from '~/components/demos/banner/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/banner/TonesVue.vue';
+import TonesVueSource from '~/components/demos/banner/TonesVue.vue?raw';
 import SolidVue from '~/components/demos/banner/SolidVue.vue';
+import SolidVueSource from '~/components/demos/banner/SolidVue.vue?raw';
 import ActionVue from '~/components/demos/banner/ActionVue.vue';
+import ActionVueSource from '~/components/demos/banner/ActionVue.vue?raw';
 
 ## Basic usage
 
@@ -20,7 +24,8 @@ Minimal form — a single line of announcement text. `Banner` defaults to `varia
   reactCode={`<CfBanner tone="info">
   Scheduled maintenance tonight from 22:00 to 22:30; some features may be unavailable.
 </CfBanner>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +46,8 @@ Minimal form — a single line of announcement text. `Banner` defaults to `varia
 <CfBanner tone="danger">danger</CfBanner>
 <CfBanner tone="accent">accent</CfBanner>
 <CfBanner tone="neutral">neutral</CfBanner>`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -64,7 +70,8 @@ Minimal form — a single line of announcement text. `Banner` defaults to `varia
 >
   v2.0 is out — new themes and three density tiers
 </CfBanner>`}
->
+
+  vueSource={SolidVueSource}>
   <SolidVue client:load />
 </DemoFrame>
 
@@ -86,7 +93,8 @@ Minimal form — a single line of announcement text. `Banner` defaults to `varia
 >
   Storage at 86%; please clean up or upgrade your quota.
 </CfBanner>`}
->
+
+  vueSource={ActionVueSource}>
   <ActionVue client:load />
 </DemoFrame>
 

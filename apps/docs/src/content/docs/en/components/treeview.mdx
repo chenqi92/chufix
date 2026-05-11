@@ -5,9 +5,13 @@ description: Nested tree display with single-select / checkbox (with cascading),
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treeview/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treeview/BasicVue.vue?raw';
 import CheckableVue from '~/components/demos/treeview/CheckableVue.vue';
+import CheckableVueSource from '~/components/demos/treeview/CheckableVue.vue?raw';
 import SizesVue from '~/components/demos/treeview/SizesVue.vue';
+import SizesVueSource from '~/components/demos/treeview/SizesVue.vue?raw';
 import NoLineVue from '~/components/demos/treeview/NoLineVue.vue';
+import NoLineVueSource from '~/components/demos/treeview/NoLineVue.vue?raw';
 
 ## Basic usage
 
@@ -66,7 +70,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -85,7 +90,8 @@ With `cascade=false`, each node is independent, useful for industry / tag multi-
 
 {/* Cascading off */}
 <CfTreeView nodes={nodes} value={checked} onChange={setChecked} checkable cascade={false} />`}
->
+
+  vueSource={CheckableVueSource}>
   <CheckableVue client:load />
 </DemoFrame>
 
@@ -100,7 +106,8 @@ With `cascade=false`, each node is independent, useful for industry / tag multi-
   reactCode={`<CfTreeView size="sm" nodes={nodes} />
 <CfTreeView size="md" nodes={nodes} />
 <CfTreeView size="lg" nodes={nodes} />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -111,7 +118,8 @@ With `cascade=false`, each node is independent, useful for industry / tag multi-
 <DemoFrame
   vueCode={`<CfTreeView :nodes="nodes" :show-line="false" />`}
   reactCode={`<CfTreeView nodes={nodes} showLine={false} />`}
->
+
+  vueSource={NoLineVueSource}>
   <NoLineVue client:load />
 </DemoFrame>
 
