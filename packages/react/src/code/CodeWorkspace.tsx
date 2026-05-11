@@ -25,7 +25,7 @@ export function CodeWorkspace(props: CodeWorkspaceProps) {
     editable = false,
     readOnly = false,
     wrap = false,
-    tone = 'light',
+    tone = 'auto',
     trimIndent = false,
     highlight = true,
     height,

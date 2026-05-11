@@ -1,0 +1,39 @@
+---
+import { Code } from 'astro:components';
+import type { DocCodeLang } from './docCode';
+
+interface Props {
+  id: string;
+  code: string;
+  lang: DocCodeLang;
+  active?: boolean;
+  className?: string;
+}
+
+const { id, code, lang, active = false, className = '' } = Astro.props;
+---
+
+<div
+  class:list={['cf-doc-code__panel', className]}
+  data-doc-code-panel={id}
+  data-active={active ? 'true' : 'false'}
+>
+  <div class="cf-demo__code">
+    <button
+      class="cf-demo__copy"
+      type="button"
+      data-demo-copy
+      data-copy={code}
+      data-copy-label="复制"
+      data-copied-label="已复制"
+    >
+      复制
+    </button>
+    <Code
+      code={code}
+      lang={lang}
+      themes={{ light: 'github-light', dark: 'github-dark' }}
+      defaultColor="light"
+    />
+  </div>
+</div>

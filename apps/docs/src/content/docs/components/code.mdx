@@ -119,7 +119,7 @@ import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
 | `maxHeight` | `number \| string` | `—` | 启用纵向滚动的最大高度 |
 | `startLine` | `number` | `1` | 行号起始 |
 | `wrap` | `boolean` | `false` | 长行换行 |
-| `tone` | `'light' \| 'dark'` | `'light'` | 代码面板色调 |
+| `tone` | `'auto' \| 'light' \| 'dark'` | `'auto'` | 代码面板色调；`auto` 跟随全局主题 |
 | `trimIndent` | `boolean` | `false` | 去掉多行代码的公共缩进 |
 | `highlight` | `boolean` | `true` | 是否启用内置轻量高亮 |
 | `highlightedHtml` | `string` | — | 外部高亮后的安全 HTML |
@@ -138,7 +138,7 @@ import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
 | `copyable` | `boolean` | `true` | 顶部复制当前文件 |
 | `height` | `number \| string` | — | 固定工作区高度 |
 | `wrap` | `boolean` | `false` | 长行换行 |
-| `tone` | `'light' \| 'dark'` | `'light'` | 面板色调 |
+| `tone` | `'auto' \| 'light' \| 'dark'` | `'auto'` | 面板色调；`auto` 跟随全局主题 |
 | `trimIndent` / `trim-indent` | `boolean` | `false` | 展示模式下去公共缩进 |
 | `highlightedHtml` | `CodeWorkspaceFile` 字段 | — | 单文件外部高亮 HTML |
 

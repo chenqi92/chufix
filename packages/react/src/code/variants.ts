@@ -1,5 +1,5 @@
 export type CodeBlockSize = 'sm' | 'md' | 'lg';
-export type CodeBlockTone = 'light' | 'dark';
+export type CodeBlockTone = 'auto' | 'light' | 'dark';
 
 export interface InlineCodeProps {
   size?: 'sm' | 'md';

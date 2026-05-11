@@ -1,5 +1,6 @@
 ---
 import { Code } from 'astro:components';
+import { normalizeCode } from './docCode';
 
 export interface DocCodeFile {
   id?: string;
@@ -22,7 +23,6 @@ interface Props {
   title?: string;
   rootLabel?: string;
   height?: number | string;
-  tone?: 'light' | 'dark';
   showLineNumbers?: boolean;
 }
 
@@ -31,7 +31,6 @@ const {
   title = 'Source',
   rootLabel = 'project',
   height = 'min(560px, 68vh)',
-  tone = 'light',
   showLineNumbers = true,
 } = Astro.props;
 
@@ -42,14 +41,6 @@ const normalizedFiles = files.map((file) => ({
 const heightValue = typeof height === 'number' ? `${height}px` : height;
 const fileId = (file: DocCodeFile) => file.id ?? file.name;
 const fileName = (path: string) => path.split('/').filter(Boolean).at(-1) ?? path;
-
-function normalizeCode(value?: string) {
-  return String(value || '')
-    .replace(/\r\n?/g, '\n')
-    .trim()
-    .replace(/[ \t]+\n/g, '\n')
-    .replace(/\n{3,}/g, '\n\n');
-}
 
 function buildTree(source: DocCodeFile[]): TreeItem[] {
   const rows: TreeItem[] = [];
@@ -88,13 +79,11 @@ const tree = buildTree(normalizedFiles);
 <div
   class:list={[
     'cf-code-workspace',
-    `cf-code-workspace--${tone}`,
     'cf-code-workspace--md',
     showLineNumbers && 'has-numbers',
     'cf-doc-code',
   ]}
   data-doc-code-workspace
-  data-doc-code-tone={tone}
   style={`height: ${heightValue};`}
 >
   <header class="cf-code-workspace__header">
@@ -103,24 +92,6 @@ const tree = buildTree(normalizedFiles);
       <span>{title}</span>
     </div>
     <div class="cf-code-workspace__actions">
-      <div class="cf-demo__code-tools" aria-label="代码主题">
-        <button
-          type="button"
-          class="cf-demo__code-tone"
-          data-doc-code-tone-button="light"
-          aria-pressed={tone === 'light' ? 'true' : 'false'}
-        >
-          浅色
-        </button>
-        <button
-          type="button"
-          class="cf-demo__code-tone"
-          data-doc-code-tone-button="dark"
-          aria-pressed={tone === 'dark' ? 'true' : 'false'}
-        >
-          深色
-        </button>
-      </div>
       {normalizedFiles[0] && (
         <button
           type="button"
@@ -215,7 +186,6 @@ const tree = buildTree(normalizedFiles);
     const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tab]');
     const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-doc-code-copy]');
-    const toneBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tone-button]');
 
     const activate = (id: string) => {
       fileBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.docCodeFile === id)));
@@ -229,16 +199,6 @@ const tree = buildTree(normalizedFiles);
 
     fileBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeFile ?? '')));
     tabBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeTab ?? '')));
-
-    toneBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const tone = btn.dataset.docCodeToneButton ?? 'light';
-        root.dataset.docCodeTone = tone;
-        root.classList.toggle('cf-code-workspace--light', tone === 'light');
-        root.classList.toggle('cf-code-workspace--dark', tone === 'dark');
-        toneBtns.forEach((item) => item.setAttribute('aria-pressed', String(item === btn)));
-      });
-    });
 
     copyBtn?.addEventListener('click', async () => {
       const text = copyBtn.dataset.copy ?? '';

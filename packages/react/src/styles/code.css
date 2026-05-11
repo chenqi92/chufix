@@ -14,12 +14,12 @@
 .cf-code--sm { padding: 0 3px; font-size: 0.85em; }
 
 .cf-code-block {
-  --cf-code-bg: var(--bg-inset);
-  --cf-code-head-bg: var(--bg-2);
+  --cf-code-bg: oklch(98% 0.006 255);
+  --cf-code-head-bg: oklch(95.5% 0.008 255);
   --cf-code-border: var(--line-1);
   --cf-code-fg: var(--fg-1);
   --cf-code-muted: var(--fg-3);
-  --cf-code-gutter-bg: var(--bg-1);
+  --cf-code-gutter-bg: oklch(96.5% 0.007 255);
   --cf-code-token-keyword: var(--accent-1);
   --cf-code-token-string: var(--status-success);
   --cf-code-token-number: var(--status-warning);
@@ -34,7 +34,10 @@
   overflow: hidden;
 }
 
-.cf-code-block--dark {
+.cf-code-block--dark,
+[data-theme='dark'] .cf-code-block--auto,
+[data-theme='dark-cool'] .cf-code-block--auto,
+[data-theme='dark-warm'] .cf-code-block--auto {
   --cf-code-bg: oklch(15% 0.015 260);
   --cf-code-head-bg: oklch(19% 0.015 260);
   --cf-code-border: oklch(29% 0.016 260);
@@ -164,10 +167,10 @@
 /* CodeWorkspace · editor-like tree + code surface. */
 
 .cf-code-workspace {
-  --cf-code-workspace-bg: var(--bg-1);
-  --cf-code-workspace-head: var(--bg-2);
-  --cf-code-workspace-tree: var(--bg-2);
-  --cf-code-workspace-editor: var(--bg-inset);
+  --cf-code-workspace-bg: oklch(96.5% 0.007 255);
+  --cf-code-workspace-head: oklch(95.5% 0.008 255);
+  --cf-code-workspace-tree: oklch(97.5% 0.006 255);
+  --cf-code-workspace-editor: oklch(98% 0.006 255);
   --cf-code-workspace-border: var(--line-1);
   --cf-code-workspace-fg: var(--fg-1);
   --cf-code-workspace-muted: var(--fg-3);
@@ -183,7 +186,10 @@
   box-shadow: var(--shadow-1);
 }
 
-.cf-code-workspace--dark {
+.cf-code-workspace--dark,
+[data-theme='dark'] .cf-code-workspace--auto,
+[data-theme='dark-cool'] .cf-code-workspace--auto,
+[data-theme='dark-warm'] .cf-code-workspace--auto {
   --cf-code-workspace-bg: oklch(15% 0.015 260);
   --cf-code-workspace-head: oklch(19% 0.015 260);
   --cf-code-workspace-tree: oklch(17% 0.014 260);

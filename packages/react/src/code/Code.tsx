@@ -28,7 +28,7 @@ export function CodeBlock(props: CodeBlockProps) {
     maxHeight,
     startLine = 1,
     wrap = false,
-    tone = 'light',
+    tone = 'auto',
     trimIndent = false,
     highlight = true,
     highlightedHtml,
