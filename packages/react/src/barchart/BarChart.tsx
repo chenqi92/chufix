@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState, type FocusEvent, type MouseEvent } from 'react';
 import { domainOf, linearScale, ticks } from '../_charts/scale';
-import type { BarChartProps } from './variants';
+import type { BarChartInteractionPayload, BarChartProps } from './variants';
 
 const padTop = 12;
 const padBottom = 24;
@@ -17,9 +17,15 @@ export function BarChart(props: BarChartProps) {
     orientation = 'vertical',
     showGrid = true,
     showLabels = true,
+    showTooltip = true,
+    valueFormatter,
+    tooltipFormatter,
+    onItemEnter,
+    onItemLeave,
     ariaLabel = '柱状图',
     className,
   } = props;
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const layout = useMemo(() => {
     if (!data?.length) return null;
@@ -42,6 +48,8 @@ export function BarChart(props: BarChartProps) {
           width: Math.abs(x1 - x0),
           height: barH,
           label: labels?.[i] ?? '',
+          value: v,
+          index: i,
           cx: x1,
           cy,
         };
@@ -63,12 +71,73 @@ export function BarChart(props: BarChartProps) {
         width: barW,
         height: Math.abs(y1 - y0),
         label: labels?.[i] ?? '',
+        value: v,
+        index: i,
         cx,
         cy: Math.min(y0, y1) + Math.abs(y1 - y0) / 2,
       };
     });
     return { orientation: 'vertical' as const, scale: sy, ticks: axisTicks, bars, padLeft };
   }, [data, labels, width, height, orientation]);
+
+  const activePayload = useMemo<BarChartInteractionPayload | null>(() => {
+    if (!layout || activeIndex == null) return null;
+    const bar = layout.bars[activeIndex];
+    if (!bar) return null;
+    return {
+      label: bar.label || `${activeIndex}`,
+      value: bar.value,
+      dataIndex: activeIndex,
+      colorIndex,
+    };
+  }, [layout, activeIndex, colorIndex]);
+
+  const tooltip = useMemo(() => {
+    if (!layout || !activePayload) return null;
+    const bar = layout.bars[activePayload.dataIndex];
+    const value = valueFormatter
+      ? valueFormatter(activePayload.value, activePayload)
+      : `${activePayload.value}`;
+    const text = tooltipFormatter?.(activePayload) ?? `${activePayload.label}: ${value}`;
+    const boxWidth = Math.max(88, text.length * 7 + 20);
+    const boxHeight = 28;
+    const x = Math.min(Math.max(bar.cx + 10, 4), width - boxWidth - 4);
+    const y = Math.min(Math.max(bar.y - boxHeight - 8, 4), height - boxHeight - 4);
+    return { x, y, width: boxWidth, height: boxHeight, text };
+  }, [layout, activePayload, valueFormatter, tooltipFormatter, width, height]);
+
+  const payloadFor = (
+    index: number,
+    nativeEvent: MouseEvent<SVGRectElement> | FocusEvent<SVGRectElement>,
+  ): BarChartInteractionPayload | null => {
+    if (!layout) return null;
+    const bar = layout.bars[index];
+    if (!bar) return null;
+    return {
+      label: bar.label || `${index}`,
+      value: bar.value,
+      dataIndex: index,
+      colorIndex,
+      nativeEvent,
+    };
+  };
+
+  const setActive = (
+    index: number,
+    event: MouseEvent<SVGRectElement> | FocusEvent<SVGRectElement>,
+  ) => {
+    setActiveIndex(index);
+    const payload = payloadFor(index, event);
+    if (payload) onItemEnter?.(payload);
+  };
+
+  const clearActive = (event: MouseEvent<SVGRectElement> | FocusEvent<SVGRectElement>) => {
+    if (activeIndex != null) {
+      const payload = payloadFor(activeIndex, event);
+      if (payload) onItemLeave?.(payload);
+    }
+    setActiveIndex(null);
+  };
 
   return (
     <svg
@@ -122,14 +191,26 @@ export function BarChart(props: BarChartProps) {
           {layout.bars.map((b, i) => (
             <rect
               key={i}
-              className="cf-chart__bar"
+              className={['cf-chart__bar', activeIndex === i && 'is-active'].filter(Boolean).join(' ')}
               x={b.x}
               y={b.y}
               width={b.width}
               height={b.height}
               rx={1.5}
+              tabIndex={0}
+              onMouseEnter={(event) => setActive(i, event)}
+              onMouseMove={(event) => setActive(i, event)}
+              onMouseLeave={clearActive}
+              onFocus={(event) => setActive(i, event)}
+              onBlur={clearActive}
             />
           ))}
+          {showTooltip && tooltip ? (
+            <g className="cf-chart-tooltip" transform={`translate(${tooltip.x} ${tooltip.y})`} pointerEvents="none">
+              <rect width={tooltip.width} height={tooltip.height} rx={4} />
+              <text x={8} y={18}>{tooltip.text}</text>
+            </g>
+          ) : null}
         </>
       ) : null}
     </svg>

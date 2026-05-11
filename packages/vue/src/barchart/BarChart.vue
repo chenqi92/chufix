@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { domainOf, linearScale, ticks } from '../_charts/scale';
-import type { BarChartProps } from './variants';
+import type { BarChartInteractionPayload, BarChartProps } from './variants';
 
 const props = withDefaults(defineProps<BarChartProps>(), {
   width: 480,
@@ -10,12 +10,19 @@ const props = withDefaults(defineProps<BarChartProps>(), {
   orientation: 'vertical',
   showGrid: true,
   showLabels: true,
+  showTooltip: true,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: BarChartInteractionPayload): void;
+  (e: 'item-leave', payload: BarChartInteractionPayload): void;
+}>();
 
 const padTop = 12;
 const padBottom = 24;
 const padLeft = 36;
 const padRight = 12;
+const activeIndex = ref<number | null>(null);
 
 const layout = computed(() => {
   const w = props.width;
@@ -41,6 +48,8 @@ const layout = computed(() => {
         width: Math.abs(x1 - x0),
         height: barH,
         label: props.labels?.[i] ?? '',
+        value: v,
+        index: i,
         cx: x1,
         cy,
       };
@@ -62,12 +71,52 @@ const layout = computed(() => {
       width: barW,
       height: Math.abs(y1 - y0),
       label: props.labels?.[i] ?? '',
+      value: v,
+      index: i,
       cx,
       cy: Math.min(y0, y1) + Math.abs(y1 - y0) / 2,
     };
   });
   return { orientation: 'vertical', scale: sy, ticks: axisTicks, bars, padLeft };
 });
+
+const activePayload = computed<BarChartInteractionPayload | null>(() => {
+  if (!layout.value || activeIndex.value == null) return null;
+  const bar = layout.value.bars[activeIndex.value];
+  if (!bar) return null;
+  return {
+    label: bar.label || `${activeIndex.value}`,
+    value: bar.value,
+    dataIndex: activeIndex.value,
+    colorIndex: props.colorIndex,
+  };
+});
+
+const tooltip = computed(() => {
+  const payload = activePayload.value;
+  const l = layout.value;
+  if (!payload || !l) return null;
+  const bar = l.bars[payload.dataIndex];
+  const value = props.valueFormatter ? props.valueFormatter(payload.value, payload) : `${payload.value}`;
+  const text = props.tooltipFormatter?.(payload) ?? `${payload.label}: ${value}`;
+  const width = Math.max(88, text.length * 7 + 20);
+  const height = 28;
+  const x = Math.min(Math.max(bar.cx + 10, 4), props.width - width - 4);
+  const y = Math.min(Math.max(bar.y - height - 8, 4), props.height - height - 4);
+  return { x, y, width, height, text };
+});
+
+function setActive(index: number, event: MouseEvent) {
+  activeIndex.value = index;
+  const payload = activePayload.value;
+  if (payload) emit('item-enter', { ...payload, nativeEvent: event });
+}
+
+function clearActive(event: MouseEvent) {
+  const payload = activePayload.value;
+  if (payload) emit('item-leave', { ...payload, nativeEvent: event });
+  activeIndex.value = null;
+}
 </script>
 
 <template>
@@ -115,12 +164,23 @@ const layout = computed(() => {
       >
         <rect
           class="cf-chart__bar"
+          :class="{ 'is-active': activeIndex === i }"
           :x="b.x"
           :y="b.y"
           :width="b.width"
           :height="b.height"
           rx="1.5"
+          tabindex="0"
+          @mouseenter="setActive(i, $event)"
+          @mousemove="setActive(i, $event)"
+          @mouseleave="clearActive($event)"
+          @focus="setActive(i, $event as FocusEvent as unknown as MouseEvent)"
+          @blur="clearActive($event as FocusEvent as unknown as MouseEvent)"
         />
+      </g>
+      <g v-if="showTooltip && tooltip" class="cf-chart-tooltip" :transform="`translate(${tooltip.x} ${tooltip.y})`" pointer-events="none">
+        <rect :width="tooltip.width" :height="tooltip.height" rx="4" />
+        <text x="8" y="18">{{ tooltip.text }}</text>
       </g>
     </template>
   </svg>
