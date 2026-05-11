@@ -1,13 +1,7 @@
 ---
 import { Code } from 'astro:components';
+import type { WorkspaceBundle, DocCodeLang } from './docCode';
 import { normalizeCode } from './docCode';
-
-export interface DocCodeFile {
-  id?: string;
-  name: string;
-  content: string;
-  lang: 'vue' | 'tsx' | 'jsx' | 'ts' | 'js' | 'json' | 'css' | 'bash' | 'mdx' | 'astro' | 'html';
-}
 
 interface TreeItem {
   id: string;
@@ -15,11 +9,19 @@ interface TreeItem {
   name: string;
   path: string;
   depth: number;
-  file?: DocCodeFile;
+  fileId?: string;
+}
+
+interface RenderableFile {
+  bundleId: string;
+  fileId: string;
+  name: string;
+  content: string;
+  lang: DocCodeLang;
 }
 
 interface Props {
-  files: DocCodeFile[];
+  bundles: WorkspaceBundle[];
   title?: string;
   rootLabel?: string;
   height?: number | string;
@@ -27,53 +29,100 @@ interface Props {
 }
 
 const {
-  files,
+  bundles,
   title = 'Source',
   rootLabel = 'project',
   height = 'min(560px, 68vh)',
   showLineNumbers = true,
 } = Astro.props;
 
-const normalizedFiles = files.map((file) => ({
-  ...file,
-  content: normalizeCode(file.content),
-}));
 const heightValue = typeof height === 'number' ? `${height}px` : height;
-const fileId = (file: DocCodeFile) => file.id ?? file.name;
+
+const normalizedBundles = bundles.map((bundle) => ({
+  ...bundle,
+  files: bundle.files.map((file) => ({
+    ...file,
+    content: normalizeCode(file.content),
+  })),
+}));
+
 const fileName = (path: string) => path.split('/').filter(Boolean).at(-1) ?? path;
 
-function buildTree(source: DocCodeFile[]): TreeItem[] {
+function buildTree(bundleId: string, files: WorkspaceBundle['files']): TreeItem[] {
   const rows: TreeItem[] = [];
   const seen = new Set<string>();
-  for (const file of source) {
+  for (const file of files) {
     const parts = file.name.split('/').filter(Boolean);
     let path = '';
     for (let i = 0; i < parts.length - 1; i++) {
       path = path ? `${path}/${parts[i]}` : parts[i]!;
-      if (!seen.has(path)) {
-        seen.add(path);
-        rows.push({
-          id: `folder:${path}`,
-          kind: 'folder',
-          name: parts[i]!,
-          path,
-          depth: i,
-        });
-      }
+      if (seen.has(`${bundleId}::${path}`)) continue;
+      seen.add(`${bundleId}::${path}`);
+      rows.push({
+        id: `folder:${bundleId}:${path}`,
+        kind: 'folder',
+        name: parts[i]!,
+        path,
+        depth: i,
+      });
     }
     rows.push({
-      id: `file:${fileId(file)}`,
+      id: `file:${bundleId}:${file.name}`,
       kind: 'file',
       name: fileName(file.name),
       path: file.name,
       depth: Math.max(0, parts.length - 1),
-      file,
+      fileId: `${bundleId}::${file.name}`,
     });
   }
   return rows;
 }
 
-const tree = buildTree(normalizedFiles);
+const trees = normalizedBundles.map((bundle) => ({
+  bundle,
+  rows: buildTree(bundle.id, bundle.files),
+}));
+
+const renderable: RenderableFile[] = normalizedBundles.flatMap((bundle) =>
+  bundle.files.map((file) => ({
+    bundleId: bundle.id,
+    fileId: `${bundle.id}::${file.name}`,
+    name: file.name,
+    content: file.content,
+    lang: file.lang,
+  })),
+);
+
+const defaultBundleId = normalizedBundles[0]?.id ?? '';
+const defaultFramework = normalizedBundles[0]?.framework ?? 'neutral';
+const defaultFileId = normalizedBundles[0]?.files[0]
+  ? `${normalizedBundles[0].id}::${normalizedBundles[0].files[0].name}`
+  : '';
+const defaultCopy = normalizedBundles[0]?.files[0]?.content ?? '';
+
+// Framework tabs: distinct frameworks across bundles, in declaration order.
+const frameworkOrder: string[] = [];
+for (const bundle of normalizedBundles) {
+  if (bundle.framework === 'neutral') continue;
+  if (!frameworkOrder.includes(bundle.framework)) frameworkOrder.push(bundle.framework);
+}
+const frameworkLabel: Record<string, string> = {};
+for (const bundle of normalizedBundles) {
+  if (bundle.framework === 'neutral') continue;
+  frameworkLabel[bundle.framework] ??= bundle.frameworkLabel;
+}
+const showFrameworkTabs = frameworkOrder.length > 1;
+const showVariantTabs = normalizedBundles.some(
+  (bundle) => bundle.framework !== 'neutral',
+) && normalizedBundles.some((bundle) => {
+  if (bundle.framework === 'neutral') return false;
+  return normalizedBundles.some(
+    (other) =>
+      other !== bundle &&
+      other.framework === bundle.framework &&
+      other.variant !== bundle.variant,
+  );
+});
 ---
 
 <div
@@ -84,6 +133,8 @@ const tree = buildTree(normalizedFiles);
     'cf-doc-code',
   ]}
   data-doc-code-workspace
+  data-active-bundle={defaultBundleId}
+  data-active-framework={defaultFramework}
   style={`height: ${heightValue};`}
 >
   <header class="cf-code-workspace__header">
@@ -92,20 +143,52 @@ const tree = buildTree(normalizedFiles);
       <span>{title}</span>
     </div>
     <div class="cf-code-workspace__actions">
-      {normalizedFiles[0] && (
-        <button
-          type="button"
-          class="cf-code-workspace__copy"
-          data-doc-code-copy
-          data-copy={normalizedFiles[0].content}
-          data-copy-label="复制"
-          data-copied-label="已复制"
-        >
-          复制
-        </button>
-      )}
+      <button
+        type="button"
+        class="cf-code-workspace__copy"
+        data-doc-code-copy
+        data-copy={defaultCopy}
+        data-copy-label="复制"
+        data-copied-label="已复制"
+      >
+        复制
+      </button>
     </div>
   </header>
+
+  {(showFrameworkTabs || showVariantTabs) && (
+    <div class="cf-code-workspace__bundles" role="tablist" aria-label="Framework">
+      {showFrameworkTabs && (
+        <div class="cf-code-workspace__frameworks">
+          {frameworkOrder.map((framework) => (
+            <button
+              type="button"
+              class="cf-code-workspace__framework-tab"
+              data-doc-code-framework={framework}
+              aria-selected={normalizedBundles[0]?.framework === framework ? 'true' : 'false'}
+            >
+              {frameworkLabel[framework]}
+            </button>
+          ))}
+        </div>
+      )}
+      {showVariantTabs && (
+        <div class="cf-code-workspace__variants">
+          {normalizedBundles.map((bundle) => bundle.framework !== 'neutral' && (
+            <button
+              type="button"
+              class="cf-code-workspace__variant-tab"
+              data-doc-code-bundle={bundle.id}
+              data-doc-code-bundle-framework={bundle.framework}
+              aria-selected={bundle.id === defaultBundleId ? 'true' : 'false'}
+            >
+              {bundle.variantLabel}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
 
   <div class="cf-code-workspace__shell">
     <aside class="cf-code-workspace__tree" aria-label="Code files">
@@ -113,49 +196,71 @@ const tree = buildTree(normalizedFiles);
         <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
         <span>{rootLabel}</span>
       </div>
-      {tree.map((item) =>
-        item.kind === 'folder' ? (
-          <div
-            class="cf-code-workspace__folder"
-            style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
-          >
-            <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
-            <span>{item.name}</span>
-          </div>
-        ) : (
-          <button
-            type="button"
-            class="cf-code-workspace__file"
-            style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
-            data-doc-code-file={item.file ? fileId(item.file) : ''}
-            aria-selected={item.file && fileId(item.file) === fileId(normalizedFiles[0]) ? 'true' : 'false'}
-          >
-            <span class="cf-code-workspace__file-dot" aria-hidden="true"></span>
-            <span class="cf-code-workspace__file-name">{item.name}</span>
-          </button>
-        )
-      )}
+      {trees.map(({ bundle, rows }) => (
+        <div
+          class="cf-code-workspace__tree-bundle"
+          data-doc-code-tree={bundle.id}
+          data-active={bundle.id === defaultBundleId ? 'true' : 'false'}
+        >
+          {rows.map((item) =>
+            item.kind === 'folder' ? (
+              <div
+                class="cf-code-workspace__folder"
+                style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
+              >
+                <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
+                <span>{item.name}</span>
+              </div>
+            ) : (
+              <button
+                type="button"
+                class="cf-code-workspace__file"
+                style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
+                data-doc-code-file={item.fileId}
+                data-doc-code-file-bundle={bundle.id}
+                aria-selected={item.fileId === defaultFileId ? 'true' : 'false'}
+              >
+                <span class="cf-code-workspace__file-dot" aria-hidden="true"></span>
+                <span class="cf-code-workspace__file-name">{item.name}</span>
+              </button>
+            )
+          )}
+        </div>
+      ))}
     </aside>
 
     <section class="cf-code-workspace__editor" aria-live="polite">
       <div class="cf-code-workspace__tabs" role="tablist">
-        {normalizedFiles.map((file, index) => (
-          <button
-            type="button"
-            class="cf-code-workspace__tab"
-            data-doc-code-tab={fileId(file)}
-            aria-selected={index === 0 ? 'true' : 'false'}
+        {normalizedBundles.map((bundle) => (
+          <div
+            class="cf-code-workspace__tabs-bundle"
+            data-doc-code-tabs={bundle.id}
+            data-active={bundle.id === defaultBundleId ? 'true' : 'false'}
           >
-            {fileName(file.name)}
-          </button>
+            {bundle.files.map((file, index) => {
+              const fileId = `${bundle.id}::${file.name}`;
+              return (
+                <button
+                  type="button"
+                  class="cf-code-workspace__tab"
+                  data-doc-code-tab={fileId}
+                  data-doc-code-tab-bundle={bundle.id}
+                  aria-selected={index === 0 ? 'true' : 'false'}
+                >
+                  {fileName(file.name)}
+                </button>
+              );
+            })}
+          </div>
         ))}
       </div>
 
-      {normalizedFiles.map((file, index) => (
+      {renderable.map((file, index) => (
         <div
           class="cf-doc-code__panel"
-          data-doc-code-panel={fileId(file)}
-          data-active={index === 0 ? 'true' : 'false'}
+          data-doc-code-panel={file.fileId}
+          data-doc-code-panel-bundle={file.bundleId}
+          data-active={file.fileId === defaultFileId ? 'true' : 'false'}
         >
           <div class="cf-code-workspace__meta">
             <span>{file.name}</span>
@@ -182,23 +287,93 @@ const tree = buildTree(normalizedFiles);
     if (root.dataset.bound === 'true') return;
     root.dataset.bound = 'true';
 
+    const frameworkBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-framework]');
+    const variantBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-bundle]');
+    const trees = root.querySelectorAll<HTMLElement>('[data-doc-code-tree]');
     const fileBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-file]');
+    const tabGroups = root.querySelectorAll<HTMLElement>('[data-doc-code-tabs]');
     const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tab]');
     const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-doc-code-copy]');
 
-    const activate = (id: string) => {
-      fileBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.docCodeFile === id)));
-      tabBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.docCodeTab === id)));
-      panels.forEach((panel) => {
-        const active = panel.dataset.docCodePanel === id;
-        panel.dataset.active = String(active);
-        if (active && copyBtn) copyBtn.dataset.copy = panel.querySelector('pre')?.textContent ?? '';
-      });
+    const syncCopyTarget = () => {
+      if (!copyBtn) return;
+      const activePanel = Array.from(panels).find((panel) => panel.dataset.active === 'true');
+      if (!activePanel) return;
+      copyBtn.dataset.copy = activePanel.querySelector('pre')?.textContent ?? '';
     };
 
-    fileBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeFile ?? '')));
-    tabBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeTab ?? '')));
+    const firstFileIdOfBundle = (bundleId: string) => {
+      const firstTab = root.querySelector<HTMLButtonElement>(
+        `[data-doc-code-tab-bundle="${bundleId}"]`,
+      );
+      return firstTab?.dataset.docCodeTab ?? '';
+    };
+
+    const firstBundleOfFramework = (framework: string) => {
+      const first = root.querySelector<HTMLButtonElement>(
+        `[data-doc-code-bundle-framework="${framework}"]`,
+      );
+      return first?.dataset.docCodeBundle ?? '';
+    };
+
+    const activateBundle = (bundleId: string) => {
+      if (!bundleId) return;
+      root.dataset.activeBundle = bundleId;
+      variantBtns.forEach((btn) =>
+        btn.setAttribute('aria-selected', String(btn.dataset.docCodeBundle === bundleId)),
+      );
+      trees.forEach((tree) => (tree.dataset.active = String(tree.dataset.docCodeTree === bundleId)));
+      tabGroups.forEach(
+        (group) => (group.dataset.active = String(group.dataset.docCodeTabs === bundleId)),
+      );
+      const bundleFramework = root
+        .querySelector<HTMLButtonElement>(`[data-doc-code-bundle="${bundleId}"]`)
+        ?.dataset.docCodeBundleFramework;
+      if (bundleFramework) {
+        root.dataset.activeFramework = bundleFramework;
+        frameworkBtns.forEach((btn) =>
+          btn.setAttribute(
+            'aria-selected',
+            String(btn.dataset.docCodeFramework === bundleFramework),
+          ),
+        );
+      }
+      activateFile(firstFileIdOfBundle(bundleId));
+    };
+
+    const activateFile = (fileId: string) => {
+      if (!fileId) return;
+      fileBtns.forEach((btn) =>
+        btn.setAttribute('aria-selected', String(btn.dataset.docCodeFile === fileId)),
+      );
+      tabBtns.forEach((btn) =>
+        btn.setAttribute('aria-selected', String(btn.dataset.docCodeTab === fileId)),
+      );
+      panels.forEach((panel) => {
+        panel.dataset.active = String(panel.dataset.docCodePanel === fileId);
+      });
+      syncCopyTarget();
+    };
+
+    frameworkBtns.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const target = firstBundleOfFramework(btn.dataset.docCodeFramework ?? '');
+        if (target) activateBundle(target);
+      }),
+    );
+
+    variantBtns.forEach((btn) =>
+      btn.addEventListener('click', () => activateBundle(btn.dataset.docCodeBundle ?? '')),
+    );
+
+    fileBtns.forEach((btn) =>
+      btn.addEventListener('click', () => activateFile(btn.dataset.docCodeFile ?? '')),
+    );
+
+    tabBtns.forEach((btn) =>
+      btn.addEventListener('click', () => activateFile(btn.dataset.docCodeTab ?? '')),
+    );
 
     copyBtn?.addEventListener('click', async () => {
       const text = copyBtn.dataset.copy ?? '';
@@ -213,5 +388,7 @@ const tree = buildTree(normalizedFiles);
         copyBtn.textContent = label;
       }, 1400);
     });
+
+    syncCopyTarget();
   });
 </script>

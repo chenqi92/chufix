@@ -1,5 +1,4 @@
 ---
-import DocCodeWorkspace from './DocCodeWorkspace.astro';
 import DocCodeBlock from './DocCodeBlock.astro';
 import { buildDemoCodeGroups } from './docCode';
 
@@ -11,7 +10,6 @@ interface Props {
   cliCode?: string;
   cliSource?: string;
   variant?: 'default' | 'wide' | 'compact';
-  codeLayout?: 'tabs' | 'workspace';
 }
 
 const {
@@ -22,7 +20,6 @@ const {
   cliCode,
   cliSource,
   variant = 'default',
-  codeLayout = 'tabs',
 } = Astro.props;
 
 const codeGroups = buildDemoCodeGroups({
@@ -73,54 +70,48 @@ const defaultFileId = codeGroups[0]?.files[0]?.id;
       </button>
 
       <div class="cf-demo__code-body cf-doc-code">
-        {codeLayout === 'workspace' ? (
-          <DocCodeWorkspace files={codeTabs} title="Demo source" rootLabel="demo" />
-        ) : (
-          <>
-            <div class="cf-demo__code-bar">
-              <div class="cf-demo__switchers">
-                <div class="cf-demo__tabs" role="tablist" aria-label="Framework">
-                  {codeGroups.map((group) => (
+        <div class="cf-demo__code-bar">
+          <div class="cf-demo__switchers">
+            <div class="cf-demo__tabs" role="tablist" aria-label="Framework">
+              {codeGroups.map((group) => (
+                <button
+                  type="button"
+                  class="cf-demo__tab"
+                  data-demo-framework={group.framework}
+                  aria-selected={group.framework === defaultFramework ? 'true' : 'false'}
+                >
+                  {group.label}
+                </button>
+              ))}
+            </div>
+            <div class="cf-demo__variant-tabs" role="tablist" aria-label="Language">
+              {codeGroups.map((group) => (
+                <div
+                  class="cf-demo__variant-group"
+                  data-demo-variant-group={group.framework}
+                  data-active={group.framework === defaultFramework ? 'true' : 'false'}
+                >
+                  {group.files.map((file) => (
                     <button
                       type="button"
-                      class="cf-demo__tab"
-                      data-demo-framework={group.framework}
-                      aria-selected={group.framework === defaultFramework ? 'true' : 'false'}
+                      class="cf-demo__variant-tab"
+                      data-demo-tab={file.id}
+                      data-demo-tab-framework={group.framework}
+                      data-demo-tab-name={file.name}
+                      aria-selected={file.id === defaultFileId ? 'true' : 'false'}
                     >
-                      {group.label}
+                      {file.variantLabel}
                     </button>
                   ))}
                 </div>
-                <div class="cf-demo__variant-tabs" role="tablist" aria-label="Language">
-                  {codeGroups.map((group) => (
-                    <div
-                      class="cf-demo__variant-group"
-                      data-demo-variant-group={group.framework}
-                      data-active={group.framework === defaultFramework ? 'true' : 'false'}
-                    >
-                      {group.files.map((file) => (
-                        <button
-                          type="button"
-                          class="cf-demo__variant-tab"
-                          data-demo-tab={file.id}
-                          data-demo-tab-framework={group.framework}
-                          data-demo-tab-name={file.name}
-                          aria-selected={file.id === defaultFileId ? 'true' : 'false'}
-                        >
-                          {file.variantLabel}
-                        </button>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <span class="cf-demo__code-current" data-demo-code-current>{codeGroups[0]?.files[0]?.name}</span>
+              ))}
             </div>
-            {codeTabs.map((tab) => (
-              <DocCodeBlock id={tab.id} code={tab.content} lang={tab.lang} active={tab.id === defaultFileId} />
-            ))}
-          </>
-        )}
+          </div>
+          <span class="cf-demo__code-current" data-demo-code-current>{codeGroups[0]?.files[0]?.name}</span>
+        </div>
+        {codeTabs.map((tab) => (
+          <DocCodeBlock id={tab.id} code={tab.content} lang={tab.lang} active={tab.id === defaultFileId} />
+        ))}
       </div>
     </div>
   )}

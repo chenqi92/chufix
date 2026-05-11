@@ -153,7 +153,12 @@ function hasPlaceholderEllipsis(value?: string) {
 function readConstInitializer(script: string, name: string) {
   const match = new RegExp(`\\bconst\\s+${name}\\s*=`).exec(script);
   if (!match) return '';
-  let i = match.index + match[0].length;
+  return readInitializerAt(script, match.index + match[0].length);
+}
+
+function readInitializerAt(script: string, offset: number) {
+  let i = offset;
+  while (/\s/.test(script[i] ?? '')) i++;
   const start = i;
   let depth = 0;
   let quote = '';
@@ -186,10 +191,21 @@ function readConstInitializer(script: string, name: string) {
 function unwrapVueInitializer(value: string) {
   const trimmed = value.trim();
   for (const helper of ['ref', 'shallowRef', 'reactive']) {
-    if (!trimmed.startsWith(`${helper}(`) || !trimmed.endsWith(')')) continue;
-    return trimmed.slice(helper.length + 1, -1).trim();
+    const match = trimmed.match(new RegExp(`^${helper}(?:<([\\s\\S]+?)>)?\\(([\\s\\S]*)\\)$`));
+    if (match) return (match[2] ?? '').trim();
   }
   return trimmed;
+}
+
+function parseVueInitializer(value: string) {
+  const trimmed = value.trim();
+  const match = trimmed.match(/^(ref|shallowRef|reactive|computed)(?:<([\s\S]+?)>)?\(([\s\S]*)\)$/);
+  if (!match) return undefined;
+  return {
+    helper: match[1]!,
+    typeArg: (match[2] ?? '').trim(),
+    inner: (match[3] ?? '').trim(),
+  };
 }
 
 function namesUsedByReact(code: string) {
@@ -309,7 +325,7 @@ function transformSimpleVueMarkup(template: string, stateNames: Set<string>) {
       return `<${tag}${transformVueAttributes(attrs, stateNames)}>`;
     })
     .replace(/\{\{\s*([^}]+?)\s*\}\}/g, (match, expr: string, offset: number, whole: string) => (
-      isInsideQuotedAttribute(whole, offset) ? match : `{${expr}}`
+      isInsideQuotedAttribute(whole, offset) || whole[offset - 1] === '=' ? match : `{${expr}}`
     ));
 }
 
@@ -376,13 +392,40 @@ function stripStringLiterals(value: string) {
     .replace(/'(?:\\.|[^'\\])*'/g, '');
 }
 
+function stripDemoImports(source: string) {
+  return source
+    .replace(/^\s*import\s+[\s\S]*?\s+from\s+['"]vue['"];?\s*$/gm, '')
+    .replace(/^\s*import\s+[\s\S]*?\s+from\s+['"]@chufix-design\/react['"];?\s*$/gm, '');
+}
+
+function transformRefValueUsage(source: string, valueNames: Set<string>, stateNames: Set<string>) {
+  let out = source;
+  for (const name of stateNames) {
+    const setter = `set${cap(name)}`;
+    out = out.replace(
+      new RegExp(`\\b${name}\\.value\\s*=\\s*([\\s\\S]*?);`, 'g'),
+      (_match, value: string) => `${setter}(${value.trim()});`,
+    );
+  }
+  for (const name of valueNames) {
+    out = out.replace(new RegExp(`\\b${name}\\.value\\b`, 'g'), name);
+  }
+  return out;
+}
+
+function transformLifecycleUsage(source: string) {
+  return source.replace(/\bonMounted\(\(\)\s*=>\s*\{/g, 'useEffect(() => {');
+}
+
 function vueScriptHasConst(script: string, name: string) {
   return Boolean(readConstInitializer(script, name));
 }
 
 function reactSnippetHasUnresolvedState(snippet: string, vueScript: string) {
   for (const exprMatch of snippet.matchAll(/\{([^{}]*)\}/g)) {
-    const expr = stripStringLiterals(exprMatch[1] ?? '');
+    const rawExpr = (exprMatch[1] ?? '').trim();
+    if (rawExpr.startsWith('<')) continue;
+    const expr = stripStringLiterals(rawExpr);
     for (const idMatch of expr.matchAll(/\b[A-Za-z_$][\w$]*\b/g)) {
       const name = idMatch[0];
       const offset = idMatch.index ?? 0;
@@ -401,32 +444,92 @@ function reactSnippetHasUnresolvedState(snippet: string, vueScript: string) {
   return false;
 }
 
+function stripReactSnippetImports(source: string) {
+  return source
+    .replace(/^\s*import\s+[\s\S]*?\s+from\s+['"]react['"];?\s*$/gm, '')
+    .replace(/^\s*import\s+[\s\S]*?\s+from\s+['"]@chufix-design\/react['"];?\s*$/gm, '');
+}
+
+function declaredNames(source: string) {
+  const names = new Set<string>();
+  for (const match of source.matchAll(/\b(?:const|let|var|function)\s+([A-Za-z_$][\w$]*)/g)) {
+    names.add(match[1]!);
+  }
+  return names;
+}
+
+function splitReactSnippet(source: string) {
+  const lines = normalizeCode(source).split('\n');
+  const jsxStart = lines.findIndex((line) => {
+    const trimmed = line.trim();
+    return trimmed.startsWith('<');
+  });
+  if (jsxStart === -1 && normalizeCode(source).startsWith('{')) {
+    return { declarations: '', jsx: normalizeCode(source) };
+  }
+  if (jsxStart <= 0) {
+    return { declarations: '', jsx: normalizeCode(source) };
+  }
+  return {
+    declarations: normalizeCode(lines.slice(0, jsxStart).join('\n')),
+    jsx: normalizeCode(lines.slice(jsxStart).join('\n')),
+  };
+}
+
 function transformVueScriptToReact(script: string) {
   const stateNames = new Set<string>();
+  const valueNames = new Set<string>();
   let usesState = false;
-  const lines = script
+  let usesEffect = false;
+  const source = script
     .replace(/from ['"]@chufix-design\/vue['"]/g, `from '@chufix-design/react'`)
-    .split('\n');
-  const out: string[] = [];
+    .replace(/\bonMounted\b/g, 'onMounted');
 
-  for (const rawLine of lines) {
-    const line = rawLine.trimEnd();
-    if (/^\s*import\s+\{[^}]*\}\s+from\s+['"]vue['"];?/.test(line)) continue;
-    if (/^\s*import\s+\{[^}]*Cf[A-Za-z0-9_,\s]*\}\s+from\s+['"]@chufix-design\/react['"];?/.test(line)) continue;
-    const refMatch = line.match(/^(\s*)const\s+([A-Za-z_$][\w$]*)\s*=\s*ref\((.*)\);?\s*$/);
-    if (refMatch) {
+  const out: string[] = [];
+  let cursor = 0;
+  const importless = stripDemoImports(source);
+  const constRe = /^(\s*)const\s+([A-Za-z_$][\w$]*)\s*=/gm;
+  for (const match of importless.matchAll(constRe)) {
+    const start = match.index ?? 0;
+    const name = match[2]!;
+    const initializer = readInitializerAt(importless, start + match[0].length);
+    const parsed = parseVueInitializer(initializer);
+    if (!parsed) continue;
+
+    const initializerStart = start + match[0].length + (importless.slice(start + match[0].length).match(/^\s*/)?.[0].length ?? 0);
+    let end = initializerStart + initializer.length;
+    if (importless[end] === ';') end++;
+    out.push(importless.slice(cursor, start));
+
+    const indentText = match[1] ?? '';
+    if (parsed.helper === 'ref' || parsed.helper === 'shallowRef') {
       usesState = true;
-      stateNames.add(refMatch[2]!);
-      out.push(`${refMatch[1]}const [${refMatch[2]}, set${cap(refMatch[2]!)}] = useState(${refMatch[3]});`);
-      continue;
+      stateNames.add(name);
+      valueNames.add(name);
+      const typeArg = parsed.typeArg ? `<${parsed.typeArg}>` : '';
+      out.push(`${indentText}const [${name}, set${cap(name)}] = useState${typeArg}(${parsed.inner});`);
+    } else if (parsed.helper === 'reactive') {
+      out.push(`${indentText}const ${name} = ${parsed.inner};`);
+    } else {
+      valueNames.add(name);
+      const computed = parsed.inner.replace(/^\(\)\s*=>\s*/, '').replace(/,\s*$/, '');
+      out.push(`${indentText}const ${name} = ${computed};`);
     }
-    out.push(line);
+    cursor = end;
+  }
+  out.push(importless.slice(cursor));
+
+  let declarations = transformRefValueUsage(out.join(''), valueNames, stateNames);
+  if (/\bonMounted\(/.test(declarations)) {
+    usesEffect = true;
+    declarations = transformLifecycleUsage(declarations);
   }
 
   return {
-    declarations: normalizeCode(out.join('\n')),
+    declarations: normalizeCode(declarations),
     stateNames,
     usesState,
+    usesEffect,
   };
 }
 
@@ -437,8 +540,12 @@ function buildReactSourceFromVueTemplate(vueSource: string) {
   const transformedScript = transformVueScriptToReact(script);
   const jsx = transformVueTemplateToJsx(template, transformedScript.stateNames);
   const imports = componentNames(template);
+  const reactImports = [
+    transformedScript.usesEffect ? 'useEffect' : '',
+    transformedScript.usesState ? 'useState' : '',
+  ].filter(Boolean);
   const importLines = [
-    transformedScript.usesState ? `import { useState } from 'react';` : '',
+    reactImports.length ? `import { ${reactImports.join(', ')} } from 'react';` : '',
     imports.length ? `import { ${imports.join(', ')} } from '@chufix-design/react';` : '',
   ].filter(Boolean);
   const declarations = transformedScript.declarations
@@ -460,31 +567,42 @@ function buildReactSourceFromVueSource(vueSource: string, reactCode: string) {
     const source = buildReactSourceFromVueTemplate(vueSource);
     if (source) return source;
   }
-  if (/^\s*(import|export\s+default|function\s+\w+)/m.test(snippet)) return snippet;
-  if (!snippet.includes('<')) return snippet;
+  if (/^\s*export\s+default/m.test(snippet)) return snippet;
+  if (!snippet.includes('<')) {
+    const source = buildReactSourceFromVueTemplate(vueSource);
+    if (source) return source;
+    return snippet;
+  }
 
   const script = extractVueScript(vueSource);
   if (reactSnippetHasUnresolvedState(snippet, script)) {
     const source = buildReactSourceFromVueTemplate(vueSource);
     if (source) return source;
   }
-  const used = namesUsedByReact(snippet);
+  const importlessSnippet = stripReactSnippetImports(snippet);
+  const splitSnippet = splitReactSnippet(importlessSnippet);
+  const localNames = declaredNames(splitSnippet.declarations);
+  const used = namesUsedByReact(importlessSnippet);
   const declarations: string[] = [];
-  let usesState = false;
+  let usesState = /\buseState(?:<|\()/.test(splitSnippet.declarations);
 
   for (const name of used) {
-    const initializer = unwrapVueInitializer(readConstInitializer(script, name));
+    if (localNames.has(name)) continue;
+    const stateName = /^set[A-Z]/.test(name) ? lowerFirst(name.slice(3)) : name;
+    const initializer = unwrapVueInitializer(readConstInitializer(script, stateName));
     if (!initializer) continue;
-    const setter = `set${cap(name)}`;
-    if (snippet.includes(setter)) {
+    const setter = `set${cap(stateName)}`;
+    if (snippet.includes(setter) || name === setter) {
       usesState = true;
-      declarations.push(`const [${name}, ${setter}] = useState(${initializer});`);
+      declarations.push(`const [${stateName}, ${setter}] = useState(${initializer});`);
     } else {
-      declarations.push(`const ${name} = ${initializer};`);
+      declarations.push(`const ${stateName} = ${initializer};`);
     }
   }
 
-  const imports = componentNames(snippet);
+  if (splitSnippet.declarations) declarations.push(splitSnippet.declarations);
+
+  const imports = componentNames(importlessSnippet);
   const importLines = [
     usesState ? `import { useState } from 'react';` : '',
     imports.length ? `import { ${imports.join(', ')} } from '@chufix-design/react';` : '',
@@ -493,7 +611,7 @@ function buildReactSourceFromVueSource(vueSource: string, reactCode: string) {
   return normalizeCode(`${importLines.join('\n')}${importLines.length ? '\n\n' : ''}export default function Demo() {
 ${indent(declarations.join('\n'))}${declarations.length ? '\n' : ''}  return (
     <>
-${indent(snippet, 6)}
+${indent(splitSnippet.jsx, 6)}
     </>
   );
 }`);
@@ -537,6 +655,152 @@ function pushVariants(
     });
   }
   groups.push({ framework, label, files });
+}
+
+export interface WorkspaceFile {
+  name: string;
+  content: string;
+  lang?: DocCodeLang;
+}
+
+export interface WorkspaceBundle {
+  id: string;
+  framework: 'vue' | 'react' | 'neutral';
+  variant: 'ts' | 'js' | 'mixed';
+  frameworkLabel: string;
+  variantLabel: string;
+  label: string;
+  files: Array<Required<Pick<WorkspaceFile, 'name' | 'content'>> & { lang: DocCodeLang }>;
+}
+
+export interface WorkspaceProjectInput {
+  vueFiles?: Record<string, string>;
+  reactFiles?: Record<string, string>;
+  includeJs?: boolean;
+}
+
+function inferLang(name: string): DocCodeLang {
+  const ext = name.toLowerCase().split('.').pop() ?? '';
+  switch (ext) {
+    case 'vue': return 'vue';
+    case 'tsx': return 'tsx';
+    case 'jsx': return 'jsx';
+    case 'ts': return 'ts';
+    case 'js': return 'js';
+    case 'mjs': return 'js';
+    case 'json': return 'json';
+    case 'css': return 'css';
+    case 'sh':
+    case 'bash': return 'bash';
+    case 'mdx': return 'mdx';
+    case 'astro': return 'astro';
+    case 'html': return 'html';
+    default: return 'ts';
+  }
+}
+
+function withInferredLang(file: WorkspaceFile) {
+  return {
+    name: file.name,
+    content: normalizeCode(file.content),
+    lang: file.lang ?? inferLang(file.name),
+  };
+}
+
+function convertNameToJs(name: string) {
+  return name.replace(/\.tsx$/, '.jsx').replace(/\.ts$/, '.js');
+}
+
+function convertFileToJs(file: WorkspaceFile) {
+  const base = withInferredLang(file);
+  if (base.lang === 'ts' || base.lang === 'tsx') {
+    return {
+      name: convertNameToJs(base.name),
+      content: toJavaScript(base.content),
+      lang: (base.lang === 'tsx' ? 'jsx' : 'js') as DocCodeLang,
+    };
+  }
+  if (base.lang === 'vue') {
+    return {
+      name: base.name,
+      content: toJavaScript(base.content),
+      lang: 'vue' as DocCodeLang,
+    };
+  }
+  return base;
+}
+
+export function buildWorkspaceBundles(input: WorkspaceProjectInput): WorkspaceBundle[] {
+  const bundles: WorkspaceBundle[] = [];
+  const includeJs = input.includeJs !== false;
+
+  const vueEntries = Object.entries(input.vueFiles ?? {});
+  if (vueEntries.length) {
+    const tsFiles = vueEntries.map(([name, content]) => withInferredLang({ name, content }));
+    bundles.push({
+      id: 'vue-ts',
+      framework: 'vue',
+      variant: 'ts',
+      frameworkLabel: 'Vue',
+      variantLabel: 'TypeScript',
+      label: 'Vue · TypeScript',
+      files: tsFiles,
+    });
+    if (includeJs) {
+      bundles.push({
+        id: 'vue-js',
+        framework: 'vue',
+        variant: 'js',
+        frameworkLabel: 'Vue',
+        variantLabel: 'JavaScript',
+        label: 'Vue · JavaScript',
+        files: vueEntries.map(([name, content]) => convertFileToJs({ name, content })),
+      });
+    }
+  }
+
+  const reactEntries = Object.entries(input.reactFiles ?? {});
+  if (reactEntries.length) {
+    const tsFiles = reactEntries.map(([name, content]) => withInferredLang({ name, content }));
+    bundles.push({
+      id: 'react-ts',
+      framework: 'react',
+      variant: 'ts',
+      frameworkLabel: 'React',
+      variantLabel: 'TypeScript',
+      label: 'React · TypeScript',
+      files: tsFiles,
+    });
+    if (includeJs) {
+      bundles.push({
+        id: 'react-js',
+        framework: 'react',
+        variant: 'js',
+        frameworkLabel: 'React',
+        variantLabel: 'JavaScript',
+        label: 'React · JavaScript',
+        files: reactEntries.map(([name, content]) => convertFileToJs({ name, content })),
+      });
+    }
+  }
+
+  return bundles;
+}
+
+/** Wrap a flat file list as a single framework-neutral bundle (no tabs). */
+export function asSingleBundle(
+  files: WorkspaceFile[],
+  label = 'Source',
+): WorkspaceBundle {
+  return {
+    id: 'single',
+    framework: 'neutral',
+    variant: 'mixed',
+    frameworkLabel: label,
+    variantLabel: '',
+    label,
+    files: files.map(withInferredLang),
+  };
 }
 
 export function buildDemoCodeGroups(input: DemoCodeInput) {

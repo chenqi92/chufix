@@ -1343,6 +1343,279 @@ a.cf-card .cf-card__header,
   gap: 0.35rem;
 }
 
+/* ===== IDE-style multi-file workspace ===== */
+.cf-code-workspace {
+  --cf-code-workspace-bg: var(--cf-doc-code-head, var(--bg-2));
+  --cf-code-workspace-head: var(--cf-doc-code-head, var(--bg-2));
+  --cf-code-workspace-tree: color-mix(in oklch, var(--cf-doc-code-head, var(--bg-2)), var(--cf-doc-code-bg, var(--bg-1)) 45%);
+  --cf-code-workspace-editor: var(--cf-doc-code-bg, var(--bg-1));
+  --cf-code-workspace-border: var(--cf-doc-code-border, var(--line-1));
+  --cf-code-workspace-fg: var(--cf-doc-code-fg, var(--fg-1));
+  --cf-code-workspace-muted: var(--cf-doc-code-muted, var(--fg-3));
+  --cf-code-workspace-active: var(--cf-doc-code-active, var(--bg-3));
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--cf-code-workspace-editor);
+  color: var(--cf-code-workspace-fg);
+  border: 1px solid var(--cf-code-workspace-border);
+  border-radius: var(--r-6);
+  overflow: hidden;
+  box-shadow: var(--shadow-2, 0 1px 2px oklch(0% 0 0 / 0.08));
+}
+.cf-code-workspace__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--cf-code-workspace-head);
+  border-bottom: 1px solid var(--cf-code-workspace-border);
+  font-size: var(--t-12);
+  color: var(--cf-code-workspace-muted);
+}
+.cf-code-workspace__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.cf-code-workspace__traffic {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+.cf-code-workspace__traffic > span {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--cf-code-workspace-active);
+}
+.cf-code-workspace__traffic > span:nth-child(1) { background: oklch(72% 0.16 22); }
+.cf-code-workspace__traffic > span:nth-child(2) { background: oklch(82% 0.16 80); }
+.cf-code-workspace__traffic > span:nth-child(3) { background: oklch(72% 0.16 152); }
+.cf-code-workspace__copy {
+  appearance: none;
+  border: 1px solid var(--cf-code-workspace-border);
+  background: transparent;
+  color: var(--cf-code-workspace-muted);
+  padding: 0.25rem 0.6rem;
+  font-size: var(--t-11);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cf-code-workspace__copy:hover {
+  color: var(--cf-code-workspace-fg);
+  background: var(--cf-code-workspace-active);
+}
+
+.cf-code-workspace__bundles {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--cf-code-workspace-head);
+  border-bottom: 1px solid var(--cf-code-workspace-border);
+}
+.cf-code-workspace__frameworks,
+.cf-code-workspace__variants {
+  display: inline-flex;
+  gap: 0.15rem;
+  flex-wrap: wrap;
+}
+.cf-code-workspace__variants {
+  padding-left: 0.85rem;
+  border-left: 1px solid var(--cf-code-workspace-border);
+}
+.cf-code-workspace__framework-tab,
+.cf-code-workspace__variant-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0.3rem 0.75rem;
+  font-size: var(--t-12);
+  font-family: var(--font-sans);
+  color: var(--cf-code-workspace-muted);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cf-code-workspace__framework-tab:hover,
+.cf-code-workspace__variant-tab:hover {
+  color: var(--cf-code-workspace-fg);
+}
+.cf-code-workspace__framework-tab[aria-selected='true'],
+.cf-code-workspace__variant-tab[aria-selected='true'] {
+  background: var(--cf-code-workspace-active);
+  color: var(--cf-code-workspace-fg);
+  font-weight: var(--w-semibold);
+}
+.cf-code-workspace__variant-tab { display: inline-flex; }
+.cf-code-workspace[data-active-framework='vue']
+  .cf-code-workspace__variant-tab:not([data-doc-code-bundle-framework='vue']),
+.cf-code-workspace[data-active-framework='react']
+  .cf-code-workspace__variant-tab:not([data-doc-code-bundle-framework='react']) {
+  display: none;
+}
+
+.cf-code-workspace__shell {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+}
+.cf-code-workspace__tree {
+  min-width: 0;
+  padding: 0.6rem 0.5rem 0.8rem;
+  background: var(--cf-code-workspace-tree);
+  border-right: 1px solid var(--cf-code-workspace-border);
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+}
+.cf-code-workspace__root {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.45rem 0.5rem;
+  color: var(--cf-code-workspace-muted);
+  font-weight: var(--w-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: var(--t-10);
+}
+.cf-code-workspace__tree-bundle {
+  display: none;
+  flex-direction: column;
+  gap: 1px;
+}
+.cf-code-workspace__tree-bundle[data-active='true'] {
+  display: flex;
+}
+.cf-code-workspace__folder,
+.cf-code-workspace__file {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.45rem;
+  padding-left: calc(0.45rem + var(--cf-code-tree-indent, 0px));
+  color: var(--cf-code-workspace-muted);
+  border-radius: var(--r-3);
+  cursor: default;
+  text-align: left;
+  font: inherit;
+  background: transparent;
+  border: 0;
+}
+.cf-code-workspace__folder {
+  font-weight: var(--w-medium);
+  color: var(--cf-code-workspace-fg);
+}
+.cf-code-workspace__file {
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cf-code-workspace__file:hover {
+  color: var(--cf-code-workspace-fg);
+  background: var(--cf-code-workspace-active);
+}
+.cf-code-workspace__file[aria-selected='true'] {
+  background: var(--cf-code-workspace-active);
+  color: var(--cf-code-workspace-fg);
+}
+.cf-code-workspace__folder-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: 0 0 auto;
+  border-radius: 2px;
+  background: color-mix(in oklch, var(--accent-1, currentColor), transparent 70%);
+}
+.cf-code-workspace__file-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+.cf-code-workspace__file-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-code-workspace__editor {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--cf-code-workspace-editor);
+}
+.cf-code-workspace__tabs {
+  flex: 0 0 auto;
+  display: flex;
+  border-bottom: 1px solid var(--cf-code-workspace-border);
+  background: var(--cf-code-workspace-head);
+  overflow-x: auto;
+}
+.cf-code-workspace__tabs-bundle {
+  display: none;
+  flex: 1;
+  min-width: 0;
+}
+.cf-code-workspace__tabs-bundle[data-active='true'] {
+  display: flex;
+}
+.cf-code-workspace__tab {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--cf-code-workspace-border);
+  background: transparent;
+  color: var(--cf-code-workspace-muted);
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cf-code-workspace__tab:hover { color: var(--cf-code-workspace-fg); }
+.cf-code-workspace__tab[aria-selected='true'] {
+  background: var(--cf-code-workspace-editor);
+  color: var(--cf-code-workspace-fg);
+  box-shadow: inset 0 -2px 0 0 var(--accent-1, currentColor);
+}
+.cf-code-workspace__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.85rem;
+  border-bottom: 1px solid var(--cf-code-workspace-border);
+  color: var(--cf-code-workspace-muted);
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+}
+.cf-code-workspace__lang {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--t-10);
+}
+.cf-code-workspace__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+}
+.cf-code-workspace__body .cf-doc-code__scroll {
+  flex: 1;
+  min-height: 0;
+}
+
 .cf-demo__code {
   position: relative;
   margin: 0;
