@@ -29,26 +29,35 @@
 .cf-titlebar__traffic {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   padding: 0 4px;
   flex-shrink: 0;
 }
 .cf-titlebar__tl {
-  width: 12px;
-  height: 12px;
-  padding: 0;
+  width: 22px;
+  height: 22px;
+  padding: 5px;
+  box-sizing: border-box;
+  background-clip: content-box;
   border: 0;
   border-radius: 50%;
   cursor: pointer;
 }
+.cf-titlebar__tl:hover {
+  background-color: color-mix(in oklch, currentColor, transparent 100%);
+}
+.cf-titlebar__tl:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-1);
+}
 .cf-titlebar__tl--close {
-  background: oklch(60% 0.18 22);
+  background-color: oklch(60% 0.18 22);
 }
 .cf-titlebar__tl--min {
-  background: oklch(78% 0.13 78);
+  background-color: oklch(78% 0.13 78);
 }
 .cf-titlebar__tl--max {
-  background: oklch(70% 0.16 152);
+  background-color: oklch(70% 0.16 152);
 }
 
 .cf-titlebar__leading,
@@ -98,8 +107,8 @@
   margin-right: -8px;
 }
 .cf-titlebar__wc {
-  width: 36px;
-  height: 100%;
+  width: 46px;
+  align-self: stretch;
   border: 0;
   background: transparent;
   color: var(--fg-2);
@@ -115,6 +124,16 @@
 .cf-titlebar__wc--close:hover {
   background: var(--status-error);
   color: var(--fg-on-accent);
+}
+.cf-titlebar__wc:focus-visible {
+  outline: none;
+  background: var(--bg-2);
+  box-shadow: inset 0 0 0 2px var(--accent-1);
+}
+.cf-titlebar__wc--close:focus-visible {
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  box-shadow: inset 0 0 0 2px var(--accent-1);
 }
 .cf-titlebar__wc > svg {
   width: 10px;
