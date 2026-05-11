@@ -7,6 +7,10 @@
     "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview --host",
+    "pages:dev": "pnpm build && pnpm dlx wrangler pages dev dist",
+    "db:create": "pnpm dlx wrangler d1 create chufix-comments",
+    "db:migrate:local": "pnpm dlx wrangler d1 migrations apply chufix-comments --local",
+    "db:migrate:remote": "pnpm dlx wrangler d1 migrations apply chufix-comments --remote",
     "astro": "astro"
   },
   "dependencies": {

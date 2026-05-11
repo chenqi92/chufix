@@ -371,7 +371,7 @@
 1. 按 `CLAUDE.md §13` 的 checklist 把 vue/react/styles/demos/mdx 全部到位
 2. 跑 `pnpm --filter @chufix-design/vue build && pnpm --filter @chufix-design/react build && pnpm tokens:check && pnpm --filter docs build`
 3. 把这个文件里对应的 `- [ ]` 改成 `- [x]`
-4. `pnpm sync:docs` → `cd ../../chukit-docs && git add -A && git commit && git push`
+4. `pnpm build:pages` 验证 monorepo 内置文档站，Cloudflare Pages 直接部署 `apps/docs`
 5. 主仓库一并 commit（包括 ROADMAP.md 的勾选）
 
 完成进度可以看 git log 也可以看这一份的 `[x]` 数。

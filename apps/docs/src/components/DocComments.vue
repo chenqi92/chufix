@@ -40,7 +40,11 @@ const T = isEn
       emptyTitle: 'No public comments yet',
       emptyBody: 'The first high-quality piece of feedback often saves the next reader a wrong turn.',
       role: 'Maintainer',
+      reply: 'Reply',
+      cancelReply: 'Cancel',
+      replyPlaceholder: 'Reply to this thread',
       noticeSubmitted: 'Submitted — your comment will appear after moderation.',
+      noticeReplySubmitted: 'Reply submitted — it will appear after moderation.',
       noticeFailed: "Couldn't submit just now, please try again shortly.",
       noticeNeedNick: 'Fill in a nickname first, then tap an emoji to send.',
     }
@@ -59,7 +63,11 @@ const T = isEn
       emptyTitle: '还没有公开评论',
       emptyBody: '第一条高质量反馈，往往会帮后面的使用者少走一点弯路。',
       role: '维护者',
+      reply: '回复',
+      cancelReply: '取消',
+      replyPlaceholder: '回复这条讨论',
       noticeSubmitted: '评论已提交，审核通过后会显示在这里。',
+      noticeReplySubmitted: '回复已提交，审核通过后会显示在这里。',
       noticeFailed: '评论暂时没有提交成功，请稍后再试。',
       noticeNeedNick: '先填写昵称，再点 emoji 就能一键发送。',
     };
@@ -81,6 +89,8 @@ const notice = ref('');
 const comments = ref<CommentItem[]>([]);
 const author = ref('');
 const content = ref('');
+const replyingTo = ref('');
+const replyContent = ref('');
 const quickEmojis = ['👍', '❤️', '🎉', '👀', '🙌', '💡'];
 
 const count = computed(() =>
@@ -148,9 +158,9 @@ async function loadComments() {
   }
 }
 
-async function submit(overrideContent?: string) {
+async function submit(overrideContent?: string, parentId?: string) {
   const nextAuthor = author.value.trim();
-  const nextContent = (overrideContent ?? content.value).trim();
+  const nextContent = (overrideContent ?? (parentId ? replyContent.value : content.value)).trim();
   if (!nextAuthor || !nextContent || posting.value || unavailable.value) return;
 
   posting.value = true;
@@ -161,13 +171,16 @@ async function submit(overrideContent?: string) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         pageId: props.pageId,
+        parentId,
         author: nextAuthor,
         content: nextContent,
       }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    if (!overrideContent) content.value = '';
-    notice.value = T.noticeSubmitted;
+    if (!overrideContent && parentId) replyContent.value = '';
+    if (!overrideContent && !parentId) content.value = '';
+    if (parentId) replyingTo.value = '';
+    notice.value = parentId ? T.noticeReplySubmitted : T.noticeSubmitted;
     await loadComments();
   } catch {
     notice.value = T.noticeFailed;
@@ -184,6 +197,11 @@ function quickSendEmoji(emoji: string) {
     return;
   }
   submit(emoji);
+}
+
+function startReply(id: string) {
+  replyingTo.value = replyingTo.value === id ? '' : id;
+  replyContent.value = '';
 }
 
 onMounted(() => {
@@ -274,6 +292,43 @@ onMounted(() => {
               <time :datetime="item.createdAt">{{ formatTime(item.createdAt) }}</time>
             </div>
             <p>{{ item.content }}</p>
+            <div class="doc-comment__actions">
+              <CfButton
+                type="button"
+                variant="ghost"
+                size="sm"
+                :disabled="posting || unavailable"
+                @click="startReply(item.id)"
+              >
+                {{ replyingTo === item.id ? T.cancelReply : T.reply }}
+              </CfButton>
+            </div>
+            <form
+              v-if="replyingTo === item.id"
+              class="doc-comment__reply-form"
+              @submit.prevent="submit(undefined, item.id)"
+            >
+              <CfTextarea
+                v-model="replyContent"
+                :placeholder="T.replyPlaceholder"
+                :rows="3"
+                :maxlength="600"
+                show-count
+                auto-resize
+                :disabled="posting || unavailable"
+              />
+              <div class="doc-comments__actions">
+                <span />
+                <CfButton
+                  type="submit"
+                  size="sm"
+                  :loading="posting"
+                  :disabled="!author.trim() || !replyContent.trim() || unavailable"
+                >
+                  {{ T.reply }}
+                </CfButton>
+              </div>
+            </form>
           </div>
         </article>
 
@@ -284,7 +339,7 @@ onMounted(() => {
               <div class="doc-comment__body">
                 <div class="doc-comment__meta">
                   <strong>{{ reply.author }}</strong>
-                  <span v-if="reply.role === 'admin'" class="doc-comment__role">维护者</span>
+                  <span v-if="reply.role === 'admin'" class="doc-comment__role">{{ T.role }}</span>
                   <time :datetime="reply.createdAt">{{ formatTime(reply.createdAt) }}</time>
                 </div>
                 <p>{{ reply.content }}</p>
@@ -401,6 +456,19 @@ onMounted(() => {
   line-height: 1.7;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+.doc-comment__actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.4rem;
+}
+.doc-comment__reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--line-1);
 }
 .doc-comments__replies {
   margin-left: 2.75rem;
