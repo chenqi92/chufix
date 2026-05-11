@@ -121,6 +121,23 @@ function extractVueScript(source: string) {
   return match ? match[1] : '';
 }
 
+function extractVueTemplate(source: string) {
+  const match = source.match(/<template\b[^>]*>([\s\S]*?)<\/template>/i);
+  return match ? match[1] : '';
+}
+
+function isPlaceholderCode(value?: string) {
+  const source = normalizeCode(value);
+  if (!source) return false;
+  return /<Cf[A-Za-z0-9]+[^>]*(?:\s|=|\{|\[)\.\.\.(?:\s|\}|\]|>|\/>)/.test(source)
+    || /<Cf[A-Za-z0-9]+[^>]*>\s*(?:\.{3}|…)\s*<\/Cf[A-Za-z0-9]+>/.test(source)
+    || /slots=\{\{\s*\.\.\.\s*\}\}/.test(source)
+    || /content=\{\s*\.\.\.\s*\}/.test(source)
+    || /<Panel[A-Za-z0-9_]*\s*\/>/.test(source)
+    || /\[\s*\.\.\.\s*\]/.test(source)
+    || /\/\*\s*\.\.\.\s*\*\//.test(source);
+}
+
 function readConstInitializer(script: string, name: string) {
   const match = new RegExp(`\\bconst\\s+${name}\\s*=`).exec(script);
   if (!match) return '';
@@ -185,8 +202,196 @@ function indent(value: string, spaces = 2) {
   return value.split('\n').map((line) => (line ? `${pad}${line}` : line)).join('\n');
 }
 
+function camelName(value: string) {
+  return value.replace(/-([a-z])/g, (_, ch: string) => ch.toUpperCase());
+}
+
+function eventName(value: string) {
+  if (value.startsWith('update:')) {
+    return `on${value.slice('update:'.length).split('-').map(cap).join('')}Change`;
+  }
+  return `on${value.split('-').map(cap).join('')}`;
+}
+
+function styleObject(value: string) {
+  const rows = value.split(';')
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => {
+      const [rawKey, ...rawValue] = item.split(':');
+      const key = camelName((rawKey ?? '').trim());
+      const cssValue = rawValue.join(':').trim();
+      if (!key || !cssValue) return '';
+      if (/^-?\d+(\.\d+)?px$/.test(cssValue)) return `${key}: ${cssValue.replace(/px$/, '')}`;
+      if (/^-?\d+(\.\d+)?$/.test(cssValue)) return `${key}: ${cssValue}`;
+      return `${key}: ${JSON.stringify(cssValue)}`;
+    })
+    .filter(Boolean);
+  return rows.length ? `style={{ ${rows.join(', ')} }}` : '';
+}
+
+function transformAssignmentExpression(value: string, stateNames: Set<string>) {
+  return value.replace(/\b([A-Za-z_$][\w$]*)\s*=\s*([^,;]+)/g, (match, name: string, expr: string) => {
+    if (!stateNames.has(name)) return match;
+    return `set${cap(name)}(${expr.trim()})`;
+  });
+}
+
+function transformEventExpression(event: string, expression: string, stateNames: Set<string>) {
+  const trimmed = expression.trim();
+  const updateMatch = event.match(/^update:(.+)$/);
+  if (updateMatch) {
+    const target = updateMatch[1]!.replace(/-([a-z])/g, (_, ch: string) => ch.toUpperCase());
+    const assignMatch = trimmed.match(/^\(?\s*([A-Za-z_$][\w$]*)\s*\)?\s*=>\s*([A-Za-z_$][\w$]*)\s*=\s*\1$/);
+    if (assignMatch && assignMatch[2] === target && stateNames.has(target)) return `{set${cap(target)}}`;
+  }
+  if (/^\(?\s*[^)=]+\s*\)?\s*=>/.test(trimmed)) return `{${transformAssignmentExpression(trimmed, stateNames)}}`;
+  if (/^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)?$/.test(trimmed)) return `{${trimmed}}`;
+  return `{() => ${transformAssignmentExpression(trimmed, stateNames)}}`;
+}
+
+function transformVueAttributes(attrs: string, stateNames: Set<string>) {
+  let out = attrs
+    .replace(/\sclass=/g, ' className=')
+    .replace(/\sstyle="([^"]*)"/g, (_match, value: string) => ` ${styleObject(value)}`)
+    .replace(/\s:([A-Za-z0-9_:-]+)="([^"]*)"/g, (_match, name: string, value: string) => ` ${camelName(name)}={${value}}`)
+    .replace(/\s@([A-Za-z0-9_:-]+)="([^"]*)"/g, (_match, name: string, value: string) => ` ${eventName(name)}=${transformEventExpression(name, value, stateNames)}`)
+    .replace(/\sv-model(?::([A-Za-z0-9_-]+))?="([^"]*)"/g, (_match, modelName: string, value: string) => {
+      const prop = modelName ? camelName(modelName) : 'value';
+      const setter = stateNames.has(value) ? ` on${cap(prop)}Change={set${cap(value)}}` : '';
+      return ` ${prop}={${value}}${setter}`;
+    });
+
+  out = out.replace(/\s([a-z][A-Za-z0-9_-]*)(?=(\s|>|\/))/g, (match, name: string) => {
+    if (['data-', 'aria-'].some((prefix) => name.startsWith(prefix))) return match;
+    return ` ${camelName(name)}`;
+  });
+  return out.replace(/\s+/g, ' ');
+}
+
+function transformSimpleVueMarkup(template: string, stateNames: Set<string>) {
+  const source = normalizeCode(template)
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<template\s+#[^>]+>|<\/template>/g, '')
+    .replace(/\sclass=/g, ' className=')
+    .replace(/\sstyle="([^"]*)"/g, (_match, value: string) => ` ${styleObject(value)}`)
+    .replace(/\s:([A-Za-z0-9_:-]+)="([^"]*)"/g, (_match, name: string, value: string) => ` ${camelName(name)}={${value}}`)
+    .replace(/\s@([A-Za-z0-9_:-]+)="([^"]*)"/g, (_match, name: string, value: string) => ` ${eventName(name)}=${transformEventExpression(name, value, stateNames)}`)
+    .replace(/\sv-model(?::([A-Za-z0-9_-]+))?="([^"]*)"/g, (_match, modelName: string, value: string) => {
+      const prop = modelName ? camelName(modelName) : 'value';
+      const setter = stateNames.has(value) ? ` on${cap(prop)}Change={set${cap(value)}}` : '';
+      return ` ${prop}={${value}}${setter}`;
+    });
+
+  return source
+    .replace(/<([A-Za-z][A-Za-z0-9]*)([^>]*)>/g, (match, tag: string, attrs: string) => {
+      if (match.startsWith('</')) return match;
+      return `<${tag}${transformVueAttributes(attrs, stateNames)}>`;
+    })
+    .replace(/\{\{\s*([^}]+?)\s*\}\}/g, (match, expr: string, offset: number, whole: string) => (
+      whole[offset - 1] === '=' ? match : `{${expr}}`
+    ));
+}
+
+function transformContentSlots(template: string, stateNames: Set<string>) {
+  return template.replace(
+    /<(?<component>Cf[A-Za-z0-9]+)(?<attrs>[^>]*)>(?<body>[\s\S]*?<template\s+#content>[\s\S]*?<\/template>[\s\S]*?)<\/\k<component>>/g,
+    (...args) => {
+      const groups = args.at(-1) as { component: string; attrs: string; body: string };
+      const contentMatch = groups.body.match(/<template\s+#content>([\s\S]*?)<\/template>/);
+      if (!contentMatch) return args[0] as string;
+      const children = groups.body.replace(contentMatch[0], '').trim();
+      const content = transformSimpleVueMarkup(contentMatch[1] ?? '', stateNames);
+      const childMarkup = transformSimpleVueMarkup(children, stateNames);
+      return `<${groups.component}${transformVueAttributes(groups.attrs, stateNames)} content={(
+${indent(content, 2)}
+)}>
+${indent(childMarkup, 2)}
+</${groups.component}>`;
+    },
+  );
+}
+
+function transformNamedSlots(template: string, stateNames: Set<string>) {
+  return template.replace(
+    /<(?<component>Cf[A-Za-z0-9]+)(?<attrs>[^>]*)>\s*(?<slots>(?:<template\s+#[\s\S]*?<\/template>\s*)+)<\/\k<component>>/g,
+    (...args) => {
+      const groups = args.at(-1) as { component: string; attrs: string; slots: string };
+      const slotRows = Array.from(groups.slots.matchAll(/<template\s+#([A-Za-z0-9_-]+)>([\s\S]*?)<\/template>/g))
+        .map(([, name, body]) => {
+          const content = transformSimpleVueMarkup(body ?? '', stateNames);
+          return `  '${name}': (\n${indent(content, 4)}\n  )`;
+        });
+      return `<${groups.component}${transformVueAttributes(groups.attrs, stateNames)} slots={{\n${slotRows.join(',\n')}\n}} />`;
+    },
+  );
+}
+
+function transformVueTemplateToJsx(template: string, stateNames: Set<string>) {
+  const withContent = transformContentSlots(template, stateNames);
+  const withSlots = transformNamedSlots(withContent, stateNames);
+  return transformSimpleVueMarkup(withSlots, stateNames);
+}
+
+function transformVueScriptToReact(script: string) {
+  const stateNames = new Set<string>();
+  let usesState = false;
+  const lines = script
+    .replace(/from ['"]@chufix-design\/vue['"]/g, `from '@chufix-design/react'`)
+    .split('\n');
+  const out: string[] = [];
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+    if (/^\s*import\s+\{[^}]*\}\s+from\s+['"]vue['"];?/.test(line)) continue;
+    if (/^\s*import\s+\{[^}]*Cf[A-Za-z0-9_,\s]*\}\s+from\s+['"]@chufix-design\/react['"];?/.test(line)) continue;
+    const refMatch = line.match(/^(\s*)const\s+([A-Za-z_$][\w$]*)\s*=\s*ref\((.*)\);?\s*$/);
+    if (refMatch) {
+      usesState = true;
+      stateNames.add(refMatch[2]!);
+      out.push(`${refMatch[1]}const [${refMatch[2]}, set${cap(refMatch[2]!)}] = useState(${refMatch[3]});`);
+      continue;
+    }
+    out.push(line);
+  }
+
+  return {
+    declarations: normalizeCode(out.join('\n')),
+    stateNames,
+    usesState,
+  };
+}
+
+function buildReactSourceFromVueTemplate(vueSource: string) {
+  const script = extractVueScript(vueSource);
+  const template = extractVueTemplate(vueSource);
+  if (!template) return '';
+  const transformedScript = transformVueScriptToReact(script);
+  const jsx = transformVueTemplateToJsx(template, transformedScript.stateNames);
+  const imports = componentNames(template);
+  const importLines = [
+    transformedScript.usesState ? `import { useState } from 'react';` : '',
+    imports.length ? `import { ${imports.join(', ')} } from '@chufix-design/react';` : '',
+  ].filter(Boolean);
+  const declarations = transformedScript.declarations
+    ? `${indent(transformedScript.declarations)}\n`
+    : '';
+
+  return normalizeCode(`${importLines.join('\n')}${importLines.length ? '\n\n' : ''}export default function Demo() {
+${declarations}  return (
+    <>
+${indent(jsx, 6)}
+    </>
+  );
+}`);
+}
+
 function buildReactSourceFromVueSource(vueSource: string, reactCode: string) {
   const snippet = normalizeCode(reactCode);
+  if (isPlaceholderCode(snippet)) {
+    const source = buildReactSourceFromVueTemplate(vueSource);
+    if (source) return source;
+  }
   if (/^\s*(import|export\s+default|function\s+\w+)/m.test(snippet)) return snippet;
   if (!snippet.includes('<')) return snippet;
 
