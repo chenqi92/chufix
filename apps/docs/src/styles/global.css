@@ -1213,9 +1213,6 @@ a.cf-card .cf-card__header,
 .cf-doc-code .astro-code {
   color: var(--cf-doc-code-fg) !important;
 }
-.cf-doc-code .astro-code span {
-  color: var(--shiki-light, inherit) !important;
-}
 [data-theme='dark-cool'] .cf-doc-code .astro-code span,
 [data-theme='dark-warm'] .cf-doc-code .astro-code span,
 [data-theme='dark'] .cf-doc-code .astro-code span {

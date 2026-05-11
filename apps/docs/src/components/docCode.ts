@@ -233,7 +233,7 @@ function pushVariants(
   const source = normalizeCode(content);
   if (!source) return;
   const files: DocCodeFile[] = [];
-  const ts = hasTypeScript(source);
+  const ts = framework === 'react' || hasTypeScript(source);
   const tsExt = framework === 'react' ? 'tsx' : baseLang;
   const jsExt = framework === 'react' ? 'jsx' : baseLang;
 
