@@ -17,6 +17,10 @@
   min-height: 120px;
   z-index: var(--z-drawer);
 }
+.cf-detached.is-contained {
+  position: absolute;
+  z-index: var(--z-popover);
+}
 
 .cf-detached__header {
   display: flex;

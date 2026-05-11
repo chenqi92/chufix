@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { CfGlobalSearch, CfButton } from '@chufix-design/vue';
 const open = ref(false);
+const host = ref<HTMLElement | null>(null);
 const results = Array.from({ length: 18 }, (_, i) => ({
   id: String(i),
   title: ['/v1/orders', '/v1/login', 'jane.l', 'preview env', 'reset onboarding', 'export collection'][i % 6],
@@ -14,11 +15,14 @@ const results = Array.from({ length: 18 }, (_, i) => ({
 </script>
 
 <template>
-  <div class="demo-row">
-    <CfButton @click="open = true">类目过滤搜索</CfButton>
+  <div ref="host" class="demo-floating-host demo-floating-host--search">
+    <div class="demo-row">
+      <CfButton @click="open = true">类目过滤搜索</CfButton>
+    </div>
     <CfGlobalSearch
       :open="open"
       :results="results"
+      :to="host ?? 'body'"
       @update:open="(v) => open = v"
       @select="(id) => alert(`Selected: ${id}`)"
     />

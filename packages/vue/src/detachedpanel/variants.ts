@@ -8,7 +8,7 @@ export interface DetachedPanelProps {
   height?: number | string;
   resizable?: boolean;
   closable?: boolean;
-  to?: string;
+  to?: string | HTMLElement;
   /** z-index override */
   zIndex?: number;
 }

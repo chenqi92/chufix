@@ -48,7 +48,7 @@ import MultipleVue from '~/components/demos/detachedpanel/MultipleVue.vue';
 | `width` / `height` | `number \| string` | `360 / 240` | |
 | `resizable` | `boolean` | `false` | 启用原生 resize 句柄 |
 | `closable` | `boolean` | `true` | |
-| `to` | `string` | `'body'` | Teleport 目标 |
+| `to` | `string \| HTMLElement` | `'body'` | Teleport 目标；传入局部容器时面板改为容器内定位 |
 | `zIndex` | `number` | — | |
 
 事件：`update:open` / `move(x, y)`。

@@ -20,7 +20,7 @@ export interface GlobalSearchProps {
   /** Show category filter chips above results. */
   showCategories?: boolean;
   closeOnSelect?: boolean;
-  to?: string;
+  to?: string | HTMLElement;
 }
 
 export interface FilteredCategoryGroup {

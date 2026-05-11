@@ -11,6 +11,17 @@
   justify-content: center;
   padding: 8vh 16px 16px;
 }
+.cf-globalsearch__overlay.is-contained {
+  position: absolute;
+  z-index: var(--z-popover);
+  background: oklch(0% 0 0 / 0.22);
+  backdrop-filter: blur(2px);
+  padding: 24px 16px;
+}
+.cf-globalsearch__overlay.is-contained .cf-globalsearch {
+  max-width: min(640px, 100%);
+  max-height: calc(100% - 48px);
+}
 
 .cf-globalsearch {
   width: 100%;

@@ -966,6 +966,37 @@ a.cf-card .cf-card__header,
   gap: 0.6rem;
   align-items: center;
 }
+.demo-floating-host {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  overflow: hidden;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: color-mix(in oklch, var(--bg-3) 78%, var(--bg-1));
+}
+.demo-floating-host > .demo-row {
+  position: relative;
+  z-index: 1;
+  padding: 12px;
+  border-bottom: 1px solid var(--line-1);
+  background: color-mix(in oklch, var(--bg-3) 86%, transparent);
+}
+.demo-floating-host--tall {
+  min-height: 390px;
+}
+.demo-floating-host--search {
+  min-height: 460px;
+}
+.demo-floating-host--tearoff {
+  min-height: 310px;
+}
+.demo-floating-host__hint {
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
 .demo-stack {
   display: flex;
   flex-direction: column;

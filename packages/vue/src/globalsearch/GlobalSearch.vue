@@ -36,6 +36,14 @@ const groups = computed(() =>
 
 const flat = computed(() => groups.value.flatMap((g) => g.results));
 
+const isContained = computed(() => {
+  if (typeof props.to !== 'string') {
+    return typeof document === 'undefined' ? true : props.to !== document.body;
+  }
+  const target = props.to.trim().toLowerCase();
+  return target !== 'body' && target !== 'html';
+});
+
 watch(
   () => props.open,
   async (open) => {
@@ -98,11 +106,11 @@ function onOverlayClick(e: MouseEvent) {
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="open" :to="to">
     <Transition name="cf-gs" appear>
       <div
-        v-if="open"
         class="cf-globalsearch__overlay"
+        :class="{ 'is-contained': isContained }"
         @click="onOverlayClick"
         @keydown="onKeyDown"
       >

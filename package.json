@@ -14,7 +14,6 @@
     "build:docs": "pnpm --filter=docs build",
     "icons:sync": "pnpm --filter @chufix-design/icons sync",
     "tokens:check": "node scripts/check-tokens.mjs",
-    "sync:docs": "node scripts/sync-docs.mjs",
     "smoke": "pnpm --filter @chufix-design/example-vite-vue dev",
     "smoke:build": "pnpm --filter @chufix-design/example-vite-vue build",
     "clean": "pnpm -r exec rimraf dist .astro node_modules",

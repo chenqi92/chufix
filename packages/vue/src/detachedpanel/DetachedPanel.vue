@@ -52,6 +52,14 @@ const dimStyle = computed(() => {
   return s;
 });
 
+const isContained = computed(() => {
+  if (typeof props.to !== 'string') {
+    return typeof document === 'undefined' ? true : props.to !== document.body;
+  }
+  const target = props.to.trim().toLowerCase();
+  return target !== 'body' && target !== 'html';
+});
+
 function onHeaderPointerDown(e: PointerEvent) {
   dragging.value = true;
   dragOffsetX = e.clientX - x.value;
@@ -84,11 +92,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="open" :to="to">
     <Transition name="cf-detached" appear>
       <section
-        v-if="open"
         class="cf-detached"
+        :class="{ 'is-contained': isContained }"
         :style="dimStyle"
         role="dialog"
         :aria-label="title || 'panel'"

@@ -104,10 +104,11 @@ export function GlobalSearch(props: GlobalSearchProps) {
   const target =
     typeof window === 'undefined' ? null : (container ?? document.body);
   if (!open || !target) return null;
+  const isContained = target !== document.body;
 
   return createPortal(
     <div
-      className={['cf-globalsearch__overlay', className]
+      className={['cf-globalsearch__overlay', isContained && 'is-contained', className]
         .filter(Boolean)
         .join(' ')}
       onClick={onOverlayClick}

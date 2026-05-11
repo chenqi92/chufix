@@ -48,7 +48,7 @@ import MultipleVue from '~/components/demos/detachedpanel/MultipleVue.vue';
 | `width` / `height` | `number \| string` | `360 / 240` | |
 | `resizable` | `boolean` | `false` | Enable native resize handle |
 | `closable` | `boolean` | `true` | |
-| `to` | `string` | `'body'` | Teleport target |
+| `to` | `string \| HTMLElement` | `'body'` | Teleport target; local containers switch the panel to contained positioning |
 | `zIndex` | `number` | — | |
 
 Events: `update:open` / `move(x, y)`.

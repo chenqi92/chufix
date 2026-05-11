@@ -3,15 +3,21 @@ import { ref } from 'vue';
 import { CfDetachedPanel, CfButton } from '@chufix-design/vue';
 const a = ref(false);
 const b = ref(false);
+const host = ref<HTMLElement | null>(null);
 </script>
 
 <template>
-  <div class="demo-row">
-    <CfButton @click="a = true">面板 A</CfButton>
-    <CfButton variant="secondary" @click="b = true">面板 B（resizable）</CfButton>
+  <div ref="host" class="demo-floating-host demo-floating-host--panel demo-floating-host--tall">
+    <div class="demo-row">
+      <CfButton @click="a = true">面板 A</CfButton>
+      <CfButton variant="secondary" @click="b = true">面板 B（resizable）</CfButton>
+    </div>
     <CfDetachedPanel
       v-model:open="a"
       title="Inspector A"
+      :to="host ?? 'body'"
+      :x="24"
+      :y="64"
       :width="280"
       :height="180"
       :z-index="1500"
@@ -21,6 +27,9 @@ const b = ref(false);
     <CfDetachedPanel
       v-model:open="b"
       title="Inspector B"
+      :to="host ?? 'body'"
+      :x="336"
+      :y="104"
       :width="320"
       :height="220"
       resizable

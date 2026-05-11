@@ -74,6 +74,7 @@ export function DetachedPanel(props: DetachedPanelProps) {
   const target =
     typeof window === 'undefined' ? null : (container ?? document.body);
   if (!open || !target) return null;
+  const isContained = target !== document.body;
 
   const style: CSSProperties = {
     left: `${pos.x}px`,
@@ -86,7 +87,9 @@ export function DetachedPanel(props: DetachedPanelProps) {
 
   return createPortal(
     <section
-      className={['cf-detached', className].filter(Boolean).join(' ')}
+      className={['cf-detached', isContained && 'is-contained', className]
+        .filter(Boolean)
+        .join(' ')}
       style={style}
       role="dialog"
       aria-label={typeof title === 'string' ? title : 'panel'}

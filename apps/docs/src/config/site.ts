@@ -4,7 +4,7 @@ export const site = {
   title: 'ChuFix UI',
   nameZh: '础件',
   github: 'https://github.com/chenqi92/chufix',
-  docsRepo: 'https://github.com/chenqi92/chufix-docs',
+  docsRepo: 'https://github.com/chenqi92/chufix',
   npm: 'https://www.npmjs.com/org/chufix-design',
   version: '0.2.1',
   status: {

@@ -47,6 +47,30 @@ const localAllow = new Set([
   '--diff-add-fg',
   '--diff-del-bg',
   '--diff-del-fg',
+  '--cf-col-xs-span',
+  '--cf-col-xs-offset',
+  '--cf-col-xs-push',
+  '--cf-col-xs-pull',
+  '--cf-col-sm-span',
+  '--cf-col-sm-offset',
+  '--cf-col-sm-push',
+  '--cf-col-sm-pull',
+  '--cf-col-md-span',
+  '--cf-col-md-offset',
+  '--cf-col-md-push',
+  '--cf-col-md-pull',
+  '--cf-col-lg-span',
+  '--cf-col-lg-offset',
+  '--cf-col-lg-push',
+  '--cf-col-lg-pull',
+  '--cf-col-xl-span',
+  '--cf-col-xl-offset',
+  '--cf-col-xl-push',
+  '--cf-col-xl-pull',
+  '--cf-col-xxl-span',
+  '--cf-col-xxl-offset',
+  '--cf-col-xxl-push',
+  '--cf-col-xxl-pull',
 ]);
 
 /* ── 3. walk style dirs ── */
@@ -65,13 +89,17 @@ const cssFiles = styleDirs.flatMap((d) => walk(d));
 const missing = [];
 for (const f of cssFiles) {
   const src = readFileSync(f, 'utf8');
+  const localDefined = new Set();
+  for (const m of src.matchAll(/(--[a-z0-9-]+)\s*:/gi)) {
+    localDefined.add(m[1]);
+  }
   /* var(--x) without a fallback must resolve; var(--x, fallback) is an
    * intentional component-scoped knob (consumer-overridable) and skipped. */
   for (const m of src.matchAll(/var\((--[a-z0-9-]+)\s*(,[^)]*)?\)/gi)) {
     const name = m[1];
     const hasFallback = Boolean(m[2]);
     if (hasFallback) continue;
-    if (!defined.has(name) && !localAllow.has(name)) {
+    if (!defined.has(name) && !localDefined.has(name) && !localAllow.has(name)) {
       missing.push({ file: f.replace(repoRoot, '').replace(/\\/g, '/'), name });
     }
   }

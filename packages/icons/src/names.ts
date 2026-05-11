@@ -422,16 +422,16 @@ export const iconNames = [
   "anim-heartbeat",
   "illust-empty",
   "illust-not-found",
-  "illust-error",
-  "illust-search",
   "illust-build",
   "duo-database",
   "duo-shield-check",
+  "illust-search",
+  "illust-error",
+  "brand-dribbble",
   "brand-windows",
   "brand-google",
   "brand-apple",
   "brand-github",
-  "brand-dribbble",
   "brand-figma",
   "brand-react",
   "brand-vue",
@@ -582,7 +582,7 @@ export const iconNames = [
   "anim-scan-line",
   "anim-equalizer-dots",
   "anim-disk-spin",
-  "anim-battery-bolt",
+  "anim-battery-bolt"
 ] as const;
 
 export type IconName = typeof iconNames[number];

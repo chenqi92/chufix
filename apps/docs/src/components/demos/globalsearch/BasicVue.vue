@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { CfGlobalSearch, CfButton } from '@chufix-design/vue';
 const open = ref(false);
+const host = ref<HTMLElement | null>(null);
 const results = [
   { id: '1', title: '/v1/orders', description: 'GET 列表所有订单', category: 'API', badge: 'GET', path: 'payments / orders' },
   { id: '2', title: '/v1/orders/{id}', description: 'PUT 更新订单', category: 'API', badge: 'PUT', path: 'payments / orders' },
@@ -13,11 +14,14 @@ const results = [
 </script>
 
 <template>
-  <div class="demo-row">
-    <CfButton @click="open = true">⌘⇧K 打开</CfButton>
+  <div ref="host" class="demo-floating-host demo-floating-host--search">
+    <div class="demo-row">
+      <CfButton @click="open = true">⌘⇧K 打开</CfButton>
+    </div>
     <CfGlobalSearch
       :open="open"
       :results="results"
+      :to="host ?? 'body'"
       @update:open="(v) => open = v"
       @select="(id) => alert(`Selected: ${id}`)"
     />

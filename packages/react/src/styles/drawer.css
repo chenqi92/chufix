@@ -91,7 +91,7 @@
   margin: 0;
   font-weight: var(--w-semibold);
   font-size: var(--t-14);
-  line-height: var(--lh-20);
+  line-height: var(--lh-14);
   color: var(--fg-1);
 }
 .cf-drawer__desc {
