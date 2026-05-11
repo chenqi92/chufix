@@ -1027,13 +1027,17 @@ a.cf-card .cf-card__header,
 .cf-demo__code-body {
   display: none;
   flex-direction: column;
-  padding: 12px;
+  padding: 0;
   background: var(--bg-inset);
   border-top: 1px solid var(--line-1);
   border-radius: 0 0 var(--r-8) var(--r-8);
 }
 .cf-demo__code-section[data-collapsed='false'] .cf-demo__code-body {
   display: flex;
+}
+
+.cf-demo__code-body:has(.cf-code-workspace) {
+  padding: 12px;
 }
 
 .cf-demo__code-body .cf-code-workspace {
