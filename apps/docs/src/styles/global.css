@@ -814,6 +814,7 @@ a.cf-card .cf-card__header,
 }
 
 .cf-demo__preview {
+  position: relative;
   padding: 2.25rem 1.75rem;
   border-radius: var(--r-8) var(--r-8) 0 0;
   background:
@@ -822,6 +823,106 @@ a.cf-card .cf-card__header,
     linear-gradient(45deg, transparent 75%, var(--bg-2) 75%) 8px -8px/16px 16px,
     linear-gradient(-45deg, transparent 75%, var(--bg-2) 75%) -8px 0/16px 16px;
   transition: padding-bottom var(--dur-base) var(--ease-out);
+}
+
+.cf-demo__preview[data-demo-bg='light'] {
+  background: #ffffff;
+}
+
+.cf-demo__preview[data-demo-bg='muted'] {
+  background: #f3f5f8;
+}
+
+.cf-demo__preview[data-demo-bg='dark'] {
+  background: #171a21;
+}
+
+.cf-demo__preview[data-demo-bg='accent'] {
+  background: color-mix(in srgb, var(--accent-1) 10%, #ffffff);
+}
+
+.cf-demo__preview-tools {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid color-mix(in srgb, var(--line-1) 78%, transparent);
+  border-radius: var(--r-6);
+  background: color-mix(in srgb, var(--bg-0) 86%, transparent);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(8px);
+}
+
+.cf-demo__preview-tools-label {
+  padding: 0 0.25rem;
+  color: var(--fg-3);
+  font-size: var(--t-11);
+  line-height: 1;
+}
+
+.cf-demo__bg-option {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-4);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.cf-demo__bg-option:hover {
+  background: var(--bg-2);
+}
+
+.cf-demo__bg-option:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.cf-demo__bg-option[data-active='true'] {
+  border-color: var(--accent-1);
+  background: var(--accent-soft);
+}
+
+.cf-demo__bg-swatch {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+}
+
+.cf-demo__bg-swatch--transparent {
+  background:
+    linear-gradient(45deg, #d9dee7 25%, transparent 25%) 0 0/8px 8px,
+    linear-gradient(-45deg, #d9dee7 25%, transparent 25%) 0 4px/8px 8px,
+    linear-gradient(45deg, transparent 75%, #d9dee7 75%) 4px -4px/8px 8px,
+    linear-gradient(-45deg, transparent 75%, #d9dee7 75%) -4px 0/8px 8px,
+    #ffffff;
+}
+
+.cf-demo__bg-swatch--light {
+  background: #ffffff;
+}
+
+.cf-demo__bg-swatch--muted {
+  background: #f3f5f8;
+}
+
+.cf-demo__bg-swatch--dark {
+  background: #171a21;
+}
+
+.cf-demo__bg-swatch--accent {
+  background: color-mix(in srgb, var(--accent-1) 18%, #ffffff);
 }
 
 .cf-demo--compact .cf-demo__preview {

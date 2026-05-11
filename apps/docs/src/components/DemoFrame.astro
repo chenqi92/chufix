@@ -41,6 +41,55 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
 
 <div class:list={['cf-demo', variant !== 'default' && `cf-demo--${variant}`]} data-demo-frame>
   <div class="cf-demo__preview">
+    <div class="cf-demo__preview-tools" aria-label="预览背景">
+      <span class="cf-demo__preview-tools-label">背景</span>
+      <button
+        class="cf-demo__bg-option"
+        type="button"
+        data-demo-bg="transparent"
+        data-active="true"
+        aria-label="透明背景"
+        title="透明背景"
+      >
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--transparent"></span>
+      </button>
+      <button
+        class="cf-demo__bg-option"
+        type="button"
+        data-demo-bg="light"
+        aria-label="白色背景"
+        title="白色背景"
+      >
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--light"></span>
+      </button>
+      <button
+        class="cf-demo__bg-option"
+        type="button"
+        data-demo-bg="muted"
+        aria-label="浅灰背景"
+        title="浅灰背景"
+      >
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--muted"></span>
+      </button>
+      <button
+        class="cf-demo__bg-option"
+        type="button"
+        data-demo-bg="dark"
+        aria-label="深色背景"
+        title="深色背景"
+      >
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--dark"></span>
+      </button>
+      <button
+        class="cf-demo__bg-option"
+        type="button"
+        data-demo-bg="accent"
+        aria-label="品牌淡色背景"
+        title="品牌淡色背景"
+      >
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--accent"></span>
+      </button>
+    </div>
     <div class="cf-demo__pane-content">
       <slot />
     </div>
@@ -116,6 +165,8 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
     const section = root.querySelector<HTMLElement>('.cf-demo__code-section');
     const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-tab]');
     const panels = root.querySelectorAll<HTMLElement>('[data-demo-panel]');
+    const bgBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-bg]');
+    const preview = root.querySelector<HTMLElement>('.cf-demo__preview');
     const floatingSelector = [
       '.cf-select.is-open',
       '.cf-combobox.is-open',
@@ -146,6 +197,19 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
 
     tabBtns.forEach((btn) => {
       btn.addEventListener('click', () => activate(btn.dataset.demoTab ?? ''));
+    });
+
+    bgBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const bg = btn.dataset.demoBg ?? 'transparent';
+        if (preview) preview.dataset.demoBg = bg;
+        bgBtns.forEach((item) => {
+          const active = item === btn;
+          item.dataset.active = String(active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+      });
+      btn.setAttribute('aria-pressed', String(btn.dataset.active === 'true'));
     });
 
     root.querySelectorAll<HTMLButtonElement>('[data-demo-copy]').forEach((btn) => {
