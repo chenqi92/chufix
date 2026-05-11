@@ -87,23 +87,31 @@ const seconds = range(60);
 
 <template>
   <div ref="wrapper" :class="cls" tabindex="-1" @focusout="onFocusOut">
-    <button
-      type="button"
-      class="cf-timepicker__trigger"
-      :disabled="disabled"
-      @click="toggle"
-    >
-      <span v-if="displayText" class="cf-timepicker__value">{{ displayText }}</span>
-      <span v-else class="cf-timepicker__placeholder">{{ placeholder }}</span>
+    <div class="cf-timepicker__trigger">
+      <button
+        type="button"
+        class="cf-timepicker__field"
+        :disabled="disabled"
+        @click="toggle"
+      >
+        <span v-if="displayText" class="cf-timepicker__value">{{ displayText }}</span>
+        <span v-else class="cf-timepicker__placeholder">{{ placeholder }}</span>
+      </button>
       <button
         v-if="clearable && value && !disabled"
         type="button"
         class="cf-timepicker__clear"
         aria-label="清除"
-        @click.stop="clear"
+        @click="clear"
       >×</button>
-      <span class="cf-timepicker__caret" aria-hidden="true">▾</span>
-    </button>
+      <button
+        type="button"
+        class="cf-timepicker__caret"
+        :disabled="disabled"
+        aria-label="展开时间选择"
+        @click="toggle"
+      >▾</button>
+    </div>
 
     <div v-if="open" class="cf-timepicker__panel" role="dialog">
       <div class="cf-timepicker__columns">

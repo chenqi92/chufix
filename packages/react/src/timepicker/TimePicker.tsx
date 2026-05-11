@@ -59,30 +59,35 @@ export function TimePicker({
 
   return (
     <div ref={wrapper} className={cls} tabIndex={-1} onBlur={onFocusOut}>
-      <button
-        type="button"
-        className="cf-timepicker__trigger"
-        disabled={disabled}
-        onClick={toggle}
-      >
-        {displayText ? (
-          <span className="cf-timepicker__value">{displayText}</span>
-        ) : (
-          <span className="cf-timepicker__placeholder">{placeholder}</span>
-        )}
+      <div className="cf-timepicker__trigger">
+        <button
+          type="button"
+          className="cf-timepicker__field"
+          disabled={disabled}
+          onClick={toggle}
+        >
+          {displayText ? (
+            <span className="cf-timepicker__value">{displayText}</span>
+          ) : (
+            <span className="cf-timepicker__placeholder">{placeholder}</span>
+          )}
+        </button>
         {clearable && real && !disabled && (
           <button
             type="button"
             className="cf-timepicker__clear"
             aria-label="清除"
-            onClick={(e) => {
-              e.stopPropagation();
-              clear();
-            }}
+            onClick={clear}
           >×</button>
         )}
-        <span className="cf-timepicker__caret" aria-hidden="true">▾</span>
-      </button>
+        <button
+          type="button"
+          className="cf-timepicker__caret"
+          disabled={disabled}
+          aria-label="展开时间选择"
+          onClick={toggle}
+        >▾</button>
+      </div>
 
       {open && (
         <div className="cf-timepicker__panel" role="dialog">
