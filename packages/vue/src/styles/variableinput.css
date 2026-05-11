@@ -5,8 +5,9 @@
 
 .cf-vinput {
   position: relative;
-  display: inline-block;
+  display: block;
   width: 100%;
+  min-width: 0;
   height: var(--control-h);
   border: 1px solid var(--line-2);
   border-radius: var(--r-6);
@@ -110,17 +111,19 @@
   color: var(--fg-1);
 }
 .cf-vinput__var {
-  display: inline-block;
-  padding: 1px 5px;
-  margin: 0 1px;
+  display: inline;
+  padding: 0;
+  margin: 0;
   background: var(--accent-soft);
   color: var(--accent-1);
-  border-radius: var(--r-3);
-  font-weight: var(--w-medium);
+  border-radius: var(--r-2);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+  font-weight: inherit;
 }
 .cf-vinput__var.is-invalid {
   background: var(--status-error-soft);
   color: var(--status-error);
+  box-shadow: 0 0 0 2px var(--status-error-soft);
   text-decoration: underline wavy;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;

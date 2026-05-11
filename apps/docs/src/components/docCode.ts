@@ -209,6 +209,10 @@ function cap(value: string) {
   return value ? value[0]!.toUpperCase() + value.slice(1) : value;
 }
 
+function lowerFirst(value: string) {
+  return value ? value[0]!.toLowerCase() + value.slice(1) : value;
+}
+
 function indent(value: string, spaces = 2) {
   const pad = ' '.repeat(spaces);
   return value.split('\n').map((line) => (line ? `${pad}${line}` : line)).join('\n');
@@ -262,6 +266,10 @@ function transformEventExpression(event: string, expression: string, stateNames:
   return `{() => ${transformAssignmentExpression(trimmed, stateNames)}}`;
 }
 
+function reactModelChangeProp(prop: string) {
+  return prop === 'value' ? 'onChange' : `on${cap(prop)}Change`;
+}
+
 function transformVueAttributes(attrs: string, stateNames: Set<string>) {
   let out = attrs
     .replace(/\sclass=/g, ' className=')
@@ -270,7 +278,7 @@ function transformVueAttributes(attrs: string, stateNames: Set<string>) {
     .replace(/\s@([A-Za-z0-9_:-]+)="([^"]*)"/g, (_match, name: string, value: string) => ` ${eventName(name)}=${transformEventExpression(name, value, stateNames)}`)
     .replace(/\sv-model(?::([A-Za-z0-9_-]+))?="([^"]*)"/g, (_match, modelName: string, value: string) => {
       const prop = modelName ? camelName(modelName) : 'value';
-      const setter = stateNames.has(value) ? ` on${cap(prop)}Change={set${cap(value)}}` : '';
+      const setter = stateNames.has(value) ? ` ${reactModelChangeProp(prop)}={set${cap(value)}}` : '';
       return ` ${prop}={${value}}${setter}`;
     });
 
@@ -291,7 +299,7 @@ function transformSimpleVueMarkup(template: string, stateNames: Set<string>) {
     .replace(/\s@([A-Za-z0-9_:-]+)="([^"]*)"/g, (_match, name: string, value: string) => ` ${eventName(name)}=${transformEventExpression(name, value, stateNames)}`)
     .replace(/\sv-model(?::([A-Za-z0-9_-]+))?="([^"]*)"/g, (_match, modelName: string, value: string) => {
       const prop = modelName ? camelName(modelName) : 'value';
-      const setter = stateNames.has(value) ? ` on${cap(prop)}Change={set${cap(value)}}` : '';
+      const setter = stateNames.has(value) ? ` ${reactModelChangeProp(prop)}={set${cap(value)}}` : '';
       return ` ${prop}={${value}}${setter}`;
     });
 
@@ -301,7 +309,7 @@ function transformSimpleVueMarkup(template: string, stateNames: Set<string>) {
       return `<${tag}${transformVueAttributes(attrs, stateNames)}>`;
     })
     .replace(/\{\{\s*([^}]+?)\s*\}\}/g, (match, expr: string, offset: number, whole: string) => (
-      whole[offset - 1] === '=' ? match : `{${expr}}`
+      isInsideQuotedAttribute(whole, offset) ? match : `{${expr}}`
     ));
 }
 
@@ -343,6 +351,54 @@ function transformVueTemplateToJsx(template: string, stateNames: Set<string>) {
   const withContent = transformContentSlots(template, stateNames);
   const withSlots = transformNamedSlots(withContent, stateNames);
   return transformSimpleVueMarkup(withSlots, stateNames);
+}
+
+function isInsideQuotedAttribute(source: string, offset: number) {
+  const openTag = source.lastIndexOf('<', offset);
+  const closeTag = source.lastIndexOf('>', offset);
+  if (openTag === -1 || closeTag > openTag) return false;
+  let quote = '';
+  for (let i = openTag + 1; i < offset; i++) {
+    const ch = source[i]!;
+    if (!quote && (ch === '"' || ch === "'")) {
+      quote = ch;
+    } else if (quote === ch && source[i - 1] !== '\\') {
+      quote = '';
+    }
+  }
+  return Boolean(quote);
+}
+
+function stripStringLiterals(value: string) {
+  return value
+    .replace(/`(?:\\.|[^`\\])*`/g, '')
+    .replace(/"(?:\\.|[^"\\])*"/g, '')
+    .replace(/'(?:\\.|[^'\\])*'/g, '');
+}
+
+function vueScriptHasConst(script: string, name: string) {
+  return Boolean(readConstInitializer(script, name));
+}
+
+function reactSnippetHasUnresolvedState(snippet: string, vueScript: string) {
+  for (const exprMatch of snippet.matchAll(/\{([^{}]*)\}/g)) {
+    const expr = stripStringLiterals(exprMatch[1] ?? '');
+    for (const idMatch of expr.matchAll(/\b[A-Za-z_$][\w$]*\b/g)) {
+      const name = idMatch[0];
+      const offset = idMatch.index ?? 0;
+      const prev = expr[offset - 1];
+      const next = expr[offset + name.length];
+      if (JS_RESERVED.has(name) || /^Cf[A-Z]/.test(name)) continue;
+      if (prev === '.' || next === ':') continue;
+      if (/^set[A-Z]/.test(name)) {
+        if (vueScriptHasConst(vueScript, lowerFirst(name.slice(3)))) continue;
+      } else if (vueScriptHasConst(vueScript, name)) {
+        continue;
+      }
+      return true;
+    }
+  }
+  return false;
 }
 
 function transformVueScriptToReact(script: string) {
@@ -408,6 +464,10 @@ function buildReactSourceFromVueSource(vueSource: string, reactCode: string) {
   if (!snippet.includes('<')) return snippet;
 
   const script = extractVueScript(vueSource);
+  if (reactSnippetHasUnresolvedState(snippet, script)) {
+    const source = buildReactSourceFromVueTemplate(vueSource);
+    if (source) return source;
+  }
   const used = namesUsedByReact(snippet);
   const declarations: string[] = [];
   let usesState = false;

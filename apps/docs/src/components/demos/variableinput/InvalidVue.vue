@@ -8,7 +8,7 @@ const known = ['base_url', 'user_id'];
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; gap: 12px; max-width: 720px;">
+  <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 920px;">
     <CfVariableAwareInput v-model="v1" :variables="known" />
     <CfVariableAwareInput v-model="v2" :variables="known" />
     <CfVariableAwareInput v-model="v3" :variables="known" />

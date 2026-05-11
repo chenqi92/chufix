@@ -18,7 +18,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
 }>();
 
-const knownSet = computed(() => new Set(props.variables ?? []));
+const knownSet = computed(() => new Set((props.variables ?? []).map((item) => item.trim()).filter(Boolean)));
 const tokens = computed(() => parseTokens(props.modelValue, knownSet.value));
 
 const inputRef = ref<HTMLInputElement | null>(null);

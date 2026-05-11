@@ -17,7 +17,10 @@ export function VariableAwareInput(props: VariableAwareInputProps) {
     className,
   } = props;
 
-  const knownSet = useMemo(() => new Set(variables ?? []), [variables]);
+  const knownSet = useMemo(
+    () => new Set((variables ?? []).map((item) => item.trim()).filter(Boolean)),
+    [variables],
+  );
   const tokens = useMemo(() => parseTokens(value, knownSet), [value, knownSet]);
 
   const inputRef = useRef<HTMLInputElement | null>(null);

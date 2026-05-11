@@ -13,9 +13,6 @@ Implementation: a native input with transparent text underneath, plus an overlay
 Names listed in `variables` are treated as "known" and highlighted with accent; others are "unknown" and get a red squiggle.
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
-  reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
-
   vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
@@ -29,9 +26,6 @@ import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
 import InvalidVueSource from '~/components/demos/variableinput/InvalidVue.vue?raw';
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
-  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
-
   vueSource={InvalidVueSource}>
   <InvalidVue client:load />
 </DemoFrame>

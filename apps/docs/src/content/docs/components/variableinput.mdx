@@ -13,9 +13,6 @@ import BasicVueSource from '~/components/demos/variableinput/BasicVue.vue?raw';
 `variables` 数组里的名字算"已知"用 accent 高亮，其他算"未知"用红色波浪线。
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
-  reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
-
   vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
@@ -29,9 +26,6 @@ import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
 import InvalidVueSource from '~/components/demos/variableinput/InvalidVue.vue?raw';
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
-  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
-
   vueSource={InvalidVueSource}>
   <InvalidVue client:load />
 </DemoFrame>
