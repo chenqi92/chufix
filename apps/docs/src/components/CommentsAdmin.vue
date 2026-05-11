@@ -9,6 +9,7 @@ import {
   CfInput,
   CfTextarea,
 } from '@chufix-design/vue';
+import CommentEmojiPicker from './CommentEmojiPicker.vue';
 
 type CommentStatus = 'pending' | 'approved' | 'rejected';
 type FilterStatus = CommentStatus | 'all';
@@ -37,7 +38,12 @@ const filters: { value: FilterStatus; label: string }[] = [
   { value: 'rejected', label: '已拒绝' },
   { value: 'all', label: '全部' },
 ];
-const quickEmojis = ['👍', '❤️', '🎉', '👀', '🙌', '💡'];
+const emojiCategories = [
+  { id: 'recent', label: '常用', emojis: ['👍', '❤️', '🎉', '👀', '🙌', '💡', '✅', '🙏'] },
+  { id: 'mood', label: '情绪', emojis: ['😀', '🙂', '😍', '🤔', '😅', '😢', '😮', '😎'] },
+  { id: 'action', label: '动作', emojis: ['👏', '🚀', '🔥', '✨', '💪', '🤝', '📌', '🛠️'] },
+  { id: 'signal', label: '信号', emojis: ['⭐', '⚠️', '❗', '❓', '💬', '📣', '🔍', '🧩'] },
+];
 
 const authenticated = ref(false);
 const checking = ref(true);
@@ -215,8 +221,12 @@ async function deleteComment(id: string) {
   }
 }
 
-async function reply(item: CommentItem, emoji?: string) {
-  const content = (emoji ?? replyDraft.value[item.id] ?? '').trim();
+function insertReplyEmoji(id: string, emoji: string) {
+  replyDraft.value[id] = Array.from(`${replyDraft.value[id] ?? ''}${emoji}`).slice(0, 600).join('');
+}
+
+async function reply(item: CommentItem) {
+  const content = (replyDraft.value[item.id] ?? '').trim();
   if (!content) return;
 
   busyId.value = item.id;
@@ -385,21 +395,13 @@ onMounted(checkSession);
                   :disabled="item.status !== 'approved'"
                 />
                 <div class="comments-admin-card__reply-actions">
-                  <div class="comments-admin-card__emoji">
-                    <CfButton
-                      v-for="emoji in quickEmojis"
-                      :key="emoji"
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      shape="square"
-                      :disabled="item.status !== 'approved'"
-                      :aria-label="`回复 ${emoji}`"
-                      @click="reply(item, emoji)"
-                    >
-                      {{ emoji }}
-                    </CfButton>
-                  </div>
+                  <CommentEmojiPicker
+                    :categories="emojiCategories"
+                    label="表情"
+                    panel-label="选择回复表情"
+                    :disabled="item.status !== 'approved'"
+                    @select="(emoji) => insertReplyEmoji(item.id, emoji)"
+                  />
                   <CfButton
                     size="sm"
                     variant="secondary"
@@ -561,11 +563,6 @@ onMounted(checkSession);
 }
 .comments-admin-card__reply {
   margin-top: 0.85rem;
-}
-.comments-admin-card__emoji {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
 }
 @media (max-width: 640px) {
   .comments-admin__header,

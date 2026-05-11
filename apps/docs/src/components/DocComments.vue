@@ -10,10 +10,12 @@ import {
   CfModal,
   CfTextarea,
 } from '@chufix-design/vue';
+import CommentEmojiPicker from './CommentEmojiPicker.vue';
 
 type CommentStatus = 'approved' | 'pending' | 'rejected';
 type IdentityMode = 'anonymous' | 'account';
 type UserFormMode = 'login' | 'register';
+type EmojiTarget = 'comment' | 'reply';
 
 interface CommentItem {
   id: string;
@@ -47,9 +49,12 @@ const T = isEn
       unavailableNetworkBody: 'The comments API could not be reached from this page. Check the deployed domain and Pages Functions logs.',
       placeholderNick: 'Nickname',
       placeholderBody: 'Share suggestions, questions, or usage feedback',
-      emojiLabel: 'Quick emoji reply',
-      emojiSend: 'One-click send',
-      emojiAria: 'Send',
+      emojiLabel: 'Emoji',
+      emojiPanel: 'Choose emoji',
+      emojiRecent: 'Common',
+      emojiMood: 'Mood',
+      emojiAction: 'Actions',
+      emojiSymbol: 'Signals',
       submit: 'Submit',
       loading: 'Loading comments...',
       emptyTitle: 'No public comments yet',
@@ -98,9 +103,12 @@ const T = isEn
       unavailableNetworkBody: '当前页面无法访问评论 API。请检查部署域名和 Pages Functions 日志。',
       placeholderNick: '昵称',
       placeholderBody: '留下建议、问题或使用反馈',
-      emojiLabel: '快捷 emoji 评论',
-      emojiSend: '一键发送',
-      emojiAria: '发送',
+      emojiLabel: '表情',
+      emojiPanel: '选择表情',
+      emojiRecent: '常用',
+      emojiMood: '情绪',
+      emojiAction: '动作',
+      emojiSymbol: '信号',
       submit: '提交评论',
       loading: '正在加载评论...',
       emptyTitle: '还没有公开评论',
@@ -160,7 +168,28 @@ const author = ref('');
 const content = ref('');
 const replyingTo = ref('');
 const replyContent = ref('');
-const quickEmojis = ['👍', '❤️', '🎉', '👀', '🙌', '💡'];
+const emojiCategories = computed(() => [
+  {
+    id: 'recent',
+    label: T.emojiRecent,
+    emojis: ['👍', '❤️', '🎉', '👀', '🙌', '💡', '✅', '🙏'],
+  },
+  {
+    id: 'mood',
+    label: T.emojiMood,
+    emojis: ['😀', '🙂', '😍', '🤔', '😅', '😢', '😮', '😎'],
+  },
+  {
+    id: 'action',
+    label: T.emojiAction,
+    emojis: ['👏', '🚀', '🔥', '✨', '💪', '🤝', '📌', '🛠️'],
+  },
+  {
+    id: 'signal',
+    label: T.emojiSymbol,
+    emojis: ['⭐', '⚠️', '❗', '❓', '💬', '📣', '🔍', '🧩'],
+  },
+]);
 
 const identityMode = ref<IdentityMode>('anonymous');
 const userOpen = ref(false);
@@ -391,9 +420,14 @@ async function submit(overrideContent?: string, parentId?: string) {
   }
 }
 
-function quickSendEmoji(emoji: string) {
+function insertEmoji(emoji: string, target: EmojiTarget = 'comment') {
   if (posting.value || unavailable.value) return;
-  submit(emoji);
+  const append = (value: string) => Array.from(`${value}${emoji}`).slice(0, 600).join('');
+  if (target === 'reply') {
+    replyContent.value = append(replyContent.value);
+    return;
+  }
+  content.value = append(content.value);
 }
 
 function startReply(id: string) {
@@ -550,24 +584,17 @@ onMounted(() => {
         auto-resize
         :disabled="posting || unavailable"
       />
-      <div class="doc-comments__emoji" :aria-label="T.emojiLabel">
-        <span>{{ T.emojiSend }}</span>
-        <CfButton
-          v-for="emoji in quickEmojis"
-          :key="emoji"
-          type="button"
-          variant="ghost"
-          size="sm"
-          shape="square"
-          :disabled="posting || unavailable"
-          :aria-label="`${T.emojiAria} ${emoji}`"
-          @click="quickSendEmoji(emoji)"
-        >
-          {{ emoji }}
-        </CfButton>
-      </div>
       <div class="doc-comments__actions">
-        <p v-if="notice" class="doc-comments__notice">{{ notice }}</p>
+        <div class="doc-comments__tools">
+          <CommentEmojiPicker
+            :categories="emojiCategories"
+            :label="T.emojiLabel"
+            :panel-label="T.emojiPanel"
+            :disabled="posting || unavailable"
+            @select="insertEmoji"
+          />
+          <p v-if="notice" class="doc-comments__notice">{{ notice }}</p>
+        </div>
         <CfButton type="submit" size="sm" :loading="posting" :disabled="!canSubmit">
           {{ T.submit }}
         </CfButton>
@@ -619,7 +646,13 @@ onMounted(() => {
                 :disabled="posting || unavailable"
               />
               <div class="doc-comments__actions">
-                <span />
+                <CommentEmojiPicker
+                  :categories="emojiCategories"
+                  :label="T.emojiLabel"
+                  :panel-label="T.emojiPanel"
+                  :disabled="posting || unavailable"
+                  @select="(emoji) => insertEmoji(emoji, 'reply')"
+                />
                 <CfButton type="submit" size="sm" :loading="posting" :disabled="!canSubmitReply">
                   {{ T.reply }}
                 </CfButton>
@@ -726,24 +759,18 @@ onMounted(() => {
   gap: 0.75rem;
   margin: 1rem 0 1.25rem;
 }
-.doc-comments__emoji {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-}
-.doc-comments__emoji span {
-  color: var(--fg-3);
-  font-size: var(--t-12);
-}
-.doc-comments__emoji .cf-btn {
-  min-width: 2rem;
-}
 .doc-comments__actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+}
+.doc-comments__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
 }
 .doc-comments__notice,
 .doc-comments__loading {
@@ -825,6 +852,10 @@ onMounted(() => {
   }
   .doc-comments__header-actions,
   .doc-comments__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .doc-comments__tools {
     align-items: stretch;
     flex-direction: column;
   }
