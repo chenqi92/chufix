@@ -69,21 +69,21 @@
 .cf-chart__series-7 .cf-chart__area { fill: var(--viz-8); }
 
 .cf-chart__series-0 .cf-chart__dot,
-.cf-chart__bar--0 { fill: var(--viz-1); }
+.cf-chart__bar--0 { fill: var(--viz-1); color: var(--viz-1); }
 .cf-chart__series-1 .cf-chart__dot,
-.cf-chart__bar--1 { fill: var(--viz-2); }
+.cf-chart__bar--1 { fill: var(--viz-2); color: var(--viz-2); }
 .cf-chart__series-2 .cf-chart__dot,
-.cf-chart__bar--2 { fill: var(--viz-3); }
+.cf-chart__bar--2 { fill: var(--viz-3); color: var(--viz-3); }
 .cf-chart__series-3 .cf-chart__dot,
-.cf-chart__bar--3 { fill: var(--viz-4); }
+.cf-chart__bar--3 { fill: var(--viz-4); color: var(--viz-4); }
 .cf-chart__series-4 .cf-chart__dot,
-.cf-chart__bar--4 { fill: var(--viz-5); }
+.cf-chart__bar--4 { fill: var(--viz-5); color: var(--viz-5); }
 .cf-chart__series-5 .cf-chart__dot,
-.cf-chart__bar--5 { fill: var(--viz-6); }
+.cf-chart__bar--5 { fill: var(--viz-6); color: var(--viz-6); }
 .cf-chart__series-6 .cf-chart__dot,
-.cf-chart__bar--6 { fill: var(--viz-7); }
+.cf-chart__bar--6 { fill: var(--viz-7); color: var(--viz-7); }
 .cf-chart__series-7 .cf-chart__dot,
-.cf-chart__bar--7 { fill: var(--viz-8); }
+.cf-chart__bar--7 { fill: var(--viz-8); color: var(--viz-8); }
 
 /* sparkline variants */
 .cf-sparkline {
@@ -135,8 +135,14 @@
   font-family: var(--font-mono);
 }
 
-/* heatmap cells */
-.cf-heatmap__cell {
+.cf-latencyheatmap {
+  width: var(--cf-latencyheatmap-width, 480px);
+  max-width: 100%;
+  height: auto;
+}
+
+/* latency heatmap cells */
+.cf-latencyheatmap__cell {
   stroke: var(--bg-1);
   stroke-width: 1;
 }

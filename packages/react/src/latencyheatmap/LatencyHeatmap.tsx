@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import { ratioColor, type LatencyHeatmapProps } from './variants';
 
 export function LatencyHeatmap(props: LatencyHeatmapProps) {
@@ -50,17 +50,18 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
 
   return (
     <svg
-      className={['cf-chart', className].filter(Boolean).join(' ')}
+      className={['cf-chart', 'cf-latencyheatmap', className].filter(Boolean).join(' ')}
       viewBox={`0 0 ${width} ${height}`}
       width={width}
       height={height}
+      style={{ '--cf-latencyheatmap-width': `${width}px` } as CSSProperties}
       role="img"
       aria-label={ariaLabel}
     >
       {layout?.cells.map((c, i) => (
         <rect
           key={i}
-          className="cf-heatmap__cell"
+          className="cf-latencyheatmap__cell"
           x={c.x}
           y={c.y}
           width={c.w}

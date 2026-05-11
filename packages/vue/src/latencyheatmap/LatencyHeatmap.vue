@@ -41,10 +41,11 @@ const layout = computed(() => {
 
 <template>
   <svg
-    class="cf-chart"
+    class="cf-chart cf-latencyheatmap"
     :viewBox="`0 0 ${width} ${height}`"
     :width="width"
     :height="height"
+    :style="{ '--cf-latencyheatmap-width': `${width}px` }"
     role="img"
     :aria-label="ariaLabel ?? '延迟热力图'"
   >
@@ -52,7 +53,7 @@ const layout = computed(() => {
       <rect
         v-for="(c, i) in layout.cells"
         :key="i"
-        class="cf-heatmap__cell"
+        class="cf-latencyheatmap__cell"
         :x="c.x"
         :y="c.y"
         :width="c.w"
