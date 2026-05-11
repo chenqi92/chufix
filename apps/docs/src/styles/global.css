@@ -352,13 +352,13 @@ kbd {
 .docs-shell {
   max-width: 1480px;
   margin: 0 auto;
-  height: calc(100dvh - 104px);
+  min-height: calc(100dvh - 104px);
   padding: 1.5rem 1.25rem 2rem;
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr) 176px;
   gap: 2rem;
-  align-items: stretch;
-  overflow: hidden;
+  align-items: start;
+  overflow: visible;
 }
 @media (max-width: 1100px) {
   .docs-shell { grid-template-columns: 220px minmax(0, 1fr); }
@@ -400,7 +400,9 @@ kbd {
 
 .site-sidebar {
   min-height: 0;
-  height: 100%;
+  position: sticky;
+  top: calc(60px + 1rem);
+  max-height: calc(100dvh - 60px - 2rem);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -456,7 +458,9 @@ kbd {
 
 .site-toc {
   min-height: 0;
-  height: 100%;
+  position: sticky;
+  top: calc(60px + 1rem);
+  max-height: calc(100dvh - 60px - 2rem);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -505,9 +509,7 @@ kbd {
 .docs-main {
   min-width: 0;
   min-height: 0;
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: visible;
   scrollbar-width: thin;
   scroll-behavior: smooth;
   scroll-padding-top: 1rem;

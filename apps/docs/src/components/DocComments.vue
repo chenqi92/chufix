@@ -414,6 +414,8 @@ onMounted(() => {
 
 <template>
   <section class="doc-comments" aria-labelledby="doc-comments-title">
+    <div id="doc-comments-modal-root" class="doc-comments__modal-root" />
+
     <header class="doc-comments__header">
       <div>
         <p class="doc-comments__eyebrow">{{ T.eyebrow }}</p>
@@ -430,7 +432,7 @@ onMounted(() => {
       </div>
     </header>
 
-    <CfModal v-model:open="userOpen" :title="T.userTitle" size="sm">
+    <CfModal v-model:open="userOpen" :title="T.userTitle" size="sm" to="#doc-comments-modal-root">
       <div class="doc-comments__modal">
         <div class="doc-comments__identity-choice" role="group" :aria-label="T.userTitle">
           <CfButton
@@ -505,7 +507,7 @@ onMounted(() => {
       </div>
     </CfModal>
 
-    <CfModal v-model:open="adminOpen" :title="T.adminTitle" size="sm">
+    <CfModal v-model:open="adminOpen" :title="T.adminTitle" size="sm" to="#doc-comments-modal-root">
       <form class="doc-comments__modal" @submit.prevent="adminLogin">
         <CfInput
           v-model="adminToken"
@@ -651,6 +653,9 @@ onMounted(() => {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--line-1);
+}
+.doc-comments__modal-root {
+  display: contents;
 }
 .doc-comments__header {
   display: flex;

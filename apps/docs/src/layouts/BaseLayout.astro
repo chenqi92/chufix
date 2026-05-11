@@ -4,10 +4,6 @@ import { site } from '~/config/site';
 import { getLocaleFromUrl } from '~/i18n/utils';
 import { t } from '~/i18n/strings';
 import SiteNav from '~/components/SiteNav.astro';
-/* MUST be the barrel import; deep import (@chufix-design/vue/src/toast/CfToaster.vue)
- * loads a different copy of the toast store than the dist-bundled one used
- * by `import { toast } from '@chufix-design/vue'` in demos, breaking pub/sub. */
-import { CfToaster } from '@chufix-design/vue';
 
 interface Props {
   title?: string;
@@ -86,6 +82,16 @@ const announcementStorageKey = `chufix:announcement:${site.status.updatedAt}`;
       })();
     </script>
     <slot />
-    <CfToaster client:only="vue" position="top-right" />
+    <div id="docs-toaster-root"></div>
+    <script>
+      import { createApp } from 'vue';
+      import { CfToaster } from '@chufix-design/vue';
+
+      const root = document.getElementById('docs-toaster-root');
+      if (root && !root.dataset.mounted) {
+        root.dataset.mounted = 'true';
+        createApp(CfToaster, { position: 'top-right', teleport: false }).mount(root);
+      }
+    </script>
   </body>
 </html>

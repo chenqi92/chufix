@@ -1,5 +1,9 @@
 /* ChuKit Toaster — portal'd notification stack. */
 
+.cf-toaster-host {
+  display: contents;
+}
+
 .cf-toaster {
   position: fixed;
   z-index: var(--z-toast);
