@@ -1,0 +1,42 @@
+---
+title: Diff editor
+description: Line-level LCS diff with split / unified modes, line numbers, and +/- markers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/diffeditor/BasicVue.vue';
+
+## Basic usage
+
+General-purpose text diff (distinct from the JSON-specific [JsonDiff](/components/jsondiff/)). `mode="unified"` gives a compact single-column view.
+
+<DemoFrame
+  vueCode={`<CfDiffEditor :left="oldText" :right="newText" />`}
+  reactCode={`<CfDiffEditor left={oldText} right={newText} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Unified mode
+
+`mode="unified"` shows a compact single column: removed lines red, added lines green, unchanged lines white.
+
+import UnifiedVue from '~/components/demos/diffeditor/UnifiedVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDiffEditor :left="a" :right="b" mode="unified" />`}
+  reactCode={`<CfDiffEditor left={a} right={b} mode="unified" />`}
+>
+  <UnifiedVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `left` / `right` | `string` | — | Left and right text |
+| `mode` | `'split' \| 'unified'` | `'split'` | |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `showLineNumbers` | `boolean` | `true` | |
+| `leftLabel` / `rightLabel` | `string` | `'Original'` / `'Modified'` | Top title |

@@ -1,0 +1,56 @@
+---
+title: NetworkPane 网络面板
+description: HAR / Hex / PCAP / Cert / Cookie 5 个 tab 的网络抓包面板。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/networkpane/BasicVue.vue';
+
+## 基础用法
+
+预定义 5 个 tab（id：`har`、`hex`、`pcap`、`cert`、`cookie`），每个 tab 内容由消费方通过 named slot
+`#panel-{tabId}`（Vue）/ `slots["panel-{tabId}"]`（React）填入。也可通过 `tabs` prop 覆盖默认列表。
+
+来源：[`network.html`](https://github.com/chenqi92/chufix-design)。
+
+<DemoFrame
+  vueCode={`<CfNetworkPane>
+  <template #panel-har>...</template>
+  <template #panel-hex>...</template>
+</CfNetworkPane>`}
+  reactCode={`<CfNetworkPane slots={{
+  'panel-har': <PanelA />,
+  'panel-hex': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 真实内容拼装
+
+5 个 tab 各放对应原子：HAR Timeline 用 CfTimingBar；Hex Viewer 用 pre + 等宽字体；Cert 字段用 CfDescriptionList。
+
+import RealVue from '~/components/demos/networkpane/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfNetworkPane>
+  <template #panel-har>...</template>
+  ...
+</CfNetworkPane>`}
+  reactCode={`<CfNetworkPane slots={{...}} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | 第一个 tab id | 活动 tab |
+| `tabs` | `TemplatePaneTab[]` | 预设 | 自定义 tab 列表 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+预设的 tab id 列表导出为 `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS` 等常量，可在自定义 `tabs` 时直接拿来用。
+
+> 模版组件本质是 [`CfTabs`](/components/tabs/) 的语义薄壳。如果你不需要一组预定义 tab，直接用 CfTabs 即可。

@@ -1,0 +1,41 @@
+---
+title: Sankey diagram
+description: Weighted flow diagram with nodes and links — node height equals flow.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sankeydiagram/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props and rendered as pure SVG, with no third-party charting dependency.
+Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfSankeyDiagram ... />`}
+  reactCode={`<CfSankeyDiagram ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Three-layer purchase path
+
+Search engine / direct visit → product list / detail → add-to-cart / checkout, in three layers.
+
+import SimpleVue from '~/components/demos/sankeydiagram/SimpleVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSankeyDiagram :nodes="n" :links="l" />`}
+  reactCode={`<CfSankeyDiagram nodes={n} links={l} />`}
+>
+  <SimpleVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `nodes` | `SankeyNode[]` | `—` | &#123; id, name, layer?, colorIndex? &#125;[] |
+| `links` | `SankeyLink[]` | `—` | &#123; source, target, value &#125;[] |
+| `nodeWidth` | `number` | `12` | Node bar width |

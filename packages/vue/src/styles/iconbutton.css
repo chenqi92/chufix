@@ -1,0 +1,164 @@
+/* ChuFix IconButton — square / round, icon-only.
+ * Sizes follow density (control-h / -sm / -lg). Toggle uses aria-pressed. */
+
+.cf-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-6);
+  background: transparent;
+  color: var(--fg-2);
+  font: inherit;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition:
+    background var(--dur-instant) linear,
+    color var(--dur-instant) linear,
+    border-color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.cf-iconbtn:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+.cf-iconbtn:active {
+  background: var(--bg-3);
+}
+.cf-iconbtn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.cf-iconbtn:disabled,
+.cf-iconbtn[aria-disabled='true'] {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* sizes */
+.cf-iconbtn--sm {
+  width: var(--control-h-sm);
+  height: var(--control-h-sm);
+}
+.cf-iconbtn--md {
+  width: var(--control-h);
+  height: var(--control-h);
+}
+.cf-iconbtn--lg {
+  width: var(--control-h-lg);
+  height: var(--control-h-lg);
+}
+
+/* shape */
+.cf-iconbtn--round {
+  border-radius: var(--r-pill);
+}
+
+/* variants */
+.cf-iconbtn--default {
+  /* default ghost — already styled above */
+}
+.cf-iconbtn--primary {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-iconbtn--primary:hover {
+  background: var(--accent-2);
+  color: var(--fg-on-accent);
+}
+.cf-iconbtn--primary:active {
+  background: var(--accent-3);
+}
+.cf-iconbtn--danger {
+  color: var(--status-error);
+}
+.cf-iconbtn--danger:hover {
+  background: var(--status-error-soft);
+  color: var(--status-error);
+}
+.cf-iconbtn--danger:active {
+  background: var(--status-error-soft);
+}
+
+/* pressed (toggle) */
+.cf-iconbtn[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.cf-iconbtn--primary[aria-pressed='true'] {
+  background: var(--accent-3);
+  color: var(--fg-on-accent);
+}
+.cf-iconbtn--danger[aria-pressed='true'] {
+  background: var(--status-error-soft);
+  color: var(--status-error);
+}
+
+/* loading */
+.cf-iconbtn.is-loading {
+  color: transparent !important;
+  pointer-events: none;
+}
+.cf-iconbtn.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: cf-iconbtn-spin 0.7s linear infinite;
+  color: var(--fg-1);
+}
+.cf-iconbtn--primary.is-loading::after {
+  color: var(--fg-on-accent);
+}
+@keyframes cf-iconbtn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* svg icon sizing inside */
+.cf-iconbtn > svg {
+  width: 16px;
+  height: 16px;
+}
+.cf-iconbtn--sm > svg {
+  width: 14px;
+  height: 14px;
+}
+.cf-iconbtn--lg > svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* badge slot */
+.cf-iconbtn__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  border-radius: var(--r-pill);
+  font-size: var(--t-11);
+  line-height: 16px;
+  font-weight: var(--w-medium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  white-space: nowrap;
+}

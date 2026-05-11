@@ -1,0 +1,138 @@
+---
+title: Tag input
+description: Multi-tag input — Enter to add, Backspace to delete, paste to bulk-import.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/taginput/BasicVue.vue';
+import TonesVue from '~/components/demos/taginput/TonesVue.vue';
+import SeparatorsVue from '~/components/demos/taginput/SeparatorsVue.vue';
+import MaxValidateVue from '~/components/demos/taginput/MaxValidateVue.vue';
+
+## Basic usage
+
+`v-model` binds a `string[]`. Press `Enter` to commit a tag; with an empty input, `Backspace` removes the last tag; clicking the × on a tag also removes it.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfTagInput } from '@chufix-design/vue';
+
+const tags = ref<string[]>(['vue', 'react']);
+</script>
+
+<template>
+  <CfTagInput v-model="tags" placeholder="Type and press Enter" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfTagInput } from '@chufix-design/react';
+
+export default function Demo() {
+  const [tags, setTags] = useState<string[]>(['vue', 'react']);
+  return <CfTagInput value={tags} placeholder="Type and press Enter" onChange={setTags} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Tones
+
+`tone` controls the tag background, mapping to Tag's semantic colors one to one.
+
+<DemoFrame
+  vueCode={`<CfTagInput v-model="a" tone="neutral" />
+<CfTagInput v-model="b" tone="accent" />
+<CfTagInput v-model="c" tone="success" />
+<CfTagInput v-model="d" tone="warning" />
+<CfTagInput v-model="e" tone="danger" />`}
+  reactCode={`<CfTagInput value={a} tone="neutral" onChange={setA} />
+<CfTagInput value={b} tone="accent"  onChange={setB} />
+<CfTagInput value={c} tone="success" onChange={setC} />
+<CfTagInput value={d} tone="warning" onChange={setD} />
+<CfTagInput value={e} tone="danger"  onChange={setE} />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## Custom separators
+
+`separators` is an array of key names; pressing any of them commits the current draft as a tag. Comma / space / Tab can all be added. Pasting splits on `,`, `\\n`, and `\\t`.
+
+<DemoFrame
+  vueCode={`<CfTagInput
+  v-model="tags"
+  :separators="['Enter', ',', ' ']"
+  placeholder="Enter / comma / space all separate"
+/>`}
+  reactCode={`<CfTagInput
+  value={tags}
+  separators={['Enter', ',', ' ']}
+  placeholder="Enter / comma / space all separate"
+  onChange={setTags}
+/>`}
+>
+  <SeparatorsVue client:load />
+</DemoFrame>
+
+## Max count and validation
+
+`max` caps the total count; `validate` is a function returning `boolean` — invalid entries are silently dropped.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfTagInput } from '@chufix-design/vue';
+
+const tags = ref<string[]>([]);
+const isEmail = (t: string) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(t);
+</script>
+
+<template>
+  <CfTagInput
+    v-model="tags"
+    :max="5"
+    :validate="isEmail"
+    :separators="['Enter', ',', ' ']"
+    placeholder="Up to 5 email addresses"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfTagInput } from '@chufix-design/react';
+
+const isEmail = (t: string) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(t);
+
+export default function Demo() {
+  const [tags, setTags] = useState<string[]>([]);
+  return (
+    <CfTagInput
+      value={tags}
+      max={5}
+      validate={isEmail}
+      separators={['Enter', ',', ' ']}
+      placeholder="Up to 5 email addresses"
+      onChange={setTags}
+    />
+  );
+}`}
+>
+  <MaxValidateVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string[]` | `[]` | Current tag array |
+| `placeholder` | `string` | `'Type and press Enter'` | Placeholder, shown only when empty |
+| `variant` | `'outline' \| 'filled' \| 'ghost'` | `'outline'` | Visual mode |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `tone` | `'neutral' \| 'accent' \| 'success' \| 'warning' \| 'danger'` | `'neutral'` | Tag background |
+| `disabled` | `boolean` | `false` | Disabled |
+| `error` | `boolean` | `false` | Error state |
+| `max` | `number` | `—` | Maximum tag count |
+| `separators` | `string[]` | `['Enter']` | Keys that commit, may include `'Enter'`, `','`, `' '`, `'Tab'`, or any single char |
+| `unique` | `boolean` | `true` | Deduplicate; repeated entries are ignored |
+| `trim` | `boolean` | `true` | Trim before commit |
+| `validate` | `(tag) => boolean` | `—` | Entries returning `false` are dropped |
+
+Events: `update:modelValue` / `add` / `remove` (React: `onChange` / `onAdd` / `onRemove`).

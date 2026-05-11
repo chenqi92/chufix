@@ -12,6 +12,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
     checked,
     defaultChecked,
     onChange,
+    onCheckedChange,
     className,
     children,
     ...rest
@@ -25,6 +26,11 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (isInactive) return;
     if (!isControlled) setInternal(e.target.checked);
+    onCheckedChange?.(e.target.checked, {
+      event: e,
+      checked: e.target.checked,
+      name: e.target.name || undefined,
+    });
     onChange?.(e);
   }
 

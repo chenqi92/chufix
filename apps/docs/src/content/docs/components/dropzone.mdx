@@ -15,7 +15,7 @@ import ProgressVue from '~/components/demos/dropzone/ProgressVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfDropzone } from '@chufix/vue';
+import { CfDropzone } from '@chufix-design/vue';
 
 const files = ref<File[]>([]);
 </script>
@@ -24,7 +24,7 @@ const files = ref<File[]>([]);
   <CfDropzone v-model="files" hint="支持拖入或点击选择，多文件均可" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfDropzone } from '@chufix/react';
+import { CfDropzone } from '@chufix-design/react';
 
 export default function Demo() {
   const [files, setFiles] = useState<File[]>([]);
@@ -47,7 +47,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfDropzone, type DropzoneRejection } from '@chufix/vue';
+import { CfDropzone, type DropzoneRejection } from '@chufix-design/vue';
 
 const files = ref<File[]>([]);
 
@@ -67,7 +67,7 @@ function onReject(items: DropzoneRejection[]) {
   />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfDropzone, type DropzoneRejection } from '@chufix/react';
+import { CfDropzone, type DropzoneRejection } from '@chufix-design/react';
 
 export default function Demo() {
   const [files, setFiles] = useState<File[]>([]);
@@ -96,7 +96,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref, watch } from 'vue';
-import { CfDropzone, type DropzoneFileStatus } from '@chufix/vue';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix-design/vue';
 
 const files = ref<File[]>([]);
 const statuses = ref<DropzoneFileStatus[]>([]);
@@ -112,7 +112,7 @@ watch(files, (next) => {
   <CfDropzone v-model="files" :statuses="statuses" />
 </template>`}
   reactCode={`import { useState, useEffect } from 'react';
-import { CfDropzone, type DropzoneFileStatus } from '@chufix/react';
+import { CfDropzone, type DropzoneFileStatus } from '@chufix-design/react';
 
 export default function Demo() {
   const [files, setFiles] = useState<File[]>([]);
@@ -145,4 +145,4 @@ export default function Demo() {
 
 事件：`update:modelValue` / `change` / `reject` / `remove`（React 端：`onChange` / `onReject` / `onRemove`）。
 
-插槽：默认 slot 替换标题区域；`#icon` 替换上传图标。
+插槽：默认 slot 替换标题区域；`#icon` 替换默认上传插图（默认来自 `CfStatusIllustration variant="upload"`）。

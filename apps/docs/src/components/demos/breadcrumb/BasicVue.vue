@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfBreadcrumb } from '@chufix/vue';
+import { CfBreadcrumb } from '@chufix-design/vue';
 
 const items = [
   { label: '首页', href: '/' },

@@ -1,0 +1,70 @@
+/* ChuFix AnsiText — render terminal output with ANSI escape sequences. */
+
+.cf-ansi {
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--bg-inset);
+  color: var(--fg-1);
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  line-height: 18px;
+  border-radius: var(--r-6);
+  border: 1px solid var(--line-1);
+  overflow-x: auto;
+}
+.cf-ansi.is-pre {
+  white-space: pre;
+}
+.cf-ansi.is-wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cf-ansi--sm {
+  font-size: var(--t-12);
+  line-height: 16px;
+  padding: 10px 12px;
+}
+.cf-ansi--lg {
+  font-size: var(--t-14);
+  line-height: 20px;
+  padding: 14px 16px;
+}
+
+/* foreground colors */
+.cf-ansi__fg-black { color: oklch(20% 0 0); }
+.cf-ansi__fg-red { color: var(--status-error); }
+.cf-ansi__fg-green { color: var(--status-success); }
+.cf-ansi__fg-yellow { color: var(--status-warning); }
+.cf-ansi__fg-blue { color: oklch(60% 0.15 240); }
+.cf-ansi__fg-magenta { color: oklch(60% 0.18 320); }
+.cf-ansi__fg-cyan { color: oklch(72% 0.13 195); }
+.cf-ansi__fg-white { color: var(--fg-1); }
+
+.cf-ansi__fg-bright-black { color: var(--fg-3); }
+.cf-ansi__fg-bright-red { color: oklch(72% 0.18 22); }
+.cf-ansi__fg-bright-green { color: oklch(78% 0.15 152); }
+.cf-ansi__fg-bright-yellow { color: oklch(86% 0.13 78); }
+.cf-ansi__fg-bright-blue { color: oklch(72% 0.13 240); }
+.cf-ansi__fg-bright-magenta { color: oklch(74% 0.16 320); }
+.cf-ansi__fg-bright-cyan { color: oklch(82% 0.12 195); }
+.cf-ansi__fg-bright-white { color: oklch(99% 0 0); }
+
+/* background colors */
+.cf-ansi__bg-black { background-color: oklch(20% 0 0); }
+.cf-ansi__bg-red { background-color: var(--status-error-soft); }
+.cf-ansi__bg-green { background-color: var(--status-success-soft); }
+.cf-ansi__bg-yellow { background-color: var(--status-warning-soft); }
+.cf-ansi__bg-blue { background-color: oklch(60% 0.15 240 / 0.16); }
+.cf-ansi__bg-magenta { background-color: oklch(60% 0.18 320 / 0.16); }
+.cf-ansi__bg-cyan { background-color: oklch(72% 0.13 195 / 0.16); }
+.cf-ansi__bg-white { background-color: var(--bg-3); }
+
+/* style decorations */
+.cf-ansi__bold { font-weight: 700; }
+.cf-ansi__dim { opacity: 0.65; }
+.cf-ansi__italic { font-style: italic; }
+.cf-ansi__underline { text-decoration: underline; }
+.cf-ansi__inverse {
+  filter: invert(1);
+}

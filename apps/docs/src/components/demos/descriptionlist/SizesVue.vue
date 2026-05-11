@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDescriptionList } from '@chufix/vue';
+import { CfDescriptionList } from '@chufix-design/vue';
 
 const items = [
   { term: '总览', description: '在线 124 / 离线 8' },

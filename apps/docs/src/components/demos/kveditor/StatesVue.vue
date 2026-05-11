@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfKVEditor, type KVRow } from '@chufix/vue';
+import { CfKVEditor, type KVRow } from '@chufix-design/vue';
 
 const env = ref<KVRow[]>([
   { key: 'NODE_ENV', value: 'production', enabled: true },

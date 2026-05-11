@@ -1,0 +1,42 @@
+---
+title: Funnel chart
+description: Step-by-step narrowing conversion funnel with absolute values per step.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props. Pure SVG rendering, no third-party chart library dependency.
+Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfFunnelChart ... />`}
+  reactCode={`<CfFunnelChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Healthy vs leaky funnel
+
+A healthy funnel (30–50% drop per step) versus a leaky funnel (92% drop right after the first step).
+
+import CompareVue from '~/components/demos/funnelchart/CompareVue.vue';
+
+<DemoFrame
+  vueCode={`<CfFunnelChart :steps="good" />
+<CfFunnelChart :steps="bad" />`}
+  reactCode={`<CfFunnelChart steps={good} />
+<CfFunnelChart steps={bad} />`}
+>
+  <CompareVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `steps` | `FunnelStep[]` | `—` | &#123; label, value &#125;[]; values decrease from top to bottom |
+| `width / height / showLabels` | `` | `` |  |

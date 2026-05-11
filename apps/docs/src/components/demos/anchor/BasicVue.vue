@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAnchor, type AnchorItem } from '@chufix/vue';
+import { CfAnchor, type AnchorItem } from '@chufix-design/vue';
 
 const items: AnchorItem[] = [
   { href: '#anchor-intro', label: '概述' },

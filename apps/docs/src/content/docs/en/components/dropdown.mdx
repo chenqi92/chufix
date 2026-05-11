@@ -1,0 +1,95 @@
+---
+title: Dropdown
+description: Dropdown menu — Popover + list + keyboard navigation. Supports group headers, dividers, and danger semantics.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/dropdown/BasicVue.vue';
+
+## Basic usage
+
+`items` is an array of menu entries rendered in order. `divider: true` renders a separator; `header: true` renders a group title. Keyboard: `up/down` navigate, `Enter` / `Space` to select, `Esc` to close, `Home` / `End` to jump to first/last.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfButton, CfDropdown } from '@chufix-design/vue';
+import type { DropdownItem } from '@chufix-design/vue';
+
+const items: DropdownItem[] = [
+  { key: 'profile', label: 'Profile' },
+  { key: 'settings', label: 'Settings' },
+  { divider: true, label: '' },
+  { header: true, label: 'Actions' },
+  { key: 'rename', label: 'Rename' },
+  { key: 'archive', label: 'Archive', disabled: true },
+  { key: 'delete', label: 'Delete', tone: 'danger' },
+];
+
+function onSelect(item: DropdownItem) {
+  console.log('selected:', item.key);
+}
+</script>
+
+<template>
+  <CfDropdown :items="items" placement="bottom" @select="onSelect">
+    <CfButton variant="secondary">Actions ▾</CfButton>
+  </CfDropdown>
+</template>`}
+  reactCode={`import { CfButton, CfDropdown } from '@chufix-design/react';
+import type { DropdownItem } from '@chufix-design/react';
+
+const items: DropdownItem[] = [
+  { key: 'profile', label: 'Profile' },
+  { key: 'settings', label: 'Settings' },
+  { divider: true, label: '' },
+  { header: true, label: 'Actions' },
+  { key: 'rename', label: 'Rename' },
+  { key: 'archive', label: 'Archive', disabled: true },
+  { key: 'delete', label: 'Delete', tone: 'danger' },
+];
+
+export default function Demo() {
+  return (
+    <CfDropdown
+      items={items}
+      placement="bottom"
+      onSelect={(item) => console.log('selected:', item.key)}
+    >
+      <CfButton variant="secondary">Actions ▾</CfButton>
+    </CfDropdown>
+  );
+}`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API · Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `DropdownItem[]` | `[]` | Menu item array |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Preferred placement |
+| `offset` | `number` | `6` | Gap to the trigger (px) |
+| `closeOnSelect` | `boolean` | `true` | Close after select |
+| `disabled` | `boolean` | `false` | Disable trigger |
+| `width` | `number \| string` | `—` | Fixed width; auto if omitted |
+| `open` | `boolean` | `—` | For controlled use |
+
+## API · DropdownItem
+
+| Field | Type | Description |
+|---|---|---|
+| `key` | `string` | Unique id (recommended for routing in `select`) |
+| `label` | `string` | Display text |
+| `icon` | `string` | Optional leading icon (emoji or symbol) |
+| `disabled` | `boolean` | Disabled item |
+| `divider` | `boolean` | Render as separator |
+| `header` | `boolean` | Render as group header (non-clickable) |
+| `tone` | `'default' \| 'danger'` | Semantic color; `danger` for irreversible actions |
+
+## API · Events
+
+| Event | Args | Description |
+|---|---|---|
+| `select` (Vue) / `onSelect` (React) | `(item, index)` | Fires when an item is selected |
+| `update:open` (Vue) / `onOpenChange` (React) | `(open: boolean)` | Open state change |

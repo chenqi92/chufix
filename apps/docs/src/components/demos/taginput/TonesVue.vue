@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTagInput } from '@chufix/vue';
+import { CfTagInput } from '@chufix-design/vue';
 
 const a = ref<string[]>(['neutral']);
 const b = ref<string[]>(['accent', 'highlight']);

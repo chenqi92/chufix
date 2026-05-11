@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react';
 import {
   radioGroupClass,
+  type RadioChangeMeta,
   type RadioGroupProps,
   type RadioSize,
   type RadioValue,
@@ -11,7 +12,7 @@ export interface RadioGroupContextValue {
   name?: string;
   size: RadioSize;
   disabled: boolean;
-  select(v: RadioValue): void;
+  select(v: RadioValue, meta: RadioChangeMeta): void;
 }
 
 export const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);
@@ -33,9 +34,9 @@ export function RadioGroup(props: RadioGroupProps) {
   const [internal, setInternal] = useState<RadioValue>(defaultValue);
   const current = isControlled ? (value as RadioValue) : internal;
 
-  function select(v: RadioValue) {
+  function select(v: RadioValue, meta: RadioChangeMeta) {
     if (!isControlled) setInternal(v);
-    onChange?.(v);
+    onChange?.(v, meta);
   }
 
   return (

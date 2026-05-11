@@ -1,0 +1,58 @@
+---
+title: Protocol pane
+description: Protocol monitor shell with SSE / MQTT / Kafka / gRPC tabs.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/protocolpane/BasicVue.vue';
+
+## Basic usage
+
+4 predefined tabs (ids: `sse`, `mqtt`, `kafka`, `grpc`). Each tab's content is filled in by the consumer via the named slot
+`#panel-{tabId}` (Vue) / `slots["panel-{tabId}"]` (React). You can also override the default list via the `tabs` prop.
+
+Source: [`protocols.html`](https://github.com/chenqi92/chufix-design).
+
+<DemoFrame
+  vueCode={`<CfProtocolPane>
+  <template #panel-sse>...</template>
+  <template #panel-mqtt>...</template>
+</CfProtocolPane>`}
+  reactCode={`<CfProtocolPane slots={{
+  'panel-sse': <PanelA />,
+  'panel-mqtt': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Real content composition
+
+Replace the placeholders with concrete visualizations — one per tab: SSE timeline / MQTT topic tree / Kafka partition table / gRPC method list.
+
+import RealVue from '~/components/demos/protocolpane/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfProtocolPane>
+  <template #panel-sse><EventList /></template>
+  <template #panel-mqtt><CfTreeView ... /></template>
+  <template #panel-kafka><CfDataGrid ... /></template>
+  <template #panel-grpc><CfList ... /></template>
+</CfProtocolPane>`}
+  reactCode={`<CfProtocolPane slots={{...}} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | First tab id | Active tab |
+| `tabs` | `TemplatePaneTab[]` | preset | Custom tab list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+The preset tab id lists are exported as constants `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS`, ready to reuse when customizing `tabs`.
+
+> Template components are a thin semantic wrapper over [`CfTabs`](/components/tabs/). If you don't need a predefined tab set, use CfTabs directly.

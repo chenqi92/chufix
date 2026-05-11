@@ -4,6 +4,11 @@ export type DatePickerSize = 'sm' | 'md' | 'lg';
 export type DatePickerVariant = 'outline' | 'filled' | 'ghost';
 export type DatePickerView = 'day' | 'month' | 'year';
 
+export interface DatePickerPreset {
+  label: string;
+  value: Date | string | (() => Date | string);
+}
+
 export interface DatePickerProps {
   value?: DateLike;
   defaultValue?: DateLike;
@@ -22,6 +27,8 @@ export interface DatePickerProps {
   name?: string;
   id?: string;
   className?: string;
+  showWeekNumber?: boolean;
+  presets?: DatePickerPreset[];
   onChange?: (value: string | null, date: Date | null) => void;
 }
 

@@ -2,8 +2,11 @@
 import BaseLayout from './BaseLayout.astro';
 import SiteSidebar from '~/components/SiteSidebar.astro';
 import SiteToc from '~/components/SiteToc.astro';
+import DocComments from '~/components/DocComments.vue';
 import type { MarkdownHeading } from 'astro';
-import { sidebar } from '~/config/site';
+import { sidebar, site, pickLabel } from '~/config/site';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+import { t } from '~/i18n/strings';
 
 interface Props {
   title: string;
@@ -11,12 +14,27 @@ interface Props {
   headings?: MarkdownHeading[];
 }
 const { title, description, headings = [] } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
 
 const flat = sidebar.flatMap((g) => g.items);
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
-const idx = flat.findIndex((i) => (i.href.replace(/\/$/, '') || '/') === currentPath);
-const prev = idx > 0 ? flat[idx - 1] : null;
-const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
+
+// 把 sidebar 里 zh 的 href 升级为当前 locale 的 href，再做 prev/next 计算
+const flatLocalized = flat.map((item) => ({
+  href: prefixHref(item.href, locale),
+  label: pickLabel(item.label, locale),
+}));
+
+const idx = flatLocalized.findIndex((i) => (i.href.replace(/\/$/, '') || '/') === currentPath);
+const prev = idx > 0 ? flatLocalized[idx - 1] : null;
+const next = idx >= 0 && idx < flatLocalized.length - 1 ? flatLocalized[idx + 1] : null;
+
+const statusLabel = site.status.label[locale];
+const updatedLabel = t(locale, 'announce.updated');
+const npmUnpub = t(locale, 'announce.npmUnpub');
+const prevLabel = t(locale, 'docs.pager.prev');
+const nextLabel = t(locale, 'docs.pager.next');
+const commentsTitle = t(locale, 'docs.comments.title');
 ---
 
 <BaseLayout title={title} description={description}>
@@ -25,6 +43,11 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
     <main class="docs-main" data-docs-main>
       <article class="cf-prose">
         <header class="docs-header">
+          <div class="docs-header__meta">
+            <span>{statusLabel}</span>
+            <span>{updatedLabel} {site.status.updatedAt}</span>
+            {!site.status.npmPublished && <span>{npmUnpub}</span>}
+          </div>
           <h1>{title}</h1>
           {description && <p class="docs-header__lede">{description}</p>}
         </header>
@@ -34,17 +57,23 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
       <nav class="docs-pager">
         {prev ? (
           <a href={prev.href} class="docs-pager__link docs-pager__link--prev">
-            <span class="docs-pager__dir">← 上一篇</span>
+            <span class="docs-pager__dir">← {prevLabel}</span>
             <span class="docs-pager__label">{prev.label}</span>
           </a>
         ) : <span />}
         {next ? (
           <a href={next.href} class="docs-pager__link docs-pager__link--next">
-            <span class="docs-pager__dir">下一篇 →</span>
+            <span class="docs-pager__dir">{nextLabel} →</span>
             <span class="docs-pager__label">{next.label}</span>
           </a>
         ) : <span />}
       </nav>
+
+      <DocComments
+        client:load
+        page-id={currentPath}
+        title={`${title}${commentsTitle}`}
+      />
     </main>
     <SiteToc headings={headings} />
   </div>

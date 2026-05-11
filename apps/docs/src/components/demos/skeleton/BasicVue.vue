@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSkeleton } from '@chufix/vue';
+import { CfSkeleton } from '@chufix-design/vue';
 </script>
 
 <template>

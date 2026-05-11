@@ -1,11 +1,19 @@
+import type { FocusEventHandler } from 'react';
+
 export type SelectVariant = 'outline' | 'filled' | 'ghost';
 export type SelectSize = 'sm' | 'md' | 'lg';
-export type SelectValue = string | number | null;
+export type SelectSingleValue = string | number | null;
+export type SelectValue = SelectSingleValue | Array<string | number>;
 
 export interface SelectOption {
-  value: SelectValue;
+  value: string | number;
   label: string;
   disabled?: boolean;
+  group?: string;
+}
+
+export interface SelectChangeMeta {
+  option: SelectOption | null;
 }
 
 export interface SelectProps {
@@ -21,7 +29,19 @@ export interface SelectProps {
   name?: string;
   id?: string;
   className?: string;
-  onChange?: (value: SelectValue) => void;
+  multiple?: boolean;
+  searchable?: boolean;
+  loading?: boolean;
+  emptyText?: string;
+  maxTagCount?: number;
+  onChange?: (value: SelectValue, meta: SelectChangeMeta) => void;
+  onSelect?: (option: SelectOption) => void;
+  onClear?: () => void;
+  onOpenChange?: (open: boolean) => void;
+  onActiveChange?: (option: SelectOption | null, index: number) => void;
+  onSearch?: (term: string) => void;
+  onFocus?: FocusEventHandler<HTMLButtonElement>;
+  onBlur?: FocusEventHandler<HTMLButtonElement>;
 }
 
 export function selectClass(p: {
@@ -30,6 +50,7 @@ export function selectClass(p: {
   open: boolean;
   disabled: boolean;
   error: boolean;
+  multiple: boolean;
   className?: string;
 }): string {
   return [
@@ -39,6 +60,7 @@ export function selectClass(p: {
     p.open && 'is-open',
     p.disabled && 'is-disabled',
     p.error && 'is-error',
+    p.multiple && 'cf-select--multi',
     p.className,
   ]
     .filter(Boolean)

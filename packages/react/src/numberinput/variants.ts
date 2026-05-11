@@ -1,3 +1,5 @@
+import type { FocusEventHandler } from 'react';
+
 export type NumberInputSize = 'sm' | 'md' | 'lg';
 
 export interface NumberInputProps {
@@ -6,12 +8,35 @@ export interface NumberInputProps {
   placeholder?: string;
   size?: NumberInputSize;
   disabled?: boolean;
+  name?: string;
+  id?: string;
   min?: number;
   max?: number;
   step?: number;
   precision?: number;
   hideSteppers?: boolean;
-  onChange?: (v: number | null) => void;
+  onChange?: (v: number | null, meta: NumberInputChangeMeta) => void;
+  onInput?: (raw: string) => void;
+  onStep?: (v: number, meta: NumberInputStepMeta) => void;
+  onInvalid?: (meta: NumberInputInvalidMeta) => void;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
+}
+
+export type NumberInputChangeReason = 'commit' | 'blur' | 'enter' | 'step' | 'home' | 'end';
+
+export interface NumberInputChangeMeta {
+  raw: string;
+  reason: NumberInputChangeReason;
+}
+
+export interface NumberInputStepMeta {
+  direction: 1 | -1;
+}
+
+export interface NumberInputInvalidMeta {
+  raw: string;
+  reason: 'nan';
 }
 
 export function numberInputClass(p: { size: NumberInputSize }): string {

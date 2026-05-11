@@ -1,0 +1,99 @@
+---
+title: Alert
+description: Inline static message bar — 4 tones × 3 variants, with optional title, icon, and close button.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/alert/BasicVue.vue';
+import TonesVue from '~/components/demos/alert/TonesVue.vue';
+import VariantsVue from '~/components/demos/alert/VariantsVue.vue';
+import ClosableVue from '~/components/demos/alert/ClosableVue.vue';
+import NoIconVue from '~/components/demos/alert/NoIconVue.vue';
+
+## Basic usage
+
+Minimal form — a line of text with a status icon and an optional title.
+
+<DemoFrame
+  vueCode={`<CfAlert tone="info" title="A message">Here is some additional context.</CfAlert>`}
+  reactCode={`<CfAlert tone="info" title="A message">Here is some additional context.</CfAlert>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Four tones
+
+`tone` sets the semantic color — `info` / `success` / `warning` / `error`, mapped to the `--status-*` tokens. Each tone ships with a matching status icon.
+
+<DemoFrame
+  vueCode={`<CfAlert tone="info" title="A message">Blue</CfAlert>
+<CfAlert tone="success" title="Saved successfully">Green</CfAlert>
+<CfAlert tone="warning" title="Disk space is low">Yellow</CfAlert>
+<CfAlert tone="error" title="Cannot connect to the service">Red</CfAlert>`}
+  reactCode={`<CfAlert tone="info" title="A message">Blue</CfAlert>
+<CfAlert tone="success" title="Saved successfully">Green</CfAlert>
+<CfAlert tone="warning" title="Disk space is low">Yellow</CfAlert>
+<CfAlert tone="error" title="Cannot connect to the service">Red</CfAlert>`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## Three variants
+
+`variant` controls background and border: `soft` (tinted background, default, most common) / `outline` (transparent + border, the most restrained) / `solid` (filled background, the strongest).
+
+<DemoFrame
+  vueCode={`<CfAlert tone="success" variant="soft">soft — tinted background</CfAlert>
+<CfAlert tone="success" variant="outline">outline — transparent + matching border</CfAlert>
+<CfAlert tone="success" variant="solid">solid — filled background</CfAlert>`}
+  reactCode={`<CfAlert tone="success" variant="soft">soft</CfAlert>
+<CfAlert tone="success" variant="outline">outline</CfAlert>
+<CfAlert tone="success" variant="solid">solid</CfAlert>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Close button
+
+`closable` adds an × button on the right — clicking it removes the alert from the DOM and fires the `close` / `onClose` event.
+
+<DemoFrame
+  vueCode={`<CfAlert tone="warning" title="Closable" closable>
+  An × button appears on the right.
+</CfAlert>
+<CfAlert tone="info" closable>A closable alert without a title.</CfAlert>`}
+  reactCode={`<CfAlert tone="warning" title="Closable" closable>
+  An × button appears on the right.
+</CfAlert>
+<CfAlert tone="info" closable>A closable alert without a title.</CfAlert>`}
+>
+  <ClosableVue client:load />
+</DemoFrame>
+
+## Hide icon
+
+`icon={false}` drops the leading status icon — handy in dense text or inline form hints where space is tight.
+
+<DemoFrame
+  vueCode={`<CfAlert tone="info" :icon="false" title="No-icon variant">More compact</CfAlert>
+<CfAlert tone="success" :icon="false">Just a single line</CfAlert>`}
+  reactCode={`<CfAlert tone="info" icon={false} title="No-icon variant">More compact</CfAlert>
+<CfAlert tone="success" icon={false}>Just a single line</CfAlert>`}
+>
+  <NoIconVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tone` | `'info' \| 'success' \| 'warning' \| 'error'` | `'info'` | Semantic color |
+| `variant` | `'soft' \| 'outline' \| 'solid'` | `'soft'` | Visual variant |
+| `title` | `string` | — | Bold emphasis title |
+| `icon` | `boolean` | `true` | Whether to show the leading status icon |
+| `closable` | `boolean` | `false` | Whether to show the trailing × button |
+
+Events:
+
+- Vue: `@close` — fires when the user clicks the close button
+- React: `onClose` — same as above

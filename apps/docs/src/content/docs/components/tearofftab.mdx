@@ -1,0 +1,59 @@
+---
+title: TearOffTabs 可撕离 Tab
+description: Tab 拖拽超过阈值时触发 tear-off 事件；消费方决定是 spawn DetachedPanel 还是新窗口。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tearofftab/BasicVue.vue';
+
+## 基础用法
+
+普通 tabs + 拖拽手势。垂直拖动距离超过 `tearThreshold`（默认 60px）后触发 `tear-off(id, item, x, y)`。
+组件本身不实现窗口/面板创建，由消费方决定行为。
+
+<DemoFrame
+  vueCode={`<CfTearOffTabs
+  :tabs="tabs"
+  v-model="active"
+  @tear-off="(id) => spawnPanel(id)"
+  @close="(id) => removeTab(id)"
+>
+  <template #content-orders>orders.ts 内容</template>
+</CfTearOffTabs>`}
+  reactCode={`<CfTearOffTabs
+  tabs={tabs}
+  value={active}
+  onChange={setActive}
+  onTearOff={(id) => spawnPanel(id)}
+  onClose={(id) => removeTab(id)}
+  slots={{ 'content-orders': <pre>orders.ts</pre> }}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Tear-off 接 DetachedPanel
+
+把撕下的 tab 即刻 spawn 成 DetachedPanel；关闭面板时把 tab 还原回去。
+
+import PinVue from '~/components/demos/tearofftab/PinVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTearOffTabs ... @tear-off="tearOff" />
+<CfDetachedPanel ... @update:open="reattach" />`}
+  reactCode={`<CfTearOffTabs ... onTearOff={tearOff} />
+<CfDetachedPanel ... onOpenChange={reattach} />`}
+>
+  <PinVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `tabs` | `TearOffTabItem[]` | — | `{ id, title, contentKey?, modified?, closable? }` |
+| `modelValue` / `value` | `string` | 第一个 tab | 活动 tab id |
+| `tearThreshold` | `number` | `60` | 触发 tear-off 的垂直拖动距离 |
+
+事件：`update:modelValue` / `tear-off(id, item, x, y)` / `close(id, item)`。

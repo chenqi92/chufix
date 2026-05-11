@@ -1,13 +1,51 @@
-import '@chufix/tokens/tokens.css';
+import '@chufix-design/tokens/tokens.css';
+import './styles/a11y.css';
 import './styles/icon.css';
+import './styles/statusillustration.css';
 import './styles/button.css';
+import './styles/iconbutton.css';
+import './styles/toolbar.css';
+import './styles/colorswatch.css';
+import './styles/splitbutton.css';
+import './styles/confirmdialog.css';
+import './styles/hovercard.css';
+import './styles/contextmenu.css';
+import './styles/snackbar.css';
+import './styles/passwordstrength.css';
+import './styles/phoneinput.css';
+import './styles/rangeslider.css';
+import './styles/filepicker.css';
+import './styles/commandpalette.css';
+import './styles/protocolbadge.css';
+import './styles/statuscodebadge.css';
+import './styles/variableinput.css';
+import './styles/codeeditor.css';
+import './styles/diffeditor.css';
+import './styles/markdowneditor.css';
+import './styles/regexbuilder.css';
+import './styles/ansitext.css';
+import './styles/titlebar.css';
+import './styles/statusbar.css';
+import './styles/menubar.css';
+import './styles/notificationcenter.css';
+import './styles/globalsearch.css';
+import './styles/docklayout.css';
+import './styles/detachedpanel.css';
+import './styles/floatinginspector.css';
+import './styles/tearofftab.css';
+import './styles/templatepane.css';
+import './styles/charts.css';
 import './styles/input.css';
+import './styles/flex.css';
+import './styles/grid.css';
 import './styles/card.css';
 import './styles/switch.css';
 import './styles/checkbox.css';
 import './styles/radio.css';
 import './styles/textarea.css';
 import './styles/select.css';
+import './styles/treeselect.css';
+import './styles/iconpicker.css';
 import './styles/tooltip.css';
 import './styles/toast.css';
 import './styles/tag.css';
@@ -69,6 +107,9 @@ import './styles/affix.css';
 import './styles/watermark.css';
 import './styles/image.css';
 import './styles/timeline.css';
+import './styles/timelinegantt.css';
+import './styles/pivot.css';
+import './styles/spreadsheet.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -87,11 +128,12 @@ import './styles/timerangepicker.css';
 import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
+import './styles/map.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
  * their JSX and disambiguate against other UI libraries. Want short
- * names? Alias on import: `import { CfButton as Button } from '@chufix/react'`. */
+ * names? Alias on import: `import { CfButton as Button } from '@chufix-design/react'`. */
 
 export { Button as CfButton } from './button/Button';
 export type {
@@ -101,8 +143,380 @@ export type {
   ButtonShape,
 } from './button/variants';
 
+export { IconButton as CfIconButton } from './iconbutton/IconButton';
+export type {
+  IconButtonProps,
+  IconButtonOwnProps,
+  IconButtonVariant,
+  IconButtonSize,
+  IconButtonShape,
+} from './iconbutton/variants';
+
+export { StatusIllustration as CfStatusIllustration } from './statusillustration/StatusIllustration';
+export type {
+  StatusIllustrationProps,
+  StatusIllustrationSize,
+  StatusIllustrationVariant,
+} from './statusillustration/variants';
+
+export { Toolbar as CfToolbar, ToolbarSeparator as CfToolbarSeparator } from './toolbar/Toolbar';
+export type {
+  ToolbarProps,
+  ToolbarOwnProps,
+  ToolbarVariant,
+  ToolbarSize,
+  ToolbarOrientation,
+} from './toolbar/variants';
+
+export { ColorSwatch as CfColorSwatch } from './colorswatch/ColorSwatch';
+export type {
+  ColorSwatchProps,
+  ColorSwatchOwnProps,
+  ColorSwatchSize,
+  ColorSwatchShape,
+} from './colorswatch/variants';
+
+export { SplitButton as CfSplitButton } from './splitbutton/SplitButton';
+export type {
+  SplitButtonProps,
+  SplitButtonOwnProps,
+  SplitButtonItem,
+  SplitButtonVariant,
+  SplitButtonSize,
+} from './splitbutton/variants';
+
+export { ConfirmDialog as CfConfirmDialog } from './confirmdialog/ConfirmDialog';
+export type {
+  ConfirmDialogProps,
+  ConfirmTone,
+} from './confirmdialog/variants';
+
+export { HoverCard as CfHoverCard } from './hovercard/HoverCard';
+export type {
+  HoverCardProps,
+  HoverCardPlacement,
+  HoverCardSize,
+} from './hovercard/variants';
+
+export { ContextMenu as CfContextMenu } from './contextmenu/ContextMenu';
+export type {
+  ContextMenuProps,
+  ContextMenuItem,
+} from './contextmenu/variants';
+
+export { Snackbar as CfSnackbar } from './snackbar/Snackbar';
+export type {
+  SnackbarProps,
+  SnackbarTone,
+  SnackbarPlacement,
+} from './snackbar/variants';
+
+export { PasswordStrength as CfPasswordStrength } from './passwordstrength/PasswordStrength';
+export type {
+  PasswordStrengthProps,
+  PasswordStrengthSize,
+  PasswordRequirement,
+  StrengthLevel,
+} from './passwordstrength/variants';
+export { defaultRequirements as defaultPasswordRequirements } from './passwordstrength/variants';
+
+export { PhoneInput as CfPhoneInput } from './phoneinput/PhoneInput';
+export type {
+  PhoneInputProps,
+  PhoneInputSize,
+  CountryCode,
+} from './phoneinput/variants';
+export { defaultCountries } from './phoneinput/variants';
+
+export { RangeSlider as CfRangeSlider } from './rangeslider/RangeSlider';
+export type {
+  RangeSliderProps,
+  RangeSliderSize,
+  RangeSliderTone,
+  RangeValue,
+} from './rangeslider/variants';
+
+export { FilePicker as CfFilePicker } from './filepicker/FilePicker';
+export type {
+  FilePickerProps,
+  FilePickerSize,
+  FilePickerVariant,
+} from './filepicker/variants';
+
+export { CommandPalette as CfCommandPalette } from './commandpalette/CommandPalette';
+export type {
+  CommandPaletteProps,
+  CommandPaletteItem,
+} from './commandpalette/variants';
+
+export {
+  ProtocolBadge as CfProtocolBadge,
+  MethodBadge as CfMethodBadge,
+} from './protocolbadge/ProtocolBadge';
+export type {
+  ProtocolBadgeProps,
+  ProtocolBadgeSize,
+  ProtocolKind,
+} from './protocolbadge/variants';
+
+export { StatusCodeBadge as CfStatusCodeBadge } from './statuscodebadge/StatusCodeBadge';
+export type {
+  StatusCodeBadgeProps,
+  StatusCodeBadgeSize,
+  StatusClass,
+} from './statuscodebadge/variants';
+
+export { VariableAwareInput as CfVariableAwareInput } from './variableinput/VariableAwareInput';
+export type {
+  VariableAwareInputProps,
+  VariableAwareInputSize,
+  VariableAwareInputVariant,
+  Token as VariableAwareInputToken,
+} from './variableinput/variants';
+
+export { CodeEditor as CfCodeEditor } from './codeeditor/CodeEditor';
+export type {
+  CodeEditorProps,
+  CodeEditorSize,
+} from './codeeditor/variants';
+
+export { DiffEditor as CfDiffEditor } from './diffeditor/DiffEditor';
+export type {
+  DiffEditorProps,
+  DiffEditorSize,
+  DiffEditorMode,
+  DiffOp as DiffEditorOp,
+  DiffRow as DiffEditorRow,
+} from './diffeditor/variants';
+
+export { MarkdownEditor as CfMarkdownEditor } from './markdowneditor/MarkdownEditor';
+export type {
+  MarkdownEditorProps,
+  MarkdownEditorSize,
+  MarkdownEditorMode,
+} from './markdowneditor/variants';
+export { renderMarkdown as renderMarkdownDefault } from './markdowneditor/variants';
+
+export { RegexBuilder as CfRegexBuilder } from './regexbuilder/RegexBuilder';
+export type {
+  RegexBuilderProps,
+  RegexBuilderSize,
+  RegexFlag,
+  RegexMatch,
+  RegexResult,
+} from './regexbuilder/variants';
+
+export { AnsiText as CfAnsiText } from './ansitext/AnsiText';
+export type {
+  AnsiTextProps,
+  AnsiTextSize,
+  AnsiSpan,
+} from './ansitext/variants';
+
+export { TitleBar as CfTitleBar } from './titlebar/TitleBar';
+export type {
+  TitleBarProps,
+  TitleBarPlatform,
+  TitleBarSize,
+} from './titlebar/variants';
+
+export { StatusBar as CfStatusBar } from './statusbar/StatusBar';
+export type {
+  StatusBarProps,
+  StatusBarItem,
+  StatusBarTone,
+  StatusBarSize,
+} from './statusbar/variants';
+
+export { MenuBar as CfMenuBar } from './menubar/MenuBar';
+export type {
+  MenuBarProps,
+  MenuBarMenu,
+  MenuBarItem,
+} from './menubar/variants';
+
+export { NotificationCenter as CfNotificationCenter } from './notificationcenter/NotificationCenter';
+export type {
+  NotificationCenterProps,
+  NotificationItem,
+  NotificationTone,
+} from './notificationcenter/variants';
+
+export { GlobalSearch as CfGlobalSearch } from './globalsearch/GlobalSearch';
+export type {
+  GlobalSearchProps,
+  GlobalSearchResult,
+} from './globalsearch/variants';
+
+export { DockLayout as CfDockLayout } from './docklayout/DockLayout';
+export type {
+  DockLayoutProps,
+  DockGroup,
+  DockPanel,
+  DockOrientation,
+} from './docklayout/variants';
+
+export { DetachedPanel as CfDetachedPanel } from './detachedpanel/DetachedPanel';
+export type { DetachedPanelProps } from './detachedpanel/variants';
+
+export { FloatingInspector as CfFloatingInspector } from './floatinginspector/FloatingInspector';
+export type {
+  FloatingInspectorProps,
+  InspectorPlacement,
+} from './floatinginspector/variants';
+
+export { TearOffTabs as CfTearOffTabs } from './tearofftab/TearOffTabs';
+export type {
+  TearOffTabsProps,
+  TearOffTabItem,
+} from './tearofftab/variants';
+
+/* ── Template panes ── */
+export {
+  ProtocolPane as CfProtocolPane,
+  NetworkPane as CfNetworkPane,
+  SqlWorkbench as CfSqlWorkbench,
+  TerminalPane as CfTerminalPane,
+  CrashPane as CfCrashPane,
+  PluginPane as CfPluginPane,
+  DomainPane as CfDomainPane,
+  OnboardingFlow as CfOnboardingFlow,
+} from './templatepanes/Panes';
+export { TemplatePane as CfTemplatePane } from './templatepanes/TemplatePane';
+export type {
+  TemplatePaneProps,
+  TemplatePaneTab,
+} from './templatepanes/variants';
+export {
+  PROTOCOL_TABS,
+  NETWORK_TABS,
+  SQL_TABS,
+  TERMINAL_TABS,
+  CRASH_TABS,
+  PLUGIN_TABS,
+  DOMAIN_TABS,
+  ONBOARDING_TABS,
+} from './templatepanes/variants';
+
+/* ── Data viz · 22 chart components ── */
+export { Sparkline as CfSparkline } from './sparkline/Sparkline';
+export type { SparklineProps } from './sparkline/variants';
+
+export { LineChart as CfLineChart } from './linechart/LineChart';
+export type { LineChartProps, LineSeries } from './linechart/variants';
+
+export { AreaChart as CfAreaChart } from './areachart/AreaChart';
+export type { AreaChartProps, AreaSeries } from './areachart/variants';
+
+export { BarChart as CfBarChart } from './barchart/BarChart';
+export type { BarChartProps } from './barchart/variants';
+
+export { Histogram as CfHistogram } from './histogram/Histogram';
+export type { HistogramProps, HistogramBin } from './histogram/variants';
+
+export { StackedBar100 as CfStackedBar100 } from './stackedbar100/StackedBar100';
+export type {
+  StackedBar100Props,
+  StackedBar100Series,
+} from './stackedbar100/variants';
+
+export { BulletChart as CfBulletChart } from './bulletchart/BulletChart';
+export type { BulletChartProps } from './bulletchart/variants';
+
+export { CandlestickChart as CfCandlestickChart } from './candlestickchart/CandlestickChart';
+export type {
+  CandlestickChartProps,
+  Candle,
+} from './candlestickchart/variants';
+
+export { DonutChart as CfDonutChart } from './donutchart/DonutChart';
+export type { DonutChartProps, DonutSegment } from './donutchart/variants';
+
+export { FunnelChart as CfFunnelChart } from './funnelchart/FunnelChart';
+export type { FunnelChartProps, FunnelStep } from './funnelchart/variants';
+
+export { Treemap as CfTreemap } from './treemap/Treemap';
+export type { TreemapProps, TreemapNode } from './treemap/variants';
+
+export { SankeyDiagram as CfSankeyDiagram } from './sankeydiagram/SankeyDiagram';
+export type {
+  SankeyDiagramProps,
+  SankeyNode,
+  SankeyLink,
+} from './sankeydiagram/variants';
+
+export { ScatterPlot as CfScatterPlot } from './scatterplot/ScatterPlot';
+export type { ScatterPlotProps, ScatterPoint } from './scatterplot/variants';
+
+export { BoxPlot as CfBoxPlot } from './boxplot/BoxPlot';
+export type { BoxPlotProps, BoxStat } from './boxplot/variants';
+
+export { RadarChart as CfRadarChart } from './radarchart/RadarChart';
+export type { RadarChartProps, RadarSeries } from './radarchart/variants';
+
+export { RidgePlot as CfRidgePlot } from './ridgeplot/RidgePlot';
+export type { RidgePlotProps, RidgeRow } from './ridgeplot/variants';
+
+export { Gauge as CfGauge } from './gauge/Gauge';
+export type { GaugeProps } from './gauge/variants';
+
+export { MetricCard as CfMetricCard } from './metriccard/MetricCard';
+export type { MetricCardProps } from './metriccard/variants';
+
+export { TimingBar as CfTimingBar } from './timingbar/TimingBar';
+export type { TimingBarProps, TimingPhase } from './timingbar/variants';
+
+export { LatencyHeatmap as CfLatencyHeatmap } from './latencyheatmap/LatencyHeatmap';
+export type { LatencyHeatmapProps } from './latencyheatmap/variants';
+
+export { ConnectionGraph as CfConnectionGraph } from './connectiongraph/ConnectionGraph';
+export type {
+  ConnectionGraphProps,
+  GraphNode,
+  GraphEdge,
+} from './connectiongraph/variants';
+
+export { ChartCrosshair as CfChartCrosshair } from './chartcrosshair/ChartCrosshair';
+export type { ChartCrosshairProps } from './chartcrosshair/variants';
+
+export { ChartToolbar as CfChartToolbar } from './charttoolbar/ChartToolbar';
+export type {
+  ChartToolbarProps,
+  LegendSeries,
+} from './charttoolbar/variants';
+
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
+
+export { Flex as CfFlex } from './flex/Flex';
+export type {
+  FlexProps,
+  FlexOwnProps,
+  FlexDirection,
+  FlexAlign,
+  FlexJustify,
+  FlexGap,
+} from './flex/variants';
+
+export { Grid as CfGrid } from './grid/Grid';
+export { Row as CfRow } from './grid/Row';
+export { Col as CfCol } from './grid/Col';
+export type {
+  GridProps,
+  GridOwnProps,
+  GridGap,
+  GridAlign,
+  GridJustify,
+  RowProps,
+  RowOwnProps,
+  RowJustify,
+  RowAlign,
+  RowGutter,
+  ColProps,
+  ColOwnProps,
+  ColBreakpoint,
+  ColBreakpointConfig,
+} from './grid/variants';
 
 export {
   Card as CfCard,
@@ -113,10 +527,14 @@ export {
 export type { CardProps, CardVariant } from './card/variants';
 
 export { Switch as CfSwitch } from './switch/Switch';
-export type { SwitchProps, SwitchSize } from './switch/variants';
+export type { SwitchChangeMeta, SwitchProps, SwitchSize } from './switch/variants';
 
 export { Checkbox as CfCheckbox } from './checkbox/Checkbox';
-export type { CheckboxProps, CheckboxSize } from './checkbox/variants';
+export type {
+  CheckboxChangeMeta,
+  CheckboxProps,
+  CheckboxSize,
+} from './checkbox/variants';
 
 export { Radio as CfRadio } from './radio/Radio';
 export {
@@ -128,6 +546,7 @@ export type {
   RadioGroupProps,
   RadioSize,
   RadioValue,
+  RadioChangeMeta,
 } from './radio/variants';
 
 export { Textarea as CfTextarea } from './textarea/Textarea';
@@ -146,6 +565,21 @@ export type {
   SelectSize,
   SelectValue,
 } from './select/variants';
+
+export { TreeSelect as CfTreeSelect } from './treeselect/TreeSelect';
+export type {
+  TreeSelectProps,
+  TreeSelectOwnProps,
+  TreeSelectNode,
+  TreeSelectSize,
+} from './treeselect/variants';
+
+export { IconPicker as CfIconPicker } from './iconpicker/IconPicker';
+export type {
+  IconPickerProps,
+  IconPickerOwnProps,
+  IconPickerSize,
+} from './iconpicker/variants';
 
 export { Tooltip as CfTooltip } from './tooltip/Tooltip';
 export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
@@ -175,7 +609,10 @@ export type {
 } from './avatar/variants';
 
 export { Modal as CfModal } from './modal/Modal';
-export type { ModalProps, ModalSize } from './modal/variants';
+export type { ModalProps } from './modal/Modal';
+export type { ModalSize, ModalTone, FooterAlign } from './modal/variants';
+export { modal } from './modal/service';
+export type { ModalServiceOptions } from './modal/service';
 
 export { Tabs as CfTabs, TabPanel as CfTabPanel } from './tabs/Tabs';
 export type {
@@ -234,14 +671,24 @@ export type {
 } from './accordion/variants';
 
 export { Slider as CfSlider } from './slider/Slider';
-export type { SliderProps, SliderSize, SliderTone } from './slider/variants';
+export type {
+  SliderChangeMeta,
+  SliderChangeSource,
+  SliderProps,
+  SliderSize,
+  SliderTone,
+} from './slider/variants';
 
 export { Drawer as CfDrawer } from './drawer/Drawer';
+export type { DrawerProps } from './drawer/Drawer';
 export type {
-  DrawerProps,
   DrawerPlacement,
   DrawerSize,
+  DrawerTone,
+  DrawerFooterAlign,
 } from './drawer/variants';
+export { drawer } from './drawer/service';
+export type { DrawerServiceOptions } from './drawer/service';
 
 export { Popover as CfPopover } from './popover/Popover';
 export type {
@@ -263,7 +710,7 @@ export type {
   IconSize,
   IconStrokeWidth,
 } from './icon/variants';
-export type { IconName } from '@chufix/icons';
+export type { IconName } from '@chufix-design/icons';
 
 export { InputGroup as CfInputGroup } from './inputgroup/InputGroup';
 export type {
@@ -283,6 +730,11 @@ export type {
   FormFieldProps,
   FormLayout,
   FormSize,
+  FieldRule,
+  FieldRules,
+  FieldErrors,
+  FormHandle,
+  ValidateTrigger,
 } from './form/variants';
 
 export { Combobox as CfCombobox } from './combobox/Combobox';
@@ -324,6 +776,7 @@ export type {
   DatePickerSize,
   DatePickerVariant,
   DatePickerView,
+  DatePickerPreset,
 } from './datepicker/variants';
 export type { DateLike } from './datepicker/date';
 
@@ -437,10 +890,24 @@ export { Link as CfLink } from './link/Link';
 export type { LinkProps, LinkVariant, LinkSize } from './link/variants';
 
 export { InlineCode as CfInlineCode, CodeBlock as CfCodeBlock } from './code/Code';
+export { CodeWorkspace as CfCodeWorkspace } from './code/CodeWorkspace';
 export type {
   InlineCodeProps,
   CodeBlockProps,
   CodeBlockSize,
+  CodeBlockTone,
+  CodeWorkspaceFile,
+  CodeWorkspaceProps,
+  CodeTreeItem,
+} from './code/variants';
+export {
+  buildCodeTree,
+  codeFileId,
+  codeFileLanguage,
+  detectLanguageFromName,
+  escapeHtml as escapeCodeHtml,
+  highlightCode,
+  normalizeCodeIndent,
 } from './code/variants';
 
 export { AspectRatio as CfAspectRatio } from './aspectratio/AspectRatio';
@@ -528,6 +995,35 @@ export type {
   TimelineDotColor,
 } from './timeline/variants';
 
+export { TimelineGantt as CfTimelineGantt } from './timelinegantt/TimelineGantt';
+export type { TimelineGanttProps } from './timelinegantt/TimelineGantt';
+export type {
+  GanttRow,
+  GanttBar,
+  GanttDependency,
+  GanttUnit,
+  GanttSize,
+  GanttBarChangeMeta,
+} from './timelinegantt/variants';
+
+export { Pivot as CfPivot } from './pivot/Pivot';
+export type {
+  PivotProps,
+  PivotAggregator,
+  PivotSize,
+  PivotResult,
+} from './pivot/variants';
+export { pivotCompute, aggregate as pivotAggregate } from './pivot/variants';
+
+export { Spreadsheet as CfSpreadsheet } from './spreadsheet/Spreadsheet';
+export type { SpreadsheetProps } from './spreadsheet/Spreadsheet';
+export type {
+  SpreadsheetSize,
+  CellPos,
+  CellRange,
+} from './spreadsheet/variants';
+export { toA1, colLetter, rangeToTSV, tsvToData } from './spreadsheet/variants';
+
 export { Result as CfResult } from './result/Result';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';
 
@@ -597,3 +1093,17 @@ export type { TourProps, TourStep, TourPlacement } from './tour/variants';
 
 export { QRCode as CfQRCode } from './qrcode/QRCode';
 export type { QRCodeProps, QrEcc } from './qrcode/variants';
+
+export { Map as CfMap } from './map/Map';
+export type {
+  MapProps,
+  MapCoord,
+  MapMarker,
+  MapOverlay,
+  MapRoute,
+  MapViewport,
+  MapMarkerEvent,
+  MapOverlayEvent,
+  MapCanvasEvent,
+  MapTone,
+} from './map/variants';

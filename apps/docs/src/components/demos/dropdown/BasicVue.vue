@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CfButton, CfDropdown } from '@chufix/vue';
-import type { DropdownItem } from '@chufix/vue';
+import { CfButton, CfDropdown } from '@chufix-design/vue';
+import type { DropdownItem } from '@chufix-design/vue';
 
 const items: DropdownItem[] = [
   { key: 'profile', label: '个人资料' },

@@ -1,0 +1,61 @@
+---
+title: Pivot
+description: 2D aggregation table — sum / avg / count / min / max aggregators, built-in row/col totals, optional heatmap shading, cell drill-down.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pivot/BasicVue.vue';
+import HeatmapVue from '~/components/demos/pivot/HeatmapVue.vue';
+import DrillDownVue from '~/components/demos/pivot/DrillDownVue.vue';
+
+## Basic usage
+
+Group a flat array of objects by `rowField` (rows) and `colField` (columns), aggregating `valueField`. Row totals, column totals, and grand total are computed automatically.
+
+<DemoFrame>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Heatmap mode
+
+With `heatmap`, each cell is shaded with a translucent accent color proportional to its value (larger = deeper). Combined with different `aggregator` settings it gives an at-a-glance distribution view.
+
+<DemoFrame>
+  <HeatmapVue client:load />
+</DemoFrame>
+
+## Drill-down
+
+`onCellClick` receives `{ row, col, value, rows }` — `rows` is every source record that fell into this cell, ideal for triggering a drawer or modal with the underlying detail.
+
+<DemoFrame>
+  <DrillDownVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `T[]` | — | Flat data array |
+| `rowField` | `keyof T` | — | Row grouping field |
+| `colField` | `keyof T` | — | Column grouping field |
+| `valueField` | `keyof T` | — | Numeric field (omittable with `aggregator='count'`) |
+| `aggregator` | `'sum' \| 'avg' \| 'count' \| 'min' \| 'max'` | `'sum'` | Aggregation method |
+| `format` | `(value, { row, col }) => string` | — | Custom cell formatter |
+| `showTotals` | `boolean` | `true` | Render row + column totals |
+| `heatmap` | `boolean` | `false` | Shade cells by value |
+| `heatmapColor` | `string` | `var(--accent-1)` | Heatmap base color |
+| `caption` | `string` | — | Caption above the table |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+| `onCellClick` | `(cell) => void` | — | Cell click callback (receives source `rows`) |
+
+## Utility
+
+```ts
+import { pivotCompute, pivotAggregate } from '@chufix-design/vue';
+
+const result = pivotCompute(data, 'region', 'channel', 'amount', 'sum');
+// → { rowKeys, colKeys, cells, raw, rowTotals, colTotals, grandTotal, min, max }
+```
+
+`pivotCompute` is the same pure function the component uses internally — re-use it for CSV export, charting, or custom drill-down flows.

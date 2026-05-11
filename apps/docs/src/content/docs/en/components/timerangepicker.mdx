@@ -1,0 +1,33 @@
+---
+title: Time range picker
+description: Two TimePickers paired up to select a "start – end" time range.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timerangepicker/BasicVue.vue';
+
+## Basic usage
+
+`v-model` / `value` is `[string, string] | null`; each entry is `HH:mm` or `HH:mm:ss` (when `showSeconds` is on).
+
+<DemoFrame
+  vueCode={`<CfTimeRangePicker v-model="range" clearable />`}
+  reactCode={`<CfTimeRangePicker value={range} onChange={setRange} clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` / `modelValue` | `[string \| null, string \| null] \| null` | `—` | Controlled range value |
+| `defaultValue` | `[string \| null, string \| null] \| null` | `null` | Uncontrolled initial value |
+| `placeholder` | `[string, string]` | `['Start time', 'End time']` | Placeholders for both ends |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Trigger size |
+| `disabled` | `boolean` | `false` | Disable the whole group |
+| `clearable` | `boolean` | `false` | Show clear button |
+| `showSeconds` | `boolean` | `false` | Show seconds column |
+| `separator` | `string` | `'–'` | Separator between values |
+
+Events: `onChange(value)` fires whenever either end changes.

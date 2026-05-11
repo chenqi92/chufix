@@ -1,0 +1,59 @@
+---
+title: Regex builder
+description: Live compile + match testing with friendly error messages; flags toggled via chips.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/regexbuilder/BasicVue.vue';
+
+## Basic usage
+
+Type a pattern, pick flags, and matches in the test text are highlighted live.
+If the pattern fails to compile, the native `SyntaxError.message` is shown.
+
+<DemoFrame
+  vueCode={`<CfRegexBuilder
+  :pattern="pattern"
+  :flags="flags"
+  :test-text="text"
+  @update:pattern="setPattern"
+  @update:flags="setFlags"
+  @update:test-text="setText"
+/>`}
+  reactCode={`<CfRegexBuilder
+  pattern={pattern}
+  onPatternChange={setPattern}
+  flags={flags}
+  onFlagsChange={setFlags}
+  testText={text}
+  onTestTextChange={setText}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Compile errors
+
+Intentionally enter an invalid pattern (e.g. an unbalanced bracket) and the error message renders in a red box below the input.
+
+import ErrorVue from '~/components/demos/regexbuilder/ErrorVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRegexBuilder :pattern="'([unbalanced'" />`}
+  reactCode={`<CfRegexBuilder pattern="([unbalanced" />`}
+>
+  <ErrorVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `pattern` | `string` | `''` | |
+| `flags` | `string` | `'g'` | Any subset of: `g i m s u y` |
+| `testText` | `string` | `''` | |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `patternPlaceholder` / `testPlaceholder` | | | |
+
+> Safety: the component uses `new RegExp()` internally. Don't run untrusted user strings as patterns — ReDoS attacks are possible. The internal match loop is capped at 5000 hits.

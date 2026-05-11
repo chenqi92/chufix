@@ -1,0 +1,15 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BlockDetailBody from '~/components/BlockDetailBody.astro';
+import { blocks } from '~/blocks/registry';
+
+export async function getStaticPaths() {
+  return blocks.map((b) => ({ params: { block: b.id }, props: { block: b } }));
+}
+
+const { block } = Astro.props;
+---
+
+<BaseLayout title={block.name} description={block.description}>
+  <BlockDetailBody block={block} />
+</BaseLayout>

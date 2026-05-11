@@ -1,0 +1,112 @@
+---
+import CategoryTabs from '~/components/CategoryTabs.astro';
+import BlockPreview from '~/components/BlockPreview.vue';
+import { blocks } from '~/blocks/registry';
+import { CATEGORIES } from '~/blocks/types';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+
+const isEn = locale === 'en';
+const heroTitle = isEn ? 'Blocks · page templates' : 'Blocks 页面方案';
+const heroLede = isEn
+  ? "ChuFix isn't just atoms — these are full-page recipes assembled from atoms. Each block ships with its complete Vue source plus optional decomposition. Open the code panel and paste it into your own app."
+  : 'ChuFix 不只是 atoms — 这里是把 atoms 拼成完整页面的"成品菜谱"。每个 block 都包含完整 Vue 单文件 + 多文件分解（如有），点开看代码即可粘贴到自己应用里。';
+
+const grouped = CATEGORIES.map((cat) => ({
+  ...cat,
+  items: blocks.filter((b) => b.category === cat.id),
+}));
+const defaultCat = CATEGORIES[0].id;
+---
+
+<div class="blocks-page">
+  <header class="blocks-hero">
+    <h1 class="blocks-hero__title">{heroTitle}</h1>
+    <p class="blocks-hero__lede">{heroLede}</p>
+  </header>
+
+  <CategoryTabs tabs={grouped.map((g) => ({ id: g.id, label: g.label }))} defaultId={defaultCat}>
+    {grouped.map((g) => (
+      <div data-cat-panel={g.id} data-active={g.id === defaultCat ? 'true' : 'false'}>
+        <p class="blocks-page__cat-desc">{g.description}</p>
+        <div class="cf-gallery cf-gallery--masonry">
+          {g.items.map((b) => (
+            <article class={`cf-gallery-card block-card block-card--${b.category}`}>
+              <div class="cf-gallery-card__preview block-thumb" aria-hidden="true">
+                <div class="block-thumb__stage">
+                  <BlockPreview blockId={b.id} client:only="vue" />
+                </div>
+              </div>
+              <a class="cf-gallery-card__body" href={prefixHref(`/blocks/${b.id}/`, locale)}>
+                <div class="cf-gallery-card__name">{b.name}</div>
+                <div class="cf-gallery-card__desc">{b.description}</div>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
+  </CategoryTabs>
+</div>
+
+<style>
+  .blocks-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .blocks-page__cat-desc {
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    margin: 0 0 14px;
+  }
+  .cf-gallery--masonry {
+    display: block;
+    columns: 2 560px;
+    column-gap: 18px;
+  }
+  .block-card {
+    display: inline-flex;
+    width: 100%;
+    margin: 0 0 18px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .block-thumb {
+    height: auto;
+    min-height: 260px;
+    aspect-ratio: auto;
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+    background:
+      linear-gradient(180deg, color-mix(in oklch, var(--bg-inset), var(--accent-soft) 18%), var(--bg-inset)),
+      var(--bg-inset);
+  }
+  .block-thumb__stage {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    pointer-events: none;
+  }
+  .block-thumb__stage :global(.cf-block-preview-shell),
+  .block-thumb__stage :global(.cf-app-shell),
+  .block-thumb__stage :global(.cf-card),
+  .block-thumb__stage :global(.cf-page) {
+    box-shadow: none;
+  }
+  .cf-gallery-card {
+    cursor: default;
+  }
+  .cf-gallery-card__body {
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 760px) {
+    .cf-gallery--masonry {
+      columns: 1;
+    }
+  }
+</style>

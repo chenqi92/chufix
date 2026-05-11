@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfStatistic } from '@chufix/vue';
+import { CfStatistic } from '@chufix-design/vue';
 </script>
 
 <template>

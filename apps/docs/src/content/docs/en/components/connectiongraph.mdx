@@ -1,0 +1,41 @@
+---
+title: Connection graph
+description: Node-and-edge relationship graph. Nodes without explicit coordinates are evenly placed around a circle.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/connectiongraph/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props. Pure SVG rendering, no third-party chart library dependency.
+Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfConnectionGraph ... />`}
+  reactCode={`<CfConnectionGraph ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Microservice topology
+
+Seven services and seven edges showing a typical gateway dispatch pattern.
+
+import MicroservicesVue from '~/components/demos/connectiongraph/MicroservicesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfConnectionGraph :nodes="nodes" :edges="edges" />`}
+  reactCode={`<CfConnectionGraph nodes={nodes} edges={edges} />`}
+>
+  <MicroservicesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `nodes` | `GraphNode[]` | `—` | &#123; id, label, x?, y?, colorIndex?, size? &#125;[] |
+| `edges` | `GraphEdge[]` | `—` | &#123; source, target, weight?, colorIndex? &#125;[] |
+| `showLabels` | `boolean` | `true` |  |

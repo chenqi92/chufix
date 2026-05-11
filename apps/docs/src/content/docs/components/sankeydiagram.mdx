@@ -1,0 +1,41 @@
+---
+title: SankeyDiagram 流向图
+description: 节点 + 加权边的流向图，节点高度 = 流量。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sankeydiagram/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfSankeyDiagram ... />`}
+  reactCode={`<CfSankeyDiagram ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 购物路径 3 层
+
+搜索引擎 / 直接访问 → 产品列表 / 详情 → 加购 / 支付 三层流向。
+
+import SimpleVue from '~/components/demos/sankeydiagram/SimpleVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSankeyDiagram :nodes="n" :links="l" />`}
+  reactCode={`<CfSankeyDiagram nodes={n} links={l} />`}
+>
+  <SimpleVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `nodes` | `SankeyNode[]` | `—` | &#123; id, name, layer?, colorIndex? &#125;[] |
+| `links` | `SankeyLink[]` | `—` | &#123; source, target, value &#125;[] |
+| `nodeWidth` | `number` | `12` | 节点条宽 |

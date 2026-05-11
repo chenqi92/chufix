@@ -1,0 +1,45 @@
+---
+title: MarkdownEditor
+description: Built-in minimal markdown renderer with split / edit / preview modes. Pass a custom `render` for richer features.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/markdowneditor/BasicVue.vue';
+
+## Basic usage
+
+The built-in renderer supports: headings, bold / italic / inline code, fenced code blocks, ordered / unordered lists, blockquotes, `---` rules, and links.
+For richer needs (tables, task lists, extended syntax), pass a custom `render`.
+
+<DemoFrame
+  vueCode={`<CfMarkdownEditor v-model="md" :mode="mode" @update:mode="setMode" />`}
+  reactCode={`<CfMarkdownEditor value={md} onChange={setMd} mode={mode} onModeChange={setMode} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Read-only + size sm
+
+Combine `readOnly` with `size="sm"` for a compact preview panel (e.g. commit message preview).
+
+import SizesVue from '~/components/demos/markdowneditor/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfMarkdownEditor v-model="md" mode="preview" size="sm" read-only />`}
+  reactCode={`<CfMarkdownEditor value={md} onChange={set} mode="preview" size="sm" readOnly />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | Markdown source |
+| `mode` | `'split' \| 'edit' \| 'preview'` | `'split'` | |
+| `size` / `placeholder` / `rows` / `readOnly` | | | |
+| `render` | `(md: string) => string` | built-in | Custom renderer (returns HTML string) |
+
+> Note: this component's output is injected via `v-html` / `dangerouslySetInnerHTML`.
+> Sanitize user content first with `DOMPurify` or similar.

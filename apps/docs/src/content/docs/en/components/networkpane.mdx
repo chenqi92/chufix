@@ -1,0 +1,56 @@
+---
+title: NetworkPane
+description: Network capture pane with HAR / Hex / PCAP / Cert / Cookie tabs.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/networkpane/BasicVue.vue';
+
+## Basic usage
+
+Five predefined tabs (ids: `har`, `hex`, `pcap`, `cert`, `cookie`); the consumer fills each tab via a named slot
+`#panel-{tabId}` (Vue) / `slots["panel-{tabId}"]` (React). The default list can also be overridden with the `tabs` prop.
+
+Source: [`network.html`](https://github.com/chenqi92/chufix-design).
+
+<DemoFrame
+  vueCode={`<CfNetworkPane>
+  <template #panel-har>...</template>
+  <template #panel-hex>...</template>
+</CfNetworkPane>`}
+  reactCode={`<CfNetworkPane slots={{
+  'panel-har': <PanelA />,
+  'panel-hex': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Realistic composition
+
+Each of the 5 tabs hosts a corresponding atom: HAR Timeline uses CfTimingBar; the Hex Viewer uses `pre` + monospace font; cert fields use CfDescriptionList.
+
+import RealVue from '~/components/demos/networkpane/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfNetworkPane>
+  <template #panel-har>...</template>
+  ...
+</CfNetworkPane>`}
+  reactCode={`<CfNetworkPane slots={{...}} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | First tab id | Active tab |
+| `tabs` | `TemplatePaneTab[]` | preset | Custom tab list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+The preset tab-id lists are exported as constants `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS` etc., and can be reused directly in custom `tabs`.
+
+> Template components are essentially semantic shells over [`CfTabs`](/components/tabs/). If you don't need a predefined tab set, use CfTabs directly.

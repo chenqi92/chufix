@@ -1,0 +1,49 @@
+---
+title: Gauge
+description: Ring-style current-value gauge with four tones.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/gauge/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props. Pure SVG rendering, no third-party chart library dependency.
+Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfGauge ... />`}
+  reactCode={`<CfGauge ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Sweep angle
+
+`sweep` controls the size of the ring opening (180 = half circle, 270 = three-quarter, 360 = full circle).
+
+import SweepVue from '~/components/demos/gauge/SweepVue.vue';
+
+<DemoFrame
+  vueCode={`<CfGauge :value="42" :sweep="180" label="180°" unit="%" />
+<CfGauge :value="60" :sweep="270" label="270°" unit="%" />
+<CfGauge :value="78" :sweep="360" label="360°" unit="%" />`}
+  reactCode={`<CfGauge value={42} sweep={180} label="180°" unit="%" />
+<CfGauge value={60} sweep={270} label="270°" unit="%" />
+<CfGauge value={78} sweep={360} label="360°" unit="%" />`}
+>
+  <SweepVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | `—` | Current value |
+| `min / max` | `number` | `0 / 100` |  |
+| `size` | `number` | `160` | Diameter |
+| `thickness` | `number` | `10` | Ring thickness |
+| `sweep` | `number` | `270` | Sweep angle (180 = half, 270 = three-quarter, 360 = full circle) |
+| `tone` | `'accent' \| 'success' \| 'warning' \| 'error'` | `'accent'` |  |
+| `unit / label` | `string` | `—` |  |

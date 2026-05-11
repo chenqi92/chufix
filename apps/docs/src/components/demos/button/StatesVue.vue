@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfButton } from '@chufix/vue';
+import { CfButton } from '@chufix-design/vue';
 
 const loading = ref(false);
 async function load() {

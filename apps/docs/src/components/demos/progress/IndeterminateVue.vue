@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfProgress } from '@chufix/vue';
+import { CfProgress } from '@chufix-design/vue';
 </script>
 
 <template>

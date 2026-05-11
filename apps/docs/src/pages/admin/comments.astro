@@ -1,0 +1,13 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CommentsAdmin from '~/components/CommentsAdmin.vue';
+---
+
+<BaseLayout
+  title="评论审核"
+  description="ChuFix UI 文档评论的超管审核后台。"
+>
+  <main>
+    <CommentsAdmin client:load />
+  </main>
+</BaseLayout>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfKVEditor, type KVRow } from '@chufix/vue';
+import { CfKVEditor, type KVRow } from '@chufix-design/vue';
 
 const params = ref<KVRow[]>([
   { key: 'page', value: '1', enabled: true },

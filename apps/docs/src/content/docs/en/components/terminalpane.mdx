@@ -1,0 +1,39 @@
+---
+title: Terminal pane
+description: Terminal pane shell with three tabs — Terminal / Output / Command line.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/terminalpane/BasicVue.vue';
+
+## Basic usage
+
+Three predefined tabs (ids: `terminal`, `output`, `commandline`). Each tab body is provided by the consumer through named slots
+`#panel-{tabId}` (Vue) / `slots["panel-{tabId}"]` (React). The default list can be replaced via the `tabs` prop.
+
+Source: [`terminal.html`](https://github.com/chenqi92/chufix-design).
+
+<DemoFrame
+  vueCode={`<CfTerminalPane>
+  <template #panel-terminal>...</template>
+  <template #panel-output>...</template>
+</CfTerminalPane>`}
+  reactCode={`<CfTerminalPane slots={{
+  'panel-terminal': <PanelA />,
+  'panel-output': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | first tab id | Active tab |
+| `tabs` | `TemplatePaneTab[]` | preset | Custom tab list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+The preset tab id lists are exported as `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS` constants — drop them straight into a custom `tabs`.
+
+> Template components are essentially semantic wrappers around [`CfTabs`](/components/tabs/). If you don't need a predefined tab set, use `CfTabs` directly.

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTextarea } from '@chufix/vue';
+import { CfTextarea } from '@chufix-design/vue';
 
 const note = ref('');
 </script>

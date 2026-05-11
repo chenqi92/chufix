@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfHighlight, CfInput } from '@chufix/vue';
+import { CfHighlight, CfInput } from '@chufix-design/vue';
 
 const text =
   'ChuFix UI 是一个 Vue 3 与 React 双框架同源的基础组件库；CSS 变量主题、cf-* 类名前缀，纯 HTML/JS 项目也能直接用。';

@@ -1,0 +1,75 @@
+/* ChuFix ColorSwatch — single color block, click-to-pick.
+ * "add" variant draws a dashed plus tile for "add new color". */
+
+.cf-swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: box-shadow var(--dur-fast) linear,
+    border-color var(--dur-instant) linear,
+    color var(--dur-instant) linear;
+}
+.cf-swatch:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.cf-swatch:disabled,
+.cf-swatch[aria-disabled='true'] {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* sizes */
+.cf-swatch--sm {
+  width: 18px;
+  height: 18px;
+}
+.cf-swatch--md {
+  width: 24px;
+  height: 24px;
+}
+.cf-swatch--lg {
+  width: 32px;
+  height: 32px;
+}
+
+/* shape */
+.cf-swatch--round {
+  border-radius: var(--r-pill);
+}
+
+/* selected ring (matches design: bg-0 gap + accent ring) */
+.cf-swatch--selected {
+  box-shadow: 0 0 0 2px var(--bg-0), 0 0 0 3px var(--accent-1);
+}
+
+/* add variant — dashed border + plus icon */
+.cf-swatch--add {
+  background: transparent;
+  border: 1px dashed var(--line-2);
+  color: var(--fg-3);
+}
+.cf-swatch--add:hover {
+  border-color: var(--fg-2);
+  color: var(--fg-2);
+}
+
+.cf-swatch__plus {
+  width: 12px;
+  height: 12px;
+}
+.cf-swatch--lg .cf-swatch__plus {
+  width: 14px;
+  height: 14px;
+}

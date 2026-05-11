@@ -1,0 +1,28 @@
+---
+title: Text ellipsis
+description: Multi-line text truncation with ellipsis and an optional Expand / Collapse toggle.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/textellipsis/BasicVue.vue';
+
+## Basic usage
+
+Built on CSS `-webkit-line-clamp`. With `expandable`, a ResizeObserver detects overflow and only renders the "Expand" button when the text actually overflows.
+
+<DemoFrame
+  vueCode={`<CfTextEllipsis :text="long" :rows="2" expandable />`}
+  reactCode={`<CfTextEllipsis text={long} rows={2} expandable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `text` | `string` | `—` | Text content (slot/children also supported) |
+| `rows` | `number` | `2` | Maximum rows when collapsed |
+| `expandable` | `boolean` | `false` | Show Expand / Collapse button |
+| `expandText` | `string` | `'Expand'` | Expand button label |
+| `collapseText` | `string` | `'Collapse'` | Collapse button label |

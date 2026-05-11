@@ -1,0 +1,82 @@
+---
+title: Divider
+description: Horizontal or vertical divider with three line styles, optional label and alignment.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/divider/BasicVue.vue';
+import VariantsVue from '~/components/demos/divider/VariantsVue.vue';
+import AlignVue from '~/components/demos/divider/AlignVue.vue';
+import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
+
+## Basic usage
+
+Without props, renders a single horizontal solid line that separates surrounding content.
+
+<DemoFrame
+  vueCode={`<p>First paragraph</p>
+<CfDivider />
+<p>Second paragraph</p>`}
+  reactCode={`<p>First paragraph</p>
+<CfDivider />
+<p>Second paragraph</p>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Three line styles
+
+`variant` — `solid` (default), `dashed`, or `dotted`. The default slot becomes the inline label.
+
+<DemoFrame
+  vueCode={`<CfDivider variant="solid">solid</CfDivider>
+<CfDivider variant="dashed">dashed</CfDivider>
+<CfDivider variant="dotted">dotted</CfDivider>`}
+  reactCode={`<CfDivider variant="solid">solid</CfDivider>
+<CfDivider variant="dashed">dashed</CfDivider>
+<CfDivider variant="dotted">dotted</CfDivider>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Label alignment
+
+`align` — `start`, `center` (default), or `end`. Controls the horizontal position of the label.
+
+<DemoFrame
+  vueCode={`<CfDivider align="start">Start</CfDivider>
+<CfDivider align="center">Center</CfDivider>
+<CfDivider align="end">End</CfDivider>`}
+  reactCode={`<CfDivider align="start">Start</CfDivider>
+<CfDivider align="center">Center</CfDivider>
+<CfDivider align="end">End</CfDivider>`}
+>
+  <AlignVue client:load />
+</DemoFrame>
+
+## Vertical divider
+
+`orientation="vertical"` switches to a vertical line, useful for separating inline segments. Vertical also supports `variant`.
+
+<DemoFrame
+  vueCode={`<span>Left</span>
+<CfDivider orientation="vertical" />
+<span>Middle</span>
+<CfDivider orientation="vertical" variant="dashed" />
+<span>Right</span>`}
+  reactCode={`<span>Left</span>
+<CfDivider orientation="vertical" />
+<span>Middle</span>
+<CfDivider orientation="vertical" variant="dashed" />
+<span>Right</span>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction |
+| `variant` | `'solid' \| 'dashed' \| 'dotted'` | `'solid'` | Line style |
+| `align` | `'start' \| 'center' \| 'end'` | `'center'` | Label position (horizontal only) |

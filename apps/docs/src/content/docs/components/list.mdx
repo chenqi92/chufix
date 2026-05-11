@@ -15,7 +15,7 @@ import CardVue from '~/components/demos/list/CardVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfList, type ListItem } from '@chufix/vue';
+import { CfList, type ListItem } from '@chufix-design/vue';
 
 const value = ref<string | null>('alice');
 const items: ListItem[] = [
@@ -30,7 +30,7 @@ const items: ListItem[] = [
   <CfList v-model="value" selectable="single" :items="items" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfList, type ListItem } from '@chufix/react';
+import { CfList, type ListItem } from '@chufix-design/react';
 
 const items: ListItem[] = [/* ... */];
 

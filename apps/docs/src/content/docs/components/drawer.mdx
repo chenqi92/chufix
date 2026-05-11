@@ -1,6 +1,6 @@
 ---
 title: Drawer 抽屉
-description: Modal 的边缘变体 —— 从上下左右滑入，自带 portal / focus trap / 滚动锁 / Esc 关闭。
+description: 边缘锚定的滑入面板 —— 4 个方向、tone 变体、可缩放、异步确认、不锁背景模式、命令式服务、多抽屉栈管理。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
@@ -8,91 +8,66 @@ import BasicVue from '~/components/demos/drawer/BasicVue.vue';
 import PlacementVue from '~/components/demos/drawer/PlacementVue.vue';
 import SizesVue from '~/components/demos/drawer/SizesVue.vue';
 import NoCloseVue from '~/components/demos/drawer/NoCloseVue.vue';
+import TonesVue from '~/components/demos/drawer/TonesVue.vue';
+import AsyncVue from '~/components/demos/drawer/AsyncVue.vue';
+import ResizableVue from '~/components/demos/drawer/ResizableVue.vue';
+import ServiceVue from '~/components/demos/drawer/ServiceVue.vue';
+import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 
 ## 基础用法
 
 `v-model:open` (Vue) / `open + onOpenChange` (React) 双向绑定。Drawer 共用 Modal 的 portal / focus trap / body 滚动锁 / Esc 关闭基础设施。
 
-<DemoFrame
-  vueCode={`<script setup lang="ts">
-import { ref } from 'vue';
-import { CfButton, CfDrawer } from '@chufix/vue';
-
-const open = ref(false);
-</script>
-
-<template>
-  <CfButton @click="open = true">打开抽屉</CfButton>
-  <CfDrawer v-model:open="open" title="基础抽屉">
-    <p>从右侧滑入。按 Esc 或点击遮罩关闭。</p>
-    <template #footer>
-      <CfButton variant="ghost" @click="open = false">取消</CfButton>
-      <CfButton @click="open = false">确定</CfButton>
-    </template>
-  </CfDrawer>
-</template>`}
-  reactCode={`import { useState } from 'react';
-import { CfButton, CfDrawer } from '@chufix/react';
-
-export default function Demo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <CfButton onClick={() => setOpen(true)}>打开抽屉</CfButton>
-      <CfDrawer
-        open={open}
-        onOpenChange={setOpen}
-        title="基础抽屉"
-        footer={
-          <>
-            <CfButton variant="ghost" onClick={() => setOpen(false)}>取消</CfButton>
-            <CfButton onClick={() => setOpen(false)}>确定</CfButton>
-          </>
-        }
-      >
-        <p>从右侧滑入。</p>
-      </CfDrawer>
-    </>
-  );
-}`}
->
+<DemoFrame>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## 4 种滑入方向
 
-`placement` 决定从哪一边滑入 — 右（默认，最常见的详情侧栏）/ 左（移动端导航）/ 顶 / 底（中文输入面板风格的临时操作）。
+`placement` 决定从哪一边滑入 — 右（默认，最常见的详情侧栏）/ 左（移动端导航）/ 顶 / 底（playground 风格的临时操作）。
 
-<DemoFrame
-  vueCode={`<CfDrawer v-model:open="right" title="右侧抽屉" placement="right" />
-<CfDrawer v-model:open="left" title="左侧抽屉" placement="left" />
-<CfDrawer v-model:open="top" title="顶部抽屉" placement="top" />
-<CfDrawer v-model:open="bottom" title="底部抽屉" placement="bottom" />`}
-  reactCode={`<CfDrawer open={right} onOpenChange={setRight} title="右侧抽屉" placement="right" />
-<CfDrawer open={left} onOpenChange={setLeft} title="左侧抽屉" placement="left" />
-<CfDrawer open={top} onOpenChange={setTop} title="顶部抽屉" placement="top" />
-<CfDrawer open={bottom} onOpenChange={setBottom} title="底部抽屉" placement="bottom" />`}
->
+<DemoFrame>
   <PlacementVue client:only="vue" />
 </DemoFrame>
 
 ## 5 档尺寸
 
-`size` 控制抽屉宽度（左右 placement）或高度（上下 placement） — `sm` / `md`（默认）/ `lg` / `xl` / `full`（全屏）。
+`size` 控制抽屉宽度（左右 placement）或高度（上下 placement） — `sm` / `md`（默认）/ `lg` / `xl` / `full`（全屏）。`width` / `height` 也可以传具体像素值覆盖档位。
 
-<DemoFrame
-  vueCode={`<CfDrawer v-model:open="sm" title="size = sm" size="sm" />
-<CfDrawer v-model:open="md" title="size = md" size="md" />
-<CfDrawer v-model:open="lg" title="size = lg" size="lg" />
-<CfDrawer v-model:open="xl" title="size = xl" size="xl" />
-<CfDrawer v-model:open="full" title="size = full" size="full" />`}
-  reactCode={`<CfDrawer open={sm} onOpenChange={setSm} title="size = sm" size="sm" />
-<CfDrawer open={md} onOpenChange={setMd} title="size = md" size="md" />
-<CfDrawer open={lg} onOpenChange={setLg} title="size = lg" size="lg" />
-<CfDrawer open={xl} onOpenChange={setXl} title="size = xl" size="xl" />
-<CfDrawer open={full} onOpenChange={setFull} title="size = full" size="full" />`}
->
+<DemoFrame>
   <SizesVue client:only="vue" />
+</DemoFrame>
+
+## Tone 变体
+
+`tone="info | success | warning | error"` 给 header 加一个圆形 tone 图标 + 强调色。`tone="error"` 时默认 OK 按钮自动切到 danger 红。
+
+<DemoFrame>
+  <TonesVue client:only="vue" />
+</DemoFrame>
+
+## 内置 OK / Cancel + 异步确认
+
+直接传 `okText` / `cancelText`，组件渲染默认按钮组。`onBeforeOk` 接异步函数：返回 false / 抛错 → 阻止关闭并恢复 loading 态；正常 resolve → 关闭并发 `@ok` 事件。
+
+<DemoFrame>
+  <AsyncVue client:only="vue" />
+</DemoFrame>
+
+## 内边缘缩放
+
+`resizable` 让抽屉的内边缘变成拖拽把手 —— 用户可以横向（左右抽屉）或纵向（上下抽屉）调整尺寸。最小 240×160。
+
+<DemoFrame>
+  <ResizableVue client:only="vue" />
+</DemoFrame>
+
+## 不锁背景
+
+默认 `mask=true` 渲染遮罩并锁定 body 滚动。设置 `mask={false}` 后抽屉浮在原页面之上，遮罩不渲染、滚动也不锁，适合"参考资料"、"实时日志"这类常驻面板。
+
+<DemoFrame>
+  <NoMaskVue client:only="vue" />
 </DemoFrame>
 
 ## 锁死关闭路径
@@ -103,53 +78,68 @@ export default function Demo() {
 - `closeOnEsc={false}` —— Esc 不关
 - `showClose={false}` —— 隐藏右上角 ×
 
-<DemoFrame
-  vueCode={`<CfDrawer
-  v-model:open="open"
-  title="表单填写中"
-  :close-on-overlay="false"
-  :close-on-esc="false"
-  :show-close="false"
->
-  <template #footer>
-    <CfButton variant="ghost" @click="open = false">取消</CfButton>
-    <CfButton @click="open = false">提交</CfButton>
-  </template>
-</CfDrawer>`}
-  reactCode={`<CfDrawer
-  open={open}
-  onOpenChange={setOpen}
-  title="表单填写中"
-  closeOnOverlay={false}
-  closeOnEsc={false}
-  showClose={false}
-  footer={
-    <>
-      <CfButton variant="ghost" onClick={() => setOpen(false)}>取消</CfButton>
-      <CfButton onClick={() => setOpen(false)}>提交</CfButton>
-    </>
-  }
-/>`}
->
+异步态（`onBeforeOk` 进行中）会自动屏蔽所有关闭路径，不需要手动控制。
+
+<DemoFrame>
   <NoCloseVue client:only="vue" />
 </DemoFrame>
 
-## API · Props
+## 命令式服务
 
-| 属性 | 类型 | 默认值 | 说明 |
-|---|---|---|---|
-| `open` | `boolean` | `false` | 是否展开。Vue 用 `v-model:open`，React 用 `open + onOpenChange` |
+`drawer.open / confirm / danger` 直接弹一个抽屉并返回 `Promise<boolean>` —— 不需要任何状态绑定。
+
+```ts
+import { drawer } from '@chufix-design/vue'; // React 端：从 @chufix-design/react 导入
+
+const ok = await drawer.confirm({
+  title: '设置',
+  description: '快速调整服务参数',
+  placement: 'right',
+  content: SettingsForm, // 字符串 / 组件
+  onOk: async () => {
+    await api.save(); // throw 或 return false 阻止关闭
+  },
+});
+```
+
+<DemoFrame>
+  <ServiceVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `false` | 受控开关 |
+| `title` | `string` | — | header 标题 |
+| `description` | `string` | — | 标题下副标题 |
 | `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | 滑入方向 |
-| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | 左右控制宽度，上下控制高度 |
-| `title` | `string` | `—` | 标题文案，等价于具名 slot `header` |
-| `closeOnOverlay` | `boolean` | `true` | 点击遮罩关闭 |
-| `closeOnEsc` | `boolean` | `true` | Esc 关闭 |
-| `showClose` | `boolean` | `true` | 右上角关闭按钮 |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | 横向→宽度档位；纵向→高度档位 |
+| `tone` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'default'` | 视觉 tone + 自动图标 |
+| `width` | `number \| string` | — | 自定义宽度（左右 placement） |
+| `height` | `number \| string` | — | 自定义高度（上下 placement） |
+| `resizable` | `boolean` | `false` | 内边缘可拖拽缩放 |
+| `mask` | `boolean` | `true` | 是否渲染遮罩并锁滚动 |
+| `closeOnOverlay` | `boolean` | `true` | 点遮罩是否关闭 |
+| `closeOnEsc` | `boolean` | `true` | Esc 是否关闭 |
+| `showClose` | `boolean` | `true` | 右上角 × |
+| `footerAlign` | `'start' \| 'center' \| 'end' \| 'space-between'` | `'end'` | footer 对齐 |
+| `okText` / `cancelText` | `string` | — | 默认按钮文案；不传则不渲染默认按钮 |
+| `okVariant` | `'primary' \| 'danger' \| 'secondary'` | `'primary'` | 确认按钮样式 |
+| `onBeforeOk` | `() => boolean \| void \| Promise<...>` | — | 异步钩子；false / throw 阻止关闭 |
+| `to` | `string \| Element` | `'body'` | Teleport / Portal 目标 |
+| `zIndex` | `number` | 自动栈管理 | 自定义 z-index 起点 |
 
-## API · Slots / 子节点
+### 插槽 / 事件
 
-| 名称 | 说明 |
-|---|---|
-| `default` | 抽屉主体内容 |
-| `header` | 自定义标题区，覆盖 `title` |
-| `footer` | 底部操作区，通常放 取消 / 确定 按钮 |
+- Vue：`header` / 默认 / `footer` 三个具名插槽。`footer` 插槽接收 `{ ok, cancel, loading }` 用于自渲染按钮。
+- React：`header`、`footer`（可传 ReactNode 或 `({ ok, cancel, loading }) => ReactNode`）+ `children`。
+- 事件：`update:open` / `close` / `ok` / `cancel`。
+
+### 服务方法
+
+| 方法 | tone | 默认按钮 |
+| --- | --- | --- |
+| `drawer.open(opts)` | 跟 opts 一致 | 跟 opts |
+| `drawer.confirm(opts)` | warning | OK + Cancel |
+| `drawer.danger(opts)` | error | 红色 OK + Cancel |

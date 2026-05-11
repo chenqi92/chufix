@@ -37,7 +37,16 @@ for (const m of tokensSrc.matchAll(/(--[a-z0-9-]+)\s*:/gi)) {
 
 /* ── 2. allowlist for tokens defined elsewhere (e.g. inside component CSS itself) ── */
 const localAllow = new Set([
-  /* placeholders for component-scoped vars — declare them here if any */
+  /* component-scoped vars defined inline within their own .cf-* selector;
+   * they exist for inheritance/cascading inside the component, not as global tokens. */
+  '--cf-rs-track-h',
+  '--cf-rs-knob-size',
+  '--cf-status-accent',
+  '--cf-status-soft',
+  '--diff-add-bg',
+  '--diff-add-fg',
+  '--diff-del-bg',
+  '--diff-del-fg',
 ]);
 
 /* ── 3. walk style dirs ── */

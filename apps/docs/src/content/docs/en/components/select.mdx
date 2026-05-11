@@ -1,0 +1,194 @@
+---
+title: Select
+description: Dropdown picker — single/multi, searchable, grouped, async loading, keyboard nav, tag overflow.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/select/BasicVue.vue';
+import VariantsVue from '~/components/demos/select/VariantsVue.vue';
+import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+import EventsVue from '~/components/demos/select/EventsVue.vue';
+import MultiVue from '~/components/demos/select/MultiVue.vue';
+import SearchVue from '~/components/demos/select/SearchVue.vue';
+import GroupVue from '~/components/demos/select/GroupVue.vue';
+import AsyncLoadVue from '~/components/demos/select/AsyncLoadVue.vue';
+
+## Basic usage
+
+Pass an `options` array; each item needs at least `value` and `label`.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSelect, type SelectOption } from '@chufix-design/vue';
+
+const options: SelectOption[] = [
+  { value: 'beijing', label: 'Beijing' },
+  { value: 'shanghai', label: 'Shanghai' },
+  { value: 'guangzhou', label: 'Guangzhou' },
+];
+
+const city = ref<string | null>('shanghai');
+</script>
+
+<template>
+  <CfSelect v-model="city" :options="options" placeholder="Pick a city" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSelect, type SelectOption } from '@chufix-design/react';
+
+const options: SelectOption[] = [
+  { value: 'beijing', label: 'Beijing' },
+  { value: 'shanghai', label: 'Shanghai' },
+  { value: 'guangzhou', label: 'Guangzhou' },
+];
+
+export default function Demo() {
+  const [city, setCity] = useState<string | null>('shanghai');
+  return (
+    <CfSelect
+      value={city}
+      options={options}
+      placeholder="Pick a city"
+      onChange={(v) => setCity(v as string | null)}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants
+
+Three variants matching Input: `outline` (default) / `filled` / `ghost`.
+
+<DemoFrame
+  vueCode={`<CfSelect v-model="v1" :options="options" variant="outline" />
+<CfSelect v-model="v2" :options="options" variant="filled" />
+<CfSelect v-model="v3" :options="options" variant="ghost" />`}
+  reactCode={`<CfSelect value={v1} options={options} variant="outline" onChange={setV1} />
+<CfSelect value={v2} options={options} variant="filled" onChange={setV2} />
+<CfSelect value={v3} options={options} variant="ghost" onChange={setV3} />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## States and clearable
+
+`clearable` shows × when a value is selected; `disabled` disables the whole control; `error` switches the border to the error color. Individual options can have `disabled: true` to be skipped.
+
+<DemoFrame
+  vueCode={`<CfSelect v-model="a" :options="options" placeholder="Clearable" clearable />
+<CfSelect v-model="b" :options="options" placeholder="Disabled" disabled />
+<CfSelect v-model="b" :options="options" placeholder="Error state" error />`}
+  reactCode={`<CfSelect value={a} options={options} clearable onChange={setA} />
+<CfSelect value={b} options={options} disabled />
+<CfSelect value={b} options={options} error />`}
+>
+  <AdvancedVue client:load />
+</DemoFrame>
+
+## Events and forms
+
+Beyond value changes, `Select` exposes events for open state, active option, clear, and focus. When you pass `name`, it syncs a hidden input so the current value is submitted with native forms.
+
+<DemoFrame
+  vueCode={`<CfSelect
+  v-model="value"
+  :options="options"
+  clearable
+  name="status"
+  @change="(value, meta) => console.log(value, meta.option)"
+  @select="(option) => console.log('select', option)"
+  @clear="() => console.log('clear')"
+  @open-change="(open) => console.log('open', open)"
+  @active-change="(option, index) => console.log(option, index)"
+/>`}
+  reactCode={`<CfSelect
+  value={value}
+  options={options}
+  clearable
+  name="status"
+  onChange={(value, meta) => console.log(value, meta.option)}
+  onSelect={(option) => console.log('select', option)}
+  onClear={() => console.log('clear')}
+  onOpenChange={(open) => console.log('open', open)}
+  onActiveChange={(option, index) => console.log(option, index)}
+/>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
+## Multiple
+
+`multiple` turns the model into an array; the trigger renders removable tag chips. `maxTagCount` collapses overflow into a `+N` pill. Backspace removes the last tag.
+
+<DemoFrame>
+  <MultiVue client:only="vue" />
+</DemoFrame>
+
+## Searchable
+
+`searchable` adds an input atop the menu that filters by label in real time. Stacks with `multiple` for traditional multi-select UX.
+
+<DemoFrame>
+  <SearchVue client:only="vue" />
+</DemoFrame>
+
+## Groups
+
+Add `group: string` to an option and the component renders a section header per group (in first-encounter order).
+
+<DemoFrame>
+  <GroupVue client:only="vue" />
+</DemoFrame>
+
+## Async loading
+
+When `loading=true` the trigger is disabled and shows a spinner; the menu shows "Loading…". Pair with onMounted / SWR / TanStack Query.
+
+<DemoFrame>
+  <AsyncLoadVue client:only="vue" />
+</DemoFrame>
+
+## Keyboard interaction
+
+| Key              | Behavior                                  |
+| ---------------- | ----------------------------------------- |
+| `↓` / `↑`        | Open the menu / move active among options |
+| `Enter` / `Space`| Open the menu / select the active option  |
+| `Esc`            | Close the menu                            |
+| `Tab`            | Close the menu and return focus to the browser |
+
+## API
+
+| Prop          | Type                               | Default      | Description                                     |
+| ------------- | ---------------------------------- | ------------ | ----------------------------------------------- |
+| `options`     | `SelectOption[]`                   | `[]`         | Option array, `{ value, label, disabled? }`     |
+| `placeholder` | `string`                           | `'Select'`   | Shown when no value is selected                 |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'` | `'outline'`  | Visual variant                                  |
+| `size`        | `'sm' \| 'md' \| 'lg'`             | `'md'`       | Overall size                                    |
+| `clearable`   | `boolean`                          | `false`      | Show clear button when a value is selected      |
+| `disabled`    | `boolean`                          | `false`      | Disable the whole control                       |
+| `error`       | `boolean`                          | `false`      | Error state                                     |
+| `name`        | `string`                           | —            | Renders a hidden input for native form submit   |
+| `id`          | `string`                           | —            | Trigger button id, also wires up the listbox    |
+| `multiple`    | `boolean`                          | `false`      | Multi-select; model becomes `Array<value>`      |
+| `searchable`  | `boolean`                          | `false`      | Adds a filter input above the menu              |
+| `loading`     | `boolean`                          | `false`      | Async loading state (trigger disabled + spinner)|
+| `emptyText`   | `string`                           | `'No options'`| Override the empty-state message               |
+| `maxTagCount` | `number`                           | —            | Cap visible tags in multi-mode; rest collapse   |
+
+## Events
+
+| Vue event | React callback | payload | Description |
+|---|---|---|---|
+| `change` | `onChange` | `(value, { option })` | Value changed; on clear, `option` is `null` |
+| `select` | `onSelect` | `option` | An option was selected |
+| `clear` | `onClear` | — | Clear button clicked |
+| `open-change` | `onOpenChange` | `open` | Menu opened / closed |
+| `active-change` | `onActiveChange` | `(option, index)` | Keyboard or mouse moved the active option |
+| `search` | `onSearch` | `term` | Search input changed (only when `searchable=true`) |
+| `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | Trigger button focus events |
+
+> The current implementation uses an `position: absolute` overlay. If a parent has `overflow: hidden` and crops the menu, a Portal version will be added later.

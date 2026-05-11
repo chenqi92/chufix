@@ -1,0 +1,54 @@
+---
+title: DetachedPanel 浮动面板
+description: 可拖拽的浮动面板，Teleport 到 body。配合 TearOffTab / DockLayout 的 detach 动作使用。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/detachedpanel/BasicVue.vue';
+
+## 基础用法
+
+按住头部即可拖动；`resizable` 启用浏览器原生 resize。Tauri / Electron 场景里把它转成独立 window 时只需在
+`tear-off` 事件里 spawn 一个新 BrowserWindow / WebView。
+
+<DemoFrame
+  vueCode={`<CfDetachedPanel v-model:open="open" title="Inspector" :width="320">
+  <div>面板内容…</div>
+</CfDetachedPanel>`}
+  reactCode={`<CfDetachedPanel open={open} onOpenChange={setOpen} title="Inspector" width={320}>
+  <div>面板内容…</div>
+</CfDetachedPanel>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## 多面板共存
+
+可同时打开多个 DetachedPanel；通过 `zIndex` 显式分层。`resizable=true` 启用浏览器原生 resize 句柄。
+
+import MultipleVue from '~/components/demos/detachedpanel/MultipleVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDetachedPanel v-model:open="a" :width="280" />
+<CfDetachedPanel v-model:open="b" resizable />`}
+  reactCode={`<CfDetachedPanel open={a} onOpenChange={setA} width={280} />
+<CfDetachedPanel open={b} onOpenChange={setB} resizable />`}
+>
+  <MultipleVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `open` / `v-model:open` | `boolean` | `false` | |
+| `title` | `string` | — | 头部标题 |
+| `x` / `y` | `number` | 自动 | 初始位置 |
+| `width` / `height` | `number \| string` | `360 / 240` | |
+| `resizable` | `boolean` | `false` | 启用原生 resize 句柄 |
+| `closable` | `boolean` | `true` | |
+| `to` | `string` | `'body'` | Teleport 目标 |
+| `zIndex` | `number` | — | |
+
+事件：`update:open` / `move(x, y)`。

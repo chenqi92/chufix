@@ -17,6 +17,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       checked,
       defaultChecked,
       onChange,
+      onCheckedChange,
       className,
       children,
       ...rest
@@ -36,6 +37,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
       if (disabled) return;
       if (!isControlled) setInternal(e.target.checked);
+      onCheckedChange?.(e.target.checked, {
+        event: e,
+        checked: e.target.checked,
+        indeterminate,
+        value: e.target.value,
+        name: e.target.name || undefined,
+      });
       onChange?.(e);
     }
 

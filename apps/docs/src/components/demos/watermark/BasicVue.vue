@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfWatermark } from '@chufix/vue';
+import { CfWatermark } from '@chufix-design/vue';
 </script>
 
 <template>

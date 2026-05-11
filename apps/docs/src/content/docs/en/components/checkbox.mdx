@@ -1,0 +1,122 @@
+---
+title: Checkbox
+description: Checkbox — 3 sizes, indeterminate state, with native input semantics preserved.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/checkbox/BasicVue.vue';
+import SizesVue from '~/components/demos/checkbox/SizesVue.vue';
+import IndeterminateVue from '~/components/demos/checkbox/IndeterminateVue.vue';
+
+## Basic usage
+
+It's a real `<CfInput type="checkbox">` underneath, so keyboard, form, and screen-reader behavior all work out of the box.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfCheckbox } from '@chufix-design/vue';
+
+const agree = ref(false);
+</script>
+
+<template>
+  <CfCheckbox v-model="agree">I agree to the terms of service</CfCheckbox>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfCheckbox } from '@chufix-design/react';
+
+export default function Demo() {
+  const [agree, setAgree] = useState(false);
+  return (
+    <CfCheckbox checked={agree} onChange={(e) => setAgree(e.target.checked)}>
+      I agree to the terms of service
+    </CfCheckbox>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Sizes and disabled
+
+<DemoFrame
+  vueCode={`<CfCheckbox size="sm" :model-value="true">sm checked</CfCheckbox>
+<CfCheckbox size="md" :model-value="true">md checked</CfCheckbox>
+<CfCheckbox size="lg" :model-value="true">lg checked</CfCheckbox>
+<CfCheckbox disabled>Disabled</CfCheckbox>
+<CfCheckbox disabled :model-value="true">Disabled checked</CfCheckbox>`}
+  reactCode={`<CfCheckbox size="sm" defaultChecked>sm checked</CfCheckbox>
+<CfCheckbox size="md" defaultChecked>md checked</CfCheckbox>
+<CfCheckbox size="lg" defaultChecked>lg checked</CfCheckbox>
+<CfCheckbox disabled>Disabled</CfCheckbox>
+<CfCheckbox disabled defaultChecked>Disabled checked</CfCheckbox>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Indeterminate
+
+`indeterminate` is purely a visual state — it doesn't affect the actual `checked` value. Common use: a parent "select all" checkbox when only some children are checked.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { CfCheckbox } from '@chufix-design/vue';
+
+const apple = ref(true);
+const banana = ref(false);
+const cherry = ref(false);
+
+const count = computed(
+  () => [apple.value, banana.value, cherry.value].filter(Boolean).length,
+);
+const all = computed({
+  get: () => count.value === 3,
+  set(v) { apple.value = v; banana.value = v; cherry.value = v; },
+});
+const indeterminate = computed(() => count.value > 0 && count.value < 3);
+</script>
+
+<template>
+  <CfCheckbox v-model="all" :indeterminate="indeterminate">Select all</CfCheckbox>
+  <CfCheckbox v-model="apple">Apple</CfCheckbox>
+  <CfCheckbox v-model="banana">Banana</CfCheckbox>
+  <CfCheckbox v-model="cherry">Cherry</CfCheckbox>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfCheckbox } from '@chufix-design/react';
+
+export default function Demo() {
+  const [apple, setApple] = useState(true);
+  const [banana, setBanana] = useState(false);
+  const [cherry, setCherry] = useState(false);
+  const count = [apple, banana, cherry].filter(Boolean).length;
+
+  return (
+    <>
+      <CfCheckbox
+        checked={count === 3}
+        indeterminate={count > 0 && count < 3}
+        onChange={(e) => {
+          const v = e.target.checked;
+          setApple(v); setBanana(v); setCherry(v);
+        }}
+      >Select all</CfCheckbox>
+      <CfCheckbox checked={apple} onChange={(e) => setApple(e.target.checked)}>Apple</CfCheckbox>
+      <CfCheckbox checked={banana} onChange={(e) => setBanana(e.target.checked)}>Banana</CfCheckbox>
+      <CfCheckbox checked={cherry} onChange={(e) => setCherry(e.target.checked)}>Cherry</CfCheckbox>
+    </>
+  );
+}`}
+>
+  <IndeterminateVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop            | Type                   | Default | Description                          |
+| --------------- | ---------------------- | ------- | --------------------------------- |
+| `size`          | `'sm' \| 'md' \| 'lg'` | `'md'`  | Overall size                      |
+| `disabled`      | `boolean`              | `false` | Disabled                          |
+| `indeterminate` | `boolean`              | `false` | Indeterminate (visual only, doesn't affect `checked`) |

@@ -1,0 +1,50 @@
+---
+title: CodeEditor
+description: Lightweight code-editing container — textarea + line numbers + Tab indentation. Reach for Monaco / CodeMirror when you need full syntax / completion.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/codeeditor/BasicVue.vue';
+
+## Basic usage
+
+It's positioned as "visual container + light interactions": line numbers, Tab indentation, end-of-line preservation, and full ARIA labeling — but no built-in syntax highlighting.
+For highlighting, wrap an overlay around it on the consumer side (see the overlay technique used in VariableAwareInput).
+
+<DemoFrame
+  vueCode={`<CfCodeEditor v-model="code" language="typescript" :rows="12" />`}
+  reactCode={`<CfCodeEditor value={code} onChange={setCode} language="typescript" rows={12} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## readOnly / wrap / no line numbers
+
+A handful of state combinations: read-only doc samples, soft-wrapped long text, and a no-line-number compact mode.
+
+import StatesVue from '~/components/demos/codeeditor/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCodeEditor v-model="code" read-only />
+<CfCodeEditor v-model="text" wrap />
+<CfCodeEditor v-model="snip" :show-line-numbers="false" />`}
+  reactCode={`<CfCodeEditor value={code} onChange={set} readOnly />
+<CfCodeEditor value={text} onChange={set} wrap />
+<CfCodeEditor value={snip} onChange={set} showLineNumbers={false} />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | Code content |
+| `language` | `string` | `'plaintext'` | Forwarded as `data-language` only; not used for rendering |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `showLineNumbers` | `boolean` | `true` | |
+| `readOnly` | `boolean` | `false` | |
+| `rows` | `number` | `12` | Visible rows |
+| `wrap` | `boolean` | `false` | Soft-wrap long lines |
+| `tabSize` | `number` | `2` | Number of spaces inserted by Tab; `0` makes Tab move focus |

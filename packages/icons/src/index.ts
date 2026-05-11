@@ -6,7 +6,7 @@ export { iconNames } from './names';
 export type { IconName } from './names';
 export { iconSymbols } from './symbols';
 
-export const CHUFIX_ICON_SPRITE_PATH = '@chufix/icons/icons.svg';
+export const CHUFIX_ICON_SPRITE_PATH = '@chufix-design/icons/icons.svg';
 export const CHUFIX_ICON_VIEWBOX = '0 0 16 16';
 
 export function getIconSymbolId(name: IconName): string {

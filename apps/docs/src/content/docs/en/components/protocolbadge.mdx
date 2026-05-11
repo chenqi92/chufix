@@ -1,0 +1,38 @@
+---
+title: Protocol badge
+description: Color + initial dual-coded badges for 12 protocols. Shared style across HTTP methods and transport protocols.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/protocolbadge/BasicVue.vue';
+
+## Basic usage
+
+Supports GET / POST / PUT / PATCH / DELETE / HEAD / OPTIONS (HTTP) plus WS / MQTT / gRPC / SSE / GraphQL (transport / protocol).
+Colors are driven by `--proto-*` tokens; the initial-letter encoding keeps them colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfProtocolBadge kind="get" />
+<CfProtocolBadge kind="post" />
+<CfProtocolBadge kind="grpc" />
+<CfProtocolBadge kind="ws" />`}
+  reactCode={`<CfProtocolBadge kind="get" />
+<CfProtocolBadge kind="post" />
+<CfProtocolBadge kind="grpc" />
+<CfProtocolBadge kind="ws" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## CfMethodBadge alias
+
+`CfMethodBadge` is an alias export of `CfProtocolBadge`, semantically dedicated to HTTP method lists.
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `kind` | `ProtocolKind \| string` | — | Case-insensitive; unknown values render the original text on a default grey background |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 32×16 / 38×18 / 46×22 |
+
+`ProtocolKind = 'get' | 'post' | 'put' | 'patch' | 'del' | 'delete' | 'head' | 'options' | 'opt' | 'ws' | 'mqtt' | 'grpc' | 'sse' | 'gql' | 'graphql'`

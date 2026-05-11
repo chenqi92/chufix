@@ -1,0 +1,93 @@
+---
+title: Pagination
+description: Number buttons + prev/next + jump input; auto-calculated page ellipses; 3 sizes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pagination/BasicVue.vue';
+import ExtrasVue from '~/components/demos/pagination/ExtrasVue.vue';
+import SiblingsVue from '~/components/demos/pagination/SiblingsVue.vue';
+import SizesVue from '~/components/demos/pagination/SizesVue.vue';
+
+## Basic usage
+
+Pass `total` (item count) and `pageSize` (per page); the component derives the page count. `v-model` (Vue) / `value` + `onChange` (React) bind the current page (1-based).
+
+<DemoFrame
+  vueCode={`<CfPagination v-model="page" :total="80" :page-size="10" />`}
+  reactCode={`<CfPagination value={page} onChange={setPage} total={80} pageSize={10} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Total / jumper
+
+`showTotal` adds "Total N items" text on the left; `showJumper` adds a "Go to page N" input on the right (commits on Enter or blur). The two toggles are independent.
+
+<DemoFrame
+  vueCode={`<CfPagination
+  v-model="page"
+  :total="200"
+  :page-size="10"
+  show-total
+  show-jumper
+/>`}
+  reactCode={`<CfPagination
+  value={page}
+  onChange={setPage}
+  total={200}
+  pageSize={10}
+  showTotal
+  showJumper
+/>`}
+>
+  <ExtrasVue client:load />
+</DemoFrame>
+
+## Sibling count
+
+`siblingCount` controls how many adjacent page numbers appear on each side of the current page — default `1`. Combined with first/last pages, at most `siblingCount * 2 + 5` buttons are rendered; the rest become ellipsis `…`.
+
+<DemoFrame
+  vueCode={`<CfPagination v-model="a" :total="500" :page-size="10" :sibling-count="0" />
+<CfPagination v-model="b" :total="500" :page-size="10" :sibling-count="1" />
+<CfPagination v-model="c" :total="500" :page-size="10" :sibling-count="2" />`}
+  reactCode={`<CfPagination value={a} onChange={setA} total={500} pageSize={10} siblingCount={0} />
+<CfPagination value={b} onChange={setB} total={500} pageSize={10} siblingCount={1} />
+<CfPagination value={c} onChange={setC} total={500} pageSize={10} siblingCount={2} />`}
+>
+  <SiblingsVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` matches Button / Input — `sm` compact (common in table pagination) / `md` default / `lg` large.
+
+<DemoFrame
+  vueCode={`<CfPagination v-model="a" :total="120" :page-size="10" size="sm" />
+<CfPagination v-model="b" :total="120" :page-size="10" size="md" />
+<CfPagination v-model="c" :total="120" :page-size="10" size="lg" />`}
+  reactCode={`<CfPagination value={a} onChange={setA} total={120} pageSize={10} size="sm" />
+<CfPagination value={b} onChange={setB} total={120} pageSize={10} size="md" />
+<CfPagination value={c} onChange={setC} total={120} pageSize={10} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `1` | Current page (1-based) |
+| `total` | `number` | `0` | Total items |
+| `pageSize` | `number` | `10` | Items per page |
+| `siblingCount` | `number` | `1` | Adjacent page numbers shown on each side of the current page |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button height |
+| `showNav` | `boolean` | `true` | Show prev / next arrows |
+| `showJumper` | `boolean` | `false` | Show jump input |
+| `showTotal` | `boolean` | `false` | Show "Total N items" text |
+
+Events:
+
+- Vue: `@update:modelValue` — auto-listened by `v-model`
+- React: `onChange(page: number)`

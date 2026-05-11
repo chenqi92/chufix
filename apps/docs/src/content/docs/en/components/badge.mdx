@@ -1,0 +1,134 @@
+---
+title: Badge
+description: Standalone pill or corner-attached marker — supports dot and count modes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/badge/BasicVue.vue';
+import WrapVue from '~/components/demos/badge/WrapVue.vue';
+import MaxVue from '~/components/demos/badge/MaxVue.vue';
+
+## Standalone pill
+
+Without children, Badge renders as an inline pill that can sit next to text. `dot` mode renders as a pure dot with no content.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfBadge } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfBadge content="New" tone="primary" />
+  <CfBadge content="3" />
+  <CfBadge content="Beta" tone="info" />
+  <CfBadge content="ok" tone="success" />
+  <CfBadge content="hot" tone="warning" />
+  <CfBadge dot tone="danger" />
+</template>`}
+  reactCode={`import { CfBadge } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfBadge content="New" tone="primary" />
+      <CfBadge content="3" />
+      <CfBadge content="Beta" tone="info" />
+      <CfBadge content="ok" tone="success" />
+      <CfBadge content="hot" tone="warning" />
+      <CfBadge dot tone="danger" />
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Attached to a child
+
+Pass content into the default slot / children and Badge automatically positions itself in the child's corner. `placement` controls which corner.
+
+<DemoFrame
+  vueCode={`<CfBadge :content="5">
+  <CfButton variant="tertiary">Inbox</CfButton>
+</CfBadge>
+
+<CfBadge dot tone="success">
+  <CfAvatar name="Chen Qi" />
+</CfBadge>
+
+<CfBadge dot tone="warning" placement="bottom-right">
+  <CfAvatar name="Anna Lee" />
+</CfBadge>
+
+<CfBadge content="Pro" tone="info" placement="top-left">
+  <CfButton variant="tertiary">Account</CfButton>
+</CfBadge>`}
+  reactCode={`<CfBadge content={5}>
+  <CfButton variant="tertiary">Inbox</CfButton>
+</CfBadge>
+
+<CfBadge dot tone="success">
+  <CfAvatar name="Chen Qi" />
+</CfBadge>
+
+<CfBadge dot tone="warning" placement="bottom-right">
+  <CfAvatar name="Anna Lee" />
+</CfBadge>
+
+<CfBadge content="Pro" tone="info" placement="top-left">
+  <CfButton variant="tertiary">Account</CfButton>
+</CfBadge>`}
+>
+  <WrapVue client:load />
+</DemoFrame>
+
+## Numbers and overflow
+
+`max` sets the overflow threshold; values past it render as `${max}+`. `showZero` keeps `0` visible (otherwise hidden).
+
+<DemoFrame
+  vueCode={`<CfBadge :content="3">
+  <CfButton>3 items</CfButton>
+</CfBadge>
+
+<CfBadge :content="120">  <!-- default max=99 → renders as 99+ -->
+  <CfButton>default max=99</CfButton>
+</CfBadge>
+
+<CfBadge :content="120" :max="999">
+  <CfButton>max=999</CfButton>
+</CfBadge>
+
+<CfBadge :content="0" show-zero tone="success">
+  <CfButton>show-zero</CfButton>
+</CfBadge>`}
+  reactCode={`<CfBadge content={3}>
+  <CfButton>3 items</CfButton>
+</CfBadge>
+
+<CfBadge content={120}>
+  <CfButton>default max=99</CfButton>
+</CfBadge>
+
+<CfBadge content={120} max={999}>
+  <CfButton>max=999</CfButton>
+</CfBadge>
+
+<CfBadge content={0} showZero tone="success">
+  <CfButton>show-zero</CfButton>
+</CfBadge>`}
+>
+  <MaxVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop        | Type                                                                     | Default       | Description                                       |
+| ----------- | ------------------------------------------------------------------------ | ------------- | ------------------------------------------ |
+| `content`   | `string \| number`                                                       | —             | Content to display; if empty and not `dot`, the badge does not render |
+| `dot`       | `boolean`                                                                | `false`       | Dot mode (ignores `content`)              |
+| `tone`      | `'neutral' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `'danger'`    | Semantic color                            |
+| `max`       | `number`                                                                 | `99`          | Numeric overflow threshold; renders as `${max}+` |
+| `showZero`  | `boolean`                                                                | `false`       | Show `0` instead of hiding it              |
+| `placement` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'`           | `'top-right'` | Corner position when wrapping a child     |
+| `offset`    | `[number, number]`                                                       | —             | Additional `[x, y]` pixel offset on top of `placement` |

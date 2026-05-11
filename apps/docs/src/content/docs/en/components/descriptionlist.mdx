@@ -1,0 +1,87 @@
+---
+title: Description list
+description: Key-value display in dt/dd style — horizontal or vertical layout, multi-column, three sizes, optional borders.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/descriptionlist/BasicVue.vue';
+import ColumnsVue from '~/components/demos/descriptionlist/ColumnsVue.vue';
+import LayoutVue from '~/components/demos/descriptionlist/LayoutVue.vue';
+import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
+
+## Basic usage
+
+Pass data via `items`: each entry has `term` and `description`. `termWidth` controls the term column width (horizontal layout). `bordered` adds borders between entries.
+
+<DemoFrame
+  vueCode={`const items = [
+  { term: 'Order ID', description: '#2026-CF-00018' },
+  { term: 'Created at', description: '2026-05-09 14:23' },
+  { term: 'Shipping address', description: 'Room 18A, 100 Century Avenue, Pudong, Shanghai' },
+];
+
+<CfDescriptionList :items="items" :term-width="100" bordered title="Order info" />`}
+  reactCode={`const items = [
+  { term: 'Order ID', description: '#2026-CF-00018' },
+  { term: 'Created at', description: '2026-05-09 14:23' },
+  { term: 'Shipping address', description: 'Room 18A, 100 Century Avenue, Pudong, Shanghai' },
+];
+
+<CfDescriptionList items={items} termWidth={100} bordered title="Order info" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Horizontal vs vertical layout
+
+`layout="horizontal"` (default) — term and description on the same row; works well for property tables and detail pages.
+`layout="vertical"` — term on top, description below; good for longer descriptions or narrow mobile screens.
+
+<DemoFrame
+  vueCode={`<CfDescriptionList :items="items" layout="horizontal" :term-width="80" bordered />
+<CfDescriptionList :items="items" layout="vertical" bordered />`}
+  reactCode={`<CfDescriptionList items={items} layout="horizontal" termWidth={80} bordered />
+<CfDescriptionList items={items} layout="vertical" bordered />`}
+>
+  <LayoutVue client:load />
+</DemoFrame>
+
+## Multi-column
+
+`columns` is a number controlling the internal grid column count. `item.span` lets a single entry span multiple columns. Useful when you have a wide header and many fields.
+
+<DemoFrame
+  vueCode={`<CfDescriptionList :items="items" :columns="3" bordered :term-width="60" />`}
+  reactCode={`<CfDescriptionList items={items} columns={3} bordered termWidth={60} />`}
+>
+  <ColumnsVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` controls font size and padding — `sm` (compact), `md` (default), `lg` (large detail view).
+
+<DemoFrame
+  vueCode={`<CfDescriptionList :items="items" size="sm" bordered title="size = sm" />
+<CfDescriptionList :items="items" size="md" bordered title="size = md" />
+<CfDescriptionList :items="items" size="lg" bordered title="size = lg" />`}
+  reactCode={`<CfDescriptionList items={items} size="sm" bordered title="size = sm" />
+<CfDescriptionList items={items} size="md" bordered title="size = md" />
+<CfDescriptionList items={items} size="lg" bordered title="size = lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `DescriptionItem[]` | `[]` | Data array |
+| `layout` | `'horizontal' \| 'vertical'` | `'horizontal'` | term/description direction |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size and padding |
+| `columns` | `number` | `1` | Total columns |
+| `bordered` | `boolean` | `false` | Outer border and row dividers |
+| `termWidth` | `number \| string` | `'120px'` | Term column width (horizontal only) |
+| `title` | `string \| ReactNode` | `—` | Top title |
+
+`DescriptionItem`: `{ key?, term, description?, span? }`.

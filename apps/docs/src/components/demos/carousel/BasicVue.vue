@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCarousel, type CarouselItem } from '@chufix/vue';
+import { CfCarousel, type CarouselItem } from '@chufix-design/vue';
 
 const items: CarouselItem[] = [
   { src: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=800&h=300&fit=crop', alt: '场景 1' },

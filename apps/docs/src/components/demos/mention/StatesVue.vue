@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMention } from '@chufix/vue';
+import { CfMention } from '@chufix-design/vue';
 
 const sample = '@alice 这条只读的评论给你看一眼。';
 const options = [

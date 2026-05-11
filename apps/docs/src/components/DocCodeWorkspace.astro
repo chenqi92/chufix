@@ -1,0 +1,209 @@
+---
+import { Code } from 'astro:components';
+
+export interface DocCodeFile {
+  id?: string;
+  name: string;
+  content: string;
+  lang: 'vue' | 'tsx' | 'ts' | 'js' | 'json' | 'css' | 'bash' | 'mdx' | 'astro' | 'html';
+}
+
+interface TreeItem {
+  id: string;
+  kind: 'folder' | 'file';
+  name: string;
+  path: string;
+  depth: number;
+  file?: DocCodeFile;
+}
+
+interface Props {
+  files: DocCodeFile[];
+  title?: string;
+  rootLabel?: string;
+  height?: number | string;
+  tone?: 'light' | 'dark';
+  showLineNumbers?: boolean;
+}
+
+const {
+  files,
+  title = 'Source',
+  rootLabel = 'project',
+  height = 'min(560px, 68vh)',
+  tone = 'dark',
+  showLineNumbers = true,
+} = Astro.props;
+
+const heightValue = typeof height === 'number' ? `${height}px` : height;
+const fileId = (file: DocCodeFile) => file.id ?? file.name;
+const fileName = (path: string) => path.split('/').filter(Boolean).at(-1) ?? path;
+const theme = tone === 'dark' ? 'github-dark' : 'github-light';
+
+function buildTree(source: DocCodeFile[]): TreeItem[] {
+  const rows: TreeItem[] = [];
+  const seen = new Set<string>();
+  for (const file of source) {
+    const parts = file.name.split('/').filter(Boolean);
+    let path = '';
+    for (let i = 0; i < parts.length - 1; i++) {
+      path = path ? `${path}/${parts[i]}` : parts[i]!;
+      if (!seen.has(path)) {
+        seen.add(path);
+        rows.push({
+          id: `folder:${path}`,
+          kind: 'folder',
+          name: parts[i]!,
+          path,
+          depth: i,
+        });
+      }
+    }
+    rows.push({
+      id: `file:${fileId(file)}`,
+      kind: 'file',
+      name: fileName(file.name),
+      path: file.name,
+      depth: Math.max(0, parts.length - 1),
+      file,
+    });
+  }
+  return rows;
+}
+
+const tree = buildTree(files);
+---
+
+<div
+  class:list={[
+    'cf-code-workspace',
+    `cf-code-workspace--${tone}`,
+    'cf-code-workspace--md',
+    showLineNumbers && 'has-numbers',
+    'cf-doc-code',
+  ]}
+  data-doc-code-workspace
+  style={`height: ${heightValue};`}
+>
+  <header class="cf-code-workspace__header">
+    <div class="cf-code-workspace__title">
+      <span class="cf-code-workspace__traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>{title}</span>
+    </div>
+    {files[0] && (
+      <button
+        type="button"
+        class="cf-code-workspace__copy"
+        data-doc-code-copy
+        data-copy={files[0].content}
+        data-copy-label="复制"
+        data-copied-label="已复制"
+      >
+        复制
+      </button>
+    )}
+  </header>
+
+  <div class="cf-code-workspace__shell">
+    <aside class="cf-code-workspace__tree" aria-label="Code files">
+      <div class="cf-code-workspace__root">
+        <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
+        <span>{rootLabel}</span>
+      </div>
+      {tree.map((item) =>
+        item.kind === 'folder' ? (
+          <div
+            class="cf-code-workspace__folder"
+            style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
+          >
+            <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
+            <span>{item.name}</span>
+          </div>
+        ) : (
+          <button
+            type="button"
+            class="cf-code-workspace__file"
+            style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
+            data-doc-code-file={item.file ? fileId(item.file) : ''}
+            aria-selected={item.file && fileId(item.file) === fileId(files[0]) ? 'true' : 'false'}
+          >
+            <span class="cf-code-workspace__file-dot" aria-hidden="true"></span>
+            <span class="cf-code-workspace__file-name">{item.name}</span>
+          </button>
+        )
+      )}
+    </aside>
+
+    <section class="cf-code-workspace__editor" aria-live="polite">
+      <div class="cf-code-workspace__tabs" role="tablist">
+        {files.map((file, index) => (
+          <button
+            type="button"
+            class="cf-code-workspace__tab"
+            data-doc-code-tab={fileId(file)}
+            aria-selected={index === 0 ? 'true' : 'false'}
+          >
+            {fileName(file.name)}
+          </button>
+        ))}
+      </div>
+
+      {files.map((file, index) => (
+        <div
+          class="cf-doc-code__panel"
+          data-doc-code-panel={fileId(file)}
+          data-active={index === 0 ? 'true' : 'false'}
+        >
+          <div class="cf-code-workspace__meta">
+            <span>{file.name}</span>
+            <span class="cf-code-workspace__lang">{file.lang}</span>
+          </div>
+          <div class="cf-code-workspace__body">
+            <div class="cf-doc-code__scroll">
+              <Code code={file.content} lang={file.lang as any} theme={theme} />
+            </div>
+          </div>
+        </div>
+      ))}
+    </section>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-doc-code-workspace]').forEach((root) => {
+    if (root.dataset.bound === 'true') return;
+    root.dataset.bound = 'true';
+
+    const fileBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-file]');
+    const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tab]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
+    const copyBtn = root.querySelector<HTMLButtonElement>('[data-doc-code-copy]');
+
+    const activate = (id: string) => {
+      fileBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.docCodeFile === id)));
+      tabBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.docCodeTab === id)));
+      panels.forEach((panel) => {
+        const active = panel.dataset.docCodePanel === id;
+        panel.dataset.active = String(active);
+        if (active && copyBtn) copyBtn.dataset.copy = panel.querySelector('pre')?.textContent ?? '';
+      });
+    };
+
+    fileBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeFile ?? '')));
+    tabBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeTab ?? '')));
+
+    copyBtn?.addEventListener('click', async () => {
+      const text = copyBtn.dataset.copy ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        /* clipboard blocked */
+      }
+      const label = copyBtn.dataset.copyLabel ?? '复制';
+      copyBtn.textContent = copyBtn.dataset.copiedLabel ?? '已复制';
+      setTimeout(() => {
+        copyBtn.textContent = label;
+      }, 1400);
+    });
+  });
+</script>

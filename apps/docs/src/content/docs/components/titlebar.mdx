@@ -1,0 +1,52 @@
+---
+title: TitleBar 标题栏
+description: 桌面应用窗口顶栏。macOS 风格 traffic light + 居中标题；Windows / Linux 风格 min/max/close 按钮 + 左对齐。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
+
+## 基础用法
+
+`platform="macos"` 时左侧三个圆点（关闭 / 最小化 / 最大化）+ 居中标题；
+`platform="windows"` / `'linux'` 时右侧三个按钮 + 左对齐标题。
+头部默认 `-webkit-app-region: drag`，外层 Tauri / Electron 应用可拖拽窗口。
+
+<DemoFrame
+  vueCode={`<CfTitleBar platform="macos" title="orders.parquet" subtitle="protoforge" :modified="true" />
+<CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
+  reactCode={`<CfTitleBar platform="macos" title="orders.parquet" subtitle="protoforge" modified />
+<CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## macOS / Windows / Linux 三平台
+
+同一组件，`platform` 切视觉。`hideControls=true` 用作普通 header bar。
+
+import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTitleBar platform="macos" title="…" subtitle="…" :modified="true" />
+<CfTitleBar platform="windows" title="…" subtitle="…" />
+<CfTitleBar platform="linux" title="…" />`}
+  reactCode={`<CfTitleBar platform="macos" title="…" subtitle="…" modified />
+<CfTitleBar platform="windows" title="…" subtitle="…" />
+<CfTitleBar platform="linux" title="…" />`}
+>
+  <PlatformsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `platform` | `'macos' \| 'windows' \| 'linux'` | `'macos'` | 视觉变体 |
+| `title` / `subtitle` | `string` | — | |
+| `modified` | `boolean` | `false` | 显示未保存圆点 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 28 / 32 / 36 px |
+| `hideControls` | `boolean` | `false` | 隐藏窗口控件，作为普通 header 用 |
+
+事件：`minimize` / `maximize` / `close`。

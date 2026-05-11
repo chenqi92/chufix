@@ -1,0 +1,47 @@
+---
+title: HoverCard 悬停卡片
+description: 长延迟（700ms）的丰富预览卡，适合用户名、变量、请求等富信息悬停预览。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
+
+## 基础用法
+
+包裹任意触发元素，`content` 槽放卡片内容。延迟与位置可配。
+
+<DemoFrame
+  vueCode={`<CfHoverCard placement="bottom">
+  <span>@jane.l</span>
+  <template #content>…</template>
+</CfHoverCard>`}
+  reactCode={`<CfHoverCard placement="bottom" trigger={<span>@jane.l</span>}>
+  …
+</CfHoverCard>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## 4 种 placement
+
+`top / bottom / left / right` 自动计算位置；这里用 200ms 短延迟方便演示。
+
+import PlacementsVue from '~/components/demos/hovercard/PlacementsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfHoverCard placement="top">…</CfHoverCard>`}
+  reactCode={`<CfHoverCard placement="top" trigger={…}>…</CfHoverCard>`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | 位置 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 220 / 280 / 360 px |
+| `openDelay` | `number` | `700` | 显示延迟 ms |
+| `closeDelay` | `number` | `200` | 隐藏延迟 ms（防闪） |
+| `disabled` | `boolean` | `false` | |

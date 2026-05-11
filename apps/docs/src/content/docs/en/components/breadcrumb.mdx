@@ -1,0 +1,75 @@
+---
+title: Breadcrumb
+description: Location-trail navigation; the last item is the current page (not clickable) and the separator is customizable.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/breadcrumb/BasicVue.vue';
+import SeparatorsVue from '~/components/demos/breadcrumb/SeparatorsVue.vue';
+import LongVue from '~/components/demos/breadcrumb/LongVue.vue';
+
+## Basic usage
+
+Each `items` entry is `{ label, href? }`. The last entry is rendered as the current page (not clickable) regardless of whether `href` is provided.
+
+<DemoFrame
+  vueCode={`const items = [
+  { label: 'Home', href: '/' },
+  { label: 'Components', href: '/components/' },
+  { label: 'Breadcrumb' },
+];
+
+<CfBreadcrumb :items="items" />`}
+  reactCode={`const items = [
+  { label: 'Home', href: '/' },
+  { label: 'Components', href: '/components/' },
+  { label: 'Breadcrumb' },
+];
+
+<CfBreadcrumb items={items} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Custom separator
+
+`separator` defaults to `/`; common alternatives are `›` / `·` / `→`. Any character works.
+
+<DemoFrame
+  vueCode={`<CfBreadcrumb :items="items" separator="/" />
+<CfBreadcrumb :items="items" separator="›" />
+<CfBreadcrumb :items="items" separator="·" />
+<CfBreadcrumb :items="items" separator="→" />`}
+  reactCode={`<CfBreadcrumb items={items} separator="/" />
+<CfBreadcrumb items={items} separator="›" />
+<CfBreadcrumb items={items} separator="·" />
+<CfBreadcrumb items={items} separator="→" />`}
+>
+  <SeparatorsVue client:load />
+</DemoFrame>
+
+## Long trails
+
+For deeper hierarchies the leading items become clickable links and the last is the current location.
+
+<DemoFrame
+  vueCode={`const items = [
+  { label: 'Home', href: '/' },
+  { label: 'Organizations', href: '/orgs/' },
+  { label: 'Some team', href: '/orgs/team-x/' },
+  { label: 'Projects', href: '/orgs/team-x/projects/' },
+  { label: 'Deep folder' },
+];
+
+<CfBreadcrumb :items="items" separator="›" />`}
+  reactCode={`<CfBreadcrumb items={items} separator="›" />`}
+>
+  <LongVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `Array<{ label: string; href?: string }>` | `[]` | Trail items; the last entry is the current page |
+| `separator` | `string` | `'/'` | Separator; common values include `›` `·` or any custom character |

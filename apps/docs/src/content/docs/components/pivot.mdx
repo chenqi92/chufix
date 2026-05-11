@@ -1,0 +1,61 @@
+---
+title: Pivot 透视表
+description: 行 × 列 二维聚合表格 —— sum / avg / count / min / max 五种聚合、自带行列合计、可选热力着色、单元格 drill-down。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pivot/BasicVue.vue';
+import HeatmapVue from '~/components/demos/pivot/HeatmapVue.vue';
+import DrillDownVue from '~/components/demos/pivot/DrillDownVue.vue';
+
+## 基础用法
+
+把扁平的对象数组按 `rowField`（行）/ `colField`（列）分组，对 `valueField` 字段做聚合。组件会自动计算行合计、列合计、总计。
+
+<DemoFrame>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 热力图模式
+
+`heatmap` 打开后，每个单元格按数值大小渲染为一层透明 accent 颜色（数值越大颜色越深）。配合不同 `aggregator` 切换可以快速观察分布形态。
+
+<DemoFrame>
+  <HeatmapVue client:load />
+</DemoFrame>
+
+## Drill-down
+
+`onCellClick` 回调会拿到 `{ row, col, value, rows }` —— `rows` 是聚合时归并到这个单元格的所有原始数据，可用于触发抽屉、弹窗等下钻交互。
+
+<DemoFrame>
+  <DrillDownVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `data` | `T[]` | — | 扁平数据数组 |
+| `rowField` | `keyof T` | — | 用于分行的字段 |
+| `colField` | `keyof T` | — | 用于分列的字段 |
+| `valueField` | `keyof T` | — | 数值字段（`aggregator='count'` 时可省略） |
+| `aggregator` | `'sum' \| 'avg' \| 'count' \| 'min' \| 'max'` | `'sum'` | 聚合方式 |
+| `format` | `(value, { row, col }) => string` | — | 单元格自定义格式化 |
+| `showTotals` | `boolean` | `true` | 是否显示行 / 列合计 |
+| `heatmap` | `boolean` | `false` | 按数值大小渲染热力背景 |
+| `heatmapColor` | `string` | `var(--accent-1)` | 热力主色 |
+| `caption` | `string` | — | 顶部说明文字 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+| `onCellClick` | `(cell) => void` | — | 单元格点击回调，参数包含原始 `rows` |
+
+## 工具函数
+
+```ts
+import { pivotCompute, pivotAggregate } from '@chufix-design/vue';
+
+const result = pivotCompute(data, 'region', 'channel', 'amount', 'sum');
+// → { rowKeys, colKeys, cells, raw, rowTotals, colTotals, grandTotal, min, max }
+```
+
+`pivotCompute` 是组件内部用的纯函数，外部也可以直接复用：导出 CSV、画图、做下钻等场景都用得上。

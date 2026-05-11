@@ -7,6 +7,7 @@ import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/radio/BasicVue.vue';
 import DirectionVue from '~/components/demos/radio/DirectionVue.vue';
 import SizesVue from '~/components/demos/radio/SizesVue.vue';
+import EventsVue from '~/components/demos/radio/EventsVue.vue';
 
 ## 基础用法
 
@@ -15,7 +16,7 @@ import SizesVue from '~/components/demos/radio/SizesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfRadio, CfRadioGroup } from '@chufix/vue';
+import { CfRadio, CfRadioGroup } from '@chufix-design/vue';
 
 const plan = ref<'free' | 'pro' | 'team'>('pro');
 </script>
@@ -28,7 +29,7 @@ const plan = ref<'free' | 'pro' | 'team'>('pro');
   </CfRadioGroup>
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfRadio, CfRadioGroup } from '@chufix/react';
+import { CfRadio, CfRadioGroup } from '@chufix-design/react';
 
 export default function Demo() {
   const [plan, setPlan] = useState<'free' | 'pro' | 'team'>('pro');
@@ -84,6 +85,41 @@ export default function Demo() {
   <SizesVue client:load />
 </DemoFrame>
 
+## 事件与表单
+
+`change` 会返回选中的值，同时透出 `name`、`checked` 与原生事件，适合表单联动、埋点、权限策略切换等场景。事件从 `RadioGroup` 发出时，meta 来自实际触发的子项。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfRadio, CfRadioGroup } from '@chufix-design/vue';
+
+const region = ref('cn');
+</script>
+
+<template>
+  <CfRadioGroup v-model="region" name="deploy-region" @change="(value, meta) => console.log(value, meta.name)">
+    <CfRadio value="cn">华东节点</CfRadio>
+    <CfRadio value="eu">欧洲节点</CfRadio>
+    <CfRadio value="us">美西节点</CfRadio>
+  </CfRadioGroup>
+</template>`}
+  reactCode={`<CfRadioGroup
+  value={region}
+  name="deploy-region"
+  onChange={(value, meta) => {
+    setRegion(value as string);
+    console.log(meta.name, meta.checked);
+  }}
+>
+  <CfRadio value="cn">华东节点</CfRadio>
+  <CfRadio value="eu">欧洲节点</CfRadio>
+  <CfRadio value="us">美西节点</CfRadio>
+</CfRadioGroup>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
 ## API
 
 ### RadioGroup
@@ -102,5 +138,13 @@ export default function Demo() {
 | ---------- | ------------------------------------- | ------- | --------------------------------------- |
 | `value`    | `string \| number \| boolean \| null` | —       | 单项的值                                |
 | `disabled` | `boolean`                             | `false` | 单独禁用此项（叠加 RadioGroup.disabled）|
+
+## Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `change` / `onChange` | `(value, meta)` | 选中值变化；`meta` 包含 `event`、`value`、`name`、`checked` |
+| `focus` / `onFocus` | `(event)` | 单个 Radio 获得焦点 |
+| `blur` / `onBlur` | `(event)` | 单个 Radio 失去焦点 |
 
 > Radio 也可以脱离 RadioGroup 独立使用，自行管理 `v-model` / `checked + onChange`。

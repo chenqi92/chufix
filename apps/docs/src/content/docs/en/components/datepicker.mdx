@@ -1,0 +1,145 @@
+---
+title: Date picker
+description: Input + month-grid panel — day/month/year views, date bounds, quick presets, ISO week numbers, keyboard navigation.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/datepicker/BasicVue.vue';
+import BoundsVue from '~/components/demos/datepicker/BoundsVue.vue';
+import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
+import PresetsVue from '~/components/demos/datepicker/PresetsVue.vue';
+import WeekNumberVue from '~/components/demos/datepicker/WeekNumberVue.vue';
+
+## Basic usage
+
+`v-model` binds a `'YYYY-MM-DD'` string. Clicking the trigger opens the month panel; clicking a day cell selects it and closes the panel. Clicking the month name jumps to the month view; clicking the year jumps to the year view.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDatePicker } from '@chufix-design/vue';
+
+const value = ref<string | null>('2026-05-09');
+</script>
+
+<template>
+  <CfDatePicker v-model="value" clearable />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDatePicker } from '@chufix-design/react';
+
+export default function Demo() {
+  const [value, setValue] = useState<string | null>('2026-05-09');
+  return <CfDatePicker value={value} clearable onChange={(v) => setValue(v)} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Bounds and disabledDate
+
+`minDate` / `maxDate` constrain the selectable range. `disabledDate` is a `(date: Date) => boolean` callback; dates that return `true` are struck through and cannot be clicked.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfDatePicker } from '@chufix-design/vue';
+
+const value = ref<string | null>(null);
+const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
+</script>
+
+<template>
+  <CfDatePicker
+    v-model="value"
+    min-date="2026-01-01"
+    max-date="2026-12-31"
+    :disabled-date="noWeekends"
+    clearable
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfDatePicker } from '@chufix-design/react';
+
+const noWeekends = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
+
+export default function Demo() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <CfDatePicker
+      value={value}
+      minDate="2026-01-01"
+      maxDate="2026-12-31"
+      disabledDate={noWeekends}
+      clearable
+      onChange={(v) => setValue(v)}
+    />
+  );
+}`}
+>
+  <BoundsVue client:load />
+</DemoFrame>
+
+## Display format
+
+`format` controls how the date is rendered in the trigger (it does not affect the `v-model` storage format, which is always `'YYYY-MM-DD'`). Supported tokens: `YYYY` `YY` `MM` `M` `DD` `D`.
+
+<DemoFrame
+  vueCode={`<CfDatePicker v-model="a" format="YYYY-MM-DD" />
+<CfDatePicker v-model="b" format="YYYY 年 M 月 D 日" />
+<CfDatePicker v-model="c" format="DD/MM/YYYY" />`}
+  reactCode={`<CfDatePicker value={a} format="YYYY-MM-DD" onChange={(v) => setA(v)} />
+<CfDatePicker value={b} format="YYYY 年 M 月 D 日" onChange={(v) => setB(v)} />
+<CfDatePicker value={c} format="DD/MM/YYYY" onChange={(v) => setC(v)} />`}
+>
+  <FormatVue client:load />
+</DemoFrame>
+
+## Quick presets
+
+`presets` accepts an array of `{ label, value }`. The panel renders these as a left-side column. `value` may be a fixed `Date` / ISO string, or a function that returns one (re-evaluated on each click — perfect for relative dates like "Today" / "7 days ago").
+
+<DemoFrame>
+  <PresetsVue client:only="vue" />
+</DemoFrame>
+
+## ISO week numbers
+
+`show-week-number` adds a leading column of ISO 8601 week numbers (Monday-based) to the date grid.
+
+<DemoFrame>
+  <WeekNumberVue client:only="vue" />
+</DemoFrame>
+
+## Keyboard navigation
+
+When the panel is open:
+
+| Key | Action |
+| --- | --- |
+| `← / → / ↑ / ↓` | Move focus across the grid |
+| `PageUp` / `PageDown` | Previous / next month |
+| `Home` / `End` | Jump to start / end of month |
+| `Enter` | Pick the focused day |
+| `Esc` | Close the panel |
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `Date \| string \| number \| null` | `null` | Current date; accepts ISO / timestamp / Date as input |
+| `format` | `string` | `'YYYY-MM-DD'` | Trigger display format |
+| `placeholder` | `string` | `'Select a date'` | Placeholder text |
+| `variant` | `'outline' \| 'filled' \| 'ghost'` | `'outline'` | Trigger visual variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `disabled` | `boolean` | `false` | Disabled |
+| `clearable` | `boolean` | `false` | Show clear button |
+| `error` | `boolean` | `false` | Error state |
+| `minDate` / `maxDate` | `DateLike` | `—` | Selectable range |
+| `disabledDate` | `(date: Date) => boolean` | `—` | Custom disable rule |
+| `weekStartsOn` | `0 \| 1` | `1` | 0 = Sunday-first, 1 = Monday-first |
+| `view` | `'day' \| 'month' \| 'year'` | `'day'` | Initial open view |
+| `showWeekNumber` | `boolean` | `false` | Add ISO week-number column before the day grid |
+| `presets` | `DatePickerPreset[]` | — | Quick-pick buttons: `{ label, value: Date \| string \| () => ... }` |
+
+Events: `update:modelValue` / `change` (React: `onChange(value, date)`, the second argument is `Date \| null`).

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfScrollArea } from '@chufix/vue';
+import { CfScrollArea } from '@chufix-design/vue';
 
 const items = Array.from({ length: 30 }, (_, i) => `第 ${i + 1} 项 — Lorem ipsum dolor sit amet, consectetur adipiscing elit.`);
 </script>

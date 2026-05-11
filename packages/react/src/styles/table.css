@@ -1,4 +1,8 @@
-/* ChuFix Table — column-defined data table with sort, selection, empty state. */
+/* ChuFix Table — feature-complete data table.
+ * Capabilities: sticky header, multi-sort, column resize, column reorder,
+ * pin left/right, pagination, summary footer, row expand, tree data,
+ * filter dropdown, global search, column visibility menu, loading overlay.
+ */
 
 .cf-table {
   font-family: var(--font-sans);
@@ -6,19 +10,104 @@
   color: var(--fg-1);
   background: var(--bg-1);
   border-radius: var(--r-4);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .cf-table--sm { font-size: var(--t-12); }
 .cf-table--lg { font-size: var(--t-14); }
+.cf-table--bordered { border: 1px solid var(--line-1); }
 
-.cf-table--bordered {
+/* ---- Toolbar ---- */
+.cf-table__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-1);
+}
+.cf-table__toolbar-left,
+.cf-table__toolbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.cf-table__search {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--bg-2);
   border: 1px solid var(--line-1);
+  border-radius: var(--r-pill);
+  color: var(--fg-3);
+  height: 28px;
+}
+.cf-table__search:focus-within {
+  border-color: var(--accent-1);
+  color: var(--fg-1);
+}
+.cf-table__search-input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  width: 180px;
 }
 
+/* ---- Column visibility menu ---- */
+.cf-table__col-menu { position: relative; }
+.cf-table__col-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px;
+  height: 28px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  color: var(--fg-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-12);
+}
+.cf-table__col-menu-trigger:hover { color: var(--fg-1); border-color: var(--line-2); }
+.cf-table__col-menu-popup {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 180px;
+  max-height: 320px;
+  overflow: auto;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
+  z-index: var(--z-popover);
+  padding: 4px;
+}
+.cf-table__col-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font-size: var(--t-12);
+}
+.cf-table__col-menu-item:hover { background: var(--bg-2); }
+.cf-table__col-menu-item input { accent-color: var(--accent-1); }
+
+/* ---- Scroll container ---- */
 .cf-table__scroll {
-  overflow-x: auto;
+  overflow: auto;
   scrollbar-width: thin;
+  position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .cf-table__table {
@@ -26,13 +115,17 @@
   border-collapse: separate;
   border-spacing: 0;
   text-align: left;
+  table-layout: auto;
 }
 
+/* ---- Cells ---- */
 .cf-table__cell {
   padding: 10px 12px;
   border-bottom: 1px solid var(--line-1);
   vertical-align: middle;
   white-space: nowrap;
+  background: var(--bg-1);
+  position: relative;
 }
 .cf-table--sm .cf-table__cell { padding: 6px 10px; }
 .cf-table--lg .cf-table__cell { padding: 12px 16px; }
@@ -40,6 +133,13 @@
 .cf-table__cell--center { text-align: center; }
 .cf-table__cell--right { text-align: right; font-variant-numeric: tabular-nums; }
 
+.cf-table__cell--ellipsis {
+  max-width: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Header ---- */
 .cf-table__cell--th {
   background: var(--bg-2);
   color: var(--fg-2);
@@ -47,9 +147,12 @@
   font-size: var(--t-12);
   letter-spacing: 0.01em;
   border-bottom: 1px solid var(--line-1);
+}
+/* sticky header — only when explicitly opted in */
+.cf-table.is-sticky-header .cf-table__cell--th {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 .cf-table__cell--th.is-sortable {
@@ -76,7 +179,163 @@
 .cf-table__sort.is-desc path:nth-child(1) { color: var(--line-2); }
 .cf-table__sort.is-desc path:nth-child(2) { color: var(--accent-1); }
 .cf-table__cell--th.is-sorted .cf-table__sort { color: var(--accent-1); }
+.cf-table__sort-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  font-size: 10px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  margin-left: 2px;
+}
 
+/* ---- Filter ---- */
+.cf-table__filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  border-radius: var(--r-3);
+  margin-left: 2px;
+}
+.cf-table__filter-btn:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-table__filter-btn.is-active { color: var(--accent-1); }
+.cf-table__filter-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  min-width: 200px;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
+  z-index: var(--z-popover);
+  padding: 8px;
+  text-align: left;
+  cursor: default;
+}
+.cf-table__filter-text,
+.cf-table__filter-range input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-12);
+}
+.cf-table__filter-range {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 4px;
+}
+.cf-table__filter-range span {
+  color: var(--fg-3);
+  font-size: var(--t-11);
+}
+.cf-table__filter-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font-size: var(--t-12);
+  font-weight: var(--w-regular);
+}
+.cf-table__filter-opt:hover { background: var(--bg-2); }
+.cf-table__filter-opt input { accent-color: var(--accent-1); }
+.cf-table__filter-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line-1);
+}
+.cf-table__filter-clear,
+.cf-table__filter-ok {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-12);
+}
+.cf-table__filter-clear { background: transparent; color: var(--fg-3); }
+.cf-table__filter-clear:hover { color: var(--fg-1); }
+.cf-table__filter-ok { background: var(--accent-1); color: var(--fg-on-accent); }
+.cf-table__filter-ok:hover { background: var(--accent-2); }
+
+/* ---- Resize handle ---- */
+.cf-table__resize-handle {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 3;
+  background: transparent;
+  touch-action: none;
+}
+.cf-table__resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  bottom: 30%;
+  left: 2px;
+  width: 2px;
+  background: transparent;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.cf-table__resize-handle:hover::after,
+.cf-table__resize-handle.is-active::after {
+  background: var(--accent-1);
+}
+
+/* ---- Reorder dnd ---- */
+.cf-table__cell--th.is-dragging {
+  opacity: 0.5;
+}
+.cf-table__cell--th.is-drop-target {
+  box-shadow: inset 3px 0 0 var(--accent-1);
+}
+
+/* ---- Pinned columns ---- */
+.cf-table__cell--fixed {
+  position: sticky;
+  z-index: 1;
+  background: var(--bg-1);
+}
+.cf-table__cell--fixed.cf-table__cell--th {
+  z-index: 3;
+  background: var(--bg-2);
+}
+.cf-table__cell--fixed-left {
+  box-shadow: 1px 0 0 var(--line-1);
+}
+.cf-table__cell--fixed-right {
+  box-shadow: -1px 0 0 var(--line-1);
+}
+.cf-table__row:hover .cf-table__cell--fixed,
+.cf-table__row.is-selected .cf-table__cell--fixed {
+  background: inherit;
+}
+
+/* ---- Bordered ---- */
 .cf-table--bordered .cf-table__cell {
   border-right: 1px solid var(--line-1);
 }
@@ -84,18 +343,19 @@
   border-right: 0;
 }
 
-.cf-table__row:last-child .cf-table__cell {
+/* ---- Body rows ---- */
+.cf-table__body .cf-table__row:last-child .cf-table__cell {
   border-bottom: 0;
 }
 
-.cf-table--striped .cf-table__row:nth-child(odd) .cf-table__cell {
+.cf-table--striped .cf-table__body .cf-table__row:nth-child(odd) .cf-table__cell {
   background: var(--bg-2);
 }
 
-.cf-table.is-hoverable .cf-table__row:hover .cf-table__cell {
+.cf-table.is-hoverable .cf-table__body .cf-table__row:hover .cf-table__cell {
   background: var(--bg-2);
 }
-.cf-table--striped.is-hoverable .cf-table__row:hover .cf-table__cell {
+.cf-table--striped.is-hoverable .cf-table__body .cf-table__row:hover .cf-table__cell {
   background: var(--bg-3);
 }
 
@@ -106,6 +366,7 @@
   color: var(--accent-1);
 }
 
+/* ---- Selection cell ---- */
 .cf-table__cell--check {
   width: 36px;
   text-align: center;
@@ -117,6 +378,48 @@
   cursor: pointer;
 }
 
+/* ---- Expand cell ---- */
+.cf-table__cell--expand {
+  width: 36px;
+  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.cf-table__expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-3);
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.cf-table__expand-btn:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-table__expand-btn.is-open {
+  transform: rotate(180deg);
+  color: var(--accent-1);
+}
+.cf-table__row--expand .cf-table__cell {
+  background: var(--bg-2);
+  padding: 12px 16px;
+}
+.cf-table__expand-content {
+  border-bottom: 1px solid var(--line-1);
+}
+
+/* ---- Tree row indent ---- */
+.cf-table__tree-indent {
+  display: inline-block;
+  width: 0;
+  vertical-align: middle;
+}
+
+/* ---- Empty / loading ---- */
 .cf-table__row--empty td {
   padding: 32px 16px;
   color: var(--fg-3);
@@ -126,6 +429,312 @@
 
 .cf-table.is-loading {
   position: relative;
+}
+.cf-table__loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklch, var(--bg-0) 60%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
   pointer-events: none;
-  opacity: 0.6;
+}
+.cf-table__loading-spinner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--line-2);
+  border-top-color: var(--accent-1);
+  animation: cf-table-spin 0.8s linear infinite;
+}
+@keyframes cf-table-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Summary footer ---- */
+.cf-table__foot {
+  background: var(--bg-2);
+}
+.cf-table__summary-row .cf-table__cell {
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+  background: var(--bg-2);
+  border-top: 1px solid var(--line-1);
+  border-bottom: 0;
+}
+.cf-table__summary-row--auto .cf-table__cell {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+
+/* ---- Row drag handle ---- */
+.cf-table__cell--row-drag {
+  width: 28px;
+  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: var(--fg-3);
+}
+.cf-table__row-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  cursor: grab;
+  border-radius: var(--r-3);
+  user-select: none;
+  -webkit-user-drag: element;
+}
+.cf-table__row-drag-handle:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-table__row-drag-handle:active {
+  cursor: grabbing;
+}
+.cf-table__row.is-row-dragging {
+  opacity: 0.55;
+}
+.cf-table__row.is-row-drop-above > .cf-table__cell {
+  box-shadow: inset 0 2px 0 var(--accent-1);
+}
+.cf-table__row.is-row-drop-below > .cf-table__cell {
+  box-shadow: inset 0 -2px 0 var(--accent-1);
+}
+.cf-table__row.is-row-drop-inside > .cf-table__cell {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-1);
+}
+
+/* ---- Inline edit ---- */
+.cf-table__cell--editable {
+  cursor: cell;
+}
+.cf-table__cell--editable:hover::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed var(--line-2);
+  border-radius: var(--r-3);
+  pointer-events: none;
+}
+.cf-table__cell--editing {
+  padding: 2px 4px !important;
+}
+.cf-table__edit-input {
+  width: 100%;
+  height: 100%;
+  padding: 6px 8px;
+  border: 2px solid var(--accent-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font: inherit;
+  outline: 0;
+  box-sizing: border-box;
+}
+.cf-table__edit-input:focus {
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* ---- Virtual padding rows ---- */
+.cf-table__row--virtual-pad {
+  background: transparent !important;
+}
+.cf-table__row--virtual-pad > td {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* ---- Cell selection (Excel-style) ---- */
+.cf-table__cell--cell-selected {
+  background: var(--accent-soft) !important;
+  user-select: none;
+  position: relative;
+}
+.cf-table__cell--cell-selected.cf-table__cell--editable:hover::after {
+  display: none;
+}
+/* 选区只在矩形外边画边框，由 4 个 edge modifier 决定哪几条边有 */
+.cf-table__cell--sel-top    { box-shadow: inset 0 2px 0 var(--accent-1); }
+.cf-table__cell--sel-bottom { box-shadow: inset 0 -2px 0 var(--accent-1); }
+.cf-table__cell--sel-left   { box-shadow: inset 2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-right  { box-shadow: inset -2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-bottom { box-shadow: inset 0 2px 0 var(--accent-1), inset 0 -2px 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-left   { box-shadow: inset 0 2px 0 var(--accent-1), inset 2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-right  { box-shadow: inset 0 2px 0 var(--accent-1), inset -2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-bottom.cf-table__cell--sel-left  { box-shadow: inset 0 -2px 0 var(--accent-1), inset 2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-bottom.cf-table__cell--sel-right { box-shadow: inset 0 -2px 0 var(--accent-1), inset -2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-left.cf-table__cell--sel-right        { box-shadow: inset 0 2px 0 var(--accent-1), inset 2px 0 0 var(--accent-1), inset -2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-bottom.cf-table__cell--sel-left       { box-shadow: inset 0 2px 0 var(--accent-1), inset 0 -2px 0 var(--accent-1), inset 2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-bottom.cf-table__cell--sel-right      { box-shadow: inset 0 2px 0 var(--accent-1), inset 0 -2px 0 var(--accent-1), inset -2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-bottom.cf-table__cell--sel-left.cf-table__cell--sel-right     { box-shadow: inset 0 -2px 0 var(--accent-1), inset 2px 0 0 var(--accent-1), inset -2px 0 0 var(--accent-1); }
+.cf-table__cell--sel-top.cf-table__cell--sel-bottom.cf-table__cell--sel-left.cf-table__cell--sel-right {
+  box-shadow:
+    inset 0 2px 0 var(--accent-1),
+    inset 0 -2px 0 var(--accent-1),
+    inset 2px 0 0 var(--accent-1),
+    inset -2px 0 0 var(--accent-1);
+}
+
+/* ---- Row edit mode ---- */
+.cf-table__row.is-row-editing > .cf-table__cell {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-1);
+}
+.cf-table__row-edit-actions {
+  display: inline-flex;
+  gap: 4px;
+}
+.cf-table__row-edit-btn {
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-11);
+  cursor: pointer;
+}
+.cf-table__row-edit-btn--save {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-table__row-edit-btn--save:hover { background: var(--accent-2); border-color: var(--accent-2); }
+.cf-table__row-edit-btn--cancel:hover { background: var(--bg-2); }
+
+/* ---- Batch action bar ---- */
+.cf-table__batch-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--accent-1);
+  background: var(--accent-soft);
+  color: var(--fg-1);
+  font-size: var(--t-12);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.cf-table__batch-count {
+  font-weight: var(--w-medium);
+  color: var(--accent-1);
+}
+.cf-table__batch-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.cf-table__batch-btn {
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-12);
+  cursor: pointer;
+}
+.cf-table__batch-btn:hover { border-color: var(--accent-1); color: var(--accent-1); }
+
+/* ---- Pinned row ---- */
+.cf-table__row.is-pinned > .cf-table__cell {
+  position: sticky;
+  z-index: 1;
+  background: var(--bg-1);
+  box-shadow: inset 3px 0 0 var(--accent-1);
+}
+.cf-table__row.is-pinned + .cf-table__row:not(.is-pinned) > .cf-table__cell {
+  border-top: 1px solid var(--line-2);
+}
+
+/* ---- Column virtual padding ---- */
+.cf-table__col-pad {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+/* ---- Dark theme nuances ---- */
+[data-theme='dark-cool'] .cf-table__resize-handle:hover::after,
+[data-theme='dark-cool'] .cf-table__resize-handle.is-active::after,
+[data-theme='dark-warm'] .cf-table__resize-handle:hover::after,
+[data-theme='dark-warm'] .cf-table__resize-handle.is-active::after {
+  background: var(--accent-2);
+  box-shadow: 0 0 6px var(--accent-soft);
+}
+[data-theme='dark-cool'] .cf-table__cell--th.is-drop-target,
+[data-theme='dark-warm'] .cf-table__cell--th.is-drop-target {
+  box-shadow: inset 3px 0 0 var(--accent-2);
+  background: var(--accent-soft);
+}
+[data-theme='dark-cool'] .cf-table__row.is-row-drop-target > .cf-table__cell,
+[data-theme='dark-warm'] .cf-table__row.is-row-drop-target > .cf-table__cell {
+  box-shadow: inset 0 2px 0 var(--accent-2);
+  background: var(--accent-soft);
+}
+[data-theme='dark-cool'] .cf-table__edit-input,
+[data-theme='dark-warm'] .cf-table__edit-input {
+  background: var(--bg-2);
+  border-color: var(--accent-2);
+}
+
+/* ---- Pagination ---- */
+.cf-table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--line-1);
+  font-size: var(--t-12);
+  color: var(--fg-3);
+  background: var(--bg-1);
+}
+.cf-table__pagination-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.cf-table__pager-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border-radius: var(--r-3);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-13);
+}
+.cf-table__pager-btn:disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.cf-table__pager-btn:hover:not(:disabled) {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+.cf-table__pager-current {
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+  padding: 0 6px;
+}
+.cf-table__pager-size {
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border-radius: var(--r-3);
+  font: inherit;
+  font-size: var(--t-12);
 }

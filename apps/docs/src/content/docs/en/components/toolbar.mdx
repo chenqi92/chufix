@@ -1,0 +1,61 @@
+---
+title: Toolbar
+description: Horizontal button-group container with separators, vertical orientation, and 3 sizes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
+
+## Basic usage
+
+`CfToolbar` is a semantic container for a button group; `CfToolbarSeparator` draws a thin line between buttons.
+`role="toolbar"` is applied automatically.
+
+<DemoFrame
+  vueCode={`<CfToolbar>
+  <CfIconButton aria-label="Undo">↶</CfIconButton>
+  <CfIconButton aria-label="Redo">↷</CfIconButton>
+  <CfToolbarSeparator />
+  <CfButton variant="ghost" size="sm">Duplicate</CfButton>
+  <CfButton variant="ghost" size="sm">Delete</CfButton>
+</CfToolbar>`}
+  reactCode={`<CfToolbar>
+  <CfIconButton aria-label="Undo">↶</CfIconButton>
+  <CfIconButton aria-label="Redo">↷</CfIconButton>
+  <CfToolbarSeparator />
+  <CfButton variant="ghost" size="sm">Duplicate</CfButton>
+  <CfButton variant="ghost" size="sm">Delete</CfButton>
+</CfToolbar>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Orientation and variant
+
+`orientation="vertical"` stacks vertically; `variant="plain"` removes background and border, useful as a bare button group.
+
+import VerticalVue from '~/components/demos/toolbar/VerticalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfToolbar orientation="vertical">…</CfToolbar>
+<CfToolbar variant="plain">…</CfToolbar>`}
+  reactCode={`<CfToolbar orientation="vertical">…</CfToolbar>
+<CfToolbar variant="plain">…</CfToolbar>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## API
+
+### CfToolbar
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'default' \| 'plain'` | `'default'` | `plain` removes background and border |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Padding and gap |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction |
+
+### CfToolbarSeparator
+
+Takes no props; flips horizontal/vertical based on the parent toolbar's orientation.

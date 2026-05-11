@@ -1,0 +1,47 @@
+---
+title: DonutChart 环形图
+description: 中空饼图，可在中心放数值/标签。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/donutchart/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfDonutChart ... />`}
+  reactCode={`<CfDonutChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 不同厚度
+
+`thickness` 控制环厚度（同 `size` 时，越厚越偏饼图，越薄越偏 ring）。
+
+import CenterVue from '~/components/demos/donutchart/CenterVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDonutChart :segments="data" :thickness="14" center-value="78%" center-label="完成率" />
+<CfDonutChart :segments="data" :thickness="22" />
+<CfDonutChart :segments="data" :thickness="32" />`}
+  reactCode={`<CfDonutChart segments={data} thickness={14} centerValue="78%" centerLabel="完成率" />
+<CfDonutChart segments={data} thickness={22} />
+<CfDonutChart segments={data} thickness={32} />`}
+>
+  <CenterVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `segments` | `DonutSegment[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `size` | `number` | `180` | 直径 |
+| `thickness` | `number` | `24` | 环厚 |
+| `centerValue / centerLabel` | `string \| number` | `—` | 中心文本 |
+| `showLegend` | `boolean` | `true` |  |

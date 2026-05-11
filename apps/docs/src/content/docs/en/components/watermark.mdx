@@ -1,0 +1,39 @@
+---
+title: Watermark
+description: Overlay tilted, repeating text watermarks on a content container. Useful for tracing leak sources on sensitive pages.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/watermark/BasicVue.vue';
+
+## Basic usage
+
+`content` can be a single string or an array of strings (multi-line watermark). The watermark is layered via an SVG data URL on `::after` with `pointer-events: none`, so content interaction isn't blocked.
+
+<DemoFrame
+  vueCode={`<CfWatermark content="ChuFix UI · Confidential">
+  <div class="protected-area">
+    <h3>Sensitive content</h3>
+    <p>The watermark covers the whole container, tiled and tilted.</p>
+  </div>
+</CfWatermark>`}
+  reactCode={`<CfWatermark content="ChuFix UI · Confidential">
+  <div className="protected-area">
+    <h3>Sensitive content</h3>
+    <p>The watermark covers the whole container, tiled and tilted.</p>
+  </div>
+</CfWatermark>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `content` | `string \| string[]` | `—` | Watermark text; arrays render as multiple lines |
+| `fontSize` | `number` | `14` | Font size (px) |
+| `color` | `string` | `oklch(... / 0.16)` | Text color, including alpha |
+| `rotate` | `number` | `-22` | Rotation angle (deg) |
+| `gap` | `[number, number]` | `[160, 80]` | Horizontal / vertical spacing between tiles |
+| `zIndex` | `number` | `9` | Overlay z-index |

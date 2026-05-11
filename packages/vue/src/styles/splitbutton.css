@@ -1,0 +1,214 @@
+/* ChuFix SplitButton — main action + dropdown trigger as a single unit.
+ * Visually shares the Button variant tokens but has its own divider seam. */
+
+.cf-splitbtn {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: var(--r-6);
+  overflow: visible;
+  position: relative;
+  font: inherit;
+  font-family: var(--font-sans);
+  line-height: 1;
+}
+
+.cf-splitbtn__main,
+.cf-splitbtn__more {
+  border: 1px solid transparent;
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  font: inherit;
+  font-size: var(--t-13);
+  font-weight: var(--w-medium);
+  cursor: pointer;
+  height: var(--control-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-instant) linear,
+    color var(--dur-instant) linear,
+    border-color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+}
+.cf-splitbtn__main {
+  padding: 0 14px;
+  border-top-left-radius: var(--r-6);
+  border-bottom-left-radius: var(--r-6);
+  gap: 6px;
+}
+.cf-splitbtn__more {
+  width: var(--control-h);
+  padding: 0;
+  border-top-right-radius: var(--r-6);
+  border-bottom-right-radius: var(--r-6);
+}
+.cf-splitbtn__main:hover,
+.cf-splitbtn__more:hover {
+  background: var(--accent-2);
+}
+.cf-splitbtn__main:active,
+.cf-splitbtn__more:active {
+  background: var(--accent-3);
+}
+.cf-splitbtn__main:focus-visible,
+.cf-splitbtn__more:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  z-index: 1;
+}
+.cf-splitbtn__main:disabled,
+.cf-splitbtn__more:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.cf-splitbtn.is-disabled,
+.cf-splitbtn.is-loading {
+  opacity: var(--disabled-opacity);
+}
+.cf-splitbtn__div {
+  width: 1px;
+  background: rgba(0, 0, 0, 0.18);
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+/* sizes */
+.cf-splitbtn--sm .cf-splitbtn__main,
+.cf-splitbtn--sm .cf-splitbtn__more {
+  height: var(--control-h-sm);
+  font-size: var(--t-12);
+}
+.cf-splitbtn--sm .cf-splitbtn__main {
+  padding: 0 10px;
+}
+.cf-splitbtn--sm .cf-splitbtn__more {
+  width: var(--control-h-sm);
+}
+.cf-splitbtn--lg .cf-splitbtn__main,
+.cf-splitbtn--lg .cf-splitbtn__more {
+  height: var(--control-h-lg);
+  font-size: var(--t-14);
+}
+.cf-splitbtn--lg .cf-splitbtn__main {
+  padding: 0 18px;
+}
+.cf-splitbtn--lg .cf-splitbtn__more {
+  width: var(--control-h-lg);
+}
+
+/* variants — mirror Button colors */
+.cf-splitbtn--primary .cf-splitbtn__main,
+.cf-splitbtn--primary .cf-splitbtn__more {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-splitbtn--primary .cf-splitbtn__main:hover,
+.cf-splitbtn--primary .cf-splitbtn__more:hover {
+  background: var(--accent-2);
+}
+.cf-splitbtn--primary .cf-splitbtn__main:active,
+.cf-splitbtn--primary .cf-splitbtn__more:active {
+  background: var(--accent-3);
+}
+
+.cf-splitbtn--secondary .cf-splitbtn__main,
+.cf-splitbtn--secondary .cf-splitbtn__more {
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border-color: var(--line-2);
+}
+.cf-splitbtn--secondary .cf-splitbtn__main:hover,
+.cf-splitbtn--secondary .cf-splitbtn__more:hover {
+  background: var(--bg-3);
+}
+.cf-splitbtn--secondary .cf-splitbtn__div {
+  background: var(--line-2);
+}
+
+.cf-splitbtn--tertiary .cf-splitbtn__main,
+.cf-splitbtn--tertiary .cf-splitbtn__more {
+  background: transparent;
+  color: var(--fg-1);
+  border-color: var(--line-2);
+}
+.cf-splitbtn--tertiary .cf-splitbtn__main:hover,
+.cf-splitbtn--tertiary .cf-splitbtn__more:hover {
+  background: var(--bg-2);
+}
+.cf-splitbtn--tertiary .cf-splitbtn__div {
+  background: var(--line-2);
+}
+
+.cf-splitbtn--ghost .cf-splitbtn__main,
+.cf-splitbtn--ghost .cf-splitbtn__more {
+  background: transparent;
+  color: var(--fg-2);
+  border-color: transparent;
+}
+.cf-splitbtn--ghost .cf-splitbtn__main:hover,
+.cf-splitbtn--ghost .cf-splitbtn__more:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+.cf-splitbtn--ghost .cf-splitbtn__div {
+  background: var(--line-1);
+}
+
+.cf-splitbtn--danger .cf-splitbtn__main,
+.cf-splitbtn--danger .cf-splitbtn__more {
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+}
+.cf-splitbtn--danger .cf-splitbtn__main:hover,
+.cf-splitbtn--danger .cf-splitbtn__more:hover {
+  filter: brightness(1.08);
+}
+
+.cf-splitbtn__caret {
+  width: 12px;
+  height: 12px;
+}
+
+/* dropdown menu */
+.cf-splitbtn__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 180px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  z-index: var(--z-popover);
+}
+
+.cf-splitbtn__option {
+  padding: 6px 10px;
+  border-radius: var(--r-4);
+  color: var(--fg-1);
+  font-size: var(--t-13);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cf-splitbtn__option:hover:not(.is-disabled) {
+  background: var(--bg-2);
+}
+.cf-splitbtn__option.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+}
+.cf-splitbtn__option.is-danger {
+  color: var(--status-error);
+}
+.cf-splitbtn__option.is-danger:hover:not(.is-disabled) {
+  background: var(--status-error-soft);
+}

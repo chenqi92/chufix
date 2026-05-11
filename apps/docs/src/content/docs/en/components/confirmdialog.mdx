@@ -1,0 +1,62 @@
+---
+title: Confirm dialog
+description: Modal-derived component for confirmation prompts, with default and danger tones.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/confirmdialog/BasicVue.vue';
+
+## Basic usage
+
+Built-in icon, title, description, and cancel/confirm buttons. `tone="danger"` switches to a red palette to emphasize irreversible actions.
+`closeOnOverlay` defaults to `false` — destructive actions must require an explicit button click.
+
+<DemoFrame
+  vueCode={`<CfConfirmDialog
+  v-model:open="open"
+  tone="danger"
+  title="Delete permanently?"
+  description="This action cannot be undone."
+  confirm-text="Delete permanently"
+  @confirm="onConfirm"
+/>`}
+  reactCode={`<CfConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  tone="danger"
+  title="Delete permanently?"
+  description="This action cannot be undone."
+  confirmText="Delete permanently"
+  onConfirm={onConfirm}
+/>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Async confirm with loading
+
+Hook confirm to a 1.5s async operation. The confirm button shows a spinner during the wait and the cancel button is disabled.
+
+import LoadingVue from '~/components/demos/confirmdialog/LoadingVue.vue';
+
+<DemoFrame
+  vueCode={`<CfConfirmDialog ... :loading="loading" @confirm="onConfirm" />`}
+  reactCode={`<CfConfirmDialog ... loading={loading} onConfirm={onConfirm} />`}
+>
+  <LoadingVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` / `v-model:open` | `boolean` | `false` | Visibility control |
+| `title` | `string` | — | Main title |
+| `description` | `string` | — | Description |
+| `tone` | `'default' \| 'danger'` | `'default'` | Danger uses red |
+| `confirmText` / `cancelText` | `string` | `'Confirm'` / `'Cancel'` | |
+| `loading` | `boolean` | `false` | Spinner on the confirm button |
+| `closeOnOverlay` / `closeOnEsc` | `boolean` | `false` / `true` | |
+
+Events: `confirm`, `cancel`, `update:open`.

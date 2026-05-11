@@ -1,21 +1,50 @@
 ---
 import { getCollection } from 'astro:content';
 import DocsLayout from '~/layouts/DocsLayout.astro';
+import { t } from '~/i18n/strings';
 
 export async function getStaticPaths() {
   const entries = await getCollection('docs');
-  return entries
-    .filter((e) => e.slug !== '' && !e.data.splash)
-    .map((entry) => ({
-      params: { slug: entry.slug },
-      props: { entry },
-    }));
+  const visible = entries.filter((e) => e.slug !== '' && !e.data.splash && !e.data.internal);
+
+  const paths: Array<{
+    params: { slug: string };
+    props: { entry: (typeof visible)[number]; fallback: 'zh' | null };
+  }> = [];
+
+  // 收集已存在的 en/ 前缀 slug 集合
+  const enSlugs = new Set(visible.filter((e) => e.slug.startsWith('en/')).map((e) => e.slug));
+
+  for (const entry of visible) {
+    paths.push({ params: { slug: entry.slug }, props: { entry, fallback: null } });
+
+    // 对每个 zh 条目，若没有 en/ 镜像，则用同一份 zh 条目挂到 /en/<slug>/，渲染时挂"翻译进行中"横幅
+    if (!entry.slug.startsWith('en/')) {
+      const enSlug = `en/${entry.slug}`;
+      if (!enSlugs.has(enSlug)) {
+        paths.push({ params: { slug: enSlug }, props: { entry, fallback: 'zh' } });
+      }
+    }
+  }
+
+  return paths;
 }
 
-const { entry } = Astro.props;
+const { entry, fallback } = Astro.props;
 const { Content, headings } = await entry.render();
+
+const isEn = Astro.url.pathname.startsWith('/en/');
+const showFallbackBanner = fallback === 'zh' && isEn;
+const pendingTitle = t('en', 'docs.translationPending.title');
+const pendingBody = t('en', 'docs.translationPending.body');
 ---
 
 <DocsLayout title={entry.data.title} description={entry.data.description} headings={headings}>
+  {showFallbackBanner && (
+    <div class="cf-alert cf-alert--warning" role="status" style="margin: 0 0 20px; padding: 12px 16px; border-radius: 6px; background: var(--status-warning-soft); color: var(--fg-1); font-size: var(--t-12);">
+      <strong style="display: block; margin-bottom: 4px;">{pendingTitle}</strong>
+      <span style="color: var(--fg-2);">{pendingBody}</span>
+    </div>
+  )}
   <Content />
 </DocsLayout>

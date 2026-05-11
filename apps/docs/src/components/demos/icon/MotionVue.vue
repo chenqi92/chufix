@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfIcon } from '@chufix/vue';
+import { CfIcon } from '@chufix-design/vue';
 
 const motions = [
   {

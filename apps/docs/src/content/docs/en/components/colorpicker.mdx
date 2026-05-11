@@ -1,0 +1,73 @@
+---
+title: ColorPicker
+description: HSV palette + hue slider + alpha slider + multi-format input — opens in a popover from a trigger or expands inline via panelOnly.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/colorpicker/BasicVue.vue';
+import AlphaVue from '~/components/demos/colorpicker/AlphaVue.vue';
+import PanelVue from '~/components/demos/colorpicker/PanelVue.vue';
+
+## Basic usage
+
+`v-model` binds a color string. Once open, you can drag on the HSV palette, adjust hue, switch between HEX / RGB / HSL formats, and edit the value as text. Preset swatches let you pick a color in one click.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfColorPicker } from '@chufix-design/vue';
+
+const value = ref('#3b82f6');
+</script>
+
+<template>
+  <CfColorPicker v-model="value" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfColorPicker } from '@chufix-design/react';
+
+export default function Demo() {
+  const [value, setValue] = useState('#3b82f6');
+  return <CfColorPicker value={value} onChange={setValue} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Alpha
+
+Enabling `showAlpha` adds an alpha slider; the output automatically switches to `rgba()` / `hsla()` / 8-digit HEX.
+
+<DemoFrame
+  vueCode={`<CfColorPicker v-model="value" show-alpha default-format="rgb" />`}
+  reactCode={`<CfColorPicker value={value} showAlpha defaultFormat="rgb" onChange={setValue} />`}
+>
+  <AlphaVue client:load />
+</DemoFrame>
+
+## Inline panel
+
+`panelOnly` keeps the panel always expanded inline — common for settings sidebars or theme editors.
+
+<DemoFrame
+  vueCode={`<CfColorPicker v-model="value" panel-only show-alpha />`}
+  reactCode={`<CfColorPicker value={value} panelOnly showAlpha onChange={setValue} />`}
+>
+  <PanelVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `'#3b82f6'` | Color string; accepts hex / rgb / rgba / hsl / hsla |
+| `defaultFormat` | `'hex' \| 'rgb' \| 'hsl'` | `'hex'` | Output format (auto switches to `-a` suffix or 8-digit HEX when alpha is on) |
+| `showAlpha` | `boolean` | `false` | Whether to show the alpha slider |
+| `presets` | `string[]` | 12-color default palette | Custom preset swatches |
+| `panelOnly` | `boolean` | `false` | Skip the trigger and render the panel directly |
+| `disabled` | `boolean` | `false` | Disabled |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size (trigger only) |
+
+Events: `update:modelValue` / `change` (React: `onChange`).
+
+> Color parsing accepts `#rgb` `#rgba` `#rrggbb` `#rrggbbaa` `rgb()` `rgba()` `hsl()` `hsla()`. The input field re-parses on blur and falls back to the last valid value if it can't be parsed.

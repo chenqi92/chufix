@@ -1,0 +1,113 @@
+/* ChuFix RangeSlider — two-knob range selector. */
+
+.cf-rangeslider {
+  --cf-rs-track-h: 4px;
+  --cf-rs-knob-size: 16px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: calc(var(--cf-rs-knob-size) / 2 + 4px) calc(var(--cf-rs-knob-size) / 2);
+  font: inherit;
+}
+.cf-rangeslider.is-disabled {
+  opacity: var(--disabled-opacity);
+  pointer-events: none;
+}
+
+.cf-rangeslider--sm {
+  --cf-rs-track-h: 3px;
+  --cf-rs-knob-size: 14px;
+}
+.cf-rangeslider--lg {
+  --cf-rs-track-h: 5px;
+  --cf-rs-knob-size: 18px;
+}
+
+.cf-rangeslider__track {
+  position: relative;
+  flex: 1;
+  height: var(--cf-rs-track-h);
+  background: var(--bg-3);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+}
+
+.cf-rangeslider__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--accent-1);
+  border-radius: var(--r-pill);
+}
+.cf-rangeslider--success .cf-rangeslider__fill {
+  background: var(--status-success);
+}
+.cf-rangeslider--warning .cf-rangeslider__fill {
+  background: var(--status-warning);
+}
+.cf-rangeslider--error .cf-rangeslider__fill {
+  background: var(--status-error);
+}
+
+.cf-rangeslider__knob {
+  position: absolute;
+  top: 50%;
+  width: var(--cf-rs-knob-size);
+  height: var(--cf-rs-knob-size);
+  margin-top: calc(var(--cf-rs-knob-size) / -2);
+  margin-left: calc(var(--cf-rs-knob-size) / -2);
+  padding: 0;
+  border: 2px solid var(--accent-1);
+  background: var(--bg-0);
+  border-radius: 50%;
+  cursor: grab;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow var(--dur-fast) linear,
+    transform var(--dur-fast) var(--ease-out);
+  touch-action: none;
+}
+.cf-rangeslider--success .cf-rangeslider__knob {
+  border-color: var(--status-success);
+}
+.cf-rangeslider--warning .cf-rangeslider__knob {
+  border-color: var(--status-warning);
+}
+.cf-rangeslider--error .cf-rangeslider__knob {
+  border-color: var(--status-error);
+}
+.cf-rangeslider__knob:hover {
+  transform: scale(1.08);
+}
+.cf-rangeslider__knob:active {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+.cf-rangeslider__knob:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.cf-rangeslider__tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  color: var(--fg-1);
+  font-size: var(--t-11);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) linear;
+}
+.cf-rangeslider__knob:hover .cf-rangeslider__tooltip,
+.cf-rangeslider__knob:active .cf-rangeslider__tooltip,
+.cf-rangeslider__knob:focus-visible .cf-rangeslider__tooltip {
+  opacity: 1;
+}

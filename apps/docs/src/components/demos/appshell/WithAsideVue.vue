@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAppShell } from '@chufix/vue';
+import { CfAppShell } from '@chufix-design/vue';
 </script>
 
 <template>

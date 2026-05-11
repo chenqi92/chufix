@@ -15,7 +15,7 @@ import StatesVue from '~/components/demos/kveditor/StatesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfKVEditor, type KVRow } from '@chufix/vue';
+import { CfKVEditor, type KVRow } from '@chufix-design/vue';
 
 const params = ref<KVRow[]>([
   { key: 'page', value: '1', enabled: true },
@@ -31,7 +31,7 @@ const params = ref<KVRow[]>([
   />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfKVEditor, type KVRow } from '@chufix/react';
+import { CfKVEditor, type KVRow } from '@chufix-design/react';
 
 export default function Demo() {
   const [params, setParams] = useState<KVRow[]>([

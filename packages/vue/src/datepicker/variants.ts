@@ -4,6 +4,12 @@ export type DatePickerSize = 'sm' | 'md' | 'lg';
 export type DatePickerVariant = 'outline' | 'filled' | 'ghost';
 export type DatePickerView = 'day' | 'month' | 'year';
 
+export interface DatePickerPreset {
+  label: string;
+  /** Either an absolute Date or a function returning one (called when clicked). */
+  value: Date | string | (() => Date | string);
+}
+
 export interface DatePickerProps {
   modelValue?: DateLike;
   format?: string;
@@ -20,6 +26,10 @@ export interface DatePickerProps {
   view?: DatePickerView;
   name?: string;
   id?: string;
+  /** Show ISO week numbers in the leading column. */
+  showWeekNumber?: boolean;
+  /** Quick-pick presets shown beside the calendar. */
+  presets?: DatePickerPreset[];
 }
 
 export function datePickerClass(p: {

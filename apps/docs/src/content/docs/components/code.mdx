@@ -8,17 +8,18 @@ import BasicVue from '~/components/demos/code/BasicVue.vue';
 import InlineVue from '~/components/demos/code/InlineVue.vue';
 import NumbersVue from '~/components/demos/code/NumbersVue.vue';
 import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
+import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
 
 ## 基础用法
 
 `<CfInlineCode>` 用于句中嵌入小段代码（包名 / 命令）。`<CfCodeBlock>` 接收 `code` 字符串渲染多行代码块，可选 `title` / `language` / `showLineNumbers` / `copyable`。
 
-> 本组件只渲染样式，不做语法高亮 — 如需高亮请在外部接 `shiki` / `highlight.js` 等并把高亮后的 HTML 通过 slot / `dangerouslySetInnerHTML` 传入（v0 暂不内置）。
+内置轻量语法高亮、行号、复制、去缩进、暗色面板；也可以传 `highlightedHtml` 接入 shiki / highlight.js / prism 等外部高亮方案。
 
 <DemoFrame
-  vueCode={`<p>用 <CfInlineCode>npm i @chufix/vue</CfInlineCode> 安装。</p>
+  vueCode={`<p>用 <CfInlineCode>npm i @chufix-design/vue</CfInlineCode> 安装。</p>
 <CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
-  reactCode={`<p>用 <CfInlineCode>npm i @chufix/react</CfInlineCode> 安装。</p>
+  reactCode={`<p>用 <CfInlineCode>npm i @chufix-design/react</CfInlineCode> 安装。</p>
 <CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
 >
   <BasicVue client:load />
@@ -29,10 +30,10 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 `<CfInlineCode>` 单独使用 — 把 `<code>` 包成等宽 + 浅色底 + 圆角的小标签。`size="sm"` 在密集文档里更小一档。
 
 <DemoFrame
-  vueCode={`<p>常用包：<CfInlineCode>@chufix/vue</CfInlineCode>、<CfInlineCode>@chufix/react</CfInlineCode>。</p>
+  vueCode={`<p>常用包：<CfInlineCode>@chufix-design/vue</CfInlineCode>、<CfInlineCode>@chufix-design/react</CfInlineCode>。</p>
 <p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
 <p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
-  reactCode={`<p>常用包：<CfInlineCode>@chufix/vue</CfInlineCode>、<CfInlineCode>@chufix/react</CfInlineCode>。</p>
+  reactCode={`<p>常用包：<CfInlineCode>@chufix-design/vue</CfInlineCode>、<CfInlineCode>@chufix-design/react</CfInlineCode>。</p>
 <p>命令：<CfInlineCode>pnpm dev</CfInlineCode>。</p>
 <p>小号：<CfInlineCode size="sm">--config</CfInlineCode>。</p>`}
 >
@@ -61,6 +62,34 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
   <MaxHeightVue client:load />
 </DemoFrame>
 
+## 代码工作区
+
+`CfCodeWorkspace` 是左侧项目树 + 右侧代码区的组合组件，可用于 docs 代码展示、图标源码、Blocks 页面方案、多文件示例。开启 `editable` 后右侧会切换成类编辑器输入区，仍保留文件树、tab、复制和行号。
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfCodeWorkspace
+  title="status-panel"
+  root-label="app"
+  :files="files"
+  tone="dark"
+  editable
+  :height="430"
+  trim-indent
+/>`}
+  reactCode={`<CfCodeWorkspace
+  title="status-panel"
+  rootLabel="app"
+  files={files}
+  tone="dark"
+  editable
+  height={430}
+  trimIndent
+/>`}
+>
+  <WorkspaceVue client:load />
+</DemoFrame>
+
 ## API · InlineCode
 
 | 属性 | 类型 | 默认值 | 说明 |
@@ -78,3 +107,38 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 | `showLineNumbers` | `boolean` | `false` | 是否显示行号 |
 | `copyable` | `boolean` | `true` | 头部显示复制按钮 |
 | `maxHeight` | `number \| string` | `—` | 启用纵向滚动的最大高度 |
+| `startLine` | `number` | `1` | 行号起始 |
+| `wrap` | `boolean` | `false` | 长行换行 |
+| `tone` | `'light' \| 'dark'` | `'light'` | 代码面板色调 |
+| `trimIndent` | `boolean` | `false` | 去掉多行代码的公共缩进 |
+| `highlight` | `boolean` | `true` | 是否启用内置轻量高亮 |
+| `highlightedHtml` | `string` | — | 外部高亮后的安全 HTML |
+
+## API · CodeWorkspace
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `files` | `CodeWorkspaceFile[]` | 必填 | 多文件列表 |
+| `title` | `string \| ReactNode` | — | 顶部标题 |
+| `rootLabel` / `root-label` | `string` | `'project'` | 左侧树根节点 |
+| `defaultFile` / `activeFile` | `string` | 首个文件 | 默认 / 受控激活文件 id |
+| `editable` | `boolean` | `false` | 编辑器模式 |
+| `readOnly` / `read-only` | `boolean` | `false` | 禁止编辑 |
+| `showLineNumbers` / `show-line-numbers` | `boolean` | `true` | 行号 |
+| `copyable` | `boolean` | `true` | 顶部复制当前文件 |
+| `height` | `number \| string` | — | 固定工作区高度 |
+| `wrap` | `boolean` | `false` | 长行换行 |
+| `tone` | `'light' \| 'dark'` | `'light'` | 面板色调 |
+| `trimIndent` / `trim-indent` | `boolean` | `false` | 展示模式下去公共缩进 |
+| `highlightedHtml` | `CodeWorkspaceFile` 字段 | — | 单文件外部高亮 HTML |
+
+```ts
+interface CodeWorkspaceFile {
+  id?: string;
+  name: string;
+  content: string;
+  language?: string;
+  highlightedHtml?: string;
+  readonly?: boolean;
+}
+```

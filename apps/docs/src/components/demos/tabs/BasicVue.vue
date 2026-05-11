@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTabs } from '@chufix/vue';
+import { CfTabs } from '@chufix-design/vue';
 
 const tab = ref('account');
 const items = [

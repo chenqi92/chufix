@@ -1,0 +1,103 @@
+---
+title: Banner
+description: Full-width announcement bar — 6 tones × 2 variants, dismissible and stickable.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/banner/BasicVue.vue';
+import TonesVue from '~/components/demos/banner/TonesVue.vue';
+import SolidVue from '~/components/demos/banner/SolidVue.vue';
+import ActionVue from '~/components/demos/banner/ActionVue.vue';
+
+## Basic usage
+
+Minimal form — a single line of announcement text. `Banner` defaults to `variant="subtle"`: tinted background with accent text, the most restrained full-width prompt.
+
+<DemoFrame
+  vueCode={`<CfBanner tone="info">
+  Scheduled maintenance tonight from 22:00 to 22:30; some features may be unavailable.
+</CfBanner>`}
+  reactCode={`<CfBanner tone="info">
+  Scheduled maintenance tonight from 22:00 to 22:30; some features may be unavailable.
+</CfBanner>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Six tones
+
+`tone` — `info` (neutral notice) / `success` (completed) / `warning` (needs attention) / `danger` (urgent) / `accent` (marketing) / `neutral` (most restrained).
+
+<DemoFrame
+  vueCode={`<CfBanner tone="info">info</CfBanner>
+<CfBanner tone="success">success</CfBanner>
+<CfBanner tone="warning">warning</CfBanner>
+<CfBanner tone="danger">danger</CfBanner>
+<CfBanner tone="accent">accent</CfBanner>
+<CfBanner tone="neutral">neutral</CfBanner>`}
+  reactCode={`<CfBanner tone="info">info</CfBanner>
+<CfBanner tone="success">success</CfBanner>
+<CfBanner tone="warning">warning</CfBanner>
+<CfBanner tone="danger">danger</CfBanner>
+<CfBanner tone="accent">accent</CfBanner>
+<CfBanner tone="neutral">neutral</CfBanner>`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## Solid variant
+
+`variant="solid"` fills the background with the tone color and uses white text — the strongest visual weight, suitable for marketing announcements or urgent interruptions.
+
+<DemoFrame
+  vueCode={`<CfBanner variant="solid" tone="accent" dismissible>
+  v2.0 is out — new themes and three density tiers
+  <template #action>
+    <CfButton size="sm" variant="ghost">View update</CfButton>
+  </template>
+</CfBanner>`}
+  reactCode={`<CfBanner
+  variant="solid"
+  tone="accent"
+  dismissible
+  action={<CfButton size="sm" variant="ghost">View update</CfButton>}
+>
+  v2.0 is out — new themes and three density tiers
+</CfBanner>`}
+>
+  <SolidVue client:load />
+</DemoFrame>
+
+## Close button + action slot
+
+`dismissible` adds an × close button on the right — clicking it removes the banner and fires `dismiss` / `onDismiss`. The `action` slot / prop adds an action button between the text and the × (clean up / view / renew).
+
+<DemoFrame
+  vueCode={`<CfBanner tone="warning" dismissible>
+  Storage at 86%; please clean up or upgrade your quota.
+  <template #action>
+    <CfButton size="sm" variant="tertiary">Clean up</CfButton>
+  </template>
+</CfBanner>`}
+  reactCode={`<CfBanner
+  tone="warning"
+  dismissible
+  action={<CfButton size="sm" variant="tertiary">Clean up</CfButton>}
+>
+  Storage at 86%; please clean up or upgrade your quota.
+</CfBanner>`}
+>
+  <ActionVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tone` | `'info' \| 'success' \| 'warning' \| 'danger' \| 'accent' \| 'neutral'` | `'info'` | Semantic color |
+| `variant` | `'subtle' \| 'solid'` | `'subtle'` | Visual mode |
+| `dismissible` | `boolean` | `false` | Show the × close button |
+| `icon` | `boolean` | `true` | Whether to show the leading icon (Vue: defaults to true, replaceable via the `#icon` slot; React: pass a node via the `icon` prop) |
+| `sticky` | `boolean` | `false` | Whether to stick to the top (`position: sticky`) |
+
+Events: `dismiss` (React: `onDismiss`). Slots: default content, `action`, `icon` (Vue).

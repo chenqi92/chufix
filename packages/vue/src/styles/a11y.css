@@ -1,0 +1,105 @@
+/* ChuFix accessibility baseline — applied globally once per package import.
+ *
+ * What this layer guarantees on top of individual components:
+ *   1. `.cf-sr-only` utility for screen-reader-only labels.
+ *   2. A baseline `:focus-visible` ring on any cf-* interactive control that
+ *      forgot to set its own — keyboard users always see where they are.
+ *   3. `prefers-reduced-motion: reduce` strips animation across the board:
+ *      transitions become instantaneous, keyframe spinners stop spinning,
+ *      and entry slide/scale transforms are removed.
+ *   4. `forced-colors: active` (Windows high contrast) keeps borders + text
+ *      visible by deferring to system colors instead of OKLCH custom props.
+ */
+
+/* ─────────────── 1. Screen-reader-only utility ─────────────── */
+.cf-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─────────────── 2. Baseline focus ring for keyboard users ─────────────── */
+
+/* Catch-all for every cf-* clickable control that didn't define its own
+ * focus-visible. We only paint when the user actually navigates by keyboard
+ * (`:focus-visible`), so mouse clicks won't trigger this. */
+[class*='cf-']:where(button, a, [role='button'], [tabindex='0']):focus-visible:not(:disabled) {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-3, 4px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────── 3. Reduced motion ─────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  /* tokens.css already collapses --dur-* to 0ms; this layer kills any
+   * remaining hard-coded animations. */
+  [class*='cf-'],
+  [class*='cf-']::before,
+  [class*='cf-']::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  /* Strip translate/scale entry transforms so users don't see anything fly. */
+  .cf-modal-enter-from .cf-modal__dialog,
+  .cf-modal-leave-to .cf-modal__dialog,
+  .cf-drawer-left-enter-from .cf-drawer__panel,
+  .cf-drawer-left-leave-to .cf-drawer__panel,
+  .cf-drawer-right-enter-from .cf-drawer__panel,
+  .cf-drawer-right-leave-to .cf-drawer__panel,
+  .cf-drawer-top-enter-from .cf-drawer__panel,
+  .cf-drawer-top-leave-to .cf-drawer__panel,
+  .cf-drawer-bottom-enter-from .cf-drawer__panel,
+  .cf-drawer-bottom-leave-to .cf-drawer__panel,
+  [data-cf-drawer][data-state='closed'] .cf-drawer__panel,
+  [data-cf-modal][data-state='closed'] .cf-modal__dialog {
+    transform: none !important;
+  }
+  /* Marquee + scrolling decorations should pause. */
+  .cf-marquee__track,
+  .cf-modal__footer-spinner,
+  .cf-select__spinner,
+  .cf-drawer__footer-spinner {
+    animation: none !important;
+  }
+}
+
+/* ─────────────── 4. High contrast (forced-colors) ─────────────── */
+
+@media (forced-colors: active) {
+  /* Defer to system colors so Windows high-contrast actually shows borders. */
+  [class*='cf-']:where(button, [role='button']):focus-visible {
+    outline: 2px solid CanvasText !important;
+    box-shadow: none !important;
+  }
+  [class*='cf-']:where(input, textarea, select),
+  .cf-card,
+  .cf-modal__dialog,
+  .cf-drawer__panel,
+  .cf-pivot__scroll,
+  .cf-sheet__frame,
+  .cf-gantt__frame {
+    border: 1px solid CanvasText !important;
+  }
+  .cf-tag,
+  .cf-badge,
+  .cf-status-code-badge {
+    forced-color-adjust: none;
+  }
+}
+
+/* ─────────────── 5. Honor users disabling decoration ─────────────── */
+@media (prefers-contrast: more) {
+  :root {
+    --line-1: var(--line-2);
+  }
+}

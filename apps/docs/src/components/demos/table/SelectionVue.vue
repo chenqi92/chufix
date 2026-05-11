@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTable, type TableColumn } from '@chufix/vue';
+import { CfTable, type TableColumn } from '@chufix-design/vue';
 
 interface Row { id: string; name: string; role: string; team: string }
 

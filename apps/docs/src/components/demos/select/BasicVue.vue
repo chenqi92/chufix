@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSelect, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix-design/vue';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },

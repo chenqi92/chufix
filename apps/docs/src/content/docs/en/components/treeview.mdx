@@ -1,0 +1,146 @@
+---
+title: Tree view
+description: Nested tree display with single-select / checkbox (with cascading), expand / collapse, and custom icons.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/treeview/BasicVue.vue';
+import CheckableVue from '~/components/demos/treeview/CheckableVue.vue';
+import SizesVue from '~/components/demos/treeview/SizesVue.vue';
+import NoLineVue from '~/components/demos/treeview/NoLineVue.vue';
+
+## Basic usage
+
+`nodes` is a tree (each node may have `children`). `selectedKey` + `update:selectedKey` controls the single-select highlight; `defaultExpandedKeys` sets initially expanded node keys. `disabled` nodes don't respond to clicks.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfTreeView, type TreeNode } from '@chufix-design/vue';
+
+const selected = ref<string | null>('home');
+
+const nodes: TreeNode[] = [
+  {
+    key: 'src',
+    label: 'src',
+    children: [
+      {
+        key: 'components',
+        label: 'components',
+        children: [
+          { key: 'home', label: 'Home.vue' },
+          { key: 'about', label: 'About.vue' },
+          { key: 'contact', label: 'Contact.vue', disabled: true },
+        ],
+      },
+      { key: 'main', label: 'main.ts' },
+      { key: 'styles', label: 'styles.css' },
+    ],
+  },
+  { key: 'readme', label: 'README.md' },
+];
+</script>
+
+<template>
+  <CfTreeView
+    :nodes="nodes"
+    :selected-key="selected"
+    :default-expanded-keys="['src', 'components']"
+    @update:selected-key="selected = $event"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfTreeView, type TreeNode } from '@chufix-design/react';
+
+const nodes: TreeNode[] = [/* ... */];
+
+export default function Demo() {
+  const [selected, setSelected] = useState<string | null>('home');
+  return (
+    <CfTreeView
+      nodes={nodes}
+      selectedKey={selected}
+      defaultExpandedKeys={['src', 'components']}
+      onSelectedKeyChange={setSelected}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Checkbox with cascading
+
+`checkable` adds a checkbox to each node, paired with `v-model` (Vue) / `value` + `onChange` (React) bound to `string[]`. `cascade=true` (default) makes parent / child checks affect each other — checking a parent checks all descendants, and checking all descendants checks the parent; half-checked state becomes `indeterminate` automatically.
+
+With `cascade=false`, each node is independent, useful for industry / tag multi-select cases.
+
+<DemoFrame
+  vueCode={`<CfTreeView v-model="checked" :nodes="nodes" checkable />
+
+<!-- Cascading off -->
+<CfTreeView v-model="checked" :nodes="nodes" checkable :cascade="false" />`}
+  reactCode={`<CfTreeView nodes={nodes} value={checked} onChange={setChecked} checkable />
+
+{/* Cascading off */}
+<CfTreeView nodes={nodes} value={checked} onChange={setChecked} checkable cascade={false} />`}
+>
+  <CheckableVue client:load />
+</DemoFrame>
+
+## Sizes
+
+`size` controls node row height and font size — `sm` compact (common in sidebar file trees) / `md` default / `lg` for touch-friendly use.
+
+<DemoFrame
+  vueCode={`<CfTreeView size="sm" :nodes="nodes" />
+<CfTreeView size="md" :nodes="nodes" />
+<CfTreeView size="lg" :nodes="nodes" />`}
+  reactCode={`<CfTreeView size="sm" nodes={nodes} />
+<CfTreeView size="md" nodes={nodes} />
+<CfTreeView size="lg" nodes={nodes} />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Hide connector lines
+
+`showLine={false}` hides the dashed parent-child connectors — cleaner look, often paired with custom icons.
+
+<DemoFrame
+  vueCode={`<CfTreeView :nodes="nodes" :show-line="false" />`}
+  reactCode={`<CfTreeView nodes={nodes} showLine={false} />`}
+>
+  <NoLineVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `nodes` | `TreeNode[]` | `[]` | Tree data |
+| `modelValue` (Vue) / `value` (React) | `string[]` | `[]` | Checked keys (checkable mode only) |
+| `expandedKeys` / `defaultExpandedKeys` | `string[]` | `—` | Controlled / uncontrolled expanded list |
+| `selectedKey` | `string \| null` | `null` | Currently selected key |
+| `checkable` | `boolean` | `false` | Show checkboxes |
+| `cascade` | `boolean` | `true` | Cascading parent / child checks |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size + padding |
+| `showLine` | `boolean` | `true` | Show nested connector lines |
+| `emptyText` | `string \| ReactNode` | `'No data'` | Empty state text |
+
+`TreeNode`:
+
+```ts
+interface TreeNode {
+  key: string;
+  label: string;
+  icon?: VNode | ReactNode;
+  children?: TreeNode[];
+  disabled?: boolean;
+  selectable?: boolean;
+  isLeaf?: boolean;
+}
+```
+
+Events: `update:modelValue` / `update:expandedKeys` / `update:selectedKey` / `select` / `expand` / `check` (React: `onChange` / `onExpandedKeysChange` / `onSelectedKeyChange` / `onSelect` / `onExpand` / `onCheck`).

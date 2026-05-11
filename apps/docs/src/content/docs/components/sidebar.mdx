@@ -16,7 +16,7 @@ import SizesVue from '~/components/demos/sidebar/SizesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfSidebar, type SidebarEntry } from '@chufix/vue';
+import { CfSidebar, type SidebarEntry } from '@chufix-design/vue';
 
 const active = ref('analytics');
 const items: SidebarEntry[] = [
@@ -53,7 +53,7 @@ const items: SidebarEntry[] = [
   <CfSidebar v-model="active" :items="items" :default-open-keys="['team']" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfSidebar, type SidebarEntry } from '@chufix/react';
+import { CfSidebar, type SidebarEntry } from '@chufix-design/react';
 
 const items: SidebarEntry[] = [/* ... */];
 

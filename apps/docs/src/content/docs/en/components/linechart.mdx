@@ -1,0 +1,58 @@
+---
+title: LineChart
+description: Multi-series line chart with smooth curves, gridlines, and x/y axis labels.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/linechart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props; pure SVG rendering with no third-party chart library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfLineChart ... />`}
+  reactCode={`<CfLineChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Smooth curves
+
+`smooth = true` uses Catmull-Rom-style cubic Bezier curves with a tension of 0.2 from neighbor differences,
+without overshooting (no "half-circle" bulges at corners).
+
+import SmoothVue from '~/components/demos/linechart/SmoothVue.vue';
+
+<DemoFrame
+  vueCode={`<CfLineChart :series="series" smooth />`}
+  reactCode={`<CfLineChart series={series} smooth />`}
+>
+  <SmoothVue client:load />
+</DemoFrame>
+
+## Multiple series
+
+Up to 8 simultaneous series; colors cycle through `--viz-1..8`.
+
+import MultiSeriesVue from '~/components/demos/linechart/MultiSeriesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfLineChart :series="series" smooth />`}
+  reactCode={`<CfLineChart series={series} smooth />`}
+>
+  <MultiSeriesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `series` | `LineSeries[]` | `—` | &#123; name?, data: number[] &#125;[] |
+| `labels` | `string[]` | `auto 0..n-1` | x-axis labels |
+| `width / height` | `number` | `480 / 240` |  |
+| `smooth` | `boolean` | `false` | Smooth curves |
+| `showGrid / showLabels` | `boolean` | `true` |  |
+| `yLabelFn` | `(v) => string` | `v.toFixed(0)` | y-axis label formatter |

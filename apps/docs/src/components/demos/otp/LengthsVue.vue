@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfOtpInput } from '@chufix/vue';
+import { CfOtpInput } from '@chufix-design/vue';
 
 const a = ref('');
 const b = ref('');

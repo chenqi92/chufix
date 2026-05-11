@@ -1,0 +1,78 @@
+---
+title: Theming & tokens
+description: Switch ChuFix UI theme, density, and accent color via CSS variables.
+order: 2
+---
+
+Every visual choice in ChuFix UI reads from CSS variables, all defined in `@chufix-design/tokens/tokens.css`. Colors live in the OKLCH color space — `#hex` literals are never used.
+
+## Switch theme
+
+Three themes: `dark-cool` (default), `dark-warm`, `light`.
+
+```html
+<html data-theme="dark-cool">...</html>
+<html data-theme="dark-warm">...</html>
+<html data-theme="light">...</html>
+```
+
+`<html data-theme="dark">` is an alias for `dark-cool`. Toggle at runtime:
+
+```ts
+document.documentElement.dataset.theme = 'light';
+```
+
+## Switch density
+
+Two densities: `comfortable` (default, 32px controls), `compact` (28px controls).
+
+```html
+<html data-density="compact">...</html>
+```
+
+Density only affects geometry tokens (`--control-h`, `--pad-x`, `--row-h`, …). It is orthogonal to the theme.
+
+## Custom accent color
+
+The accent is defined by a single OKLCH point. Hover / active / soft variants are derived from it:
+
+```css
+:root {
+  --accent-1: oklch(64% 0.16 263);            /* default fill */
+  --accent-2: oklch(70% 0.16 263);            /* hover */
+  --accent-3: oklch(58% 0.15 263);            /* active */
+  --accent-soft: oklch(64% 0.16 263 / 0.16);  /* tinted background */
+}
+```
+
+Change just the hue H to re-brand (e.g. `H 12` for red, `H 152` for green, `H 263` for blue-violet). Need transparency in another style? OKLCH supports the slash syntax directly: `oklch(64% 0.16 263 / 0.4)`.
+
+## Full token list
+
+**Surface**: `--bg-0` `--bg-1` `--bg-2` `--bg-3` `--bg-inset`
+
+**Foreground**: `--fg-1` `--fg-2` `--fg-3` `--fg-on-accent`
+
+**Line**: `--line-1` `--line-2`
+
+**Accent**: `--accent-1` `--accent-2` `--accent-3` `--accent-soft`
+
+**Status**: `--status-success` `--status-warning` `--status-error` `--status-info`,
+each with a `-soft` variant.
+
+**Radius**: `--r-2` `--r-3` `--r-4` `--r-6` `--r-8` `--r-pill`
+
+**Spacing** (4px steps): `--s-1` … `--s-12`
+
+**Type**: `--t-11` `--t-12` `--t-13` `--t-14` `--t-16` `--t-18` `--t-22` `--t-28`,
+paired with `--lh-*` line heights.
+
+**Font**: `--font-sans` (Inter), `--font-mono` (JetBrains Mono)
+
+**Shadow**: `--shadow-1` (thin border) `--shadow-2` (card) `--shadow-3` (popover) `--shadow-4` (modal)
+
+**Duration**: `--dur-instant` `--dur-fast` `--dur-base` `--dur-slow`
+
+**Easing**: `--ease-out` `--ease-in-out` `--ease-spring`
+
+**Z-index**: `--z-sticky` `--z-dropdown` `--z-popover` `--z-tooltip` `--z-drawer` `--z-modal` `--z-toast`

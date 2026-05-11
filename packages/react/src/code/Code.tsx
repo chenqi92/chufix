@@ -1,6 +1,9 @@
 import { useState, type CSSProperties } from 'react';
 import {
   codeBlockClass,
+  escapeHtml,
+  highlightCode,
+  normalizeCodeIndent,
   type CodeBlockProps,
   type InlineCodeProps,
 } from './variants';
@@ -23,15 +26,23 @@ export function CodeBlock(props: CodeBlockProps) {
     showLineNumbers = false,
     copyable = true,
     maxHeight,
+    startLine = 1,
+    wrap = false,
+    tone = 'light',
+    trimIndent = false,
+    highlight = true,
+    highlightedHtml,
     className,
   } = props;
 
   const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
-  const lines = code.split('\n');
+  const displayCode = trimIndent ? normalizeCodeIndent(code) : code;
+  const lines = displayCode.split('\n');
+  const html = highlightedHtml ?? (highlight ? highlightCode(code, language, trimIndent) : escapeHtml(displayCode));
 
   async function copy() {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(displayCode);
       setCopyState('copied');
       setTimeout(() => setCopyState('idle'), 1500);
     } catch (e) {
@@ -44,7 +55,7 @@ export function CodeBlock(props: CodeBlockProps) {
       ? { maxHeight: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight }
       : undefined;
 
-  const cls = codeBlockClass({ size, showLineNumbers, className });
+  const cls = codeBlockClass({ size, showLineNumbers, wrap, tone, className });
 
   return (
     <div className={cls}>
@@ -68,11 +79,11 @@ export function CodeBlock(props: CodeBlockProps) {
         {showLineNumbers ? (
           <span className="cf-code-block__nums" aria-hidden="true">
             {lines.map((_, i) => (
-              <span key={i}>{i + 1}</span>
+              <span key={i}>{startLine + i}</span>
             ))}
           </span>
         ) : null}
-        <code className="cf-code-block__code">{code}</code>
+        <code className="cf-code-block__code" dangerouslySetInnerHTML={{ __html: html }} />
       </pre>
     </div>
   );

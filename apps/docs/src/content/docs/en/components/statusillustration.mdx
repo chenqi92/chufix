@@ -1,0 +1,55 @@
+---
+title: Status illustration
+description: A set of semantic state illustrations (empty / search / upload / success / 404 / 403 / 500 etc.) wired to design tokens.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
+
+## Basic usage
+
+10 variants share the same body (window + shadow); each variant adds dedicated accents and color.
+By default it's decorative (`aria-hidden`); pass `title` to make it accessible (with a `<title>` element).
+
+<DemoFrame
+  vueCode={`<CfStatusIllustration variant="empty" />
+<CfStatusIllustration variant="search" />
+<CfStatusIllustration variant="upload" />
+<CfStatusIllustration variant="success" />
+<CfStatusIllustration variant="not-found" />`}
+  reactCode={`<CfStatusIllustration variant="empty" />
+<CfStatusIllustration variant="search" />
+<CfStatusIllustration variant="upload" />
+<CfStatusIllustration variant="success" />
+<CfStatusIllustration variant="not-found" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Sizes
+
+`size` controls the illustration scale. Use `sm` for inline hints, `md` by default, `lg` for full-page Result screens.
+
+import SizesVue from '~/components/demos/statusillustration/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfStatusIllustration size="sm" />
+<CfStatusIllustration size="md" />
+<CfStatusIllustration size="lg" />`}
+  reactCode={`<CfStatusIllustration size="sm" />
+<CfStatusIllustration size="md" />
+<CfStatusIllustration size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'empty' \| 'search' \| 'upload' \| 'success' \| 'info' \| 'warning' \| 'error' \| 'not-found' \| 'forbidden' \| 'server-error'` | `'empty'` | Status semantics |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `title` | `string` | — | Accessible when set; decorative otherwise |
+
+> Already used by [Empty](/components/empty/) / [Result](/components/result/) / [Dropzone](/components/dropzone/) under the hood.

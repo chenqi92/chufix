@@ -1,0 +1,31 @@
+---
+title: IconPicker 图标选择
+description: 从内置图标集中搜索并选择图标，适合菜单配置、仪表盘卡片、低代码属性面板。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/iconpicker/BasicVue.vue';
+
+## 基础用法
+
+`CfIconPicker` 直接读取 `@chufix-design/icons` 的类型化图标清单，选中的值就是 `IconName`。
+
+<DemoFrame
+  vueCode={`<CfIconPicker v-model="icon" searchable clearable />`}
+  reactCode={`<CfIconPicker value={icon} searchable clearable onChange={setIcon} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `value` / `modelValue` | `IconName` | `—` | 当前图标名 |
+| `placeholder` | `string` | `选择图标` | 空值占位 |
+| `searchable` | `boolean` | `true` | 显示搜索输入 |
+| `clearable` | `boolean` | `true` | 显示清空按钮 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `size` | `sm / md / lg` | `md` | 尺寸 |
+
+事件：Vue `update:modelValue` / `change(value)`，React `onChange(value)`。

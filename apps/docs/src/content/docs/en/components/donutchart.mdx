@@ -1,0 +1,47 @@
+---
+title: Donut chart
+description: Hollow pie chart that can show a value or label in the center.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/donutchart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props. Pure SVG rendering, no third-party chart library dependency.
+Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfDonutChart ... />`}
+  reactCode={`<CfDonutChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Different ring thicknesses
+
+`thickness` controls the ring thickness (with the same `size`, thicker is more pie-like, thinner is more ring-like).
+
+import CenterVue from '~/components/demos/donutchart/CenterVue.vue';
+
+<DemoFrame
+  vueCode={`<CfDonutChart :segments="data" :thickness="14" center-value="78%" center-label="Completion" />
+<CfDonutChart :segments="data" :thickness="22" />
+<CfDonutChart :segments="data" :thickness="32" />`}
+  reactCode={`<CfDonutChart segments={data} thickness={14} centerValue="78%" centerLabel="Completion" />
+<CfDonutChart segments={data} thickness={22} />
+<CfDonutChart segments={data} thickness={32} />`}
+>
+  <CenterVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `segments` | `DonutSegment[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `size` | `number` | `180` | Diameter |
+| `thickness` | `number` | `24` | Ring thickness |
+| `centerValue / centerLabel` | `string \| number` | `—` | Center text |
+| `showLegend` | `boolean` | `true` |  |

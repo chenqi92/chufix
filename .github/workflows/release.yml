@@ -1,0 +1,112 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+  packages: write
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 主流程：在 main 收到 push 时
+  #   - 如果存在未处理的 .changeset/*.md  →  自动开/更新一个 "Version Packages" PR
+  #     （PR 内容：升好版本号、合并好 CHANGELOG、删掉那些草稿）
+  #   - 如果不存在未处理草稿（也就是 Version PR 刚被合并那次 push）→ 直接发 npm
+  # ---------------------------------------------------------------------------
+  release:
+    name: Release to npm
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm -r --filter='./packages/*' build
+
+      - name: Create release PR or publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish
+          commit: 'chore(release): publish'
+          title: 'chore(release): version packages'
+          createGithubReleases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # ---------------------------------------------------------------------------
+  # 镜像发布到 GitHub Packages（可选附加渠道）
+  #
+  # GitHub Packages 要求 scope 等于 owner 用户名 / 组织名。
+  # 用户名是 chenqi92，所以这里把 @chufix/<x> 临时改成 @chenqi92/chufix-<x>
+  # 再发布。pnpm 端使用方仍然走 npm 上的 @chufix/<x>；GitHub Packages 这边
+  # 只是个公开备份镜像。
+  #
+  # 如果整个 job 失败也不影响主 npm 发布（continue-on-error），后续可以单独
+  # 重试或干脆删掉这个 job。
+  # ---------------------------------------------------------------------------
+  github-mirror:
+    name: Mirror to GitHub Packages
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: '@chenqi92'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm -r --filter='./packages/*' build
+
+      - name: Publish to GitHub Packages
+        run: node scripts/publish-github-packages.mjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_OWNER: chenqi92

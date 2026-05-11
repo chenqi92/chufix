@@ -1,0 +1,61 @@
+---
+title: Toolbar 工具栏
+description: 水平按钮组容器，支持分隔符、垂直方向、3 档尺寸。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
+
+## 基础用法
+
+`CfToolbar` 是按钮组的语义容器，`CfToolbarSeparator` 在按钮之间画一条细线。
+`role="toolbar"` 自动注入。
+
+<DemoFrame
+  vueCode={`<CfToolbar>
+  <CfIconButton aria-label="撤销">↶</CfIconButton>
+  <CfIconButton aria-label="重做">↷</CfIconButton>
+  <CfToolbarSeparator />
+  <CfButton variant="ghost" size="sm">Duplicate</CfButton>
+  <CfButton variant="ghost" size="sm">Delete</CfButton>
+</CfToolbar>`}
+  reactCode={`<CfToolbar>
+  <CfIconButton aria-label="撤销">↶</CfIconButton>
+  <CfIconButton aria-label="重做">↷</CfIconButton>
+  <CfToolbarSeparator />
+  <CfButton variant="ghost" size="sm">Duplicate</CfButton>
+  <CfButton variant="ghost" size="sm">Delete</CfButton>
+</CfToolbar>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 方向与变体
+
+`orientation="vertical"` 垂直堆叠；`variant="plain"` 取消背景与边框，作为纯按钮组使用。
+
+import VerticalVue from '~/components/demos/toolbar/VerticalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfToolbar orientation="vertical">…</CfToolbar>
+<CfToolbar variant="plain">…</CfToolbar>`}
+  reactCode={`<CfToolbar orientation="vertical">…</CfToolbar>
+<CfToolbar variant="plain">…</CfToolbar>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## API
+
+### CfToolbar
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `variant` | `'default' \| 'plain'` | `'default'` | `plain` 取消背景与边框 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 内边距与间距 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 方向 |
+
+### CfToolbarSeparator
+
+不接受属性，根据父 toolbar 的 orientation 自动横竖切换。

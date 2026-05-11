@@ -1,0 +1,57 @@
+---
+title: Floating inspector
+description: Corner-anchored, collapsible inspector panel — useful for performance monitors and debug overlays.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/floatinginspector/BasicVue.vue';
+
+## Basic usage
+
+Anchored to one of the four corners; `offset` controls the distance from the edge. Click the caret in the header to collapse / expand (the title remains visible).
+
+<DemoFrame
+  vueCode={`<CfFloatingInspector
+  v-model:open="open"
+  placement="bottom-right"
+  title="Performance"
+>
+  <ul>...</ul>
+</CfFloatingInspector>`}
+  reactCode={`<CfFloatingInspector
+  open={open}
+  onOpenChange={setOpen}
+  placement="bottom-right"
+  title="Performance"
+>
+  <ul>...</ul>
+</CfFloatingInspector>`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+
+## Four corners and close
+
+Toggle through all four placements; click "close" to demo `onOpenChange`.
+
+import PlacementsVue from '~/components/demos/floatinginspector/PlacementsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfFloatingInspector v-model:open="open" :placement="'top-right'" />`}
+  reactCode={`<CfFloatingInspector open={open} onOpenChange={setOpen} placement="top-right" />`}
+>
+  <PlacementsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | `true` | |
+| `collapsed` | `boolean` | `false` | Collapsed state |
+| `placement` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | `'bottom-right'` | |
+| `title` | `string` | — | |
+| `width` | `number \| string` | `320` | |
+| `offset` | `number` | `24` | Distance from viewport edge in px |
+| `closable` | `boolean` | `true` | |

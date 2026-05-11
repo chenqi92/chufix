@@ -1,0 +1,29 @@
+---
+title: ChartCrosshair
+description: Crosshair locator + tooltip helper that can be embedded inside any SVG chart.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/chartcrosshair/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props and rendered as plain SVG — no third-party charting library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfChartCrosshair ... />`}
+  reactCode={`<CfChartCrosshair ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `visible` | `boolean` | `true` |  |
+| `x / y` | `number` | `—` | Pixel coordinates (within the parent SVG coordinate system) |
+| `width / height` | `number` | `—` | Total parent SVG size (used to size the lines) |
+| `showVertical / showHorizontal` | `boolean` | `true / false` |  |
+| `tooltip` | `string` | `—` | Value label that follows the cursor |

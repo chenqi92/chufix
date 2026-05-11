@@ -1,0 +1,95 @@
+---
+title: Link
+description: Design-consistent link styling — 4 variants, 3 sizes, auto external link detection, can be disabled.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/link/BasicVue.vue';
+import VariantsVue from '~/components/demos/link/VariantsVue.vue';
+import ExternalVue from '~/components/demos/link/ExternalVue.vue';
+import StatesVue from '~/components/demos/link/StatesVue.vue';
+
+## Basic usage
+
+The two most common cases — in-page anchor jumps and external URLs. External links (`href` starting with `http://` or `https://`) automatically get a trailing icon and `rel="noopener noreferrer"`.
+
+<DemoFrame
+  vueCode={`<CfLink href="#getting-started">Go to getting started</CfLink>
+<CfLink href="https://github.com/chenqi92/chufix">GitHub repo</CfLink>`}
+  reactCode={`<CfLink href="#getting-started">Go to getting started</CfLink>
+<CfLink href="https://github.com/chenqi92/chufix">GitHub repo</CfLink>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Four variants
+
+- `default` — accent color, underline on hover
+- `subtle` — inherits parent text color, underlines on hover (great inside body paragraphs)
+- `underline` — always underlined (extra emphasis on clickability)
+- `inverse` — for use inside an inverse panel (accent background) to avoid clashing with the background
+
+<DemoFrame
+  vueCode={`<CfLink href="#" variant="default">default</CfLink>
+<CfLink href="#" variant="subtle">subtle</CfLink>
+<CfLink href="#" variant="underline">underline</CfLink>
+<div style="background: var(--accent-1); color: var(--fg-on-accent); padding: 6px 10px;">
+  <CfLink href="#" variant="inverse">inverse</CfLink>
+</div>`}
+  reactCode={`<CfLink href="#" variant="default">default</CfLink>
+<CfLink href="#" variant="subtle">subtle</CfLink>
+<CfLink href="#" variant="underline">underline</CfLink>
+<div style={{ background: 'var(--accent-1)', color: 'var(--fg-on-accent)', padding: '6px 10px' }}>
+  <CfLink href="#" variant="inverse">inverse</CfLink>
+</div>`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## External links
+
+Three triggers cause the component to treat a link as external — auto trailing icon + `rel="noopener noreferrer"`:
+
+- `href` starts with `http://` / `https://`
+- explicit `external` prop
+- `target="_blank"`
+
+<DemoFrame
+  vueCode={`<CfLink href="https://github.com/chenqi92/chufix">Auto-detected</CfLink>
+<CfLink href="/internal" external>Explicit external</CfLink>
+<CfLink href="#" target="_blank">target=_blank</CfLink>`}
+  reactCode={`<CfLink href="https://github.com/chenqi92/chufix">Auto-detected</CfLink>
+<CfLink href="/internal" external>Explicit external</CfLink>
+<CfLink href="#" target="_blank">target=_blank</CfLink>`}
+>
+  <ExternalVue client:load />
+</DemoFrame>
+
+## Sizes / disabled
+
+`size` controls font size; `disabled` blocks clicks and grays the cursor.
+
+<DemoFrame
+  vueCode={`<CfLink href="#" size="sm">Small</CfLink>
+<CfLink href="#" size="md">Default</CfLink>
+<CfLink href="#" size="lg">Large</CfLink>
+<CfLink href="#" disabled>Disabled</CfLink>`}
+  reactCode={`<CfLink href="#" size="sm">Small</CfLink>
+<CfLink href="#" size="md">Default</CfLink>
+<CfLink href="#" size="lg">Large</CfLink>
+<CfLink href="#" disabled>Disabled</CfLink>`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | `—` | Link URL |
+| `target` | `string` | `—` | Same as native `<a target>` |
+| `rel` | `string` | auto | Auto-set to `noopener noreferrer` for external links |
+| `external` | `boolean` | `false` | Mark as external; shows trailing icon |
+| `variant` | `'default' \| 'subtle' \| 'inverse' \| 'underline'` | `'default'` | Visual mode |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+| `disabled` | `boolean` | `false` | Disabled |

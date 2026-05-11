@@ -1,0 +1,50 @@
+---
+title: CodeEditor 代码编辑器
+description: 轻量代码编辑容器：textarea + 行号 + Tab 缩进。重型语法/补全请接 Monaco/CodeMirror。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/codeeditor/BasicVue.vue';
+
+## 基础用法
+
+定位是"视觉容器 + 轻交互"：行号、Tab 缩进、行尾保持、ARIA 标签齐全；不内置语法高亮。
+若需高亮，让消费方在外层裹一个 overlay（参考 VariableAwareInput 的 overlay 技法）。
+
+<DemoFrame
+  vueCode={`<CfCodeEditor v-model="code" language="typescript" :rows="12" />`}
+  reactCode={`<CfCodeEditor value={code} onChange={setCode} language="typescript" rows={12} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## readOnly / wrap / 无行号
+
+不同状态组合：只读演示文档、自动换行长文本、无行号紧凑模式。
+
+import StatesVue from '~/components/demos/codeeditor/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCodeEditor v-model="code" read-only />
+<CfCodeEditor v-model="text" wrap />
+<CfCodeEditor v-model="snip" :show-line-numbers="false" />`}
+  reactCode={`<CfCodeEditor value={code} onChange={set} readOnly />
+<CfCodeEditor value={text} onChange={set} wrap />
+<CfCodeEditor value={snip} onChange={set} showLineNumbers={false} />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | 代码内容 |
+| `language` | `string` | `'plaintext'` | 仅作 `data-language` 透传，不参与渲染 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `showLineNumbers` | `boolean` | `true` | |
+| `readOnly` | `boolean` | `false` | |
+| `rows` | `number` | `12` | 可见行数 |
+| `wrap` | `boolean` | `false` | 长行软换 |
+| `tabSize` | `number` | `2` | Tab 插入空格数；0 表示让 Tab 移动焦点 |

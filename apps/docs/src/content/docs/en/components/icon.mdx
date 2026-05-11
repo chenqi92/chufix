@@ -1,0 +1,109 @@
+---
+title: Icon
+description: ChuFix's built-in SVG icon component. Type-safe `name`, inline rendering by default, no separate sprite mounting required.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/icon/BasicVue.vue';
+import SizesVue from '~/components/demos/icon/SizesVue.vue';
+import ColorsVue from '~/components/demos/icon/ColorsVue.vue';
+import MotionVue from '~/components/demos/icon/MotionVue.vue';
+import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
+
+## Basic usage
+
+`name` uses the `IconName` type, drawn from the 231 built-in icon names in `@chufix-design/icons`. Renders as a decorative icon by default; pass `title` or `label` when an accessible name is needed.
+
+<DemoFrame
+  vueCode={`<CfIcon name="search" />
+<CfIcon name="calendar" size="lg" />
+<CfIcon name="component" :size="28" />
+<CfIcon name="check-circle" color="var(--status-success)" />
+<CfIcon name="loader" motion="spin" />
+<CfIcon name="alert-circle" title="Error" />`}
+  reactCode={`<CfIcon name="search" />
+<CfIcon name="calendar" size="lg" />
+<CfIcon name="component" size={28} />
+<CfIcon name="check-circle" color="var(--status-success)" />
+<CfIcon name="loader" motion="spin" />
+<CfIcon name="alert-circle" title="Error" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Sizes
+
+`size` accepts a preset tier (`xs` / `sm` / `md` / `lg` / `xl`) or a number / string (custom px / em).
+
+<DemoFrame
+  vueCode={`<CfIcon name="search" size="xs" />
+<CfIcon name="search" size="sm" />
+<CfIcon name="search" size="md" />
+<CfIcon name="search" size="lg" />
+<CfIcon name="search" size="xl" />
+<CfIcon name="search" :size="32" />`}
+  reactCode={`<CfIcon name="search" size="xs" />
+<CfIcon name="search" size="sm" />
+<CfIcon name="search" size="md" />
+<CfIcon name="search" size="lg" />
+<CfIcon name="search" size="xl" />
+<CfIcon name="search" size={32} />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Color
+
+When `color` is not passed, the icon uses `currentColor` and inherits the parent text color — this is the default and the most flexible option. For semantic colors, pass a token directly: `var(--status-success)` / `var(--accent-1)`, etc.
+
+<DemoFrame
+  vueCode={`<CfIcon name="check-circle" color="var(--status-success)" size="lg" />
+<CfIcon name="alert-triangle" color="var(--status-warning)" size="lg" />
+<CfIcon name="x-circle" color="var(--status-error)" size="lg" />
+<CfIcon name="info" color="var(--status-info)" size="lg" />`}
+  reactCode={`<CfIcon name="check-circle" color="var(--status-success)" size="lg" />
+<CfIcon name="alert-triangle" color="var(--status-warning)" size="lg" />
+<CfIcon name="x-circle" color="var(--status-error)" size="lg" />
+<CfIcon name="info" color="var(--status-info)" size="lg" />`}
+>
+  <ColorsVue client:load />
+</DemoFrame>
+
+## Motion
+
+`motion` adds a simple looping animation — `spin` (for loaders), `pulse` (breathing emphasis), `bounce` (strong cue). All motion respects `prefers-reduced-motion` and stops automatically when the user opts in.
+
+<DemoFrame
+  vueCode={`<CfIcon name="loader" motion="spin" size="lg" />
+<CfIcon name="circle" motion="pulse" size="lg" />
+<CfIcon name="arrow-down" motion="bounce" size="lg" />`}
+  reactCode={`<CfIcon name="loader" motion="spin" size="lg" />
+<CfIcon name="circle" motion="pulse" size="lg" />
+<CfIcon name="arrow-down" motion="bounce" size="lg" />`}
+>
+  <MotionVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | Type                                      | Default | Description |
+| ------------- | ----------------------------------------- | ------ | ---- |
+| `name`        | `IconName`                                | —      | Icon name with typed validation |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number \| string` | `'md'` | Size |
+| `strokeWidth` | `number`                                  | `1.5`  | Stroke width |
+| `color`       | `string`                                  | —      | Icon color; inherits `currentColor` by default |
+| `motion`      | `'spin' \| 'pulse' \| 'bounce'`           | —      | Simple animation effect; respects `prefers-reduced-motion` |
+| `title`       | `string`                                  | —      | SVG title; also gives the icon `img` semantics |
+| `label`       | `string`                                  | —      | Vue-only aria-label |
+
+In React you can pass `aria-label` directly:
+
+```tsx
+<CfIcon name="search" aria-label="Search" />
+```
+
+## Icon catalog
+
+The full list of built-in icons. Click an entry to copy its prefixed component usage, e.g. `<CfIcon name="search" />`.
+
+<IconGalleryVue client:load />

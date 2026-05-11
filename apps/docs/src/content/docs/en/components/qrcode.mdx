@@ -1,0 +1,31 @@
+---
+title: QR code
+description: Encode text / URL into an SVG QR code, fully client-side and zero-dependency (Byte mode, auto-selects version 1–40).
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
+
+## Basic usage
+
+`value` is the string to encode (any UTF-8). `ecc` controls the error-correction level — higher levels need a denser grid for the same payload but tolerate more damage.
+
+<DemoFrame
+  vueCode={`<CfQRCode :value="value" :size="160" ecc="M" />`}
+  reactCode={`<CfQRCode value={value} size={160} ecc="M" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | `—` | Content to encode (UTF-8) |
+| `ecc` | `'L' \| 'M' \| 'Q' \| 'H'` | `'M'` | Error-correction level (~7% / 15% / 25% / 30%) |
+| `size` | `number` | `160` | Render size (pixels) |
+| `margin` | `number` | `2` | Quiet-zone modules |
+| `color` | `string` | `'currentColor'` | Dark-module color |
+| `background` | `string` | `'transparent'` | Background color |
+
+Implementation note: a built-in Byte-mode QR encoder selects the smallest version (1–40) that fits the data. The algorithm is adapted from Project Nayuki's MIT reference implementation.

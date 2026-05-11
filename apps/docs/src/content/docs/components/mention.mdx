@@ -17,7 +17,7 @@ import StatesVue from '~/components/demos/mention/StatesVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfMention } from '@chufix/vue';
+import { CfMention } from '@chufix-design/vue';
 
 const text = ref('');
 const options = [
@@ -33,7 +33,7 @@ const options = [
   <CfMention v-model="text" :options="options" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfMention } from '@chufix/react';
+import { CfMention } from '@chufix-design/react';
 
 export default function Demo() {
   const [text, setText] = useState('');

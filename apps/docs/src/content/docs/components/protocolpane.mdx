@@ -1,0 +1,58 @@
+---
+title: ProtocolPane 协议监视面板
+description: SSE / MQTT / Kafka / gRPC 4 个 tab 的协议监视器外壳。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/protocolpane/BasicVue.vue';
+
+## 基础用法
+
+预定义 4 个 tab（id：`sse`、`mqtt`、`kafka`、`grpc`），每个 tab 内容由消费方通过 named slot
+`#panel-{tabId}`（Vue）/ `slots["panel-{tabId}"]`（React）填入。也可通过 `tabs` prop 覆盖默认列表。
+
+来源：[`protocols.html`](https://github.com/chenqi92/chufix-design)。
+
+<DemoFrame
+  vueCode={`<CfProtocolPane>
+  <template #panel-sse>...</template>
+  <template #panel-mqtt>...</template>
+</CfProtocolPane>`}
+  reactCode={`<CfProtocolPane slots={{
+  'panel-sse': <PanelA />,
+  'panel-mqtt': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 真实内容拼装
+
+替换占位文字，4 个 tab 各放一个具体可视化：SSE 时间轴 / MQTT 主题树 / Kafka partition 表 / gRPC 方法列表。
+
+import RealVue from '~/components/demos/protocolpane/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfProtocolPane>
+  <template #panel-sse><EventList /></template>
+  <template #panel-mqtt><CfTreeView ... /></template>
+  <template #panel-kafka><CfDataGrid ... /></template>
+  <template #panel-grpc><CfList ... /></template>
+</CfProtocolPane>`}
+  reactCode={`<CfProtocolPane slots={{...}} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | 第一个 tab id | 活动 tab |
+| `tabs` | `TemplatePaneTab[]` | 预设 | 自定义 tab 列表 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+预设的 tab id 列表导出为 `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS` 等常量，可在自定义 `tabs` 时直接拿来用。
+
+> 模版组件本质是 [`CfTabs`](/components/tabs/) 的语义薄壳。如果你不需要一组预定义 tab，直接用 CfTabs 即可。

@@ -1,0 +1,39 @@
+---
+title: Tour
+description: Step-by-step highlight of key UI elements with explanation popovers. Use it to onboard users when shipping new features.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tour/BasicVue.vue';
+
+## Basic usage
+
+Each entry in `steps` is `{ target, title, description, placement }`. `target` is a CSS selector for the element to highlight; `placement` is the popover side relative to the target.
+
+<DemoFrame
+  vueCode={`<CfTour v-model="open" :steps="steps" />`}
+  reactCode={`<CfTour open={open} onOpenChange={setOpen} steps={steps} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `steps` | `TourStep[]` | `—` | Tour steps |
+| `open` / `modelValue` | `boolean` | `—` | Controlled visibility |
+| `defaultOpen` / `defaultValue` | `boolean` | `false` | Uncontrolled initial visibility |
+| `current` | `number` | `—` | Controlled current step index |
+| `defaultCurrent` | `number` | `0` | Uncontrolled initial step |
+
+Events: `onOpenChange(open)` / `onCurrentChange(n)` / `onFinish()` / `onClose()`.
+
+### TourStep
+
+| Field | Type | Description |
+|---|---|---|
+| `target` | `string` | CSS selector to locate the highlight target |
+| `title` | `string` | Popover title |
+| `description` | `string` | Popover description (optional) |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | Popover side relative to target, default `'bottom'` |

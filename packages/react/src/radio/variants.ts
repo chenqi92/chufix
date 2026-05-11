@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ChangeEvent, FocusEvent, ReactNode } from 'react';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
 export type RadioValue = string | number | boolean | null;
@@ -11,9 +11,18 @@ export interface RadioProps {
   disabled?: boolean;
   name?: string;
   id?: string;
-  onChange?: (value: RadioValue) => void;
+  onChange?: (value: RadioValue, meta: RadioChangeMeta) => void;
+  onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
   children?: ReactNode;
   className?: string;
+}
+
+export interface RadioChangeMeta {
+  event: ChangeEvent<HTMLInputElement>;
+  value: RadioValue;
+  name?: string;
+  checked: boolean;
 }
 
 export interface RadioGroupProps {
@@ -23,7 +32,7 @@ export interface RadioGroupProps {
   size?: RadioSize;
   disabled?: boolean;
   direction?: 'row' | 'column';
-  onChange?: (value: RadioValue) => void;
+  onChange?: (value: RadioValue, meta: RadioChangeMeta) => void;
   children?: ReactNode;
   className?: string;
 }

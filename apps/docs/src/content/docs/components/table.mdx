@@ -1,126 +1,436 @@
 ---
 title: Table 表格
-description: 列定义式 API、列排序、行选择（单 / 多）、3 种 variant、自定义渲染。
+description: 数据表格 —— 多列排序、列拖拽 / 调宽、固定列、过滤、分页、行展开、树形数据、总计行、粘性表头、全局搜索 与 列可见性。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/table/BasicVue.vue';
 import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+import MultiSortVue from '~/components/demos/table/MultiSortVue.vue';
+import ResizeReorderVue from '~/components/demos/table/ResizeReorderVue.vue';
+import PinVue from '~/components/demos/table/PinVue.vue';
+import ExpandTreeVue from '~/components/demos/table/ExpandTreeVue.vue';
+import SummarySearchVue from '~/components/demos/table/SummarySearchVue.vue';
+import VirtualVue from '~/components/demos/table/VirtualVue.vue';
+import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
+import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
+import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
+import PersistVue from '~/components/demos/table/PersistVue.vue';
+import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
+import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
+import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
+import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
+import PasteVue from '~/components/demos/table/PasteVue.vue';
+import HistoryVue from '~/components/demos/table/HistoryVue.vue';
+import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
+import RowEditVue from '~/components/demos/table/RowEditVue.vue';
+import BatchVue from '~/components/demos/table/BatchVue.vue';
+import PinnedRowsVue from '~/components/demos/table/PinnedRowsVue.vue';
+import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
+
+`CfTable` 是组件库里功能最完整的"主力"组件之一。设计取舍：
+
+- **客户端模式默认派生** —— 全局搜索、列过滤、排序、分页全部在组件内完成；改成服务端模式只需要给 `pagination.total` 一个数字。
+- **列状态非受控为主** —— 隐藏 / 顺序 / 宽度走内置 state，必要时可通过 `update:columnsState` 全受控。
+- **0 第三方依赖** —— HTML5 DnD 处理列拖拽，PointerEvent 处理调宽，原生 `position: sticky` 处理固定列与表头。
 
 ## 基础用法
 
-`columns` 定义列，每列至少要有 `key` 和 `title`。`rows` 是数据数组；`rowKey` 指定哪个字段作为唯一 key（也可传函数）。点击 `sortable: true` 的列头切换 asc / desc / 无序三态。
+`columns` + `rows` + 可选 `rowKey`。`column.format` 做展示格式化，`column.render` 接收渲染函数返回 VNode / 字符串。
 
-<DemoFrame
-  vueCode={`<script setup lang="ts">
-import { CfTable, type TableColumn } from '@chufix/vue';
-
-interface Order {
-  id: string;
-  customer: string;
-  amount: number;
-  status: string;
-  date: string;
-}
-
-const rows: Order[] = [/* ... */];
-const columns: TableColumn<Order>[] = [
-  { key: 'id', title: '订单号', sortable: true, width: 100 },
-  { key: 'customer', title: '客户', sortable: true },
-  {
-    key: 'amount',
-    title: '金额',
-    align: 'right',
-    sortable: true,
-    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
-  },
-  { key: 'status', title: '状态' },
-  { key: 'date', title: '日期', sortable: true },
-];
-</script>
-
-<template>
-  <CfTable :columns="columns" :rows="rows" row-key="id" variant="bordered" />
-</template>`}
-  reactCode={`import { CfTable, type TableColumn } from '@chufix/react';
-
-interface Order { id: string; customer: string; amount: number; status: string; date: string; }
-const rows: Order[] = [/* ... */];
-const columns: TableColumn<Order>[] = [
-  { key: 'id', title: '订单号', sortable: true, width: 100 },
-  { key: 'customer', title: '客户', sortable: true },
-  {
-    key: 'amount',
-    title: '金额',
-    align: 'right',
-    sortable: true,
-    format: (v) => \`¥\${(v as number).toLocaleString()}\`,
-  },
-  { key: 'status', title: '状态' },
-  { key: 'date', title: '日期', sortable: true },
-];
-
-export default function Demo() {
-  return <CfTable columns={columns} rows={rows} rowKey="id" variant="bordered" />;
-}`}
->
+<DemoFrame>
   <BasicVue client:load />
 </DemoFrame>
 
-## 行选择 + 条纹
+## 选择行
 
-`selectable="multiple"` 在最左加一列复选框，`v-model` 绑定 `string[]`；`selectable="single"` 行点击直接切换单选，`v-model` 绑定 `string`。`variant="striped"` 给奇数行加底色。
+单选 `selectable="single"` / 多选 `selectable="multiple"`。`v-model` 接受 `string` 或 `string[]`，由 `rowKey` 决定。
 
-<DemoFrame
-  vueCode={`<CfTable
-  v-model="selected"
-  :columns="columns"
-  :rows="rows"
-  row-key="id"
-  selectable="multiple"
-  variant="striped"
-/>`}
-  reactCode={`<CfTable
-  value={selected}
-  columns={columns}
-  rows={rows}
-  rowKey="id"
-  selectable="multiple"
-  variant="striped"
-  onChange={setSelected as any}
-/>`}
->
+<DemoFrame>
   <SelectionVue client:load />
 </DemoFrame>
 
-## API · Table
+## 多列排序
 
-| 属性 | 类型 | 默认值 | 说明 |
-|---|---|---|---|
-| `columns` | `TableColumn<T>[]` | `[]` | 列定义 |
-| `rows` | `T[]` | `[]` | 数据数组 |
-| `rowKey` | `string \| ((row, i) => string)` | `index` | 行唯一标识字段或函数 |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 内距 |
-| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | 视觉模式 |
-| `hoverable` | `boolean` | `true` | 行悬停高亮 |
-| `emptyText` | `string \| ReactNode` | `'暂无数据'` | 空状态文案 |
-| `loading` | `boolean` | `false` | 加载态（半透明 + 不可点） |
-| `sort` / `defaultSort` | `TableSort` | `—` | 受控 / 非受控的排序 |
-| `selectable` | `'single' \| 'multiple'` | `—` | 行选择模式 |
-| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | `null` | 选中行的 key |
+打开 `multi-sort` 后，按住 <kbd>Shift</kbd> / <kbd>⌘</kbd> 点列头追加次级排序。同列再次点击循环 asc → desc → 取消。表头显示当前列在排序队列中的序号。
 
-事件：`update:sort` / `sort-change` / `update:modelValue` / `row-click`（React 端：`onSortChange` / `onChange` / `onRowClick`）。
-插槽（Vue）：`cell:<key>` / `header:<key>` / `empty`；React 用 `column.render` 自定义单元格。
+<DemoFrame>
+  <MultiSortVue client:load />
+</DemoFrame>
 
-## API · TableColumn
+排序优先级 = `sort` 数组顺序。完全受控时把 `:sort` 绑到自己的 ref 上即可。
 
-| 属性 | 类型 | 说明 |
-|---|---|---|
-| `key` | `string` | 列唯一标识 |
-| `title` | `string \| ReactNode` | 表头 |
-| `dataIndex` | `string` | 取值字段；省略时使用 `key` |
-| `width` | `number \| string` | 列宽 |
-| `align` | `'left' \| 'center' \| 'right'` | 对齐方式（right 自动 tabular-nums） |
-| `sortable` | `boolean` | 是否可排序 |
-| `format` | `(value, row, i) => string` | 格式化字符串 |
-| `render` | `(value, row, i) => ReactNode` | 自定义渲染（React） |
+## 拖拽调宽 + 拖拽换序
+
+打开 `resizable` 后每列右边出现 6px 的 col-resize 区。拖拽实时更新内部 state，`@update:columns-state` 把新宽度送出来用于持久化。`reorderable` 让表头可拖拽换序。
+
+<DemoFrame>
+  <ResizeReorderVue client:load />
+</DemoFrame>
+
+单列可以用 `resizable: false` / `reorderable: false` 屏蔽。
+
+## 固定列 + 粘性表头
+
+`column.fixed: 'left' | 'right'` 把列钉在两侧，超长内容横向滚动时仍可见。配合 `sticky-header` + `:height` 表头同时粘顶。
+
+<DemoFrame>
+  <PinVue client:load />
+</DemoFrame>
+
+## 行展开 + 树形数据
+
+`expandable` 给每行加展开按钮：
+
+- 传 `expand-render` —— 渲染自定义展开内容（订单详情、嵌套图表等）。
+- 行数据自带 `children` —— 自动当作树形数据递归渲染，每层 `tree-indent` 像素的缩进。
+
+<DemoFrame>
+  <ExpandTreeVue client:load />
+</DemoFrame>
+
+`v-model:expanded-row-keys` 把展开状态外置到父组件，方便保存到 URL 或 localStorage。
+
+## 工具栏 + 总计行 + 分页 + 过滤
+
+把 `toolbar="auto"` 打开就出现全局搜索与列可见性菜单。`column.filterable` 给每列加漏斗按钮，`filterType` 切到 `select` / `number-range` / 默认文本。`column.summary` 接 `'sum' | 'avg' | 'count'` 或函数；表底自动出一行**总计**，跟着过滤结果实时变。
+
+<DemoFrame>
+  <SummarySearchVue client:load />
+</DemoFrame>
+
+`:default-pagination="{ page: 1, pageSize: 8 }"` 是非受控分页。完全受控用 `pagination` 绑当前对象，并监听 `@update:pagination`。
+
+## 虚拟滚动
+
+打开 `virtual` 后表体只渲染当前可见的行 + 上下 `overscan` 缓冲，DOM 节点数恒定在几十个。要求所有行使用固定 `row-height`（缺省 36px）。建议配合 `:height` + `sticky-header`。
+
+<DemoFrame>
+  <VirtualVue client:load />
+</DemoFrame>
+
+50000 行的数据集只渲染 ~30 个 `<tr>`。继续兼容排序、过滤、固定列、全局搜索。**注意**：虚拟模式下 `expandable` 的展开行高也被固定，复杂的展开内容请用 Modal 替代或关闭虚拟。
+
+## 行拖拽换序
+
+`row-reorderable` 在最左侧加一列 ⋮⋮ 拖把柄。拖动整行换序，`@update:rows` 把新数组送出来；想监听 from/to 索引就用 `@row-reorder`。
+
+<DemoFrame>
+  <RowReorderVue client:load />
+</DemoFrame>
+
+仅作用在顶层（level 0）行；树形子行自身不能拖。
+
+## 内联编辑
+
+给列加 `editable: true` + 可选 `editType: 'text' | 'number' | 'select'`，双击单元格进入编辑：
+
+- `editValidate` 拦截非法值，校验失败时保留编辑态。
+- 提交时机：Enter / blur；取消：Esc。
+- `@cell-edit` 抛出 `{ row, column, oldValue, newValue, index }`，由你写回数据源。
+
+<DemoFrame>
+  <InlineEditVue client:load />
+</DemoFrame>
+
+> 组件不直接 mutate 你的 `rows`：所有提交都通过 `cell-edit` 事件，业务方决定要不要写回、是否调接口、是否合并。
+
+## CSV 导出
+
+`exportable` 让工具栏出现 **Export** 按钮，点击导出当前**过滤后**的结果。导出文件含 UTF-8 BOM，Excel 直接打开不乱码。
+
+- 跳过某列：`column.exportable: false`
+- 自定义单元格序列化：`column.exportRender(value, row, i) => string`
+- 文件名：`export-file-name`，缺省 `'table'`
+- 完全自定义：`@export` 事件接到 CSV 字符串，自己 download 或上传到服务端。
+- 命令式调用：组件 `exportCsv()` 已通过 `defineExpose` 暴露。
+
+<DemoFrame>
+  <CsvExportVue client:load />
+</DemoFrame>
+
+## 列状态持久化
+
+`persistKey="<key>"` 让组件把当前 `columnsState`（隐藏 / 顺序 / 宽度）写到 `localStorage['cf-table:<key>']`，下次访问自动恢复。
+
+<DemoFrame>
+  <PersistVue client:load />
+</DemoFrame>
+
+完全受控时（外部传 `:columns-state`）会跳过自动读写，这时由你决定怎么持久化。
+
+## 自动 rowSpan 合并
+
+给某列加 `mergeRows: true`，连续相同值的单元格会自动合并 rowSpan。需要更细粒度的合并条件可以传函数：`mergeRows: (cur, prev) => cur.groupId === prev.groupId`。
+
+<DemoFrame>
+  <MergeRowsVue client:load />
+</DemoFrame>
+
+合并不会跨树形层级（不同 `parentKey` 的子行不会被合并到一起）。
+
+## 单元格选区 + 一键复制
+
+`cell-selectable` 让表格行为接近 Excel：
+
+- 单击单元格 → 选中
+- Shift 单击 / 鼠标拖动 → 矩形选区
+- <kbd>Ctrl/⌘ + C</kbd> → 复制为 TSV 到剪贴板，可以直接粘到 Excel / Numbers / Google Sheets
+
+<DemoFrame>
+  <CellSelectVue client:load />
+</DemoFrame>
+
+`column.format` 会被尊重 —— 复制出去的就是显示的字符串。
+
+## 列虚拟化（双向虚拟化）
+
+100+ 列且每列内容简单（如二维数据矩阵）时，启用 `col-virtual` + 默认 `col-width` 让横向滚动也只渲染可见列；和 `virtual` 一起开就是双向虚拟化。
+
+<DemoFrame>
+  <ColVirtualVue client:load />
+</DemoFrame>
+
+200 行 × 121 列 = 24200 单元格，DOM 实际不到 800 个节点。注意：列虚拟化下 `column.fixed` 仍然钉住，但要求被钉的列总宽不要超过视口的 1/3，否则可视区会很拥挤。
+
+## 树形拖拽（跨父节点）
+
+在 `row-reorderable` 之上加 `tree-reorderable`，拖拽行为升级为 Excel / Finder / 看板风格的"上下/中间"三段：
+
+- 拖到目标行**上 1/4** → 放在它**前面**（同父）
+- 拖到目标行**下 1/4** → 放在它**后面**（同父）
+- 拖到**中间一半** → 拖**进**目标行作为它的子节点
+
+不会让你把祖先放进自己的后代里。
+
+<DemoFrame>
+  <TreeDragVue client:load />
+</DemoFrame>
+
+`@tree-reorder` 事件给到 `{ fromKey, toKey, pos: 'above' | 'below' | 'inside', rows }`，业务方可以决定要不要持久化到后端。
+
+## TSV 反向粘贴
+
+在 `cell-selectable` 上再加 `cell-pastable`：单击或框选起点单元格，按 <kbd>Ctrl/⌘ + V</kbd> 粘贴整片 TSV / CSV，从起点开始按行写回；`column.editable` 控制每格能否写、`column.editValidate` 拦截非法值。
+
+<DemoFrame>
+  <PasteVue client:load />
+</DemoFrame>
+
+`@cell-paste` 事件返回 `{ applied, skipped }`，可以拿来给个 toast 提示。
+
+## 历史撤销
+
+`history-enabled` 把 sort / filter / search / pagination / columnsState 的每一次变化记到内存栈，监听 <kbd>Ctrl/⌘ + Z</kbd> 撤销、<kbd>Ctrl/⌘ + Shift + Z</kbd> / <kbd>Ctrl + Y</kbd> 重做。`history-depth` 控制最多保留多少步（默认 50）。
+
+<DemoFrame>
+  <HistoryVue client:load />
+</DemoFrame>
+
+`@history-change` 事件吐 `{ canUndo, canRedo }`，方便业务方亮 / 灭对应按钮。组件实例上还暴露 `undo()` / `redo()` 命令式调用。
+
+## 变高行虚拟滚动
+
+`virtual` 默认要求所有行高一致。如果每行高度不固定（比如 body 是 markdown 渲染、有多张图片），传 `:get-row-height="(idx) => 42"` 让组件按累计偏移做二分查找定位可见窗口。
+
+<DemoFrame>
+  <VarHeightVue client:load />
+</DemoFrame>
+
+注意：`getRowHeight` 必须**纯函数**，组件会在每次行数变化时重算累计偏移。如果高度真的需要等 DOM 渲染后才知道，目前的建议是先返回一个估值，DOM 测量完成后再 `setState` 改回真实值；后续会出 `auto-row-height` 模式自动用 ResizeObserver。
+
+## 行编辑模式
+
+把 `edit-mode="row"` 打开，双击任意行进入整行编辑：所有 `editable` 列同时变为 input，行尾单独多出一行 Save / Cancel 按钮。Enter 提交、Esc 取消，校验失败保留编辑态。
+
+<DemoFrame>
+  <RowEditVue client:load />
+</DemoFrame>
+
+每个 cell 改动都通过 `@cell-edit` 事件抛出（与单格编辑一致），业务方决定是否调接口、是否合并提交。组件不 mutate `rows`。
+
+## 批量操作工具栏
+
+`batch-actions` + `selectable="multiple"`：选中至少一行后，表头上方出现 sticky 的批量操作条，自带 计数 / 导出选中 / 清空，可以通过 `#batch-actions` 插槽塞自定义按钮（接到 `selectedKeys`）。
+
+<DemoFrame>
+  <BatchVue client:load />
+</DemoFrame>
+
+## 冻结行
+
+`pinned-row-keys` 的列表里所有 rowKey 会置顶并 sticky 到表体顶部，下面的内容滚动时它们一直可见。常用于"自选"、"高优先级"等需要永远先看到的行。
+
+<DemoFrame>
+  <PinnedRowsVue client:load />
+</DemoFrame>
+
+## auto-row-height
+
+`virtual` 默认按固定 rowHeight。如果 row 内容确实需要等浏览器渲染才能知道高度（富文本、图片、嵌套布局），开启 `auto-row-height`：组件内置 ResizeObserver 监听每个可见行的真实高度并写回累积偏移表。
+
+<DemoFrame>
+  <AutoHeightVue client:load />
+</DemoFrame>
+
+第一次渲染会用 `rowHeight` 作为估值；测量完成后 padTop / padBottom 自动重算。比手写 `getRowHeight` 函数更省心，但代价是首次滚动可能短暂看到滚动条抖动（系统校准位移）。
+
+## 服务端模式 · 防抖
+
+输入框 / 过滤面板的状态变化每一帧都触发会把后端打爆。给 `:server-debounce="300"`（ms）让 `update:globalSearch` 与 `update:filters` 在静默 300ms 后才发出。其它信号（点排序 / 翻页）是显式点击，不需要防抖，所以保持同步触发。
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :pagination="{ page, pageSize, total }"
+  :server-debounce="300"
+  @update:globalSearch="(q) => loadData({ search: q })"
+  @update:filters="(f) => loadData({ filters: f })"
+/>
+```
+
+## 服务端模式
+
+只要 `pagination.total` 是个数字，组件就**不**自己做客户端 slice：sort / filter / pagination 都通过事件抛给上层，由你去请求服务端：
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :sort="sort"
+  :filters="filters"
+  :pagination="{ page, pageSize, total }"
+  :loading="loading"
+  @update:sort="(s) => loadData({ sort: s, filters, page, pageSize })"
+  @update:filters="(f) => loadData({ sort, filters: f, page: 1, pageSize })"
+  @update:pagination="(p) => loadData({ sort, filters, ...p })"
+  @update:globalSearch="(q) => loadData({ search: q })"
+/>
+```
+
+## API
+
+### `TableProps`
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `columns` | `TableColumn[]` | — | 列定义；可嵌套 `children` 形成多行表头 |
+| `rows` | `T[]` | — | 数据行；`row[childrenField]` 是子行 |
+| `rowKey` | `string \| (row, i) => string` | `i` | 行唯一 key，影响选择 / 展开 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 整体密度 |
+| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | 视觉变体 |
+| `hoverable` | `boolean` | `true` | 行 hover 高亮 |
+| `stickyHeader` | `boolean` | `false` | 表头粘顶（建议同时给 `height`） |
+| `height` | `number \| string` | — | 表体最大高度，超出滚动 |
+| `loading` | `boolean` | `false` | 显示加载遮罩 |
+| `emptyText` | `string` | `'暂无数据'` | 空数据提示 |
+| `sort` | `TableSort \| TableSort[] \| null` | — | 当前排序（受控） |
+| `defaultSort` | 同上 | `null` | 初始排序（非受控） |
+| `multiSort` | `boolean` | `false` | 启用 Shift 多列排序 |
+| `filters` | `Record<string, unknown>` | — | 列过滤值（受控） |
+| `defaultFilters` | 同上 | `{}` | 初始过滤值（非受控） |
+| `globalSearch` | `string` | — | 全局搜索值（受控） |
+| `defaultGlobalSearch` | `string` | `''` | 初始搜索（非受控） |
+| `pagination` | `TablePagination \| false` | — | 分页配置；`false` 强制不分页 |
+| `defaultPagination` | `TablePagination` | — | 初始分页（非受控） |
+| `selectable` | `'single' \| 'multiple'` | — | 行选择模式 |
+| `modelValue` | `string \| string[] \| null` | `null` | 选中行 key |
+| `expandable` | `boolean` | `false` | 启用展开按钮 |
+| `expandRender` | `(row, i) => any` | — | 自定义展开内容 |
+| `expandedRowKeys` | `string[]` | — | 展开行（受控） |
+| `defaultExpandedRowKeys` | `string[]` | `[]` | 初始展开行（非受控） |
+| `childrenField` | `string` | `'children'` | 树形数据字段名 |
+| `treeIndent` | `number` | `16` | 树形每层缩进（px） |
+| `columnsState` | `TableColumnsState` | — | 列状态：隐藏 / 顺序 / 宽度（受控） |
+| `defaultColumnsState` | 同上 | — | 初始列状态（非受控） |
+| `resizable` | `boolean` | `false` | 全局开启列调宽 |
+| `reorderable` | `boolean` | `false` | 全局开启列拖拽换序 |
+| `showSummary` | `boolean` | `false` | 自动按 `column.summary` 渲染总计行 |
+| `summary` | `TableSummaryRow[]` | — | 额外手动总计行 |
+| `toolbar` | `'auto' \| 'none'` | `'none'` | 工具栏：搜索 + 列可见性 + 导出 |
+| `virtual` | `boolean` | `false` | 启用虚拟滚动（要求 `height` + 固定 `rowHeight`） |
+| `rowHeight` | `number` | `36` | 虚拟模式下每行高度（px） |
+| `overscan` | `number` | `6` | 虚拟模式上下额外渲染的行数 |
+| `rowReorderable` | `boolean` | `false` | 启用行拖拽换序（最左侧出现拖把柄） |
+| `exportable` | `boolean` | `false` | 工具栏出现 CSV 导出按钮 |
+| `exportFileName` | `string` | `'table'` | 导出文件名（不含扩展名） |
+| `persistKey` | `string` | — | localStorage 自动持久化 columnsState 的 key |
+| `serverDebounce` | `number` | `0` | 全局搜索 / 过滤事件的防抖（ms） |
+| `cellSelectable` | `boolean` | `false` | Excel 风格单元格选区 + Ctrl/⌘+C 复制 TSV |
+| `colVirtual` | `boolean` | `false` | 启用列虚拟化（推荐 100+ 列时开启） |
+| `colWidth` | `number` | `120` | 列虚拟化的默认列宽（px） |
+| `colOverscan` | `number` | `4` | 列虚拟化左右额外渲染的列数 |
+| `treeReorderable` | `boolean` | `false` | 配合 rowReorderable 启用 above/below/inside 三段拖拽 |
+| `cellPastable` | `boolean` | `false` | 启用 Ctrl/⌘+V 粘贴 TSV 反向写回 |
+| `historyEnabled` | `boolean` | `false` | 启用快照栈：sort/filter/search/page/columnsState 全部入栈 |
+| `historyDepth` | `number` | `50` | 历史栈最大深度 |
+| `getRowHeight` | `(index) => number` | — | 虚拟滚动下指定每行高度，用于变高行 |
+| `editMode` | `'cell' \| 'row'` | `'cell'` | `'row'` 时双击整行进入编辑，所有 editable 列同时变 input |
+| `batchActions` | `boolean` | `false` | 多选状态下顶部出 sticky 操作条 |
+| `pinnedRowKeys` | `string[]` | — | 这些 rowKey 对应的行置顶 sticky |
+| `autoRowHeight` | `boolean` | `false` | ResizeObserver 自动测量变高行 |
+
+### `TableColumn`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `key` | `string` | 必填唯一 ID |
+| `title` | `string` | 表头文字 |
+| `dataIndex` | `string` | 数据字段；缺省回退到 `key` |
+| `width / minWidth / maxWidth` | `number \| string` | 几何 |
+| `align` | `'left' \| 'center' \| 'right'` | 对齐 |
+| `ellipsis` | `boolean` | 文本溢出截断 |
+| `sortable` | `boolean` | 启用此列排序 |
+| `sortFn` | `(a, b) => number` | 自定义排序函数 |
+| `filterable` | `boolean` | 启用此列过滤 |
+| `filterType` | `'text' \| 'select' \| 'number-range' \| 'date-range'` | 过滤面板类型 |
+| `filterOptions` | `{label,value}[]` | `select` 模式下的选项 |
+| `filterFn` | `(filterValue, row, i) => boolean` | 自定义过滤函数 |
+| `fixed` | `'left' \| 'right'` | 固定列 |
+| `resizable / reorderable / hideable` | `boolean` | 单列覆盖全局开关 |
+| `hidden` | `boolean` | 默认隐藏 |
+| `render` | `(value, row, i) => any` | 自定义单元格渲染 |
+| `format` | `(value, row, i) => string` | 仅做字符串格式化 |
+| `headerRender` | `() => any` | 自定义表头 |
+| `children` | `TableColumn[]` | 多行表头分组 |
+| `summary` | `'sum' \| 'avg' \| 'count' \| (rows) => any` | 总计聚合 |
+| `summaryRender` | `(value) => any` | 总计单元格自定义渲染 |
+| `mergeRows` | `boolean \| 'consecutive' \| (cur, prev) => boolean` | 连续相同值自动合并 rowSpan |
+| `editable` | `boolean \| (row, i) => boolean` | 该列是否可双击编辑 |
+| `editType` | `'text' \| 'number' \| 'select'` | 编辑器类型 |
+| `editOptions` | `{label,value}[]` | `select` 模式选项 |
+| `editValidate` | `(value, row, i) => boolean` | 提交校验，返回 false 阻止 |
+| `exportable` | `boolean` | `false` 时 CSV 导出跳过该列 |
+| `exportRender` | `(value, row, i) => string` | 导出时单元格的字符串化方式 |
+| `cellClass` | `string \| (row, i) => string` | 单元格 class |
+
+### Events / Slots
+
+| Event / Slot | Payload | 说明 |
+| --- | --- | --- |
+| `update:sort` / `sort-change` | `TableSort \| TableSort[] \| null` | 排序变化 |
+| `update:filters` | `Record<string, unknown>` | 过滤值变化 |
+| `update:globalSearch` | `string` | 搜索框变化 |
+| `update:pagination` | `TablePagination` | 翻页 / 改页大小 |
+| `update:modelValue` | `string \| string[] \| null` | 选中行变化 |
+| `update:columnsState` | `TableColumnsState` | 拖拽 / 隐藏 / 调宽 |
+| `update:expandedRowKeys` | `string[]` | 展开行变化 |
+| `update:rows` / `row-reorder` | `T[]` / `{from,to,rows}` | 行拖拽换序 |
+| `tree-reorder` | `{fromKey, toKey, pos, rows}` | 树形拖拽（含 above/below/inside） |
+| `cell-edit` | `{row, column, oldValue, newValue, index}` | 单元格内联编辑提交 |
+| `cell-paste` | `{applied, skipped}` | TSV 粘贴完成后 |
+| `export` | `string` | CSV 导出（拿到 csv 字符串后自定义处理） |
+| `history-change` | `{canUndo, canRedo}` | 历史栈状态变化 |
+| `row-click` | `(row, i)` | 选择关闭时单击行 |
+| `#header:<key>` | — | 自定义表头节点 |
+| `#cell:<key>` | `{ row, index, value }` | 自定义单元格 |
+| `#empty` | — | 自定义空状态 |
+| `#toolbar-left` / `#toolbar-right` | — | 工具栏左右扩展槽 |
+
+## 性能笔记
+
+- 内部所有派生（filtered → sorted → paginated → flat tree）都用 `computed`/`useMemo`，只在依赖变时重算。
+- 列调宽 / 拖拽换序更新的是**列状态对象**，不会触发整张表重排——只有命中变化的列重新计算 style。
+- 行 1k+ 的场景建议同时启用 `pagination` + `sticky-header` + `height`。如果必须一次渲染上万行，可以用 `expandable` + `children` 做"折叠树"分批展示；后续会出独立的 `<CfVirtualTable>` 做真正的虚拟滚动。
+- 在 React 端 `Row` 组件已经独立化，可在外部用 `memo` 进一步包装；在 Vue 端单元格 render 函数会被 v-for 自动 patch。

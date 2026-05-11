@@ -1,0 +1,40 @@
+---
+title: Scatter plot
+description: Two-dimensional scatter chart, colored by group.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/scatterplot/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props and rendered as pure SVG, with no third-party charting dependency.
+Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfScatterPlot ... />`}
+  reactCode={`<CfScatterPlot ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Multi-group clustering
+
+A point's `group` field decides its color; if omitted, it falls into `default`.
+
+import GroupsVue from '~/components/demos/scatterplot/GroupsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfScatterPlot :data="points" />`}
+  reactCode={`<CfScatterPlot data={points} />`}
+>
+  <GroupsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `ScatterPoint[]` | `—` | &#123; x, y, r?, group? &#125;[] |
+| `width / height` | `number` | `480 / 240` |  |

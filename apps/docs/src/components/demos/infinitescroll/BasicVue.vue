@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfInfiniteScroll } from '@chufix/vue';
+import { CfInfiniteScroll } from '@chufix-design/vue';
 
 const items = ref<number[]>(Array.from({ length: 12 }, (_, i) => i + 1));
 const loading = ref(false);

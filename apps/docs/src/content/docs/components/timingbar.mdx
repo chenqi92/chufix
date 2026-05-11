@@ -1,0 +1,41 @@
+---
+title: TimingBar 请求瀑布
+description: 横向请求阶段瀑布图，每段一个 phase。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfTimingBar ... />`}
+  reactCode={`<CfTimingBar ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 真实瀑布场景
+
+3 个并发 HTTP 请求的 timing 拼接：DNS / Connect / TLS / Wait / Receive 各色。
+
+import RealVue from '~/components/demos/timingbar/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTimingBar :phases="phases" />`}
+  reactCode={`<CfTimingBar phases={phases} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `phases` | `TimingPhase[]` | `—` | &#123; label, start, end, colorIndex? &#125;[]（ms） |
+| `showAxis` | `boolean` | `true` | 底部段标签 |
+| `labelMode` | `'auto' \| 'all' \| 'none'` | `'auto'` | 段标签显示策略，默认自动避让重叠 |

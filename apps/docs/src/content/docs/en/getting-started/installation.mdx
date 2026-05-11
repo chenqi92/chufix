@@ -1,0 +1,71 @@
+---
+title: Installation
+description: Install and start using ChuFix UI in a Vue 3 or React project.
+order: 1
+---
+
+## Vue 3
+
+```bash
+npm i @chufix-design/vue
+```
+
+```ts
+// main.ts
+import { createApp } from 'vue';
+import App from './App.vue';
+import '@chufix-design/vue/style.css';
+
+createApp(App).mount('#app');
+```
+
+```vue
+<script setup lang="ts">
+import { CfButton } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfButton>Hello ChuFix</CfButton>
+</template>
+```
+
+## React
+
+```bash
+npm i @chufix-design/react
+```
+
+```ts
+// main.tsx
+import '@chufix-design/react/style.css';
+```
+
+```tsx
+import { CfButton } from '@chufix-design/react';
+
+export default () => <CfButton>Hello ChuFix</CfButton>;
+```
+
+## Copy-source mode
+
+When you want full control over the component source:
+
+```bash
+npx chufix add button
+```
+
+This drops `button/Button.vue` (or `Button.tsx`) plus its `button.css` straight into your project. From there, modify them however you like.
+
+## Tailwind CSS (optional)
+
+```ts
+// tailwind.config.ts
+import preset from '@chufix-design/tokens/tailwind';
+
+export default {
+  presets: [preset],
+  content: ['./src/**/*.{vue,tsx,ts,html}'],
+};
+```
+
+Then write classes like `<div class="bg-chufix-primary text-chufix-primary-fg" />`.

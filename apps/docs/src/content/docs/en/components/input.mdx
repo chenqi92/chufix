@@ -1,0 +1,168 @@
+---
+title: Input
+description: Single-line input — 3 variants, 3 sizes, error state, clearable, prefix/suffix.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/input/BasicVue.vue';
+import VariantsVue from '~/components/demos/input/VariantsVue.vue';
+import SizesVue from '~/components/demos/input/SizesVue.vue';
+import StatesVue from '~/components/demos/input/StatesVue.vue';
+import AffixVue from '~/components/demos/input/AffixVue.vue';
+
+## Basic usage
+
+`v-model` / `value + onChange` binds directly to a string. `placeholder` matches the native input.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfInput } from '@chufix-design/vue';
+
+const name = ref('');
+</script>
+
+<template>
+  <CfInput v-model="name" placeholder="Enter username" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfInput } from '@chufix-design/react';
+
+export default function Demo() {
+  const [name, setName] = useState('');
+  return (
+    <CfInput
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      placeholder="Enter username"
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants
+
+Three variants offer different border / background intensities. `filled` fits dense forms; `ghost` avoids double borders when wrapped in a container that already has one.
+
+<DemoFrame
+  vueCode={`<CfInput variant="outline" placeholder="outline · default" />
+<CfInput variant="filled" placeholder="filled · gray fill" />
+<CfInput variant="ghost" placeholder="ghost · borderless, appears on focus" />`}
+  reactCode={`<CfInput variant="outline" placeholder="outline · default" />
+<CfInput variant="filled" placeholder="filled · gray fill" />
+<CfInput variant="ghost" placeholder="ghost · borderless, appears on focus" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Sizes
+
+<DemoFrame
+  vueCode={`<CfInput size="sm" placeholder="Small" />
+<CfInput size="md" placeholder="Medium" />
+<CfInput size="lg" placeholder="Large" />`}
+  reactCode={`<CfInput size="sm" placeholder="Small" />
+<CfInput size="md" placeholder="Medium" />
+<CfInput size="lg" placeholder="Large" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## States
+
+`clearable` shows the clear button only when there is a value; `error` switches to a danger border + ring; `disabled` / `readonly` match the native input.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfInput } from '@chufix-design/vue';
+
+const email = ref('not-an-email');
+const valid = (s: string) => /.+@.+\\..+/.test(s);
+</script>
+
+<template>
+  <CfInput v-model="search" clearable placeholder="Clearable (× appears once typed)" />
+  <CfInput
+    v-model="email"
+    :error="!valid(email)"
+    placeholder="Error state: invalid email"
+  />
+  <CfInput placeholder="Disabled" disabled />
+  <CfInput placeholder="Readonly" readonly model-value="readonly content" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfInput } from '@chufix-design/react';
+
+export default function Demo() {
+  const [email, setEmail] = useState('not-an-email');
+  const valid = /.+@.+\\..+/.test(email);
+
+  return (
+    <>
+      <CfInput clearable placeholder="Clearable (× appears once typed)" />
+      <CfInput
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={!valid}
+        placeholder="Error state: invalid email"
+      />
+      <CfInput placeholder="Disabled" disabled />
+      <CfInput placeholder="Readonly" readOnly defaultValue="readonly content" />
+    </>
+  );
+}`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## Prefix and suffix
+
+Use named slots (Vue) / `prefix` & `suffix` props (React) to place an icon or fixed text. `clearable` and `suffix` are mutually exclusive (the clear button shows when there is a value).
+
+<DemoFrame
+  vueCode={`<CfInput v-model="url" placeholder="example">
+  <template #prefix>https://</template>
+  <template #suffix>.com</template>
+</CfInput>
+
+<CfInput v-model="search" clearable placeholder="Search…">
+  <template #prefix>
+    <SearchIcon />
+  </template>
+</CfInput>`}
+  reactCode={`<CfInput
+  value={url}
+  onChange={(e) => setUrl(e.target.value)}
+  placeholder="example"
+  prefix={<>https://</>}
+  suffix={<>.com</>}
+/>
+
+<CfInput
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  clearable
+  placeholder="Search…"
+  prefix={<SearchIcon />}
+/>`}
+>
+  <AffixVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | Type                                                                          | Default     | Description         |
+| ------------- | ----------------------------------------------------------------------------- | ----------- | ------------------- |
+| `modelValue`  | `string \| number`                                                            | —           | Vue v-model value   |
+| `value`       | `string`                                                                      | —           | React controlled value |
+| `type`        | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url' \| 'search'`   | `'text'`    | Input type          |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'`                                            | `'outline'` | Visual variant      |
+| `size`        | `'sm' \| 'md' \| 'lg'`                                                        | `'md'`      | Height and font size |
+| `clearable`   | `boolean`                                                                     | `false`     | Show clear button when there is a value |
+| `error`       | `boolean`                                                                     | `false`     | Error border / ring |
+| `disabled`    | `boolean`                                                                     | `false`     | Disabled            |
+| `readonly`    | `boolean`                                                                     | `false`     | Read-only           |
+| `placeholder` | `string`                                                                      | —           | Placeholder text    |

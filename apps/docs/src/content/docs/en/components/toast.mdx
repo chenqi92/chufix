@@ -1,0 +1,104 @@
+---
+title: Toast
+description: Global notifications — imperative API plus a one-mount Toaster, 5 semantics, 6 positions.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/toast/BasicVue.vue';
+import TypesVue from '~/components/demos/toast/TypesVue.vue';
+import PositionVue from '~/components/demos/toast/PositionVue.vue';
+
+## Basic usage
+
+Mount `<CfToaster />` once in your root layout, then call `toast()` from anywhere. Under the hood is a framework-agnostic pub-sub store; the component subscribes and renders the queue. Each toast auto-dismisses after 4s by default.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfButton, CfToaster, toast } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfButton @click="toast({ title: 'Saved', description: 'Configuration has been saved.' })">
+    Show a toast
+  </CfButton>
+  <CfToaster />
+</template>`}
+  reactCode={`import { CfButton, CfToaster, toast } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfButton onClick={() => toast({ title: 'Saved', description: 'Configuration has been saved.' })}>
+        Show a toast
+      </CfButton>
+      <CfToaster />
+    </>
+  );
+}`}
+>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Five semantics
+
+`toast()` renders without an icon by default. `success` / `error` / `warning` / `info` come with their own colored circular icons. `input` accepts a string or an object `{ title, description, duration, dismissible }`.
+
+<DemoFrame
+  vueCode={`toast('Default notification');
+toast.success('Saved');
+toast.error('Save failed');
+toast.warning('Disk space low');
+toast.info('Copied to clipboard');`}
+  reactCode={`toast('Default notification');
+toast.success('Saved');
+toast.error('Save failed');
+toast.warning('Disk space low');
+toast.info('Copied to clipboard');`}
+>
+  <TypesVue client:only="vue" />
+</DemoFrame>
+
+## Six positions
+
+`<CfToaster position="..." />` controls where the stack appears. Common choices are `top-right` (default); on mobile, `bottom-center` is recommended.
+
+<DemoFrame
+  vueCode={`<CfToaster position="top-right" />
+<CfToaster position="bottom-center" />`}
+  reactCode={`<CfToaster position="top-right" />
+<CfToaster position="bottom-center" />`}
+>
+  <PositionVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### `toast(input)` and helpers
+
+```ts
+interface ToastInput {
+  type?: 'default' | 'success' | 'error' | 'warning' | 'info';
+  title?: string;
+  description?: string;
+  duration?: number;     // ms, default 4000; <= 0 disables auto-close
+  dismissible?: boolean; // show close button, default true
+}
+```
+
+| Method              | Equivalent to                            |
+| ------------------- | ---------------------------------------- |
+| `toast(x)`          | Default type                             |
+| `toast.success(x)`  | `toast({ ...x, type: 'success' })`       |
+| `toast.error(x)`    | `toast({ ...x, type: 'error' })`         |
+| `toast.warning(x)`  | `toast({ ...x, type: 'warning' })`       |
+| `toast.info(x)`     | `toast({ ...x, type: 'info' })`          |
+| `toast.dismiss(id)` | Dismiss a single toast (returns its `id`) |
+| `toast.clear()`     | Clear all toasts                         |
+
+### `<CfToaster />` Props
+
+| Name       | Type                                                                                                  | Default       | Description     |
+| ---------- | ----------------------------------------------------------------------------------------------------- | ------------- | --------------- |
+| `position` | `'top-right' \| 'top-left' \| 'top-center' \| 'bottom-right' \| 'bottom-left' \| 'bottom-center'`     | `'top-right'` | Render position |
+
+> **Mount Toaster only once**: place it in the root layout. Mounting it more than once causes duplicate rendering.

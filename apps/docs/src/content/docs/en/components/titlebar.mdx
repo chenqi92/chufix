@@ -1,0 +1,52 @@
+---
+title: Title bar
+description: Desktop app window header. macOS-style traffic lights with centered title; Windows / Linux-style min/max/close buttons with left-aligned title.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
+
+## Basic usage
+
+When `platform="macos"`, three dots on the left (close / minimize / maximize) with a centered title.
+When `platform="windows"` / `'linux'`, three buttons on the right with a left-aligned title.
+The header has `-webkit-app-region: drag` by default, so a Tauri / Electron host can drag the window from there.
+
+<DemoFrame
+  vueCode={`<CfTitleBar platform="macos" title="orders.parquet" subtitle="protoforge" :modified="true" />
+<CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
+  reactCode={`<CfTitleBar platform="macos" title="orders.parquet" subtitle="protoforge" modified />
+<CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## macOS / Windows / Linux
+
+Same component, `platform` switches the look. Use `hideControls=true` for a plain header bar.
+
+import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTitleBar platform="macos" title="…" subtitle="…" :modified="true" />
+<CfTitleBar platform="windows" title="…" subtitle="…" />
+<CfTitleBar platform="linux" title="…" />`}
+  reactCode={`<CfTitleBar platform="macos" title="…" subtitle="…" modified />
+<CfTitleBar platform="windows" title="…" subtitle="…" />
+<CfTitleBar platform="linux" title="…" />`}
+>
+  <PlatformsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `platform` | `'macos' \| 'windows' \| 'linux'` | `'macos'` | Visual variant |
+| `title` / `subtitle` | `string` | — | |
+| `modified` | `boolean` | `false` | Show unsaved indicator dot |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 28 / 32 / 36 px |
+| `hideControls` | `boolean` | `false` | Hide window controls; useful as a plain header |
+
+Events: `minimize` / `maximize` / `close`.

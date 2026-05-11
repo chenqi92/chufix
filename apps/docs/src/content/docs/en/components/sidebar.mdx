@@ -1,0 +1,134 @@
+---
+title: Sidebar
+description: Vertical primary navigation — supports groups, nested submenus, badges, and collapsing into icon mode.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sidebar/BasicVue.vue';
+import CollapsedVue from '~/components/demos/sidebar/CollapsedVue.vue';
+import BadgesVue from '~/components/demos/sidebar/BadgesVue.vue';
+import SizesVue from '~/components/demos/sidebar/SizesVue.vue';
+
+## Basic usage
+
+`items` accepts two kinds of entries: a regular `SidebarItem` (leaf entry) or a `SidebarGroup` (group container, `type: 'group'` + `items[]`). `v-model` binds the currently selected key; `defaultOpenKeys` controls which entries with children are initially expanded.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSidebar, type SidebarEntry } from '@chufix-design/vue';
+
+const active = ref('analytics');
+const items: SidebarEntry[] = [
+  {
+    type: 'group',
+    label: 'Workspace',
+    items: [
+      { key: 'overview', label: 'Overview' },
+      { key: 'analytics', label: 'Analytics', badge: '12' },
+      { key: 'reports', label: 'Reports' },
+    ],
+  },
+  {
+    type: 'group',
+    label: 'Resources',
+    items: [
+      {
+        key: 'team',
+        label: 'Team',
+        children: [
+          { key: 'members', label: 'Members' },
+          { key: 'roles', label: 'Roles' },
+          { key: 'invitations', label: 'Invitations', badge: 3 },
+        ],
+      },
+      { key: 'settings', label: 'Settings' },
+      { key: 'billing', label: 'Billing', disabled: true },
+    ],
+  },
+];
+</script>
+
+<template>
+  <CfSidebar v-model="active" :items="items" :default-open-keys="['team']" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSidebar, type SidebarEntry } from '@chufix-design/react';
+
+const items: SidebarEntry[] = [/* ... */];
+
+export default function Demo() {
+  const [active, setActive] = useState('analytics');
+  return (
+    <CfSidebar
+      value={active}
+      items={items}
+      defaultOpenKeys={['team']}
+      onChange={setActive}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Collapsed icon mode
+
+`collapsed` shrinks the sidebar to 56px, showing icons only with a tooltip on hover (`title`). Submenus no longer expand in this mode — handle that interaction at the application layer.
+
+<DemoFrame
+  vueCode={`<CfSidebar v-model="active" :items="items" collapsed />`}
+  reactCode={`<CfSidebar value={active} items={items} collapsed onChange={setActive} />`}
+>
+  <CollapsedVue client:load />
+</DemoFrame>
+
+## Badges + disabled
+
+`item.badge` accepts a number or string and renders to the right of the label. `item.disabled` greys out and ignores clicks.
+
+<DemoFrame
+  vueCode={`const items: SidebarEntry[] = [
+  { key: 'inbox', label: 'Inbox', badge: 12 },
+  { key: 'starred', label: 'Starred' },
+  { key: 'drafts', label: 'Drafts', badge: 'NEW' },
+  { key: 'trash', label: 'Trash', disabled: true },
+];
+
+<CfSidebar v-model="active" :items="items" />`}
+  reactCode={`<CfSidebar value={active} items={items} onChange={setActive} />`}
+>
+  <BadgesVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` — `sm` (compact, suits deep nesting or many entries) / `md` / `lg` (touch-friendly).
+
+<DemoFrame
+  vueCode={`<CfSidebar v-model="a" :items="items" size="sm" />
+<CfSidebar v-model="b" :items="items" size="md" />
+<CfSidebar v-model="c" :items="items" size="lg" />`}
+  reactCode={`<CfSidebar value={a} onChange={setA} items={items} size="sm" />
+<CfSidebar value={b} onChange={setB} items={items} size="md" />
+<CfSidebar value={c} onChange={setC} items={items} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `SidebarEntry[]` | `[]` | Menu entries; mix leaves and groups |
+| `modelValue` (Vue) / `value` (React) | `string` | `—` | Currently selected `item.key` |
+| `openKeys` / `defaultOpenKeys` | `string[]` | `—` | Controlled / uncontrolled list of expanded keys |
+| `collapsed` | `boolean` | `false` | Collapse to 56px icon mode |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size + padding |
+
+`SidebarItem`: `{ key, label, icon?, href?, badge?, disabled?, children? }`.
+`SidebarGroup`: `{ type: 'group', key?, label?, items[] }`.
+
+Events: `update:modelValue` / `update:openKeys` / `select` (React: `onChange` / `onOpenKeysChange` / `onSelect`).
+
+> When pairing with [AppShell](/components/appshell/), drop `<CfSidebar>` into the `#sidebar` slot to get a complete admin shell.

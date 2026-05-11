@@ -1,0 +1,45 @@
+---
+title: VariableAwareInput 变量感知输入
+description: Input 增强版，自动识别 `{{var}}` 模板变量并高亮；未知变量标红波浪线。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
+
+## 基础用法
+
+实现：底层是透明文字的原生 input + 同尺寸 overlay 渲染高亮文本，光标位置完全对齐。
+`variables` 数组里的名字算"已知"用 accent 高亮，其他算"未知"用红色波浪线。
+
+<DemoFrame
+  vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
+  reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 混合状态
+
+已知（accent 高亮）+ 未知（红色波浪线）的组合实例。
+
+import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
+
+<DemoFrame
+  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
+  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
+>
+  <InvalidVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | 输入值 |
+| `variables` | `string[]` | `[]` | 已知变量名清单 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `variant` | `'outline' \| 'filled'` | `'outline'` | |
+| `placeholder` / `disabled` / `error` | | | |
+
+> 自动补全浮层（输入 `{{` 触发候选列表）在 v2 加入。

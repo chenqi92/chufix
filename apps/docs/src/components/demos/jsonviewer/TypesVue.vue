@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfJsonViewer } from '@chufix/vue';
+import { CfJsonViewer } from '@chufix-design/vue';
 
 const data = {
   string: '混合 中英文 with emoji 🎯',

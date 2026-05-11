@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfButton, CfModal } from '@chufix/vue';
+import { CfButton, CfModal } from '@chufix-design/vue';
 
 const sm = ref(false);
 const md = ref(false);

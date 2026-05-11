@@ -1,0 +1,132 @@
+---
+title: Modal
+description: Dialog with built-in portal, focus trap, scroll lock, tone variants, async confirm, draggable, resizable, imperative service, stacked z-index.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/modal/BasicVue.vue';
+import SizesVue from '~/components/demos/modal/SizesVue.vue';
+import BehaviorVue from '~/components/demos/modal/BehaviorVue.vue';
+import TonesVue from '~/components/demos/modal/TonesVue.vue';
+import AsyncVue from '~/components/demos/modal/AsyncVue.vue';
+import DraggableVue from '~/components/demos/modal/DraggableVue.vue';
+import ServiceVue from '~/components/demos/modal/ServiceVue.vue';
+import StackedVue from '~/components/demos/modal/StackedVue.vue';
+
+## Basic usage
+
+`v-model:open` (Vue) or `open + onOpenChange` (React) for two-way binding. The component handles portal-to-body, focus trap, body scroll lock, ESC close, overlay click, and fade + scale transitions internally.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Sizes
+
+`size` controls the max width. `full` fills nearly the entire viewport. `width` / `min-height` accept custom pixel values.
+
+<DemoFrame>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
+## Close behavior
+
+By default any close path works: overlay click, ESC, top-right ×. Disable individually with `closeOnOverlay` / `closeOnEsc` / `showClose`. While async (`onBeforeOk` in flight) every close path is blocked automatically.
+
+<DemoFrame>
+  <BehaviorVue client:only="vue" />
+</DemoFrame>
+
+## Tone variants
+
+`tone="info | success | warning | error"` adds a circular tone icon plus accent color in the header. `tone="error"` automatically switches the default OK button to danger red.
+
+<DemoFrame>
+  <TonesVue client:only="vue" />
+</DemoFrame>
+
+## Built-in OK / Cancel + async confirm
+
+Pass `okText` / `cancelText` and the component renders the default footer buttons. `onBeforeOk` accepts an async function — return `false` or throw to keep the dialog open and restore the loading state; resolve normally to close and emit `@ok`.
+
+<DemoFrame>
+  <AsyncVue client:only="vue" />
+</DemoFrame>
+
+## Draggable + resizable
+
+`draggable` turns the title bar into a drag handle. `resizable` adds a corner handle for diagonal resizing. Both are PointerEvent-based with zero third-party deps.
+
+<DemoFrame>
+  <DraggableVue client:only="vue" />
+</DemoFrame>
+
+## Imperative service
+
+`modal.confirm / danger / alert / info / success / warning / error` opens a dialog and returns `Promise<boolean>` — no state binding, no template nesting. Best for "confirm-then-act" auxiliary flows.
+
+```ts
+import { modal } from '@chufix-design/vue'; // React: import from '@chufix-design/react'
+
+const ok = await modal.confirm({
+  title: 'Submit order?',
+  description: 'This action cannot be undone.',
+  onOk: async () => {
+    const r = await api.submit(); // throw or return false to block close
+    if (!r.ok) return false;
+  },
+});
+if (ok) modal.success({ title: 'Submitted' });
+```
+
+<DemoFrame>
+  <ServiceVue client:only="vue" />
+</DemoFrame>
+
+Service method signatures:
+
+| Method | tone | Default buttons |
+| --- | --- | --- |
+| `modal.open(opts)` | from opts | from opts |
+| `modal.confirm(opts)` | warning | OK + Cancel |
+| `modal.danger(opts)` | error | red OK + Cancel |
+| `modal.alert(opts)` | info | OK |
+| `modal.info / success / warning / error(opts)` | matching tone | OK |
+
+## Stacked modals
+
+Each open Modal is pushed onto an internal stack with z-index auto-incremented by 10. ESC only closes the topmost one, and closing pops it from the stack — so you can open a Modal from inside another Modal without thinking about layering.
+
+<DemoFrame>
+  <StackedVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `false` | Controlled state |
+| `title` | `string` | — | Header title text |
+| `description` | `string` | — | Subtitle below the title |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Max-width preset |
+| `tone` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'default'` | Visual tone + auto icon |
+| `centered` | `boolean` | `true` | Vertically center vs. 80px from top |
+| `width` | `number \| string` | — | Custom width (overrides size) |
+| `minHeight` | `number \| string` | — | Custom min height |
+| `closeOnOverlay` | `boolean` | `true` | Close on overlay click |
+| `closeOnEsc` | `boolean` | `true` | Close on ESC |
+| `showClose` | `boolean` | `true` | Top-right × button |
+| `footerAlign` | `'start' \| 'center' \| 'end' \| 'space-between'` | `'end'` | Footer alignment |
+| `draggable` | `boolean` | `false` | Drag header to move |
+| `resizable` | `boolean` | `false` | Bottom-right resize handle |
+| `okText` / `cancelText` | `string` | — | Default button labels; omit to skip default footer |
+| `okVariant` | `'primary' \| 'danger' \| 'secondary'` | `'primary'` | OK button variant |
+| `onBeforeOk` | `() => boolean \| void \| Promise<...>` | — | Async hook; false / throw blocks close |
+| `to` | `string \| Element` | `'body'` | Teleport / Portal target |
+| `zIndex` | `number` | auto-stack | Custom z-index base |
+
+### Slots / events
+
+- Vue: named slots `header` / default / `footer`. The `footer` slot receives `{ ok, cancel, loading }` for custom button rendering.
+- React: `header`, `footer` (accepts `ReactNode` or `({ ok, cancel, loading }) => ReactNode`), plus `children`.
+- Events: `update:open` / `close` / `ok` / `cancel`.

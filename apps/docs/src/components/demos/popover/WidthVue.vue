@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfButton, CfPopover } from '@chufix/vue';
+import { CfButton, CfPopover } from '@chufix-design/vue';
 </script>
 
 <template>

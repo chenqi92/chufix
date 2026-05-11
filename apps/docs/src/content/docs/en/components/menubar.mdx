@@ -1,0 +1,26 @@
+---
+title: MenuBar
+description: Top app menu bar (File / Edit / View style); supports shortcuts, separators, and danger items.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/menubar/BasicVue.vue';
+
+## Basic usage
+
+Click a menu to open / toggle; hover lets you switch quickly between top-level menus; clicking outside or selecting an item closes the menu.
+
+<DemoFrame
+  vueCode={`<CfMenuBar :menus="menus" @select="(menuId, itemId) => onPick(menuId, itemId)" />`}
+  reactCode={`<CfMenuBar menus={menus} onSelect={(menuId, itemId) => onPick(menuId, itemId)} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+`menus: MenuBarMenu[]` — `{ id, label, items: MenuBarItem[] }`
+
+`MenuBarItem`: `{ id, label, shortcut?, disabled?, danger?, separator? }`
+
+Events: `select(menuId, itemId, item)`.

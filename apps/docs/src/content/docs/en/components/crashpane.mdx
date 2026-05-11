@@ -1,0 +1,53 @@
+---
+title: Crash pane
+description: "Crash report panel with four tabs: Crash Dialog, Stack Trace, Dump Uploader, and Safe Mode."
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/crashpane/BasicVue.vue';
+
+## Basic usage
+
+Predefines four tabs (ids: `dialog`, `stack`, `uploader`, `safemode`). Each tab's content is provided by the consumer through the named slot
+`#panel-{tabId}` (Vue) / `slots["panel-{tabId}"]` (React). The default list can also be overridden via the `tabs` prop.
+
+Source: [`crash.html`](https://github.com/chenqi92/chufix-design).
+
+<DemoFrame
+  vueCode={`<CfCrashPane>
+  <template #panel-dialog>...</template>
+  <template #panel-stack>...</template>
+</CfCrashPane>`}
+  reactCode={`<CfCrashPane slots={{
+  'panel-dialog': <PanelA />,
+  'panel-stack': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Real content layout
+
+Each of the four tabs holds one atom: a Banner error summary, a `pre` stack trace, a Dropzone dump uploader, and a safe-mode entry point.
+
+import RealVue from '~/components/demos/crashpane/RealVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCrashPane>...</CfCrashPane>`}
+  reactCode={`<CfCrashPane slots={{...}} />`}
+>
+  <RealVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | first tab id | Active tab |
+| `tabs` | `TemplatePaneTab[]` | preset | Custom tab list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+The preset tab id lists are exported as `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS` and other constants, so you can reuse them when supplying a custom `tabs`.
+
+> The template component is essentially a semantic shell around [`CfTabs`](/components/tabs/). If you don't need a predefined tab set, use `CfTabs` directly.

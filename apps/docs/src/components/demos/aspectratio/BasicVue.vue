@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAspectRatio } from '@chufix/vue';
+import { CfAspectRatio } from '@chufix-design/vue';
 </script>
 
 <template>

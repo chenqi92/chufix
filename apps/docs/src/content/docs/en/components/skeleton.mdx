@@ -1,0 +1,114 @@
+---
+title: Skeleton
+description: Placeholder elements for loading states — three shapes, shimmer animation, and a multi-line text helper.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/skeleton/BasicVue.vue';
+import ShapesVue from '~/components/demos/skeleton/ShapesVue.vue';
+import TextVue from '~/components/demos/skeleton/TextVue.vue';
+import StaticVue from '~/components/demos/skeleton/StaticVue.vue';
+import CardVue from '~/components/demos/skeleton/CardVue.vue';
+
+## Basic usage
+
+The most common combination — a circular avatar plus two text lines. `width` / `height` accept a pixel number or a CSS string (`'80%'` `'2rem'`).
+
+<DemoFrame
+  vueCode={`<div style="display: flex; gap: 12px; align-items: center;">
+  <CfSkeleton shape="circle" :width="40" :height="40" />
+  <div style="flex: 1;">
+    <CfSkeleton shape="text" :width="120" />
+    <CfSkeleton shape="text" :width="200" />
+  </div>
+</div>`}
+  reactCode={`<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+  <CfSkeleton shape="circle" width={40} height={40} />
+  <div style={{ flex: 1 }}>
+    <CfSkeleton shape="text" width={120} />
+    <CfSkeleton shape="text" width={200} />
+  </div>
+</div>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Three shapes
+
+`shape` — `text` (a thin line, default 1em tall) / `circle` (round, for avatars / icons) / `rect` (a block, for images / cards).
+
+<DemoFrame
+  vueCode={`<CfSkeleton shape="text" :width="240" />
+<CfSkeleton shape="circle" :width="48" :height="48" />
+<CfSkeleton shape="rect" :height="80" />`}
+  reactCode={`<CfSkeleton shape="text" width={240} />
+<CfSkeleton shape="circle" width={48} height={48} />
+<CfSkeleton shape="rect" height={80} />`}
+>
+  <ShapesVue client:load />
+</DemoFrame>
+
+## Multiple text lines
+
+When `lines > 1` and `shape="text"`, multiple lines render with the last line shrinking to 60% width to mimic a paragraph end.
+
+<DemoFrame
+  vueCode={`<CfSkeleton shape="text" :lines="4" />`}
+  reactCode={`<CfSkeleton shape="text" lines={4} />`}
+>
+  <TextVue client:load />
+</DemoFrame>
+
+## Disable animation
+
+`static` turns off the shimmer animation and renders a plain block — saves CPU on low-end devices and respects `prefers-reduced-motion`.
+
+<DemoFrame
+  vueCode={`<CfSkeleton shape="rect" :height="40" />
+<CfSkeleton shape="rect" :height="40" static />`}
+  reactCode={`<CfSkeleton shape="rect" height={40} />
+<CfSkeleton shape="rect" height={40} static />`}
+>
+  <StaticVue client:load />
+</DemoFrame>
+
+## Card placeholder
+
+Combine multiple shapes to mimic the structure of a real card — cover image + avatar + title + subtitle + multi-line body.
+
+<DemoFrame
+  vueCode={`<div class="card">
+  <CfSkeleton shape="rect" :height="120" />
+  <div class="row">
+    <CfSkeleton shape="circle" :width="32" :height="32" />
+    <div>
+      <CfSkeleton shape="text" :width="100" />
+      <CfSkeleton shape="text" :width="160" />
+    </div>
+  </div>
+  <CfSkeleton shape="text" :lines="3" />
+</div>`}
+  reactCode={`<div className="card">
+  <CfSkeleton shape="rect" height={120} />
+  <div className="row">
+    <CfSkeleton shape="circle" width={32} height={32} />
+    <div>
+      <CfSkeleton shape="text" width={100} />
+      <CfSkeleton shape="text" width={160} />
+    </div>
+  </div>
+  <CfSkeleton shape="text" lines={3} />
+</div>`}
+>
+  <CardVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `shape` | `'text' \| 'circle' \| 'rect'` | `'rect'` | Base shape |
+| `width` | `string \| number` | — | Width; numbers are pixels, strings are written verbatim into CSS |
+| `height` | `string \| number` | — | Height; same as above |
+| `lines` | `number` | `1` | Number of lines when shape=text; the last line is 60% wide |
+| `static` | `boolean` | `false` | Disable shimmer; render a plain block (cheaper first paint) |

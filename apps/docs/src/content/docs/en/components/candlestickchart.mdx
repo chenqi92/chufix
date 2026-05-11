@@ -1,0 +1,39 @@
+---
+title: CandlestickChart
+description: OHLC candlestick chart — green for up, red for down, with wick and body.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/candlestickchart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props and rendered as plain SVG — no third-party charting library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfCandlestickChart ... />`}
+  reactCode={`<CfCandlestickChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Up / down trends
+
+The up-vs-down color is chosen automatically by `close >= open`; wick and body share the same color.
+
+import UpDownVue from '~/components/demos/candlestickchart/UpDownVue.vue';
+
+<DemoFrame
+  vueCode={`<CfCandlestickChart :data="ohlc" />`}
+  reactCode={`<CfCandlestickChart data={ohlc} />`}
+>
+  <UpDownVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Candle[]` | `—` | &#123; open, high, low, close, label? &#125;[] |

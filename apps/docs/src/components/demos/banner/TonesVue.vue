@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfBanner } from '@chufix/vue';
+import { CfBanner } from '@chufix-design/vue';
 </script>
 
 <template>

@@ -1,0 +1,41 @@
+---
+title: LatencyHeatmap
+description: 2D matrix heatmap with green→yellow→red OKLCH hue lerp.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/latencyheatmap/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props; pure SVG rendering with no third-party chart library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfLatencyHeatmap ... />`}
+  reactCode={`<CfLatencyHeatmap ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Week × 24 hours
+
+Rows = Mon–Sun, columns = hours. Colors map to `oklch(70% 0.16 H)` where H lerps from 152 (green) → 78 (yellow) → 22 (red).
+
+import WeekVue from '~/components/demos/latencyheatmap/WeekVue.vue';
+
+<DemoFrame
+  vueCode={`<CfLatencyHeatmap :data="data" :row-labels="days" :col-labels="hours" />`}
+  reactCode={`<CfLatencyHeatmap data={data} rowLabels={days} colLabels={hours} />`}
+>
+  <WeekVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `number[][]` | `—` | rows × cols numeric matrix |
+| `rowLabels / colLabels` | `string[]` | `—` |  |
+| `min / max` | `number` | `auto` | Color mapping range |

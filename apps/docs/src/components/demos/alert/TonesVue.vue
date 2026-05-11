@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfAlert } from '@chufix/vue';
+import { CfAlert } from '@chufix-design/vue';
 </script>
 
 <template>

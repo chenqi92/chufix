@@ -1,0 +1,114 @@
+/* ChuFix FloatingInspector — corner-anchored collapsible panel. */
+
+.cf-inspector {
+  position: fixed;
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cf-inspector--top-left {
+  top: 0;
+  left: 0;
+}
+.cf-inspector--top-right {
+  top: 0;
+  right: 0;
+}
+.cf-inspector--bottom-left {
+  bottom: 0;
+  left: 0;
+}
+.cf-inspector--bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.cf-inspector__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+  flex-shrink: 0;
+}
+.cf-inspector.is-collapsed .cf-inspector__header {
+  border-bottom: 0;
+}
+
+.cf-inspector__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg-1);
+  cursor: pointer;
+  font: inherit;
+  font-weight: var(--w-medium);
+}
+
+.cf-inspector__caret {
+  width: 12px;
+  height: 12px;
+  color: var(--fg-3);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-inspector__caret.is-open {
+  transform: rotate(0deg);
+}
+.cf-inspector__caret:not(.is-open) {
+  transform: rotate(-90deg);
+}
+
+.cf-inspector__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-inspector__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-inspector__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: var(--r-3);
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+.cf-inspector__close:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+
+.cf-inspector__body {
+  flex: 1;
+  min-height: 0;
+  max-height: 60vh;
+  overflow: auto;
+  padding: 10px 12px;
+}

@@ -1,0 +1,104 @@
+---
+title: Slider
+description: Single-value slider — 3 sizes × 4 tones, with step, ticks, current-value bubble, and full keyboard support.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/slider/BasicVue.vue';
+import TonesVue from '~/components/demos/slider/TonesVue.vue';
+import SizesVue from '~/components/demos/slider/SizesVue.vue';
+import StepsVue from '~/components/demos/slider/StepsVue.vue';
+import DisabledVue from '~/components/demos/slider/DisabledVue.vue';
+
+## Basic usage
+
+The simplest form — a continuous value from 0 to 100. Drag the thumb with the mouse or adjust with `← →`. `showValue` mounts a bubble on the thumb showing the current value.
+
+<DemoFrame
+  vueCode={`<CfSlider v-model="value" show-value />`}
+  reactCode={`<CfSlider value={value} onChange={setValue} showValue />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Four tones
+
+`tone` controls the fill color — `primary` (default) / `success` / `warning` / `danger`. Semantic colors map to the four `--accent-*` / `--status-*` token sets.
+
+<DemoFrame
+  vueCode={`<CfSlider v-model="a" tone="primary" show-value />
+<CfSlider v-model="b" tone="success" show-value />
+<CfSlider v-model="c" tone="warning" show-value />
+<CfSlider v-model="d" tone="danger" show-value />`}
+  reactCode={`<CfSlider value={a} onChange={setA} tone="primary" showValue />
+<CfSlider value={b} onChange={setB} tone="success" showValue />
+<CfSlider value={c} onChange={setC} tone="warning" showValue />
+<CfSlider value={d} onChange={setD} tone="danger" showValue />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` changes the track thickness and thumb diameter: `sm` (thin) / `md` (default) / `lg` (thick, touch-friendly).
+
+<DemoFrame
+  vueCode={`<CfSlider v-model="a" size="sm" />
+<CfSlider v-model="b" size="md" />
+<CfSlider v-model="c" size="lg" />`}
+  reactCode={`<CfSlider value={a} onChange={setA} size="sm" />
+<CfSlider value={b} onChange={setB} size="md" />
+<CfSlider value={c} onChange={setC} size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Step and ticks
+
+`step` controls the smallest increment per step. `ticks` renders a tick at each step — useful for discrete values (rating / level). When `(max-min)/step > 50` ticks are skipped automatically to avoid clutter.
+
+<DemoFrame
+  vueCode={`<!-- 0~5 rating -->
+<CfSlider v-model="stars" :min="0" :max="5" :step="1" ticks show-value />
+<!-- 10% step -->
+<CfSlider v-model="percent" :step="10" ticks show-value />`}
+  reactCode={`<CfSlider value={stars} onChange={setStars} min={0} max={5} step={1} ticks showValue />
+<CfSlider value={percent} onChange={setPercent} step={10} ticks showValue />`}
+>
+  <StepsVue client:load />
+</DemoFrame>
+
+## Disabled
+
+`disabled` greys the slider and blocks mouse / keyboard interaction; the current value is still displayed from props.
+
+<DemoFrame
+  vueCode={`<CfSlider :model-value="50" disabled show-value />`}
+  reactCode={`<CfSlider value={50} disabled showValue />`}
+>
+  <DisabledVue client:load />
+</DemoFrame>
+
+## Keyboard interaction
+
+| Key | Behavior |
+|---|---|
+| `←` / `↓` | Decrease by 1 step |
+| `→` / `↑` | Increase by 1 step |
+| `PgDn` / `PgUp` | Decrease / increase by 10 steps |
+| `Home` | Jump to `min` |
+| `End` | Jump to `max` |
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `0` | Current value |
+| `min` | `number` | `0` | Min value |
+| `max` | `number` | `100` | Max value |
+| `step` | `number` | `1` | Step |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Slider / track thickness |
+| `tone` | `'primary' \| 'success' \| 'warning' \| 'danger'` | `'primary'` | Fill color |
+| `showValue` | `boolean` | `false` | Show current value bubble on the thumb |
+| `ticks` | `boolean` | `false` | Render ticks (skipped when too many steps) |
+| `disabled` | `boolean` | `false` | Disabled |

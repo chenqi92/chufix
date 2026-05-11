@@ -16,7 +16,7 @@ import StaticVue from '~/components/demos/kanban/StaticVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfKanban, type KanbanColumn } from '@chufix/vue';
+import { CfKanban, type KanbanColumn } from '@chufix-design/vue';
 
 const board = ref<KanbanColumn[]>([
   {
@@ -46,7 +46,7 @@ const board = ref<KanbanColumn[]>([
   <CfKanban v-model="board" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfKanban, type KanbanColumn } from '@chufix/react';
+import { CfKanban, type KanbanColumn } from '@chufix-design/react';
 
 export default function Demo() {
   const [board, setBoard] = useState<KanbanColumn[]>([

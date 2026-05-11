@@ -1,0 +1,60 @@
+/* ChuFix Toolbar — horizontal / vertical button group container.
+ * Sub-components: <CfToolbarSeparator> for visual dividers. */
+
+.cf-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  font: inherit;
+}
+
+/* orientation */
+.cf-toolbar--horizontal {
+  flex-direction: row;
+}
+.cf-toolbar--vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* sizes */
+.cf-toolbar--sm {
+  padding: 4px 8px;
+  gap: 4px;
+}
+.cf-toolbar--md {
+  padding: 6px 10px;
+  gap: 6px;
+}
+.cf-toolbar--lg {
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+/* variants */
+.cf-toolbar--plain {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* separator */
+.cf-toolbar__sep {
+  flex-shrink: 0;
+  background: var(--line-2);
+  display: inline-block;
+}
+.cf-toolbar--horizontal > .cf-toolbar__sep {
+  width: 1px;
+  height: 16px;
+  margin: 0 4px;
+}
+.cf-toolbar--vertical > .cf-toolbar__sep {
+  height: 1px;
+  width: 100%;
+  margin: 4px 0;
+}

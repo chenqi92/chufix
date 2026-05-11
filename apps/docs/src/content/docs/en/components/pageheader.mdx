@@ -1,0 +1,127 @@
+---
+title: PageHeader
+description: All-in-one page header with title + description + breadcrumb + actions + toolbar + tabs.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pageheader/BasicVue.vue';
+import WithTabsVue from '~/components/demos/pageheader/WithTabsVue.vue';
+import SizesVue from '~/components/demos/pageheader/SizesVue.vue';
+import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
+
+## Basic usage
+
+`PageHeader` is a composition container that arranges the common page-header pieces (breadcrumb, title, description, actions) in a fixed layout. `title` / `description` are convenience props; for richer content, override the same-named slots.
+
+<DemoFrame
+  vueCode={`<CfPageHeader
+  title="Project settings"
+  description="Manage members, permissions, and notification preferences."
+>
+  <template #breadcrumb>
+    <CfBreadcrumb :items="[
+      { label: 'Workbench', href: '#' },
+      { label: 'Projects', href: '#' },
+      { label: 'Settings' },
+    ]" />
+  </template>
+  <template #actions>
+    <CfButton variant="tertiary">Cancel</CfButton>
+    <CfButton variant="primary">Save</CfButton>
+  </template>
+</CfPageHeader>`}
+  reactCode={`<CfPageHeader
+  title="Project settings"
+  description="Manage members, permissions, and notification preferences."
+  breadcrumb={
+    <CfBreadcrumb items={[
+      { label: 'Workbench', href: '#' },
+      { label: 'Projects', href: '#' },
+      { label: 'Settings' },
+    ]} />
+  }
+  actions={
+    <>
+      <CfButton variant="tertiary">Cancel</CfButton>
+      <CfButton variant="primary">Save</CfButton>
+    </>
+  }
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Tabs + rich title
+
+Embed Tabs directly in the `tabs` slot / prop and they will sit flush with the header (a negative margin pins them to the bottom edge).
+
+<DemoFrame
+  vueCode={`<CfPageHeader>
+  <template #title>
+    chufix
+    <CfTag tone="primary" variant="solid" size="sm">v0.0.1</CfTag>
+  </template>
+  <template #description>Single-source Vue 3 + React component library</template>
+  <template #actions>
+    <CfButton variant="tertiary" size="sm">Share</CfButton>
+    <CfButton variant="primary" size="sm">Deploy</CfButton>
+  </template>
+  <template #tabs>
+    <CfTabs v-model="tab" :items="items" />
+  </template>
+</CfPageHeader>`}
+  reactCode={`<CfPageHeader
+  title={<>chufix <CfTag tone="primary" variant="solid" size="sm">v0.0.1</CfTag></>}
+  description="Single-source Vue 3 + React component library"
+  actions={<><CfButton size="sm" variant="tertiary">Share</CfButton><CfButton size="sm" variant="primary">Deploy</CfButton></>}
+  tabs={<CfTabs value={tab} items={items} onChange={setTab} />}
+/>`}
+>
+  <WithTabsVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` controls padding and font size — `sm` (sub-pages / inside modals) / `md` (default) / `lg` (landing-page emphasis).
+
+<DemoFrame
+  vueCode={`<CfPageHeader title="size = sm" description="Compact header" size="sm" />
+<CfPageHeader title="size = md" description="Default size" size="md" />
+<CfPageHeader title="size = lg" description="Landing-page emphasis" size="lg" />`}
+  reactCode={`<CfPageHeader title="size = sm" description="Compact header" size="sm" />
+<CfPageHeader title="size = md" description="Default size" size="md" />
+<CfPageHeader title="size = lg" description="Landing-page emphasis" size="lg" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## No bottom border
+
+`bordered={false}` removes the default bottom divider so the header sits flush against the page background or the next card.
+
+<DemoFrame
+  vueCode={`<CfPageHeader
+  title="Header without bottom border"
+  description="bordered=false drops the bottom divider"
+  :bordered="false"
+/>`}
+  reactCode={`<CfPageHeader
+  title="Header without bottom border"
+  description="bordered=false drops the bottom divider"
+  bordered={false}
+/>`}
+>
+  <NoBorderVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string \| ReactNode` | `—` | Main title (h1); pick this or the `#title` slot |
+| `description` | `string \| ReactNode` | `—` | Subtitle / description |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Overall padding and font size |
+| `bordered` | `boolean` | `true` | Bottom border |
+
+Vue slots: `breadcrumb` / `back` / `title` / `description` / `actions` / `toolbar` / `tabs`.
+React uses same-named props receiving `ReactNode`.

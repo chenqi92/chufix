@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfNumberInput } from '@chufix/vue';
+import { CfNumberInput } from '@chufix-design/vue';
 
 const ratio = ref<number | null>(0.25);
 const price = ref<number | null>(99.9);

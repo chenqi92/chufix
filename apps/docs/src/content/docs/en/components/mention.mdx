@@ -1,0 +1,128 @@
+---
+title: Mention
+description: Multi-line text input that opens a candidate dropdown when the trigger character (default @) is typed; ↑↓ to select, Enter / Tab to confirm.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/mention/BasicVue.vue';
+import TriggerVue from '~/components/demos/mention/TriggerVue.vue';
+import StatesVue from '~/components/demos/mention/StatesVue.vue';
+
+## Basic usage
+
+`CfMention` overlays trigger-character recognition on a `<textarea>`. When `@` appears before the cursor followed by an optional search string (no spaces), the dropdown opens and filters `options` by case-insensitive substring on that text.
+
+When an option is picked, `@<value> ` is inserted at the cursor — replacing the segment from the trigger to the current cursor position only, leaving subsequent text untouched.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfMention } from '@chufix-design/vue';
+
+const text = ref('');
+const options = [
+  { value: 'alice', label: 'Alice Zhang', description: 'Frontend · Design System' },
+  { value: 'bob', label: 'Bob Li', description: 'Backend · API Gateway' },
+  { value: 'carol', label: 'Carol Liu', description: 'Product' },
+  { value: 'david', label: 'David Wang', description: 'QA' },
+  { value: 'eve', label: 'Eve Zhou', description: 'Ops', disabled: true },
+];
+</script>
+
+<template>
+  <CfMention v-model="text" :options="options" />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfMention } from '@chufix-design/react';
+
+export default function Demo() {
+  const [text, setText] = useState('');
+  const options = [
+    { value: 'alice', label: 'Alice Zhang', description: 'Frontend · Design System' },
+    { value: 'bob', label: 'Bob Li', description: 'Backend · API Gateway' },
+    // ...
+  ];
+  return <CfMention value={text} onChange={setText} options={options} />;
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Custom trigger character
+
+`trigger` can be any single character. Pass `#` for tag selection, `/` for a command palette. Position and keyboard behavior are identical.
+
+<DemoFrame
+  vueCode={`<CfMention
+  v-model="text"
+  trigger="#"
+  :options="tags"
+  placeholder="Type # to pick a tag"
+/>`}
+  reactCode={`<CfMention
+  value={text}
+  onChange={setText}
+  trigger="#"
+  options={tags}
+  placeholder="Type # to pick a tag"
+/>`}
+>
+  <TriggerVue client:load />
+</DemoFrame>
+
+## Read-only / disabled
+
+`readonly` keeps the display but blocks typing in the textarea; `disabled` grays it out and removes focus. The candidate dropdown will not appear in either mode.
+
+<DemoFrame
+  vueCode={`<CfMention :model-value="sample" :options="options" readonly />
+<CfMention :model-value="sample" :options="options" disabled />`}
+  reactCode={`<CfMention value={sample} options={options} readonly />
+<CfMention value={sample} options={options} disabled />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## Keyboard interaction
+
+While the dropdown is open, the following keys are supported:
+
+| Key | Behavior |
+|---|---|
+| `↑` / `↓` | Move the highlight between candidates |
+| `Enter` / `Tab` | Select the highlighted candidate |
+| `Esc` | Close the dropdown without inserting |
+| Printable chars | Live-filter candidates |
+| Space | Auto-closes the dropdown (treated as end of mention) |
+
+`disabled` items cannot be selected by keyboard and mouse clicks on them are ignored.
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `string` | `''` | Text content |
+| `defaultValue` | `string` | `''` | Uncontrolled initial value |
+| `options` | `MentionOption[]` | `—` | `{ value, label?, description?, disabled? }` |
+| `trigger` | `string` | `'@'` | Trigger character (single character) |
+| `rows` | `number` | `4` | Textarea rows |
+| `placeholder` | `string` | `'Type @ to mention'` | Textarea placeholder |
+| `disabled` / `readonly` | `boolean` | `false` | Disable / read-only the editor |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+| `className` | `string` | `—` | Forwarded to the root container |
+
+Events:
+
+- `onChange(value)` / `update:modelValue` — any text change
+- `onSelect(option)` / `select` — fires when a candidate is selected
+
+Type exports:
+
+```ts
+interface MentionOption {
+  value: string;
+  label?: string;
+  description?: string;
+  disabled?: boolean;
+}
+```

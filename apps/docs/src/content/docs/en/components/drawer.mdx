@@ -1,0 +1,145 @@
+---
+title: Drawer
+description: Edge-anchored sliding panel — 4 placements, tone variants, resizable, async confirm, no-mask mode, imperative service, stacked z-index.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/drawer/BasicVue.vue';
+import PlacementVue from '~/components/demos/drawer/PlacementVue.vue';
+import SizesVue from '~/components/demos/drawer/SizesVue.vue';
+import NoCloseVue from '~/components/demos/drawer/NoCloseVue.vue';
+import TonesVue from '~/components/demos/drawer/TonesVue.vue';
+import AsyncVue from '~/components/demos/drawer/AsyncVue.vue';
+import ResizableVue from '~/components/demos/drawer/ResizableVue.vue';
+import ServiceVue from '~/components/demos/drawer/ServiceVue.vue';
+import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
+
+## Basic usage
+
+`v-model:open` (Vue) / `open + onOpenChange` (React) two-way binding. Drawer shares Modal's portal / focus trap / body scroll lock / ESC-close infrastructure.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Four placements
+
+`placement` controls the slide-in edge — right (default, the most common detail panel) / left (mobile nav) / top / bottom (playground-style ad-hoc workspace).
+
+<DemoFrame>
+  <PlacementVue client:only="vue" />
+</DemoFrame>
+
+## Five sizes
+
+`size` controls width (left/right placement) or height (top/bottom). Available presets: `sm` / `md` (default) / `lg` / `xl` / `full`. `width` / `height` accept custom pixel values.
+
+<DemoFrame>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
+## Tone variants
+
+`tone="info | success | warning | error"` adds a circular tone icon + accent color in the header. With `tone="error"` the default OK button automatically switches to danger red.
+
+<DemoFrame>
+  <TonesVue client:only="vue" />
+</DemoFrame>
+
+## Built-in OK / Cancel + async confirm
+
+Pass `okText` / `cancelText` and the component renders the default footer buttons. `onBeforeOk` accepts an async function — return `false` or throw to keep the dialog open and restore the loading state; resolve normally to close and emit `@ok`.
+
+<DemoFrame>
+  <AsyncVue client:only="vue" />
+</DemoFrame>
+
+## Edge-grip resize
+
+`resizable` turns the inner edge into a drag handle — users can resize horizontally (left/right drawers) or vertically (top/bottom drawers). Min size 240×160.
+
+<DemoFrame>
+  <ResizableVue client:only="vue" />
+</DemoFrame>
+
+## No-mask mode
+
+Default `mask=true` renders an overlay and locks body scroll. Setting `mask={false}` floats the drawer above the page without overlay or scroll lock — ideal for persistent reference panels or live logs.
+
+<DemoFrame>
+  <NoMaskVue client:only="vue" />
+</DemoFrame>
+
+## Lock close paths
+
+For long forms or in-progress flows you may want to prevent accidental close. Set all three flags to `false` so users must explicitly submit or cancel via the footer buttons:
+
+- `closeOnOverlay={false}` — overlay click does not close
+- `closeOnEsc={false}` — ESC does not close
+- `showClose={false}` — hide the top-right ×
+
+While async (`onBeforeOk` in flight) every close path is blocked automatically.
+
+<DemoFrame>
+  <NoCloseVue client:only="vue" />
+</DemoFrame>
+
+## Imperative service
+
+`drawer.open / confirm / danger` opens a drawer and returns `Promise<boolean>` — no state binding required.
+
+```ts
+import { drawer } from '@chufix-design/vue'; // React: import from '@chufix-design/react'
+
+const ok = await drawer.confirm({
+  title: 'Settings',
+  description: 'Quickly tune service parameters',
+  placement: 'right',
+  content: SettingsForm,
+  onOk: async () => {
+    await api.save(); // throw or return false to block close
+  },
+});
+```
+
+<DemoFrame>
+  <ServiceVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `false` | Controlled state |
+| `title` | `string` | — | Header title text |
+| `description` | `string` | — | Subtitle below the title |
+| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Slide-in edge |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Horizontal → width; vertical → height |
+| `tone` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'default'` | Visual tone + auto icon |
+| `width` | `number \| string` | — | Custom width (left/right) |
+| `height` | `number \| string` | — | Custom height (top/bottom) |
+| `resizable` | `boolean` | `false` | Inner-edge drag-resize |
+| `mask` | `boolean` | `true` | Render overlay and lock body scroll |
+| `closeOnOverlay` | `boolean` | `true` | Close on overlay click |
+| `closeOnEsc` | `boolean` | `true` | Close on ESC |
+| `showClose` | `boolean` | `true` | Top-right × button |
+| `footerAlign` | `'start' \| 'center' \| 'end' \| 'space-between'` | `'end'` | Footer alignment |
+| `okText` / `cancelText` | `string` | — | Default button labels; omit to skip default footer |
+| `okVariant` | `'primary' \| 'danger' \| 'secondary'` | `'primary'` | OK button variant |
+| `onBeforeOk` | `() => boolean \| void \| Promise<...>` | — | Async hook; false / throw blocks close |
+| `to` | `string \| Element` | `'body'` | Teleport / Portal target |
+| `zIndex` | `number` | auto-stack | Custom z-index base |
+
+### Slots / events
+
+- Vue: named slots `header` / default / `footer`. The `footer` slot receives `{ ok, cancel, loading }` for custom button rendering.
+- React: `header`, `footer` (accepts `ReactNode` or `({ ok, cancel, loading }) => ReactNode`), plus `children`.
+- Events: `update:open` / `close` / `ok` / `cancel`.
+
+### Service methods
+
+| Method | tone | Default buttons |
+| --- | --- | --- |
+| `drawer.open(opts)` | from opts | from opts |
+| `drawer.confirm(opts)` | warning | OK + Cancel |
+| `drawer.danger(opts)` | error | red OK + Cancel |

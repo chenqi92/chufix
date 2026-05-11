@@ -1,0 +1,40 @@
+---
+title: Statistic
+description: Large numeric display with thousand separators, prefix/suffix, and countdown. Common in dashboard headers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/statistic/BasicVue.vue';
+
+## Basic usage
+
+When `value` is a number, thousand separators are applied automatically. `precision` controls decimal places. `prefix` / `suffix` add units on either side.
+
+<DemoFrame
+  vueCode={`<CfStatistic label="Today's visits" :value="12384" />
+<CfStatistic label="Revenue" :value="84520.42" prefix="¥" :precision="2" />
+<CfStatistic label="Conversion" :value="3.2" suffix="%" :precision="1" />`}
+  reactCode={`<CfStatistic label="Today's visits" value={12384} />
+<CfStatistic label="Revenue" value={84520.42} prefix="¥" precision={2} />
+<CfStatistic label="Conversion" value={3.2} suffix="%" precision={1} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | `—` | Small label above the number |
+| `value` | `number` | `—` | Main number |
+| `precision` | `number` | `0` | Decimal places |
+| `prefix` / `suffix` | `string` | `—` | Units before/after the number |
+| `separator` | `string` | `','` | Thousand separator |
+| `decimal` | `string` | `'.'` | Decimal character |
+| `duration` | `number` | `800` | Roll animation duration on value change (ms) |
+| `countdown` | `number \| Date \| null` | `—` | Countdown target timestamp / Date |
+| `format` | `string` | `'HH:mm:ss'` | Countdown format (supports DD / HH / mm / ss) |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Number font size |
+| `loading` | `boolean` | `false` | Loading state, number slot shows `—` |
+
+Events: `onFinish` (countdown mode only, fired when reaching zero).

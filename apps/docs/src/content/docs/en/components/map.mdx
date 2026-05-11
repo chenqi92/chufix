@@ -1,0 +1,63 @@
+---
+title: Map
+description: Lightweight vector map container with marker, polygon overlay, route, zoom, and interaction events.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/map/BasicVue.vue';
+
+## Basic usage
+
+`Map` is a zero-dependency vector map canvas. Coordinates use a normalized 0–100 space — handy for data-center floor plans, campus topology, regional monitoring, or network node diagrams in admin systems. Markers, overlays, and routes are all interactive: clicking an overlay fires `overlay-click`, clicking a marker fires `marker-click`, and clicking empty space fires `map-click`.
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfMap
+  :markers="markers"
+  :overlays="overlays"
+  :routes="routes"
+  @marker-click="onMarkerClick"
+  @overlay-click="onOverlayClick"
+  @map-click="onMapClick"
+/>`}
+  reactCode={`<CfMap
+  markers={markers}
+  overlays={overlays}
+  routes={routes}
+  onMarkerClick={onMarkerClick}
+  onOverlayClick={onOverlayClick}
+  onMapClick={onMapClick}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `markers` | `MapMarker[]` | `[]` | Marker points; fields are `id / label / x / y / tone? / value? / disabled?` |
+| `overlays` | `MapOverlay[]` | `[]` | Polygon overlays. With `interactive: true` they respond to click and keyboard activation |
+| `routes` | `MapRoute[]` | `[]` | Polyline routes; supports `tone` and `dashed` |
+| `height` | `number \| string` | `360` | Map height |
+| `center` | `{ x: number; y: number }` | `{ x: 50, y: 50 }` | Viewport center |
+| `zoom` | `number` | `1` | Initial zoom level |
+| `minZoom` / `maxZoom` | `number` | `0.7 / 2.4` | Zoom bounds |
+| `showGrid` | `boolean` | `true` | Show the background grid |
+| `showLabels` | `boolean` | `true` | Show marker labels |
+| `controls` | `boolean` | `true` | Show zoom / reset controls |
+| `activeId` | `string` | `—` | Highlight a marker or overlay |
+
+## Events
+
+| Vue event | React callback | payload | Description |
+|---|---|---|---|
+| `marker-click` | `onMarkerClick` | `{ marker, nativeEvent }` | Click or keyboard activation on a marker |
+| `marker-enter` / `marker-leave` | `onMarkerEnter` / `onMarkerLeave` | `{ marker, nativeEvent }` | Marker hover state |
+| `overlay-click` | `onOverlayClick` | `{ overlay, nativeEvent }` | Click or keyboard activation on an interactive overlay |
+| `map-click` | `onMapClick` | `{ point, nativeEvent }` | Click on empty space; payload is normalized coordinates |
+| `viewport-change` | `onViewportChange` | `{ center, zoom }` | Fired after using zoom / reset controls |
+
+## Design notes
+
+This release intentionally avoids binding to any specific mapping service — the focus is on getting the UI-library essentials right (overlays, events, state, accessibility). When integrating Leaflet or Mapbox later, the same `markers / overlays / events` surface can stay; only the rendering layer needs to swap to real tiles or a WebGL map.

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSegmentedControl } from '@chufix/vue';
+import { CfSegmentedControl } from '@chufix-design/vue';
 
 const a = ref('day');
 const b = ref('day');

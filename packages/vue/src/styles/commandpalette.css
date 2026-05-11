@@ -1,0 +1,175 @@
+/* ChuFix CommandPalette — global ⌘K command search.
+ * Modal-like overlay, search input, grouped list, keyboard navigation. */
+
+.cf-cmdpal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cmdpalette);
+  background: oklch(0% 0 0 / 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.cf-cmdpal {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-8);
+  box-shadow: var(--shadow-4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: min(560px, 70vh);
+  font-family: var(--font-sans);
+}
+
+.cf-cmdpal__input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line-1);
+  flex-shrink: 0;
+}
+.cf-cmdpal__search-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--fg-3);
+  flex-shrink: 0;
+}
+.cf-cmdpal__input > input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-14);
+  caret-color: var(--accent-1);
+}
+.cf-cmdpal__input > input::placeholder {
+  color: var(--fg-3);
+}
+
+.cf-cmdpal__list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 6px 8px 6px;
+}
+
+.cf-cmdpal__empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--fg-3);
+  font-size: var(--t-13);
+}
+
+.cf-cmdpal__section {
+  font-size: var(--t-11);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-3);
+  padding: 10px 10px 4px 10px;
+  font-weight: var(--w-medium);
+}
+
+.cf-cmdpal__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--r-4);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-13);
+  text-align: left;
+  cursor: pointer;
+}
+.cf-cmdpal__row:hover:not(.is-disabled),
+.cf-cmdpal__row.is-active:not(.is-disabled) {
+  background: var(--bg-2);
+}
+.cf-cmdpal__row.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+}
+
+.cf-cmdpal__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cf-cmdpal__hl {
+  color: var(--accent-1);
+  font-weight: var(--w-medium);
+}
+.cf-cmdpal__desc {
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+.cf-cmdpal__shortcut {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  flex-shrink: 0;
+}
+
+.cf-cmdpal__footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--line-1);
+  background: var(--bg-2);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+  flex-shrink: 0;
+}
+.cf-cmdpal__footer kbd {
+  display: inline-block;
+  min-width: 16px;
+  padding: 0 4px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  color: var(--fg-2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  margin: 0 2px;
+}
+.cf-cmdpal__spacer {
+  flex: 1;
+}
+
+/* enter / leave */
+.cf-cmdpal-enter-active,
+.cf-cmdpal-leave-active {
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.cf-cmdpal-enter-active .cf-cmdpal,
+.cf-cmdpal-leave-active .cf-cmdpal {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.cf-cmdpal-enter-from,
+.cf-cmdpal-leave-to {
+  opacity: 0;
+}
+.cf-cmdpal-enter-from .cf-cmdpal,
+.cf-cmdpal-leave-to .cf-cmdpal {
+  transform: translateY(-8px);
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfCalendarHeatmap, type HeatmapDay } from '@chufix/vue';
+import { CfCalendarHeatmap, type HeatmapDay } from '@chufix-design/vue';
 
 function genYearOfData(): HeatmapDay[] {
   const out: HeatmapDay[] = [];

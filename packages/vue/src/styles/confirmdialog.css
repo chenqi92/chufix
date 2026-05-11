@@ -1,0 +1,39 @@
+/* ChuFix ConfirmDialog — Modal preset for destructive / important confirms.
+ * Adds icon + description layout inside Modal body. */
+
+.cf-confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cf-confirm__icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.cf-confirm__icon[data-tone='danger'] {
+  background: var(--status-error-soft);
+  color: var(--status-error);
+}
+.cf-confirm__icon > svg {
+  width: 18px;
+  height: 18px;
+}
+
+.cf-confirm__content {
+  flex: 1;
+  min-width: 0;
+}
+.cf-confirm__desc {
+  margin: 0;
+  color: var(--fg-2);
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+}

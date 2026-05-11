@@ -1,16 +1,19 @@
 ---
 import type { MarkdownHeading } from 'astro';
+import { getLocaleFromUrl } from '~/i18n/utils';
+import { t } from '~/i18n/strings';
 
 interface Props {
   headings: MarkdownHeading[];
 }
 const { headings } = Astro.props;
 const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const locale = getLocaleFromUrl(Astro.url);
 ---
 
 {items.length > 0 && (
   <aside class="site-toc">
-    <p class="site-toc__title">本页内容</p>
+    <p class="site-toc__title">{t(locale, 'docs.toc.title')}</p>
     <ul class="site-toc__list">
       {items.map((h) => (
         <li class:list={[`site-toc__item--d${h.depth}`]}>

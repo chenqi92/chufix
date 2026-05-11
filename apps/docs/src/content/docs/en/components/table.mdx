@@ -1,0 +1,436 @@
+---
+title: Table
+description: Data table — multi-column sort, column reorder & resize, pinned columns, filtering, pagination, row expansion, tree data, summary footer, sticky header, global search, column visibility.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/table/BasicVue.vue';
+import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+import MultiSortVue from '~/components/demos/table/MultiSortVue.vue';
+import ResizeReorderVue from '~/components/demos/table/ResizeReorderVue.vue';
+import PinVue from '~/components/demos/table/PinVue.vue';
+import ExpandTreeVue from '~/components/demos/table/ExpandTreeVue.vue';
+import SummarySearchVue from '~/components/demos/table/SummarySearchVue.vue';
+import VirtualVue from '~/components/demos/table/VirtualVue.vue';
+import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
+import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
+import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
+import PersistVue from '~/components/demos/table/PersistVue.vue';
+import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
+import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
+import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
+import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
+import PasteVue from '~/components/demos/table/PasteVue.vue';
+import HistoryVue from '~/components/demos/table/HistoryVue.vue';
+import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
+import RowEditVue from '~/components/demos/table/RowEditVue.vue';
+import BatchVue from '~/components/demos/table/BatchVue.vue';
+import PinnedRowsVue from '~/components/demos/table/PinnedRowsVue.vue';
+import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
+
+`CfTable` is one of the most feature-complete components in the library. Design choices:
+
+- **Client-side derivation by default** — global search, per-column filtering, sorting, and pagination all run inside the component. Switch to server mode by passing a numeric `pagination.total`.
+- **Column state is uncontrolled by default** — visibility / order / widths live in internal state; emit through `update:columnsState` to fully control them.
+- **Zero third-party dependencies** — HTML5 DnD for column reorder, PointerEvent for resize, native `position: sticky` for pinned columns and the header.
+
+## Basic usage
+
+`columns` + `rows` + optional `rowKey`. `column.format` formats values; `column.render` returns VNodes / strings.
+
+<DemoFrame>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Row selection
+
+Single-select via `selectable="single"`, multi-select via `selectable="multiple"`. `v-model` accepts a `string` or `string[]` keyed by `rowKey`.
+
+<DemoFrame>
+  <SelectionVue client:load />
+</DemoFrame>
+
+## Multi-column sort
+
+With `multi-sort` enabled, hold <kbd>Shift</kbd> / <kbd>⌘</kbd> while clicking a header to add a secondary sort. Clicking the same column again cycles asc → desc → off. The header shows the column's index in the sort queue.
+
+<DemoFrame>
+  <MultiSortVue client:load />
+</DemoFrame>
+
+Sort priority follows the order of the `sort` array. For full control bind `:sort` to your own ref.
+
+## Column resize + reorder
+
+With `resizable`, every column gets a 6px col-resize handle on its right edge. Dragging updates internal state in real time; `@update:columns-state` exposes the new widths for persistence. `reorderable` makes headers drag-and-drop reorderable.
+
+<DemoFrame>
+  <ResizeReorderVue client:load />
+</DemoFrame>
+
+Per-column overrides: `resizable: false` / `reorderable: false`.
+
+## Pinned columns + sticky header
+
+`column.fixed: 'left' | 'right'` pins columns to either side so they stay visible during horizontal scroll. Combine with `sticky-header` + `:height` for a sticky top row.
+
+<DemoFrame>
+  <PinVue client:load />
+</DemoFrame>
+
+## Row expansion + tree data
+
+`expandable` adds an expand button per row:
+
+- Pass `expand-render` to render custom expanded content (order details, nested charts, etc.).
+- If a row carries a `children` array, the table treats it as tree data and indents each level by `tree-indent` pixels.
+
+<DemoFrame>
+  <ExpandTreeVue client:load />
+</DemoFrame>
+
+`v-model:expanded-row-keys` lifts expansion state up to the parent — handy for syncing to the URL or localStorage.
+
+## Toolbar + summary + pagination + filters
+
+Set `toolbar="auto"` to surface global search + column visibility menu. `column.filterable` puts a funnel button in each column header; `filterType` toggles between `select` / `number-range` / plain text. `column.summary` accepts `'sum' | 'avg' | 'count'` or a function — a **summary** row is rendered at the bottom and updates with the filtered result.
+
+<DemoFrame>
+  <SummarySearchVue client:load />
+</DemoFrame>
+
+`:default-pagination="{ page: 1, pageSize: 8 }"` is uncontrolled. For full control bind `pagination` to a current value and listen to `@update:pagination`.
+
+## Virtual scrolling
+
+With `virtual` enabled, the body only renders visible rows + an `overscan` buffer above/below — DOM count stays in the dozens. Requires every row to use a fixed `row-height` (default 36px). Combine with `:height` + `sticky-header`.
+
+<DemoFrame>
+  <VirtualVue client:load />
+</DemoFrame>
+
+A 50,000-row dataset renders ~30 `<tr>` elements at any time. Sort / filter / pinned columns / global search all keep working. **Note**: in virtual mode, `expandable` rows are also constrained to the row height — for rich expanded content prefer a Modal or disable virtual scrolling.
+
+## Row reorder
+
+`row-reorderable` adds a ⋮⋮ drag handle column on the left. Drag a row to reorder; `@update:rows` emits the new array. Use `@row-reorder` if you also want from/to indices.
+
+<DemoFrame>
+  <RowReorderVue client:load />
+</DemoFrame>
+
+Only top-level (level 0) rows are draggable; tree children stay put.
+
+## Inline editing
+
+Add `editable: true` to a column with optional `editType: 'text' | 'number' | 'select'`. Double-click a cell to enter edit mode:
+
+- `editValidate` rejects invalid values; on failure the cell stays in edit mode.
+- Commit: Enter / blur. Cancel: Esc.
+- `@cell-edit` emits `{ row, column, oldValue, newValue, index }` — the parent decides how to write back.
+
+<DemoFrame>
+  <InlineEditVue client:load />
+</DemoFrame>
+
+> The component never mutates `rows` directly: every commit goes through `cell-edit`, so you choose whether to apply locally, hit an API, or merge.
+
+## CSV export
+
+`exportable` renders an **Export** button in the toolbar. Clicking it downloads the **filtered** result. The CSV is UTF-8 with a BOM, so Excel opens it correctly without garbling.
+
+- Skip a column: `column.exportable: false`
+- Custom cell serialization: `column.exportRender(value, row, i) => string`
+- File name: `export-file-name`, defaults to `'table'`
+- Fully custom: `@export` gives you the CSV string — download or upload as you wish.
+- Imperative: the component exposes `exportCsv()` via `defineExpose`.
+
+<DemoFrame>
+  <CsvExportVue client:load />
+</DemoFrame>
+
+## Persist column state
+
+Setting `persistKey="<key>"` makes the table write the current `columnsState` (hidden / order / widths) to `localStorage['cf-table:<key>']` and restore it on next mount.
+
+<DemoFrame>
+  <PersistVue client:load />
+</DemoFrame>
+
+When fully controlled (you pass `:columns-state`), persistence is skipped — you decide where to save it.
+
+## Auto rowSpan merge
+
+Add `mergeRows: true` to a column and consecutive cells with equal values are merged into a single rowSpan. For finer control pass a function: `mergeRows: (cur, prev) => cur.groupId === prev.groupId`.
+
+<DemoFrame>
+  <MergeRowsVue client:load />
+</DemoFrame>
+
+Merges never cross tree levels (different `parentKey` rows are not joined).
+
+## Cell selection + one-tap copy
+
+`cell-selectable` makes the table behave like Excel:
+
+- Click a cell → select it
+- Shift-click / mouse drag → rectangular selection
+- <kbd>Ctrl/⌘ + C</kbd> → copies as TSV to the clipboard, ready to paste into Excel / Numbers / Google Sheets
+
+<DemoFrame>
+  <CellSelectVue client:load />
+</DemoFrame>
+
+`column.format` is honored — what you see is what you copy.
+
+## Column virtualization (bidirectional)
+
+When you have 100+ columns of simple cells (think 2-D matrices), enabling `col-virtual` + a default `col-width` virtualizes the horizontal axis too. Combine with `virtual` for full bidirectional virtual scrolling.
+
+<DemoFrame>
+  <ColVirtualVue client:load />
+</DemoFrame>
+
+200 rows × 121 columns = 24,200 cells, but the actual DOM stays under ~800 nodes. Note: `column.fixed` still pins columns, but try to keep total fixed width under one third of the viewport so the visible area isn't crowded.
+
+## Tree-aware drag (across parents)
+
+Add `tree-reorderable` on top of `row-reorderable` and the drop UI splits each target row into three zones, like Finder / Excel / Kanban tools:
+
+- Top quarter → drop **above** (same parent)
+- Bottom quarter → drop **below** (same parent)
+- Middle half → drop **inside** as a child
+
+Ancestor-into-descendant moves are blocked.
+
+<DemoFrame>
+  <TreeDragVue client:load />
+</DemoFrame>
+
+`@tree-reorder` emits `{ fromKey, toKey, pos: 'above' | 'below' | 'inside', rows }` so you can persist the new tree shape.
+
+## TSV paste-back
+
+On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a starting cell, paste TSV / CSV from your clipboard with <kbd>Ctrl/⌘ + V</kbd>, and the data flows back into cells starting at that anchor. `column.editable` decides which cells accept writes; `column.editValidate` rejects invalid values.
+
+<DemoFrame>
+  <PasteVue client:load />
+</DemoFrame>
+
+`@cell-paste` returns `{ applied, skipped }` — handy for a "write 12 cells, skipped 3" toast.
+
+## Undo / redo history
+
+`history-enabled` records every change to sort / filter / search / pagination / columnsState into an in-memory stack. <kbd>Ctrl/⌘ + Z</kbd> undoes, <kbd>Ctrl/⌘ + Shift + Z</kbd> / <kbd>Ctrl + Y</kbd> redoes. `history-depth` caps the stack size (default 50).
+
+<DemoFrame>
+  <HistoryVue client:load />
+</DemoFrame>
+
+`@history-change` fires `{ canUndo, canRedo }` for toolbar buttons. Component instance also exposes imperative `undo()` / `redo()`.
+
+## Variable row heights
+
+`virtual` defaults to a single `rowHeight`. For rows of varying height (markdown body, image gallery, etc.), pass `:get-row-height="(idx) => 42"` and the table builds cumulative offsets, then binary-searches for the visible window on each scroll.
+
+<DemoFrame>
+  <VarHeightVue client:load />
+</DemoFrame>
+
+`getRowHeight` should be a pure function — the component recomputes offsets when row count changes. If real heights are only known after rendering, return an estimate first and update once measured. A future `auto-row-height` mode will wire ResizeObserver in for you.
+
+## Row-level edit mode
+
+Set `edit-mode="row"` and double-click any row to enter row-edit mode: every `editable` column becomes an input simultaneously, and a Save / Cancel row appears below. Enter commits, Esc cancels. Validation failure keeps the row in edit mode.
+
+<DemoFrame>
+  <RowEditVue client:load />
+</DemoFrame>
+
+Each cell change still emits `@cell-edit` (same as cell mode); the parent decides whether to commit individually or batch them.
+
+## Batch action toolbar
+
+`batch-actions` + `selectable="multiple"`: when at least one row is selected, a sticky bar appears above the table — built-in count / Export selected / Clear, plus a `#batch-actions` slot for custom buttons (which receives `selectedKeys`).
+
+<DemoFrame>
+  <BatchVue client:load />
+</DemoFrame>
+
+## Pinned rows
+
+`pinned-row-keys` lifts those rows to the top and makes them sticky inside the scroll container. Useful for "watchlist" / "high priority" rows that should always stay visible.
+
+<DemoFrame>
+  <PinnedRowsVue client:load />
+</DemoFrame>
+
+## auto-row-height
+
+`virtual` defaults to a fixed `rowHeight`. When row content really needs to render before height is known (rich text, images, nested layout), enable `auto-row-height`: the component runs ResizeObserver on every visible row and writes measured heights back into the offset table.
+
+<DemoFrame>
+  <AutoHeightVue client:load />
+</DemoFrame>
+
+The first paint uses `rowHeight` as an estimate; once measurements arrive, padTop / padBottom are recomputed. Less code than hand-writing `getRowHeight`, but the very first scroll may see a tiny scrollbar jitter while the system calibrates.
+
+## Server-side debounce
+
+Typing in the search box or filter dropdown shouldn't pound your backend on every keystroke. Pass `:server-debounce="300"` (ms) to delay `update:globalSearch` and `update:filters` until the input is idle. Other signals (sort click, page change) are explicit clicks and remain synchronous.
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :pagination="{ page, pageSize, total }"
+  :server-debounce="300"
+  @update:globalSearch="(q) => loadData({ search: q })"
+  @update:filters="(f) => loadData({ filters: f })"
+/>
+```
+
+## Server-side mode
+
+Once `pagination.total` is a number, the component **stops** doing client-side slicing. sort / filter / pagination changes are emitted as events and you fetch from the backend:
+
+```vue
+<CfTable
+  :columns="columns"
+  :rows="rows"
+  :sort="sort"
+  :filters="filters"
+  :pagination="{ page, pageSize, total }"
+  :loading="loading"
+  @update:sort="(s) => loadData({ sort: s, filters, page, pageSize })"
+  @update:filters="(f) => loadData({ sort, filters: f, page: 1, pageSize })"
+  @update:pagination="(p) => loadData({ sort, filters, ...p })"
+  @update:globalSearch="(q) => loadData({ search: q })"
+/>
+```
+
+## API
+
+### `TableProps`
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `columns` | `TableColumn[]` | — | Column defs; nest `children` for grouped headers |
+| `rows` | `T[]` | — | Data rows; `row[childrenField]` is children |
+| `rowKey` | `string \| (row, i) => string` | `i` | Unique row id for selection / expansion |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Density |
+| `variant` | `'default' \| 'bordered' \| 'striped'` | `'default'` | Visual variant |
+| `hoverable` | `boolean` | `true` | Row hover highlight |
+| `stickyHeader` | `boolean` | `false` | Sticky header (also pass `height`) |
+| `height` | `number \| string` | — | Body max height; scrolls when exceeded |
+| `loading` | `boolean` | `false` | Show loading overlay |
+| `emptyText` | `string` | `'No data'` | Empty state text |
+| `sort` | `TableSort \| TableSort[] \| null` | — | Current sort (controlled) |
+| `defaultSort` | same | `null` | Initial sort (uncontrolled) |
+| `multiSort` | `boolean` | `false` | Enable shift-click multi-sort |
+| `filters` | `Record<string, unknown>` | — | Filter values (controlled) |
+| `defaultFilters` | same | `{}` | Initial filters (uncontrolled) |
+| `globalSearch` | `string` | — | Global search (controlled) |
+| `defaultGlobalSearch` | `string` | `''` | Initial search (uncontrolled) |
+| `pagination` | `TablePagination \| false` | — | Pagination; `false` disables |
+| `defaultPagination` | `TablePagination` | — | Initial pagination (uncontrolled) |
+| `selectable` | `'single' \| 'multiple'` | — | Row selection mode |
+| `modelValue` | `string \| string[] \| null` | `null` | Selected row keys |
+| `expandable` | `boolean` | `false` | Show expand toggle |
+| `expandRender` | `(row, i) => any` | — | Custom expanded content |
+| `expandedRowKeys` | `string[]` | — | Expanded keys (controlled) |
+| `defaultExpandedRowKeys` | `string[]` | `[]` | Initial expanded (uncontrolled) |
+| `childrenField` | `string` | `'children'` | Tree data field |
+| `treeIndent` | `number` | `16` | Per-level indent (px) |
+| `columnsState` | `TableColumnsState` | — | Hidden / order / widths (controlled) |
+| `defaultColumnsState` | same | — | Initial columns state (uncontrolled) |
+| `resizable` | `boolean` | `false` | Enable resize globally |
+| `reorderable` | `boolean` | `false` | Enable reorder globally |
+| `showSummary` | `boolean` | `false` | Auto-render a summary row from `column.summary` |
+| `summary` | `TableSummaryRow[]` | — | Extra manual summary rows |
+| `toolbar` | `'auto' \| 'none'` | `'none'` | Toolbar (search + column menu + export) |
+| `virtual` | `boolean` | `false` | Enable virtual scroll (requires `height` + fixed `rowHeight`) |
+| `rowHeight` | `number` | `36` | Per-row height in virtual mode (px) |
+| `overscan` | `number` | `6` | Extra rows above/below the viewport |
+| `rowReorderable` | `boolean` | `false` | Enable row drag-and-drop reorder |
+| `exportable` | `boolean` | `false` | Show CSV export button in toolbar |
+| `exportFileName` | `string` | `'table'` | Export file name (without extension) |
+| `persistKey` | `string` | — | Persist `columnsState` in localStorage under this key |
+| `serverDebounce` | `number` | `0` | Debounce (ms) for `update:globalSearch` / `update:filters` |
+| `cellSelectable` | `boolean` | `false` | Excel-style cell selection + Ctrl/⌘+C copy as TSV |
+| `colVirtual` | `boolean` | `false` | Enable column virtualization (recommended for 100+ columns) |
+| `colWidth` | `number` | `120` | Default column width when virtualizing (px) |
+| `colOverscan` | `number` | `4` | Extra columns rendered on each side |
+| `treeReorderable` | `boolean` | `false` | Combined with `rowReorderable`, enable above/below/inside drop zones |
+| `cellPastable` | `boolean` | `false` | Accept Ctrl/⌘+V to paste TSV / CSV back into cells |
+| `historyEnabled` | `boolean` | `false` | Snapshot stack for undo / redo across sort/filter/search/page/columnsState |
+| `historyDepth` | `number` | `50` | Max snapshots kept |
+| `getRowHeight` | `(index) => number` | — | Per-row height in virtual mode for variable-height rows |
+| `editMode` | `'cell' \| 'row'` | `'cell'` | `'row'` enters whole-row edit on double-click |
+| `batchActions` | `boolean` | `false` | Sticky batch action bar when rows are selected |
+| `pinnedRowKeys` | `string[]` | — | Row keys pinned to the top via sticky |
+| `autoRowHeight` | `boolean` | `false` | ResizeObserver auto-measures variable-height rows |
+
+### `TableColumn`
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | Required unique id |
+| `title` | `string` | Header text |
+| `dataIndex` | `string` | Data field; falls back to `key` |
+| `width / minWidth / maxWidth` | `number \| string` | Geometry |
+| `align` | `'left' \| 'center' \| 'right'` | Alignment |
+| `ellipsis` | `boolean` | Truncate overflow |
+| `sortable` | `boolean` | Enable sort on this column |
+| `sortFn` | `(a, b) => number` | Custom sort comparator |
+| `filterable` | `boolean` | Enable filter on this column |
+| `filterType` | `'text' \| 'select' \| 'number-range' \| 'date-range'` | Filter UI type |
+| `filterOptions` | `{label,value}[]` | Options for `select` |
+| `filterFn` | `(filterValue, row, i) => boolean` | Custom filter |
+| `fixed` | `'left' \| 'right'` | Pin column |
+| `resizable / reorderable / hideable` | `boolean` | Per-column overrides |
+| `hidden` | `boolean` | Hidden by default |
+| `render` | `(value, row, i) => any` | Custom cell render |
+| `format` | `(value, row, i) => string` | String formatter |
+| `headerRender` | `() => any` | Custom header |
+| `children` | `TableColumn[]` | Grouped headers |
+| `summary` | `'sum' \| 'avg' \| 'count' \| (rows) => any` | Aggregation |
+| `summaryRender` | `(value) => any` | Custom summary cell |
+| `mergeRows` | `boolean \| 'consecutive' \| (cur, prev) => boolean` | Auto-merge rowSpan for consecutive equal cells |
+| `editable` | `boolean \| (row, i) => boolean` | Whether this column is double-click editable |
+| `editType` | `'text' \| 'number' \| 'select'` | Editor type |
+| `editOptions` | `{label,value}[]` | Options for `select` editor |
+| `editValidate` | `(value, row, i) => boolean` | Reject commit if it returns `false` |
+| `exportable` | `boolean` | When `false`, column is skipped in CSV export |
+| `exportRender` | `(value, row, i) => string` | Cell stringification on export |
+| `cellClass` | `string \| (row, i) => string` | Cell class |
+
+### Events / Slots
+
+| Event / Slot | Payload | Description |
+| --- | --- | --- |
+| `update:sort` / `sort-change` | `TableSort \| TableSort[] \| null` | Sort changed |
+| `update:filters` | `Record<string, unknown>` | Filter values changed |
+| `update:globalSearch` | `string` | Search box changed |
+| `update:pagination` | `TablePagination` | Page / page size changed |
+| `update:modelValue` | `string \| string[] \| null` | Selected rows changed |
+| `update:columnsState` | `TableColumnsState` | Reorder / hide / resize |
+| `update:expandedRowKeys` | `string[]` | Expansion changed |
+| `update:rows` / `row-reorder` | `T[]` / `{from,to,rows}` | Row drag reorder |
+| `tree-reorder` | `{fromKey, toKey, pos, rows}` | Tree-aware drag (above/below/inside) |
+| `cell-edit` | `{row, column, oldValue, newValue, index}` | Inline cell commit |
+| `cell-paste` | `{applied, skipped}` | TSV paste finished |
+| `export` | `string` | CSV export hook (receives the CSV string) |
+| `history-change` | `{canUndo, canRedo}` | History stack changed |
+| `row-click` | `(row, i)` | Row click (when not selectable) |
+| `#header:<key>` | — | Custom header node |
+| `#cell:<key>` | `{ row, index, value }` | Custom cell |
+| `#empty` | — | Custom empty state |
+| `#toolbar-left` / `#toolbar-right` | — | Toolbar extension slots |
+
+## Performance notes
+
+- All derivations (filtered → sorted → paginated → flat tree) run via `computed`/`useMemo` and only re-run on dependency change.
+- Column resize / reorder updates the **column state object**, not the entire table — only the affected column re-evaluates its style.
+- For 1k+ rows, combine `pagination` + `sticky-header` + `height`. For 10k+, use `expandable` + `children` as a "lazy tree" or wait for the upcoming `<CfVirtualTable>` (real virtual scroll).
+- React side keeps `Row` extracted; you can wrap it with `memo` externally. Vue side uses v-for diffing for cells.

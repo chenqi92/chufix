@@ -9,6 +9,7 @@ import TonesVue from '~/components/demos/slider/TonesVue.vue';
 import SizesVue from '~/components/demos/slider/SizesVue.vue';
 import StepsVue from '~/components/demos/slider/StepsVue.vue';
 import DisabledVue from '~/components/demos/slider/DisabledVue.vue';
+import EventsVue from '~/components/demos/slider/EventsVue.vue';
 
 ## 基础用法
 
@@ -79,6 +80,31 @@ import DisabledVue from '~/components/demos/slider/DisabledVue.vue';
   <DisabledVue client:load />
 </DemoFrame>
 
+## 事件与提交
+
+拖拽时 `change` 持续返回当前值；松开指针或键盘提交时触发 `changeEnd` / `onChangeEnd`。meta 会标记来源是 `pointer` 还是 `keyboard`，便于区分实时预览和最终保存。
+
+<DemoFrame
+  vueCode={`<CfSlider
+  v-model="cpu"
+  :step="5"
+  ticks
+  show-value
+  @change="(value, meta) => preview(value, meta.source)"
+  @change-end="(value, meta) => save(value, meta.source)"
+/>`}
+  reactCode={`<CfSlider
+  value={cpu}
+  step={5}
+  ticks
+  showValue
+  onChange={(value, meta) => preview(value, meta.source)}
+  onChangeEnd={(value, meta) => save(value, meta.source)}
+/>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
 ## 键盘交互
 
 | 按键 | 行为 |
@@ -102,3 +128,10 @@ import DisabledVue from '~/components/demos/slider/DisabledVue.vue';
 | `showValue` | `boolean` | `false` | thumb 上显示当前值气泡 |
 | `ticks` | `boolean` | `false` | 渲染刻度（步数过多自动忽略） |
 | `disabled` | `boolean` | `false` | 禁用 |
+
+## Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `change` / `onChange` | `(value, meta)` | 值变化时触发；`meta.source` 为 `pointer` 或 `keyboard` |
+| `changeEnd` / `onChangeEnd` | `(value, meta)` | 指针松开或键盘提交后触发，适合保存最终值 |

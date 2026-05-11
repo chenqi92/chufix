@@ -3,12 +3,18 @@ title: 组件总览
 description: ChuFix UI 当前提供的所有组件清单与状态。
 ---
 
+## 总览
+
+P0–P11 + 8 模版 + 22 数据可视化全部具象化，**总计 155 + 组件**，覆盖了 ProtoForge 设计稿里
+所有的视觉单元 — 表单 / 反馈 / 容器 / 导航 / 数据展示 / 编辑器 / 系统壳 / 多窗口 / 图表 / 模版。
+
+
 ## 表单
 
 <div class="cf-feature-grid">
   <a href="/components/icon/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Icon 图标</div>
-    <div class="cf-card__body">169 个内置 SVG 图标，类型化 name，React / Vue 组件直接内联渲染。</div>
+    <div class="cf-card__body">500+ 个内置 SVG 图标，类型化 name，React / Vue 组件直接内联渲染。</div>
   </a>
   <a href="/components/button/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Button 按钮</div>
@@ -37,6 +43,10 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
   <a href="/components/select/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Select 选择器</div>
     <div class="cf-card__body">options 配置式 API，clearable、键盘导航、disabled item。</div>
+  </a>
+  <a href="/components/treeselect/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TreeSelect 树形选择</div>
+    <div class="cf-card__body">树形数据下拉选择，支持搜索、多选、清空与禁用节点。</div>
   </a>
   <a href="/components/searchinput/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">SearchInput 搜索框</div>
@@ -86,6 +96,10 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
     <div class="cf-card__header">ColorPicker 颜色选择</div>
     <div class="cf-card__body">HSV 调色板 + 色相 / 透明度滑块 + HEX / RGB / HSL 输入 + 预设色块。</div>
   </a>
+  <a href="/components/iconpicker/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">IconPicker 图标选择</div>
+    <div class="cf-card__body">搜索并选择内置 SVG 图标，适合菜单配置、仪表盘和属性面板。</div>
+  </a>
   <a href="/components/datepicker/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">DatePicker 日期选择</div>
     <div class="cf-card__body">月历面板，日 / 月 / 年三视图切换，min/max/disabledDate 约束，可清除。</div>
@@ -119,6 +133,14 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
 ## 容器
 
 <div class="cf-feature-grid">
+  <a href="/components/flex/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Flex 弹性布局</div>
+    <div class="cf-card__body">组件化管理 direction / align / justify / gap / wrap，减少内联样式。</div>
+  </a>
+  <a href="/components/grid/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Grid 栅格</div>
+    <div class="cf-card__body">自适应栅格，支持固定列数、最小卡片宽度、间距 token 与 dense 排布。</div>
+  </a>
   <a href="/components/card/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Card 卡片</div>
     <div class="cf-card__body">3 种 variant、Header / Body / Footer 三段式、可交互整卡。</div>
@@ -171,6 +193,14 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
   <a href="/components/datagrid/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">DataGrid 数据网格</div>
     <div class="cf-card__body">重型表格 — 列拖拽调宽、单元格双击编辑、固定表头滚动。</div>
+  </a>
+  <a href="/components/pivot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Pivot 透视表</div>
+    <div class="cf-card__body">行 × 列二维聚合 + 自动合计 + 可选热力着色 + drill-down。</div>
+  </a>
+  <a href="/components/spreadsheet/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Spreadsheet 表格编辑器</div>
+    <div class="cf-card__body">A1 风格可编辑网格，方向键 / Tab / Enter / F2 + Cmd+C/V 与系统剪贴板互通。</div>
   </a>
   <a href="/components/treeview/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">TreeView 树形列表</div>
@@ -232,6 +262,10 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
     <div class="cf-card__header">Timeline 时间轴</div>
     <div class="cf-card__body">顺序事件流，每条带圆点 / 连线 / 时间戳，变更日志与流水审计。</div>
   </a>
+  <a href="/components/timelinegantt/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TimelineGantt 甘特图</div>
+    <div class="cf-card__body">横向时间轴 + 多行任务条，today 标线 / 周末高亮 / 拖拽缩放 / 依赖箭头。</div>
+  </a>
   <a href="/components/marquee/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">Marquee 跑马灯</div>
     <div class="cf-card__body">横向匀速滚动，公告条 / 滚动消息 / logo 墙，悬停可暂停。</div>
@@ -259,6 +293,10 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
   <a href="/components/qrcode/" class="cf-card cf-card--outlined cf-card--link">
     <div class="cf-card__header">QRCode 二维码</div>
     <div class="cf-card__body">纯客户端零依赖编码，自动选版本 1–40，4 档纠错等级。</div>
+  </a>
+  <a href="/components/map/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Map 地图</div>
+    <div class="cf-card__body">零依赖矢量地图底座，支持 marker、区域覆盖物、路线与点击事件。</div>
   </a>
 </div>
 
@@ -319,7 +357,7 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
     <div class="cf-card__body">线性 / 圆形进度条，5 种语义色，支持不确定状态。</div>
   </a>
   <a href="/components/spinner/" class="cf-card cf-card--outlined cf-card--link">
-    <div class="cf-card__header">Spinner 加载</div>
+    <div class="cf-card__header">Spinner 加载中</div>
     <div class="cf-card__body">旋转环加载图标，3 档尺寸 × 6 种 tone，可选文字标签。</div>
   </a>
   <a href="/components/accordion/" class="cf-card cf-card--outlined cf-card--link">
@@ -393,6 +431,207 @@ description: ChuFix UI 当前提供的所有组件清单与状态。
   </a>
 </div>
 
-## 路线图
+## 编辑器
 
-P0–P8 全部就绪 — 表单 / 反馈 / 数据展示 / 容器 / 导航 / 布局 / 特殊场景齐备。
+<div class="cf-feature-grid">
+  <a href="/components/codeeditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CodeEditor 代码编辑</div>
+    <div class="cf-card__body">轻量代码编辑容器：textarea + 行号 + Tab 缩进。重型语法/补全请接 Monaco/CodeMirror。</div>
+  </a>
+  <a href="/components/diffeditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DiffEditor 文本对比</div>
+    <div class="cf-card__body">行级 LCS diff，支持 split / unified 双模式，行号 + +/- 标识。</div>
+  </a>
+  <a href="/components/markdowneditor/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">MarkdownEditor</div>
+    <div class="cf-card__body">内置最小 markdown 渲染器，支持 split / edit / preview 三种模式。</div>
+  </a>
+  <a href="/components/regexbuilder/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">RegexBuilder 正则构建</div>
+    <div class="cf-card__body">实时编译 + 测试匹配，错误友好提示，flags 用 chip 切换。</div>
+  </a>
+  <a href="/components/ansitext/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">AnsiText ANSI 文本</div>
+    <div class="cf-card__body">解析 ANSI 转义序列渲染为彩色 span，纯展示，不依赖 xterm.js。</div>
+  </a>
+</div>
+
+## 系统壳层
+
+<div class="cf-feature-grid">
+  <a href="/components/titlebar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TitleBar 标题栏</div>
+    <div class="cf-card__body">桌面应用窗口顶栏。macOS 风格 traffic light + 居中标题；Windows / Linux 风格 min/max/close 按钮 + 左对齐。</div>
+  </a>
+  <a href="/components/statusbar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">StatusBar 状态栏</div>
+    <div class="cf-card__body">编辑器底栏。三段（左 / 中 / 右）槽位，6 种语义色调。</div>
+  </a>
+  <a href="/components/menubar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">MenuBar 菜单栏</div>
+    <div class="cf-card__body">应用顶部菜单栏（File / Edit / View 风格），支持快捷键、分隔符、危险项。</div>
+  </a>
+  <a href="/components/notificationcenter/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">NotificationCenter 通知中心</div>
+    <div class="cf-card__body">通知历史面板，自带未读计数、全部已读、清空控件。</div>
+  </a>
+  <a href="/components/globalsearch/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">GlobalSearch 全局搜索</div>
+    <div class="cf-card__body">全屏覆盖式应用级搜索，支持分类切换 + 分组列表 + path / badge / shortcut。</div>
+  </a>
+</div>
+
+## 多窗口布局
+
+<div class="cf-feature-grid">
+  <a href="/components/docklayout/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DockLayout 多面板布局</div>
+    <div class="cf-card__body">递归 split + tabbed pane 的桌面应用布局壳。v1 声明式，v2 加入拖拽重排。</div>
+  </a>
+  <a href="/components/detachedpanel/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DetachedPanel 浮动面板</div>
+    <div class="cf-card__body">可拖拽的浮动面板，Teleport 到 body。配合 TearOffTab / DockLayout 的 detach 动作使用。</div>
+  </a>
+  <a href="/components/floatinginspector/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">FloatingInspector 浮动检查器</div>
+    <div class="cf-card__body">角落锚定的可折叠检查器面板，常用于性能监视、调试信息浮窗。</div>
+  </a>
+  <a href="/components/tearofftab/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TearOffTabs 可撕离 Tab</div>
+    <div class="cf-card__body">Tab 拖拽超过阈值时触发 tear-off 事件；消费方决定是 spawn DetachedPanel 还是新窗口。</div>
+  </a>
+</div>
+
+## 数据可视化
+
+<div class="cf-feature-grid">
+  <a href="/components/sparkline/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Sparkline 缩略走势</div>
+    <div class="cf-card__body">行内微缩走势线，常用于 KPI 卡的趋势线。</div>
+  </a>
+  <a href="/components/linechart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">LineChart 折线图</div>
+    <div class="cf-card__body">多 series 折线图，支持平滑曲线、网格线、x/y 轴标签。</div>
+  </a>
+  <a href="/components/areachart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">AreaChart 面积图</div>
+    <div class="cf-card__body">面积图，支持堆叠模式与平滑曲线。</div>
+  </a>
+  <a href="/components/barchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BarChart 柱状图</div>
+    <div class="cf-card__body">单 series 垂直柱状图。</div>
+  </a>
+  <a href="/components/histogram/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Histogram 直方图</div>
+    <div class="cf-card__body">分箱直方图，每个 bin 一个柱。</div>
+  </a>
+  <a href="/components/stackedbar100/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">StackedBar100 占比柱</div>
+    <div class="cf-card__body">横向 100% 堆叠柱，适合占比分布。</div>
+  </a>
+  <a href="/components/bulletchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BulletChart 子弹图</div>
+    <div class="cf-card__body">单值进度条 + 目标线 + 质量带。</div>
+  </a>
+  <a href="/components/candlestickchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CandlestickChart K 线图</div>
+    <div class="cf-card__body">OHLC 蜡烛图，涨绿跌红，wick + body。</div>
+  </a>
+  <a href="/components/donutchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DonutChart 环形图</div>
+    <div class="cf-card__body">中空饼图，可在中心放数值/标签。</div>
+  </a>
+  <a href="/components/funnelchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">FunnelChart 漏斗图</div>
+    <div class="cf-card__body">逐层收窄的转化漏斗，每层显示绝对值。</div>
+  </a>
+  <a href="/components/treemap/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Treemap 矩形树图</div>
+    <div class="cf-card__body">层级矩形面积图，slice-and-dice 单层布局。</div>
+  </a>
+  <a href="/components/sankeydiagram/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">SankeyDiagram 流向图</div>
+    <div class="cf-card__body">节点 + 加权边的流向图，节点高度 = 流量。</div>
+  </a>
+  <a href="/components/scatterplot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ScatterPlot 散点图</div>
+    <div class="cf-card__body">二维散点，可按 group 分色。</div>
+  </a>
+  <a href="/components/boxplot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">BoxPlot 箱线图</div>
+    <div class="cf-card__body">统计分布的 5 数概要 + outliers。</div>
+  </a>
+  <a href="/components/radarchart/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">RadarChart 雷达图</div>
+    <div class="cf-card__body">多维度对比的多边形图，支持多 series。</div>
+  </a>
+  <a href="/components/ridgeplot/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">RidgePlot 密度脊图</div>
+    <div class="cf-card__body">多组密度曲线垂直堆叠。</div>
+  </a>
+  <a href="/components/gauge/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">Gauge 仪表盘</div>
+    <div class="cf-card__body">圆环型当前值仪表，4 种 tone。</div>
+  </a>
+  <a href="/components/metriccard/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">MetricCard 指标卡</div>
+    <div class="cf-card__body">数值 + 单位 + 涨跌 + 内嵌 sparkline 趋势。</div>
+  </a>
+  <a href="/components/timingbar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TimingBar 请求瀑布</div>
+    <div class="cf-card__body">横向请求阶段瀑布图，每段一个 phase。</div>
+  </a>
+  <a href="/components/latencyheatmap/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">LatencyHeatmap 延迟热力图</div>
+    <div class="cf-card__body">二维矩阵热力图，绿→黄→红 OKLCH 色相 lerp。</div>
+  </a>
+  <a href="/components/connectiongraph/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ConnectionGraph 连接图</div>
+    <div class="cf-card__body">节点 + 边的关系图，圆周等距默认布局。</div>
+  </a>
+  <a href="/components/chartcrosshair/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ChartCrosshair 十字线</div>
+    <div class="cf-card__body">可嵌入任何 SVG 图表的十字定位线 + tooltip 工具。</div>
+  </a>
+  <a href="/components/charttoolbar/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ChartToolbar 图表工具栏</div>
+    <div class="cf-card__body">图表头部工具条：标题 + legend 切换 + zoom/export/refresh 按钮。</div>
+  </a>
+</div>
+
+## 模版 / 页面模块
+
+<div class="cf-feature-grid">
+  <a href="/components/protocolpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">ProtocolPane 协议监视面板</div>
+    <div class="cf-card__body">SSE / MQTT / Kafka / gRPC 4 个 tab 的协议监视器外壳。</div>
+  </a>
+  <a href="/components/networkpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">NetworkPane 网络面板</div>
+    <div class="cf-card__body">HAR / Hex / PCAP / Cert / Cookie 5 个 tab 的网络抓包面板。</div>
+  </a>
+  <a href="/components/sqlworkbench/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">SqlWorkbench SQL 工作台</div>
+    <div class="cf-card__body">Editor / Console / History 3 个 tab 的 SQL 工作台外壳。</div>
+  </a>
+  <a href="/components/terminalpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">TerminalPane 终端面板</div>
+    <div class="cf-card__body">Terminal / Output / CommandLine 3 个 tab 的终端面板外壳。</div>
+  </a>
+  <a href="/components/crashpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">CrashPane 崩溃面板</div>
+    <div class="cf-card__body">Crash Dialog / Stack Trace / Dump Uploader / Safe Mode 4 个 tab。</div>
+  </a>
+  <a href="/components/pluginpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">PluginPane 插件面板</div>
+    <div class="cf-card__body">Card / Manifest / Permission / Marketplace 4 个 tab 的插件中心面板。</div>
+  </a>
+  <a href="/components/domainpane/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">DomainPane API 调试</div>
+    <div class="cf-card__body">Collection / Request / Response / Mock / Workflow 5 个 tab 的 API 调试面板。</div>
+  </a>
+  <a href="/components/onboardingflow/" class="cf-card cf-card--outlined cf-card--link">
+    <div class="cf-card__header">OnboardingFlow 引导流</div>
+    <div class="cf-card__body">First-Run Wizard / Hotspot Tour / Full Flow 3 个 tab 的引导流外壳。</div>
+  </a>
+</div>

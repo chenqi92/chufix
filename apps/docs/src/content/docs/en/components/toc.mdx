@@ -1,0 +1,89 @@
+---
+title: Toc
+description: Article side TOC, indented by depth. Supports manual selection or automatic scroll-spy via IntersectionObserver.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/toc/BasicVue.vue';
+import NestedVue from '~/components/demos/toc/NestedVue.vue';
+import MaxDepthVue from '~/components/demos/toc/MaxDepthVue.vue';
+
+## Basic usage
+
+`items` is an array; each entry needs at least `id` and `label`. `activeId` controls the currently highlighted entry; clicking smoothly scrolls and updates the URL hash.
+
+<DemoFrame
+  vueCode={`<CfToc
+  :items="items"
+  :active-id="'install'"
+  title="On this page"
+/>`}
+  reactCode={`<CfToc items={items} activeId="install" title="On this page" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Nested indentation
+
+`depth: 1..6` controls the indent level. Given correct depth values, the same `items` array forms nested indentation naturally.
+
+<DemoFrame
+  vueCode={`const items: TocItem[] = [
+  { id: 'intro', label: 'Intro', depth: 1 },
+  { id: 'install', label: 'Install', depth: 1 },
+  { id: 'install-vue', label: 'Vue 3', depth: 2 },
+  { id: 'install-react', label: 'React 18', depth: 2 },
+  { id: 'theme', label: 'Theme', depth: 1 },
+  { id: 'theme-detail', label: 'Color details', depth: 3 },
+];
+
+<CfToc :items="items" />`}
+  reactCode={`const items: TocItem[] = [/* ... */];
+
+<CfToc items={items} />`}
+>
+  <NestedVue client:load />
+</DemoFrame>
+
+## maxDepth limit
+
+`maxDepth` caps the deepest level rendered — for a blog sidebar that only wants H1 / H2, pass `maxDepth={2}` and deeper headings are skipped.
+
+<DemoFrame
+  vueCode={`<CfToc :items="items" :max-depth="2" />
+<CfToc :items="items" :max-depth="4" />`}
+  reactCode={`<CfToc items={items} maxDepth={2} />
+<CfToc items={items} maxDepth={4} />`}
+>
+  <MaxDepthVue client:load />
+</DemoFrame>
+
+## Automatic scroll-spy
+
+`autoSpy: true` makes the component observe headings whose `id` matches `items` and switch active based on viewport visibility. `scrollRoot` specifies the observed container; omit to observe the viewport.
+
+```vue
+<!-- Vue -->
+<CfToc :items="items" auto-spy />
+<CfToc :items="items" auto-spy scroll-root=".article-body" />
+```
+
+```tsx
+{/* React */}
+<CfToc items={items} autoSpy />
+<CfToc items={items} autoSpy scrollRoot=".article-body" />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `TocItem[]` | `[]` | TOC entries |
+| `autoSpy` | `boolean` | `false` | Enable IntersectionObserver-based scroll-spy |
+| `scrollRoot` | `string` | `—` | Selector for the observed container; falls back to viewport |
+| `activeId` | `string \| null` | `null` | Controlled current id |
+| `defaultActiveId` (React) | `string \| null` | `null` | Uncontrolled initial value |
+| `title` | `string \| ReactNode` | `—` | Top heading |
+| `maxDepth` | `number` | `6` | Maximum depth to render |
+
+`TocItem`: `{ id, label, depth? }`. Events: `update:activeId` (React: `onActiveIdChange`).

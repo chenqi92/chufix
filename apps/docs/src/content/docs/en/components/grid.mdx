@@ -1,0 +1,48 @@
+---
+title: Grid
+description: A 24-column Row / Col grid system for page ratios, gutters, offsets, and responsive layout.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/grid/BasicVue.vue';
+
+## Basic Usage
+
+`CfRow` / `CfCol` form a 24-column grid system. `span=6` is 25%, `span=8` is 33.33%, and `span=12` is 50%. `gutter` controls horizontal and vertical spacing, while `offset` creates left-side blank columns.
+
+<DemoFrame
+  vueCode={`<CfRow :gutter="[16, 16]">
+  <CfCol :span="6">25%</CfCol>
+  <CfCol :span="12">50%</CfCol>
+  <CfCol :span="6">25%</CfCol>
+</CfRow>`}
+  reactCode={`<CfRow gutter={[16, 16]}>
+  <CfCol span={6}>25%</CfCol>
+  <CfCol span={12}>50%</CfCol>
+  <CfCol span={6}>25%</CfCol>
+</CfRow>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Row API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | Rendered element |
+| `gutter` | `number / string / [x, y]` | `0` | Horizontal / vertical spacing |
+| `justify` | `start / center / end / space-around / space-between / space-evenly` | `start` | Horizontal distribution |
+| `align` | `top / middle / bottom / stretch` | `top` | Vertical alignment |
+| `wrap` | `boolean` | `true` | Allow wrapping |
+
+## Col API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | Rendered element |
+| `span` | `number` | `24` | Column span, 0–24 |
+| `offset` | `number` | `0` | Left offset columns |
+| `push` | `number` | `0` | Move right by columns |
+| `pull` | `number` | `0` | Move left by columns |
+| `order` | `number` | `0` | Flex order |
+| `xs / sm / md / lg / xl / xxl` | `number / ColBreakpointConfig` | `—` | Responsive config |

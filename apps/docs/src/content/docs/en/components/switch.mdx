@@ -1,0 +1,118 @@
+---
+title: Switch
+description: Binary toggle — 3 sizes, loading and disabled states, native `role=switch` semantics preserved.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/switch/BasicVue.vue';
+import SizesVue from '~/components/demos/switch/SizesVue.vue';
+import StatesVue from '~/components/demos/switch/StatesVue.vue';
+
+## Basic usage
+
+Built on `<CfInput type="checkbox" role="switch">`, so keyboard, form, and screen reader behavior all work out of the box.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSwitch } from '@chufix-design/vue';
+
+const wifi = ref(true);
+</script>
+
+<template>
+  <CfSwitch v-model="wifi">Wi-Fi {{ wifi ? 'on' : 'off' }}</CfSwitch>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSwitch } from '@chufix-design/react';
+
+export default function Demo() {
+  const [wifi, setWifi] = useState(true);
+  return (
+    <CfSwitch checked={wifi} onChange={(e) => setWifi(e.target.checked)}>
+      Wi-Fi {wifi ? 'on' : 'off'}
+    </CfSwitch>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Sizes
+
+<DemoFrame
+  vueCode={`<CfSwitch size="sm">Small</CfSwitch>
+<CfSwitch size="md">Medium</CfSwitch>
+<CfSwitch size="lg">Large</CfSwitch>`}
+  reactCode={`<CfSwitch size="sm">Small</CfSwitch>
+<CfSwitch size="md">Medium</CfSwitch>
+<CfSwitch size="lg">Large</CfSwitch>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## States
+
+`loading` shows a spinner inside the thumb and temporarily blocks toggling. `disabled` disables the whole switch.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSwitch } from '@chufix-design/vue';
+
+const sync = ref(false);
+const loading = ref(false);
+
+async function toggle(v: boolean) {
+  loading.value = true;
+  await new Promise((r) => setTimeout(r, 1000));
+  sync.value = v;
+  loading.value = false;
+}
+</script>
+
+<template>
+  <CfSwitch :model-value="sync" :loading="loading" @change="toggle">
+    Auto sync (1s async on click)
+  </CfSwitch>
+  <CfSwitch :model-value="true" disabled>Disabled · on</CfSwitch>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSwitch } from '@chufix-design/react';
+
+export default function Demo() {
+  const [sync, setSync] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function toggle(e) {
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 1000));
+    setSync(e.target.checked);
+    setLoading(false);
+  }
+
+  return (
+    <>
+      <CfSwitch checked={sync} loading={loading} onChange={toggle}>
+        Auto sync (1s async on click)
+      </CfSwitch>
+      <CfSwitch checked disabled>Disabled · on</CfSwitch>
+    </>
+  );
+}`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop       | Type                   | Default | Description                       |
+| ---------- | ---------------------- | ------- | --------------------------------- |
+| `size`     | `'sm' \| 'md' \| 'lg'` | `'md'`  | Overall size                      |
+| `disabled` | `boolean`              | `false` | Disabled                          |
+| `loading`  | `boolean`              | `false` | Show spinner and block toggling   |
+
+### Two-way binding
+
+- **Vue**: `v-model` binds a `boolean`; `@change` receives the `boolean`.
+- **React**: controlled via `checked` + `onChange`; uncontrolled via `defaultChecked`. `onChange` is the native ChangeEvent.

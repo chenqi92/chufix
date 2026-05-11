@@ -1,0 +1,43 @@
+---
+title: MetricCard 指标卡
+description: 数值 + 单位 + 涨跌 + 内嵌 sparkline 趋势。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/metriccard/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfMetricCard ... />`}
+  reactCode={`<CfMetricCard ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 网格布局
+
+配 `grid-template-columns: repeat(auto-fit, minmax(...))` 自适应密度。
+
+import GridVue from '~/components/demos/metriccard/GridVue.vue';
+
+<DemoFrame
+  vueCode={`<CfMetricCard label="…" value="…" :delta="…" :trend="[…]" />`}
+  reactCode={`<CfMetricCard label="…" value="…" delta={…} trend={[…]} />`}
+>
+  <GridVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `label` | `string` | `—` | 顶部小标签 |
+| `value` | `string \| number` | `—` | 主数值 |
+| `unit` | `string` | `—` | 单位（数值后） |
+| `delta` | `number` | `—` | 涨跌百分比，正负染色 |
+| `trend` | `number[]` | `—` | 内嵌 Sparkline 数据 |

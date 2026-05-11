@@ -1,0 +1,34 @@
+---
+title: CalendarHeatmap
+description: 52-week × 7-day grid heatmap colored by intensity — handy for activity or commit statistics.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/calendarheatmap/BasicVue.vue';
+
+## Basic usage
+
+`data` is `[{ date: 'YYYY-MM-DD', value: number }]`. `thresholds` defaults to `[1, 3, 6, 10]`, producing 5 color tiers (including 0).
+
+<DemoFrame
+  vueCode={`<CfCalendarHeatmap :data="data" />`}
+  reactCode={`<CfCalendarHeatmap data={data} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `HeatmapDay[]` | `—` | List of date + value pairs; missing dates count as 0 |
+| `startDate` | `string \| Date` | `today - 1 year` | Range start |
+| `endDate` | `string \| Date` | `today` | Range end |
+| `thresholds` | `number[]` | `[1, 3, 6, 10]` | Ascending intensity thresholds; tier count = length + 1 |
+
+### HeatmapDay
+
+| Field | Type | Description |
+|---|---|---|
+| `date` | `string` | `YYYY-MM-DD` date |
+| `value` | `number` | Value for that day |

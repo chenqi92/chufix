@@ -1,0 +1,110 @@
+---
+title: Tabs
+description: Tabs with three visual variants. Controlled / uncontrolled, items-array API, and configurable alignment.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tabs/BasicVue.vue';
+import VariantsVue from '~/components/demos/tabs/VariantsVue.vue';
+import SizesVue from '~/components/demos/tabs/SizesVue.vue';
+
+## Basic usage
+
+`items` defines the tab list, `v-model` binds the active value. The default `variant="line"` underlines the active item with the accent color.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfTabs } from '@chufix-design/vue';
+
+const tab = ref('account');
+const items = [
+  { value: 'account', label: 'Account' },
+  { value: 'security', label: 'Security' },
+  { value: 'notifications', label: 'Notifications' },
+  { value: 'billing', label: 'Billing', disabled: true },
+];
+</script>
+
+<template>
+  <CfTabs v-model="tab" :items="items">
+    <template #default="{ active }">
+      <div v-if="active === 'account'">Account page…</div>
+      <div v-if="active === 'security'">Security page…</div>
+      <div v-if="active === 'notifications'">Notifications page…</div>
+    </template>
+  </CfTabs>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfTabs, CfTabPanel } from '@chufix-design/react';
+
+const items = [
+  { value: 'account', label: 'Account' },
+  { value: 'security', label: 'Security' },
+  { value: 'notifications', label: 'Notifications' },
+  { value: 'billing', label: 'Billing', disabled: true },
+];
+
+export default function Demo() {
+  const [tab, setTab] = useState('account');
+  return (
+    <CfTabs value={tab} onChange={setTab} items={items}>
+      {({ active }) => (
+        <>
+          <CfTabPanel value="account" active={active}>Account page…</CfTabPanel>
+          <CfTabPanel value="security" active={active}>Security page…</CfTabPanel>
+          <CfTabPanel value="notifications" active={active}>Notifications page…</CfTabPanel>
+        </>
+      )}
+    </CfTabs>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Variants
+
+`line` is the default underlined style; `segmented` is a button-group segmented control; `pill` is a capsule-shaped single-select.
+
+<DemoFrame
+  vueCode={`<CfTabs v-model="a" :items="items" variant="line" />
+<CfTabs v-model="b" :items="items" variant="segmented" />
+<CfTabs v-model="c" :items="items" variant="pill" />`}
+  reactCode={`<CfTabs value={a} onChange={setA} items={items} variant="line" />
+<CfTabs value={b} onChange={setB} items={items} variant="segmented" />
+<CfTabs value={c} onChange={setC} items={items} variant="pill" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Sizes
+
+3 sizes that follow the density system `--control-h-sm/md/lg`.
+
+<DemoFrame
+  vueCode={`<CfTabs v-model="sm" :items="items" size="sm" />
+<CfTabs v-model="md" :items="items" size="md" />
+<CfTabs v-model="lg" :items="items" size="lg" />`}
+  reactCode={`<CfTabs items={items} size="sm" defaultValue="one" />
+<CfTabs items={items} size="md" defaultValue="one" />
+<CfTabs items={items} size="lg" defaultValue="one" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop          | Type                                            | Default     | Description                         |
+| ------------- | ----------------------------------------------- | ----------- | ----------------------------------- |
+| `modelValue` (Vue) / `value` (React) | `string`                  | —           | Active tab value (controlled)       |
+| `defaultValue` (React)               | `string`                  | —           | Initial active tab value (uncontrolled) |
+| `items`       | `TabsItem[]`                                    | `[]`        | Tab list, each `{value, label, disabled?}` |
+| `variant`     | `'line' \| 'segmented' \| 'pill'`               | `'line'`    | Visual variant                      |
+| `size`        | `'sm' \| 'md' \| 'lg'`                          | `'md'`      | Height and font size                |
+| `align`       | `'start' \| 'center' \| 'end' \| 'stretch'`     | `'start'`   | Tab list alignment                  |
+
+### Default slot
+
+Vue's default slot receives a scoped param `{ active }`; render the matching content based on it.
+React passes `children` as a function `({ active }) => ReactNode` together with `<CfTabPanel>` guards.

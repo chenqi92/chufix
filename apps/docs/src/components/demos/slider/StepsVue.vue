@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfSlider } from '@chufix/vue';
+import { CfSlider } from '@chufix-design/vue';
 
 const stars = ref(3);
 const percent = ref(40);

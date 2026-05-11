@@ -1,0 +1,145 @@
+/* ChuFix RegexBuilder — pattern + flags + test text + live highlighted matches. */
+
+.cf-regex {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  background: var(--bg-inset);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+}
+.cf-regex.is-error .cf-regex__pattern {
+  border-color: var(--status-error);
+}
+
+.cf-regex__pattern {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  background: var(--bg-2);
+  height: var(--control-h);
+  font-family: var(--font-mono);
+}
+.cf-regex__delim {
+  color: var(--fg-3);
+  font-weight: 600;
+}
+.cf-regex__pattern-input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--accent-1);
+  font: inherit;
+  font-size: var(--t-13);
+  padding: 0 4px;
+  min-width: 0;
+}
+.cf-regex__pattern-input::placeholder {
+  color: var(--fg-3);
+  font-family: var(--font-sans);
+}
+.cf-regex__flags-text {
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+
+.cf-regex__flags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.cf-regex__flag {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  background: var(--bg-2);
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  cursor: pointer;
+  transition: background var(--dur-instant) linear,
+    color var(--dur-instant) linear;
+}
+.cf-regex__flag:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-regex__flag[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  border-color: var(--accent-1);
+}
+
+.cf-regex__error {
+  padding: 8px 10px;
+  border: 1px solid var(--status-error);
+  border-radius: var(--r-4);
+  background: var(--status-error-soft);
+  color: var(--status-error);
+  font-size: var(--t-12);
+  font-family: var(--font-mono);
+}
+
+.cf-regex__test {
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  line-height: 18px;
+  padding: 8px 10px;
+  resize: vertical;
+  outline: none;
+  min-height: 80px;
+}
+.cf-regex__test:focus {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring-inset);
+}
+
+.cf-regex__output {
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  background: var(--bg-2);
+  overflow: hidden;
+}
+.cf-regex__output-head {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-1);
+  font-size: var(--t-11);
+  color: var(--fg-2);
+  font-family: var(--font-sans);
+}
+.cf-regex__output-head > strong {
+  color: var(--fg-1);
+  font-weight: 600;
+  margin: 0 2px;
+}
+.cf-regex__output-body {
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  line-height: 18px;
+  color: var(--fg-1);
+  max-height: 200px;
+  overflow-y: auto;
+}
+.cf-regex__hit {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  padding: 0 2px;
+  border-radius: var(--r-3);
+  font-weight: 600;
+}

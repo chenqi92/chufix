@@ -1,13 +1,51 @@
-import '@chufix/tokens/tokens.css';
+import '@chufix-design/tokens/tokens.css';
+import './styles/a11y.css';
 import './styles/icon.css';
+import './styles/statusillustration.css';
 import './styles/button.css';
+import './styles/iconbutton.css';
+import './styles/toolbar.css';
+import './styles/colorswatch.css';
+import './styles/splitbutton.css';
+import './styles/confirmdialog.css';
+import './styles/hovercard.css';
+import './styles/contextmenu.css';
+import './styles/snackbar.css';
+import './styles/passwordstrength.css';
+import './styles/phoneinput.css';
+import './styles/rangeslider.css';
+import './styles/filepicker.css';
+import './styles/commandpalette.css';
+import './styles/protocolbadge.css';
+import './styles/statuscodebadge.css';
+import './styles/variableinput.css';
+import './styles/codeeditor.css';
+import './styles/diffeditor.css';
+import './styles/markdowneditor.css';
+import './styles/regexbuilder.css';
+import './styles/ansitext.css';
+import './styles/titlebar.css';
+import './styles/statusbar.css';
+import './styles/menubar.css';
+import './styles/notificationcenter.css';
+import './styles/globalsearch.css';
+import './styles/docklayout.css';
+import './styles/detachedpanel.css';
+import './styles/floatinginspector.css';
+import './styles/tearofftab.css';
+import './styles/templatepane.css';
+import './styles/charts.css';
 import './styles/input.css';
+import './styles/flex.css';
+import './styles/grid.css';
 import './styles/card.css';
 import './styles/switch.css';
 import './styles/checkbox.css';
 import './styles/radio.css';
 import './styles/textarea.css';
 import './styles/select.css';
+import './styles/treeselect.css';
+import './styles/iconpicker.css';
 import './styles/tooltip.css';
 import './styles/toast.css';
 import './styles/tag.css';
@@ -69,6 +107,9 @@ import './styles/affix.css';
 import './styles/watermark.css';
 import './styles/image.css';
 import './styles/timeline.css';
+import './styles/timelinegantt.css';
+import './styles/pivot.css';
+import './styles/spreadsheet.css';
 import './styles/result.css';
 import './styles/statistic.css';
 import './styles/carousel.css';
@@ -87,26 +128,393 @@ import './styles/timerangepicker.css';
 import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
+import './styles/map.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
  * their template and disambiguate against other UI libraries. Want short
- * names? Alias on import: `import { CfButton as Button } from '@chufix/vue'`. */
+ * names? Alias on import: `import { CfButton as Button } from '@chufix-design/vue'`. */
 
 export { default as CfButton } from './button/Button.vue';
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape } from './button/variants';
 
+export { default as CfIconButton } from './iconbutton/IconButton.vue';
+export type {
+  IconButtonProps,
+  IconButtonVariant,
+  IconButtonSize,
+  IconButtonShape,
+} from './iconbutton/variants';
+
+export { default as CfStatusIllustration } from './statusillustration/StatusIllustration.vue';
+export type {
+  StatusIllustrationProps,
+  StatusIllustrationSize,
+  StatusIllustrationVariant,
+} from './statusillustration/variants';
+
+export { default as CfToolbar } from './toolbar/Toolbar.vue';
+export { default as CfToolbarSeparator } from './toolbar/ToolbarSeparator.vue';
+export type {
+  ToolbarProps,
+  ToolbarVariant,
+  ToolbarSize,
+  ToolbarOrientation,
+} from './toolbar/variants';
+
+export { default as CfColorSwatch } from './colorswatch/ColorSwatch.vue';
+export type {
+  ColorSwatchProps,
+  ColorSwatchSize,
+  ColorSwatchShape,
+} from './colorswatch/variants';
+
+export { default as CfSplitButton } from './splitbutton/SplitButton.vue';
+export type {
+  SplitButtonProps,
+  SplitButtonItem,
+  SplitButtonVariant,
+  SplitButtonSize,
+} from './splitbutton/variants';
+
+export { default as CfConfirmDialog } from './confirmdialog/ConfirmDialog.vue';
+export type {
+  ConfirmDialogProps,
+  ConfirmTone,
+} from './confirmdialog/variants';
+
+export { default as CfHoverCard } from './hovercard/HoverCard.vue';
+export type {
+  HoverCardProps,
+  HoverCardPlacement,
+  HoverCardSize,
+} from './hovercard/variants';
+
+export { default as CfContextMenu } from './contextmenu/ContextMenu.vue';
+export type {
+  ContextMenuProps,
+  ContextMenuItem,
+} from './contextmenu/variants';
+
+export { default as CfSnackbar } from './snackbar/Snackbar.vue';
+export type {
+  SnackbarProps,
+  SnackbarTone,
+  SnackbarPlacement,
+} from './snackbar/variants';
+
+export { default as CfPasswordStrength } from './passwordstrength/PasswordStrength.vue';
+export type {
+  PasswordStrengthProps,
+  PasswordStrengthSize,
+  PasswordRequirement,
+  StrengthLevel,
+} from './passwordstrength/variants';
+export { defaultRequirements as defaultPasswordRequirements } from './passwordstrength/variants';
+
+export { default as CfPhoneInput } from './phoneinput/PhoneInput.vue';
+export type {
+  PhoneInputProps,
+  PhoneInputSize,
+  CountryCode,
+} from './phoneinput/variants';
+export { defaultCountries } from './phoneinput/variants';
+
+export { default as CfRangeSlider } from './rangeslider/RangeSlider.vue';
+export type {
+  RangeSliderProps,
+  RangeSliderSize,
+  RangeSliderTone,
+  RangeValue,
+} from './rangeslider/variants';
+
+export { default as CfFilePicker } from './filepicker/FilePicker.vue';
+export type {
+  FilePickerProps,
+  FilePickerSize,
+  FilePickerVariant,
+} from './filepicker/variants';
+
+export { default as CfCommandPalette } from './commandpalette/CommandPalette.vue';
+export type {
+  CommandPaletteProps,
+  CommandPaletteItem,
+} from './commandpalette/variants';
+
+export { default as CfProtocolBadge } from './protocolbadge/ProtocolBadge.vue';
+/** Alias of CfProtocolBadge for HTTP-method-only contexts. */
+export { default as CfMethodBadge } from './protocolbadge/ProtocolBadge.vue';
+export type {
+  ProtocolBadgeProps,
+  ProtocolBadgeSize,
+  ProtocolKind,
+} from './protocolbadge/variants';
+
+export { default as CfStatusCodeBadge } from './statuscodebadge/StatusCodeBadge.vue';
+export type {
+  StatusCodeBadgeProps,
+  StatusCodeBadgeSize,
+  StatusClass,
+} from './statuscodebadge/variants';
+
+export { default as CfVariableAwareInput } from './variableinput/VariableAwareInput.vue';
+export type {
+  VariableAwareInputProps,
+  VariableAwareInputSize,
+  VariableAwareInputVariant,
+  Token as VariableAwareInputToken,
+} from './variableinput/variants';
+
+export { default as CfCodeEditor } from './codeeditor/CodeEditor.vue';
+export type {
+  CodeEditorProps,
+  CodeEditorSize,
+} from './codeeditor/variants';
+
+export { default as CfDiffEditor } from './diffeditor/DiffEditor.vue';
+export type {
+  DiffEditorProps,
+  DiffEditorSize,
+  DiffEditorMode,
+  DiffOp as DiffEditorOp,
+  DiffRow as DiffEditorRow,
+} from './diffeditor/variants';
+
+export { default as CfMarkdownEditor } from './markdowneditor/MarkdownEditor.vue';
+export type {
+  MarkdownEditorProps,
+  MarkdownEditorSize,
+  MarkdownEditorMode,
+} from './markdowneditor/variants';
+export { renderMarkdown as renderMarkdownDefault } from './markdowneditor/variants';
+
+export { default as CfRegexBuilder } from './regexbuilder/RegexBuilder.vue';
+export type {
+  RegexBuilderProps,
+  RegexBuilderSize,
+  RegexFlag,
+  RegexMatch,
+  RegexResult,
+} from './regexbuilder/variants';
+
+export { default as CfAnsiText } from './ansitext/AnsiText.vue';
+export type {
+  AnsiTextProps,
+  AnsiTextSize,
+  AnsiSpan,
+} from './ansitext/variants';
+
+export { default as CfTitleBar } from './titlebar/TitleBar.vue';
+export type {
+  TitleBarProps,
+  TitleBarPlatform,
+  TitleBarSize,
+} from './titlebar/variants';
+
+export { default as CfStatusBar } from './statusbar/StatusBar.vue';
+export type {
+  StatusBarProps,
+  StatusBarItem,
+  StatusBarTone,
+  StatusBarSize,
+} from './statusbar/variants';
+
+export { default as CfMenuBar } from './menubar/MenuBar.vue';
+export type {
+  MenuBarProps,
+  MenuBarMenu,
+  MenuBarItem,
+} from './menubar/variants';
+
+export { default as CfNotificationCenter } from './notificationcenter/NotificationCenter.vue';
+export type {
+  NotificationCenterProps,
+  NotificationItem,
+  NotificationTone,
+} from './notificationcenter/variants';
+
+export { default as CfGlobalSearch } from './globalsearch/GlobalSearch.vue';
+export type {
+  GlobalSearchProps,
+  GlobalSearchResult,
+} from './globalsearch/variants';
+
+export { default as CfDockLayout } from './docklayout/DockLayout.vue';
+export { default as CfDockNode } from './docklayout/DockNode.vue';
+export type {
+  DockLayoutProps,
+  DockGroup,
+  DockPanel,
+  DockOrientation,
+} from './docklayout/variants';
+
+export { default as CfDetachedPanel } from './detachedpanel/DetachedPanel.vue';
+export type { DetachedPanelProps } from './detachedpanel/variants';
+
+export { default as CfFloatingInspector } from './floatinginspector/FloatingInspector.vue';
+export type {
+  FloatingInspectorProps,
+  InspectorPlacement,
+} from './floatinginspector/variants';
+
+export { default as CfTearOffTabs } from './tearofftab/TearOffTabs.vue';
+export type {
+  TearOffTabsProps,
+  TearOffTabItem,
+} from './tearofftab/variants';
+
+/* ── Template panes (Cf<Domain>Pane) — page-module shells with predefined Tabs + slots. ── */
+export { default as CfProtocolPane } from './templatepanes/ProtocolPane.vue';
+export { default as CfNetworkPane } from './templatepanes/NetworkPane.vue';
+export { default as CfSqlWorkbench } from './templatepanes/SqlWorkbench.vue';
+export { default as CfTerminalPane } from './templatepanes/TerminalPane.vue';
+export { default as CfCrashPane } from './templatepanes/CrashPane.vue';
+export { default as CfPluginPane } from './templatepanes/PluginPane.vue';
+export { default as CfDomainPane } from './templatepanes/DomainPane.vue';
+export { default as CfOnboardingFlow } from './templatepanes/OnboardingFlow.vue';
+export type {
+  TemplatePaneProps,
+  TemplatePaneTab,
+} from './templatepanes/variants';
+export {
+  PROTOCOL_TABS,
+  NETWORK_TABS,
+  SQL_TABS,
+  TERMINAL_TABS,
+  CRASH_TABS,
+  PLUGIN_TABS,
+  DOMAIN_TABS,
+  ONBOARDING_TABS,
+} from './templatepanes/variants';
+
+/* ── Data viz · 22 chart components ── */
+export { default as CfSparkline } from './sparkline/Sparkline.vue';
+export type { SparklineProps } from './sparkline/variants';
+
+export { default as CfLineChart } from './linechart/LineChart.vue';
+export type { LineChartProps, LineSeries } from './linechart/variants';
+
+export { default as CfAreaChart } from './areachart/AreaChart.vue';
+export type { AreaChartProps, AreaSeries } from './areachart/variants';
+
+export { default as CfBarChart } from './barchart/BarChart.vue';
+export type { BarChartProps } from './barchart/variants';
+
+export { default as CfHistogram } from './histogram/Histogram.vue';
+export type { HistogramProps, HistogramBin } from './histogram/variants';
+
+export { default as CfStackedBar100 } from './stackedbar100/StackedBar100.vue';
+export type {
+  StackedBar100Props,
+  StackedBar100Series,
+} from './stackedbar100/variants';
+
+export { default as CfBulletChart } from './bulletchart/BulletChart.vue';
+export type { BulletChartProps } from './bulletchart/variants';
+
+export { default as CfCandlestickChart } from './candlestickchart/CandlestickChart.vue';
+export type {
+  CandlestickChartProps,
+  Candle,
+} from './candlestickchart/variants';
+
+export { default as CfDonutChart } from './donutchart/DonutChart.vue';
+export type { DonutChartProps, DonutSegment } from './donutchart/variants';
+
+export { default as CfFunnelChart } from './funnelchart/FunnelChart.vue';
+export type { FunnelChartProps, FunnelStep } from './funnelchart/variants';
+
+export { default as CfTreemap } from './treemap/Treemap.vue';
+export type { TreemapProps, TreemapNode } from './treemap/variants';
+
+export { default as CfSankeyDiagram } from './sankeydiagram/SankeyDiagram.vue';
+export type {
+  SankeyDiagramProps,
+  SankeyNode,
+  SankeyLink,
+} from './sankeydiagram/variants';
+
+export { default as CfScatterPlot } from './scatterplot/ScatterPlot.vue';
+export type { ScatterPlotProps, ScatterPoint } from './scatterplot/variants';
+
+export { default as CfBoxPlot } from './boxplot/BoxPlot.vue';
+export type { BoxPlotProps, BoxStat } from './boxplot/variants';
+
+export { default as CfRadarChart } from './radarchart/RadarChart.vue';
+export type { RadarChartProps, RadarSeries } from './radarchart/variants';
+
+export { default as CfRidgePlot } from './ridgeplot/RidgePlot.vue';
+export type { RidgePlotProps, RidgeRow } from './ridgeplot/variants';
+
+export { default as CfGauge } from './gauge/Gauge.vue';
+export type { GaugeProps } from './gauge/variants';
+
+export { default as CfMetricCard } from './metriccard/MetricCard.vue';
+export type { MetricCardProps } from './metriccard/variants';
+
+export { default as CfTimingBar } from './timingbar/TimingBar.vue';
+export type { TimingBarProps, TimingPhase } from './timingbar/variants';
+
+export { default as CfLatencyHeatmap } from './latencyheatmap/LatencyHeatmap.vue';
+export type { LatencyHeatmapProps } from './latencyheatmap/variants';
+
+export { default as CfConnectionGraph } from './connectiongraph/ConnectionGraph.vue';
+export type {
+  ConnectionGraphProps,
+  GraphNode,
+  GraphEdge,
+} from './connectiongraph/variants';
+
+export { default as CfChartCrosshair } from './chartcrosshair/ChartCrosshair.vue';
+export type { ChartCrosshairProps } from './chartcrosshair/variants';
+
+export { default as CfChartToolbar } from './charttoolbar/ChartToolbar.vue';
+export type {
+  ChartToolbarProps,
+  LegendSeries,
+} from './charttoolbar/variants';
+
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
+
+export { default as CfFlex } from './flex/Flex.vue';
+export type {
+  FlexProps,
+  FlexDirection,
+  FlexAlign,
+  FlexJustify,
+  FlexGap,
+} from './flex/variants';
+
+export { default as CfGrid } from './grid/Grid.vue';
+export { default as CfRow } from './grid/Row.vue';
+export { default as CfCol } from './grid/Col.vue';
+export type {
+  GridProps,
+  GridGap,
+  GridAlign,
+  GridJustify,
+  RowProps,
+  RowJustify,
+  RowAlign,
+  RowGutter,
+  ColProps,
+  ColBreakpoint,
+  ColBreakpointConfig,
+} from './grid/variants';
 
 export { default as CfCard } from './card/Card.vue';
 export type { CardProps, CardVariant } from './card/variants';
 
 export { default as CfSwitch } from './switch/Switch.vue';
-export type { SwitchProps, SwitchSize } from './switch/variants';
+export type { SwitchChangeMeta, SwitchProps, SwitchSize } from './switch/variants';
 
 export { default as CfCheckbox } from './checkbox/Checkbox.vue';
-export type { CheckboxProps, CheckboxSize } from './checkbox/variants';
+export type {
+  CheckboxChangeMeta,
+  CheckboxProps,
+  CheckboxSize,
+} from './checkbox/variants';
 
 export { default as CfRadio } from './radio/Radio.vue';
 export { default as CfRadioGroup } from './radio/RadioGroup.vue';
@@ -115,6 +523,7 @@ export type {
   RadioGroupProps,
   RadioSize,
   RadioValue,
+  RadioChangeMeta,
 } from './radio/variants';
 
 export { default as CfTextarea } from './textarea/Textarea.vue';
@@ -133,6 +542,16 @@ export type {
   SelectSize,
   SelectValue,
 } from './select/variants';
+
+export { default as CfTreeSelect } from './treeselect/TreeSelect.vue';
+export type {
+  TreeSelectProps,
+  TreeSelectNode,
+  TreeSelectSize,
+} from './treeselect/variants';
+
+export { default as CfIconPicker } from './iconpicker/IconPicker.vue';
+export type { IconPickerProps, IconPickerSize } from './iconpicker/variants';
 
 export { default as CfTooltip } from './tooltip/Tooltip.vue';
 export type { TooltipProps, TooltipPlacement } from './tooltip/variants';
@@ -161,7 +580,9 @@ export type {
 } from './avatar/variants';
 
 export { default as CfModal } from './modal/Modal.vue';
-export type { ModalProps, ModalSize } from './modal/variants';
+export type { ModalProps, ModalSize, ModalTone, FooterAlign } from './modal/variants';
+export { modal } from './modal/service';
+export type { ModalServiceOptions } from './modal/service';
 
 export { default as CfTabs } from './tabs/Tabs.vue';
 export { default as CfTabPanel } from './tabs/TabPanel.vue';
@@ -225,6 +646,8 @@ export type {
   SliderProps,
   SliderSize,
   SliderTone,
+  SliderChangeMeta,
+  SliderChangeSource,
 } from './slider/variants';
 
 export { default as CfDrawer } from './drawer/Drawer.vue';
@@ -232,7 +655,11 @@ export type {
   DrawerProps,
   DrawerPlacement,
   DrawerSize,
+  DrawerTone,
+  DrawerFooterAlign,
 } from './drawer/variants';
+export { drawer } from './drawer/service';
+export type { DrawerServiceOptions } from './drawer/service';
 
 export { default as CfPopover } from './popover/Popover.vue';
 export type {
@@ -265,6 +692,10 @@ export type {
   FormFieldProps,
   FormLayout,
   FormSize,
+  FieldRule,
+  FieldRules,
+  FieldErrors,
+  ValidateTrigger,
 } from './form/variants';
 
 export { default as CfCombobox } from './combobox/Combobox.vue';
@@ -306,6 +737,7 @@ export type {
   DatePickerSize,
   DatePickerVariant,
   DatePickerView,
+  DatePickerPreset,
 } from './datepicker/variants';
 export type { DateLike } from './datepicker/date';
 
@@ -420,10 +852,24 @@ export type { LinkProps, LinkVariant, LinkSize } from './link/variants';
 
 export { default as CfInlineCode } from './code/InlineCode.vue';
 export { default as CfCodeBlock } from './code/CodeBlock.vue';
+export { default as CfCodeWorkspace } from './code/CodeWorkspace.vue';
 export type {
   InlineCodeProps,
   CodeBlockProps,
   CodeBlockSize,
+  CodeBlockTone,
+  CodeWorkspaceFile,
+  CodeWorkspaceProps,
+  CodeTreeItem,
+} from './code/variants';
+export {
+  buildCodeTree,
+  codeFileId,
+  codeFileLanguage,
+  detectLanguageFromName,
+  escapeHtml as escapeCodeHtml,
+  highlightCode,
+  normalizeCodeIndent,
 } from './code/variants';
 
 export { default as CfAspectRatio } from './aspectratio/AspectRatio.vue';
@@ -511,6 +957,35 @@ export type {
   TimelineDotColor,
 } from './timeline/variants';
 
+export { default as CfTimelineGantt } from './timelinegantt/TimelineGantt.vue';
+export type {
+  TimelineGanttProps,
+  GanttRow,
+  GanttBar,
+  GanttDependency,
+  GanttUnit,
+  GanttSize,
+  GanttBarChangeMeta,
+} from './timelinegantt/variants';
+
+export { default as CfPivot } from './pivot/Pivot.vue';
+export type {
+  PivotProps,
+  PivotAggregator,
+  PivotSize,
+  PivotResult,
+} from './pivot/variants';
+export { pivotCompute, aggregate as pivotAggregate } from './pivot/variants';
+
+export { default as CfSpreadsheet } from './spreadsheet/Spreadsheet.vue';
+export type {
+  SpreadsheetProps,
+  SpreadsheetSize,
+  CellPos,
+  CellRange,
+} from './spreadsheet/variants';
+export { toA1, colLetter, rangeToTSV, tsvToData } from './spreadsheet/variants';
+
 export { default as CfResult } from './result/Result.vue';
 export type { ResultProps, ResultStatus, ResultSize } from './result/variants';
 
@@ -581,10 +1056,24 @@ export type { TourProps, TourStep, TourPlacement } from './tour/variants';
 export { default as CfQRCode } from './qrcode/QRCode.vue';
 export type { QRCodeProps, QrEcc } from './qrcode/variants';
 
+export { default as CfMap } from './map/Map.vue';
+export type {
+  MapProps,
+  MapCoord,
+  MapMarker,
+  MapOverlay,
+  MapRoute,
+  MapViewport,
+  MapMarkerEvent,
+  MapOverlayEvent,
+  MapCanvasEvent,
+  MapTone,
+} from './map/variants';
+
 export { default as CfIcon } from './icon/Icon.vue';
 export type {
   IconProps,
   IconSize,
   IconStrokeWidth,
 } from './icon/variants';
-export type { IconName } from '@chufix/icons';
+export type { IconName } from '@chufix-design/icons';

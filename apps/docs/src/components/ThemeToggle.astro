@@ -1,37 +1,146 @@
 ---
 ---
 
-<button
-  type="button"
-  class="cf-btn cf-btn--ghost cf-btn--sm cf-btn--square theme-toggle"
-  aria-label="切换主题"
-  data-theme-toggle
->
-  <svg class="theme-toggle__sun" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-    <circle cx="8" cy="8" r="3" />
-    <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3" />
-  </svg>
-  <svg class="theme-toggle__moon" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M13 9.5A6 6 0 116.5 3a4.5 4.5 0 006.5 6.5z" />
-  </svg>
-</button>
+<div class="theme-switcher" data-theme-switcher>
+  <button
+    type="button"
+    class="cf-btn cf-btn--ghost cf-btn--sm cf-btn--square theme-switcher__mode"
+    aria-label="切换亮暗模式"
+    data-theme-mode-toggle
+  >
+    <svg class="theme-toggle__sun" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <circle cx="8" cy="8" r="3" />
+      <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3" />
+    </svg>
+    <svg class="theme-toggle__moon" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 9.5A6 6 0 116.5 3a4.5 4.5 0 006.5 6.5z" />
+    </svg>
+  </button>
+
+  <button
+    type="button"
+    class="cf-btn cf-btn--ghost cf-btn--sm cf-btn--square theme-switcher__accent-trigger"
+    aria-label="选择强调色"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-accent-menu-toggle
+  >
+    <span class="theme-switcher__accent-dot" aria-hidden="true"></span>
+  </button>
+
+  <div class="theme-switcher__menu" role="menu" data-accent-menu hidden>
+    <div class="theme-switcher__label" data-theme-accent-label>强调色</div>
+    <div class="theme-switcher__palette">
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--blue" data-accent-option="blue" role="menuitemradio">蓝</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--sky" data-accent-option="sky" role="menuitemradio">天蓝</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--cyan" data-accent-option="cyan" role="menuitemradio">青</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--teal" data-accent-option="teal" role="menuitemradio">蓝绿</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--emerald" data-accent-option="emerald" role="menuitemradio">绿</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--lime" data-accent-option="lime" role="menuitemradio">青柠</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--amber" data-accent-option="amber" role="menuitemradio">金</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--orange" data-accent-option="orange" role="menuitemradio">橙</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--rose" data-accent-option="rose" role="menuitemradio">红</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--pink" data-accent-option="pink" role="menuitemradio">粉</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--violet" data-accent-option="violet" role="menuitemradio">紫</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--grape" data-accent-option="grape" role="menuitemradio">葡萄</button>
+      <button type="button" class="theme-switcher__swatch theme-switcher__swatch--slate" data-accent-option="slate" role="menuitemradio">石墨</button>
+    </div>
+  </div>
+</div>
 
 <script is:inline>
   (function () {
-    const KEY = 'cf-theme';
+    const THEME_KEY = 'cf-theme';
+    const ACCENT_KEY = 'cf-accent';
     const root = document.documentElement;
-    const stored = localStorage.getItem(KEY);
-    const initial =
-      stored ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    root.dataset.theme = initial;
+    const switcher = document.querySelector('[data-theme-switcher]');
+    if (!switcher) return;
 
-    document.addEventListener('click', (e) => {
-      const t = e.target.closest('[data-theme-toggle]');
-      if (!t) return;
-      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      root.dataset.theme = next;
-      localStorage.setItem(KEY, next);
+    const menu = switcher.querySelector('[data-accent-menu]');
+    const accentToggle = switcher.querySelector('[data-accent-menu-toggle]');
+    const modeToggle = switcher.querySelector('[data-theme-mode-toggle]');
+    const accentLabel = switcher.querySelector('[data-theme-accent-label]');
+    const isEn = location.pathname.startsWith('/en/');
+    const accentNames = {
+      blue: isEn ? 'Blue' : '蓝',
+      sky: isEn ? 'Sky' : '天蓝',
+      cyan: isEn ? 'Cyan' : '青',
+      teal: isEn ? 'Teal' : '蓝绿',
+      emerald: isEn ? 'Emerald' : '绿',
+      lime: isEn ? 'Lime' : '青柠',
+      amber: isEn ? 'Amber' : '金',
+      orange: isEn ? 'Orange' : '橙',
+      rose: isEn ? 'Rose' : '红',
+      pink: isEn ? 'Pink' : '粉',
+      violet: isEn ? 'Violet' : '紫',
+      grape: isEn ? 'Grape' : '葡萄',
+      slate: isEn ? 'Slate' : '石墨',
+    };
+
+    if (accentLabel) accentLabel.textContent = isEn ? 'Accent' : '强调色';
+    modeToggle?.setAttribute('aria-label', isEn ? 'Toggle light or dark mode' : '切换亮暗模式');
+    accentToggle?.setAttribute('aria-label', isEn ? 'Choose accent color' : '选择强调色');
+
+    switcher.querySelectorAll('[data-accent-option]').forEach((btn) => {
+      const value = btn.dataset.accentOption;
+      btn.textContent = accentNames[value] || value;
+    });
+
+    const storedTheme = localStorage.getItem(THEME_KEY);
+    const storedAccent = localStorage.getItem(ACCENT_KEY);
+    const initialTheme =
+      storedTheme ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-cool' : 'light');
+    const initialAccent = storedAccent || 'blue';
+
+    function normalizeTheme(theme) {
+      return theme && theme.startsWith('dark') ? 'dark-cool' : 'light';
+    }
+
+    function syncState(theme, accent) {
+      const nextTheme = normalizeTheme(theme);
+      root.dataset.theme = nextTheme;
+      root.dataset.accent = accent;
+      modeToggle?.setAttribute('aria-pressed', nextTheme === 'dark-cool' ? 'true' : 'false');
+      switcher.querySelectorAll('[data-accent-option]').forEach((btn) => {
+        btn.setAttribute('aria-checked', btn.dataset.accentOption === accent ? 'true' : 'false');
+      });
+    }
+
+    syncState(initialTheme, initialAccent);
+
+    modeToggle?.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark-cool' ? 'light' : 'dark-cool';
+      localStorage.setItem(THEME_KEY, next);
+      syncState(next, root.dataset.accent || initialAccent);
+    });
+
+    accentToggle?.addEventListener('click', () => {
+      const open = menu.hasAttribute('hidden');
+      menu.toggleAttribute('hidden', !open);
+      accentToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!switcher.contains(target)) {
+        menu.setAttribute('hidden', '');
+        accentToggle?.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      const accentBtn = target.closest('[data-accent-option]');
+      if (accentBtn) {
+        const next = accentBtn.dataset.accentOption;
+        localStorage.setItem(ACCENT_KEY, next);
+        syncState(root.dataset.theme || initialTheme, next);
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      menu.setAttribute('hidden', '');
+      accentToggle?.setAttribute('aria-expanded', 'false');
     });
   })();
 </script>

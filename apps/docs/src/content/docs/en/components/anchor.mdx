@@ -1,0 +1,37 @@
+---
+title: Anchor
+description: Sidebar that lists page anchors explicitly, highlights the section in view as you scroll, and smooth-scrolls on click.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/anchor/BasicVue.vue';
+
+## Basic usage
+
+`items` is the anchor list; each entry is `{ href, label }`. `href` looks like `#section-id` and corresponds to a `<h2 id="section-id">` on the page. One level of `children` nesting is supported.
+
+<DemoFrame
+  vueCode={`<CfAnchor :items="items" :offset-top="0" />`}
+  reactCode={`<CfAnchor items={items} offsetTop={0} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `AnchorItem[]` | `—` | Anchor list |
+| `offsetTop` | `number` | `0` | Top offset (in pixels) used for highlight detection and scroll-to |
+| `bounds` | `number` | `5` | An element is considered in view when its top distance ≤ `bounds + offsetTop`; smaller is stricter |
+| `target` | `string` | `—` | Scroll container selector; omit to listen on `window` |
+
+### AnchorItem
+
+| Field | Type | Description |
+|---|---|---|
+| `href` | `string` | Anchor hash, e.g. `#install` |
+| `label` | `string` | Display text |
+| `children` | `AnchorItem[]` | Child anchors |
+
+Events: `onChange(href)` — fires when the highlighted anchor changes.

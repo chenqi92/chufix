@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfKanban, type KanbanColumn } from '@chufix/vue';
+import { CfKanban, type KanbanColumn } from '@chufix-design/vue';
 
 const board = ref<KanbanColumn[]>([
   {

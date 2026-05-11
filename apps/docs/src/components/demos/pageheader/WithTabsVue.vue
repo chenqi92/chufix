@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfPageHeader, CfButton, CfTabs, CfTag } from '@chufix/vue';
+import { CfPageHeader, CfButton, CfTabs, CfTag } from '@chufix-design/vue';
 
 const tab = ref('overview');
 </script>

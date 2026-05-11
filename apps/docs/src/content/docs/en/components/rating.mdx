@@ -1,0 +1,72 @@
+---
+title: Rating
+description: Star rating control — integer or half-star precision, read-only and disabled states, optional value display.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/rating/BasicVue.vue';
+import HalfVue from '~/components/demos/rating/HalfVue.vue';
+import StatesVue from '~/components/demos/rating/StatesVue.vue';
+import SizesVue from '~/components/demos/rating/SizesVue.vue';
+
+## Basic usage
+
+The simplest form — 5 integer stars with hover preview and click to commit.
+
+<DemoFrame
+  vueCode={`<CfRating v-model="value" />`}
+  reactCode={`<CfRating value={value} onChange={setValue} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Half-star precision
+
+`allowHalf` enables half-star steps — hovering on the left half of star `i` returns `i + 0.5`, the right half returns `i + 1`. Useful for 0.5-grain rating scenarios.
+
+<DemoFrame
+  vueCode={`<CfRating v-model="value" allow-half show-value />`}
+  reactCode={`<CfRating value={value} onChange={setValue} allowHalf showValue />`}
+>
+  <HalfVue client:load />
+</DemoFrame>
+
+## Read-only / disabled
+
+`readonly` locks the value while preserving the visuals (for displaying existing ratings); `disabled` greys out and blocks all interaction.
+
+<DemoFrame
+  vueCode={`<CfRating :model-value="4" readonly show-value />
+<CfRating :model-value="2" disabled />`}
+  reactCode={`<CfRating value={4} readonly showValue />
+<CfRating value={2} disabled />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## Three sizes
+
+`size` controls the diameter of each star — `sm` / `md` (default) / `lg`. `showValue` appends `value / count` at the end.
+
+<DemoFrame
+  vueCode={`<CfRating v-model="a" size="sm" show-value />
+<CfRating v-model="b" size="md" show-value />
+<CfRating v-model="c" size="lg" show-value />`}
+  reactCode={`<CfRating value={a} onChange={setA} size="sm" showValue />
+<CfRating value={b} onChange={setB} size="md" showValue />
+<CfRating value={c} onChange={setC} size="lg" showValue />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `0` | Current rating |
+| `count` | `number` | `5` | Total number of stars |
+| `allowHalf` | `boolean` | `false` | Enable half-star precision |
+| `readonly` | `boolean` | `false` | Read-only |
+| `disabled` | `boolean` | `false` | Disabled |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
+| `showValue` | `boolean` | `false` | Display `value / count` at the end |

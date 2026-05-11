@@ -1,0 +1,101 @@
+/* ChuFix Pivot — pivot table with row/col grouping, totals, optional heatmap. */
+
+.cf-pivot {
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cf-pivot--sm { font-size: var(--t-12); }
+.cf-pivot--lg { font-size: var(--t-14); }
+
+.cf-pivot__caption {
+  margin: 0;
+  font-size: var(--t-12);
+  color: var(--fg-3);
+}
+
+.cf-pivot__scroll {
+  overflow: auto;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  background: var(--bg-1);
+}
+
+.cf-pivot__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-pivot__corner,
+.cf-pivot__th,
+.cf-pivot__cell {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line-1);
+  border-right: 1px solid var(--line-1);
+  text-align: right;
+  white-space: nowrap;
+}
+.cf-pivot__th--col,
+.cf-pivot__corner {
+  text-align: center;
+  font-weight: var(--w-medium);
+  background: var(--bg-2);
+  color: var(--fg-2);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.cf-pivot__corner {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  background: var(--bg-3);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+}
+.cf-pivot__corner-row { color: var(--fg-1); }
+.cf-pivot__corner-sep { margin: 0 4px; opacity: 0.5; }
+.cf-pivot__corner-col { color: var(--fg-1); }
+
+.cf-pivot__th--row {
+  text-align: left;
+  font-weight: var(--w-medium);
+  background: var(--bg-2);
+  color: var(--fg-2);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.cf-pivot__cell.is-empty { color: var(--fg-3); }
+.cf-pivot__cell.is-clickable {
+  cursor: pointer;
+}
+.cf-pivot__cell.is-clickable:hover {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+
+.cf-pivot__cell--total,
+.cf-pivot__th--total {
+  background: var(--bg-3);
+  font-weight: var(--w-medium);
+  color: var(--fg-1);
+}
+.cf-pivot__cell--grand {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  font-weight: var(--w-semibold);
+}
+
+/* zebra rows */
+.cf-pivot__table tbody tr:nth-child(even) .cf-pivot__cell:not(.cf-pivot__cell--total) {
+  background-image: linear-gradient(transparent, oklch(50% 0 0 / 0.02));
+}

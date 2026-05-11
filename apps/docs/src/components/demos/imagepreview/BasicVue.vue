@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfImagePreview, CfButton } from '@chufix/vue';
+import { CfImagePreview, CfButton } from '@chufix-design/vue';
 
 const open = ref(false);
 const src = 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=1600&h=900&fit=crop';

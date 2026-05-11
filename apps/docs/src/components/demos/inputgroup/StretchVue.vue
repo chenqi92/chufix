@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfInputGroup, CfInput, CfButton } from '@chufix/vue';
+import { CfInputGroup, CfInput, CfButton } from '@chufix-design/vue';
 
 const q = ref('');
 </script>

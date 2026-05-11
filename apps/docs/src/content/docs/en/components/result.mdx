@@ -1,0 +1,58 @@
+---
+title: Result
+description: Full-page feedback for completed / failed / exception states — submission outcomes, 404 / 403 / 500 placeholders, etc.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/result/BasicVue.vue';
+import StatusesVue from '~/components/demos/result/StatusesVue.vue';
+
+## Basic usage
+
+`status` controls the icon and default title; `#extra` (Vue) / the `extra` prop (React) hosts follow-up action buttons.
+
+<DemoFrame
+  vueCode={`<CfResult status="success" title="Submitted" description="Your request has been sent to the admin and should be processed within one business day.">
+  <template #extra>
+    <CfButton variant="primary">Back home</CfButton>
+    <CfButton variant="tertiary">Submit another</CfButton>
+  </template>
+</CfResult>`}
+  reactCode={`<CfResult
+  status="success"
+  title="Submitted"
+  description="Your request has been sent to the admin and should be processed within one business day."
+  extra={<>
+    <CfButton variant="primary">Back home</CfButton>
+    <CfButton variant="tertiary">Submit another</CfButton>
+  </>}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Exception states
+
+`404` / `403` / `500` share one set of state illustrations; colors follow the semantic tokens.
+
+<DemoFrame
+  vueCode={`<CfResult status="404" size="sm" description="The page may have moved or been deleted." />
+<CfResult status="403" size="sm" description="Your account doesn't have access." />
+<CfResult status="500" size="sm" description="The service is temporarily unavailable. Please try again later." />`}
+  reactCode={`<CfResult status="404" size="sm" description="The page may have moved or been deleted." />
+<CfResult status="403" size="sm" description="Your account doesn't have access." />
+<CfResult status="500" size="sm" description="The service is temporarily unavailable. Please try again later." />`}
+>
+  <StatusesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `status` | `'success' \| 'info' \| 'warning' \| 'error' \| '404' \| '403' \| '500'` | `'info'` | Status semantic; mapped to a default illustration and default title |
+| `title` | `string` | The default copy associated with `status` | Main title |
+| `description` | `string` | `—` | Subtitle |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Overall size |
+
+Slot (Vue) / prop (React): `icon` for a custom icon, `extra` for the action area.

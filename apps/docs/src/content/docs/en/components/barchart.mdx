@@ -1,0 +1,58 @@
+---
+title: BarChart
+description: Single-series vertical bar chart.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/barchart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props and rendered as plain SVG — no third-party charting library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfBarChart ... />`}
+  reactCode={`<CfBarChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Color
+
+`colorIndex` 0..7 selects `--viz-1..8` directly.
+
+import SeriesColorVue from '~/components/demos/barchart/SeriesColorVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBarChart :data="data" :color-index="0" />
+<CfBarChart :data="data" :color-index="3" />`}
+  reactCode={`<CfBarChart data={data} colorIndex={0} />
+<CfBarChart data={data} colorIndex={3} />`}
+>
+  <SeriesColorVue client:load />
+</DemoFrame>
+
+## Horizontal layout
+
+Use `orientation="horizontal"` for rankings, comparisons, or longer category labels.
+
+import HorizontalVue from '~/components/demos/barchart/HorizontalVue.vue';
+
+<DemoFrame
+  vueCode={`<CfBarChart :data="data" :labels="labels" orientation="horizontal" />`}
+  reactCode={`<CfBarChart data={data} labels={labels} orientation="horizontal" />`}
+>
+  <HorizontalVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `number[]` | `—` | Bar heights |
+| `labels` | `string[]` | `—` | x-axis labels |
+| `colorIndex` | `0..7` | `0` |  |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Bar direction |
+| `width / height / showGrid / showLabels` | `` | `` |  |

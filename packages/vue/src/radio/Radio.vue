@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
-import { radioClass, radioGroupKey, type RadioProps, type RadioValue } from './variants';
+import {
+  radioClass,
+  radioGroupKey,
+  type RadioChangeMeta,
+  type RadioProps,
+  type RadioValue,
+} from './variants';
 
 const props = withDefaults(defineProps<RadioProps>(), {
   modelValue: null,
@@ -10,7 +16,9 @@ const props = withDefaults(defineProps<RadioProps>(), {
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: RadioValue): void;
-  (e: 'change', value: RadioValue): void;
+  (e: 'change', value: RadioValue, meta: RadioChangeMeta): void;
+  (e: 'focus', event: FocusEvent): void;
+  (e: 'blur', event: FocusEvent): void;
 }>();
 
 const group = inject(radioGroupKey, null);
@@ -31,13 +39,19 @@ const cls = computed(() =>
   }),
 );
 
-function onChange() {
+function onChange(e: Event) {
   if (disabled.value) return;
+  const meta = {
+    event: e,
+    value: props.value,
+    name: name.value,
+    checked: true,
+  };
   if (group) {
-    group.select(props.value);
+    group.select(props.value, meta);
   } else {
     emit('update:modelValue', props.value);
-    emit('change', props.value);
+    emit('change', props.value, meta);
   }
 }
 </script>
@@ -52,6 +66,8 @@ function onChange() {
       :name="name"
       :id="id"
       @change="onChange"
+      @focus="(event) => emit('focus', event)"
+      @blur="(event) => emit('blur', event)"
     />
     <span class="cf-radio__dot" aria-hidden="true" />
     <span v-if="$slots.default" class="cf-radio__label"><slot /></span>

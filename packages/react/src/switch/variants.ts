@@ -1,11 +1,18 @@
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
 
 export type SwitchSize = 'sm' | 'md' | 'lg';
 
 export interface SwitchOwnProps {
   size?: SwitchSize;
   loading?: boolean;
+  onCheckedChange?: (checked: boolean, meta: SwitchChangeMeta) => void;
   children?: ReactNode;
+}
+
+export interface SwitchChangeMeta {
+  event: ChangeEvent<HTMLInputElement>;
+  checked: boolean;
+  name?: string;
 }
 
 export type SwitchProps = SwitchOwnProps &

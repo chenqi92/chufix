@@ -1,0 +1,46 @@
+---
+title: Sparkline
+description: Inline micro trend line, often used as the trend indicator on KPI cards.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props and rendered as pure SVG, with no third-party charting dependency.
+Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfSparkline ... />`}
+  reactCode={`<CfSparkline ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 8-color palette
+
+`colorIndex` (0..7) picks any color in `--viz-1..8` — colorblind-friendly and aligned with chart series colors.
+
+import ColorsVue from '~/components/demos/sparkline/ColorsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfSparkline :data="data" :color-index="0" filled smooth />
+<CfSparkline :data="data" :color-index="3" filled smooth />`}
+  reactCode={`<CfSparkline data={data} colorIndex={0} filled smooth />
+<CfSparkline data={data} colorIndex={3} filled smooth />`}
+>
+  <ColorsVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `number[]` | `—` | Array of data points |
+| `width / height` | `number` | `80 / 24` |  |
+| `filled` | `boolean` | `false` | Show filled area |
+| `smooth` | `boolean` | `false` | Smooth curve |
+| `colorIndex` | `0..7` | `0` | Color index (--viz-&#123;n+1&#125;) |
+| `showDot` | `boolean` | `true` | Highlight the last point |

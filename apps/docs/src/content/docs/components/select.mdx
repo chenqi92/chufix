@@ -1,12 +1,17 @@
 ---
 title: Select 选择器
-description: 下拉选择 —— options 数组式 API，支持 clearable、键盘导航、disabled item。
+description: 下拉选择 —— 单/多选、可搜索、分组、loading 异步占位、键盘导航、tag 标签溢出收缩。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/select/BasicVue.vue';
 import VariantsVue from '~/components/demos/select/VariantsVue.vue';
 import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
+import EventsVue from '~/components/demos/select/EventsVue.vue';
+import MultiVue from '~/components/demos/select/MultiVue.vue';
+import SearchVue from '~/components/demos/select/SearchVue.vue';
+import GroupVue from '~/components/demos/select/GroupVue.vue';
+import AsyncLoadVue from '~/components/demos/select/AsyncLoadVue.vue';
 
 ## 基础用法
 
@@ -15,7 +20,7 @@ import AdvancedVue from '~/components/demos/select/AdvancedVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfSelect, type SelectOption } from '@chufix/vue';
+import { CfSelect, type SelectOption } from '@chufix-design/vue';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -30,7 +35,7 @@ const city = ref<string | null>('shanghai');
   <CfSelect v-model="city" :options="options" placeholder="选一个城市" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfSelect, type SelectOption } from '@chufix/react';
+import { CfSelect, type SelectOption } from '@chufix-design/react';
 
 const options: SelectOption[] = [
   { value: 'beijing', label: '北京' },
@@ -83,6 +88,69 @@ export default function Demo() {
   <AdvancedVue client:load />
 </DemoFrame>
 
+## 事件与表单
+
+`Select` 除了值变化，也会暴露打开状态、active 选项、清空、焦点等事件；传入 `name` 时会同步一个 hidden input，方便在原生表单里提交当前值。
+
+<DemoFrame
+  vueCode={`<CfSelect
+  v-model="value"
+  :options="options"
+  clearable
+  name="status"
+  @change="(value, meta) => console.log(value, meta.option)"
+  @select="(option) => console.log('select', option)"
+  @clear="() => console.log('clear')"
+  @open-change="(open) => console.log('open', open)"
+  @active-change="(option, index) => console.log(option, index)"
+/>`}
+  reactCode={`<CfSelect
+  value={value}
+  options={options}
+  clearable
+  name="status"
+  onChange={(value, meta) => console.log(value, meta.option)}
+  onSelect={(option) => console.log('select', option)}
+  onClear={() => console.log('clear')}
+  onOpenChange={(open) => console.log('open', open)}
+  onActiveChange={(option, index) => console.log(option, index)}
+/>`}
+>
+  <EventsVue client:load />
+</DemoFrame>
+
+## 多选
+
+`multiple` 让 model 变成数组，触发器渲染为可移除的 tag 组。`maxTagCount` 把多余的 tag 收成 `+N` 胶囊。退格键删除最后一个 tag。
+
+<DemoFrame>
+  <MultiVue client:only="vue" />
+</DemoFrame>
+
+## 可搜索
+
+`searchable` 在菜单顶部加一个输入框，按 label 实时过滤。和 multiple 可叠加 —— 像传统 multi-select 一样组合使用。
+
+<DemoFrame>
+  <SearchVue client:only="vue" />
+</DemoFrame>
+
+## 分组
+
+给 option 加 `group: string`，组件自动按 group 渲染分组标题（顺序按 group 首次出现的次序）。
+
+<DemoFrame>
+  <GroupVue client:only="vue" />
+</DemoFrame>
+
+## 异步加载
+
+`loading=true` 时触发器变为禁用并展示 spinner，菜单内显示 "加载中…"。结合 onMounted / SWR / TanStack Query 等数据源使用。
+
+<DemoFrame>
+  <AsyncLoadVue client:only="vue" />
+</DemoFrame>
+
 ## 键盘交互
 
 | 按键              | 行为                                |
@@ -103,5 +171,24 @@ export default function Demo() {
 | `clearable`   | `boolean`                          | `false`      | 已选中时显示清除按钮                    |
 | `disabled`    | `boolean`                          | `false`      | 整体禁用                                |
 | `error`       | `boolean`                          | `false`      | 错误态                                  |
+| `name`        | `string`                           | —            | 生成 hidden input，参与原生表单提交     |
+| `id`          | `string`                           | —            | 触发按钮 id，并用于关联 listbox         |
+| `multiple`    | `boolean`                          | `false`      | 多选模式，model 变为 `Array<value>`     |
+| `searchable`  | `boolean`                          | `false`      | 菜单顶部加搜索输入框                    |
+| `loading`     | `boolean`                          | `false`      | 异步加载中（trigger 禁用 + spinner）    |
+| `emptyText`   | `string`                           | `'无选项'`   | 自定义"无选项"文案                      |
+| `maxTagCount` | `number`                           | —            | 多选模式下最多展示几个 tag，溢出收成 +N |
+
+## Events
+
+| Vue 事件 | React 回调 | payload | 说明 |
+|---|---|---|---|
+| `change` | `onChange` | `(value, { option })` | 值变化，清空时 `option` 为 `null` |
+| `select` | `onSelect` | `option` | 选中某个 option |
+| `clear` | `onClear` | — | 点击清除按钮 |
+| `open-change` | `onOpenChange` | `open` | 下拉菜单打开 / 关闭 |
+| `active-change` | `onActiveChange` | `(option, index)` | 键盘或鼠标移动 active option |
+| `search` | `onSearch` | `term` | 搜索框输入（仅 `searchable=true` 时） |
+| `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | 触发按钮焦点事件 |
 
 > 当前实现使用 `position: absolute` 浮层；如果父级 `overflow: hidden` 裁掉了菜单，后续会扩展 Portal 版本。

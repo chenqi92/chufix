@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTag } from '@chufix/vue';
+import { CfTag } from '@chufix-design/vue';
 
 const tags = ref(['Vue', 'Astro', 'Tailwind', 'TypeScript']);
 

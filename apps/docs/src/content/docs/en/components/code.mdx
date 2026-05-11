@@ -1,0 +1,133 @@
+---
+title: Code
+description: InlineCode for inline snippets + CodeBlock for multi-line blocks — with optional title, language tag, line numbers, copy button, and max scroll height.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/code/BasicVue.vue';
+import InlineVue from '~/components/demos/code/InlineVue.vue';
+import NumbersVue from '~/components/demos/code/NumbersVue.vue';
+import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
+import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
+
+## Basic usage
+
+`<CfInlineCode>` embeds small inline snippets (package names, commands). `<CfCodeBlock>` takes a `code` string and renders a multi-line block, with optional `title` / `language` / `showLineNumbers` / `copyable`.
+
+It includes lightweight syntax highlighting, line numbers, copy, dedent, and a dark code surface. You can also pass `highlightedHtml` from shiki / highlight.js / prism.
+
+<DemoFrame
+  vueCode={`<p>Install with <CfInlineCode>npm i @chufix-design/vue</CfInlineCode>.</p>
+<CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
+  reactCode={`<p>Install with <CfInlineCode>npm i @chufix-design/react</CfInlineCode>.</p>
+<CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Inline code
+
+`<CfInlineCode>` on its own — wraps `<code>` as a monospace pill with a tinted background and rounded corners. `size="sm"` gives a smaller variant for dense docs.
+
+<DemoFrame
+  vueCode={`<p>Common packages: <CfInlineCode>@chufix-design/vue</CfInlineCode>, <CfInlineCode>@chufix-design/react</CfInlineCode>.</p>
+<p>Command: <CfInlineCode>pnpm dev</CfInlineCode>.</p>
+<p>Small: <CfInlineCode size="sm">--config</CfInlineCode>.</p>`}
+  reactCode={`<p>Common packages: <CfInlineCode>@chufix-design/vue</CfInlineCode>, <CfInlineCode>@chufix-design/react</CfInlineCode>.</p>
+<p>Command: <CfInlineCode>pnpm dev</CfInlineCode>.</p>
+<p>Small: <CfInlineCode size="sm">--config</CfInlineCode>.</p>`}
+>
+  <InlineVue client:load />
+</DemoFrame>
+
+## Line numbers
+
+`showLineNumbers` shows line numbers on the left — handy for tutorials and walkthroughs.
+
+<DemoFrame
+  vueCode={`<CfCodeBlock :code="code" language="js" title="fib.js" show-line-numbers />`}
+  reactCode={`<CfCodeBlock code={code} language="js" title="fib.js" showLineNumbers />`}
+>
+  <NumbersVue client:load />
+</DemoFrame>
+
+## Limit max height
+
+`maxHeight` enables vertical scrolling so long blocks don't take over the page.
+
+<DemoFrame
+  vueCode={`<CfCodeBlock :code="code" language="js" title="long-output.js" show-line-numbers :max-height="200" />`}
+  reactCode={`<CfCodeBlock code={code} language="js" title="long-output.js" showLineNumbers maxHeight={200} />`}
+>
+  <MaxHeightVue client:load />
+</DemoFrame>
+
+## Code workspace
+
+`CfCodeWorkspace` combines a project tree with a code surface. Use it for docs snippets, icon source, Blocks recipes, and multi-file examples. With `editable`, the right side becomes an editor-like textarea while keeping the tree, tabs, copy, and line numbers.
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfCodeWorkspace
+  title="status-panel"
+  root-label="app"
+  :files="files"
+  tone="dark"
+  editable
+  :height="430"
+  trim-indent
+/>`}
+  reactCode={`<CfCodeWorkspace
+  title="status-panel"
+  rootLabel="app"
+  files={files}
+  tone="dark"
+  editable
+  height={430}
+  trimIndent
+/>`}
+>
+  <WorkspaceVue client:load />
+</DemoFrame>
+
+## API · InlineCode
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `'sm' \| 'md'` | `'md'` | Size, relative to the parent font size |
+
+## API · CodeBlock
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `code` | `string` | required | Code content (use `\n` for line breaks) |
+| `language` | `string` | `—` | Language label on the right of the header |
+| `title` | `string \| ReactNode` | `—` | Title on the left of the header — typically a file name |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+| `showLineNumbers` | `boolean` | `false` | Whether to show line numbers |
+| `copyable` | `boolean` | `true` | Show the copy button in the header |
+| `maxHeight` | `number \| string` | `—` | Max height to enable vertical scrolling |
+| `startLine` | `number` | `1` | First line number |
+| `wrap` | `boolean` | `false` | Soft-wrap long lines |
+| `tone` | `'light' \| 'dark'` | `'light'` | Code surface tone |
+| `trimIndent` | `boolean` | `false` | Remove common indentation |
+| `highlight` | `boolean` | `true` | Enable built-in lightweight highlighting |
+| `highlightedHtml` | `string` | — | Safe HTML from an external highlighter |
+
+## API · CodeWorkspace
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `files` | `CodeWorkspaceFile[]` | required | Multi-file source list |
+| `title` | `string \| ReactNode` | — | Header title |
+| `rootLabel` / `root-label` | `string` | `'project'` | Tree root label |
+| `defaultFile` / `activeFile` | `string` | first file | Default / controlled active file id |
+| `editable` | `boolean` | `false` | Editor mode |
+| `readOnly` / `read-only` | `boolean` | `false` | Disable editing |
+| `showLineNumbers` / `show-line-numbers` | `boolean` | `true` | Line numbers |
+| `copyable` | `boolean` | `true` | Copy current file |
+| `height` | `number \| string` | — | Fixed workspace height |
+| `wrap` | `boolean` | `false` | Soft-wrap long lines |
+| `tone` | `'light' \| 'dark'` | `'light'` | Surface tone |
+| `trimIndent` / `trim-indent` | `boolean` | `false` | Dedent in display mode |
+| `highlightedHtml` | `CodeWorkspaceFile` field | — | Per-file external highlighted HTML |

@@ -1,0 +1,41 @@
+---
+title: Histogram 直方图
+description: 分箱直方图，每个 bin 一个柱。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/histogram/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfHistogram ... />`}
+  reactCode={`<CfHistogram ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 两种典型分布
+
+正态分布 / 长尾分布对比 — 长尾时建议用对数刻度的 bin label。
+
+import DistributionsVue from '~/components/demos/histogram/DistributionsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfHistogram :bins="bins" />`}
+  reactCode={`<CfHistogram bins={bins} />`}
+>
+  <DistributionsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `bins` | `HistogramBin[]` | `—` | &#123; label, count &#125;[] |
+| `colorIndex` | `0..7` | `0` |  |
+| `showLabels` | `boolean` | `true` | bin label 显示开关 |

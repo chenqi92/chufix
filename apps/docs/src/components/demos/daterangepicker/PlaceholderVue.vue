@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDateRangePicker, type DateRangeValue } from '@chufix/vue';
+import { CfDateRangePicker, type DateRangeValue } from '@chufix-design/vue';
 
 const a = ref<DateRangeValue>([null, null]);
 const b = ref<DateRangeValue>([null, null]);

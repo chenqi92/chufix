@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfButton, CfPopover } from '@chufix/vue';
+import { CfButton, CfPopover } from '@chufix-design/vue';
 
 const manualOpen = ref(false);
 </script>

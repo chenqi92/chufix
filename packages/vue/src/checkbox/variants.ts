@@ -10,6 +10,14 @@ export interface CheckboxProps {
   value?: string | number;
 }
 
+export interface CheckboxChangeMeta {
+  event: Event;
+  checked: boolean;
+  indeterminate: boolean;
+  value?: string | number;
+  name?: string;
+}
+
 export function checkboxClass(p: {
   size: CheckboxSize;
   disabled: boolean;

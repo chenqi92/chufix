@@ -1,0 +1,39 @@
+---
+title: Float button
+description: A circular button anchored to a viewport corner. Common entry point for "Contact support", "Open cart", or "New post".
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/floatbutton/BasicVue.vue';
+
+## Basic usage
+
+Default `position: fixed`, with `bottom` and `right` set to 24px. `tooltip` is shown on hover via the `title` attribute, and `badge` renders a small red dot in the top-right corner.
+
+<DemoFrame
+  vueCode={`<CfFloatButton tooltip="Contact support" badge="3" :bottom="24" :right="24" variant="primary">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8..." />
+  </svg>
+</CfFloatButton>`}
+  reactCode={`<CfFloatButton tooltip="Contact support" badge="3" bottom={24} right={24} variant="primary">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8..." />
+  </svg>
+</CfFloatButton>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `shape` | `'circle' \| 'square'` | `'circle'` | Button shape |
+| `variant` | `'default' \| 'primary'` | `'default'` | Visual emphasis |
+| `tooltip` | `string` | `—` | Hover hint text (rendered via `title`) |
+| `badge` | `string \| number` | `—` | Top-right badge text; not shown when empty |
+| `bottom` / `right` / `top` / `left` | `number` | `bottom: 24, right: 24` | Viewport offset; same as CSS |
+| `ariaLabel` | `string` | same as `tooltip` | Screen-reader label |
+
+Events: `onClick(evt)` — button click.

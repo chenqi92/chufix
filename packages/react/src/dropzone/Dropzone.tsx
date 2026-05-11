@@ -13,6 +13,7 @@ import {
   type DropzoneProps,
   type DropzoneRejection,
 } from './variants';
+import { StatusIllustration } from '../statusillustration/StatusIllustration';
 
 export function Dropzone(props: DropzoneProps) {
   const {
@@ -177,22 +178,7 @@ export function Dropzone(props: DropzoneProps) {
           disabled={disabled}
           onChange={onSelect}
         />
-        {icon ?? (
-          <svg
-            className="cf-dropzone__icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M12 4v12m0-12-4 4m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
+        {icon ?? <StatusIllustration className="cf-dropzone__illustration" variant="upload" />}
         {children ?? (
           <>
             <div className="cf-dropzone__title">

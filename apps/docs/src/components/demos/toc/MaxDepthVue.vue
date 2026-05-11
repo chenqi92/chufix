@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfToc, type TocItem } from '@chufix/vue';
+import { CfToc, type TocItem } from '@chufix-design/vue';
 
 const items: TocItem[] = [
   { id: 'a', label: '一级标题', depth: 1 },

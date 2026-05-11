@@ -1,20 +1,27 @@
 ---
-import { Code } from 'astro:components';
+import DocCodeWorkspace from './DocCodeWorkspace.astro';
 
 interface Props {
   vueCode?: string;
   reactCode?: string;
   cliCode?: string;
+  variant?: 'default' | 'wide' | 'compact';
 }
-const { vueCode, reactCode, cliCode } = Astro.props;
+type DocCodeFile = {
+  id: string;
+  name: string;
+  content: string;
+  lang: 'vue' | 'tsx' | 'bash';
+};
+const { vueCode, reactCode, cliCode, variant = 'default' } = Astro.props;
 
-const codeTabs: Array<{ key: 'vue' | 'react' | 'cli'; label: string; code: string; lang: string }> = [];
-if (vueCode) codeTabs.push({ key: 'vue', label: 'Vue', code: vueCode, lang: 'vue' });
-if (reactCode) codeTabs.push({ key: 'react', label: 'React', code: reactCode, lang: 'tsx' });
-if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bash' });
+const codeTabs: DocCodeFile[] = [];
+if (vueCode) codeTabs.push({ id: 'vue', name: 'src/App.vue', content: vueCode, lang: 'vue' });
+if (reactCode) codeTabs.push({ id: 'react', name: 'src/App.tsx', content: reactCode, lang: 'tsx' });
+if (cliCode) codeTabs.push({ id: 'cli', name: 'scripts/setup.sh', content: cliCode, lang: 'bash' });
 ---
 
-<div class="cf-demo" data-demo-frame>
+<div class:list={['cf-demo', variant !== 'default' && `cf-demo--${variant}`]} data-demo-frame>
   <div class="cf-demo__preview">
     <div class="cf-demo__pane-content">
       <slot />
@@ -36,28 +43,7 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
       </button>
 
       <div class="cf-demo__code-body">
-        <div class="cf-demo__code-bar">
-          <div class="cf-demo__tabs" role="tablist">
-            {codeTabs.map((t, i) => (
-              <button
-                class="cf-demo__tab"
-                role="tab"
-                data-target={t.key}
-                aria-selected={i === 0 ? 'true' : 'false'}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        {codeTabs.map((t, i) => (
-          <div class="cf-demo__panel" data-panel={t.key} data-active={i === 0 ? 'true' : 'false'}>
-            <div class="cf-demo__code">
-              <button class="cf-demo__copy" data-copy={t.code}>复制</button>
-              <Code code={t.code} lang={t.lang as any} theme="github-dark" />
-            </div>
-          </div>
-        ))}
+        <DocCodeWorkspace files={codeTabs} title="Demo source" rootLabel="demo" />
       </div>
     </div>
   )}
@@ -67,8 +53,6 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
   function bind(root: HTMLElement) {
     const toggle = root.querySelector<HTMLButtonElement>('[data-demo-toggle]');
     const section = root.querySelector<HTMLElement>('.cf-demo__code-section');
-    const tabs = root.querySelectorAll<HTMLButtonElement>('.cf-demo__tab');
-    const panels = root.querySelectorAll<HTMLElement>('.cf-demo__panel');
     const floatingSelector = [
       '.cf-select.is-open',
       '.cf-combobox.is-open',
@@ -91,34 +75,6 @@ if (cliCode) codeTabs.push({ key: 'cli', label: 'CLI', code: cliCode, lang: 'bas
         syncFloatingState();
       });
     }
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.target;
-        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-        panels.forEach((p) => {
-          p.dataset.active = String(p.dataset.panel === target);
-        });
-      });
-    });
-
-    root.querySelectorAll<HTMLButtonElement>('.cf-demo__copy').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const text = btn.dataset.copy ?? '';
-        try {
-          await navigator.clipboard.writeText(text);
-        } catch {
-          /* clipboard blocked — ignore */
-        }
-        const original = btn.textContent;
-        btn.dataset.copied = 'true';
-        btn.textContent = '已复制';
-        setTimeout(() => {
-          btn.dataset.copied = 'false';
-          btn.textContent = original;
-        }, 1400);
-      });
-    });
 
     const observer = new MutationObserver(syncFloatingState);
     observer.observe(root, {

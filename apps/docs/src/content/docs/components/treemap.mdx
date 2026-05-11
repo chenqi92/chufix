@@ -1,0 +1,42 @@
+---
+title: Treemap 矩形树图
+description: 层级矩形面积图，slice-and-dice 单层布局。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/treemap/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfTreemap ... />`}
+  reactCode={`<CfTreemap ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## label 显隐
+
+`showLabels=false` 时只展示色块，适合微缩组合。仅当矩形足够大（w>50, h>20）时才显示文字。
+
+import LabeledVue from '~/components/demos/treemap/LabeledVue.vue';
+
+<DemoFrame
+  vueCode={`<CfTreemap :nodes="nodes" />
+<CfTreemap :nodes="nodes" :show-labels="false" />`}
+  reactCode={`<CfTreemap nodes={nodes} />
+<CfTreemap nodes={nodes} showLabels={false} />`}
+>
+  <LabeledVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `nodes` | `TreemapNode[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `width / height` | `number` | `480 / 240` |  |

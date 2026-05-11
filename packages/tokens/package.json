@@ -1,7 +1,25 @@
 {
-  "name": "@chufix/tokens",
-  "version": "0.0.1",
+  "name": "@chufix-design/tokens",
+  "version": "0.2.1",
   "description": "ChuFix UI 设计 token —— CSS 变量与可选 Tailwind preset",
+  "license": "MIT",
+  "author": "chenqi92",
+  "homepage": "https://chufix.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenqi92/chufix.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/chenqi92/chufix/issues"
+  },
+  "keywords": [
+    "chufix",
+    "design-tokens",
+    "css-variables",
+    "tailwind-preset",
+    "design-system"
+  ],
   "type": "module",
   "files": [
     "src",
@@ -17,6 +35,10 @@
       "types": "./src/tailwind-preset.ts",
       "import": "./src/tailwind-preset.ts"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "dev": "echo 'tokens: nothing to compile, source is consumed directly'",

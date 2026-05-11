@@ -17,7 +17,7 @@ import AffixVue from '~/components/demos/input/AffixVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfInput } from '@chufix/vue';
+import { CfInput } from '@chufix-design/vue';
 
 const name = ref('');
 </script>
@@ -26,7 +26,7 @@ const name = ref('');
   <CfInput v-model="name" placeholder="请输入用户名" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfInput } from '@chufix/react';
+import { CfInput } from '@chufix-design/react';
 
 export default function Demo() {
   const [name, setName] = useState('');
@@ -77,7 +77,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfInput } from '@chufix/vue';
+import { CfInput } from '@chufix-design/vue';
 
 const email = ref('not-an-email');
 const valid = (s: string) => /.+@.+\\..+/.test(s);
@@ -94,7 +94,7 @@ const valid = (s: string) => /.+@.+\\..+/.test(s);
   <CfInput placeholder="只读" readonly model-value="readonly content" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfInput } from '@chufix/react';
+import { CfInput } from '@chufix-design/react';
 
 export default function Demo() {
   const [email, setEmail] = useState('not-an-email');

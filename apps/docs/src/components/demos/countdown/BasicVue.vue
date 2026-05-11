@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { CfCountDown, CfButton } from '@chufix/vue';
+import { CfCountDown, CfButton } from '@chufix-design/vue';
 
 const now = Date.now();
 const target = ref<number>(now + 60_000);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfTimeline, type TimelineItem } from '@chufix/vue';
+import { CfTimeline, type TimelineItem } from '@chufix-design/vue';
 
 const items: TimelineItem[] = [
   { title: '提交了 PR #128', time: '2026-05-08 10:14', color: 'primary' },

@@ -1,0 +1,105 @@
+/* ChuFix StatusBar — bottom status strip with three groups (left / center / right). */
+
+.cf-statusbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 24px;
+  padding: 0 4px;
+  background: var(--bg-1);
+  border-top: 1px solid var(--line-1);
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-2);
+  user-select: none;
+}
+.cf-statusbar--sm {
+  height: 20px;
+  font-size: 10px;
+}
+
+.cf-statusbar--accent {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-statusbar--success {
+  background: var(--status-success);
+  color: var(--fg-on-accent);
+}
+.cf-statusbar--warning {
+  background: var(--status-warning);
+  color: var(--bg-0);
+}
+.cf-statusbar--error {
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+}
+.cf-statusbar--info {
+  background: var(--status-info);
+  color: var(--fg-on-accent);
+}
+
+.cf-statusbar__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+}
+.cf-statusbar__group--left {
+  justify-content: flex-start;
+}
+.cf-statusbar__group--center {
+  justify-content: center;
+}
+.cf-statusbar__group--right {
+  justify-content: flex-end;
+}
+
+.cf-statusbar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.cf-statusbar__item:hover:not(.is-disabled) {
+  background: var(--bg-2);
+}
+.cf-statusbar__item.is-disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+.cf-statusbar--accent .cf-statusbar__item:hover:not(.is-disabled),
+.cf-statusbar--success .cf-statusbar__item:hover:not(.is-disabled),
+.cf-statusbar--warning .cf-statusbar__item:hover:not(.is-disabled),
+.cf-statusbar--error .cf-statusbar__item:hover:not(.is-disabled),
+.cf-statusbar--info .cf-statusbar__item:hover:not(.is-disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cf-statusbar__item--success {
+  color: var(--status-success);
+}
+.cf-statusbar__item--warning {
+  color: var(--status-warning);
+}
+.cf-statusbar__item--error {
+  color: var(--status-error);
+}
+.cf-statusbar__item--info {
+  color: var(--status-info);
+}
+.cf-statusbar__item--accent {
+  color: var(--accent-1);
+}
+
+.cf-statusbar__shortcut {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-left: 4px;
+}

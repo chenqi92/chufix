@@ -1,0 +1,49 @@
+---
+title: Gauge 仪表盘
+description: 圆环型当前值仪表，4 种 tone。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/gauge/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfGauge ... />`}
+  reactCode={`<CfGauge ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 扫角度
+
+`sweep` 决定圆环开口大小（180=半圆 270=三分之三 360=整圆）。
+
+import SweepVue from '~/components/demos/gauge/SweepVue.vue';
+
+<DemoFrame
+  vueCode={`<CfGauge :value="42" :sweep="180" label="180°" unit="%" />
+<CfGauge :value="60" :sweep="270" label="270°" unit="%" />
+<CfGauge :value="78" :sweep="360" label="360°" unit="%" />`}
+  reactCode={`<CfGauge value={42} sweep={180} label="180°" unit="%" />
+<CfGauge value={60} sweep={270} label="270°" unit="%" />
+<CfGauge value={78} sweep={360} label="360°" unit="%" />`}
+>
+  <SweepVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `value` | `number` | `—` | 当前值 |
+| `min / max` | `number` | `0 / 100` |  |
+| `size` | `number` | `160` | 直径 |
+| `thickness` | `number` | `10` | 圆环厚 |
+| `sweep` | `number` | `270` | 扫角度（180=半圆 270=三分之三 360=整圆） |
+| `tone` | `'accent' \| 'success' \| 'warning' \| 'error'` | `'accent'` |  |
+| `unit / label` | `string` | `—` |  |

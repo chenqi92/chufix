@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTransfer, type TransferItem } from '@chufix/vue';
+import { CfTransfer, type TransferItem } from '@chufix-design/vue';
 
 const data: TransferItem[] = [
   { key: 'auth', label: '权限管理' },

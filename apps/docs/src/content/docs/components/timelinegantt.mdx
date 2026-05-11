@@ -1,0 +1,85 @@
+---
+title: TimelineGantt 甘特图
+description: 横向时间轴 + 多行任务条 —— today 标线、周末高亮、拖拽移动 / 缩放、依赖箭头、按 group 分组。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/timelinegantt/BasicVue.vue';
+import EditableVue from '~/components/demos/timelinegantt/EditableVue.vue';
+import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
+
+## 基础用法
+
+`rows` 是任务行数组；每行的 `bars` 是该行上的若干时间段。`start` / `end` 决定可视范围，`day-width` 控制一天的像素宽度，今天会用一条蓝色竖线标出。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 可编辑（拖拽 / 缩放）
+
+`editable` 打开后，条体可拖拽整体移动；左右边缘出现把柄，可以单边缩放。变更通过 `@bar-change` 事件抛出 `{ bar, row, next: { start, end }, meta }`，宿主自己回写到 model。
+
+<DemoFrame>
+  <EditableVue client:only="vue" />
+</DemoFrame>
+
+## 分组 + 依赖
+
+行可以带 `group: string` —— 渲染时自动按首次出现顺序插入分组标题（侧栏 + 主体一起对齐）。`dependencies` 数组以 bar id 配对，组件在主体上画一条带箭头的折线，表示前置/后置关系。
+
+<DemoFrame>
+  <GroupedVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `rows` | `GanttRow[]` | — | 任务行数组 |
+| `start` / `end` | `DateLike` | — | 可视范围（包含 end 当天） |
+| `unit` | `'day' \| 'week' \| 'month'` | `'day'` | 轴粒度（v1 仅影响显示文案） |
+| `dayWidth` | `number` | `32` | 每天的像素宽度 |
+| `rowHeight` | `number` | `40` | 每行高度 |
+| `labelWidth` | `number` | `200` | 左侧名称栏宽度 |
+| `showToday` | `boolean` | `true` | 渲染 today 竖线 |
+| `dependencies` | `GanttDependency[]` | — | 依赖关系 `{ from, to }` 数组（bar id 配对） |
+| `editable` | `boolean` | `false` | 允许拖拽移动 / 边缘缩放 |
+| `weekStartsOn` | `0 \| 1` | `1` | 周日 / 周一为起点（影响周末判断） |
+| `caption` | `string` | — | 顶部说明文字 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+### 类型
+
+```ts
+interface GanttRow {
+  id: string;
+  label: string;
+  group?: string;
+  bars: GanttBar[];
+}
+
+interface GanttBar {
+  id: string;
+  start: DateLike;
+  end: DateLike;
+  label?: string;
+  color?: string;     // 自定义色，覆盖默认 accent
+  progress?: number;  // 0–1 完成度
+  disabled?: boolean;
+}
+
+interface GanttDependency {
+  from: string;  // 源 bar id
+  to: string;    // 目标 bar id
+}
+```
+
+### 事件
+
+- Vue: `@bar-click(bar, row)` / `@row-click(row)` / `@bar-change({ bar, row, next, meta })`
+- React: `onBarClick` / `onRowClick` / `onBarChange`
+
+`meta.action` 取值：`'move' | 'resize-start' | 'resize-end'`。`meta.prev` 是拖拽前的原始 `{ start, end }`。

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSearchInput } from '@chufix/vue';
+import { CfSearchInput } from '@chufix-design/vue';
 </script>
 
 <template>

@@ -1,0 +1,145 @@
+---
+title: Avatar
+description: Avatar with three-stage fallback (image → initials → icon), 5 sizes, circle/square shapes, and AvatarGroup overlap.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/avatar/BasicVue.vue';
+import SizesVue from '~/components/demos/avatar/SizesVue.vue';
+import FallbackVue from '~/components/demos/avatar/FallbackVue.vue';
+import GroupVue from '~/components/demos/avatar/GroupVue.vue';
+
+## Basic usage
+
+Priority order: a successfully loaded `src` shows the image; on failure or if no `src` is provided, `fallback` / `name` initials are shown; otherwise a `?` placeholder.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfAvatar } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfAvatar src="https://i.pravatar.cc/80?img=12" alt="Avatar" />
+  <CfAvatar name="Chen Qi" />
+  <CfAvatar name="Anna Lee" />
+  <CfAvatar fallback="?" />
+</template>`}
+  reactCode={`import { CfAvatar } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfAvatar src="https://i.pravatar.cc/80?img=12" alt="Avatar" />
+      <CfAvatar name="Chen Qi" />
+      <CfAvatar name="Anna Lee" />
+      <CfAvatar fallback="?" />
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Size and shape
+
+Five sizes (`xs` / `sm` / `md` / `lg` / `xl`) and two shapes (`circle` / `square`).
+
+<DemoFrame
+  vueCode={`<CfAvatar size="xs" name="Chen Qi" />
+<CfAvatar size="sm" name="Chen Qi" />
+<CfAvatar size="md" name="Chen Qi" />
+<CfAvatar size="lg" name="Chen Qi" />
+<CfAvatar size="xl" name="Chen Qi" />
+
+<CfAvatar shape="circle" name="Bob Smith" />
+<CfAvatar shape="square" name="Bob Smith" />`}
+  reactCode={`<CfAvatar size="xs" name="Chen Qi" />
+<CfAvatar size="sm" name="Chen Qi" />
+<CfAvatar size="md" name="Chen Qi" />
+<CfAvatar size="lg" name="Chen Qi" />
+<CfAvatar size="xl" name="Chen Qi" />
+
+<CfAvatar shape="circle" name="Bob Smith" />
+<CfAvatar shape="square" name="Bob Smith" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Fallback priority
+
+The second example points at a non-existent `src` and falls back to initials computed from `name`. The last one uses a custom icon.
+
+<DemoFrame
+  vueCode={`<CfAvatar src="https://i.pravatar.cc/80?img=22" alt="Loaded normally" />
+<CfAvatar src="/__intentionally_404__.png" name="Fallback Test" />  <!-- load fails → "FT" -->
+<CfAvatar name="Chen Qi" />                                          <!-- "CQ" -->
+<CfAvatar name="anna lee smith" />                                   <!-- "AS" -->
+<CfAvatar fallback="🐱" />                                            <!-- direct override -->
+<CfAvatar>                                                            <!-- custom icon -->
+  <UserSvg />
+</CfAvatar>`}
+  reactCode={`<CfAvatar src="https://i.pravatar.cc/80?img=22" alt="Loaded normally" />
+<CfAvatar src="/__intentionally_404__.png" name="Fallback Test" />
+<CfAvatar name="Chen Qi" />
+<CfAvatar name="anna lee smith" />
+<CfAvatar fallback="🐱" />
+<CfAvatar><UserSvg /></CfAvatar>`}
+>
+  <FallbackVue client:load />
+</DemoFrame>
+
+## AvatarGroup overlap
+
+`AvatarGroup` arranges avatars in an overlapping row — common for "X people collaborating" lists. `spacing` controls the overlap (more negative = more overlap).
+
+<DemoFrame
+  vueCode={`<CfAvatarGroup>
+  <CfAvatar src="https://i.pravatar.cc/80?img=1" />
+  <CfAvatar src="https://i.pravatar.cc/80?img=2" />
+  <CfAvatar src="https://i.pravatar.cc/80?img=3" />
+  <CfAvatar fallback="+5" />
+</CfAvatarGroup>
+
+<CfAvatarGroup :spacing="-4">
+  <CfAvatar size="sm" name="Anna" />
+  <CfAvatar size="sm" name="Bob" />
+  <CfAvatar size="sm" name="Cici" />
+  <CfAvatar size="sm" fallback="+12" />
+</CfAvatarGroup>`}
+  reactCode={`<CfAvatarGroup>
+  <CfAvatar src="https://i.pravatar.cc/80?img=1" />
+  <CfAvatar src="https://i.pravatar.cc/80?img=2" />
+  <CfAvatar src="https://i.pravatar.cc/80?img=3" />
+  <CfAvatar fallback="+5" />
+</CfAvatarGroup>
+
+<CfAvatarGroup spacing={-4}>
+  <CfAvatar size="sm" name="Anna" />
+  <CfAvatar size="sm" name="Bob" />
+  <CfAvatar size="sm" name="Cici" />
+  <CfAvatar size="sm" fallback="+12" />
+</CfAvatarGroup>`}
+>
+  <GroupVue client:load />
+</DemoFrame>
+
+## API
+
+### Avatar
+
+| Prop       | Type                                       | Default    | Description                                          |
+| ---------- | ------------------------------------------ | ---------- | --------------------------------------------- |
+| `src`      | `string`                                   | —          | Image URL; auto-falls back on load failure    |
+| `alt`      | `string`                                   | —          | Image alt; falls back to `name` when unset    |
+| `name`     | `string`                                   | —          | Used to compute initials (first letter of first and last words) |
+| `fallback` | `string`                                   | —          | Override for the initial text, takes priority over `name`  |
+| `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`     | `'md'`     | Size                                          |
+| `shape`    | `'circle' \| 'square'`                     | `'circle'` | Shape                                         |
+
+The default slot (Vue) / children (React) replaces the initials — typically used to drop in an SVG icon.
+
+### AvatarGroup
+
+| Prop      | Type     | Default | Description                                       |
+| --------- | -------- | ------ | ------------------------------------------ |
+| `spacing` | `number` | `-8`   | Horizontal spacing between items; negative values create overlap |

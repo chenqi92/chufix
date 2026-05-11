@@ -1,0 +1,31 @@
+---
+title: IconPicker
+description: Search and select from the built-in icon set for menu settings, dashboards, and property panels.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/iconpicker/BasicVue.vue';
+
+## Basic Usage
+
+`CfIconPicker` reads the typed icon list from `@chufix-design/icons`. The selected value is an `IconName`.
+
+<DemoFrame
+  vueCode={`<CfIconPicker v-model="icon" searchable clearable />`}
+  reactCode={`<CfIconPicker value={icon} searchable clearable onChange={setIcon} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` / `modelValue` | `IconName` | `—` | Current icon name |
+| `placeholder` | `string` | `选择图标` | Empty placeholder |
+| `searchable` | `boolean` | `true` | Show search input |
+| `clearable` | `boolean` | `true` | Show clear button |
+| `disabled` | `boolean` | `false` | Disable the control |
+| `size` | `sm / md / lg` | `md` | Size |
+
+Events: Vue `update:modelValue` / `change(value)`, React `onChange(value)`.

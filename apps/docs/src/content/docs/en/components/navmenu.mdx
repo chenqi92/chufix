@@ -1,0 +1,108 @@
+---
+title: NavMenu
+description: Top horizontal navigation; each item can attach a rich panel (multi-column links + descriptions); 3 variants, hover / click triggers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/navmenu/BasicVue.vue';
+import VariantsVue from '~/components/demos/navmenu/VariantsVue.vue';
+import TriggerVue from '~/components/demos/navmenu/TriggerVue.vue';
+
+## Basic usage
+
+`items` is the top-level menu array. Each entry is either a simple link (`href`) or has a `links[]` sublist. The latter opens a rich panel on hover / click; each link can carry a `description` and `icon`. `columns` controls how many columns per row in the panel (1 / 2 / 3).
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfNavMenu, type NavMenuItem } from '@chufix-design/vue';
+
+const active = ref('products');
+const items: NavMenuItem[] = [
+  {
+    key: 'products',
+    label: 'Products',
+    columns: 2,
+    links: [
+      { label: 'Components', description: 'Vue 3 and React from a single source', href: '#' },
+      { label: 'Tokens', description: 'OKLCH design variables + 3 themes', href: '#' },
+      { label: 'Icons', description: '16x16 sprite', href: '#' },
+      { label: 'CLI', description: 'npx chufix add', href: '#' },
+    ],
+  },
+  { key: 'docs', label: 'Docs', links: [{ label: 'Get started', href: '#' }] },
+  { key: 'pricing', label: 'Pricing', href: '#' },
+];
+</script>
+
+<template>
+  <CfNavMenu :items="items" :active="active" />
+</template>`}
+  reactCode={`import { CfNavMenu, type NavMenuItem } from '@chufix-design/react';
+
+const items: NavMenuItem[] = [/* ... */];
+
+<CfNavMenu items={items} active="products" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Three variants
+
+- `underline` — thin underline beneath the active item (default, most restrained)
+- `pill` — active item turns into a filled pill
+- `minimal` — color change only, no shape indicator
+
+<DemoFrame
+  vueCode={`<CfNavMenu :items="items" :active="a" variant="underline" />
+<CfNavMenu :items="items" :active="b" variant="pill" />
+<CfNavMenu :items="items" :active="c" variant="minimal" />`}
+  reactCode={`<CfNavMenu items={items} active={a} variant="underline" />
+<CfNavMenu items={items} active={b} variant="pill" />
+<CfNavMenu items={items} active={c} variant="minimal" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Trigger
+
+`trigger` — `hover` (default, opens on mouse hover) / `click` (opens on click; better for mobile or to avoid accidental triggers).
+
+<DemoFrame
+  vueCode={`<CfNavMenu :items="items" :active="a" trigger="hover" />
+<CfNavMenu :items="items" :active="b" trigger="click" />`}
+  reactCode={`<CfNavMenu items={items} active={a} trigger="hover" />
+<CfNavMenu items={items} active={b} trigger="click" />`}
+>
+  <TriggerVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `NavMenuItem[]` | `[]` | Top-level entries |
+| `active` | `string` | `—` | `key` of the active item; drives underline / highlight |
+| `variant` | `'underline' \| 'pill' \| 'minimal'` | `'underline'` | Visual mode |
+| `trigger` | `'hover' \| 'click'` | `'hover'` | Trigger for the rich panel |
+
+Type exports:
+
+```ts
+interface NavMenuItem {
+  key: string;
+  label: string;
+  href?: string;
+  links?: NavMenuLink[];
+  columns?: 1 | 2 | 3;
+  disabled?: boolean;
+}
+interface NavMenuLink {
+  label: string;
+  description?: string;
+  href: string;
+  icon?: VNode | ReactNode;
+}
+```
+
+Events: `navigate(item)` (React: `onNavigate`); fires only when a simple link is clicked (no `links` sublist).

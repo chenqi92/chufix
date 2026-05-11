@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfTimeRangePicker, type TimeRangeValue } from '@chufix/vue';
+import { CfTimeRangePicker, type TimeRangeValue } from '@chufix-design/vue';
 
 const range = ref<TimeRangeValue>(['09:00', '18:00']);
 </script>

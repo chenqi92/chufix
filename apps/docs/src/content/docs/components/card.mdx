@@ -15,7 +15,7 @@ import InteractiveVue from '~/components/demos/card/InteractiveVue.vue';
 
 <DemoFrame
   vueCode={`<script setup lang="ts">
-import { CfCard } from '@chufix/vue';
+import { CfCard } from '@chufix-design/vue';
 </script>
 
 <template>
@@ -23,7 +23,7 @@ import { CfCard } from '@chufix/vue';
     <p>最简卡片，只渲染默认插槽。</p>
   </CfCard>
 </template>`}
-  reactCode={`import { CfCard } from '@chufix/react';
+  reactCode={`import { CfCard } from '@chufix-design/react';
 
 export default function Demo() {
   return (
@@ -64,7 +64,7 @@ Vue 用具名插槽 `header` / `footer`，React 用子组件 `CardHeader` / `Car
     <CfButton size="sm">保存</CfButton>
   </template>
 </CfCard>`}
-  reactCode={`import { CfButton, CfCard, CfCardHeader, CfCardBody, CfCardFooter } from '@chufix/react';
+  reactCode={`import { CfButton, CfCard, CfCardHeader, CfCardBody, CfCardFooter } from '@chufix-design/react';
 
 export default function Demo() {
   return (

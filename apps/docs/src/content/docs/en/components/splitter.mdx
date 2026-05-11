@@ -1,0 +1,119 @@
+---
+title: Splitter
+description: Drag the divider to resize two panels — horizontal / vertical, keyboard accessible, controllable.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/splitter/BasicVue.vue';
+import VerticalVue from '~/components/demos/splitter/VerticalVue.vue';
+import PixelVue from '~/components/demos/splitter/PixelVue.vue';
+import DisabledVue from '~/components/demos/splitter/DisabledVue.vue';
+
+## Basic usage
+
+`v-model` binds a number. With `unit="%"` (default) it's a percentage; with `unit="px"` it's pixels. `min` / `max` clamp the range. After focusing the divider with the keyboard: ← / → for fine adjustment (Shift jumps by 10), Home / End jump to the extremes.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfSplitter } from '@chufix-design/vue';
+
+const size = ref(35);
+</script>
+
+<template>
+  <CfSplitter v-model="size" :min="15" :max="85">
+    <template #start>Sidebar</template>
+    <template #end>Main</template>
+  </CfSplitter>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfSplitter } from '@chufix-design/react';
+
+export default function Demo() {
+  const [size, setSize] = useState(35);
+  return (
+    <CfSplitter
+      value={size}
+      min={15}
+      max={85}
+      start={<div>Sidebar</div>}
+      end={<div>Main</div>}
+      onChange={setSize}
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Vertical
+
+`orientation="vertical"` rotates the divider horizontally, splitting top and bottom panels. Common for editor + console or table + detail layouts.
+
+<DemoFrame
+  vueCode={`<CfSplitter v-model="size" orientation="vertical" :min="20" :max="80">
+  <template #start>Editor</template>
+  <template #end>Console</template>
+</CfSplitter>`}
+  reactCode={`<CfSplitter
+  value={size}
+  orientation="vertical"
+  min={20}
+  max={80}
+  start={<div>Editor</div>}
+  end={<div>Console</div>}
+  onChange={setSize}
+/>`}
+>
+  <VerticalVue client:load />
+</DemoFrame>
+
+## Pixel unit
+
+`unit="px"` switches the value to pixels — ideal when the sidebar width must be precise (and shouldn't change with the viewport like `%` does).
+
+<DemoFrame
+  vueCode={`<CfSplitter v-model="size" unit="px" :min="120" :max="480">
+  <template #start>Sidebar — currently {{ size }}px</template>
+  <template #end>Main</template>
+</CfSplitter>`}
+  reactCode={`<CfSplitter
+  value={size}
+  onChange={setSize}
+  unit="px"
+  min={120}
+  max={480}
+  start={<div>Sidebar — currently {size}px</div>}
+  end={<div>Main</div>}
+/>`}
+>
+  <PixelVue client:load />
+</DemoFrame>
+
+## Disabled
+
+`disabled` locks the divider — the current ratio is still rendered but users can't drag. Common in demo states or restricted-permission views.
+
+<DemoFrame
+  vueCode={`<CfSplitter v-model="size" disabled />`}
+  reactCode={`<CfSplitter value={size} disabled />`}
+>
+  <DisabledVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `number` | `—` | Controlled size value; omit to self-manage with `defaultSize` |
+| `defaultSize` (Vue) / `defaultValue` (React) | `number` | `30` | Initial size |
+| `unit` | `'%' \| 'px'` | `'%'` | Value unit |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction |
+| `min` / `max` | `number` | `10` / `90` | Value bounds (matching `unit`) |
+| `disabled` | `boolean` | `false` | Disable dragging |
+| `collapsible` | `boolean` | `false` | Enable Enter / Space to toggle between `min` and `defaultSize` |
+| `resizeFrom` | `'start' \| 'end'` | `'start'` | Which side the value tracks |
+
+Events: `update:modelValue` / `resize` (React: `onChange` / `onResize`).
+Slots: `start` / `end` (React uses same-named props that accept ReactNode).

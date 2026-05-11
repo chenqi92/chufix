@@ -1,0 +1,95 @@
+---
+title: Stat
+description: KPI metric card with number, label, and trend. Designed for dashboard summary headers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/stat/BasicVue.vue';
+import TrendsVue from '~/components/demos/stat/TrendsVue.vue';
+import VariantsVue from '~/components/demos/stat/VariantsVue.vue';
+import SizesVue from '~/components/demos/stat/SizesVue.vue';
+import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
+
+## Basic usage
+
+`label` + `value` is the minimum config.
+
+<DemoFrame
+  vueCode={`<CfStat label="Today's visits" :value="12384" variant="outlined" />`}
+  reactCode={`<CfStat label="Today's visits" value={12384} variant="outlined" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Trends and prefix / suffix
+
+`trend` — `{ delta, direction?, label? }`. When `direction` is omitted it's inferred from the value's sign (positive green, negative red, zero gray). `prefix` / `suffix` add small text around the number (currency, percent sign).
+
+<DemoFrame
+  vueCode={`<CfStat label="Today's visits" :value="12384" :trend="{ delta: '+12.4%', label: 'vs. yesterday' }" variant="outlined" />
+<CfStat label="Conversion" value="3.2" suffix="%" :trend="{ delta: '-0.4%', label: 'vs. yesterday' }" variant="outlined" />
+<CfStat label="Revenue" :value="84520" prefix="¥" :trend="{ delta: 0, label: 'flat vs. yesterday' }" variant="outlined" />`}
+  reactCode={`<CfStat label="Today's visits" value={12384} trend={{ delta: '+12.4%', label: 'vs. yesterday' }} variant="outlined" />
+<CfStat label="Conversion" value="3.2" suffix="%" trend={{ delta: '-0.4%', label: 'vs. yesterday' }} variant="outlined" />
+<CfStat label="Revenue" value={84520} prefix="¥" trend={{ delta: 0, label: 'flat vs. yesterday' }} variant="outlined" />`}
+>
+  <TrendsVue client:load />
+</DemoFrame>
+
+## Variants
+
+`variant` controls background and border: `default` (transparent) / `outlined` (border) / `soft` (light gray fill).
+
+<DemoFrame
+  vueCode={`<CfStat label="default" :value="42" />
+<CfStat label="outlined" :value="42" variant="outlined" />
+<CfStat label="soft" :value="42" variant="soft" />`}
+  reactCode={`<CfStat label="default" value={42} />
+<CfStat label="outlined" value={42} variant="outlined" />
+<CfStat label="soft" value={42} variant="soft" />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## Sizes
+
+`size` changes the main number's font size — `sm` compact / `md` default / `lg` for landing-page emphasis.
+
+<DemoFrame
+  vueCode={`<CfStat label="size = sm" :value="42" size="sm" variant="outlined" />
+<CfStat label="size = md" :value="42" size="md" variant="outlined" />
+<CfStat label="size = lg" :value="42" size="lg" variant="outlined" />`}
+  reactCode={`<CfStat label="size = sm" value={42} size="sm" variant="outlined" />
+<CfStat label="size = md" value={42} size="md" variant="outlined" />
+<CfStat label="size = lg" value={42} size="lg" variant="outlined" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## Loading
+
+When `loading`, the number slot shows `—` so 0 doesn't flash before data arrives.
+
+<DemoFrame
+  vueCode={`<CfStat label="Loading" :value="0" loading variant="outlined" />
+<CfStat label="Ready" :value="123" variant="outlined" />`}
+  reactCode={`<CfStat label="Loading" value={0} loading variant="outlined" />
+<CfStat label="Ready" value={123} variant="outlined" />`}
+>
+  <LoadingVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string \| ReactNode` | `—` | Small label above the number |
+| `value` | `string \| number \| ReactNode` | `—` | Main number |
+| `prefix` / `suffix` | `string \| ReactNode` | `—` | Small text before/after the number |
+| `hint` | `string \| ReactNode` | `—` | Helper text below |
+| `trend` | `StatTrend` | `—` | `{ delta, direction?, label? }`; direction inferred from sign when omitted |
+| `variant` | `'default' \| 'outlined' \| 'soft'` | `'default'` | Visual mode |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Number font size |
+| `loading` | `boolean` | `false` | Loading state, number slot shows `—` |
+
+Slots (Vue) / props (React): `leading` / `trailing` (label row ends), `footer` (appended at the bottom).

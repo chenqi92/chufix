@@ -1,0 +1,102 @@
+---
+title: InputGroup
+description: Compose multiple Input / Button / Select / static labels into one unit with shared outer radius and border.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/inputgroup/BasicVue.vue';
+import UrlVue from '~/components/demos/inputgroup/UrlVue.vue';
+import AddonVue from '~/components/demos/inputgroup/AddonVue.vue';
+import StretchVue from '~/components/demos/inputgroup/StretchVue.vue';
+
+## Basic usage
+
+InputGroup is a pure styling wrapper. Put form controls inside in order; adjacent inner radii are removed automatically and the first / last element inherits the outer radius. Static labels are rendered with `<span class="cf-input-group__addon">`.
+
+<DemoFrame
+  vueCode={`<CfInputGroup>
+  <span class="cf-input-group__addon">@</span>
+  <CfInput v-model="search" placeholder="username" />
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup>
+  <span className="cf-input-group__addon">@</span>
+  <CfInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="username" />
+</CfInputGroup>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## With Select / Button
+
+The most common combination — "URL input + protocol select + submit button" — three segments share a single border.
+
+<DemoFrame
+  vueCode={`<CfInputGroup>
+  <CfSelect v-model="protocol" :options="protocols" />
+  <CfInput v-model="host" placeholder="example.com" />
+  <CfButton>Visit</CfButton>
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup>
+  <CfSelect value={protocol} onChange={setProtocol} options={protocols} />
+  <CfInput value={host} onChange={(e) => setHost(e.target.value)} placeholder="example.com" />
+  <CfButton>Visit</CfButton>
+</CfInputGroup>`}
+>
+  <UrlVue client:load />
+</DemoFrame>
+
+## Leading and trailing addons
+
+`<span class="cf-input-group__addon">` can sit on either side of the input — common for currency or URL path prefixes/suffixes.
+
+<DemoFrame
+  vueCode={`<CfInputGroup>
+  <span class="cf-input-group__addon">¥</span>
+  <CfInput v-model="price" placeholder="Price" />
+  <span class="cf-input-group__addon">RMB</span>
+</CfInputGroup>
+
+<CfInputGroup>
+  <span class="cf-input-group__addon">https://</span>
+  <CfInput v-model="url" placeholder="example.com" />
+  <span class="cf-input-group__addon">/path</span>
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup>
+  <span className="cf-input-group__addon">¥</span>
+  <CfInput value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
+  <span className="cf-input-group__addon">RMB</span>
+</CfInputGroup>
+
+<CfInputGroup>
+  <span className="cf-input-group__addon">https://</span>
+  <CfInput value={url} onChange={(e) => setUrl(e.target.value)} placeholder="example.com" />
+  <span className="cf-input-group__addon">/path</span>
+</CfInputGroup>`}
+>
+  <AddonVue client:load />
+</DemoFrame>
+
+## Equal-width stretch
+
+`stretch` makes children share the parent width equally — handy for a full-row search box + submit button.
+
+<DemoFrame
+  vueCode={`<CfInputGroup stretch>
+  <CfInput v-model="q" placeholder="Search…" />
+  <CfButton variant="primary">Search</CfButton>
+</CfInputGroup>`}
+  reactCode={`<CfInputGroup stretch>
+  <CfInput value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" />
+  <CfButton variant="primary">Search</CfButton>
+</CfInputGroup>`}
+>
+  <StretchVue client:load />
+</DemoFrame>
+
+## API · Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of static addons (controls keep their own size) |
+| `stretch` | `boolean` | `false` | Children fill parent equally |

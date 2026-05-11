@@ -1,0 +1,34 @@
+---
+title: InfiniteScroll
+description: Auto-loads the next page when scrolled to the bottom; based on IntersectionObserver.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/infinitescroll/BasicVue.vue';
+
+## Basic usage
+
+Place the list inside the component slot. When the bottom sentinel enters the viewport (`threshold` pixels in advance), `load` fires. `loading` suppresses repeat triggers, and `finished` shows "no more results".
+
+<DemoFrame
+  vueCode={`<CfInfiniteScroll :loading="loading" :finished="finished" @load="loadMore">
+  <ul>...</ul>
+</CfInfiniteScroll>`}
+  reactCode={`<CfInfiniteScroll loading={loading} finished={finished} onLoad={loadMore}>
+  <ul>...</ul>
+</CfInfiniteScroll>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `loading` | `boolean` | `false` | Loading; `load` will not fire while true |
+| `finished` | `boolean` | `false` | No more data |
+| `threshold` | `number` | `100` | Fire when the sentinel is N pixels away from entering the viewport (rootMargin) |
+
+Events: `onLoad()` — load the next batch in the handler.
+
+Slots (Vue): `loading` / `finished` for custom bottom hint text.

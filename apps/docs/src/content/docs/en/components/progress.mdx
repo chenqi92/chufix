@@ -1,0 +1,84 @@
+---
+title: Progress
+description: Linear / circular progress bar with 5 semantic tones, indeterminate state, and percentage display.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/progress/BasicVue.vue';
+import TonesVue from '~/components/demos/progress/TonesVue.vue';
+import CircleVue from '~/components/demos/progress/CircleVue.vue';
+import IndeterminateVue from '~/components/demos/progress/IndeterminateVue.vue';
+
+## Basic usage
+
+`value` is a percentage in the range 0..100. `showLabel` renders the current percentage to the right of the linear bar.
+
+<DemoFrame
+  vueCode={`<CfProgress :value="value" show-label />`}
+  reactCode={`<CfProgress value={value} showLabel />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Five tones
+
+`tone` — `primary` / `success` / `warning` / `danger` / `info`, mapped to `--accent-*` / `--status-*` tokens.
+
+<DemoFrame
+  vueCode={`<CfProgress :value="60" tone="primary" show-label />
+<CfProgress :value="60" tone="success" show-label />
+<CfProgress :value="60" tone="warning" show-label />
+<CfProgress :value="60" tone="danger" show-label />
+<CfProgress :value="60" tone="info" show-label />`}
+  reactCode={`<CfProgress value={60} tone="primary" showLabel />
+<CfProgress value={60} tone="success" showLabel />
+<CfProgress value={60} tone="warning" showLabel />
+<CfProgress value={60} tone="danger" showLabel />
+<CfProgress value={60} tone="info" showLabel />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## Circle variant
+
+`variant="circle"` switches to a ring — well suited to cards, KPIs, and gauges. `size` controls the diameter; `strokeWidth` explicitly sets the ring thickness (default is inferred from size).
+
+<DemoFrame
+  vueCode={`<CfProgress variant="circle" size="sm" :value="40" show-label />
+<CfProgress variant="circle" :value="60" show-label />
+<CfProgress variant="circle" size="lg" :value="100" tone="success" show-label />
+<CfProgress variant="circle" size="lg" indeterminate />`}
+  reactCode={`<CfProgress variant="circle" size="sm" value={40} showLabel />
+<CfProgress variant="circle" value={60} showLabel />
+<CfProgress variant="circle" size="lg" value={100} tone="success" showLabel />
+<CfProgress variant="circle" size="lg" indeterminate />`}
+>
+  <CircleVue client:load />
+</DemoFrame>
+
+## Indeterminate
+
+When `indeterminate` is set, `value` is ignored and a looping animation is rendered — for waiting states with unknown progress.
+
+<DemoFrame
+  vueCode={`<CfProgress indeterminate />
+<CfProgress indeterminate tone="success" />
+<CfProgress indeterminate tone="danger" size="sm" />`}
+  reactCode={`<CfProgress indeterminate />
+<CfProgress indeterminate tone="success" />
+<CfProgress indeterminate tone="danger" size="sm" />`}
+>
+  <IndeterminateVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` (0..100) | `0` | Current progress |
+| `variant` | `'line' \| 'circle'` | `'line'` | Visual form |
+| `tone` | `'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `'primary'` | Semantic color |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Height (line) / diameter (circle) |
+| `indeterminate` | `boolean` | `false` | Indeterminate state; ignores value, loops animation |
+| `showLabel` | `boolean` | `false` | Show percentage on the right / center |
+| `strokeWidth` | `number` | — | Ring thickness in circle mode (defaults from size) |

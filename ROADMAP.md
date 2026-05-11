@@ -1,35 +1,46 @@
 # ChuFix UI · 组件路线图
 
-来源：`base-compoent/` 下 26 个 ProtoForge 设计参考页（atoms / overlays / base / base2 / forms-plus / navigation / rich / data / layout）。
+来源：`chufix-design/` 下 28 个 ProtoForge 设计参考页（atoms / overlays / base / base2 / forms-plus / navigation / rich / data / layout / charts / charts2 / editors / sql / terminal / network / protocols / plugins / domain / system / multiwindow / onboarding / crash 等）。
 完成一项把对应行 `- [ ]` 改成 `- [x]`，commit 即可。
 
-每条行末的 `(ref)` 标的是 ProtoForge 里这个组件的来源页面，方便对照视觉做。
+每条行末括号里标的是 ProtoForge 里这个组件的来源页面，方便对照视觉做。
+
+**目标**：把设计稿里**全部**视觉单元具象为组件 —— atom / composite / template（页面模块）三档都要进。
+模版组件可以是一个壳，内部用 Tabs 组合多个子模块（例如 `ProtocolPane` 内部 tab 切 SSE/MQTT/Kafka/gRPC）。
 
 ---
 
-## 已发布 · 66 / 70+
+## 已发布 · 151 / 151 ✓ — 全部组件都已具象化
 
-### 表单 · Form (19)
+### 表单 · Form (27)
 
 - [x] Button (atoms · B.1.1)
+- [x] IconButton (atoms · B.1.2)
 - [x] Input (atoms · B.1.3)
 - [x] Textarea (atoms · B.1.4)
 - [x] Select (atoms · B.1.6)
 - [x] Switch (atoms · B.1.8)
 - [x] Checkbox (atoms · B.1.9)
 - [x] Radio · RadioGroup (atoms · B.1.10)
+- [x] ColorSwatch (atoms · B.1.14)
 - [x] SearchInput (base2 · SearchInput)
 - [x] NumberInput (base2 · NumberInput)
 - [x] Slider (atoms · #slider)
+- [x] RangeSlider (rich · #range)
 - [x] InputGroup (base2 · InputGroup)
 - [x] OtpInput (forms-plus · OTPInput)
 - [x] Form / FormField (base · B.16)
 - [x] Combobox (forms-plus · Combobox)
 - [x] TagInput (forms-plus · TagInput)
 - [x] Dropzone (forms-plus · FileDropzone / rich · Upload)
+- [x] FilePicker (rich · #file)
 - [x] ColorPicker (forms-plus · ColorPicker / rich)
 - [x] DatePicker (rich · DatePicker · Range)
 - [x] DateRangePicker (forms-plus · DateRangePicker)
+- [x] PasswordStrength (forms-plus · B.f.7)
+- [x] PhoneInput (forms-plus · B.f.8)
+- [x] SplitButton (base2 · B2.03)
+- [x] VariableAwareInput (atoms · B.1.5)
 
 ### 容器 · Container (4)
 
@@ -38,7 +49,7 @@
 - [x] AppShell (layout · #appshell)
 - [x] Splitter (navigation · Splitter / rich)
 
-### 数据展示 · Display (9)
+### 数据展示 · Display (19)
 
 - [x] Tag (atoms · B.2.1)
 - [x] Badge (atoms · B.2.1)
@@ -46,11 +57,21 @@
 - [x] List (base2 · List)
 - [x] DescriptionList (base2 · DescriptionList)
 - [x] Stat / KPI (base2 · KPI · Stat / rich)
+- [x] Statistic (rich)
 - [x] Table (base · B.16 / data · #table)
 - [x] DataGrid (data · #datagrid)
 - [x] TreeView (data · #tree / rich · Tree)
+- [x] Timeline (rich · Timeline)
+- [x] Image (rich · Image)
+- [x] ImagePreview (rich · ImagePreview)
+- [x] Carousel (rich · Carousel)
+- [x] Highlight (rich · Highlight)
+- [x] CalendarHeatmap (rich · CalendarHeatmap)
+- [x] ProtocolBadge (atoms · B.2.2)
+- [x] MethodBadge (alias of ProtocolBadge)
+- [x] StatusCodeBadge (atoms · B.2.3)
 
-### 反馈与覆盖层 · Feedback / Overlay (8)
+### 反馈与覆盖层 · Feedback / Overlay (15)
 
 - [x] Modal (overlays · #modal)
 - [x] Tooltip (overlays · #tooltip)
@@ -59,9 +80,16 @@
 - [x] Skeleton (atoms · B.2.8)
 - [x] Drawer (overlays · #drawer)
 - [x] Popover (overlays · #popover)
+- [x] HoverCard (overlays · B.3.11)
+- [x] ContextMenu (overlays · B.3.4)
+- [x] CommandPalette (overlays · B.3.9)
+- [x] ConfirmDialog (overlays · B.3.10)
+- [x] Snackbar (overlays · B.3.12)
 - [x] Banner (navigation · Banner)
+- [x] Result (rich · Result)
+- [x] Tour (onboarding · Tour)
 
-### 导航 · Navigation (7)
+### 导航 · Navigation (11)
 
 - [x] Tabs (base · B.09)
 - [x] Breadcrumb (base · B.14)
@@ -70,14 +98,39 @@
 - [x] Stepper (navigation · Stepper · Wizard / base2 · Stepper)
 - [x] Sidebar (navigation · Sidebar)
 - [x] NavMenu (base · B.15)
+- [x] BackTop (navigation · BackTop)
+- [x] Affix (navigation · Affix)
+- [x] FloatButton (navigation · FloatButton)
+- [x] Anchor (base2 · Anchor)
 
-### 布局与状态 · Layout (5)
+### 布局与状态 · Layout (9)
 
 - [x] Divider (atoms · B.2.9)
 - [x] Empty (base2 · EmptyState)
 - [x] Progress (atoms · B.2.7)
 - [x] Spinner (base2 · Spinner · Loader)
 - [x] Accordion (base · B.09 揭示模式)
+- [x] Watermark (rich · Watermark)
+- [x] Marquee (rich · Marquee)
+- [x] TextEllipsis (base2 · TextEllipsis)
+- [x] Toolbar (layout · B.6.6)
+
+### 动效与状态 · Motion (4)
+
+- [x] Tour (onboarding · Tour)
+- [x] CountDown (rich · CountDown)
+- [x] InfiniteScroll (rich · InfiniteScroll)
+- [x] QRCode (rich · QRCode)
+
+### 时间组件 · Time (3)
+
+- [x] TimePicker (rich · TimePicker)
+- [x] TimeRangePicker (rich · TimeRangePicker)
+- [x] Cascader (rich · Cascader)
+
+### 数据交互 · Data Interaction (1)
+
+- [x] Transfer (rich · Transfer)
 
 ---
 
@@ -144,24 +197,170 @@
 - [x] **KVEditor** (data · #kv) —— 键值对编辑（行式表单）
 - [x] **Mention / RichText** (forms-plus · Mention) —— 富文本 `@` 提及
 
-## 不做 / 暂不在范围 · ProtoForge 专属
+---
 
-下面这些是 ProtoForge 自己的产品级 IDE 组件，跟通用 UI 库定位不符，**不收录到 chufix**：
+## 路线图 · 优先级 P6（atoms 补齐）· 13
 
-- Terminal / OutputBlock / AnsiText / CommandLine
-- SchemaTree / CellInspector / TableFilterBar
-- SQLEditor / SQLConsole / QueryHistoryList / DiffEditor
-- HARTimeline / HexViewer / PCAPRow / CertViewer / CookieJar
-- EventStream / MQTTTopicTree / KafkaPartitionGrid / GRPCMethodList
-- TitleBar / StatusBar / TabBar / MenuBar / NotificationCenter / GlobalSearch
-- ProtocolBadge / MethodBadge / StatusCodeBadge / VariableAwareInput（领域绑死）
-- 所有 Charts（22 种图表，更适合做成独立的 `@chufix/charts` 包）
-- 所有 Editors（CodeMirror / Monaco 集成，适合 `@chufix/editors` 包）
-- CrashDialog / Sentry-style ErrorReport / DumpUploader / SafeMode
-- DockLayout / DetachedPanel / FloatingInspector / TearOffTab（多窗口管理）
-- Plugins · PermissionDialog / SandboxBadge
+通用基础原子，设计稿明确画了但还没做。最简单一批，估计一周可以全部刷完。
 
-如果将来确实有人要这些，单独开 `@chufix/<domain>` 子包，不混进核心。
+- [x] **IconButton** (atoms · B.1.2) —— 仅图标方形按钮，强制 `aria-label`，支持 `aria-pressed` toggle
+- [x] **ColorSwatch** (atoms · B.1.14) —— 单色块，含色值 + 一键复制
+- [x] **ContextMenu** (overlays · B.3.4) —— 右键菜单，复用 Dropdown + `contextmenu` 事件
+- [x] **HoverCard** (overlays · B.3.11) —— 悬停卡片，Tooltip 富内容版
+- [x] **CommandPalette** ★ (overlays · B.3.9 / navigation) —— ⌘K 全局命令搜索
+- [x] **ConfirmDialog** (overlays 派生) —— Modal + 危险确认语义糖
+- [x] **Snackbar** (overlays 派生) —— 底部 undo 通知，Toast 横向变体
+- [x] **Toolbar** (layout · #toolbar) —— 按钮组工具条，支持分组与溢出收起
+- [x] **SplitButton** (base2) —— 主按钮 + 下拉箭头复合
+- [x] **PasswordStrength** (forms-plus) —— 密码强度条 + 提示规则
+- [x] **PhoneInput** (forms-plus) —— 国家码 + 号码格式化
+- [x] **RangeSlider** (rich) —— 双 knob slider（基于现有 Slider 扩展）
+- [x] **FilePicker** (rich / atoms) —— 文件选择对话框（区别于 Dropzone 的拖拽落区）
+
+## 路线图 · 优先级 P7（领域 atoms · ProtoForge 专属）· 4
+
+设计稿原作者打了 ★ 的领域标记，但本质上是通用 badge / 输入框的语义子类，做成 atom 收益不亏。
+
+- [x] **ProtocolBadge** (atoms · B.2.2) —— GET/POST/PUT/PATCH/DELETE/WS/MQTT/gRPC 语义色 badge，复用 `--proto-*` token
+- [x] **MethodBadge** —— ProtocolBadge 的别名导出，HTTP method 专用
+- [x] **StatusCodeBadge** (atoms · B.2.3) —— 2xx/3xx/4xx/5xx 自动配色
+- [x] **VariableAwareInput** ★ (atoms · B.1.5) —— Input 增强版，识别 `{{var}}` 语法高亮 + 补全
+
+## 路线图 · 优先级 P8（编辑器家族）· 5
+
+定位：**视觉容器 + 轻交互**，不自造 lexer / parser / language server。重型能力请用户自带 Monaco/CodeMirror，本组件提供 token 主题外壳。
+
+- [x] **CodeEditor** (editors · MonacoWrapper) —— 升级版 CodeBlock，支持单行编辑、行号、minimap 占位
+- [x] **DiffEditor** (editors · DiffEditor / sql · DiffEditor) —— 双栏文本对比（jsondiff 是 JSON 专用，本组件通用文本）
+- [x] **MarkdownEditor** (editors · MarkdownEditor) —— split preview，左编辑右预览
+- [x] **RegexBuilder** (editors · RegexBuilder) —— 正则可视化拼装 + 测试匹配
+- [x] **AnsiText** (terminal · AnsiText) —— ANSI 转义序列 → 着色 span，纯展示组件，不依赖 xterm.js
+
+## 路线图 · 优先级 P9（系统壳层）· 5
+
+桌面 App 风格的窗口装饰。Web App 也有部分场景能用（StatusBar、NotificationCenter），但 TitleBar / MenuBar 在浏览器里没意义。
+**实现策略**：放在主包但用文档明确标注"适用于 Tauri / Electron / 准桌面 web 应用"。
+
+- [x] **TitleBar** (system · TitleBar) —— 应用窗口标题栏（含最小化/最大化/关闭按钮槽）
+- [x] **StatusBar** (system · StatusBar) —— 底部状态条（左中右槽，支持点击展开）
+- [x] **MenuBar** (system · MenuBar) —— 应用顶部菜单栏（File / Edit / View 风格）
+- [x] **NotificationCenter** (system · NotificationCenter) —— 通知中心面板（Toast 历史记录列表）
+- [x] **GlobalSearch** (system · GlobalSearch) —— 全局搜索壳（CommandPalette 的全屏变体）
+
+## 路线图 · 优先级 P10（多窗口布局）· 4
+
+可拖拽多面板布局，VSCode / Postman / 数据库工具风格。`DockLayout` 是其中最大件，预计 1500+ 行，单独排期。
+
+- [x] **DockLayout** (multiwindow · DockLayout) —— 多面板可拖拽 / 可折叠 / 可重排布局壳（v1：递归 split + tabbed pane，v2 加 splitter resize / drag-to-dock）
+- [x] **DetachedPanel** (multiwindow · DetachedPanel) —— 浮动可分离面板（拖出即变独立窗口槽）
+- [x] **FloatingInspector** (multiwindow · FloatingInspector) —— 全局浮动检查器面板
+- [x] **TearOffTab** (multiwindow · TearOffTab) —— 可撕离的 Tab（拖出主窗口）
+
+---
+
+## 模版 · Templates / 页面模块 · 8
+
+> **设计原则**：每个模版是一个**带 Tabs 或多分区的复合壳**，内部组合多个原子组件。
+> 用户的工程视角是"页面也是组件"——给一行 `<CfProtocolPane />` 就能拿到完整功能区。
+> 模版内的子模块（如 SSE 监视器、HAR 时序图）都用现有 atoms 拼，不再自造单独导出。
+> 命名约定：`Cf<Domain>Pane` / `Cf<Domain>Workbench` / `Cf<Domain>Flow`。
+
+- [x] **CfProtocolPane** (protocols.html) —— 协议监视器面板，Tabs 切 SSE / MQTT / Kafka / gRPC
+  - SSE tab: 事件流时间轴 + 重连状态
+  - MQTT tab: topic 树 + 订阅消息列表
+  - Kafka tab: partition grid + offset / lag 矩阵
+  - gRPC tab: service / method 列表 + 调用历史
+- [x] **CfNetworkPane** (network.html) —— HTTP / TCP 监视面板，Tabs 切 HAR / Hex / PCAP / Cert / Cookie
+  - HAR Timeline: 请求瀑布图（依赖 P8 ChartCrosshair + 时间条）
+  - HexViewer: 16 进制 + ASCII 双栏
+  - PCAPRow: 抓包行项
+  - CertViewer: X.509 证书字段树
+  - CookieJar: 域级 cookie 管理
+- [x] **CfSqlWorkbench** (sql.html) —— SQL 工作台，包含 Editor / Console / History 三区
+  - 上：SQL 编辑器（基于 P8 CodeEditor）
+  - 中：执行结果表（DataGrid）
+  - 下/侧：查询历史（List）
+- [x] **CfTerminalPane** (terminal.html) —— 终端面板壳
+  - OutputBlock: 等宽输出区（基于 P8 AnsiText）
+  - CommandLine: 命令输入行（基于 Input + History）
+  - 完整 PTY 交互需用户自接 xterm.js
+- [x] **CfCrashPane** (crash.html) —— 崩溃报告面板，包含 Dialog / StackTrace / DumpUploader
+  - CrashDialog: 错误对话框（Modal 派生）
+  - ErrorReport: Sentry 风格堆栈
+  - DumpUploader: dump 文件上传槽（基于 Dropzone）
+  - SafeModeLauncher: 安全模式启动入口
+- [x] **CfPluginPane** (plugins.html) —— 插件中心面板
+  - PluginCard / PluginGrid
+  - PermissionDialog
+  - SandboxBadge / ManifestViewer
+  - Marketplace（搜索 + 列表 + 详情，复合多个 atoms）
+- [x] **CfDomainPane** (domain.html) —— API 调试领域面板
+  - CollectionTree（左侧 REST 集合树）
+  - RequestBuilder（中间请求构造器，最大件）
+  - ResponsePanel（下方响应检查器）
+  - MockRuleCard / WorkflowNode / ChaosPolicyPanel 作为子卡片
+- [x] **CfOnboardingFlow** (onboarding.html) —— 完整引导流，FirstRunWizard + HotspotTour + 多步流程
+
+---
+
+## 路线图 · 优先级 P11（数据可视化 · 22）
+
+**重要决策**：图表全部**纯 SVG 自己画**，沿用 `--viz-1..8` token 色板，与项目"零三方依赖"原则一致。
+不引入 ECharts / Recharts / Chart.js。预期共享一个内部 `_useScale` / `_usePath` 工具层，22 个组件压在 3000 行内。
+
+可考虑做成独立子包 `@chufix-design/charts` 减少主包体积，但开发阶段先放主包共享 build，最后再决定是否拆分。
+
+### P11.1 时序 (4)
+
+- [x] **LineChart** (charts · B.5.1)
+- [x] **AreaChart** (charts · B.5.2)
+- [x] **Sparkline** (charts · B.5.5) —— 行内微缩图
+- [x] **CandlestickChart** (charts2 · B.5.18) —— OHLC K 线
+
+### P11.2 分类 (4)
+
+- [x] **BarChart** (charts · B.5.3)
+- [x] **Histogram** (charts · B.5.4)
+- [x] **StackedBar100** (charts2 · B.5.20)
+- [x] **BulletChart** (charts2 · B.5.19) —— 子弹进度条
+
+### P11.3 占比 (4)
+
+- [x] **DonutChart** (charts2 · B.5.14)
+- [x] **FunnelChart** (charts2 · B.5.15)
+- [x] **Treemap** (charts2 · B.5.17)
+- [x] **SankeyDiagram** (charts2 · B.5.16)
+
+### P11.4 多维 (4)
+
+- [x] **ScatterPlot** (charts2 · B.5.11)
+- [x] **BoxPlot** (charts2 · B.5.12)
+- [x] **RadarChart** (charts2 · B.5.13)
+- [x] **RidgePlot** (charts2 · B.5.21) —— 密度脊图
+
+### P11.5 单值 / 性能 (5)
+
+- [x] **Gauge** (charts · B.5.6) —— 圆环进度
+- [x] **MetricCard** (charts · B.5.10) —— 数值卡片 + 趋势 + sparkline
+- [x] **TimingBar** (charts · B.5.7) —— 请求瀑布
+- [x] **LatencyHeatmap** (charts · B.5.8) —— 延迟热力图
+- [x] **ConnectionGraph** (charts · B.5.9) —— 网络拓扑图
+
+### P11.6 通用工具 (1)
+
+- [x] **ChartCrosshair** + **ChartToolbar** (charts2 · B.5.22 / B.5.23) —— 共享给上面所有图表的浮层工具
+
+---
+
+## 不做 · 永久排除
+
+只剩这些**真的**不进核心包：
+
+- 重型编辑器引擎本身（Monaco / CodeMirror / Prosemirror —— 用户按需自接）
+- 完整终端模拟器（xterm.js —— 用户按需自接，本库只做 AnsiText 视觉层）
+- 大地图可视化（Leaflet / Mapbox —— rich.html Map 仅做占位 placeholder，不实现）
+
+需要重型能力时，由消费方自行集成上述库，本组件只提供 token-driven 容器外壳。
 
 ---
 
@@ -170,7 +369,7 @@
 每完成一个组件：
 
 1. 按 `CLAUDE.md §13` 的 checklist 把 vue/react/styles/demos/mdx 全部到位
-2. 跑 `pnpm --filter @chufix/vue build && pnpm --filter @chufix/react build && pnpm tokens:check && pnpm --filter docs build`
+2. 跑 `pnpm --filter @chufix-design/vue build && pnpm --filter @chufix-design/react build && pnpm tokens:check && pnpm --filter docs build`
 3. 把这个文件里对应的 `- [ ]` 改成 `- [x]`
 4. `pnpm sync:docs` → `cd ../../chukit-docs && git add -A && git commit && git push`
 5. 主仓库一并 commit（包括 ROADMAP.md 的勾选）

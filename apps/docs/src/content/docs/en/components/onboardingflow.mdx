@@ -1,0 +1,39 @@
+---
+title: OnboardingFlow
+description: Onboarding flow shell with First-Run Wizard / Hotspot Tour / Full Flow tabs.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/onboardingflow/BasicVue.vue';
+
+## Basic usage
+
+Three predefined tabs (ids: `wizard`, `hotspot`, `flow`); the consumer fills each tab via a named slot
+`#panel-{tabId}` (Vue) / `slots["panel-{tabId}"]` (React). The default list can also be overridden with the `tabs` prop.
+
+Source: [`onboarding.html`](https://github.com/chenqi92/chufix-design).
+
+<DemoFrame
+  vueCode={`<CfOnboardingFlow>
+  <template #panel-wizard>...</template>
+  <template #panel-hotspot>...</template>
+</CfOnboardingFlow>`}
+  reactCode={`<CfOnboardingFlow slots={{
+  'panel-wizard': <PanelA />,
+  'panel-hotspot': <PanelB />,
+}} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | First tab id | Active tab |
+| `tabs` | `TemplatePaneTab[]` | preset | Custom tab list |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+
+The preset tab-id lists are exported as constants `PROTOCOL_TABS` / `NETWORK_TABS` / `SQL_TABS` etc., and can be reused directly in custom `tabs`.
+
+> Template components are essentially semantic shells over [`CfTabs`](/components/tabs/). If you don't need a predefined tab set, use CfTabs directly.

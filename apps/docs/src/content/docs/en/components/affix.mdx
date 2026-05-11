@@ -1,0 +1,35 @@
+---
+title: Affix
+description: Switch an element to fixed positioning when it scrolls past — handy for sticky toolbars, anchors, or submit bars.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/affix/BasicVue.vue';
+
+## Basic usage
+
+`offsetTop` sets the pixel offset from the container top once pinned; `offsetBottom` does the opposite. `target` specifies the scroll container; omit it to listen on `window`.
+
+<DemoFrame
+  vueCode={`<div class="scroll-root" style="height: 400px; overflow-y: auto;">
+  <CfAffix :offset-top="0" target=".scroll-root">
+    <div class="toolbar">This row sticks once it reaches the top</div>
+  </CfAffix>
+</div>`}
+  reactCode={`<div className="scroll-root" style={{ height: 400, overflowY: 'auto' }}>
+  <CfAffix offsetTop={0} target=".scroll-root">
+    <div className="toolbar">This row sticks once it reaches the top</div>
+  </CfAffix>
+</div>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `offsetTop` | `number` | `—` | Pixel offset from the container top when pinned |
+| `offsetBottom` | `number` | `—` | Pixel offset from the container bottom when pinned; mutually exclusive with `offsetTop` |
+| `target` | `string` | `—` | Scroll container selector; omit to listen on `window` |
+| `zIndex` | `number` | `100` | Stacking level once pinned |

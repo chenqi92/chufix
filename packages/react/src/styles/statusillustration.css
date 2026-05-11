@@ -1,0 +1,81 @@
+/* Status illustration · token-colored SVGs for empty/result/upload states. */
+
+.cf-status-illustration {
+  --cf-status-accent: var(--accent-1);
+  --cf-status-soft: var(--accent-soft);
+
+  width: 64px;
+  height: auto;
+  display: block;
+  flex: none;
+  margin-inline: auto;
+  color: var(--fg-3);
+}
+
+.cf-status-illustration--sm { width: 48px; }
+.cf-status-illustration--md { width: 64px; }
+.cf-status-illustration--lg { width: 96px; }
+
+.cf-status-illustration--success {
+  --cf-status-accent: var(--status-success);
+  --cf-status-soft: var(--status-success-soft);
+}
+.cf-status-illustration--warning,
+.cf-status-illustration--forbidden {
+  --cf-status-accent: var(--status-warning);
+  --cf-status-soft: var(--status-warning-soft);
+}
+.cf-status-illustration--error,
+.cf-status-illustration--server-error {
+  --cf-status-accent: var(--status-error);
+  --cf-status-soft: var(--status-error-soft);
+}
+.cf-status-illustration--info {
+  --cf-status-accent: var(--status-info);
+  --cf-status-soft: var(--status-info-soft);
+}
+.cf-status-illustration--not-found,
+.cf-status-illustration--search {
+  --cf-status-accent: var(--accent-1);
+  --cf-status-soft: var(--accent-soft);
+}
+
+.cf-status-illustration__shadow {
+  fill: var(--bg-2);
+  opacity: 0.8;
+}
+.cf-status-illustration__panel {
+  fill: var(--bg-1);
+  stroke: var(--line-2);
+  stroke-width: 1.5;
+}
+.cf-status-illustration__bar,
+.cf-status-illustration__muted-stroke {
+  stroke: var(--line-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cf-status-illustration__dot {
+  fill: var(--line-2);
+}
+.cf-status-illustration__soft {
+  fill: var(--cf-status-soft);
+  stroke: var(--cf-status-accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cf-status-illustration__accent-stroke {
+  stroke: var(--cf-status-accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cf-status-illustration__code {
+  fill: var(--cf-status-accent);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: var(--w-semibold);
+  letter-spacing: 0.04em;
+}

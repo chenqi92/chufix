@@ -16,7 +16,7 @@ import MaxValidateVue from '~/components/demos/taginput/MaxValidateVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfTagInput } from '@chufix/vue';
+import { CfTagInput } from '@chufix-design/vue';
 
 const tags = ref<string[]>(['vue', 'react']);
 </script>
@@ -25,7 +25,7 @@ const tags = ref<string[]>(['vue', 'react']);
   <CfTagInput v-model="tags" placeholder="输入后按回车添加" />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfTagInput } from '@chufix/react';
+import { CfTagInput } from '@chufix-design/react';
 
 export default function Demo() {
   const [tags, setTags] = useState<string[]>(['vue', 'react']);
@@ -81,7 +81,7 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfTagInput } from '@chufix/vue';
+import { CfTagInput } from '@chufix-design/vue';
 
 const tags = ref<string[]>([]);
 const isEmail = (t: string) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(t);
@@ -97,7 +97,7 @@ const isEmail = (t: string) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(t);
   />
 </template>`}
   reactCode={`import { useState } from 'react';
-import { CfTagInput } from '@chufix/react';
+import { CfTagInput } from '@chufix-design/react';
 
 const isEmail = (t: string) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(t);
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDescriptionList } from '@chufix/vue';
+import { CfDescriptionList } from '@chufix-design/vue';
 
 const items = [
   { term: '订单号', description: '#2026-CF-00018' },

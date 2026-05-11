@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfAppShell, CfButton } from '@chufix/vue';
+import { CfAppShell, CfButton } from '@chufix-design/vue';
 
 const collapsed = ref(false);
 </script>

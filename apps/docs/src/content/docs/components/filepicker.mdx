@@ -1,0 +1,44 @@
+---
+title: FilePicker 文件选择
+description: 按钮触发文件选择对话框，自带选中文件列表。区别于 Dropzone（拖拽落区）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/filepicker/BasicVue.vue';
+
+## 基础用法
+
+`multiple` 多选，`accept` MIME / 后缀过滤；选中文件以 chip 形式列在按钮旁，单个删除或一键清空。
+
+<DemoFrame
+  vueCode={`<CfFilePicker v-model="files" multiple accept="image/*,application/json" />`}
+  reactCode={`<CfFilePicker value={files} onChange={setFiles} multiple accept="image/*" />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 变体 / 尺寸 / 禁用
+
+`variant="plain"` 取消按钮边框，作为链接式触发；`disabled` 全局禁用。
+
+import VariantsVue from '~/components/demos/filepicker/VariantsVue.vue';
+
+<DemoFrame
+  vueCode={`<CfFilePicker v-model="files" variant="plain" size="lg" multiple />`}
+  reactCode={`<CfFilePicker value={files} onChange={setFiles} variant="plain" size="lg" multiple />`}
+>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `File[]` | `[]` | |
+| `multiple` | `boolean` | `false` | |
+| `accept` | `string` | — | 同原生 `<input type=file>` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `variant` | `'outline' \| 'plain'` | `'outline'` | |
+| `disabled` / `showFiles` | `boolean` | `false` / `true` | |
+| `buttonText` / `emptyText` | `string` | `'选择文件'` / `'未选择文件'` | |

@@ -1,0 +1,106 @@
+---
+title: KVEditor
+description: Editor for HTTP headers / query params / env vars and other key-value lists; supports enable toggle, description column, and auto-appending an empty row.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
+import HeadersVue from '~/components/demos/kveditor/HeadersVue.vue';
+import StatesVue from '~/components/demos/kveditor/StatesVue.vue';
+
+## Basic usage
+
+`CfKVEditor` renders a `KVRow[]` (each row `{ key, value, enabled?, description? }`) as an editable table. The last row is always empty — once you type into its key or value, a new empty row is appended automatically, so there is always a row to fill. Click the trailing `×` to delete a row.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfKVEditor, type KVRow } from '@chufix-design/vue';
+
+const params = ref<KVRow[]>([
+  { key: 'page', value: '1', enabled: true },
+  { key: 'pageSize', value: '20', enabled: true },
+]);
+</script>
+
+<template>
+  <CfKVEditor
+    v-model="params"
+    key-placeholder="Param name"
+    value-placeholder="Param value"
+  />
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfKVEditor, type KVRow } from '@chufix-design/react';
+
+export default function Demo() {
+  const [params, setParams] = useState<KVRow[]>([
+    { key: 'page', value: '1', enabled: true },
+    { key: 'pageSize', value: '20', enabled: true },
+  ]);
+  return (
+    <CfKVEditor
+      value={params}
+      onChange={setParams}
+      keyPlaceholder="Param name"
+      valuePlaceholder="Param value"
+    />
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Enable toggle and description column
+
+Turn on `showToggle` to add a leftmost checkbox column — disabled rows keep `enabled: false` in the array so the consumer can filter on it. Turn on `showDescription` to add a trailing description column. Both are independent optional knobs.
+
+<DemoFrame
+  vueCode={`<CfKVEditor
+  v-model="headers"
+  key-placeholder="Header"
+  value-placeholder="Value"
+  show-toggle
+  show-description
+/>`}
+  reactCode={`<CfKVEditor
+  value={headers}
+  onChange={setHeaders}
+  keyPlaceholder="Header"
+  valuePlaceholder="Value"
+  showToggle
+  showDescription
+/>`}
+>
+  <HeadersVue client:load />
+</DemoFrame>
+
+## Read-only / disabled
+
+`readonly` — inputs are read-only but still focusable for copy; `disabled` — grayed out and not focusable. Neither state renders the delete button or auto-appends new empty rows.
+
+<DemoFrame
+  vueCode={`<CfKVEditor :model-value="env" readonly />
+<CfKVEditor :model-value="env" disabled />`}
+  reactCode={`<CfKVEditor value={env} readonly />
+<CfKVEditor value={env} disabled />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` (Vue) / `value` (React) | `KVRow[]` | `[]` | Row array `{ key, value, enabled?, description? }` |
+| `defaultValue` | `KVRow[]` | `[]` | Uncontrolled initial value |
+| `keyPlaceholder` | `string` | `'Key'` | Header and input placeholder |
+| `valuePlaceholder` | `string` | `'Value'` | Header and input placeholder |
+| `showToggle` | `boolean` | `false` | Show enable toggle column (writes `enabled`) |
+| `showDescription` | `boolean` | `false` | Show description column (writes `description`) |
+| `autoAppend` | `boolean` | `true` | Auto-append an empty row at the end |
+| `disabled` / `readonly` | `boolean` | `false` | Disable / read-only the whole editor |
+| `bordered` | `boolean` | `true` | Border |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size |
+
+Events: `onChange(rows)` / `update:modelValue` fires on any row change or auto-append, with the full row array.

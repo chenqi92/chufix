@@ -1,0 +1,131 @@
+---
+title: Button
+description: 5 variants, 3 sizes, 3 shapes, plus loading and disabled states.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/button/BasicVue.vue';
+import SizesVue from '~/components/demos/button/SizesVue.vue';
+import StatesVue from '~/components/demos/button/StatesVue.vue';
+
+## Basic usage
+
+The five visual variants cover every level from primary action to subtle action, ordered from heaviest to lightest visual weight.
+`primary` is the single primary action on a page; `danger` is for irreversible actions like delete.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { CfButton } from '@chufix-design/vue';
+</script>
+
+<template>
+  <CfButton variant="primary">Primary</CfButton>
+  <CfButton variant="secondary">Secondary</CfButton>
+  <CfButton variant="tertiary">Tertiary</CfButton>
+  <CfButton variant="ghost">Ghost</CfButton>
+  <CfButton variant="danger">Danger</CfButton>
+</template>`}
+  reactCode={`import { CfButton } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfButton variant="primary">Primary</CfButton>
+      <CfButton variant="secondary">Secondary</CfButton>
+      <CfButton variant="tertiary">Tertiary</CfButton>
+      <CfButton variant="ghost">Ghost</CfButton>
+      <CfButton variant="danger">Danger</CfButton>
+    </>
+  );
+}`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Size and shape
+
+Three sizes (`sm` / `md` / `lg`) match different information densities; among the three shapes, `pill` is fully rounded and `square` is square (typically used for icon-only buttons).
+
+<DemoFrame
+  vueCode={`<CfButton size="sm">Small</CfButton>
+<CfButton size="md">Medium</CfButton>
+<CfButton size="lg">Large</CfButton>
+
+<CfButton shape="default">Default radius</CfButton>
+<CfButton shape="pill">Pill</CfButton>
+<CfButton shape="square" aria-label="Settings">⚙</CfButton>`}
+  reactCode={`<CfButton size="sm">Small</CfButton>
+<CfButton size="md">Medium</CfButton>
+<CfButton size="lg">Large</CfButton>
+
+<CfButton shape="default">Default radius</CfButton>
+<CfButton shape="pill">Pill</CfButton>
+<CfButton shape="square" aria-label="Settings">⚙</CfButton>`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## States
+
+`loading` automatically renders a spinner and blocks clicks; `disabled` makes the button non-interactive; `block` makes it fill the parent's width.
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfButton } from '@chufix-design/vue';
+
+const loading = ref(false);
+async function load() {
+  loading.value = true;
+  await new Promise((r) => setTimeout(r, 1500));
+  loading.value = false;
+}
+</script>
+
+<template>
+  <CfButton :loading="loading" @click="load">
+    {{ loading ? 'Loading…' : 'Click to load' }}
+  </CfButton>
+  <CfButton disabled>Disabled</CfButton>
+  <CfButton block>Full-width (block)</CfButton>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfButton } from '@chufix-design/react';
+
+export default function Demo() {
+  const [loading, setLoading] = useState(false);
+  async function load() {
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    setLoading(false);
+  }
+
+  return (
+    <>
+      <CfButton loading={loading} onClick={load}>
+        {loading ? 'Loading…' : 'Click to load'}
+      </CfButton>
+      <CfButton disabled>Disabled</CfButton>
+      <CfButton block>Full-width (block)</CfButton>
+    </>
+  );
+}`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop       | Type                                                                | Default      | Description                       |
+| ---------- | ------------------------------------------------------------------- | ------------ | -------------------------- |
+| `variant`  | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'danger'`     | `'primary'`  | Visual variant (heaviest to lightest weight) |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                              | `'md'`       | Height and font size               |
+| `shape`    | `'default' \| 'pill' \| 'square'`                                   | `'default'`  | Corner shape                       |
+| `loading`  | `boolean`                                                           | `false`      | Show a spinner and block clicks    |
+| `block`    | `boolean`                                                           | `false`      | Stretch to fill the parent's width |
+| `disabled` | `boolean`                                                           | `false`      | Disabled                           |
+
+### Slots / Children
+
+- **Vue**: the default slot is the label; `leading` / `trailing` named slots accept icons.
+- **React**: `children` is the label; `leading` / `trailing` props accept icon nodes.

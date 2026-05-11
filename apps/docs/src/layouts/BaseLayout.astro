@@ -1,22 +1,33 @@
 ---
 import '~/styles/global.css';
 import { site } from '~/config/site';
+import { getLocaleFromUrl } from '~/i18n/utils';
+import { t } from '~/i18n/strings';
 import SiteNav from '~/components/SiteNav.astro';
-/* MUST be the barrel import; deep import (@chufix/vue/src/toast/CfToaster.vue)
+/* MUST be the barrel import; deep import (@chufix-design/vue/src/toast/CfToaster.vue)
  * loads a different copy of the toast store than the dist-bundled one used
- * by `import { toast } from '@chufix/vue'` in demos, breaking pub/sub. */
-import { CfToaster } from '@chufix/vue';
+ * by `import { toast } from '@chufix-design/vue'` in demos, breaking pub/sub. */
+import { CfToaster } from '@chufix-design/vue';
 
 interface Props {
   title?: string;
   description?: string;
 }
-const { title, description = site.description } = Astro.props;
-const fullTitle = title ? `${title} · ${site.title}` : `${site.title} · ${site.tagline}`;
+const locale = getLocaleFromUrl(Astro.url);
+const htmlLang = locale === 'en' ? 'en' : 'zh-CN';
+
+const { title, description = t(locale, 'site.description') } = Astro.props;
+const tagline = t(locale, 'site.tagline');
+const fullTitle = title ? `${title} · ${site.title}` : `${site.title} · ${tagline}`;
+
+const statusLabel = site.status.label[locale];
+const announceTitle = site.status.announcementTitle[locale];
+const announceBody = site.status.announcement[locale];
+const updatedLabel = t(locale, 'announce.updated');
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,6 +40,14 @@ const fullTitle = title ? `${title} · ${site.title}` : `${site.title} · ${site
   </head>
   <body>
     <SiteNav />
+    <aside class="site-announcement" aria-label={announceTitle}>
+      <div class="site-announcement__inner">
+        <span class="site-announcement__badge">{statusLabel}</span>
+        <strong>{announceTitle}</strong>
+        <span>{announceBody}</span>
+        <span class="site-announcement__date">{updatedLabel} {site.status.updatedAt}</span>
+      </div>
+    </aside>
     <slot />
     <CfToaster client:only="vue" position="top-right" />
   </body>

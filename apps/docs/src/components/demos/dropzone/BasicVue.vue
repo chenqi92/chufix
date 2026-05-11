@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfDropzone } from '@chufix/vue';
+import { CfDropzone } from '@chufix-design/vue';
 
 const files = ref<File[]>([]);
 </script>

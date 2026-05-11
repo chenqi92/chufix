@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CfMention } from '@chufix/vue';
+import { CfMention } from '@chufix-design/vue';
 
 const text = ref('在评论里输入 @ 试试');
 const options = [

@@ -1,0 +1,87 @@
+/* ChuFix MenuBar — top-level horizontal menu (File / Edit / View). */
+
+.cf-menubar {
+  display: flex;
+  align-items: stretch;
+  height: 28px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  user-select: none;
+}
+
+.cf-menubar__menu {
+  position: relative;
+}
+
+.cf-menubar__trigger {
+  height: 100%;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--fg-2);
+  font: inherit;
+  cursor: pointer;
+}
+.cf-menubar__trigger:hover,
+.cf-menubar__trigger.is-open {
+  background: var(--bg-2);
+  color: var(--fg-1);
+}
+
+.cf-menubar__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
+  z-index: var(--z-popover);
+}
+
+.cf-menubar__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 10px;
+  border-radius: var(--r-3);
+  color: var(--fg-1);
+  cursor: pointer;
+}
+.cf-menubar__item:hover:not(.is-disabled) {
+  background: var(--bg-2);
+}
+.cf-menubar__item.is-disabled {
+  color: var(--fg-3);
+  cursor: not-allowed;
+}
+.cf-menubar__item.is-danger {
+  color: var(--status-error);
+}
+.cf-menubar__item.is-danger:hover:not(.is-disabled) {
+  background: var(--status-error-soft);
+}
+
+.cf-menubar__label {
+  flex: 1;
+  min-width: 0;
+}
+.cf-menubar__shortcut {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+}
+
+.cf-menubar__sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line-1);
+  list-style: none;
+}

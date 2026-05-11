@@ -1,0 +1,63 @@
+---
+/**
+ * Horizontal category tabs for top-level gallery pages (Charts / Blocks).
+ * SSR-renders all panels; client JS toggles `data-active` on click.
+ * Each tab keeps anchor support via location.hash.
+ */
+interface Tab {
+  id: string;
+  label: string;
+}
+interface Props {
+  tabs: Tab[];
+  defaultId?: string;
+}
+const { tabs, defaultId } = Astro.props;
+const active = defaultId ?? tabs[0]?.id;
+---
+
+<div class="cf-cat-tabs" data-cat-tabs role="tablist">
+  {tabs.map((t) => (
+    <button
+      type="button"
+      role="tab"
+      class="cf-cat-tabs__tab"
+      data-target={t.id}
+      aria-selected={t.id === active ? 'true' : 'false'}
+    >
+      {t.label}
+    </button>
+  ))}
+</div>
+
+<div class="cf-cat-panels" data-cat-panels>
+  <slot />
+</div>
+
+<script>
+  const root = document.querySelector('[data-cat-tabs]') as HTMLElement | null;
+  const panels = document.querySelector('[data-cat-panels]') as HTMLElement | null;
+  if (root && panels) {
+    function activate(id: string) {
+      root!.querySelectorAll<HTMLButtonElement>('.cf-cat-tabs__tab').forEach((b) => {
+        b.setAttribute('aria-selected', b.dataset.target === id ? 'true' : 'false');
+      });
+      panels!.querySelectorAll<HTMLElement>('[data-cat-panel]').forEach((p) => {
+        p.dataset.active = p.dataset.catPanel === id ? 'true' : 'false';
+      });
+      if (location.hash !== `#${id}`) history.replaceState(null, '', `#${id}`);
+    }
+
+    root.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-target]');
+      if (!t) return;
+      activate(t.dataset.target!);
+    });
+
+    const fromHash = location.hash.replace(/^#/, '');
+    if (fromHash) {
+      const exists = root.querySelector(`[data-target="${fromHash}"]`);
+      if (exists) activate(fromHash);
+    }
+  }
+</script>

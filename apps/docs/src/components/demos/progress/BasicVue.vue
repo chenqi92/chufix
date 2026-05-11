@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { CfProgress } from '@chufix/vue';
+import { CfProgress } from '@chufix-design/vue';
 
 const v = ref(30);
 let timer: ReturnType<typeof setInterval> | null = null;

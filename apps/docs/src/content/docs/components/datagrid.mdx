@@ -16,7 +16,7 @@ import StickyVue from '~/components/demos/datagrid/StickyVue.vue';
 <DemoFrame
   vueCode={`<script setup lang="ts">
 import { ref } from 'vue';
-import { CfDataGrid, type DataGridColumn } from '@chufix/vue';
+import { CfDataGrid, type DataGridColumn } from '@chufix-design/vue';
 
 interface Row { id: string; name: string; role: string; level: number; }
 
@@ -35,7 +35,7 @@ const columns: DataGridColumn<Row>[] = [
 <template>
   <CfDataGrid :columns="columns" :rows="rows" row-key="id" />
 </template>`}
-  reactCode={`import { CfDataGrid, type DataGridColumn } from '@chufix/react';
+  reactCode={`import { CfDataGrid, type DataGridColumn } from '@chufix-design/react';
 
 interface Row { id: string; name: string; role: string; level: number; }
 const columns: DataGridColumn<Row>[] = [

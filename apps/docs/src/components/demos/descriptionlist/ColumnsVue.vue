@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDescriptionList } from '@chufix/vue';
+import { CfDescriptionList } from '@chufix-design/vue';
 
 const items = [
   { term: '版本', description: 'v0.0.1' },

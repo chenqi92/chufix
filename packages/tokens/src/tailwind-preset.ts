@@ -1,7 +1,7 @@
 /* Optional Tailwind preset that exposes ChuFix tokens as Tailwind utilities.
  * Usage:
  *   // tailwind.config.ts
- *   import preset from '@chufix/tokens/tailwind';
+ *   import preset from '@chufix-design/tokens/tailwind';
  *   export default { presets: [preset], content: [...] };
  */
 const channel = (v: string) => `hsl(var(${v}) / <alpha-value>)`;

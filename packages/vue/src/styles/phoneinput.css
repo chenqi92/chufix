@@ -1,0 +1,164 @@
+/* ChuFix PhoneInput — country-code dropdown + national number input. */
+
+.cf-phoneinput {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-6);
+  background: var(--bg-inset);
+  height: var(--control-h);
+  font: inherit;
+  font-family: var(--font-sans);
+  transition: border-color var(--dur-instant) linear,
+    box-shadow var(--dur-fast) linear;
+}
+.cf-phoneinput.is-open,
+.cf-phoneinput:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring-inset);
+}
+.cf-phoneinput.is-error {
+  border-color: var(--status-error);
+}
+.cf-phoneinput.is-disabled {
+  opacity: var(--disabled-opacity);
+  pointer-events: none;
+}
+
+/* sizes */
+.cf-phoneinput--sm {
+  height: var(--control-h-sm);
+}
+.cf-phoneinput--lg {
+  height: var(--control-h-lg);
+}
+
+.cf-phoneinput__cc {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 0 10px;
+  background: var(--bg-1);
+  border: 0;
+  border-right: 1px solid var(--line-1);
+  border-top-left-radius: var(--r-6);
+  border-bottom-left-radius: var(--r-6);
+  color: var(--fg-1);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--t-13);
+  font-family: var(--font-mono);
+}
+.cf-phoneinput__cc:hover {
+  background: var(--bg-2);
+}
+.cf-phoneinput__caret {
+  width: 10px;
+  height: 10px;
+  color: var(--fg-3);
+}
+
+.cf-phoneinput__input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-13);
+  font-family: var(--font-mono);
+  padding: 0 12px;
+  min-width: 0;
+}
+.cf-phoneinput__input::placeholder {
+  color: var(--fg-3);
+  font-family: var(--font-sans);
+}
+
+.cf-phoneinput--sm .cf-phoneinput__cc,
+.cf-phoneinput--sm .cf-phoneinput__input {
+  font-size: var(--t-12);
+}
+.cf-phoneinput--lg .cf-phoneinput__cc,
+.cf-phoneinput--lg .cf-phoneinput__input {
+  font-size: var(--t-14);
+}
+
+/* dropdown */
+.cf-phoneinput__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 280px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--shadow-3);
+  z-index: var(--z-popover);
+  display: flex;
+  flex-direction: column;
+  max-height: 280px;
+}
+
+.cf-phoneinput__search {
+  padding: 8px;
+  border-bottom: 1px solid var(--line-1);
+}
+.cf-phoneinput__search > input {
+  width: 100%;
+  height: var(--control-h-sm);
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-4);
+  background: var(--bg-inset);
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-12);
+  outline: none;
+}
+.cf-phoneinput__search > input:focus {
+  border-color: var(--accent-1);
+}
+
+.cf-phoneinput__list {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+.cf-phoneinput__opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: var(--r-4);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+  cursor: pointer;
+  user-select: none;
+}
+.cf-phoneinput__opt:hover {
+  background: var(--bg-2);
+}
+.cf-phoneinput__opt.is-selected {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.cf-phoneinput__opt-dial {
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+}
+.cf-phoneinput__opt.is-selected .cf-phoneinput__opt-dial {
+  color: var(--accent-1);
+}
+
+.cf-phoneinput__empty {
+  padding: 12px;
+  text-align: center;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}

@@ -1,0 +1,80 @@
+---
+title: IconButton 图标按钮
+description: 仅图标的方形按钮，必须配 aria-label；常用于 toolbar、表头列操作、输入后缀。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/iconbutton/BasicVue.vue';
+
+## 基础用法
+
+3 个 variant（`default` / `primary` / `danger`），3 档尺寸（`sm` / `md` / `lg`），形状 `square` / `round`。
+
+`pressed` 用于 toggle 行为（pin / bookmark），自动设 `aria-pressed`。
+
+<DemoFrame
+  vueCode={`<CfIconButton aria-label="保存" variant="primary">
+  <svg viewBox="0 0 16 16" fill="none">…</svg>
+</CfIconButton>
+<CfIconButton aria-label="删除" variant="danger">…</CfIconButton>
+<CfIconButton aria-label="固定" :pressed="true">…</CfIconButton>`}
+  reactCode={`<CfIconButton aria-label="保存" variant="primary"><Icon /></CfIconButton>
+<CfIconButton aria-label="删除" variant="danger"><Icon /></CfIconButton>
+<CfIconButton aria-label="固定" pressed><Icon /></CfIconButton>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 尺寸与形状
+
+3 档尺寸（`sm` 26 / `md` 32 / `lg` 38 px）。`shape="round"` 切到圆形（pill）。
+
+import SizesVue from '~/components/demos/iconbutton/SizesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfIconButton size="sm" aria-label="星标" />
+<CfIconButton size="md" aria-label="星标" />
+<CfIconButton size="lg" aria-label="星标" />
+<CfIconButton shape="round" aria-label="圆形" />`}
+  reactCode={`<CfIconButton size="sm" aria-label="星标" />
+<CfIconButton size="md" aria-label="星标" />
+<CfIconButton size="lg" aria-label="星标" />
+<CfIconButton shape="round" aria-label="圆形" />`}
+>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 状态
+
+`pressed` 切换 toggle 状态（自动设 `aria-pressed`），`loading` 与 `disabled` 分别给出 spinner 与禁用样式。
+
+import StatesVue from '~/components/demos/iconbutton/StatesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfIconButton :pressed="true" aria-label="固定" />
+<CfIconButton variant="danger" :pressed="true" aria-label="收藏" />
+<CfIconButton loading aria-label="加载中" />
+<CfIconButton disabled aria-label="禁用" />`}
+  reactCode={`<CfIconButton pressed aria-label="固定" />
+<CfIconButton variant="danger" pressed aria-label="收藏" />
+<CfIconButton loading aria-label="加载中" />
+<CfIconButton disabled aria-label="禁用" />`}
+>
+  <StatesVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `variant` | `'default' \| 'primary' \| 'danger'` | `'default'` | 视觉变体 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `shape` | `'square' \| 'round'` | `'square'` | 形状 |
+| `pressed` | `boolean` | `false` | toggle 状态，输出 `aria-pressed` |
+| `loading` | `boolean` | `false` | 显示 spinner |
+| `disabled` | `boolean` | `false` | 禁用 |
+| 默认槽 / `children` | — | — | 图标内容 |
+| `badge` 槽 / `badge` prop | — | — | 右上角徽章 |
+
+> **a11y**：必须传 `aria-label`，否则屏幕阅读器无法识别按钮含义。

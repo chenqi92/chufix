@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfDivider } from '@chufix/vue';
+import { CfDivider } from '@chufix-design/vue';
 </script>
 
 <template>

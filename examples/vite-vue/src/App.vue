@@ -17,12 +17,12 @@ import {
   CfToaster,
   CfTooltip,
   toast,
-} from '@chufix/vue';
+} from '@chufix-design/vue';
 
 /* This file is the smoke-test entry: every component is mounted at least
  * once so that any token-undefined / class-rename regression surfaces here
  * instead of in user projects. After a token rename:
- *   pnpm --filter @chufix/example-vite-vue dev
+ *   pnpm --filter @chufix-design/example-vite-vue dev
  * and visually confirm shadows, borders, radii, focus rings still render. */
 
 const text = ref('hello');
@@ -127,7 +127,7 @@ const opts = [
 </template>
 
 <style>
-@import '@chufix/vue/style.css';
+@import '@chufix-design/vue/style.css';
 
 .page {
   max-width: 880px;

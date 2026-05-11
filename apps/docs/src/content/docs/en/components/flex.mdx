@@ -1,0 +1,31 @@
+---
+title: Flex
+description: Componentized flex-direction, align, justify, gap, and wrap for common layout rows.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/flex/BasicVue.vue';
+
+## Basic Usage
+
+`CfFlex` is useful for button groups, form rows, status bars, and card toolbars. `gap` accepts token sizes, pixel numbers, or any CSS length.
+
+<DemoFrame
+  vueCode={`<CfFlex align="center" justify="between" wrap gap="md">...</CfFlex>`}
+  reactCode={`<CfFlex align="center" justify="between" wrap gap="md">...</CfFlex>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `string / ElementType` | `div` | Rendered element |
+| `direction` | `row / column / row-reverse / column-reverse` | `row` | Main axis direction |
+| `align` | `start / center / end / stretch / baseline` | `stretch` | Cross-axis alignment |
+| `justify` | `start / center / end / between / around / evenly` | `start` | Main-axis distribution |
+| `gap` | `none / xs / sm / md / lg / xl / number / string` | `md` | Spacing |
+| `wrap` | `boolean` | `false` | Allow wrapping |
+| `inline` | `boolean` | `false` | Use `inline-flex` |
+| `full` | `boolean` | `false` | Fill parent width |

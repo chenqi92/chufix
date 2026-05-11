@@ -1,24 +1,50 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { codeBlockClass, type CodeBlockProps } from './variants';
+import {
+  codeBlockClass,
+  escapeHtml,
+  highlightCode,
+  normalizeCodeIndent,
+  type CodeBlockProps,
+} from './variants';
 
 const props = withDefaults(defineProps<CodeBlockProps>(), {
   size: 'md',
   showLineNumbers: false,
   copyable: true,
+  startLine: 1,
+  wrap: false,
+  tone: 'light',
+  trimIndent: false,
+  highlight: true,
 });
 
 const cls = computed(() =>
-  codeBlockClass({ size: props.size, showLineNumbers: props.showLineNumbers }),
+  codeBlockClass({
+    size: props.size,
+    showLineNumbers: props.showLineNumbers,
+    wrap: props.wrap,
+    tone: props.tone,
+    className: props.className,
+  }),
 );
 
-const lines = computed(() => props.code.split('\n'));
+const displayCode = computed(() =>
+  props.trimIndent ? normalizeCodeIndent(props.code) : props.code,
+);
+
+const lines = computed(() => displayCode.value.split('\n'));
+const highlighted = computed(() => {
+  if (props.highlightedHtml) return props.highlightedHtml;
+  if (props.highlight === false) return escapeHtml(displayCode.value);
+  return highlightCode(props.code, props.language, props.trimIndent);
+});
 
 const copyState = ref<'idle' | 'copied'>('idle');
 
 async function copy() {
   try {
-    await navigator.clipboard.writeText(props.code);
+    await navigator.clipboard.writeText(displayCode.value);
     copyState.value = 'copied';
     setTimeout(() => (copyState.value = 'idle'), 1500);
   } catch (e) {
@@ -56,10 +82,10 @@ const maxHeightStyle = computed(() => {
     <pre class="cf-code-block__pre" :style="maxHeightStyle">
       <template v-if="showLineNumbers">
         <span class="cf-code-block__nums" aria-hidden="true">
-          <span v-for="(_, i) in lines" :key="i">{{ i + 1 }}</span>
+          <span v-for="(_, i) in lines" :key="i">{{ startLine + i }}</span>
         </span>
       </template>
-      <code class="cf-code-block__code">{{ code }}</code>
+      <code class="cf-code-block__code" v-html="highlighted"></code>
     </pre>
   </div>
 </template>

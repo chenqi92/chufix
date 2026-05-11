@@ -1,0 +1,26 @@
+---
+title: Highlight
+description: Highlight matched keywords inside long text. Useful for search result lists and keyword markers.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/highlight/BasicVue.vue';
+
+## Basic usage
+
+`text` is the source text, `match` can be a string or a regex; string mode is case-insensitive by default.
+
+<DemoFrame
+  vueCode={`<CfHighlight :text="text" :match="q" />`}
+  reactCode={`<CfHighlight text={text} match={q} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `text` | `string` | `—` | Source text |
+| `match` | `string \| RegExp` | `—` | Keyword or regex; no highlight when empty |
+| `caseSensitive` | `boolean` | `false` | Whether to be case-sensitive in string mode |

@@ -1,0 +1,32 @@
+---
+title: Marquee
+description: Horizontally scrolling text or elements at a constant speed; for announcement bars, tickers, and logo walls.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/marquee/BasicVue.vue';
+
+## Basic usage
+
+`duration` controls seconds per full loop; default direction is right-to-left. `pauseOnHover` is on by default and pauses on mouse hover.
+
+<DemoFrame
+  vueCode={`<CfMarquee :duration="20">
+  📢 The system will undergo maintenance tonight at 23:00...
+</CfMarquee>`}
+  reactCode={`<CfMarquee duration={20}>
+  📢 The system will undergo maintenance tonight at 23:00...
+</CfMarquee>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `content` | `string` | `—` | Simple text content; rich content can also be passed via the default slot / children |
+| `duration` | `number` | `20` | Seconds per loop; smaller is faster |
+| `direction` | `'left' \| 'right'` | `'left'` | Scroll direction |
+| `pauseOnHover` | `boolean` | `true` | Pause animation on hover |
+| `gap` | `number` | `40` | Pixels of whitespace between the end of content and the next loop's start |

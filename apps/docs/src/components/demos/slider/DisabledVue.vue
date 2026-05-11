@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfSlider } from '@chufix/vue';
+import { CfSlider } from '@chufix-design/vue';
 </script>
 
 <template>

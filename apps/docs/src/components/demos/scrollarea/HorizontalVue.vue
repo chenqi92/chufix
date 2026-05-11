@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfScrollArea } from '@chufix/vue';
+import { CfScrollArea } from '@chufix-design/vue';
 
 const tags = Array.from({ length: 24 }, (_, i) => `tag-${i + 1}`);
 </script>

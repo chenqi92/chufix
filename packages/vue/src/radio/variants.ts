@@ -12,6 +12,13 @@ export interface RadioProps {
   id?: string;
 }
 
+export interface RadioChangeMeta {
+  event: Event;
+  value: RadioValue;
+  name?: string;
+  checked: boolean;
+}
+
 export interface RadioGroupProps {
   modelValue?: RadioValue;
   name?: string;
@@ -25,7 +32,7 @@ export interface RadioGroupContext {
   name: string | undefined;
   size: RadioSize;
   disabled: boolean;
-  select(v: RadioValue): void;
+  select(v: RadioValue, meta: RadioChangeMeta): void;
 }
 
 export const radioGroupKey: InjectionKey<RadioGroupContext> = Symbol('cf-radio-group');

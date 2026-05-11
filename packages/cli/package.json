@@ -1,0 +1,42 @@
+{
+  "name": "@chufix-design/cli",
+  "version": "0.2.1",
+  "description": "ChuFix UI CLI · 一键拉取 blocks 源码到本地项目",
+  "license": "MIT",
+  "author": "chenqi92",
+  "homepage": "https://chufix.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenqi92/chufix.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/chenqi92/chufix/issues"
+  },
+  "keywords": [
+    "chufix",
+    "cli",
+    "scaffolding",
+    "blocks"
+  ],
+  "type": "module",
+  "bin": {
+    "chufix": "./bin/chufix.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "build": "echo 'no build needed (pure ESM)'",
+    "dev": "node ./bin/chufix.mjs"
+  }
+}

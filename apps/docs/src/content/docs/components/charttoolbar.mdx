@@ -1,0 +1,43 @@
+---
+title: ChartToolbar 图表工具栏
+description: 图表头部工具条：标题 + legend 切换 + zoom/export/refresh 按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
+
+## 基础用法
+
+数据通过 props 传入，纯 SVG 渲染，无第三方图表库依赖。
+配色取自 `--viz-1..8` token，色盲友好。
+
+<DemoFrame
+  vueCode={`<CfChartToolbar ... />`}
+  reactCode={`<CfChartToolbar ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 交互联动
+
+legend chip 点击 toggle 隐藏 series；下方 LineChart 实时联动重画。
+
+import InteractiveVue from '~/components/demos/charttoolbar/InteractiveVue.vue';
+
+<DemoFrame
+  vueCode={`<CfChartToolbar :series="series" @series-toggle="toggle" />
+<CfLineChart :series="visibleSeries" />`}
+  reactCode={`<CfChartToolbar series={series} onSeriesToggle={toggle} />
+<CfLineChart series={visibleSeries} />`}
+>
+  <InteractiveVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `title / subtitle` | `string` | `—` | 标题 + 描述 |
+| `series` | `LegendSeries[]` | `—` | &#123; name, colorIndex, hidden? &#125;[]，点击 legend 触发 toggle |
+| `showZoom / showExport / showRefresh` | `boolean` | `false` | 显示按钮槽 |

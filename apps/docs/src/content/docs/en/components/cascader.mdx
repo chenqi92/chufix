@@ -1,0 +1,42 @@
+---
+title: Cascader
+description: Column-by-column expanding picker for hierarchical options — path-based selection, common for region / department / category filters.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/cascader/BasicVue.vue';
+
+## Basic usage
+
+`options` is a tree; clicking a leaf node selects the entire path. `v-model` / `value` is a `string[]` — the sequence of values from root to the selected node.
+
+<DemoFrame
+  vueCode={`<CfCascader v-model="value" :options="options" clearable />`}
+  reactCode={`<CfCascader value={value} onChange={setValue} options={options} clearable />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `options` | `CascaderOption[]` | `—` | Cascading option tree |
+| `value` / `modelValue` | `string[]` | `—` | Controlled selected path |
+| `defaultValue` | `string[]` | `[]` | Uncontrolled initial value |
+| `placeholder` | `string` | `'Please select'` | Placeholder when nothing is selected |
+| `separator` | `string` | `' / '` | Path separator shown in the trigger |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Trigger size |
+| `disabled` | `boolean` | `false` | Disabled |
+| `clearable` | `boolean` | `false` | Show a clear button |
+
+### CascaderOption
+
+| Field | Type | Description |
+|---|---|---|
+| `value` | `string` | Unique value |
+| `label` | `string` | Display text |
+| `disabled` | `boolean` | Disable this option |
+| `children` | `CascaderOption[]` | Next-level options; omit to mark as a leaf |
+
+Events: `onChange(path: string[])` — fires when the selected path changes.

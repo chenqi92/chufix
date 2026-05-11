@@ -1,0 +1,42 @@
+---
+title: Radar chart
+description: Multi-dimensional comparison polygon chart with multi-series support.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed via props and rendered as pure SVG, with no third-party charting dependency.
+Colors are drawn from the `--viz-1..8` tokens and are colorblind-friendly.
+
+<DemoFrame
+  vueCode={`<CfRadarChart ... />`}
+  reactCode={`<CfRadarChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Multi-series comparison
+
+Compare three options across six dimensions, cycling through `--viz-*`.
+
+import CompareVue from '~/components/demos/radarchart/CompareVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRadarChart :axes="axes" :series="threeSeries" />`}
+  reactCode={`<CfRadarChart axes={axes} series={threeSeries} />`}
+>
+  <CompareVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `axes` | `string[]` | `—` | Axis names |
+| `series` | `RadarSeries[]` | `—` | &#123; name, values: number[], colorIndex? &#125;[] |
+| `size` | `number` | `240` |  |
+| `max` | `number` | data max | Normalization baseline |

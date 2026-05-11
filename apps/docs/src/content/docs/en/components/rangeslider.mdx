@@ -1,0 +1,43 @@
+---
+title: Range slider
+description: Two-knob range picker with keyboard navigation and hover tooltip.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/rangeslider/BasicVue.vue';
+
+## Basic usage
+
+`v-model` / `value` accepts `[number, number]`. Full keyboard support: ↑↓←→ / PageUp / PageDown / Home / End.
+
+<DemoFrame
+  vueCode={`<CfRangeSlider v-model="range" :min="0" :max="100" />`}
+  reactCode={`<CfRangeSlider value={range} onChange={setRange} min={0} max={100} />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Tone
+
+`tone` controls the fill color (success / warning / error); shares the `--cf-rs-*` tokens with `Slider`.
+
+import TonesVue from '~/components/demos/rangeslider/TonesVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRangeSlider v-model="v" tone="success" />`}
+  reactCode={`<CfRangeSlider value={v} onChange={setV} tone="success" />`}
+>
+  <TonesVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` / `value` | `[number, number]` | `[0, 100]` | |
+| `min` / `max` | `number` | `0` / `100` | |
+| `step` | `number` | `1` | Step |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `tone` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | |
+| `disabled` / `showTooltip` | `boolean` | `false` / `true` | |

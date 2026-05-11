@@ -1,0 +1,43 @@
+---
+title: AreaChart
+description: Area chart with stacked mode and smooth-curve support.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/areachart/BasicVue.vue';
+
+## Basic usage
+
+Data is passed in via props and rendered as plain SVG — no third-party charting library.
+Colors come from the `--viz-1..8` tokens and are color-blind friendly.
+
+<DemoFrame
+  vueCode={`<CfAreaChart ... />`}
+  reactCode={`<CfAreaChart ... />`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## Stacked mode
+
+`stacked = true` stacks the series cumulatively (each value is the sum of all previous series),
+which is suitable for showing composition; the default `false` overlays the series for trend comparison.
+
+import StackedVue from '~/components/demos/areachart/StackedVue.vue';
+
+<DemoFrame
+  vueCode={`<CfAreaChart :series="series" stacked smooth />`}
+  reactCode={`<CfAreaChart series={series} stacked smooth />`}
+>
+  <StackedVue client:load />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `series` | `AreaSeries[]` | `—` | &#123; name?, data: number[] &#125;[] |
+| `stacked` | `boolean` | `false` | Stacked mode |
+| `smooth` | `boolean` | `false` | Smooth curves |
+| `width / height / showGrid / showLabels` | `` | `` | Same as LineChart |

@@ -1,0 +1,59 @@
+---
+title: RegexBuilder 正则构建器
+description: 实时编译 + 测试匹配，错误友好提示，flags 用 chip 切换。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/regexbuilder/BasicVue.vue';
+
+## 基础用法
+
+输入 pattern + 选 flags，实时编译并在 test text 上高亮匹配。
+若 pattern 编译失败，显示原生 `SyntaxError.message`。
+
+<DemoFrame
+  vueCode={`<CfRegexBuilder
+  :pattern="pattern"
+  :flags="flags"
+  :test-text="text"
+  @update:pattern="setPattern"
+  @update:flags="setFlags"
+  @update:test-text="setText"
+/>`}
+  reactCode={`<CfRegexBuilder
+  pattern={pattern}
+  onPatternChange={setPattern}
+  flags={flags}
+  onFlagsChange={setFlags}
+  testText={text}
+  onTestTextChange={setText}
+/>`}
+>
+  <BasicVue client:load />
+</DemoFrame>
+
+
+## 编译错误
+
+故意输入非法 pattern（如未匹配的方括号），错误信息显示在 input 下方红框内。
+
+import ErrorVue from '~/components/demos/regexbuilder/ErrorVue.vue';
+
+<DemoFrame
+  vueCode={`<CfRegexBuilder :pattern="'([unbalanced'" />`}
+  reactCode={`<CfRegexBuilder pattern="([unbalanced" />`}
+>
+  <ErrorVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `pattern` | `string` | `''` | |
+| `flags` | `string` | `'g'` | 任意子集：`g i m s u y` |
+| `testText` | `string` | `''` | |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `patternPlaceholder` / `testPlaceholder` | | | |
+
+> 安全：组件内部用 `new RegExp()`。请勿把不可信用户字符串当 pattern 直接执行 ReDoS 攻击 —— 内部循环上限 5000 命中。
