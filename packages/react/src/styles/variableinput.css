@@ -336,5 +336,5 @@
 .cf-vinput__action.is-primary {
   border-color: var(--accent-1);
   background: var(--accent-1);
-  color: var(--accent-contrast);
+  color: var(--fg-on-accent);
 }
