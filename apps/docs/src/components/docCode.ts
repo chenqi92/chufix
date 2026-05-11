@@ -135,7 +135,19 @@ function isPlaceholderCode(value?: string) {
     || /content=\{\s*\.\.\.\s*\}/.test(source)
     || /<Panel[A-Za-z0-9_]*\s*\/>/.test(source)
     || /\[\s*\.\.\.\s*\]/.test(source)
+    || /\/\/\s*\.\.\.\s*$/m.test(source)
     || /\/\*\s*\.\.\.\s*\*\//.test(source);
+}
+
+function hasPlaceholderEllipsis(value?: string) {
+  const source = normalizeCode(value);
+  if (!source) return false;
+  if (isPlaceholderCode(source)) return true;
+  if (!/(?:\.{3}|…)/.test(source)) return false;
+  return /<Cf[A-Za-z0-9]+[\s\S]*(?:\.{3}|…)/.test(source)
+    || /<template\s+#/.test(source)
+    || /<path\b[^>]*\bd=["'][^"']*(?:\.{3}|…)/.test(source)
+    || /(?:content|trigger|message|title|subtitle|label|value|delta|trend)=\{?\s*(?:\.{3}|…)/.test(source);
 }
 
 function readConstInitializer(script: string, name: string) {
@@ -388,7 +400,7 @@ ${indent(jsx, 6)}
 
 function buildReactSourceFromVueSource(vueSource: string, reactCode: string) {
   const snippet = normalizeCode(reactCode);
-  if (isPlaceholderCode(snippet)) {
+  if (!snippet || hasPlaceholderEllipsis(snippet)) {
     const source = buildReactSourceFromVueTemplate(vueSource);
     if (source) return source;
   }
@@ -471,8 +483,8 @@ export function buildDemoCodeGroups(input: DemoCodeInput) {
   const groups: DocCodeGroup[] = [];
   const vueContent = normalizeCode(input.vueSource ?? input.vueCode);
   const reactContent = normalizeCode(
-    input.reactSource ?? (input.vueSource && input.reactCode
-      ? buildReactSourceFromVueSource(input.vueSource, input.reactCode)
+    input.reactSource ?? (input.vueSource
+      ? buildReactSourceFromVueSource(input.vueSource, input.reactCode ?? '')
       : input.reactCode),
   );
   const cliContent = normalizeCode(input.cliSource ?? input.cliCode);

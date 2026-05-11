@@ -1242,12 +1242,16 @@ a.cf-card .cf-card__header,
   font-size: inherit;
   line-height: inherit;
 }
+.cf-doc-code pre.astro-code,
+.cf-doc-code pre.astro-code code {
+  line-height: 0;
+}
 .cf-doc-code pre.astro-code .line {
   display: block;
   min-height: 1.45em;
   padding: 0 1.25rem;
   white-space: pre;
-  line-height: inherit;
+  line-height: 1.45;
 }
 .cf-doc-code.has-numbers pre.astro-code {
   counter-reset: cf-code-line;
@@ -1366,11 +1370,15 @@ a.cf-card .cf-card__header,
   font-size: inherit;
   line-height: inherit;
 }
+.cf-demo__code pre.astro-code,
+.cf-demo__code pre.astro-code code {
+  line-height: 0;
+}
 .cf-demo__code pre.astro-code .line {
   display: block;
   min-height: 1.45em;
   padding: 0 5rem 0 1.5rem;
-  line-height: inherit;
+  line-height: 1.45;
 }
 .cf-demo__copy {
   position: absolute;

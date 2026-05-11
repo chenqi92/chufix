@@ -357,11 +357,17 @@
   display: block;
   width: max-content;
   min-width: 100%;
+  line-height: inherit;
+}
+.cf-block__filebody pre.astro-code,
+.cf-block__filebody pre.astro-code code {
+  line-height: 0;
 }
 .cf-block__filebody pre.astro-code .line {
   display: block;
   min-height: 1.55em;
   padding: 0 5rem 0 1.25rem;
+  line-height: 1.55;
 }
 .cf-block__copy--code {
   flex-shrink: 0;
