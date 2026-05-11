@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { snackbarClass, type SnackbarProps } from './variants';
 
 const props = withDefaults(defineProps<SnackbarProps>(), {
@@ -21,6 +21,7 @@ const cls = computed(() =>
   snackbarClass({ tone: props.tone, placement: props.placement }),
 );
 
+const canRender = ref(false);
 let timer: number | null = null;
 
 function clear() {
@@ -37,10 +38,14 @@ function startTimer() {
   }
 }
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 watch(
-  () => props.open,
-  (open) => {
-    if (open) startTimer();
+  [() => props.open, canRender],
+  ([open, ready]) => {
+    if (open && ready) startTimer();
     else clear();
   },
   { immediate: true },
@@ -67,7 +72,7 @@ onBeforeUnmount(clear);
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="canRender" :to="to">
     <Transition name="cf-snackbar" appear>
       <div v-if="open" :class="cls" role="status" aria-live="polite">
         <span v-if="tone !== 'default'" class="cf-snackbar__icon" aria-hidden="true">

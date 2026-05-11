@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   formatCountdown,
   formatNumber,
@@ -19,7 +19,8 @@ const props = withDefaults(defineProps<StatisticProps>(), {
 
 const emit = defineEmits<{ finish: [] }>();
 
-const display = ref(0);
+const display = ref(props.countdown == null ? props.value ?? 0 : 0);
+const canAnimate = ref(false);
 let raf: number | null = null;
 let timer: ReturnType<typeof setInterval> | null = null;
 
@@ -68,13 +69,22 @@ function startCountdown() {
 }
 
 watch(
-  () => [props.value, props.countdown],
+  () => [props.value, props.countdown, canAnimate.value],
   () => {
-    if (props.countdown != null) startCountdown();
-    else if (props.value != null) animateTo(props.value);
+    if (props.countdown != null) {
+      if (canAnimate.value) startCountdown();
+      else display.value = 0;
+    } else if (props.value != null) {
+      if (canAnimate.value) animateTo(props.value);
+      else display.value = props.value;
+    }
   },
   { immediate: true },
 );
+
+onMounted(() => {
+  canAnimate.value = true;
+});
 
 onBeforeUnmount(clearAnim);
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   computePopoverPosition,
   type PopoverPlacement,
@@ -22,6 +22,7 @@ const emit = defineEmits<{
 
 const triggerRef = ref<HTMLSpanElement | null>(null);
 const panelRef = ref<HTMLDivElement | null>(null);
+const canRender = ref(false);
 
 const controlled = computed(() => props.open !== undefined);
 const inner = ref(false);
@@ -128,6 +129,10 @@ watch(visible, async (v) => {
   }
 });
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 onBeforeUnmount(() => {
   clearHoverTimers();
   document.removeEventListener('mousedown', onDocumentClick, true);
@@ -157,7 +162,7 @@ const panelClass = computed(
   >
     <slot />
   </span>
-  <Teleport to="body">
+  <Teleport v-if="canRender" to="body">
     <Transition name="cf-popover-fade">
       <div
         v-if="visible"

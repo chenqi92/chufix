@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import {
   computeTooltipPosition,
   type TooltipPlacement,
@@ -19,6 +19,7 @@ const triggerRef = ref<HTMLSpanElement | null>(null);
 const tipRef = ref<HTMLDivElement | null>(null);
 const visible = ref(false);
 const pos = ref({ top: 0, left: 0, placement: props.placement as TooltipPlacement });
+const canRender = ref(false);
 
 let openTimer: ReturnType<typeof setTimeout> | null = null;
 let closeTimer: ReturnType<typeof setTimeout> | null = null;
@@ -66,6 +67,10 @@ const tipClass = computed(
   () => `cf-tooltip cf-tooltip--${pos.value.placement}`,
 );
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 onBeforeUnmount(clearTimers);
 </script>
 
@@ -80,7 +85,7 @@ onBeforeUnmount(clearTimers);
   >
     <slot />
   </span>
-  <Teleport to="body">
+  <Teleport v-if="canRender" to="body">
     <Transition name="cf-tooltip-fade">
       <div
         v-if="visible"

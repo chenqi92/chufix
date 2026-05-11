@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, ref } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import type { ContextMenuItem, ContextMenuProps } from './variants';
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
@@ -17,6 +17,11 @@ const open = ref(false);
 const pos = ref<{ top: number; left: number }>({ top: 0, left: 0 });
 const menuRef = ref<HTMLUListElement | null>(null);
 const triggerRef = ref<HTMLSpanElement | null>(null);
+const canRender = ref(false);
+
+onMounted(() => {
+  canRender.value = true;
+});
 
 function clampToViewport() {
   const el = menuRef.value;
@@ -88,7 +93,7 @@ onBeforeUnmount(() => {
   >
     <slot />
   </span>
-  <Teleport :to="to">
+  <Teleport v-if="canRender" :to="to">
     <ul
       v-if="open"
       ref="menuRef"

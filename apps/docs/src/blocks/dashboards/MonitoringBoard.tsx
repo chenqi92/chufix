@@ -1,12 +1,12 @@
 import { CfGauge, CfSparkline, CfLatencyHeatmap, CfStatusCodeBadge } from '@chufix-design/react';
 
 function rand(n: number, base: number, jit: number) {
-  return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);
+  return Array.from({ length: n }, (_, i) => Number((base + Math.sin(i / 2) * jit * 0.28 + Math.cos(i / 3) * jit * 0.16).toFixed(3)));
 }
 function row(peak: number) {
   return Array.from({ length: 24 }, (_, h) => {
     const dist = Math.abs(h - peak);
-    return 60 + (24 - dist) * 8 + Math.random() * 40;
+    return 60 + (24 - dist) * 8 + ((h * 19 + peak * 13) % 40);
   });
 }
 

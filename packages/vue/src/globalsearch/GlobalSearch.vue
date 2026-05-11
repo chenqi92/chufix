@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import {
   filterResults,
   type GlobalSearchProps,
@@ -23,6 +23,7 @@ const query = ref('');
 const activeCategory = ref<string | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
 const activeIndex = ref(0);
+const canRender = ref(false);
 
 const allCategories = computed(() => {
   const set = new Set<string>();
@@ -44,10 +45,14 @@ const isContained = computed(() => {
   return target !== 'body' && target !== 'html';
 });
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 watch(
-  () => props.open,
-  async (open) => {
-    if (open) {
+  [() => props.open, canRender],
+  async ([open, ready]) => {
+    if (open && ready) {
       query.value = '';
       activeCategory.value = null;
       activeIndex.value = 0;
@@ -106,7 +111,7 @@ function onOverlayClick(e: MouseEvent) {
 </script>
 
 <template>
-  <Teleport v-if="open" :to="to">
+  <Teleport v-if="canRender && open" :to="to">
     <Transition name="cf-gs" appear>
       <div
         class="cf-globalsearch__overlay"

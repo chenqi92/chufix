@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import {
   CfButton,
   CfMetricCard,
@@ -35,7 +35,7 @@ function seed(): Record<string, string> {
   return out;
 }
 
-const data = reactive<Record<string, string>>(seed());
+const data = ref<Record<string, string>>(seed());
 
 interface ParsedRow { name: string; email: string; role: string; amount: string; rowIndex: number; }
 
@@ -45,7 +45,7 @@ const rows = computed<ParsedRow[]>(() => {
     const obj: Record<string, string> = {};
     let any = false;
     HEADERS.forEach((h, c) => {
-      const v = data[toA1(c, r)] ?? '';
+      const v = data.value[toA1(c, r)] ?? '';
       obj[h] = v;
       if (v.trim()) any = true;
     });
@@ -81,6 +81,10 @@ const validCount = computed(() => {
   return rows.value.filter((r) => !errored.has(r.rowIndex)).length;
 });
 
+function updateData(next: Record<string, string>) {
+  data.value = next;
+}
+
 async function importAll() {
   if (errors.value.length) {
     toast({ type: 'error', message: `仍有 ${errors.value.length} 条错误，请先修复` });
@@ -96,7 +100,7 @@ async function importAll() {
 }
 
 async function exportTemplate() {
-  const tsv = rangeToTSV(data, {
+  const tsv = rangeToTSV(data.value, {
     start: { col: 0, row: 0 },
     end: { col: COLS - 1, row: 0 },
   });
@@ -105,8 +109,9 @@ async function exportTemplate() {
 }
 
 function clearAll() {
-  for (const k of Object.keys(data)) delete data[k];
-  HEADERS.forEach((h, c) => { data[toA1(c, 0)] = h; });
+  const next: Record<string, string> = {};
+  HEADERS.forEach((h, c) => { next[toA1(c, 0)] = h; });
+  data.value = next;
   toast({ type: 'info', message: '已清空数据（保留表头）' });
 }
 </script>
@@ -139,11 +144,12 @@ function clearAll() {
     </div>
 
     <CfSpreadsheet
-      v-model="data"
+      :model-value="data"
       :rows="ROWS"
       :cols="COLS"
       :col-width="160"
       caption="第一行是表头,从第二行起填数据"
+      @update:model-value="updateData"
     />
 
     <div v-if="errors.length" class="bi__errors">

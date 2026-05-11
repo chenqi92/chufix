@@ -16,11 +16,15 @@ const data = ref<Record<string, string>>({
   B4: '华南',
   C4: '180',
 });
+
+function updateData(next: Record<string, string>) {
+  data.value = next;
+}
 </script>
 
 <template>
   <p style="margin: 0 0 8px; color: var(--fg-3); font-size: 12px;">
     单击选中、双击编辑、方向键移动、Tab/Enter 确认；Cmd/Ctrl + C / V 在选区与剪贴板间复制粘贴 TSV。
   </p>
-  <CfSpreadsheet v-model="data" :rows="10" :cols="5" />
+  <CfSpreadsheet :model-value="data" :rows="10" :cols="5" @update:model-value="updateData" />
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   countDownClass,
   formatRemaining,
@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<CountDownProps>(), {
 const emit = defineEmits<{ finish: []; change: [remaining: number] }>();
 
 const remaining = ref(0);
+const canTick = ref(false);
 let timer: ReturnType<typeof setInterval> | null = null;
 
 function clear() {
@@ -25,7 +26,10 @@ function clear() {
 
 function start() {
   clear();
-  if (typeof window === 'undefined') return;
+  if (!canTick.value || typeof window === 'undefined') {
+    remaining.value = 0;
+    return;
+  }
   const tms = targetMs(props.target);
   if (!tms) return;
   function tick() {
@@ -44,7 +48,12 @@ function start() {
   timer = setInterval(tick, props.interval);
 }
 
-watch(() => [props.target, props.interval], start, { immediate: true });
+watch(() => [props.target, props.interval, canTick.value], start, { immediate: true });
+
+onMounted(() => {
+  canTick.value = true;
+});
+
 onBeforeUnmount(clear);
 
 const cls = computed(() => countDownClass({ size: props.size, className: props.className }));

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   computeDropdownPosition,
   type DropdownPlacement,
@@ -22,6 +22,7 @@ const emit = defineEmits<{
 
 const triggerRef = ref<HTMLSpanElement | null>(null);
 const menuRef = ref<HTMLDivElement | null>(null);
+const canRender = ref(false);
 
 const controlled = computed(() => props.open !== undefined);
 const inner = ref(false);
@@ -147,6 +148,10 @@ watch(visible, async (v) => {
   }
 });
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 onBeforeUnmount(() => {
   document.removeEventListener('mousedown', onDocumentClick, true);
   document.removeEventListener('keydown', onKeyDown);
@@ -179,7 +184,7 @@ function itemKey(it: DropdownItem, i: number): string {
   >
     <slot />
   </span>
-  <Teleport to="body">
+  <Teleport v-if="canRender" to="body">
     <Transition name="cf-dropdown-fade">
       <div
         v-if="visible"

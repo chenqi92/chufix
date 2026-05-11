@@ -3,7 +3,7 @@ import { CfLatencyHeatmap } from '@chufix-design/vue';
 function row(peakHour: number) {
   return Array.from({ length: 24 }, (_, h) => {
     const dist = Math.abs(h - peakHour);
-    return 80 + (24 - dist) * 12 + Math.random() * 60;
+    return 80 + (24 - dist) * 12 + ((h * 17 + peakHour * 11) % 60);
   });
 }
 const data = [row(15), row(15), row(15), row(16), row(15), row(13), row(13)];

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   trapFocus,
   lockBodyScroll,
@@ -42,6 +42,7 @@ let trap: FocusTrap | null = null;
 let stackEntry: { zIndex: number; release: () => void } | null = null;
 
 const computedZ = ref<number>(props.zIndex ?? 1000);
+const canRender = ref(false);
 
 const dragOffset = ref({ x: 0, y: 0 });
 const sizeOverride = ref<{ width?: number; height?: number }>({});
@@ -91,10 +92,14 @@ function onCancel() {
   close();
 }
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 watch(
-  () => props.open,
-  async (open) => {
-    if (open) {
+  [() => props.open, canRender],
+  async ([open, ready]) => {
+    if (open && ready) {
       lockBodyScroll();
       stackEntry = pushModal(close);
       computedZ.value = props.zIndex ?? stackEntry.zIndex;
@@ -104,7 +109,7 @@ watch(
       await nextTick();
       if (dialogRef.value) trap = trapFocus(dialogRef.value);
       if (typeof window !== 'undefined') window.addEventListener('keydown', onKeyDown, true);
-    } else {
+    } else if (!open) {
       trap?.release();
       trap = null;
       unlockBodyScroll();
@@ -200,7 +205,7 @@ defineExpose({ close, ok: onOk });
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="canRender" :to="to">
     <Transition name="cf-modal" appear>
       <div
         v-if="open"

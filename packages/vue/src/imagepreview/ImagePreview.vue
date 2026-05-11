@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { clampZoom, imagePreviewClass, type ImagePreviewProps } from './variants';
 
 const props = withDefaults(defineProps<ImagePreviewProps>(), {
@@ -25,6 +25,7 @@ const realOpen = computed(() => {
 const zoom = ref(1);
 const dx = ref(0);
 const dy = ref(0);
+const canRender = ref(false);
 let dragging = false;
 let startX = 0;
 let startY = 0;
@@ -76,9 +77,13 @@ function onKeydown(evt: KeyboardEvent) {
   else if (evt.key === '0') reset();
 }
 
-watch(realOpen, (v) => {
+onMounted(() => {
+  canRender.value = true;
+});
+
+watch([realOpen, canRender], ([v, ready]) => {
   if (typeof window === 'undefined') return;
-  if (v) {
+  if (v && ready) {
     reset();
     document.addEventListener('keydown', onKeydown);
     document.addEventListener('mousemove', onMouseMove);
@@ -104,7 +109,7 @@ const imgStyle = computed(() => ({
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport v-if="canRender" to="body">
     <div v-if="realOpen" :class="cls" role="dialog" aria-modal="true">
       <div class="cf-imgpreview__backdrop" @click="setOpen(false)" />
       <div class="cf-imgpreview__stage" @wheel="onWheel">

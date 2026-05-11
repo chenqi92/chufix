@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, ref, toRef } from 'vue';
+import { provide, ref, toRaw, toRef } from 'vue';
 import {
   FormContextKey,
   validateRules,
@@ -23,7 +23,17 @@ const emit = defineEmits<{
 
 const errors = ref<FieldErrors>({});
 const fieldRefs = new Map<string, HTMLElement>();
-const initialModelSnapshot = props.model ? structuredClone(props.model) : undefined;
+
+function cloneModel(model: Record<string, unknown>): Record<string, unknown> {
+  const raw = toRaw(model);
+  try {
+    return structuredClone(raw);
+  } catch {
+    return JSON.parse(JSON.stringify(raw)) as Record<string, unknown>;
+  }
+}
+
+const initialModelSnapshot = props.model ? cloneModel(props.model) : undefined;
 
 function registerField(name: string, el: HTMLElement) {
   fieldRefs.set(name, el);
@@ -98,7 +108,7 @@ function resetFields() {
     for (const k of Object.keys(props.model)) {
       delete (props.model as Record<string, unknown>)[k];
     }
-    Object.assign(props.model as Record<string, unknown>, structuredClone(initialModelSnapshot));
+    Object.assign(props.model as Record<string, unknown>, cloneModel(initialModelSnapshot));
   }
   errors.value = {};
   emit('reset');

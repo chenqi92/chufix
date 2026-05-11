@@ -19,22 +19,27 @@ const layout = computed(() => {
     { min, max },
     { start: 0, end: props.width },
   );
-  let lastLabelEnd = -Infinity;
+  const labelRowEnds = [-Infinity, -Infinity];
   return phases.map((p, i) => {
     const x = sx(p.start);
     const width = Math.max(1, sx(p.end) - sx(p.start));
     const duration = p.end - p.start;
     const text = `${p.label} ${duration}ms`;
     const estimatedTextWidth = text.length * 7 + 10;
-    const autoVisible = width >= estimatedTextWidth && x >= lastLabelEnd + 8;
+    const labelX = Math.max(0, Math.min(x + 4, Math.max(0, props.width - estimatedTextWidth)));
+    const labelRow = labelRowEnds.findIndex((end) => labelX >= end + 8);
+    const canPlaceLabel = labelRow >= 0;
+    const autoVisible = width >= 12 && canPlaceLabel;
     const labelVisible =
-      props.labelMode === 'all' || (props.labelMode === 'auto' && autoVisible);
-    if (labelVisible) lastLabelEnd = x + estimatedTextWidth;
+      (props.labelMode === 'all' && canPlaceLabel) || (props.labelMode === 'auto' && autoVisible);
+    if (labelVisible) labelRowEnds[labelRow] = labelX + estimatedTextWidth;
     return {
       label: p.label,
       text,
       x,
       width,
+      labelX,
+      labelY: props.height + 10 + Math.max(labelRow, 0) * 12,
       colorIndex: p.colorIndex ?? i % 8,
       duration,
       labelVisible,
@@ -46,9 +51,9 @@ const layout = computed(() => {
 <template>
   <svg
     class="cf-chart"
-    :viewBox="`0 0 ${width} ${height + (showAxis ? 14 : 0)}`"
+    :viewBox="`0 0 ${width} ${height + (showAxis ? 30 : 0)}`"
     :width="width"
-    :height="height + (showAxis ? 14 : 0)"
+    :height="height + (showAxis ? 30 : 0)"
     role="img"
     :aria-label="ariaLabel ?? '请求瀑布图'"
   >
@@ -68,8 +73,8 @@ const layout = computed(() => {
         <text
           v-for="(p, i) in layout.filter((item) => labelMode !== 'none' && item.labelVisible)"
           :key="`l${i}`"
-          :x="p.x + 4"
-          :y="height + 12"
+          :x="p.labelX"
+          :y="p.labelY"
         >{{ p.text }}</text>
       </template>
     </template>
