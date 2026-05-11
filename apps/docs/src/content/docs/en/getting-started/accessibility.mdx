@@ -3,7 +3,7 @@ title: Accessibility
 description: ChuFix accessibility baseline — focus rings, keyboard navigation, screen readers, reduced-motion, forced-colors, aria-* coverage.
 ---
 
-Every ChuFix component is wrapped in this baseline a11y layer out of the box. If you've overridden styles, walk down the checklist to make sure you haven't undone the protections.
+Every ChuFix component is wrapped in this baseline a11y layer out of the box. The sections below describe focus rings, keyboard navigation, screen reader semantics, `prefers-reduced-motion`, `forced-colors`, and `prefers-contrast` behavior so you can align any custom styles with the same baseline.
 
 ## Focus ring
 
@@ -68,13 +68,3 @@ Under `forced-colors: active`:
 ## prefers-contrast: more
 
 When the user requests higher contrast, the soft border `--line-1` is aliased onto the strong `--line-2`. No component changes needed.
-
-## Self-audit
-
-Before shipping a new component or style override, run through:
-
-1. Tab / Shift+Tab across the page — every interactive element is reachable and the focus ring is visible.
-2. Hover ≠ focus: hovering shouldn't visually trigger focus styles and vice versa.
-3. Toggle `prefers-reduced-motion: reduce` (DevTools → Rendering → Emulate) — no slide/scale transforms remain.
-4. Toggle Windows high contrast (or Chromium's `forced-colors: active`) — borders and text stay visible.
-5. Run a screen reader (VoiceOver / NVDA) over the happy path — clear, no duplicate readings.
