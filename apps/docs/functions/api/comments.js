@@ -1,3 +1,6 @@
+import { ensureUserSchema, publicUser } from './comments-user.js';
+import { getUserSecret, verifyUserSession } from './comments-auth.js';
+
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
   'cache-control': 'no-store',
@@ -87,11 +90,12 @@ async function ensureSchema(db) {
         id TEXT PRIMARY KEY,
         page_id TEXT NOT NULL,
         parent_id TEXT,
+        user_id TEXT,
         author TEXT NOT NULL,
         email TEXT,
         role TEXT NOT NULL DEFAULT 'user',
         content TEXT NOT NULL,
-        status TEXT NOT NULL DEFAULT 'pending',
+        status TEXT NOT NULL DEFAULT 'approved',
         moderation_reason TEXT,
         matched_terms TEXT,
         ip_hash TEXT,
@@ -122,6 +126,7 @@ async function ensureSchema(db) {
   const { results } = await db.prepare('PRAGMA table_info(comments)').all();
   const columns = new Set((results || []).map((item) => item.name));
   const additions = [
+    ['user_id', 'ALTER TABLE comments ADD COLUMN user_id TEXT'],
     ['email', 'ALTER TABLE comments ADD COLUMN email TEXT'],
     ['moderation_reason', 'ALTER TABLE comments ADD COLUMN moderation_reason TEXT'],
     ['matched_terms', 'ALTER TABLE comments ADD COLUMN matched_terms TEXT'],
@@ -130,6 +135,7 @@ async function ensureSchema(db) {
   for (const [name, statement] of additions) {
     if (!columns.has(name)) await db.prepare(statement).run();
   }
+  await ensureUserSchema(db);
 }
 
 function cleanText(value, max) {
@@ -207,7 +213,7 @@ async function moderateSubmission(db, env, fields) {
   }
 
   if (!matches.length) {
-    return { status: 'pending', reason: null, matchedTerms: null };
+    return { status: 'approved', reason: null, matchedTerms: null };
   }
 
   const rejected = matches.some((item) => item.action === 'reject');
@@ -241,7 +247,7 @@ async function findDuplicate(db, ipHash, pageId, content) {
   if (!ipHash) return null;
   const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
   return db.prepare(`
-    SELECT id
+    SELECT id, status
     FROM comments
     WHERE ip_hash = ? AND page_id = ? AND content = ? AND created_at >= ?
     LIMIT 1
@@ -266,6 +272,7 @@ function mapComment(row, admin = false) {
     id: row.id,
     pageId: row.page_id,
     parentId: row.parent_id,
+    userId: row.user_id,
     author: row.author,
     role: row.role,
     content: row.content,
@@ -284,6 +291,19 @@ function mapComment(row, admin = false) {
   }
 
   return item;
+}
+
+async function getSessionUser(db, request, env) {
+  const secret = getUserSecret(env);
+  const userId = await verifyUserSession(request, secret);
+  if (!userId) return null;
+  const row = await db.prepare(`
+    SELECT id, display_name, email, created_at
+    FROM comment_users
+    WHERE id = ?
+    LIMIT 1
+  `).bind(userId).first();
+  return row ? publicUser(row) : null;
 }
 
 export function onRequestOptions() {
@@ -362,8 +382,12 @@ export async function onRequestPost({ request, env }) {
   const body = await request.json().catch(() => null);
   const pageId = cleanText(body?.pageId, 180);
   const parentId = cleanText(body?.parentId, 80) || null;
-  const author = cleanText(body?.author, 40);
-  const email = cleanText(body?.email, 160) || null;
+  const anonymous = body?.anonymous === true;
+  const sessionUser = anonymous ? null : await getSessionUser(db, request, env);
+  const author = anonymous
+    ? cleanText(body?.author || '匿名用户', 40)
+    : cleanText(sessionUser?.displayName || body?.author, 40);
+  const email = anonymous ? null : cleanText(sessionUser?.email || body?.email, 160) || null;
   const content = cleanText(body?.content, 1200);
   const honeypot = cleanText(body?.website, 200);
 
@@ -380,7 +404,8 @@ export async function onRequestPost({ request, env }) {
 
   const duplicate = await findDuplicate(db, ipHash, pageId, content);
   if (duplicate) {
-    return json({ ok: true, duplicate: true, comment: { id: duplicate.id, status: 'pending' } }, { status: 202 });
+    const status = duplicate.status === 'rejected' ? 'pending' : duplicate.status;
+    return json({ ok: true, duplicate: true, comment: { id: duplicate.id, status } }, { status: 202 });
   }
 
   const moderation = await moderateSubmission(db, env, { author, content, honeypot });
@@ -390,13 +415,14 @@ export async function onRequestPost({ request, env }) {
 
   await db.prepare(`
     INSERT INTO comments (
-      id, page_id, parent_id, author, email, role, content, status,
-      moderation_reason, matched_terms, ip_hash, user_agent, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, 'user', ?, ?, ?, ?, ?, ?, ?, ?)
+      id, page_id, parent_id, user_id, author, email, role, content, status,
+      moderation_reason, matched_terms, ip_hash, user_agent, created_at, updated_at, approved_at
+    ) VALUES (?, ?, ?, ?, ?, ?, 'user', ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     id,
     pageId,
     parentId,
+    sessionUser?.id || null,
     author,
     email,
     content,
@@ -407,6 +433,7 @@ export async function onRequestPost({ request, env }) {
     userAgent,
     now,
     now,
+    moderation.status === 'approved' ? now : null,
   ).run();
 
   return json({

@@ -91,6 +91,7 @@ Set these in Cloudflare Pages environment variables:
 
 ```txt
 CHUFIX_COMMENTS_ADMIN_TOKEN=long-random-admin-password
+CHUFIX_COMMENTS_USER_SECRET=long-random-user-session-secret
 CHUFIX_COMMENTS_IP_SALT=long-random-ip-hash-salt
 ```
 
@@ -104,7 +105,7 @@ CHUFIX_COMMENTS_RATE_LIMIT_MAX=5
 CHUFIX_COMMENTS_RATE_LIMIT_WINDOW=600
 ```
 
-Blocked words are stored as rejected but the public API returns a generic pending result. Review words remain pending for admin moderation.
+Comments that do not match blocked or review terms are approved immediately and shown on the page. Blocked words are stored as rejected but the public API returns a generic pending result. Review words remain pending for admin moderation.
 
 You can also store moderation terms in D1:
 
@@ -113,4 +114,17 @@ INSERT INTO comment_terms (id, phrase, action, enabled, note, created_at, update
 VALUES ('term-1', 'example', 'reject', 1, 'manual rule', datetime('now'), datetime('now'));
 ```
 
-Admin moderation lives at `/admin/comments/`.
+Users can comment anonymously or register/login from the discussion module on each docs page. Registered-user sessions are signed with `CHUFIX_COMMENTS_USER_SECRET`; if it is not configured, the Functions fallback to `CHUFIX_COMMENTS_ADMIN_TOKEN`, but a separate user-session secret is recommended.
+
+Admin moderation lives at `/admin/comments/`. Page-level discussion modules also expose an admin dialog that accepts `CHUFIX_COMMENTS_ADMIN_TOKEN` and then opens the moderation page.
+
+If older successful submissions were created before the default approval change, they may still be stored as `pending` and will not appear in the public page list until approved. To bulk publish old pending rows that were not held by moderation terms, run:
+
+```sql
+UPDATE comments
+SET status = 'approved',
+    approved_at = COALESCE(approved_at, datetime('now')),
+    updated_at = datetime('now')
+WHERE status = 'pending'
+  AND moderation_reason IS NULL;
+```

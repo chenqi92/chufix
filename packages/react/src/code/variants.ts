@@ -1,3 +1,13 @@
+import Prism from 'prismjs';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+
 export type CodeBlockSize = 'sm' | 'md' | 'lg';
 export type CodeBlockTone = 'auto' | 'light' | 'dark';
 
@@ -252,8 +262,48 @@ function tokenPattern(group: ReturnType<typeof languageGroup>): RegExp | null {
   return /\/\/.*|\/\*.*?\*\/|(['"`])(?:\\.|(?!\1)[\s\S])*?\1|\b(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|return|switch|throw|true|try|type|undefined|while)\b|\b\d+(?:\.\d+)?\b/g;
 }
 
+function prismLanguage(language?: string): string {
+  const lang = (language ?? '').toLowerCase();
+  switch (lang) {
+    case 'bash':
+    case 'sh':
+    case 'shell':
+    case 'zsh':
+      return 'bash';
+    case 'html':
+    case 'vue':
+    case 'xml':
+    case 'svg':
+      return 'markup';
+    case 'js':
+    case 'mjs':
+    case 'cjs':
+      return 'javascript';
+    case 'ts':
+      return 'typescript';
+    case 'jsonc':
+      return 'json';
+    default:
+      return lang || 'plain';
+  }
+}
+
+function highlightWithPrism(source: string, language?: string): string | null {
+  const lang = prismLanguage(language);
+  const grammar = Prism.languages[lang];
+  if (!grammar) return null;
+  try {
+    return Prism.highlight(source, grammar, lang);
+  } catch {
+    return null;
+  }
+}
+
 export function highlightCode(code: string, language?: string, trimIndent?: boolean): string {
   const source = trimIndent ? normalizeCodeIndent(code) : code;
+  const prismHtml = highlightWithPrism(source, language);
+  if (prismHtml) return prismHtml;
+
   const group = languageGroup(language);
   const pattern = tokenPattern(group);
   if (!pattern) return escapeHtml(source);

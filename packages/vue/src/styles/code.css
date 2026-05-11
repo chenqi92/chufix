@@ -164,6 +164,46 @@
 .cf-code-token--tag { color: var(--cf-code-token-tag); }
 .cf-code-token--property { color: var(--cf-code-token-property); }
 
+.cf-code-block__code .token.comment,
+.cf-code-block__code .token.prolog,
+.cf-code-block__code .token.doctype,
+.cf-code-block__code .token.cdata {
+  color: var(--cf-code-token-comment);
+  font-style: italic;
+}
+.cf-code-block__code .token.punctuation,
+.cf-code-block__code .token.operator {
+  color: var(--cf-code-muted);
+}
+.cf-code-block__code .token.namespace,
+.cf-code-block__code .token.tag,
+.cf-code-block__code .token.selector {
+  color: var(--cf-code-token-tag);
+}
+.cf-code-block__code .token.property,
+.cf-code-block__code .token.attr-name,
+.cf-code-block__code .token.constant,
+.cf-code-block__code .token.symbol {
+  color: var(--cf-code-token-property);
+}
+.cf-code-block__code .token.boolean,
+.cf-code-block__code .token.number {
+  color: var(--cf-code-token-number);
+}
+.cf-code-block__code .token.string,
+.cf-code-block__code .token.char,
+.cf-code-block__code .token.attr-value,
+.cf-code-block__code .token.regex {
+  color: var(--cf-code-token-string);
+}
+.cf-code-block__code .token.keyword,
+.cf-code-block__code .token.atrule,
+.cf-code-block__code .token.function,
+.cf-code-block__code .token.class-name,
+.cf-code-block__code .token.builtin {
+  color: var(--cf-code-token-keyword);
+}
+
 /* CodeWorkspace · editor-like tree + code surface. */
 
 .cf-code-workspace {

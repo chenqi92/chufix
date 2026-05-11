@@ -54,9 +54,11 @@
   },
   "dependencies": {
     "@chufix-design/icons": "workspace:*",
-    "@chufix-design/tokens": "workspace:*"
+    "@chufix-design/tokens": "workspace:*",
+    "prismjs": "^1.30.0"
   },
   "devDependencies": {
+    "@types/prismjs": "^1.26.5",
     "@vitejs/plugin-vue": "^5.1.4",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
