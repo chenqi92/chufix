@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 });
 
 const items = ref<ToastItem[]>([]);
+const canRender = ref(false);
 const timers = new Map<string, ReturnType<typeof setTimeout>>();
 
 let unsub: (() => void) | null = null;
@@ -42,6 +43,7 @@ function clearTimer(id: string) {
 }
 
 onMounted(() => {
+  canRender.value = true;
   unsub = toastStore.subscribe((next) => {
     next.forEach(scheduleAutoDismiss);
     const live = new Set(next.map((x) => x.id));
@@ -65,7 +67,7 @@ function dismiss(id: string) {
 
 <template>
   <div class="cf-toaster-host">
-    <Teleport to="body" :disabled="!props.teleport">
+    <Teleport v-if="canRender" to="body" :disabled="!props.teleport">
       <div :class="`cf-toaster cf-toaster--${props.position}`" role="region" aria-label="通知">
         <TransitionGroup name="cf-toast" tag="div" class="cf-toaster__list">
           <div

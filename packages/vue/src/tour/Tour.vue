@@ -34,6 +34,7 @@ const currentIndex = computed(() =>
 const currentStep = computed(() => props.steps[currentIndex.value]);
 
 const geometry = ref<TourGeometry | null>(null);
+const canRender = ref(false);
 
 function setOpen(v: boolean) {
   if (!isOpenControlled.value) internalOpen.value = v;
@@ -83,6 +84,7 @@ watch([open, currentIndex], () => nextTick(recompute), { immediate: false });
 
 onMounted(() => {
   if (typeof window === 'undefined') return;
+  canRender.value = true;
   recompute();
   window.addEventListener('scroll', recompute, true);
   window.addEventListener('resize', recompute);
@@ -98,7 +100,7 @@ const cls = computed(() => tourClass({ className: props.className }));
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport v-if="canRender" to="body">
     <div v-if="open && currentStep" :class="cls">
       <div class="cf-tour__backdrop" @click="close" />
       <div

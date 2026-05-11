@@ -48,7 +48,7 @@ const rows = [
 ];
 
 function rand(n: number, base: number, jit: number) {
-  return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);
+  return Array.from({ length: n }, (_, i) => Number((base + Math.sin(i / 2.5) * jit * 0.34 + Math.cos(i / 4) * jit * 0.18).toFixed(3)));
 }
 
 export function DashboardOverview() {

@@ -20,6 +20,7 @@
 .cf-gantt__frame {
   display: flex;
   width: 100%;
+  max-width: 100%;
   border: 1px solid var(--line-1);
   border-radius: var(--r-6);
   background: var(--bg-1);
@@ -79,6 +80,7 @@
 /* viewport (scrollable) */
 .cf-gantt__viewport {
   flex: 1;
+  min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;

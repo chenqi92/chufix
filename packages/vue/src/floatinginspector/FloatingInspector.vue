@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import type { FloatingInspectorProps } from './variants';
 
 const props = withDefaults(defineProps<FloatingInspectorProps>(), {
@@ -18,6 +18,12 @@ const emit = defineEmits<{
 }>();
 
 const localCollapsed = ref(props.collapsed);
+const canRender = ref(false);
+
+onMounted(() => {
+  canRender.value = true;
+});
+
 watch(
   () => props.collapsed,
   (v) => (localCollapsed.value = v),
@@ -47,7 +53,7 @@ function close() {
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="canRender" :to="to">
     <aside v-if="open" :class="cls" :style="dim" role="complementary">
       <header class="cf-inspector__header">
         <button

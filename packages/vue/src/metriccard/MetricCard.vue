@@ -18,6 +18,16 @@ const deltaTone = computed(() => {
   if (props.delta < 0) return 'negative';
   return 'neutral';
 });
+
+const trendData = computed(() => {
+  if (Array.isArray(props.trend)) return props.trend;
+  if (props.trend === 'up') return [18, 22, 21, 29, 34, 36, 42];
+  if (props.trend === 'down') return [42, 39, 34, 31, 26, 22, 18];
+  if (props.trend === 'flat') return [28, 30, 29, 31, 30, 32, 31];
+  return [];
+});
+
+const unitText = computed(() => props.suffix ?? props.unit);
 </script>
 
 <template>
@@ -34,12 +44,14 @@ const deltaTone = computed(() => {
       >{{ deltaText }}</span>
     </header>
     <div class="cf-metric__value">
+      <span v-if="prefix" class="cf-metric__prefix">{{ prefix }}</span>
       <span class="cf-metric__num">{{ value }}</span>
-      <span v-if="unit" class="cf-metric__unit">{{ unit }}</span>
+      <span v-if="unitText" class="cf-metric__unit">{{ unitText }}</span>
     </div>
+    <p v-if="hint" class="cf-metric__hint">{{ hint }}</p>
     <Sparkline
-      v-if="trend && trend.length"
-      :data="trend"
+      v-if="trendData.length"
+      :data="trendData"
       :width="120"
       :height="32"
       filled

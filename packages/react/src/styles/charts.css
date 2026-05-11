@@ -193,8 +193,10 @@
 .cf-metric__delta--negative { background: var(--status-error-soft); color: var(--status-error); }
 .cf-metric__delta--neutral { background: var(--bg-2); color: var(--fg-3); }
 .cf-metric__value { display: flex; align-items: baseline; gap: 4px; }
+.cf-metric__prefix { font-size: var(--t-13); color: var(--fg-2); }
 .cf-metric__num { font-size: var(--t-22); font-weight: var(--w-medium); color: var(--fg-1); }
 .cf-metric__unit { font-size: var(--t-12); color: var(--fg-3); }
+.cf-metric__hint { margin: 0; font-size: var(--t-11); color: var(--fg-3); line-height: var(--lh-14); }
 .cf-metric__trend { margin-top: 4px; width: 100%; }
 
 /* radar */

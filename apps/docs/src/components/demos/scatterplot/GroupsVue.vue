@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { CfScatterPlot } from '@chufix-design/vue';
 function gen(n: number, group: string, cx: number, cy: number, spread = 20) {
-  return Array.from({ length: n }, () => ({
-    x: cx + (Math.random() - 0.5) * spread,
-    y: cy + (Math.random() - 0.5) * spread,
+  return Array.from({ length: n }, (_, i) => ({
+    x: cx + ((((i * 29) % 100) / 100) - 0.5) * spread,
+    y: cy + ((((i * 43 + 11) % 100) / 100) - 0.5) * spread,
     group,
   }));
 }

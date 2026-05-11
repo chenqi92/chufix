@@ -18,30 +18,35 @@ export function TimingBar(props: TimingBarProps) {
     const min = Math.min(...phases.map((p) => p.start));
     const max = Math.max(...phases.map((p) => p.end));
     const sx = linearScale({ min, max }, { start: 0, end: width });
-    let lastLabelEnd = -Infinity;
+    const labelRowEnds = [-Infinity, -Infinity];
     return phases.map((p, i) => {
       const x = sx(p.start);
       const segmentWidth = Math.max(1, sx(p.end) - sx(p.start));
       const duration = p.end - p.start;
       const text = `${p.label} ${duration}ms`;
       const estimatedTextWidth = text.length * 7 + 10;
-      const autoVisible = segmentWidth >= estimatedTextWidth && x >= lastLabelEnd + 8;
+      const labelX = Math.max(0, Math.min(x + 4, Math.max(0, width - estimatedTextWidth)));
+      const labelRow = labelRowEnds.findIndex((end) => labelX >= end + 8);
+      const canPlaceLabel = labelRow >= 0;
+      const autoVisible = segmentWidth >= 12 && canPlaceLabel;
       const labelVisible =
-        labelMode === 'all' || (labelMode === 'auto' && autoVisible);
-      if (labelVisible) lastLabelEnd = x + estimatedTextWidth;
+        (labelMode === 'all' && canPlaceLabel) || (labelMode === 'auto' && autoVisible);
+      if (labelVisible) labelRowEnds[labelRow] = labelX + estimatedTextWidth;
       return {
         label: p.label,
         text,
         x,
         width: segmentWidth,
+        labelX,
+        labelY: height + 10 + Math.max(labelRow, 0) * 12,
         colorIndex: p.colorIndex ?? i % 8,
         duration,
         labelVisible,
       };
     });
-  }, [phases, width, labelMode]);
+  }, [phases, width, height, labelMode]);
 
-  const totalH = height + (showAxis ? 14 : 0);
+  const totalH = height + (showAxis ? 30 : 0);
 
   return (
     <svg
@@ -70,7 +75,7 @@ export function TimingBar(props: TimingBarProps) {
         ? layout
             ?.filter((p) => labelMode !== 'none' && p.labelVisible)
             .map((p, i) => (
-            <text key={`l${i}`} x={p.x + 4} y={height + 12}>
+            <text key={`l${i}`} x={p.labelX} y={p.labelY}>
               {p.text}
             </text>
           ))

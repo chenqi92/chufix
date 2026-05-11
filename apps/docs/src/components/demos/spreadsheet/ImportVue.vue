@@ -4,6 +4,10 @@ import { CfSpreadsheet, CfButton, toast, rangeToTSV } from '@chufix-design/vue';
 
 const data = ref<Record<string, string>>({});
 
+function updateData(next: Record<string, string>) {
+  data.value = next;
+}
+
 function loadSample() {
   data.value = {
     A1: 'date', B1: 'cpu', C1: 'mem',
@@ -30,7 +34,7 @@ async function exportAll() {
     <CfButton size="sm" @click="loadSample">载入样例数据</CfButton>
     <CfButton size="sm" variant="tertiary" @click="exportAll">导出全部为 TSV</CfButton>
   </div>
-  <CfSpreadsheet v-model="data" :rows="10" :cols="5" :col-width="140" />
+  <CfSpreadsheet :model-value="data" :rows="10" :cols="5" :col-width="140" @update:model-value="updateData" />
   <p style="margin-top: 8px; color: var(--fg-3); font-size: 12px;">
     试试：在 Excel / Numbers / Sheets 选一段复制，到这里 Cmd/Ctrl+V 粘贴；反向 Cmd/Ctrl+C 也能拷出去。
   </p>

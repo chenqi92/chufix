@@ -18,7 +18,7 @@ for (const w of WEEKDAYS) {
     let base = 50;
     if (h === '08' || h === '12' || h === '16') base += 220;
     if (w === '周六' || w === '周日') base = h === '12' || h === '20' ? 280 : 120;
-    data.push({ weekday: w, hour: h, count: Math.round(base + Math.random() * 60) });
+    data.push({ weekday: w, hour: h, count: Math.round(base + ((w.length * 31 + Number(h) * 17) % 60)) });
   }
 }
 

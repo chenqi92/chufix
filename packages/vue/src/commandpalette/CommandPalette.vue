@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import {
   filterAndGroup,
   flatten,
@@ -25,14 +25,19 @@ const query = ref('');
 const activeIndex = ref(0);
 const inputRef = ref<HTMLInputElement | null>(null);
 const listRef = ref<HTMLDivElement | null>(null);
+const canRender = ref(false);
 
 const groups = computed(() => filterAndGroup(props.items, query.value));
 const flat = computed(() => flatten(groups.value));
 
+onMounted(() => {
+  canRender.value = true;
+});
+
 watch(
-  () => props.open,
-  async (open) => {
-    if (open) {
+  [() => props.open, canRender],
+  async ([open, ready]) => {
+    if (open && ready) {
       query.value = '';
       activeIndex.value = 0;
       await nextTick();
@@ -99,7 +104,7 @@ function onOverlayClick(e: MouseEvent) {
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="canRender" :to="to">
     <Transition name="cf-cmdpal" appear>
       <div
         v-if="open"

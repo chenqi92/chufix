@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import type { HoverCardProps } from './variants';
 
 const props = withDefaults(defineProps<HoverCardProps>(), {
@@ -15,6 +15,7 @@ const open = ref(false);
 const triggerRef = ref<HTMLElement | null>(null);
 const cardRef = ref<HTMLDivElement | null>(null);
 const pos = ref<{ top: number; left: number }>({ top: 0, left: 0 });
+const canRender = ref(false);
 let openTimer: number | null = null;
 let closeTimer: number | null = null;
 
@@ -99,6 +100,10 @@ function onCardLeave() {
 onBeforeUnmount(() => {
   clearTimers();
 });
+
+onMounted(() => {
+  canRender.value = true;
+});
 </script>
 
 <template>
@@ -112,7 +117,7 @@ onBeforeUnmount(() => {
   >
     <slot />
   </span>
-  <Teleport :to="to">
+  <Teleport v-if="canRender" :to="to">
     <div
       v-if="open"
       ref="cardRef"

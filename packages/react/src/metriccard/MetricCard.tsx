@@ -2,7 +2,7 @@ import { Sparkline } from '../sparkline/Sparkline';
 import type { MetricCardProps } from './variants';
 
 export function MetricCard(props: MetricCardProps) {
-  const { label, value, unit, delta, trend, deltaFn, ariaLabel, className } =
+  const { label, value, prefix, suffix, unit, hint, delta, trend, deltaFn, ariaLabel, className } =
     props;
 
   const deltaText = (() => {
@@ -20,6 +20,16 @@ export function MetricCard(props: MetricCardProps) {
       : delta < 0
       ? 'negative'
       : 'neutral';
+  const trendData = Array.isArray(trend)
+    ? trend
+    : trend === 'up'
+    ? [18, 22, 21, 29, 34, 36, 42]
+    : trend === 'down'
+    ? [42, 39, 34, 31, 26, 22, 18]
+    : trend === 'flat'
+    ? [28, 30, 29, 31, 30, 32, 31]
+    : [];
+  const unitText = suffix ?? unit;
 
   return (
     <article
@@ -36,12 +46,14 @@ export function MetricCard(props: MetricCardProps) {
         ) : null}
       </header>
       <div className="cf-metric__value">
+        {prefix ? <span className="cf-metric__prefix">{prefix}</span> : null}
         <span className="cf-metric__num">{value}</span>
-        {unit ? <span className="cf-metric__unit">{unit}</span> : null}
+        {unitText ? <span className="cf-metric__unit">{unitText}</span> : null}
       </div>
-      {trend && trend.length ? (
+      {hint ? <p className="cf-metric__hint">{hint}</p> : null}
+      {trendData.length ? (
         <Sparkline
-          data={trend}
+          data={trendData}
           width={120}
           height={32}
           filled

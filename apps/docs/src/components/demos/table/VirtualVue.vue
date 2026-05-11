@@ -5,6 +5,7 @@ import { CfTable, type TableColumn } from '@chufix-design/vue';
 interface Trade { id: string; symbol: string; price: number; qty: number; side: string; ts: string; }
 
 const SYMBOLS = ['BTC', 'ETH', 'SOL', 'AVAX', 'DOT', 'MATIC', 'LINK', 'ARB'];
+const BASE_TIME = Date.UTC(2026, 4, 10, 12, 0, 0);
 
 const total = ref(50000);
 const rows = computed<Trade[]>(() =>
@@ -16,7 +17,7 @@ const rows = computed<Trade[]>(() =>
       price: Math.round((1000 + Math.sin(i / 20) * 800) * 100) / 100,
       qty: Math.round(((i % 50) + 1) * 0.13 * 100) / 100,
       side: i % 3 === 0 ? 'sell' : 'buy',
-      ts: new Date(Date.now() - i * 1000).toISOString().slice(11, 19),
+      ts: new Date(BASE_TIME - i * 1000).toISOString().slice(11, 19),
     };
   }),
 );

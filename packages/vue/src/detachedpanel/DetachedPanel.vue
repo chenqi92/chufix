@@ -23,10 +23,12 @@ function defaultX() {
 const x = ref<number>(props.x ?? defaultX());
 const y = ref<number>(props.y ?? 80);
 const dragging = ref(false);
+const canRender = ref(false);
 let dragOffsetX = 0;
 let dragOffsetY = 0;
 
 onMounted(() => {
+  canRender.value = true;
   if (typeof props.x !== 'number') x.value = defaultX();
 });
 
@@ -84,7 +86,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Teleport :to="to">
+  <Teleport v-if="canRender && open" :to="to">
     <Transition name="cf-detached" appear>
       <section
         v-if="open"

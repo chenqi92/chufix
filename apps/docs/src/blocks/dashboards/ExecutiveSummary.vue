@@ -2,7 +2,7 @@
 import { CfSparkline, CfStat } from '@chufix-design/vue';
 
 function r(n: number, base: number, jit: number) {
-  return Array.from({ length: n }, () => base + (Math.random() - 0.5) * jit);
+  return Array.from({ length: n }, (_, i) => Number((base + Math.sin(i / 2.2) * jit * 0.32 + Math.cos(i / 3.6) * jit * 0.18).toFixed(3)));
 }
 const kpis = [
   { label: 'ARR', value: '$ 12.4M', delta: 18.4, trend: r(20, 60, 30), unit: '' },
