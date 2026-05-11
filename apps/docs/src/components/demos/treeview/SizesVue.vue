@@ -22,15 +22,12 @@ const nodes: TreeNode[] = [
 <template>
   <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
     <div style="border: 1px solid var(--line-1); border-radius: 8px; padding: 8px;">
-      <div style="font-size: 12px; color: var(--fg-3); margin-bottom: 4px;">size = sm</div>
       <CfTreeView size="sm" :nodes="nodes" :selected-key="a" :default-expanded-keys="['src']" @update:selected-key="a = $event" />
     </div>
     <div style="border: 1px solid var(--line-1); border-radius: 8px; padding: 8px;">
-      <div style="font-size: 12px; color: var(--fg-3); margin-bottom: 4px;">size = md</div>
       <CfTreeView size="md" :nodes="nodes" :selected-key="b" :default-expanded-keys="['src']" @update:selected-key="b = $event" />
     </div>
     <div style="border: 1px solid var(--line-1); border-radius: 8px; padding: 8px;">
-      <div style="font-size: 12px; color: var(--fg-3); margin-bottom: 4px;">size = lg</div>
       <CfTreeView size="lg" :nodes="nodes" :selected-key="c" :default-expanded-keys="['src']" @update:selected-key="c = $event" />
     </div>
   </div>

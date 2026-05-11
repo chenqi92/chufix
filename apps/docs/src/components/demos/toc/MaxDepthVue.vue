@@ -12,11 +12,9 @@ const items: TocItem[] = [
 <template>
   <div style="display: flex; gap: 16px;">
     <div style="max-width: 200px;">
-      <div style="font-size: 12px; color: var(--fg-3); margin-bottom: 4px;">maxDepth = 2</div>
       <CfToc :items="items" :max-depth="2" />
     </div>
     <div style="max-width: 240px;">
-      <div style="font-size: 12px; color: var(--fg-3); margin-bottom: 4px;">maxDepth = 4（默认 6）</div>
       <CfToc :items="items" :max-depth="4" />
     </div>
   </div>
