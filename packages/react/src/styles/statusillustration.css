@@ -10,6 +10,7 @@
   flex: none;
   margin-inline: auto;
   color: var(--fg-3);
+  overflow: visible;
 }
 
 .cf-status-illustration--sm { width: 48px; }
@@ -42,7 +43,7 @@
 
 .cf-status-illustration__shadow {
   fill: var(--bg-2);
-  opacity: 0.8;
+  opacity: 0.7;
 }
 .cf-status-illustration__panel {
   fill: var(--bg-1);
@@ -68,9 +69,10 @@
 }
 .cf-status-illustration__accent-stroke {
   stroke: var(--cf-status-accent);
-  stroke-width: 2.4;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
+  fill: none;
 }
 .cf-status-illustration__code {
   fill: var(--cf-status-accent);

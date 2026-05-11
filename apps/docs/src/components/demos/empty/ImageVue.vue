@@ -3,10 +3,17 @@ import { CfButton, CfEmpty } from '@chufix-design/vue';
 
 const image = `data:image/svg+xml;utf8,${encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
-  <rect x="26" y="34" width="108" height="82" rx="14" fill="#EEF6FF" stroke="#8BBDF8" stroke-width="4"/>
-  <path d="M48 58h64M48 78h42M48 98h56" stroke="#2F7DDD" stroke-width="7" stroke-linecap="round"/>
-  <circle cx="118" cy="112" r="22" fill="#EAFBF1" stroke="#20A464" stroke-width="4"/>
-  <path d="M108 112l7 7 14-16" stroke="#10824D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="80" cy="132" rx="46" ry="7" fill="#E8EEF7"/>
+  <rect x="26" y="32" width="108" height="82" rx="14" fill="#F8FAFC" stroke="#D7E3F2" stroke-width="2"/>
+  <path d="M26 52h108" stroke="#E2EAF5" stroke-width="2"/>
+  <circle cx="40" cy="42" r="2" fill="#B7C6DA"/>
+  <circle cx="48" cy="42" r="2" fill="#B7C6DA"/>
+  <circle cx="56" cy="42" r="2" fill="#B7C6DA"/>
+  <rect x="44" y="66" width="54" height="8" rx="4" fill="#DDEBFF"/>
+  <rect x="44" y="84" width="40" height="7" rx="3.5" fill="#E6ECF5"/>
+  <rect x="44" y="100" width="50" height="7" rx="3.5" fill="#E6ECF5"/>
+  <circle cx="116" cy="108" r="18" fill="#ECFDF3" stroke="#64C48D" stroke-width="2"/>
+  <path d="M107 108.5l6 6 12-13" stroke="#16834F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `)}`;
 </script>
