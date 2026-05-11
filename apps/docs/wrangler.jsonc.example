@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chufix-docs",
+  "compatibility_date": "2026-05-11",
+  "pages_build_output_dir": "dist",
+  "d1_databases": [
+    {
+      "binding": "CHUFIX_COMMENTS_DB",
+      "database_name": "chufix-comments",
+      "database_id": "replace-with-production-d1-database-id",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

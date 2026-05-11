@@ -29,6 +29,18 @@ cd apps/docs
 pnpm dlx wrangler d1 create chufix-comments
 ```
 
+Copy the Wrangler example config and replace `database_id` with the id printed by `wrangler d1 create`:
+
+```bash
+cp wrangler.jsonc.example wrangler.jsonc
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item wrangler.jsonc.example wrangler.jsonc
+```
+
 In Cloudflare Pages, open the project and add a D1 binding:
 
 ```txt
@@ -48,7 +60,13 @@ cd apps/docs
 pnpm dlx wrangler d1 migrations apply chufix-comments --remote
 ```
 
-For local development, copy `wrangler.example.toml` to `wrangler.toml`, replace `database_id`, then run:
+If you do not want to create a local `wrangler.jsonc`, pass a config explicitly after filling the database id:
+
+```bash
+pnpm dlx wrangler d1 migrations apply chufix-comments --remote --config wrangler.jsonc
+```
+
+For local development, copy `wrangler.jsonc.example` to `wrangler.jsonc`, replace `database_id`, then run:
 
 ```bash
 cd apps/docs
