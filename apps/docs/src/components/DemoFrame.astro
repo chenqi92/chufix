@@ -17,7 +17,7 @@ type DocCodeFile = {
   label: string;
   name: string;
   content: string;
-  lang: 'vue' | 'tsx' | 'bash';
+  lang: 'vue' | 'tsx' | 'jsx' | 'bash';
 };
 const {
   vueCode,
@@ -31,11 +31,48 @@ const {
 } = Astro.props;
 
 const codeTabs: DocCodeFile[] = [];
-const vueContent = vueSource ?? vueCode;
-const reactContent = reactSource ?? reactCode;
-const cliContent = cliSource ?? cliCode;
-if (vueContent) codeTabs.push({ id: 'vue', label: 'Vue', name: 'src/App.vue', content: vueContent, lang: 'vue' });
-if (reactContent) codeTabs.push({ id: 'react', label: 'React', name: 'src/App.tsx', content: reactContent, lang: 'tsx' });
+const vueContent = normalizeCode(vueSource ?? vueCode);
+const reactContent = normalizeCode(reactSource ?? reactCode);
+const cliContent = normalizeCode(cliSource ?? cliCode);
+
+function normalizeCode(value?: string) {
+  return String(value || '')
+    .replace(/\r\n?/g, '\n')
+    .trim()
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n');
+}
+
+function hasTypeScript(value: string) {
+  return /lang=["']ts["']|\bimport\s+type\b|\binterface\s+\w+|\btype\s+\w+\s*=|:\s*[A-Za-z_$][\w$<>,\s[\]|&?]*(?=\s*[=,)])/m.test(value);
+}
+
+function toJavaScript(value: string) {
+  return normalizeCode(value)
+    .replace(/\s+lang=["']ts["']/g, '')
+    .replace(/^\s*import\s+type\s+[^;]+;\n?/gm, '')
+    .replace(/,\s*type\s+([A-Za-z_$][\w$]*)/g, '')
+    .replace(/\{\s*type\s+([A-Za-z_$][\w$]*)\s*,\s*/g, '{ ')
+    .replace(/\{\s*type\s+([A-Za-z_$][\w$]*)\s*\}/g, '{}')
+    .replace(/^\s*export\s+interface\s+\w+[^{]*\{[\s\S]*?\n\}\n?/gm, '')
+    .replace(/^\s*interface\s+\w+[^{]*\{[\s\S]*?\n\}\n?/gm, '')
+    .replace(/^\s*export\s+type\s+\w+\s*=[^;]+;\n?/gm, '')
+    .replace(/^\s*type\s+\w+\s*=[^;]+;\n?/gm, '')
+    .replace(/(\b(?:const|let|var)\s+[A-Za-z_$][\w$]*)\s*:\s*[^=]+(?=\s*=)/g, '$1')
+    .replace(/([,(]\s*[A-Za-z_$][\w$]*)\s*:\s*[A-Za-z_$][\w$<>,\s[\]|&?]*(?=\s*(?:,|\)))/g, '$1')
+    .replace(/\s+as\s+const\b/g, '')
+    .replace(/\s+as\s+[A-Za-z_$][\w$<>,\s[\]|&?]*/g, '');
+}
+
+if (vueContent) {
+  const vueIsTs = hasTypeScript(vueContent);
+  codeTabs.push({ id: 'vue-ts', label: vueIsTs ? 'Vue TS' : 'Vue', name: 'src/App.vue', content: vueContent, lang: 'vue' });
+  if (vueIsTs) codeTabs.push({ id: 'vue-js', label: 'Vue JS', name: 'src/App.vue', content: toJavaScript(vueContent), lang: 'vue' });
+}
+if (reactContent) {
+  codeTabs.push({ id: 'react-ts', label: 'React TS', name: 'src/App.tsx', content: reactContent, lang: 'tsx' });
+  codeTabs.push({ id: 'react-js', label: 'React JS', name: 'src/App.jsx', content: toJavaScript(reactContent), lang: 'jsx' });
+}
 if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh', content: cliContent, lang: 'bash' });
 ---
 
@@ -109,7 +146,7 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
         <span class="cf-demo__toggle-label">查看代码</span>
       </button>
 
-      <div class="cf-demo__code-body">
+      <div class="cf-demo__code-body cf-doc-code" data-doc-code-tone="light">
         {codeLayout === 'workspace' ? (
           <DocCodeWorkspace files={codeTabs} title="Demo source" rootLabel="demo" />
         ) : (
@@ -126,6 +163,24 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
                     {tab.label}
                   </button>
                 ))}
+              </div>
+              <div class="cf-demo__code-tools" aria-label="代码主题">
+                <button
+                  type="button"
+                  class="cf-demo__code-tone"
+                  data-demo-code-tone="light"
+                  aria-pressed="true"
+                >
+                  浅色
+                </button>
+                <button
+                  type="button"
+                  class="cf-demo__code-tone"
+                  data-demo-code-tone="dark"
+                  aria-pressed="false"
+                >
+                  深色
+                </button>
               </div>
             </div>
             {codeTabs.map((tab, index) => (
@@ -145,7 +200,12 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
                   >
                     复制
                   </button>
-                  <Code code={tab.content} lang={tab.lang} theme="github-dark" />
+                  <Code
+                    code={tab.content}
+                    lang={tab.lang}
+                    themes={{ light: 'github-light', dark: 'github-dark' }}
+                    defaultColor="light"
+                  />
                 </div>
               </div>
             ))}
@@ -166,6 +226,8 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
     const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-tab]');
     const panels = root.querySelectorAll<HTMLElement>('[data-demo-panel]');
     const bgBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-bg]');
+    const toneBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-code-tone]');
+    const codeBody = root.querySelector<HTMLElement>('.cf-demo__code-body');
     const preview = root.querySelector<HTMLElement>('.cf-demo__preview');
     const floatingSelector = [
       '.cf-select.is-open',
@@ -210,6 +272,14 @@ if (cliContent) codeTabs.push({ id: 'cli', label: 'CLI', name: 'scripts/setup.sh
         });
       });
       btn.setAttribute('aria-pressed', String(btn.dataset.active === 'true'));
+    });
+
+    toneBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tone = btn.dataset.demoCodeTone ?? 'light';
+        if (codeBody) codeBody.dataset.docCodeTone = tone;
+        toneBtns.forEach((item) => item.setAttribute('aria-pressed', String(item === btn)));
+      });
     });
 
     root.querySelectorAll<HTMLButtonElement>('[data-demo-copy]').forEach((btn) => {

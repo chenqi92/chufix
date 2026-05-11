@@ -5,7 +5,7 @@ export interface DocCodeFile {
   id?: string;
   name: string;
   content: string;
-  lang: 'vue' | 'tsx' | 'ts' | 'js' | 'json' | 'css' | 'bash' | 'mdx' | 'astro' | 'html';
+  lang: 'vue' | 'tsx' | 'jsx' | 'ts' | 'js' | 'json' | 'css' | 'bash' | 'mdx' | 'astro' | 'html';
 }
 
 interface TreeItem {
@@ -31,14 +31,25 @@ const {
   title = 'Source',
   rootLabel = 'project',
   height = 'min(560px, 68vh)',
-  tone = 'dark',
+  tone = 'light',
   showLineNumbers = true,
 } = Astro.props;
 
+const normalizedFiles = files.map((file) => ({
+  ...file,
+  content: normalizeCode(file.content),
+}));
 const heightValue = typeof height === 'number' ? `${height}px` : height;
 const fileId = (file: DocCodeFile) => file.id ?? file.name;
 const fileName = (path: string) => path.split('/').filter(Boolean).at(-1) ?? path;
-const theme = tone === 'dark' ? 'github-dark' : 'github-light';
+
+function normalizeCode(value?: string) {
+  return String(value || '')
+    .replace(/\r\n?/g, '\n')
+    .trim()
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n');
+}
 
 function buildTree(source: DocCodeFile[]): TreeItem[] {
   const rows: TreeItem[] = [];
@@ -71,7 +82,7 @@ function buildTree(source: DocCodeFile[]): TreeItem[] {
   return rows;
 }
 
-const tree = buildTree(files);
+const tree = buildTree(normalizedFiles);
 ---
 
 <div
@@ -83,6 +94,7 @@ const tree = buildTree(files);
     'cf-doc-code',
   ]}
   data-doc-code-workspace
+  data-doc-code-tone={tone}
   style={`height: ${heightValue};`}
 >
   <header class="cf-code-workspace__header">
@@ -90,18 +102,38 @@ const tree = buildTree(files);
       <span class="cf-code-workspace__traffic" aria-hidden="true"><span></span><span></span><span></span></span>
       <span>{title}</span>
     </div>
-    {files[0] && (
-      <button
-        type="button"
-        class="cf-code-workspace__copy"
-        data-doc-code-copy
-        data-copy={files[0].content}
-        data-copy-label="复制"
-        data-copied-label="已复制"
-      >
-        复制
-      </button>
-    )}
+    <div class="cf-code-workspace__actions">
+      <div class="cf-demo__code-tools" aria-label="代码主题">
+        <button
+          type="button"
+          class="cf-demo__code-tone"
+          data-doc-code-tone-button="light"
+          aria-pressed={tone === 'light' ? 'true' : 'false'}
+        >
+          浅色
+        </button>
+        <button
+          type="button"
+          class="cf-demo__code-tone"
+          data-doc-code-tone-button="dark"
+          aria-pressed={tone === 'dark' ? 'true' : 'false'}
+        >
+          深色
+        </button>
+      </div>
+      {normalizedFiles[0] && (
+        <button
+          type="button"
+          class="cf-code-workspace__copy"
+          data-doc-code-copy
+          data-copy={normalizedFiles[0].content}
+          data-copy-label="复制"
+          data-copied-label="已复制"
+        >
+          复制
+        </button>
+      )}
+    </div>
   </header>
 
   <div class="cf-code-workspace__shell">
@@ -125,7 +157,7 @@ const tree = buildTree(files);
             class="cf-code-workspace__file"
             style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
             data-doc-code-file={item.file ? fileId(item.file) : ''}
-            aria-selected={item.file && fileId(item.file) === fileId(files[0]) ? 'true' : 'false'}
+            aria-selected={item.file && fileId(item.file) === fileId(normalizedFiles[0]) ? 'true' : 'false'}
           >
             <span class="cf-code-workspace__file-dot" aria-hidden="true"></span>
             <span class="cf-code-workspace__file-name">{item.name}</span>
@@ -136,7 +168,7 @@ const tree = buildTree(files);
 
     <section class="cf-code-workspace__editor" aria-live="polite">
       <div class="cf-code-workspace__tabs" role="tablist">
-        {files.map((file, index) => (
+        {normalizedFiles.map((file, index) => (
           <button
             type="button"
             class="cf-code-workspace__tab"
@@ -148,7 +180,7 @@ const tree = buildTree(files);
         ))}
       </div>
 
-      {files.map((file, index) => (
+      {normalizedFiles.map((file, index) => (
         <div
           class="cf-doc-code__panel"
           data-doc-code-panel={fileId(file)}
@@ -160,7 +192,12 @@ const tree = buildTree(files);
           </div>
           <div class="cf-code-workspace__body">
             <div class="cf-doc-code__scroll">
-              <Code code={file.content} lang={file.lang as any} theme={theme} />
+              <Code
+                code={file.content}
+                lang={file.lang as any}
+                themes={{ light: 'github-light', dark: 'github-dark' }}
+                defaultColor="light"
+              />
             </div>
           </div>
         </div>
@@ -178,6 +215,7 @@ const tree = buildTree(files);
     const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tab]');
     const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-doc-code-copy]');
+    const toneBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tone-button]');
 
     const activate = (id: string) => {
       fileBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.docCodeFile === id)));
@@ -191,6 +229,16 @@ const tree = buildTree(files);
 
     fileBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeFile ?? '')));
     tabBtns.forEach((btn) => btn.addEventListener('click', () => activate(btn.dataset.docCodeTab ?? '')));
+
+    toneBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tone = btn.dataset.docCodeToneButton ?? 'light';
+        root.dataset.docCodeTone = tone;
+        root.classList.toggle('cf-code-workspace--light', tone === 'light');
+        root.classList.toggle('cf-code-workspace--dark', tone === 'dark');
+        toneBtns.forEach((item) => item.setAttribute('aria-pressed', String(item === btn)));
+      });
+    });
 
     copyBtn?.addEventListener('click', async () => {
       const text = copyBtn.dataset.copy ?? '';
