@@ -261,8 +261,15 @@ export { default as CfVariableAwareInput } from './variableinput/VariableAwareIn
 export type {
   VariableAwareInputProps,
   VariableAwareInputSize,
+  VariableAwareInputScope,
+  VariableAwareInputVariable,
+  VariableAwareInputVariableOption,
+  NormalizedVariableOption as VariableAwareInputOption,
   VariableAwareInputVariant,
   Token as VariableAwareInputToken,
+  VariableToken as VariableAwareInputVariableToken,
+  VariableAwareInputVariableEvent,
+  VariableAwareInputVariableUpdate,
 } from './variableinput/variants';
 
 export { default as CfCodeEditor } from './codeeditor/CodeEditor.vue';

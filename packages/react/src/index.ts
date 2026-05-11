@@ -270,8 +270,15 @@ export { VariableAwareInput as CfVariableAwareInput } from './variableinput/Vari
 export type {
   VariableAwareInputProps,
   VariableAwareInputSize,
+  VariableAwareInputScope,
+  VariableAwareInputVariable,
+  VariableAwareInputVariableOption,
+  NormalizedVariableOption as VariableAwareInputOption,
   VariableAwareInputVariant,
   Token as VariableAwareInputToken,
+  VariableToken as VariableAwareInputVariableToken,
+  VariableAwareInputVariableEvent,
+  VariableAwareInputVariableUpdate,
 } from './variableinput/variants';
 
 export { CodeEditor as CfCodeEditor } from './codeeditor/CodeEditor';
