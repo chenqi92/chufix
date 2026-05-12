@@ -149,9 +149,10 @@ function toggleLocale() {
 .adm-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 0 16px;
   height: 100%;
+  width: 100%;
 }
 .adm-header__brand {
   display: inline-flex;
@@ -172,15 +173,14 @@ function toggleLocale() {
   white-space: nowrap;
 }
 .adm-header__center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  width: 320px;
+  max-width: 36%;
 }
 .adm-header__center :deep(.cf-searchinput) {
   width: 100%;
-  max-width: 360px;
 }
 .adm-header__actions {
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 4px;

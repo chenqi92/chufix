@@ -98,6 +98,14 @@ export interface DemoStrings {
   col_role_name: string;
   col_role_desc: string;
   col_role_perms: string;
+  perm_user_read: string;
+  perm_user_write: string;
+  perm_role_read: string;
+  perm_role_write: string;
+  perm_dict_read: string;
+  perm_dict_write: string;
+  perm_log_read: string;
+  perm_log_export: string;
   col_user_roles: string;
   col_assign: string;
   col_dict_label: string;
@@ -185,6 +193,14 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     col_role_name: '角色名',
     col_role_desc: '描述',
     col_role_perms: '权限',
+    perm_user_read: '查看用户',
+    perm_user_write: '编辑用户',
+    perm_role_read: '查看角色',
+    perm_role_write: '编辑角色',
+    perm_dict_read: '查看字典',
+    perm_dict_write: '编辑字典',
+    perm_log_read: '查看日志',
+    perm_log_export: '导出日志',
     col_user_roles: '已分配角色',
     col_assign: '分配角色',
     col_dict_label: '名称',
@@ -269,6 +285,14 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     col_role_name: 'Role',
     col_role_desc: 'Description',
     col_role_perms: 'Permissions',
+    perm_user_read: 'Read users',
+    perm_user_write: 'Edit users',
+    perm_role_read: 'Read roles',
+    perm_role_write: 'Edit roles',
+    perm_dict_read: 'Read dictionary',
+    perm_dict_write: 'Edit dictionary',
+    perm_log_read: 'Read logs',
+    perm_log_export: 'Export logs',
     col_user_roles: 'Assigned roles',
     col_assign: 'Assign',
     col_dict_label: 'Label',
