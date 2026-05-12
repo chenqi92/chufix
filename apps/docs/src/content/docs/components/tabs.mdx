@@ -10,6 +10,10 @@ import VariantsVue from '~/components/demos/tabs/VariantsVue.vue';
 import VariantsVueSource from '~/components/demos/tabs/VariantsVue.vue?raw';
 import SizesVue from '~/components/demos/tabs/SizesVue.vue';
 import SizesVueSource from '~/components/demos/tabs/SizesVue.vue?raw';
+import AlignVue from '~/components/demos/tabs/AlignVue.vue';
+import AlignVueSource from '~/components/demos/tabs/AlignVue.vue?raw';
+import UncontrolledVue from '~/components/demos/tabs/UncontrolledVue.vue';
+import UncontrolledVueSource from '~/components/demos/tabs/UncontrolledVue.vue?raw';
 
 ## 基础用法
 
@@ -99,18 +103,84 @@ export default function Demo() {
   <SizesVue client:load />
 </DemoFrame>
 
+## 对齐方式
+
+`align` 控制 tab 列表的水平对齐：`start` 靠左、`center` 居中、`end` 靠右、`stretch` 等分撑满整行。
+对齐方式不影响内容区，只影响 tab 头部。
+
+<DemoFrame
+  vueCode={`<CfTabs v-model="a" :items="items" align="start" />
+<CfTabs v-model="b" :items="items" align="center" />
+<CfTabs v-model="c" :items="items" align="end" />
+<CfTabs v-model="d" :items="items" align="stretch" />`}
+  reactCode={`<CfTabs value={a} onChange={setA} items={items} align="start" />
+<CfTabs value={b} onChange={setB} items={items} align="center" />
+<CfTabs value={c} onChange={setC} items={items} align="end" />
+<CfTabs value={d} onChange={setD} items={items} align="stretch" />`}
+
+  vueSource={AlignVueSource}>
+  <AlignVue client:load />
+</DemoFrame>
+
+## 非受控模式
+
+不传 `v-model` 时组件内部自管 active 状态，默认激活 `items[0]`。
+适合 tab 仅做局部展示切换、外部不需要观察当前激活值的场景。
+
+<DemoFrame
+  vueCode={`<CfTabs :items="items">
+  <template #default="{ active }">
+    <div v-if="active === 'overview'">概览页面 —— 默认激活第一项</div>
+    <div v-if="active === 'activity'">动态页面</div>
+    <div v-if="active === 'settings'">设置页面</div>
+  </template>
+</CfTabs>`}
+  reactCode={`<CfTabs items={items} defaultValue="overview">
+  {({ active }) => (
+    <>
+      <CfTabPanel value="overview" active={active}>概览页面</CfTabPanel>
+      <CfTabPanel value="activity" active={active}>动态页面</CfTabPanel>
+      <CfTabPanel value="settings" active={active}>设置页面</CfTabPanel>
+    </>
+  )}
+</CfTabs>`}
+
+  vueSource={UncontrolledVueSource}>
+  <UncontrolledVue client:load />
+</DemoFrame>
+
 ## API
 
-| Prop          | 类型                                            | 默认值      | 说明                                |
-| ------------- | ----------------------------------------------- | ----------- | ----------------------------------- |
-| `modelValue` (Vue) / `value` (React) | `string`                  | —           | 当前激活 tab 的 value（受控）       |
-| `defaultValue` (React)               | `string`                  | —           | 初始激活 tab 的 value（非受控）     |
+### Props · Tabs
+
+| Prop          | 类型                                            | 默认值      | 说明                                       |
+| ------------- | ----------------------------------------------- | ----------- | ------------------------------------------ |
+| `modelValue` (Vue) / `value` (React) | `string`                 | —           | 当前激活 tab 的 value（受控）              |
+| `defaultValue` (React)               | `string`                 | —           | 初始激活 tab 的 value（非受控；Vue 直接不传 v-model 即可） |
 | `items`       | `TabsItem[]`                                    | `[]`        | tab 列表，每项 `{value, label, disabled?}` |
-| `variant`     | `'line' \| 'segmented' \| 'pill'`               | `'line'`    | 视觉变体                            |
-| `size`        | `'sm' \| 'md' \| 'lg'`                          | `'md'`      | 高度与字号                          |
-| `align`       | `'start' \| 'center' \| 'end' \| 'stretch'`     | `'start'`   | tab 列表对齐方式                    |
+| `variant`     | `'line' \| 'segmented' \| 'pill'`               | `'line'`    | 视觉变体                                   |
+| `size`        | `'sm' \| 'md' \| 'lg'`                          | `'md'`      | 高度与字号                                 |
+| `align`       | `'start' \| 'center' \| 'end' \| 'stretch'`     | `'start'`   | tab 列表对齐方式                           |
 
-### 默认插槽
+### Props · TabPanel
 
-Vue 默认插槽接收作用域参数 `{ active }`，根据 active 渲染对应内容。
-React 通过 `children` 接受函数 `({ active }) => ReactNode` 并配合 `<CfTabPanel>` 守卫。
+`TabPanel` 是子组件，当 `items` prop 未提供时，会从子节点的 props 中自动推断 tab 列表。
+
+| Prop       | 类型      | 默认值  | 说明                                       |
+| ---------- | --------- | ------- | ------------------------------------------ |
+| `value`    | `string`  | —       | panel 标识，与父 Tabs 的 active 匹配       |
+| `label`    | `string`  | —       | tab 头部显示文案；省略时回退到 `value`     |
+| `disabled` | `boolean` | `false` | 禁用此 tab（保留视觉，禁止切换）           |
+
+### Events
+
+| Vue 事件            | React 回调  | 载荷类型 | 说明                          |
+| ------------------- | ----------- | -------- | ----------------------------- |
+| `update:modelValue` | —           | `string` | v-model 隐式监听              |
+| `change`            | `onChange`  | `string` | 切换 active tab 时触发，与 update:modelValue 同步 |
+
+### Slots / Children
+
+| Slot      | Props              | 说明                                                                  |
+| --------- | ------------------ | --------------------------------------------------------------------- |
+| `default` | `{ active: string }` | tab 内容区；Vue 用 scoped slot，React 用 `children: ({ active }) => ReactNode` |
