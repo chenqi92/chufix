@@ -14,6 +14,10 @@ import StatesVue from '~/components/demos/input/StatesVue.vue';
 import StatesVueSource from '~/components/demos/input/StatesVue.vue?raw';
 import AffixVue from '~/components/demos/input/AffixVue.vue';
 import AffixVueSource from '~/components/demos/input/AffixVue.vue?raw';
+import PasswordVue from '~/components/demos/input/PasswordVue.vue';
+import PasswordVueSource from '~/components/demos/input/PasswordVue.vue?raw';
+import SearchVue from '~/components/demos/input/SearchVue.vue';
+import SearchVueSource from '~/components/demos/input/SearchVue.vue?raw';
 
 ## 基础用法
 
@@ -162,17 +166,126 @@ export default function Demo() {
   <AffixVue client:load />
 </DemoFrame>
 
+## 密码输入
+
+`type="password"` 把字符显示为掩码。配合 `suffix` 插槽放一个 CfIconButton 切换 `type="text"` / `"password"`，
+就得到"显示/隐藏密码"的完整体验。按钮用 `pressed` 表达当前是否可见。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { CfInput, CfIconButton, CfIcon } from '@chufix-design/vue';
+
+const pwd = ref('');
+const visible = ref(false);
+const inputType = computed(() => (visible.value ? 'text' : 'password'));
+</script>
+
+<template>
+  <CfInput v-model="pwd" :type="inputType" placeholder="请输入密码">
+    <template #suffix>
+      <CfIconButton
+        size="sm"
+        :aria-label="visible ? '隐藏密码' : '显示密码'"
+        :pressed="visible"
+        @click="visible = !visible"
+      >
+        <CfIcon :name="visible ? 'eye-off' : 'eye'" />
+      </CfIconButton>
+    </template>
+  </CfInput>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfInput, CfIconButton, CfIcon } from '@chufix-design/react';
+
+export default function Demo() {
+  const [pwd, setPwd] = useState('');
+  const [visible, setVisible] = useState(false);
+  return (
+    <CfInput
+      type={visible ? 'text' : 'password'}
+      value={pwd}
+      onChange={(e) => setPwd(e.target.value)}
+      placeholder="请输入密码"
+      suffix={
+        <CfIconButton
+          size="sm"
+          aria-label={visible ? '隐藏密码' : '显示密码'}
+          pressed={visible}
+          onClick={() => setVisible(!visible)}
+        >
+          <CfIcon name={visible ? 'eye-off' : 'eye'} />
+        </CfIconButton>
+      }
+    />
+  );
+}`}
+
+  vueSource={PasswordVueSource}>
+  <PasswordVue client:load />
+</DemoFrame>
+
+## 搜索框
+
+`type="search"` + `clearable` + 前缀放搜索图标，这是顶部搜索框的标准组合。`type="search"` 在移动端会显示搜索专用键盘。
+
+<DemoFrame
+  vueCode={`<CfInput
+  v-model="keyword"
+  type="search"
+  clearable
+  placeholder="搜索文档、组件、blocks…"
+>
+  <template #prefix>
+    <CfIcon name="search" />
+  </template>
+</CfInput>`}
+  reactCode={`<CfInput
+  type="search"
+  clearable
+  value={keyword}
+  onChange={(e) => setKeyword(e.target.value)}
+  placeholder="搜索文档、组件、blocks…"
+  prefix={<CfIcon name="search" />}
+/>`}
+
+  vueSource={SearchVueSource}>
+  <SearchVue client:load />
+</DemoFrame>
+
 ## API
 
-| Prop          | 类型                                                                          | 默认值      | 说明                |
-| ------------- | ----------------------------------------------------------------------------- | ----------- | ------------------- |
-| `modelValue`  | `string \| number`                                                            | —           | Vue v-model 绑定值  |
-| `value`       | `string`                                                                      | —           | React 受控值        |
-| `type`        | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url' \| 'search'`   | `'text'`    | 输入类型            |
-| `variant`     | `'outline' \| 'filled' \| 'ghost'`                                            | `'outline'` | 视觉变体            |
-| `size`        | `'sm' \| 'md' \| 'lg'`                                                        | `'md'`      | 高度与字号          |
-| `clearable`   | `boolean`                                                                     | `false`     | 有值时显示清除按钮  |
-| `error`       | `boolean`                                                                     | `false`     | 错误态边框 / ring   |
-| `disabled`    | `boolean`                                                                     | `false`     | 禁用                |
-| `readonly`    | `boolean`                                                                     | `false`     | 只读                |
-| `placeholder` | `string`                                                                      | —           | 占位文本            |
+### Props
+
+| Prop          | 类型                                                                          | 默认值      | 说明                                  |
+| ------------- | ----------------------------------------------------------------------------- | ----------- | ------------------------------------- |
+| `modelValue`  | `string \| number`                                                            | —           | Vue v-model 绑定值                    |
+| `value`       | `string`                                                                      | —           | React 受控值                          |
+| `type`        | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url' \| 'search'`   | `'text'`    | 输入类型                              |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'`                                            | `'outline'` | 视觉变体                              |
+| `size`        | `'sm' \| 'md' \| 'lg'`                                                        | `'md'`      | 高度与字号                            |
+| `clearable`   | `boolean`                                                                     | `false`     | 有值时显示清除按钮                    |
+| `error`       | `boolean`                                                                     | `false`     | 错误态边框 / ring                     |
+| `disabled`    | `boolean`                                                                     | `false`     | 禁用                                  |
+| `readonly`    | `boolean`                                                                     | `false`     | 只读（React 端为 `readOnly`）         |
+| `placeholder` | `string`                                                                      | —           | 占位文本                              |
+| `autofocus`   | `boolean`                                                                     | `false`     | 挂载后自动获取焦点（适合 Modal 打开） |
+
+`name` / `id` 是直接透传到原生 `<input>` 的 HTML 标准属性，用于参与表单提交或 label 关联。
+
+### Events
+
+| Vue 事件            | React 回调   | 载荷类型      | 说明                            |
+| ------------------- | ------------ | ------------- | ------------------------------- |
+| `update:modelValue` | —            | `string`      | 输入变化，v-model 隐式监听      |
+| `change`            | `onChange`   | `string`（Vue）/ `ChangeEvent`（React） | 失焦后触发原生 change |
+| `focus`             | `onFocus`    | `FocusEvent`  | 获得焦点                        |
+| `blur`              | `onBlur`     | `FocusEvent`  | 失去焦点                        |
+| `clear`             | `onClear`    | —             | 点击 clear 按钮（仅 `clearable` 时）|
+
+### Slots / Children
+
+| Slot     | 说明                                                              |
+| -------- | ----------------------------------------------------------------- |
+| `prefix` | 左侧固定内容（图标 / 文本）；React 端等价为 `prefix` prop         |
+| `suffix` | 右侧固定内容（图标 / 单位文本）；React 端等价为 `suffix` prop    |
