@@ -67,6 +67,16 @@ export interface DemoStrings {
   page_dict: string;
   page_op_log: string;
   page_login_log: string;
+  login_title: string;
+  login_lede: string;
+  login_username: string;
+  login_password: string;
+  login_remember: string;
+  login_submit: string;
+  login_hint: string;
+  login_demo_account: string;
+  login_invalid: string;
+  login_welcome: string;
   page_menus: string;
   menu_title: string;
   menu_icon: string;
@@ -222,6 +232,16 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: '字典管理',
     page_op_log: '操作日志',
     page_login_log: '登录日志',
+    login_title: 'admin-mini 后台登录',
+    login_lede: '使用 ChuFix UI 组件搭建的演示后台',
+    login_username: '账号',
+    login_password: '密码',
+    login_remember: '记住我',
+    login_submit: '登录',
+    login_hint: '演示账号已自动填入',
+    login_demo_account: '演示账号：admin / admin',
+    login_invalid: '账号或密码错误（演示用 admin / admin）',
+    login_welcome: '欢迎回来，{user}',
     page_menus: '菜单管理',
     menu_title: '名称',
     menu_icon: '图标',
@@ -371,6 +391,16 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: 'Dictionary',
     page_op_log: 'Operation log',
     page_login_log: 'Login log',
+    login_title: 'Sign in to admin-mini',
+    login_lede: 'Demo console powered by ChuFix UI components',
+    login_username: 'Username',
+    login_password: 'Password',
+    login_remember: 'Remember me',
+    login_submit: 'Sign in',
+    login_hint: 'Demo credentials are pre-filled',
+    login_demo_account: 'Demo: admin / admin',
+    login_invalid: 'Wrong username or password (use admin / admin)',
+    login_welcome: 'Welcome back, {user}',
     page_menus: 'Menu management',
     menu_title: 'Title',
     menu_icon: 'Icon',

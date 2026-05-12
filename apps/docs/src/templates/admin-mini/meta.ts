@@ -4,6 +4,7 @@ import Preview from './preview/AdminMiniDemo.vue';
 // Vue 源码 —— 用 ?raw 直接读演示组件原文，保证源码面板里看到的代码 = 真正跑起来的代码。
 import previewAdminMini from './preview/AdminMiniDemo.vue?raw';
 import previewAdminHeader from './preview/AdminHeader.vue?raw';
+import previewLogin from './preview/Login.vue?raw';
 import previewSettingsDrawer from './preview/SettingsDrawer.vue?raw';
 import previewProfileModal from './preview/ProfileModal.vue?raw';
 import previewChangePassword from './preview/ChangePasswordModal.vue?raw';
@@ -37,6 +38,7 @@ import srcReactOrg from './source-react/pages/Org.tsx?raw';
 const vueFiles: Record<string, string> = {
   'src/AdminMiniDemo.vue':       previewAdminMini,
   'src/AdminHeader.vue':         previewAdminHeader,
+  'src/Login.vue':               previewLogin,
   'src/SettingsDrawer.vue':      previewSettingsDrawer,
   'src/ProfileModal.vue':        previewProfileModal,
   'src/ChangePasswordModal.vue': previewChangePassword,

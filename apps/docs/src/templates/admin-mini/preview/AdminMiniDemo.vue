@@ -10,6 +10,7 @@ import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue';
 import { CfAppShell, CfSidebar, CfNavMenu, CfBreadcrumb, CfCommandPalette, CfTour, toast } from '@chufix-design/vue';
 import type { SidebarEntry, SidebarItem, CommandPaletteItem, TourStep } from '@chufix-design/vue';
 import AdminHeader from './AdminHeader.vue';
+import Login from './Login.vue';
 import SettingsDrawer from './SettingsDrawer.vue';
 import ProfileModal from './ProfileModal.vue';
 import ChangePasswordModal from './ChangePasswordModal.vue';
@@ -55,7 +56,27 @@ const passwordOpen = ref(false);
 const paletteOpen = ref(false);
 const tourOpen = ref(false);
 
+/* ---------- 登录态 ---------- */
+const AUTH_KEY = 'chufix-tpl:admin-mini:auth';
+const authedUser = ref<string | null>(null);
+function onLoginSuccess(payload: { username: string; remember: boolean }) {
+  authedUser.value = payload.username;
+  try {
+    if (payload.remember) window.sessionStorage.setItem(AUTH_KEY, payload.username);
+    else window.sessionStorage.removeItem(AUTH_KEY);
+  } catch { /* storage blocked */ }
+  toast.success(t.value.login_welcome.replace('{user}', payload.username));
+  // 首次登录后弹出引导（同一 session 只弹一次）
+  try {
+    if (!window.sessionStorage.getItem('chufix-tpl:admin-mini:tour-done')) {
+      setTimeout(() => (tourOpen.value = true), 600);
+      window.sessionStorage.setItem('chufix-tpl:admin-mini:tour-done', '1');
+    }
+  } catch { /* */ }
+}
 function onLogout() {
+  authedUser.value = null;
+  try { window.sessionStorage.removeItem(AUTH_KEY); } catch { /* */ }
   toast.info(t.value.logout_done);
 }
 
@@ -117,9 +138,15 @@ onMounted(() => {
 
     applyToBody();
 
-    // 首次访问自动启动 tour，sessionStorage 标志防止反复弹
+    // 恢复登录态（同一标签页刷新不需要重新登录）
     try {
-      if (!window.sessionStorage.getItem('chufix-tpl:admin-mini:tour-done')) {
+      const saved = window.sessionStorage.getItem(AUTH_KEY);
+      if (saved) authedUser.value = saved;
+    } catch { /* */ }
+
+    // 首次访问自动启动 tour，sessionStorage 标志防止反复弹（仅登录后才弹）
+    try {
+      if (authedUser.value && !window.sessionStorage.getItem('chufix-tpl:admin-mini:tour-done')) {
         setTimeout(() => (tourOpen.value = true), 400);
         window.sessionStorage.setItem('chufix-tpl:admin-mini:tour-done', '1');
       }
@@ -280,6 +307,9 @@ const pageComp = computed(() => {
     :data-density="density"
     :style="shellStyle"
   >
+    <Login v-if="!authedUser" @login-success="onLoginSuccess" />
+
+    <template v-else>
     <CfAppShell
       :sidebar-collapsed="sidebarCollapsed"
       :sidebar-width="sidebarCollapsed ? 64 : 220"
@@ -334,6 +364,7 @@ const pageComp = computed(() => {
       v-model="tourOpen"
       :steps="tourSteps"
     />
+    </template>
   </div>
 </template>
 
