@@ -35,8 +35,22 @@ export interface DemoStrings {
   switch_menu: string;
   switch_accent: string;
   switch_locale: string;
-  view_source: string;
-  hide_source: string;
+  settings: string;
+  notifications: string;
+  no_notifications: string;
+  mark_all_read: string;
+  view_all: string;
+  profile: string;
+  change_password: string;
+  logout: string;
+  search_placeholder: string;
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+  password_mismatch: string;
+  password_changed: string;
+  profile_saved: string;
+  logout_done: string;
   theme_dark_cool: string;
   theme_dark_warm: string;
   theme_light: string;
@@ -112,8 +126,22 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     switch_menu: '菜单形态',
     switch_accent: '主色',
     switch_locale: '语言',
-    view_source: '查看源码',
-    hide_source: '关闭源码',
+    settings: '主题设置',
+    notifications: '通知',
+    no_notifications: '暂无新通知',
+    mark_all_read: '全部已读',
+    view_all: '查看全部',
+    profile: '个人中心',
+    change_password: '修改密码',
+    logout: '退出登录',
+    search_placeholder: '搜索菜单 / 用户 / 角色…',
+    current_password: '当前密码',
+    new_password: '新密码',
+    confirm_password: '确认新密码',
+    password_mismatch: '两次输入的新密码不一致',
+    password_changed: '密码已更新',
+    profile_saved: '资料已保存',
+    logout_done: '已退出（演示态，无实际登出）',
     theme_dark_cool: '深蓝',
     theme_dark_warm: '深棕',
     theme_light: '浅色',
@@ -182,8 +210,22 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     switch_menu: 'Menu',
     switch_accent: 'Accent',
     switch_locale: 'Locale',
-    view_source: 'View source',
-    hide_source: 'Hide source',
+    settings: 'Appearance',
+    notifications: 'Notifications',
+    no_notifications: 'You are all caught up',
+    mark_all_read: 'Mark all read',
+    view_all: 'View all',
+    profile: 'Profile',
+    change_password: 'Change password',
+    logout: 'Sign out',
+    search_placeholder: 'Search menus / users / roles…',
+    current_password: 'Current password',
+    new_password: 'New password',
+    confirm_password: 'Confirm new password',
+    password_mismatch: 'New passwords do not match',
+    password_changed: 'Password updated',
+    profile_saved: 'Profile saved',
+    logout_done: 'Signed out (demo only — no real session)',
     theme_dark_cool: 'Dark cool',
     theme_dark_warm: 'Dark warm',
     theme_light: 'Light',

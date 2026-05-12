@@ -1,14 +1,18 @@
 <script setup lang="ts">
 /**
  * admin-mini · 实时演示。
- * 顶部 Toolbar 切换主题/密度/菜单形态/主色/语言/源码面板；
- * 中间 CfAppShell + CfSidebar/CfNavMenu + CfBreadcrumb 组成实际后台外壳；
- * 7 个子页面（仪表盘 / 用户 / 角色 / 用户角色 / 字典 / 操作日志 / 登录日志）随菜单切换。
+ * 顶部 AdminHeader（搜索 / 消息铃铛 / 语言 / 主题齿轮 / 用户头像下拉）；
+ * 中间 CfAppShell + CfSidebar / CfNavMenu + CfBreadcrumb；
+ * 右抽屉 SettingsDrawer 装主题/密度/菜单/主色；个人中心 + 修改密码用 Modal；
+ * 7 个子页面随菜单切换。
  */
 import { computed, provide, ref } from 'vue';
-import { CfAppShell, CfSidebar, CfNavMenu, CfBreadcrumb, CfTag } from '@chufix-design/vue';
+import { CfAppShell, CfSidebar, CfNavMenu, CfBreadcrumb, toast } from '@chufix-design/vue';
 import type { SidebarEntry, SidebarItem } from '@chufix-design/vue';
-import Toolbar from './Toolbar.vue';
+import AdminHeader from './AdminHeader.vue';
+import SettingsDrawer from './SettingsDrawer.vue';
+import ProfileModal from './ProfileModal.vue';
+import ChangePasswordModal from './ChangePasswordModal.vue';
 import Dashboard from './pages/Dashboard.vue';
 import Users from './pages/Users.vue';
 import Roles from './pages/Roles.vue';
@@ -40,6 +44,15 @@ provide(DemoStateKey, { theme, density, menuForm, accent, locale });
 
 const t = computed(() => STRINGS[locale.value]);
 
+// 顶部交互入口
+const settingsOpen = ref(false);
+const profileOpen = ref(false);
+const passwordOpen = ref(false);
+
+function onLogout() {
+  toast.info(t.value.logout_done);
+}
+
 const sidebarItems = computed<SidebarEntry[]>(() => [
   {
     type: 'group',
@@ -70,7 +83,7 @@ const sidebarItems = computed<SidebarEntry[]>(() => [
 
 const navMenuItems = computed(() => {
   const groups: SidebarEntry[] = sidebarItems.value;
-  const out: { key: string; label: string; href?: string; links?: { label: string; href: string }[] }[] = [];
+  const out: { key: string; label: string; href?: string }[] = [];
   for (const g of groups) {
     if ('type' in g && g.type === 'group' && g.items) {
       for (const item of g.items) {
@@ -139,24 +152,18 @@ const pageComp = computed(() => {
     :data-density="density"
     :style="shellStyle"
   >
-    <Toolbar />
-
-    <CfAppShell :sidebar-collapsed="sidebarCollapsed" :sidebar-width="sidebarCollapsed ? 64 : 220">
+    <CfAppShell
+      :sidebar-collapsed="sidebarCollapsed"
+      :sidebar-width="sidebarCollapsed ? 64 : 220"
+      :header-height="56"
+    >
       <template #header>
-        <div class="adm-header">
-          <div class="adm-header__brand">
-            <span class="adm-header__logo" />
-            <span class="adm-header__title">{{ t.brand }}</span>
-            <CfTag size="sm" tone="info" variant="soft">demo</CfTag>
-          </div>
-          <CfNavMenu
-            v-if="menuForm === 'topbar'"
-            :items="navMenuItems"
-            :active="route"
-            variant="underline"
-            @navigate="(item) => (route = item.key as RouteId)"
-          />
-        </div>
+        <AdminHeader
+          @open-settings="settingsOpen = true"
+          @open-profile="profileOpen = true"
+          @open-change-password="passwordOpen = true"
+          @logout="onLogout"
+        />
       </template>
 
       <template v-if="showSidebar" #sidebar>
@@ -169,11 +176,23 @@ const pageComp = computed(() => {
       </template>
 
       <section class="adm-body">
+        <CfNavMenu
+          v-if="menuForm === 'topbar'"
+          :items="navMenuItems"
+          :active="route"
+          variant="underline"
+          class="adm-body__nav"
+          @navigate="(item) => (route = item.key as RouteId)"
+        />
         <CfBreadcrumb :items="breadcrumbItems" />
         <h2 class="adm-body__title">{{ flatItem(route)?.label ?? '' }}</h2>
         <component :is="pageComp" :key="route + '|' + locale" />
       </section>
     </CfAppShell>
+
+    <SettingsDrawer v-model:open="settingsOpen" />
+    <ProfileModal v-model:open="profileOpen" />
+    <ChangePasswordModal v-model:open="passwordOpen" />
   </div>
 </template>
 
@@ -190,29 +209,6 @@ const pageComp = computed(() => {
   border-radius: var(--r-6);
   overflow: hidden;
   border: 1px solid var(--line-1);
-}
-.adm-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 16px;
-  height: 100%;
-}
-.adm-header__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.adm-header__logo {
-  width: 22px;
-  height: 22px;
-  border-radius: var(--r-4);
-  background: linear-gradient(135deg, var(--accent-1), color-mix(in oklch, var(--accent-1), var(--bg-0) 35%));
-  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--accent-1), transparent 50%);
-}
-.adm-header__title {
-  font-weight: var(--w-medium);
-  color: var(--fg-1);
 }
 .adm-body {
   display: flex;

@@ -29,6 +29,8 @@ if (template.reactFiles && Object.keys(template.reactFiles).length) frameworks.p
 
 const previewHeight = template.previewHeight ?? 'min(820px, 88vh)';
 const workspaceHeight = template.workspaceHeight ?? 'min(620px, 70vh)';
+const codeToggleLabel = isEn ? 'View code' : '查看代码';
+const codeToggleHideLabel = isEn ? 'Hide code' : '收起代码';
 ---
 
 <div class="tmpl-detail">
@@ -44,26 +46,26 @@ const workspaceHeight = template.workspaceHeight ?? 'min(620px, 70vh)';
   </header>
 
   {template.Preview ? (
-    <section class="tmpl-stage" data-tmpl-stage data-source-open="false">
+    <section class="tmpl-stage">
       <div class="tmpl-stage__preview" style={`min-height: ${previewHeight}; height: ${previewHeight};`}>
         <TemplatePreview templateId={template.id} client:only="vue" />
       </div>
 
-      <div class="tmpl-stage__source" data-source-pane>
-        <header class="tmpl-stage__source-bar">
-          <span class="tmpl-stage__source-title">{isEn ? 'Source code' : '源码'}</span>
-          <button class="tmpl-stage__source-close" type="button" data-source-close aria-label={isEn ? 'Hide source' : '关闭源码'}>
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M3 3l10 10M13 3L3 13" stroke-linecap="round" />
-            </svg>
-          </button>
-        </header>
-        <DocCodeWorkspace
-          bundles={bundles}
-          title={template.workspaceTitle ?? `${template.id} · source`}
-          rootLabel={template.workspaceRoot ?? template.id}
-          height={workspaceHeight}
-        />
+      <div class="tmpl-stage__code-section" data-collapsed="true" data-tmpl-code>
+        <button class="tmpl-stage__toggle" type="button" aria-expanded="false" data-tmpl-code-toggle data-show-label={codeToggleLabel} data-hide-label={codeToggleHideLabel}>
+          <svg class="tmpl-stage__toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="tmpl-stage__toggle-label">{codeToggleLabel}</span>
+        </button>
+        <div class="tmpl-stage__code-body">
+          <DocCodeWorkspace
+            bundles={bundles}
+            title={template.workspaceTitle ?? `${template.id} · source`}
+            rootLabel={template.workspaceRoot ?? template.id}
+            height={workspaceHeight}
+          />
+        </div>
       </div>
     </section>
   ) : (
@@ -81,22 +83,21 @@ const workspaceHeight = template.workspaceHeight ?? 'min(620px, 70vh)';
 </div>
 
 <script>
-  // 由 admin-mini 的 Toolbar 「查看源码」按钮通过 CustomEvent 触发；这里切换 stage 的 data-source-open。
-  const stage = document.querySelector<HTMLElement>('[data-tmpl-stage]');
-  if (stage) {
-    window.addEventListener('chufix-tpl:toggle-source', (e) => {
-      const open = !!(e as CustomEvent<{ open: boolean }>).detail?.open;
-      stage.setAttribute('data-source-open', String(open));
-      if (open) {
-        const pane = stage.querySelector<HTMLElement>('[data-source-pane]');
-        pane?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+  // 演示底部「查看代码」折叠/展开。和组件文档里 DemoFrame 的交互一致。
+  document.querySelectorAll<HTMLElement>('[data-tmpl-code]').forEach((section) => {
+    const toggle = section.querySelector<HTMLButtonElement>('[data-tmpl-code-toggle]');
+    const label = toggle?.querySelector<HTMLSpanElement>('.tmpl-stage__toggle-label');
+    if (!toggle || !label) return;
+    const showLabel = toggle.dataset.showLabel ?? 'View code';
+    const hideLabel = toggle.dataset.hideLabel ?? 'Hide code';
+    toggle.addEventListener('click', () => {
+      const collapsed = section.getAttribute('data-collapsed') !== 'false';
+      const next = !collapsed;
+      section.setAttribute('data-collapsed', String(!next));
+      toggle.setAttribute('aria-expanded', String(next));
+      label.textContent = next ? hideLabel : showLabel;
     });
-    stage.querySelector<HTMLButtonElement>('[data-source-close]')?.addEventListener('click', () => {
-      stage.setAttribute('data-source-open', 'false');
-      window.dispatchEvent(new CustomEvent('chufix-tpl:sync-source', { detail: { open: false } }));
-    });
-  }
+  });
 </script>
 
 <style>
@@ -165,7 +166,7 @@ const workspaceHeight = template.workspaceHeight ?? 'min(620px, 70vh)';
   .tmpl-stage {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 0;
   }
   .tmpl-stage__preview {
     display: flex;
@@ -176,45 +177,45 @@ const workspaceHeight = template.workspaceHeight ?? 'min(620px, 70vh)';
     flex: 1;
     min-height: 0;
   }
-  .tmpl-stage__source {
-    display: none;
-    flex-direction: column;
-    gap: 0;
-    background: var(--bg-1);
+  .tmpl-stage__code-section {
+    margin-top: 12px;
     border: 1px solid var(--line-1);
     border-radius: var(--r-6);
     overflow: hidden;
+    background: var(--bg-1);
   }
-  .tmpl-stage[data-source-open='true'] .tmpl-stage__source {
-    display: flex;
-  }
-  .tmpl-stage__source-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: var(--bg-2);
-    border-bottom: 1px solid var(--line-1);
-  }
-  .tmpl-stage__source-title {
-    font-size: var(--t-12);
-    color: var(--fg-2);
-    font-weight: var(--w-medium);
-  }
-  .tmpl-stage__source-close {
-    background: transparent;
-    border: 1px solid var(--line-1);
-    color: var(--fg-2);
-    width: 24px;
-    height: 24px;
-    border-radius: var(--r-4);
-    cursor: pointer;
+  .tmpl-stage__toggle {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-2);
+    border: 0;
+    border-bottom: 1px solid var(--line-1);
+    color: var(--fg-2);
+    font-family: var(--font-sans);
+    font-size: var(--t-12);
+    cursor: pointer;
+    text-align: left;
+  }
+  .tmpl-stage__toggle:hover { color: var(--fg-1); }
+  .tmpl-stage__toggle-icon {
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .tmpl-stage__code-section[data-collapsed='false'] .tmpl-stage__toggle-icon {
+    transform: rotate(180deg);
+  }
+  .tmpl-stage__code-section[data-collapsed='true'] .tmpl-stage__toggle {
+    border-bottom: 0;
+  }
+  .tmpl-stage__code-body {
+    display: none;
     padding: 0;
   }
-  .tmpl-stage__source-close:hover { color: var(--fg-1); }
+  .tmpl-stage__code-section[data-collapsed='false'] .tmpl-stage__code-body {
+    display: block;
+  }
   .tmpl-detail__foot {
     margin-top: 24px;
     padding-top: 16px;

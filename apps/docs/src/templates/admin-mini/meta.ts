@@ -3,7 +3,10 @@ import Preview from './preview/AdminMiniDemo.vue';
 
 // Vue 源码 —— 用 ?raw 直接读演示组件原文，保证源码面板里看到的代码 = 真正跑起来的代码。
 import previewAdminMini from './preview/AdminMiniDemo.vue?raw';
-import previewToolbar from './preview/Toolbar.vue?raw';
+import previewAdminHeader from './preview/AdminHeader.vue?raw';
+import previewSettingsDrawer from './preview/SettingsDrawer.vue?raw';
+import previewProfileModal from './preview/ProfileModal.vue?raw';
+import previewChangePassword from './preview/ChangePasswordModal.vue?raw';
 import previewState from './preview/state.ts?raw';
 import previewMock from './preview/mock.ts?raw';
 import previewDashboard from './preview/pages/Dashboard.vue?raw';
@@ -16,7 +19,6 @@ import previewLoginLog from './preview/pages/LoginLog.vue?raw';
 
 // React 镜像源码 —— 仅用于源码面板展示，不参与运行。结构与 Vue 文件一一对应。
 import srcReactApp from './source-react/AdminMiniDemo.tsx?raw';
-import srcReactToolbar from './source-react/Toolbar.tsx?raw';
 import srcReactState from './source-react/state.ts?raw';
 import srcReactMock from './source-react/mock.ts?raw';
 import srcReactDashboard from './source-react/pages/Dashboard.tsx?raw';
@@ -29,7 +31,10 @@ import srcReactLoginLog from './source-react/pages/LoginLog.tsx?raw';
 
 const vueFiles: Record<string, string> = {
   'src/AdminMiniDemo.vue':       previewAdminMini,
-  'src/Toolbar.vue':             previewToolbar,
+  'src/AdminHeader.vue':         previewAdminHeader,
+  'src/SettingsDrawer.vue':      previewSettingsDrawer,
+  'src/ProfileModal.vue':        previewProfileModal,
+  'src/ChangePasswordModal.vue': previewChangePassword,
   'src/state.ts':                previewState,
   'src/mock.ts':                 previewMock,
   'src/pages/Dashboard.vue':     previewDashboard,
@@ -43,7 +48,6 @@ const vueFiles: Record<string, string> = {
 
 const reactFiles: Record<string, string> = {
   'src/AdminMiniDemo.tsx':       srcReactApp,
-  'src/Toolbar.tsx':             srcReactToolbar,
   'src/state.ts':                srcReactState,
   'src/mock.ts':                 srcReactMock,
   'src/pages/Dashboard.tsx':     srcReactDashboard,
@@ -59,7 +63,7 @@ export const adminMini: TemplateMeta = {
   id: 'admin-mini',
   name: 'admin-mini · 后台管理',
   description:
-    '完整可交互的后台管理工程：左侧菜单 / 顶栏 / 折叠侧栏三种菜单形态切换、三套主题与两种密度、五种主色、中英文双语；用户 / 角色 / 用户角色 / 字典 / 操作日志 / 登录日志 7 个真实页面，可直接在演示里点开 CRUD 弹窗、搜索、分配权限等交互。',
+    '完整可交互的后台管理工程：顶部 header（搜索 / 消息铃铛 / 语言 / 主题齿轮 / 用户头像下拉）+ 左侧菜单 / 顶栏 / 折叠侧栏三种菜单形态、三套主题、两种密度、五种主色、中英文双语；用户 / 角色 / 用户角色 / 字典 / 操作日志 / 登录日志 7 个真实页面，可直接在演示里点开个人中心 / 修改密码 / CRUD 弹窗 / 权限分配 / 搜索等交互。',
   category: 'admin',
   Preview,
   vueFiles,
