@@ -20,6 +20,7 @@ import UserRoles from './pages/UserRoles.vue';
 import Dict from './pages/Dict.vue';
 import OperationLog from './pages/OperationLog.vue';
 import LoginLog from './pages/LoginLog.vue';
+import SystemSettings from './pages/SystemSettings.vue';
 import {
   ACCENT_HUE,
   DemoStateKey,
@@ -31,7 +32,7 @@ import {
   type DemoLocale,
 } from './state';
 
-type RouteId = 'dashboard' | 'users' | 'roles' | 'user-roles' | 'dict' | 'op-log' | 'login-log';
+type RouteId = 'dashboard' | 'users' | 'roles' | 'user-roles' | 'dict' | 'op-log' | 'login-log' | 'sys-settings';
 
 const theme = ref<DemoTheme>('dark-cool');
 const density = ref<DemoDensity>('comfortable');
@@ -74,9 +75,10 @@ const sidebarItems = computed<SidebarEntry[]>(() => [
     type: 'group',
     label: t.value.grp_system,
     items: [
-      { key: 'dict',      label: t.value.page_dict,      icon: iconSvg('M4 4h16v3H4zM4 10h16v3H4zM4 16h16v3H4z') },
-      { key: 'op-log',    label: t.value.page_op_log,    icon: iconSvg('M5 3h11l3 3v15H5z M14 3v4h4') },
-      { key: 'login-log', label: t.value.page_login_log, icon: iconSvg('M10 17l5-5-5-5v3H3v4h7v3z M21 3h-8v18h8V3z') },
+      { key: 'dict',         label: t.value.page_dict,         icon: iconSvg('M4 4h16v3H4zM4 10h16v3H4zM4 16h16v3H4z') },
+      { key: 'op-log',       label: t.value.page_op_log,       icon: iconSvg('M5 3h11l3 3v15H5z M14 3v4h4') },
+      { key: 'login-log',    label: t.value.page_login_log,    icon: iconSvg('M10 17l5-5-5-5v3H3v4h7v3z M21 3h-8v18h8V3z') },
+      { key: 'sys-settings', label: t.value.page_sys_settings, icon: iconSvg('M12 8a4 4 0 100 8 4 4 0 000-8zm9.4 4a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06A2 2 0 113.39 16.96l.06-.06a1.65 1.65 0 00.33-1.82A1.65 1.65 0 002.27 14H3a2 2 0 110-4h-.09c.36 0 .68-.13 1-.34A1.65 1.65 0 003.78 8 1.65 1.65 0 003.45 6.18l-.06-.06a2 2 0 112.83-2.83l.06.06c.5.5 1.24.63 1.82.33H8c.36 0 .68-.13 1-.34A1.65 1.65 0 0010 2.27V3a2 2 0 114 0v-.09c0 .36.13.68.34 1A1.65 1.65 0 0016 3.78a1.65 1.65 0 011.82.33l.06.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0021.4 9z') },
     ],
   },
 ]);
@@ -139,8 +141,9 @@ const pageComp = computed(() => {
     case 'user-roles': return UserRoles;
     case 'dict':       return Dict;
     case 'op-log':     return OperationLog;
-    case 'login-log':  return LoginLog;
-    default:           return Dashboard;
+    case 'login-log':    return LoginLog;
+    case 'sys-settings': return SystemSettings;
+    default:             return Dashboard;
   }
 });
 </script>

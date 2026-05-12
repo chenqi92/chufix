@@ -67,6 +67,25 @@ export interface DemoStrings {
   page_dict: string;
   page_op_log: string;
   page_login_log: string;
+  page_sys_settings: string;
+  sys_general: string;
+  sys_security: string;
+  sys_backup: string;
+  sys_log_retention: string;
+  sys_log_retention_hint: string;
+  sys_two_factor: string;
+  sys_two_factor_hint: string;
+  sys_password_policy: string;
+  sys_password_policy_basic: string;
+  sys_password_policy_strict: string;
+  sys_password_policy_paranoid: string;
+  sys_session_timeout: string;
+  sys_next_backup: string;
+  sys_upload_logs: string;
+  sys_save_changes: string;
+  sys_revert: string;
+  sys_saved: string;
+  sys_reverted: string;
   // groups
   grp_overview: string;
   grp_authz: string;
@@ -117,6 +136,9 @@ export interface DemoStrings {
   col_log_ip: string;
   col_log_at: string;
   col_log_ua: string;
+  column_settings: string;
+  reset_columns: string;
+  phone_updated: string;
   // dashboard
   kpi_users: string;
   kpi_roles: string;
@@ -165,6 +187,25 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: '字典管理',
     page_op_log: '操作日志',
     page_login_log: '登录日志',
+    page_sys_settings: '系统设置',
+    sys_general: '常规',
+    sys_security: '安全',
+    sys_backup: '备份',
+    sys_log_retention: '日志保留天数',
+    sys_log_retention_hint: '超过该天数的日志会自动归档',
+    sys_two_factor: '启用两步验证',
+    sys_two_factor_hint: '管理员账号强制开启',
+    sys_password_policy: '密码策略',
+    sys_password_policy_basic: '基本（≥ 8 位）',
+    sys_password_policy_strict: '严格（≥ 12 位 + 大小写 + 数字）',
+    sys_password_policy_paranoid: '偏执（≥ 16 位 + 大小写 + 数字 + 符号）',
+    sys_session_timeout: '会话超时（分钟）',
+    sys_next_backup: '下一次备份时间',
+    sys_upload_logs: '上传归档日志',
+    sys_save_changes: '保存设置',
+    sys_revert: '撤销',
+    sys_saved: '设置已保存',
+    sys_reverted: '已撤销',
     grp_overview: '概览',
     grp_authz: '权限',
     grp_system: '系统',
@@ -212,6 +253,9 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     col_log_ip: 'IP',
     col_log_at: '时间',
     col_log_ua: '设备',
+    column_settings: '列设置',
+    reset_columns: '重置列',
+    phone_updated: '手机号已更新',
     kpi_users: '用户总数',
     kpi_roles: '角色总数',
     kpi_login_today: '今日登录',
@@ -257,6 +301,25 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: 'Dictionary',
     page_op_log: 'Operation log',
     page_login_log: 'Login log',
+    page_sys_settings: 'Settings',
+    sys_general: 'General',
+    sys_security: 'Security',
+    sys_backup: 'Backup',
+    sys_log_retention: 'Log retention (days)',
+    sys_log_retention_hint: 'Older logs are archived automatically',
+    sys_two_factor: 'Enable 2FA',
+    sys_two_factor_hint: 'Required for admin accounts',
+    sys_password_policy: 'Password policy',
+    sys_password_policy_basic: 'Basic (≥ 8 chars)',
+    sys_password_policy_strict: 'Strict (≥ 12 + upper/lower + digits)',
+    sys_password_policy_paranoid: 'Paranoid (≥ 16 + upper/lower + digits + symbols)',
+    sys_session_timeout: 'Session timeout (min)',
+    sys_next_backup: 'Next backup at',
+    sys_upload_logs: 'Upload archived logs',
+    sys_save_changes: 'Save settings',
+    sys_revert: 'Revert',
+    sys_saved: 'Settings saved',
+    sys_reverted: 'Reverted',
     grp_overview: 'Overview',
     grp_authz: 'Authorization',
     grp_system: 'System',
@@ -304,6 +367,9 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     col_log_ip: 'IP',
     col_log_at: 'Time',
     col_log_ua: 'Device',
+    column_settings: 'Columns',
+    reset_columns: 'Reset columns',
+    phone_updated: 'Phone updated',
     kpi_users: 'Total users',
     kpi_roles: 'Total roles',
     kpi_login_today: "Today's logins",
