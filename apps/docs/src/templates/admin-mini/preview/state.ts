@@ -67,6 +67,29 @@ export interface DemoStrings {
   page_dict: string;
   page_op_log: string;
   page_login_log: string;
+  page_org: string;
+  col_dept: string;
+  org_total: string;
+  org_select_hint: string;
+  cmd_placeholder: string;
+  cmd_empty: string;
+  cmd_navigate: string;
+  cmd_actions: string;
+  cmd_open_settings: string;
+  cmd_open_profile: string;
+  cmd_change_password: string;
+  cmd_logout: string;
+  tour_brand_title: string;
+  tour_brand_desc: string;
+  tour_search_title: string;
+  tour_search_desc: string;
+  tour_settings_title: string;
+  tour_settings_desc: string;
+  tour_user_title: string;
+  tour_user_desc: string;
+  tour_next: string;
+  tour_finish: string;
+  tour_skip: string;
   page_sys_settings: string;
   sys_general: string;
   sys_security: string;
@@ -187,6 +210,29 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: '字典管理',
     page_op_log: '操作日志',
     page_login_log: '登录日志',
+    page_org: '组织架构',
+    col_dept: '所属部门',
+    org_total: '共 {n} 名成员',
+    org_select_hint: '点击左侧部门可筛选右侧成员，根节点显示全部。',
+    cmd_placeholder: '输入命令、页面或动作…',
+    cmd_empty: '没有匹配项',
+    cmd_navigate: '导航',
+    cmd_actions: '快捷动作',
+    cmd_open_settings: '打开主题设置抽屉',
+    cmd_open_profile: '打开个人中心',
+    cmd_change_password: '修改密码',
+    cmd_logout: '退出登录',
+    tour_brand_title: '欢迎来到 admin-mini',
+    tour_brand_desc: '这是一个完全由 ChuFix UI 组件组成的真实后台演示。',
+    tour_search_title: '快捷搜索',
+    tour_search_desc: '试试键盘上的 Ctrl + K 打开全局命令面板，跨页面跳转。',
+    tour_settings_title: '主题 / 密度 / 菜单形态',
+    tour_settings_desc: '点击齿轮可在右侧抽屉里切换主题、密度、菜单展示形态和主色。',
+    tour_user_title: '个人中心 + 修改密码',
+    tour_user_desc: '点击头像下拉，可以打开个人中心、修改密码或退出登录。',
+    tour_next: '下一步',
+    tour_finish: '完成',
+    tour_skip: '跳过',
     page_sys_settings: '系统设置',
     sys_general: '常规',
     sys_security: '安全',
@@ -301,6 +347,29 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: 'Dictionary',
     page_op_log: 'Operation log',
     page_login_log: 'Login log',
+    page_org: 'Organization',
+    col_dept: 'Department',
+    org_total: '{n} members',
+    org_select_hint: 'Pick a department on the left to filter members on the right. The root shows all.',
+    cmd_placeholder: 'Type a command, page or action…',
+    cmd_empty: 'No matches',
+    cmd_navigate: 'Navigate',
+    cmd_actions: 'Quick actions',
+    cmd_open_settings: 'Open appearance drawer',
+    cmd_open_profile: 'Open profile',
+    cmd_change_password: 'Change password',
+    cmd_logout: 'Sign out',
+    tour_brand_title: 'Welcome to admin-mini',
+    tour_brand_desc: 'A live admin demo built entirely with ChuFix UI components.',
+    tour_search_title: 'Quick search',
+    tour_search_desc: 'Press Ctrl + K anywhere to open the global command palette.',
+    tour_settings_title: 'Theme / density / menu',
+    tour_settings_desc: 'The gear opens a right drawer for theme, density, menu form and accent.',
+    tour_user_title: 'Profile + change password',
+    tour_user_desc: 'The avatar drops down to Profile, Change password and Sign out.',
+    tour_next: 'Next',
+    tour_finish: 'Finish',
+    tour_skip: 'Skip',
     page_sys_settings: 'Settings',
     sys_general: 'General',
     sys_security: 'Security',

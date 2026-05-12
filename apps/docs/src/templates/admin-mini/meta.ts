@@ -17,6 +17,7 @@ import previewDict from './preview/pages/Dict.vue?raw';
 import previewOpLog from './preview/pages/OperationLog.vue?raw';
 import previewLoginLog from './preview/pages/LoginLog.vue?raw';
 import previewSysSettings from './preview/pages/SystemSettings.vue?raw';
+import previewOrg from './preview/pages/Org.vue?raw';
 
 // React 镜像源码 —— 仅用于源码面板展示，不参与运行。结构与 Vue 文件一一对应。
 import srcReactApp from './source-react/AdminMiniDemo.tsx?raw';
@@ -30,6 +31,7 @@ import srcReactDict from './source-react/pages/Dict.tsx?raw';
 import srcReactOpLog from './source-react/pages/OperationLog.tsx?raw';
 import srcReactLoginLog from './source-react/pages/LoginLog.tsx?raw';
 import srcReactSysSettings from './source-react/pages/SystemSettings.tsx?raw';
+import srcReactOrg from './source-react/pages/Org.tsx?raw';
 
 const vueFiles: Record<string, string> = {
   'src/AdminMiniDemo.vue':       previewAdminMini,
@@ -47,6 +49,7 @@ const vueFiles: Record<string, string> = {
   'src/pages/OperationLog.vue':  previewOpLog,
   'src/pages/LoginLog.vue':      previewLoginLog,
   'src/pages/SystemSettings.vue': previewSysSettings,
+  'src/pages/Org.vue':            previewOrg,
 };
 
 const reactFiles: Record<string, string> = {
@@ -61,6 +64,7 @@ const reactFiles: Record<string, string> = {
   'src/pages/OperationLog.tsx':  srcReactOpLog,
   'src/pages/LoginLog.tsx':      srcReactLoginLog,
   'src/pages/SystemSettings.tsx': srcReactSysSettings,
+  'src/pages/Org.tsx':            srcReactOrg,
 };
 
 export const adminMini: TemplateMeta = {

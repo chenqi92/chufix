@@ -6,9 +6,9 @@
  * 右抽屉 SettingsDrawer 装主题/密度/菜单/主色；个人中心 + 修改密码用 Modal；
  * 7 个子页面随菜单切换。
  */
-import { computed, provide, ref } from 'vue';
-import { CfAppShell, CfSidebar, CfNavMenu, CfBreadcrumb, toast } from '@chufix-design/vue';
-import type { SidebarEntry, SidebarItem } from '@chufix-design/vue';
+import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue';
+import { CfAppShell, CfSidebar, CfNavMenu, CfBreadcrumb, CfCommandPalette, CfTour, toast } from '@chufix-design/vue';
+import type { SidebarEntry, SidebarItem, CommandPaletteItem, TourStep } from '@chufix-design/vue';
 import AdminHeader from './AdminHeader.vue';
 import SettingsDrawer from './SettingsDrawer.vue';
 import ProfileModal from './ProfileModal.vue';
@@ -21,6 +21,7 @@ import Dict from './pages/Dict.vue';
 import OperationLog from './pages/OperationLog.vue';
 import LoginLog from './pages/LoginLog.vue';
 import SystemSettings from './pages/SystemSettings.vue';
+import Org from './pages/Org.vue';
 import {
   ACCENT_HUE,
   DemoStateKey,
@@ -32,7 +33,7 @@ import {
   type DemoLocale,
 } from './state';
 
-type RouteId = 'dashboard' | 'users' | 'roles' | 'user-roles' | 'dict' | 'op-log' | 'login-log' | 'sys-settings';
+type RouteId = 'dashboard' | 'users' | 'roles' | 'user-roles' | 'org' | 'dict' | 'op-log' | 'login-log' | 'sys-settings';
 
 const theme = ref<DemoTheme>('dark-cool');
 const density = ref<DemoDensity>('comfortable');
@@ -49,10 +50,44 @@ const t = computed(() => STRINGS[locale.value]);
 const settingsOpen = ref(false);
 const profileOpen = ref(false);
 const passwordOpen = ref(false);
+const paletteOpen = ref(false);
+const tourOpen = ref(false);
 
 function onLogout() {
   toast.info(t.value.logout_done);
 }
+
+/* ---------- 全局快捷键：Ctrl/⌘ + K 打开 command palette ---------- */
+function onGlobalKey(e: KeyboardEvent) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    paletteOpen.value = !paletteOpen.value;
+  }
+}
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', onGlobalKey);
+    // 首次访问自动启动 tour，sessionStorage 标志防止反复弹
+    try {
+      if (!window.sessionStorage.getItem('chufix-tpl:admin-mini:tour-done')) {
+        setTimeout(() => (tourOpen.value = true), 400);
+        window.sessionStorage.setItem('chufix-tpl:admin-mini:tour-done', '1');
+      }
+    } catch { /* sessionStorage blocked */ }
+  }
+});
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('keydown', onGlobalKey);
+  }
+});
+
+const tourSteps = computed<TourStep[]>(() => [
+  { target: '[data-tour="brand"]',    title: t.value.tour_brand_title,    description: t.value.tour_brand_desc,    placement: 'bottom' },
+  { target: '[data-tour="search"]',   title: t.value.tour_search_title,   description: t.value.tour_search_desc,   placement: 'bottom' },
+  { target: '[data-tour="settings"]', title: t.value.tour_settings_title, description: t.value.tour_settings_desc, placement: 'bottom' },
+  { target: '[data-tour="user"]',     title: t.value.tour_user_title,     description: t.value.tour_user_desc,     placement: 'bottom' },
+]);
 
 const sidebarItems = computed<SidebarEntry[]>(() => [
   {
@@ -69,6 +104,7 @@ const sidebarItems = computed<SidebarEntry[]>(() => [
       { key: 'users',      label: t.value.page_users,      icon: iconSvg('M12 12a4 4 0 100-8 4 4 0 000 8zm-8 9a8 8 0 0116 0H4z') },
       { key: 'roles',      label: t.value.page_roles,      icon: iconSvg('M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z') },
       { key: 'user-roles', label: t.value.page_user_roles, icon: iconSvg('M9 12a4 4 0 100-8 4 4 0 000 8zm6 0a3 3 0 100-6 3 3 0 000 6zm-6 2c-3 0-9 1.5-9 4.5V21h12v-2.5c0-1.6 1.7-2.7 3.5-3.3-.6-.7-1.7-1.2-3-1.2zm6 .5c2 0 6 1 6 3V21h-6v-3.5z') },
+      { key: 'org',        label: t.value.page_org,        icon: iconSvg('M3 21V8h6V3h6v5h6v13H3zm2-2h4v-3H5v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3zM5 14h4v-3H5v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3zM11 8h4V5h-4v3z') },
     ],
   },
   {
@@ -133,12 +169,46 @@ const shellStyle = computed(() => ({
 const showSidebar = computed(() => menuForm.value !== 'topbar');
 const sidebarCollapsed = computed(() => menuForm.value === 'collapsed');
 
+const paletteItems = computed<CommandPaletteItem[]>(() => {
+  const navs: CommandPaletteItem[] = [];
+  for (const g of sidebarItems.value) {
+    if ('type' in g && g.type === 'group') {
+      for (const item of g.items) {
+        navs.push({
+          id: `nav:${item.key}`,
+          label: item.label,
+          group: t.value.cmd_navigate,
+          keywords: [item.key],
+        });
+      }
+    }
+  }
+  return [
+    ...navs,
+    { id: 'act:settings',  label: t.value.cmd_open_settings,    group: t.value.cmd_actions, shortcut: '⇧S' },
+    { id: 'act:profile',   label: t.value.cmd_open_profile,     group: t.value.cmd_actions },
+    { id: 'act:password',  label: t.value.cmd_change_password,  group: t.value.cmd_actions },
+    { id: 'act:logout',    label: t.value.cmd_logout,           group: t.value.cmd_actions },
+  ];
+});
+
+function onPaletteSelect(id: string) {
+  paletteOpen.value = false;
+  if (id.startsWith('nav:')) {
+    route.value = id.slice(4) as RouteId;
+  } else if (id === 'act:settings')  settingsOpen.value = true;
+  else if (id === 'act:profile')   profileOpen.value = true;
+  else if (id === 'act:password')  passwordOpen.value = true;
+  else if (id === 'act:logout')    onLogout();
+}
+
 const pageComp = computed(() => {
   switch (route.value) {
     case 'dashboard':  return Dashboard;
     case 'users':      return Users;
     case 'roles':      return Roles;
     case 'user-roles': return UserRoles;
+    case 'org':        return Org;
     case 'dict':       return Dict;
     case 'op-log':     return OperationLog;
     case 'login-log':    return LoginLog;
@@ -196,6 +266,19 @@ const pageComp = computed(() => {
     <SettingsDrawer v-model:open="settingsOpen" />
     <ProfileModal v-model:open="profileOpen" />
     <ChangePasswordModal v-model:open="passwordOpen" />
+
+    <CfCommandPalette
+      :open="paletteOpen"
+      :items="paletteItems"
+      :placeholder="t.cmd_placeholder"
+      :empty-text="t.cmd_empty"
+      @update:open="(v) => (paletteOpen = v)"
+      @select="onPaletteSelect"
+    />
+    <CfTour
+      v-model="tourOpen"
+      :steps="tourSteps"
+    />
   </div>
 </template>
 

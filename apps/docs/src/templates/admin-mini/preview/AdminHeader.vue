@@ -67,13 +67,13 @@ function toggleLocale() {
 
 <template>
   <div class="adm-header">
-    <div class="adm-header__brand">
+    <div class="adm-header__brand" data-tour="brand">
       <span class="adm-header__logo" />
       <span class="adm-header__title">{{ t.brand }}</span>
       <CfTag size="sm" tone="info" variant="soft">demo</CfTag>
     </div>
 
-    <div class="adm-header__center">
+    <div class="adm-header__center" data-tour="search">
       <CfSearchInput
         v-model="search"
         :placeholder="t.search_placeholder"
@@ -125,7 +125,7 @@ function toggleLocale() {
         {{ state.locale.value === 'zh' ? '中' : 'EN' }}
       </button>
 
-      <button class="adm-iconbtn" type="button" :aria-label="t.settings" @click="emit('open-settings')">
+      <button class="adm-iconbtn" type="button" :aria-label="t.settings" data-tour="settings" @click="emit('open-settings')">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3" />
           <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 017.04 4.04l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.36.94 1.18 1.5 2.15 1.51H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
@@ -133,7 +133,7 @@ function toggleLocale() {
       </button>
 
       <CfDropdown :items="userMenuItems" placement="bottom" :width="200" @select="onUserMenu">
-        <button class="adm-user" type="button">
+        <button class="adm-user" type="button" data-tour="user">
           <CfAvatar name="Admin" size="sm" />
           <span class="adm-user__name">Admin</span>
           <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">

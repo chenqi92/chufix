@@ -9,6 +9,14 @@ export interface AdminUser {
   phone: string;
   status: 'active' | 'disabled';
   createdAt: string;
+  /** 所属部门 key（用于组织架构页 join）。 */
+  deptKey?: string;
+}
+
+export interface Department {
+  key: string;
+  label: string;
+  children?: Department[];
 }
 
 export interface AdminRole {
@@ -51,13 +59,66 @@ export interface LoginLog {
 }
 
 export const initialUsers: AdminUser[] = [
-  { id: 1, username: 'admin', name: '系统管理员', email: 'admin@chufix.dev', phone: '13800000001', status: 'active', createdAt: '2025-09-01 10:21' },
-  { id: 2, username: 'ada',   name: 'Ada Lovelace', email: 'ada@chufix.dev',  phone: '13800000002', status: 'active', createdAt: '2025-10-12 14:03' },
-  { id: 3, username: 'linus', name: 'Linus Torvalds', email: 'linus@chufix.dev', phone: '13800000003', status: 'active', createdAt: '2025-11-03 09:47' },
-  { id: 4, username: 'grace', name: 'Grace Hopper', email: 'grace@chufix.dev', phone: '13800000004', status: 'disabled', createdAt: '2025-11-19 16:55' },
-  { id: 5, username: 'alan',  name: 'Alan Turing',  email: 'alan@chufix.dev',  phone: '13800000005', status: 'active', createdAt: '2026-01-08 11:32' },
-  { id: 6, username: 'donald',name: 'Donald Knuth', email: 'donald@chufix.dev',phone: '13800000006', status: 'active', createdAt: '2026-02-14 13:18' },
+  { id: 1, username: 'admin', name: '系统管理员', email: 'admin@chufix.dev', phone: '13800000001', status: 'active', createdAt: '2025-09-01 10:21', deptKey: 'd-root' },
+  { id: 2, username: 'ada',   name: 'Ada Lovelace', email: 'ada@chufix.dev',  phone: '13800000002', status: 'active', createdAt: '2025-10-12 14:03', deptKey: 'd-rnd-frontend' },
+  { id: 3, username: 'linus', name: 'Linus Torvalds', email: 'linus@chufix.dev', phone: '13800000003', status: 'active', createdAt: '2025-11-03 09:47', deptKey: 'd-rnd-backend' },
+  { id: 4, username: 'grace', name: 'Grace Hopper', email: 'grace@chufix.dev', phone: '13800000004', status: 'disabled', createdAt: '2025-11-19 16:55', deptKey: 'd-ops' },
+  { id: 5, username: 'alan',  name: 'Alan Turing',  email: 'alan@chufix.dev',  phone: '13800000005', status: 'active', createdAt: '2026-01-08 11:32', deptKey: 'd-rnd-backend' },
+  { id: 6, username: 'donald',name: 'Donald Knuth', email: 'donald@chufix.dev',phone: '13800000006', status: 'active', createdAt: '2026-02-14 13:18', deptKey: 'd-rnd-frontend' },
 ];
+
+export const initialDepartments: Department[] = [
+  {
+    key: 'd-root',
+    label: 'ChuFix Inc.',
+    children: [
+      {
+        key: 'd-rnd',
+        label: '研发中心',
+        children: [
+          { key: 'd-rnd-frontend', label: '前端组' },
+          { key: 'd-rnd-backend',  label: '后端组' },
+          { key: 'd-rnd-qa',       label: '测试组' },
+        ],
+      },
+      {
+        key: 'd-ops',
+        label: '运维与基础设施',
+        children: [
+          { key: 'd-ops-sre',    label: 'SRE' },
+          { key: 'd-ops-dba',    label: 'DBA' },
+        ],
+      },
+      { key: 'd-design',  label: '设计中心' },
+      { key: 'd-support', label: '客户支持' },
+    ],
+  },
+];
+
+/** 收集某节点及其所有后代部门 key。 */
+export function collectDeptKeys(dept: Department): string[] {
+  const out: string[] = [dept.key];
+  const visit = (d: Department) => {
+    if (!d.children) return;
+    for (const c of d.children) {
+      out.push(c.key);
+      visit(c);
+    }
+  };
+  visit(dept);
+  return out;
+}
+
+export function findDepartment(key: string, list: Department[] = initialDepartments): Department | null {
+  for (const d of list) {
+    if (d.key === key) return d;
+    if (d.children) {
+      const found = findDepartment(key, d.children);
+      if (found) return found;
+    }
+  }
+  return null;
+}
 
 export const initialRoles: AdminRole[] = [
   { id: 'r-admin',   name: '超级管理员', description: '拥有全部权限', permissions: ['user:*', 'role:*', 'dict:*', 'log:*'] },

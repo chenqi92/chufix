@@ -256,6 +256,7 @@ const cols = computed<TableColumn<AdminUser>[]>(() => [
       :hoverable="true"
       :resizable="true"
       :reorderable="true"
+      persist-key="admin-mini:users"
       :columns-state="columnsState"
       @update:columns-state="(v: TableColumnsState) => (columnsState = v)"
       @cell-edit="onCellEdit"
