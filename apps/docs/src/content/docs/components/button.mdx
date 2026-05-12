@@ -10,6 +10,16 @@ import SizesVue from '~/components/demos/button/SizesVue.vue';
 import SizesVueSource from '~/components/demos/button/SizesVue.vue?raw';
 import StatesVue from '~/components/demos/button/StatesVue.vue';
 import StatesVueSource from '~/components/demos/button/StatesVue.vue?raw';
+import IconButtonsVue from '~/components/demos/button/IconButtonsVue.vue';
+import IconButtonsVueSource from '~/components/demos/button/IconButtonsVue.vue?raw';
+import IconOnlyVue from '~/components/demos/button/IconOnlyVue.vue';
+import IconOnlyVueSource from '~/components/demos/button/IconOnlyVue.vue?raw';
+import GroupVue from '~/components/demos/button/GroupVue.vue';
+import GroupVueSource from '~/components/demos/button/GroupVue.vue?raw';
+import LinkStyleVue from '~/components/demos/button/LinkStyleVue.vue';
+import LinkStyleVueSource from '~/components/demos/button/LinkStyleVue.vue?raw';
+import LoadingLabelVue from '~/components/demos/button/LoadingLabelVue.vue';
+import LoadingLabelVueSource from '~/components/demos/button/LoadingLabelVue.vue?raw';
 
 ## 基础用法
 
@@ -120,18 +130,232 @@ export default function Demo() {
   <StatesVue client:load />
 </DemoFrame>
 
+## 图标按钮
+
+`leading` 与 `trailing` 具名插槽用于放置左侧 / 右侧图标。两者可以单独使用，也可以同时存在。
+是表单类操作（新建、导出、下一步）最常见的按钮形态。
+
+<DemoFrame
+  vueCode={`<CfButton variant="primary">
+  <template #leading><CfIcon name="plus" /></template>
+  新建
+</CfButton>
+<CfButton variant="secondary">
+  下一步
+  <template #trailing><CfIcon name="arrow-right" /></template>
+</CfButton>
+<CfButton variant="tertiary">
+  <template #leading><CfIcon name="download" /></template>
+  导出
+  <template #trailing><CfIcon name="chevron-down" /></template>
+</CfButton>`}
+  reactCode={`import { CfButton, CfIcon } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfButton variant="primary" leading={<CfIcon name="plus" />}>
+        新建
+      </CfButton>
+      <CfButton variant="secondary" trailing={<CfIcon name="arrow-right" />}>
+        下一步
+      </CfButton>
+      <CfButton
+        variant="tertiary"
+        leading={<CfIcon name="download" />}
+        trailing={<CfIcon name="chevron-down" />}
+      >
+        导出
+      </CfButton>
+    </>
+  );
+}`}
+
+  vueSource={IconButtonsVueSource}>
+  <IconButtonsVue client:load />
+</DemoFrame>
+
+## 图标独立按钮
+
+只显示图标的按钮：`shape="square"` 给出正方形几何，默认插槽放单个图标。
+**必须** 提供非空的 `aria-label` 描述按钮动作，否则屏幕阅读器读不出含义。
+
+<DemoFrame
+  vueCode={`<CfButton variant="primary" shape="square" aria-label="搜索">
+  <CfIcon name="search" />
+</CfButton>
+<CfButton variant="secondary" shape="square" aria-label="复制到剪贴板">
+  <CfIcon name="copy" />
+</CfButton>
+<CfButton variant="tertiary" shape="square" aria-label="删除">
+  <CfIcon name="trash" />
+</CfButton>`}
+  reactCode={`import { CfButton, CfIcon } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfButton variant="primary" shape="square" aria-label="搜索">
+        <CfIcon name="search" />
+      </CfButton>
+      <CfButton variant="secondary" shape="square" aria-label="复制到剪贴板">
+        <CfIcon name="copy" />
+      </CfButton>
+      <CfButton variant="tertiary" shape="square" aria-label="删除">
+        <CfIcon name="trash" />
+      </CfButton>
+    </>
+  );
+}`}
+
+  vueSource={IconOnlyVueSource}>
+  <IconOnlyVue client:load />
+</DemoFrame>
+
+## 按钮组
+
+多个相关操作横向排列（编辑 / 复制 / 删除）。同一组内尺寸保持一致，主操作放右侧、不可逆操作（删除）放最右端并用 `danger` variant 提示。
+
+<DemoFrame
+  vueCode={`<div style="display: inline-flex; gap: 6px;">
+  <CfButton variant="secondary" size="sm">
+    <template #leading><CfIcon name="edit" /></template>
+    编辑
+  </CfButton>
+  <CfButton variant="secondary" size="sm">
+    <template #leading><CfIcon name="copy" /></template>
+    复制
+  </CfButton>
+  <CfButton variant="danger" size="sm">
+    <template #leading><CfIcon name="trash" /></template>
+    删除
+  </CfButton>
+</div>`}
+  reactCode={`import { CfButton, CfIcon } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <div style={{ display: 'inline-flex', gap: 6 }}>
+      <CfButton variant="secondary" size="sm" leading={<CfIcon name="edit" />}>
+        编辑
+      </CfButton>
+      <CfButton variant="secondary" size="sm" leading={<CfIcon name="copy" />}>
+        复制
+      </CfButton>
+      <CfButton variant="danger" size="sm" leading={<CfIcon name="trash" />}>
+        删除
+      </CfButton>
+    </div>
+  );
+}`}
+
+  vueSource={GroupVueSource}>
+  <GroupVue client:load />
+</DemoFrame>
+
+## 链接样式按钮
+
+导航类操作（"查看详情" / "了解更多"）用 `variant="ghost"` 即可获得视觉上接近超链接的效果：透明背景、无边框，
+hover 时才显示反馈。比起原生 `<a>` 标签，它继承了完整的按钮 a11y 行为（焦点环、键盘 Enter / Space 触发）。
+
+<DemoFrame
+  vueCode={`<CfButton variant="ghost" size="sm">
+  查看详情
+  <template #trailing><CfIcon name="arrow-right" /></template>
+</CfButton>
+<CfButton variant="ghost" size="sm">
+  <template #leading><CfIcon name="globe" /></template>
+  访问官网
+</CfButton>
+<CfButton variant="ghost" size="sm">了解更多 →</CfButton>`}
+  reactCode={`import { CfButton, CfIcon } from '@chufix-design/react';
+
+export default function Demo() {
+  return (
+    <>
+      <CfButton variant="ghost" size="sm" trailing={<CfIcon name="arrow-right" />}>
+        查看详情
+      </CfButton>
+      <CfButton variant="ghost" size="sm" leading={<CfIcon name="globe" />}>
+        访问官网
+      </CfButton>
+      <CfButton variant="ghost" size="sm">了解更多 →</CfButton>
+    </>
+  );
+}`}
+
+  vueSource={LinkStyleVueSource}>
+  <LinkStyleVue client:load />
+</DemoFrame>
+
+## 自定义加载文案
+
+`loading` 状态下默认插槽的文案会被原样保留——只渲染额外的 spinner。
+这意味着你可以在加载期间显示与默认态不同的提示（"提交中…" / "保存中…" / "发送中…"），让用户知道当前发生了什么。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+import { CfButton } from '@chufix-design/vue';
+
+const submitting = ref(false);
+async function submit() {
+  submitting.value = true;
+  await new Promise((r) => setTimeout(r, 1500));
+  submitting.value = false;
+}
+</script>
+
+<template>
+  <CfButton variant="primary" :loading="submitting" @click="submit">
+    {{ submitting ? '提交中…' : '提交' }}
+  </CfButton>
+</template>`}
+  reactCode={`import { useState } from 'react';
+import { CfButton } from '@chufix-design/react';
+
+export default function Demo() {
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  async function submit() {
+    setSubmitting(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    setSubmitting(false);
+  }
+  return (
+    <CfButton variant="primary" loading={submitting} onClick={submit}>
+      {submitting ? '提交中…' : '提交'}
+    </CfButton>
+  );
+}`}
+
+  vueSource={LoadingLabelVueSource}>
+  <LoadingLabelVue client:load />
+</DemoFrame>
+
 ## API
 
-| Prop       | 类型                                                                | 默认值       | 说明                       |
-| ---------- | ------------------------------------------------------------------- | ------------ | -------------------------- |
-| `variant`  | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'danger'`     | `'primary'`  | 视觉变体（按权重从重到轻） |
-| `size`     | `'sm' \| 'md' \| 'lg'`                                              | `'md'`       | 高度与字号                 |
-| `shape`    | `'default' \| 'pill' \| 'square'`                                   | `'default'`  | 圆角形状                   |
-| `loading`  | `boolean`                                                           | `false`      | 显示 spinner 并阻止点击    |
-| `block`    | `boolean`                                                           | `false`      | 撑满父容器宽度             |
-| `disabled` | `boolean`                                                           | `false`      | 禁用                       |
+### Props
 
-### 插槽 / Children
+| Prop       | 类型                                                                | 默认值       | 说明                                       |
+| ---------- | ------------------------------------------------------------------- | ------------ | ------------------------------------------ |
+| `variant`  | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'danger'`     | `'primary'`  | 视觉变体（按权重从重到轻）                 |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                              | `'md'`       | 高度与字号                                 |
+| `shape`    | `'default' \| 'pill' \| 'square'`                                   | `'default'`  | 圆角形状；`square` 用于纯图标按钮          |
+| `loading`  | `boolean`                                                           | `false`      | 显示 spinner 并阻止点击                    |
+| `block`    | `boolean`                                                           | `false`      | 撑满父容器宽度                             |
+| `disabled` | `boolean`                                                           | `false`      | 禁用                                       |
+| `type`     | `'button' \| 'submit' \| 'reset'`                                   | `'button'`   | 原生 button type，用于 Form 提交场景       |
 
-- **Vue**：默认插槽是 label，`leading` / `trailing` 具名插槽放图标。
-- **React**：`children` 是 label，`leading` / `trailing` props 放图标节点。
+### Events
+
+| Event   | 载荷类型      | 说明                                       |
+| ------- | ------------- | ------------------------------------------ |
+| `click` | `MouseEvent`  | 点击触发；`disabled` 或 `loading` 时不触发 |
+
+### Slots / Children
+
+| Slot       | Props | 说明                                          |
+| ---------- | ----- | --------------------------------------------- |
+| `default`  | —     | 按钮文案；React 端等价为 `children`           |
+| `leading`  | —     | 左侧图标；React 端等价为 `leading` prop       |
+| `trailing` | —     | 右侧图标；React 端等价为 `trailing` prop      |
