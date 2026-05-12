@@ -152,17 +152,28 @@ export default function Demo() {
 
 ## API
 
-| Prop            | 类型                   | 默认值  | 说明                              |
-| --------------- | ---------------------- | ------- | --------------------------------- |
-| `size`          | `'sm' \| 'md' \| 'lg'` | `'md'`  | 整体尺寸                          |
-| `disabled`      | `boolean`              | `false` | 禁用                              |
-| `indeterminate` | `boolean`              | `false` | 半选状态（视觉态，不影响 checked）|
-| `name`          | `string`               | —       | 原生 input name                   |
-| `value`         | `string \| number`     | —       | 原生 input value                  |
+### Props
 
-## Events
+| Prop            | 类型                   | 默认值  | 说明                                                             |
+| --------------- | ---------------------- | ------- | ---------------------------------------------------------------- |
+| `modelValue`    | `boolean`              | `false` | 受控值；React 端用 `checked` + `onChange` 或 `onCheckedChange`   |
+| `size`          | `'sm' \| 'md' \| 'lg'` | `'md'`  | 整体尺寸                                                         |
+| `disabled`      | `boolean`              | `false` | 禁用                                                             |
+| `indeterminate` | `boolean`              | `false` | 半选状态（视觉态，不影响 checked）                               |
+| `name`          | `string`               | —       | 原生 input name                                                  |
+| `id`            | `string`               | —       | 原生 input id，便于外部 label 关联                               |
+| `value`         | `string \| number`     | —       | 原生 input value                                                 |
+
+### Events
 
 | Vue 事件 | React 回调 | payload | 说明 |
 |---|---|---|---|
+| `update:modelValue` | — | `boolean` | v-model 隐式监听 |
 | `change` | `onCheckedChange` | `(checked, { event, checked, indeterminate, value, name })` | 选中状态变化 |
 | `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | 原生焦点事件 |
+
+### Slots / Children
+
+| Slot      | Props | 说明                                                  |
+| --------- | ----- | ----------------------------------------------------- |
+| `default` | —     | label 文案；React 端等价为 `children`，与复选框右侧对齐 |
