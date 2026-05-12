@@ -1,0 +1,15 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import TemplateDetailBody from '~/components/TemplateDetailBody.astro';
+import { templates } from '~/templates/registry';
+
+export async function getStaticPaths() {
+  return templates.map((t) => ({ params: { template: t.id }, props: { template: t } }));
+}
+
+const { template } = Astro.props;
+---
+
+<BaseLayout title={template.name} description={template.description}>
+  <TemplateDetailBody template={template} />
+</BaseLayout>

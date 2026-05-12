@@ -1,1 +1,5 @@
 /docs/*  /:splat  301
+/getting-started/multifile  /templates/admin-mini/  301
+/getting-started/multifile/  /templates/admin-mini/  301
+/en/getting-started/multifile  /en/templates/admin-mini/  301
+/en/getting-started/multifile/  /en/templates/admin-mini/  301

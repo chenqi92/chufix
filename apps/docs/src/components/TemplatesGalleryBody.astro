@@ -1,0 +1,275 @@
+---
+import CategoryTabs from '~/components/CategoryTabs.astro';
+import { templates } from '~/templates/registry';
+import { CATEGORIES } from '~/templates/types';
+import type { TemplateMeta } from '~/templates/types';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+
+const isEn = locale === 'en';
+const heroTitle = isEn ? 'Templates · multi-page projects' : '工程方案 · 多页面工程';
+const heroLede = isEn
+  ? 'Beyond single-page blocks: full multi-file projects assembled from ChuFix components. Each template ships Vue and React source side-by-side under an IDE-style file tree — open the workspace and copy what you need into your own app.'
+  : '在单页 Blocks 之外的更大单位：由 ChuFix 组件搭起来的完整多文件工程。每个工程方案同时给出 Vue 与 React 两份源码、TypeScript / JavaScript 双语言，以左侧文件树 + 右侧编辑器的 IDE 视图呈现，按需复制到自己项目里即可。';
+
+function frameworks(t: TemplateMeta): string[] {
+  const fw: string[] = [];
+  if (t.vueFiles && Object.keys(t.vueFiles).length) fw.push('Vue');
+  if (t.reactFiles && Object.keys(t.reactFiles).length) fw.push('React');
+  return fw;
+}
+
+function fileCount(t: TemplateMeta): number {
+  return Object.keys(t.vueFiles ?? t.reactFiles ?? {}).length;
+}
+
+/** 抽取 vueFiles 或 reactFiles 的路径用于卡片上的文件树缩略图。 */
+function listPaths(t: TemplateMeta): string[] {
+  const src = t.vueFiles ?? t.reactFiles ?? {};
+  return Object.keys(src);
+}
+
+interface ThumbNode {
+  name: string;
+  depth: number;
+  isFile: boolean;
+}
+
+function buildTree(paths: string[]): ThumbNode[] {
+  const seen = new Set<string>();
+  const out: ThumbNode[] = [];
+  const sorted = [...paths].sort();
+  for (const path of sorted) {
+    const parts = path.split('/').filter(Boolean);
+    for (let i = 0; i < parts.length; i += 1) {
+      const sub = parts.slice(0, i + 1).join('/');
+      if (seen.has(sub)) continue;
+      seen.add(sub);
+      out.push({ name: parts[i], depth: i, isFile: i === parts.length - 1 });
+    }
+  }
+  return out;
+}
+
+const grouped = CATEGORIES
+  .map((cat) => ({ ...cat, items: templates.filter((t) => t.category === cat.id) }))
+  .filter((g) => g.items.length > 0);
+const defaultCat = grouped[0]?.id ?? CATEGORIES[0].id;
+
+const emptyHint = isEn
+  ? 'More templates are on the way. Drop a request at the repo issues if there is something you need.'
+  : '更多工程方案陆续补充。如有需要可在仓库 issues 留言。';
+---
+
+<div class="templates-page">
+  <header class="templates-hero">
+    <h1 class="templates-hero__title">{heroTitle}</h1>
+    <p class="templates-hero__lede">{heroLede}</p>
+  </header>
+
+  {grouped.length === 0 ? (
+    <div class="templates-empty">{emptyHint}</div>
+  ) : (
+    <CategoryTabs tabs={grouped.map((g) => ({ id: g.id, label: g.label }))} defaultId={defaultCat}>
+      {grouped.map((g) => (
+        <div data-cat-panel={g.id} data-active={g.id === defaultCat ? 'true' : 'false'}>
+          <p class="templates-page__cat-desc">{g.description}</p>
+          <div class="cf-gallery cf-gallery--grid">
+            {g.items.map((t) => {
+              const tree = buildTree(listPaths(t));
+              const fw = frameworks(t);
+              const count = fileCount(t);
+              return (
+                <a class="cf-gallery-card tmpl-card" href={prefixHref(`/templates/${t.id}/`, locale)}>
+                  <div class="tmpl-card__thumb" aria-hidden="true">
+                    <div class="tmpl-card__tree">
+                      {tree.map((node) => (
+                        <div class={`tmpl-card__tree-row tmpl-card__tree-row--d${node.depth} ${node.isFile ? 'is-file' : 'is-folder'}`}>
+                          <span class="tmpl-card__tree-icon">
+                            {node.isFile ? (
+                              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.4">
+                                <path d="M3 1.5h6L13 5.5V14a.5.5 0 01-.5.5h-9A.5.5 0 013 14V1.5z" />
+                                <path d="M9 1.5v4h4" />
+                              </svg>
+                            ) : (
+                              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.4">
+                                <path d="M2 3.5A.5.5 0 012.5 3h3l1.5 1.5h6.5a.5.5 0 01.5.5V13a.5.5 0 01-.5.5h-11A.5.5 0 012 13V3.5z" />
+                              </svg>
+                            )}
+                          </span>
+                          <span class="tmpl-card__tree-name">{node.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div class="tmpl-card__body">
+                    <div class="tmpl-card__head">
+                      <div class="tmpl-card__name">{t.name}</div>
+                      <div class="tmpl-card__meta">
+                        {fw.map((f) => <span class={`tmpl-card__chip tmpl-card__chip--${f.toLowerCase()}`}>{f}</span>)}
+                        <span class="tmpl-card__chip tmpl-card__chip--count">{count} {isEn ? 'files' : '文件'}</span>
+                      </div>
+                    </div>
+                    <div class="tmpl-card__desc">{t.description}</div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </CategoryTabs>
+  )}
+</div>
+
+<style>
+  .templates-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .templates-hero {
+    margin: 0 0 24px;
+  }
+  .templates-hero__title {
+    margin: 0;
+    font-size: var(--t-26);
+    font-weight: var(--w-medium);
+    color: var(--fg-1);
+    letter-spacing: -0.01em;
+  }
+  .templates-hero__lede {
+    margin: 8px 0 0;
+    color: var(--fg-2);
+    font-size: var(--t-14);
+    line-height: 1.65;
+    max-width: 860px;
+  }
+  .templates-page__cat-desc {
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    margin: 0 0 14px;
+  }
+  .templates-empty {
+    margin-top: 24px;
+    padding: 32px;
+    border: 1px dashed var(--line-2);
+    border-radius: var(--r-6);
+    color: var(--fg-3);
+    text-align: center;
+    font-size: var(--t-13);
+  }
+  .cf-gallery--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 18px;
+  }
+  .tmpl-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .tmpl-card,
+  .tmpl-card:hover {
+    text-decoration: none;
+  }
+  .tmpl-card__thumb {
+    padding: 14px 16px;
+    min-height: 200px;
+    background:
+      linear-gradient(180deg, color-mix(in oklch, var(--bg-inset), var(--accent-soft) 18%), var(--bg-inset));
+    border-bottom: 1px solid var(--line-1);
+    display: flex;
+    align-items: stretch;
+  }
+  .tmpl-card__tree {
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--t-11);
+    line-height: 1.5;
+    color: var(--fg-2);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .tmpl-card__tree-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 1px 6px;
+    border-radius: var(--r-2);
+  }
+  .tmpl-card__tree-row--d0 { padding-left: 6px; }
+  .tmpl-card__tree-row--d1 { padding-left: 18px; }
+  .tmpl-card__tree-row--d2 { padding-left: 30px; }
+  .tmpl-card__tree-row--d3 { padding-left: 42px; }
+  .tmpl-card__tree-row--d4 { padding-left: 54px; }
+  .tmpl-card__tree-row.is-folder { color: var(--fg-2); }
+  .tmpl-card__tree-row.is-file { color: var(--fg-3); }
+  .tmpl-card__tree-icon {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    color: var(--fg-3);
+    flex-shrink: 0;
+  }
+  .tmpl-card__tree-row.is-folder .tmpl-card__tree-icon { color: var(--accent-1); }
+  .tmpl-card__tree-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tmpl-card__body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tmpl-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .tmpl-card__name {
+    font-size: var(--t-14);
+    font-weight: var(--w-medium);
+    color: var(--fg-1);
+  }
+  .tmpl-card__meta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .tmpl-card__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-10);
+    font-weight: var(--w-medium);
+    background: var(--bg-2);
+    color: var(--fg-3);
+    border: 1px solid var(--line-1);
+  }
+  .tmpl-card__chip--vue {
+    color: oklch(70% 0.16 150);
+    border-color: color-mix(in oklch, oklch(70% 0.16 150), transparent 70%);
+  }
+  .tmpl-card__chip--react {
+    color: oklch(70% 0.13 220);
+    border-color: color-mix(in oklch, oklch(70% 0.13 220), transparent 70%);
+  }
+  .tmpl-card__chip--count {
+    color: var(--fg-3);
+  }
+  .tmpl-card__desc {
+    color: var(--fg-2);
+    font-size: var(--t-12);
+    line-height: 1.6;
+  }
+</style>

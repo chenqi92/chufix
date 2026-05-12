@@ -1,0 +1,125 @@
+---
+import DocCodeWorkspace from '~/components/DocCodeWorkspace.astro';
+import { buildWorkspaceBundles } from '~/components/docCode';
+import { CATEGORIES } from '~/templates/types';
+import type { TemplateMeta } from '~/templates/types';
+import { getLocaleFromUrl, prefixHref } from '~/i18n/utils';
+
+interface Props { template: TemplateMeta }
+const { template } = Astro.props;
+const cat = CATEGORIES.find((c) => c.id === template.category);
+
+const locale = getLocaleFromUrl(Astro.url);
+const isEn = locale === 'en';
+const backLabel = isEn ? '← All Templates' : '← 所有工程方案';
+const footText = isEn
+  ? 'Want more templates? Open an issue at '
+  : '想要更多工程方案？提 issue 到 ';
+
+const bundles = buildWorkspaceBundles({
+  vueFiles: template.vueFiles,
+  reactFiles: template.reactFiles,
+});
+
+const fileCount = Object.keys(template.vueFiles ?? template.reactFiles ?? {}).length;
+const frameworks: string[] = [];
+if (template.vueFiles && Object.keys(template.vueFiles).length) frameworks.push('Vue');
+if (template.reactFiles && Object.keys(template.reactFiles).length) frameworks.push('React');
+---
+
+<div class="tmpl-detail">
+  <header class="tmpl-detail__head">
+    <a href={prefixHref('/templates/', locale)} class="tmpl-detail__back">{backLabel}</a>
+    <span class="tmpl-detail__cat">{cat?.label ?? template.category}</span>
+    <h1>{template.name}</h1>
+    <p>{template.description}</p>
+    <div class="tmpl-detail__meta">
+      {frameworks.map((f) => <span class={`tmpl-detail__chip tmpl-detail__chip--${f.toLowerCase()}`}>{f}</span>)}
+      <span class="tmpl-detail__chip">{fileCount} {isEn ? 'files' : '文件'}</span>
+    </div>
+  </header>
+
+  <DocCodeWorkspace
+    bundles={bundles}
+    title={template.workspaceTitle ?? `${template.id} · source`}
+    rootLabel={template.workspaceRoot ?? template.id}
+    height={template.workspaceHeight ?? 'min(620px, 70vh)'}
+  />
+
+  <footer class="tmpl-detail__foot">
+    <p>{footText}<a href="https://github.com/chenqi92/chufix" target="_blank" rel="noopener">chenqi92/chufix</a>{isEn ? '.' : '。'}</p>
+  </footer>
+</div>
+
+<style>
+  .tmpl-detail {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 24px 24px 80px;
+    font-family: var(--font-sans);
+  }
+  .tmpl-detail__head { margin-bottom: 20px; }
+  .tmpl-detail__back {
+    display: inline-block;
+    color: var(--fg-3);
+    font-size: var(--t-12);
+    text-decoration: none;
+    margin-bottom: 12px;
+  }
+  .tmpl-detail__back:hover { color: var(--fg-1); text-decoration: none; }
+  .tmpl-detail__cat {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    background: var(--accent-soft);
+    color: var(--accent-1);
+    font-size: var(--t-11);
+    font-weight: var(--w-medium);
+    margin-bottom: 8px;
+  }
+  .tmpl-detail__head h1 {
+    margin: 0;
+    font-size: var(--t-22);
+    font-weight: var(--w-medium);
+    color: var(--fg-1);
+  }
+  .tmpl-detail__head p {
+    margin: 8px 0 0;
+    color: var(--fg-2);
+    font-size: var(--t-14);
+    line-height: 1.6;
+  }
+  .tmpl-detail__meta {
+    margin-top: 10px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tmpl-detail__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-11);
+    font-weight: var(--w-medium);
+    background: var(--bg-2);
+    color: var(--fg-3);
+    border: 1px solid var(--line-1);
+  }
+  .tmpl-detail__chip--vue {
+    color: oklch(70% 0.16 150);
+    border-color: color-mix(in oklch, oklch(70% 0.16 150), transparent 70%);
+  }
+  .tmpl-detail__chip--react {
+    color: oklch(70% 0.13 220);
+    border-color: color-mix(in oklch, oklch(70% 0.13 220), transparent 70%);
+  }
+  .tmpl-detail__foot {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-1);
+    color: var(--fg-3);
+    font-size: var(--t-12);
+  }
+  .tmpl-detail__foot a { color: var(--accent-1); }
+</style>
