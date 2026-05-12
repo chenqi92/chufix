@@ -17,13 +17,29 @@ function statusToIllustration(status: ResultStatus): StatusIllustrationVariant {
 }
 
 export function Result(props: ResultProps) {
-  const { status = 'info', title, description, icon, extra, size = 'md', className, children } = props;
+  const {
+    status = 'info',
+    title,
+    description,
+    image,
+    imageAlt = '',
+    icon,
+    extra,
+    size = 'md',
+    className,
+    children,
+  } = props;
   const finalTitle = title ?? resultDefaultTitle(status);
+  const visual = icon ?? (
+    image
+      ? <img className="cf-result__image" src={image} alt={imageAlt} />
+      : <StatusIllustration variant={statusToIllustration(status)} size={size} />
+  );
 
   return (
     <div className={resultClass({ status, size, className })}>
-      <div className="cf-result__icon" aria-hidden>
-        {icon ?? <StatusIllustration variant={statusToIllustration(status)} size={size} />}
+      <div className="cf-result__icon">
+        {visual}
       </div>
       <div className="cf-result__title">{finalTitle}</div>
       {description ? <div className="cf-result__description">{description}</div> : null}

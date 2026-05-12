@@ -13,6 +13,8 @@ export interface ResultProps {
   status?: ResultStatus;
   title?: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
   size?: ResultSize;
   className?: string;
 }

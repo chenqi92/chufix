@@ -1528,20 +1528,40 @@ a.cf-card .cf-card__header,
   color: var(--cf-code-workspace-fg);
 }
 .cf-code-workspace__folder-icon {
-  width: 0.85rem;
-  height: 0.85rem;
+  width: 14px;
+  height: 14px;
   flex: 0 0 auto;
-  border-radius: 2px;
-  background: color-mix(in oklch, var(--accent-1, currentColor), transparent 70%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in oklch, var(--accent-1, currentColor), var(--fg-1, currentColor) 20%);
 }
-.cf-code-workspace__file-dot {
-  width: 0.4rem;
-  height: 0.4rem;
+.cf-code-workspace__folder-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.cf-code-workspace__file-icon {
+  width: 14px;
+  height: 14px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+.cf-code-workspace__file-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.cf-code-workspace__file--vue .cf-code-workspace__file-icon  { color: oklch(70% 0.16 150); }
+.cf-code-workspace__file--tsx .cf-code-workspace__file-icon  { color: oklch(70% 0.14 235); }
+.cf-code-workspace__file--ts  .cf-code-workspace__file-icon  { color: oklch(65% 0.14 250); }
+.cf-code-workspace__file--jsx .cf-code-workspace__file-icon  { color: oklch(78% 0.15 85);  }
+.cf-code-workspace__file--js  .cf-code-workspace__file-icon  { color: oklch(78% 0.15 85);  }
+.cf-code-workspace__file--css .cf-code-workspace__file-icon  { color: oklch(70% 0.16 280); }
+.cf-code-workspace__file--json .cf-code-workspace__file-icon { color: oklch(75% 0.13 60);  }
+.cf-code-workspace__file--html .cf-code-workspace__file-icon { color: oklch(70% 0.17 35);  }
+.cf-code-workspace__file--md   .cf-code-workspace__file-icon { color: oklch(70% 0.04 250); }
+.cf-code-workspace__file--default .cf-code-workspace__file-icon { color: var(--fg-3); }
 .cf-code-workspace__file-name {
   min-width: 0;
   overflow: hidden;

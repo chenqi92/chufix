@@ -57,7 +57,12 @@ function onKey(e: KeyboardEvent) {
   <div class="adm-login" :data-theme="state.theme.value" :data-density="state.density.value">
     <aside class="adm-login__brand">
       <div class="adm-login__brand-card">
-        <span class="adm-login__logo" />
+        <div class="adm-login__logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 10 L16 4 L26 10 L26 22 L16 28 L6 22 Z" />
+            <path d="M11 13 L16 10 L21 13 L21 19 L16 22 L11 19 Z" opacity="0.6" />
+          </svg>
+        </div>
         <h1 class="adm-login__title">{{ t.brand }}</h1>
         <p class="adm-login__lede">{{ t.login_lede }}</p>
         <ul class="adm-login__features">
@@ -173,6 +178,10 @@ function onKey(e: KeyboardEvent) {
   border-radius: var(--r-4);
   background: linear-gradient(135deg, var(--accent-1), color-mix(in oklch, var(--accent-1), var(--bg-0) 40%));
   box-shadow: 0 0 0 1px color-mix(in oklch, var(--accent-1), transparent 50%) inset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-on-accent, #fff);
 }
 .adm-login__title {
   margin: 0;
@@ -230,6 +239,10 @@ function onKey(e: KeyboardEvent) {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+.adm-login__field :deep(.cf-input) {
+  max-width: none;
+  width: 100%;
 }
 .adm-login__label {
   font-size: var(--t-12);

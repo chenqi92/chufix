@@ -53,7 +53,7 @@ const cols = computed<TableColumn<AdminUser>[]>(() => [
       const dept = v ? findDepartment(String(v)) : null;
       return dept
         ? h(CfTag, { size: 'sm', variant: 'soft', tone: 'primary' }, () => dept.label)
-        : '—';
+        : h('span', { style: 'color: var(--fg-3);' }, '—');
     },
   },
   {

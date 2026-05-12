@@ -45,15 +45,20 @@
   fill: var(--bg-2);
   opacity: 0.7;
 }
+.cf-status-illustration__backdrop {
+  fill: color-mix(in oklch, var(--bg-2), transparent 28%);
+  stroke: var(--line-1);
+  stroke-width: 1.4;
+}
 .cf-status-illustration__panel {
   fill: var(--bg-1);
   stroke: var(--line-2);
-  stroke-width: 1.5;
+  stroke-width: 1.4;
 }
 .cf-status-illustration__bar,
 .cf-status-illustration__muted-stroke {
   stroke: var(--line-2);
-  stroke-width: 1.6;
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -63,13 +68,13 @@
 .cf-status-illustration__soft {
   fill: var(--cf-status-soft);
   stroke: var(--cf-status-accent);
-  stroke-width: 1.6;
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .cf-status-illustration__accent-stroke {
   stroke: var(--cf-status-accent);
-  stroke-width: 2.2;
+  stroke-width: 2.6;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
@@ -77,7 +82,7 @@
 .cf-status-illustration__code {
   fill: var(--cf-status-accent);
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 21px;
   font-weight: var(--w-semibold);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }

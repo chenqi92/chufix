@@ -48,6 +48,21 @@ const normalizedBundles = bundles.map((bundle) => ({
 
 const fileName = (path: string) => path.split('/').filter(Boolean).at(-1) ?? path;
 
+type FileKind = 'vue' | 'tsx' | 'jsx' | 'ts' | 'js' | 'css' | 'json' | 'html' | 'md' | 'default';
+function fileKind(name: string): FileKind {
+  const ext = name.split('.').pop()?.toLowerCase() ?? '';
+  if (ext === 'vue') return 'vue';
+  if (ext === 'tsx') return 'tsx';
+  if (ext === 'jsx') return 'jsx';
+  if (ext === 'ts') return 'ts';
+  if (ext === 'js' || ext === 'mjs' || ext === 'cjs') return 'js';
+  if (ext === 'css') return 'css';
+  if (ext === 'json') return 'json';
+  if (ext === 'html') return 'html';
+  if (ext === 'md' || ext === 'mdx') return 'md';
+  return 'default';
+}
+
 function buildTree(bundleId: string, files: WorkspaceBundle['files']): TreeItem[] {
   const rows: TreeItem[] = [];
   const seen = new Set<string>();
@@ -193,7 +208,11 @@ const showVariantTabs = normalizedBundles.some(
   <div class="cf-code-workspace__shell">
     <aside class="cf-code-workspace__tree" aria-label="Code files">
       <div class="cf-code-workspace__root">
-        <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
+        <span class="cf-code-workspace__folder-icon" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 4.5 A1 1 0 0 1 3 3.5 H6 L7.5 5 H13 A1 1 0 0 1 14 6 V11.5 A1 1 0 0 1 13 12.5 H3 A1 1 0 0 1 2 11.5 Z" />
+          </svg>
+        </span>
         <span>{rootLabel}</span>
       </div>
       {trees.map(({ bundle, rows }) => (
@@ -208,19 +227,48 @@ const showVariantTabs = normalizedBundles.some(
                 class="cf-code-workspace__folder"
                 style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
               >
-                <span class="cf-code-workspace__folder-icon" aria-hidden="true"></span>
+                <span class="cf-code-workspace__folder-icon" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 4.5 A1 1 0 0 1 3 3.5 H6 L7.5 5 H13 A1 1 0 0 1 14 6 V11.5 A1 1 0 0 1 13 12.5 H3 A1 1 0 0 1 2 11.5 Z" />
+                  </svg>
+                </span>
                 <span>{item.name}</span>
               </div>
             ) : (
               <button
                 type="button"
-                class="cf-code-workspace__file"
+                class={`cf-code-workspace__file cf-code-workspace__file--${fileKind(item.name)}`}
                 style={`--cf-code-tree-indent: ${item.depth * 14}px;`}
                 data-doc-code-file={item.fileId}
                 data-doc-code-file-bundle={bundle.id}
                 aria-selected={item.fileId === defaultFileId ? 'true' : 'false'}
               >
-                <span class="cf-code-workspace__file-dot" aria-hidden="true"></span>
+                <span class="cf-code-workspace__file-icon" aria-hidden="true">
+                  {fileKind(item.name) === 'vue' && (
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2 L8 14 L14 2 L11.5 2 L8 8.5 L4.5 2 Z"/></svg>
+                  )}
+                  {(fileKind(item.name) === 'tsx' || fileKind(item.name) === 'ts') && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3 H13 V13 H3 Z"/><path d="M5.5 6.5 H9.5 M7.5 6.5 V11 M11 10.5 Q11.5 11 12 11 Q13 11 13 10 Q13 9 12 9 Q11 9 11 8 Q11 7 12 7 Q12.5 7 13 7.3" /></svg>
+                  )}
+                  {(fileKind(item.name) === 'jsx' || fileKind(item.name) === 'js') && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3 H13 V13 H3 Z"/><path d="M8 6 V10.5 Q8 11.5 6.8 11.5 Q5.8 11.5 5.5 10.7 M11 10.7 Q11.5 11.5 12.4 11.5 Q13.2 11.5 13.2 10.7 Q13.2 10 12.4 9.8 L11.5 9.5 Q10.8 9.3 10.8 8.6 Q10.8 7.8 11.6 7.8 Q12.2 7.8 12.7 8.2" /></svg>
+                  )}
+                  {fileKind(item.name) === 'css' && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2.5 L4 13 L8 14.5 L12 13 L13 2.5 Z"/><path d="M5.5 5.5 H11 M5.5 8 H10.5"/></svg>
+                  )}
+                  {fileKind(item.name) === 'json' && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 Q3 3 3 5.5 Q3 8 5 8 Q3 8 3 10.5 Q3 13 6 13"/><path d="M10 3 Q13 3 13 5.5 Q13 8 11 8 Q13 8 13 10.5 Q13 13 10 13"/></svg>
+                  )}
+                  {fileKind(item.name) === 'html' && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2.5 L4 13 L8 14.5 L12 13 L13 2.5 Z"/><path d="M5.5 5.5 H10.5 L10 9.5 L8 10 L6 9.5"/></svg>
+                  )}
+                  {fileKind(item.name) === 'md' && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4 H13.5 V12 H2.5 Z"/><path d="M4.5 10 V6 L6 8 L7.5 6 V10 M10 6 V10 M9 9 L10 10 L11 9"/></svg>
+                  )}
+                  {fileKind(item.name) === 'default' && (
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5 H10 L13 5.5 V13.5 H4 Z"/><path d="M10 2.5 V5.5 H13"/></svg>
+                  )}
+                </span>
                 <span class="cf-code-workspace__file-name">{item.name}</span>
               </button>
             )

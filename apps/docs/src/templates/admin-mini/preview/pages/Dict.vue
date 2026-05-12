@@ -135,28 +135,36 @@ const deleteDescription = computed(() => {
 const cols = computed<TableColumn<DictNode>[]>(() => [
   {
     key: 'label', title: t.value.col_dict_label, dataIndex: 'label', width: 240,
-    render: (v: unknown, row: DictNode) =>
-      h('span', { style: 'display: inline-flex; align-items: center; gap: 6px;' }, [
-        h('span', String(v)),
-        row.parentId == null
-          ? h(CfTag, { size: 'sm', variant: 'soft', tone: 'primary' }, () => state.locale.value === 'zh' ? '父字典' : 'root')
-          : null,
-      ]),
+    render: (v: unknown, row: DictNode) => {
+      const children = [h('span', String(v))];
+      if (row.parentId == null) {
+        children.push(
+          h(CfTag, { size: 'sm', variant: 'soft', tone: 'primary' },
+            () => state.locale.value === 'zh' ? '父字典' : 'root'),
+        );
+      }
+      return h('span', { style: 'display: inline-flex; align-items: center; gap: 6px;' }, children);
+    },
   },
   { key: 'value',  title: t.value.col_dict_value,  dataIndex: 'value',  width: 200 },
   { key: 'remark', title: t.value.col_dict_remark, dataIndex: 'remark', ellipsis: true },
   {
     key: 'actions', title: t.value.actions, dataIndex: 'id', width: 220, align: 'right' as const,
     fixed: 'right' as const,
-    render: (_v: unknown, row: DictNode) =>
-      h('div', { style: 'display: inline-flex; gap: 4px; justify-content: flex-end;' }, [
-        row.parentId == null
-          ? h(CfButton, { size: 'sm', variant: 'tertiary', onClick: () => openCreateChild(row) },
-            () => state.locale.value === 'zh' ? '+ 子项' : '+ Child')
-          : null,
+    render: (_v: unknown, row: DictNode) => {
+      const buttons = [] as unknown[];
+      if (row.parentId == null) {
+        buttons.push(
+          h(CfButton, { size: 'sm', variant: 'tertiary', onClick: () => openCreateChild(row) },
+            () => state.locale.value === 'zh' ? '+ 子项' : '+ Child'),
+        );
+      }
+      buttons.push(
         h(CfButton, { size: 'sm', variant: 'tertiary', onClick: () => openEdit(row) }, () => t.value.edit),
         h(CfButton, { size: 'sm', variant: 'danger',   onClick: () => askDelete(row) }, () => t.value.delete),
-      ]),
+      );
+      return h('div', { style: 'display: inline-flex; gap: 4px; justify-content: flex-end;' }, buttons);
+    },
   },
 ]);
 

@@ -344,7 +344,7 @@ const pageComp = computed(() => {
         />
         <CfBreadcrumb :items="breadcrumbItems" />
         <h2 class="adm-body__title">{{ flatItem(route)?.label ?? '' }}</h2>
-        <component :is="pageComp" :key="route + '|' + locale" />
+        <component :is="pageComp" :key="route" />
       </section>
     </CfAppShell>
 

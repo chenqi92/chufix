@@ -6,6 +6,7 @@ import type { StatusIllustrationVariant } from '../statusillustration/variants';
 
 const props = withDefaults(defineProps<ResultProps>(), {
   status: 'info',
+  imageAlt: '',
   size: 'md',
 });
 
@@ -31,9 +32,10 @@ const illustrationVariant = computed<StatusIllustrationVariant>(() => {
 
 <template>
   <div :class="cls">
-    <div class="cf-result__icon" aria-hidden>
+    <div class="cf-result__icon">
       <slot name="icon">
-        <StatusIllustration :variant="illustrationVariant" :size="size" />
+        <img v-if="image" class="cf-result__image" :src="image" :alt="imageAlt" />
+        <StatusIllustration v-else :variant="illustrationVariant" :size="size" />
       </slot>
     </div>
     <div class="cf-result__title">

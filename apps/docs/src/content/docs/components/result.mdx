@@ -11,7 +11,7 @@ import StatusesVueSource from '~/components/demos/result/StatusesVue.vue?raw';
 
 ## 基础用法
 
-`status` 控制图标与默认标题；`#extra`（Vue）/ `extra` prop（React）放置后续操作按钮。
+`status` 控制内置状态插图与默认标题；`#extra`（Vue）/ `extra` prop（React）放置后续操作按钮。
 
 <DemoFrame
   vueCode={`<CfResult status="success" title="提交成功" description="申请已发送给管理员，预计 1 个工作日内处理。">
@@ -36,7 +36,7 @@ import StatusesVueSource from '~/components/demos/result/StatusesVue.vue?raw';
 
 ## 异常状态
 
-`404` / `403` / `500` 使用同一套状态插图，颜色跟随语义 token。
+`404` / `403` / `500` 默认使用内置 SVG 状态插图，颜色跟随语义 token。也可以用 `image` 换成业务内置图片，或用 `#icon`（Vue）/ `icon` prop（React）完全自定义图标。
 
 <DemoFrame
   vueCode={`<CfResult status="404" size="sm" description="页面可能已移动或被删除。" />
@@ -57,6 +57,8 @@ import StatusesVueSource from '~/components/demos/result/StatusesVue.vue?raw';
 | `status` | `'success' \| 'info' \| 'warning' \| 'error' \| '404' \| '403' \| '500'` | `'info'` | 状态语义；映射到默认状态插图和默认标题 |
 | `title` | `string` | 与 `status` 对应的默认文案 | 主标题 |
 | `description` | `string` | `—` | 副标题 |
+| `image` | `string` | `—` | 自定义插图图片地址；不传时使用内置 SVG 状态插图 |
+| `imageAlt` | `string` | `''` | 自定义图片的替代文本；装饰图保持空字符串 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 整体尺寸 |
 
-Slot（Vue）/ prop（React）：`icon` 自定义图标，`extra` 操作区。
+Slot（Vue）/ prop（React）：`icon` 自定义图标或任意视觉节点，`extra` 操作区。
