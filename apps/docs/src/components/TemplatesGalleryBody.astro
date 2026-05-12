@@ -10,8 +10,8 @@ const locale = getLocaleFromUrl(Astro.url);
 const isEn = locale === 'en';
 const heroTitle = isEn ? 'Templates · multi-page projects' : '工程方案 · 多页面工程';
 const heroLede = isEn
-  ? 'Beyond single-page blocks: full multi-file projects assembled from ChuFix components. Each template ships Vue and React source side-by-side under an IDE-style file tree — open the workspace and copy what you need into your own app.'
-  : '在单页 Blocks 之外的更大单位：由 ChuFix 组件搭起来的完整多文件工程。每个工程方案同时给出 Vue 与 React 两份源码、TypeScript / JavaScript 双语言，以左侧文件树 + 右侧编辑器的 IDE 视图呈现，按需复制到自己项目里即可。';
+  ? "Beyond single-page blocks: ready-to-run multi-page apps assembled entirely from ChuFix components. Open one to see a fully interactive admin console — menu / breadcrumb / multiple pages / theme / density / accent / locale — all wired up. Source code is available under the in-demo View source button."
+  : '在单页 Blocks 之外的更大单位：完全由 ChuFix 组件搭起来的可交互多页面工程。点开任意条目即可在浏览器里实际跑一套后台——菜单、面包屑、多个真实页面、主题、密度、主色、语言切换全部已接好；源码可通过演示内置的「查看源码」按钮展开。';
 
 function frameworks(t: TemplateMeta): string[] {
   const fw: string[] = [];
@@ -22,34 +22,6 @@ function frameworks(t: TemplateMeta): string[] {
 
 function fileCount(t: TemplateMeta): number {
   return Object.keys(t.vueFiles ?? t.reactFiles ?? {}).length;
-}
-
-/** 抽取 vueFiles 或 reactFiles 的路径用于卡片上的文件树缩略图。 */
-function listPaths(t: TemplateMeta): string[] {
-  const src = t.vueFiles ?? t.reactFiles ?? {};
-  return Object.keys(src);
-}
-
-interface ThumbNode {
-  name: string;
-  depth: number;
-  isFile: boolean;
-}
-
-function buildTree(paths: string[]): ThumbNode[] {
-  const seen = new Set<string>();
-  const out: ThumbNode[] = [];
-  const sorted = [...paths].sort();
-  for (const path of sorted) {
-    const parts = path.split('/').filter(Boolean);
-    for (let i = 0; i < parts.length; i += 1) {
-      const sub = parts.slice(0, i + 1).join('/');
-      if (seen.has(sub)) continue;
-      seen.add(sub);
-      out.push({ name: parts[i], depth: i, isFile: i === parts.length - 1 });
-    }
-  }
-  return out;
 }
 
 const grouped = CATEGORIES
@@ -77,30 +49,43 @@ const emptyHint = isEn
           <p class="templates-page__cat-desc">{g.description}</p>
           <div class="cf-gallery cf-gallery--grid">
             {g.items.map((t) => {
-              const tree = buildTree(listPaths(t));
               const fw = frameworks(t);
               const count = fileCount(t);
               return (
                 <a class="cf-gallery-card tmpl-card" href={prefixHref(`/templates/${t.id}/`, locale)}>
                   <div class="tmpl-card__thumb" aria-hidden="true">
-                    <div class="tmpl-card__tree">
-                      {tree.map((node) => (
-                        <div class={`tmpl-card__tree-row tmpl-card__tree-row--d${node.depth} ${node.isFile ? 'is-file' : 'is-folder'}`}>
-                          <span class="tmpl-card__tree-icon">
-                            {node.isFile ? (
-                              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.4">
-                                <path d="M3 1.5h6L13 5.5V14a.5.5 0 01-.5.5h-9A.5.5 0 013 14V1.5z" />
-                                <path d="M9 1.5v4h4" />
-                              </svg>
-                            ) : (
-                              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.4">
-                                <path d="M2 3.5A.5.5 0 012.5 3h3l1.5 1.5h6.5a.5.5 0 01.5.5V13a.5.5 0 01-.5.5h-11A.5.5 0 012 13V3.5z" />
-                              </svg>
-                            )}
-                          </span>
-                          <span class="tmpl-card__tree-name">{node.name}</span>
-                        </div>
-                      ))}
+                    <div class="tmpl-mini">
+                      <div class="tmpl-mini__topbar">
+                        <span class="tmpl-mini__dot tmpl-mini__dot--r" />
+                        <span class="tmpl-mini__dot tmpl-mini__dot--y" />
+                        <span class="tmpl-mini__dot tmpl-mini__dot--g" />
+                        <span class="tmpl-mini__brand">{t.name.split('·')[0].trim()}</span>
+                      </div>
+                      <div class="tmpl-mini__body">
+                        <aside class="tmpl-mini__sidebar">
+                          <span class="tmpl-mini__sidebar-item tmpl-mini__sidebar-item--active" />
+                          <span class="tmpl-mini__sidebar-item" />
+                          <span class="tmpl-mini__sidebar-item" />
+                          <span class="tmpl-mini__sidebar-item" />
+                          <span class="tmpl-mini__sidebar-item" />
+                          <span class="tmpl-mini__sidebar-item tmpl-mini__sidebar-item--short" />
+                        </aside>
+                        <main class="tmpl-mini__main">
+                          <div class="tmpl-mini__kpis">
+                            <div class="tmpl-mini__kpi" />
+                            <div class="tmpl-mini__kpi" />
+                            <div class="tmpl-mini__kpi" />
+                            <div class="tmpl-mini__kpi" />
+                          </div>
+                          <div class="tmpl-mini__table">
+                            <div class="tmpl-mini__row tmpl-mini__row--head" />
+                            <div class="tmpl-mini__row" />
+                            <div class="tmpl-mini__row" />
+                            <div class="tmpl-mini__row" />
+                            <div class="tmpl-mini__row" />
+                          </div>
+                        </main>
+                      </div>
                     </div>
                   </div>
                   <div class="tmpl-card__body">
@@ -130,9 +115,7 @@ const emptyHint = isEn
     padding: 32px 24px 80px;
     font-family: var(--font-sans);
   }
-  .templates-hero {
-    margin: 0 0 24px;
-  }
+  .templates-hero { margin: 0 0 24px; }
   .templates-hero__title {
     margin: 0;
     font-size: var(--t-26);
@@ -172,55 +155,93 @@ const emptyHint = isEn
     text-decoration: none;
     overflow: hidden;
   }
-  .tmpl-card,
-  .tmpl-card:hover {
-    text-decoration: none;
-  }
+  .tmpl-card, .tmpl-card:hover { text-decoration: none; }
   .tmpl-card__thumb {
-    padding: 14px 16px;
-    min-height: 200px;
-    background:
-      linear-gradient(180deg, color-mix(in oklch, var(--bg-inset), var(--accent-soft) 18%), var(--bg-inset));
+    padding: 12px;
+    min-height: 220px;
+    background: linear-gradient(180deg, color-mix(in oklch, var(--bg-inset), var(--accent-soft) 18%), var(--bg-inset));
     border-bottom: 1px solid var(--line-1);
-    display: flex;
-    align-items: stretch;
   }
-  .tmpl-card__tree {
-    width: 100%;
-    font-family: var(--font-mono);
-    font-size: var(--t-11);
-    line-height: 1.5;
-    color: var(--fg-2);
+  .tmpl-mini {
+    background: var(--bg-1);
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-4);
+    overflow: hidden;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    min-height: 196px;
   }
-  .tmpl-card__tree-row {
+  .tmpl-mini__topbar {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 1px 6px;
-    border-radius: var(--r-2);
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--line-1);
+    background: var(--bg-2);
   }
-  .tmpl-card__tree-row--d0 { padding-left: 6px; }
-  .tmpl-card__tree-row--d1 { padding-left: 18px; }
-  .tmpl-card__tree-row--d2 { padding-left: 30px; }
-  .tmpl-card__tree-row--d3 { padding-left: 42px; }
-  .tmpl-card__tree-row--d4 { padding-left: 54px; }
-  .tmpl-card__tree-row.is-folder { color: var(--fg-2); }
-  .tmpl-card__tree-row.is-file { color: var(--fg-3); }
-  .tmpl-card__tree-icon {
-    display: inline-flex;
-    width: 12px;
-    height: 12px;
+  .tmpl-mini__dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .tmpl-mini__dot--r { background: oklch(70% 0.15 25); }
+  .tmpl-mini__dot--y { background: oklch(85% 0.15 90); }
+  .tmpl-mini__dot--g { background: oklch(72% 0.16 145); }
+  .tmpl-mini__brand {
+    margin-left: 6px;
+    font-size: 10px;
     color: var(--fg-3);
-    flex-shrink: 0;
+    font-weight: var(--w-medium);
   }
-  .tmpl-card__tree-row.is-folder .tmpl-card__tree-icon { color: var(--accent-1); }
-  .tmpl-card__tree-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .tmpl-mini__body {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 6px;
+    flex: 1;
+    padding: 8px;
+    min-height: 0;
+  }
+  .tmpl-mini__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tmpl-mini__sidebar-item {
+    height: 8px;
+    border-radius: var(--r-2);
+    background: color-mix(in oklch, var(--fg-3), transparent 70%);
+  }
+  .tmpl-mini__sidebar-item--active {
+    background: var(--accent-1);
+  }
+  .tmpl-mini__sidebar-item--short { width: 60%; }
+  .tmpl-mini__main {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .tmpl-mini__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  .tmpl-mini__kpi {
+    height: 28px;
+    background: color-mix(in oklch, var(--bg-2), var(--accent-soft) 40%);
+    border-radius: var(--r-2);
+    border: 1px solid var(--line-1);
+  }
+  .tmpl-mini__table {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+  }
+  .tmpl-mini__row {
+    height: 10px;
+    border-radius: var(--r-2);
+    background: color-mix(in oklch, var(--fg-3), transparent 80%);
+  }
+  .tmpl-mini__row--head {
+    background: color-mix(in oklch, var(--accent-1), transparent 75%);
   }
   .tmpl-card__body {
     padding: 14px 16px 16px;
@@ -264,9 +285,7 @@ const emptyHint = isEn
     color: oklch(70% 0.13 220);
     border-color: color-mix(in oklch, oklch(70% 0.13 220), transparent 70%);
   }
-  .tmpl-card__chip--count {
-    color: var(--fg-3);
-  }
+  .tmpl-card__chip--count { color: var(--fg-3); }
   .tmpl-card__desc {
     color: var(--fg-2);
     font-size: var(--t-12);

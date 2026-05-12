@@ -1,5 +1,6 @@
 ---
 import DocCodeWorkspace from '~/components/DocCodeWorkspace.astro';
+import TemplatePreview from '~/components/TemplatePreview.vue';
 import { buildWorkspaceBundles } from '~/components/docCode';
 import { CATEGORIES } from '~/templates/types';
 import type { TemplateMeta } from '~/templates/types';
@@ -25,6 +26,9 @@ const fileCount = Object.keys(template.vueFiles ?? template.reactFiles ?? {}).le
 const frameworks: string[] = [];
 if (template.vueFiles && Object.keys(template.vueFiles).length) frameworks.push('Vue');
 if (template.reactFiles && Object.keys(template.reactFiles).length) frameworks.push('React');
+
+const previewHeight = template.previewHeight ?? 'min(820px, 88vh)';
+const workspaceHeight = template.workspaceHeight ?? 'min(620px, 70vh)';
 ---
 
 <div class="tmpl-detail">
@@ -39,17 +43,61 @@ if (template.reactFiles && Object.keys(template.reactFiles).length) frameworks.p
     </div>
   </header>
 
-  <DocCodeWorkspace
-    bundles={bundles}
-    title={template.workspaceTitle ?? `${template.id} · source`}
-    rootLabel={template.workspaceRoot ?? template.id}
-    height={template.workspaceHeight ?? 'min(620px, 70vh)'}
-  />
+  {template.Preview ? (
+    <section class="tmpl-stage" data-tmpl-stage data-source-open="false">
+      <div class="tmpl-stage__preview" style={`min-height: ${previewHeight}; height: ${previewHeight};`}>
+        <TemplatePreview templateId={template.id} client:only="vue" />
+      </div>
+
+      <div class="tmpl-stage__source" data-source-pane>
+        <header class="tmpl-stage__source-bar">
+          <span class="tmpl-stage__source-title">{isEn ? 'Source code' : '源码'}</span>
+          <button class="tmpl-stage__source-close" type="button" data-source-close aria-label={isEn ? 'Hide source' : '关闭源码'}>
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M3 3l10 10M13 3L3 13" stroke-linecap="round" />
+            </svg>
+          </button>
+        </header>
+        <DocCodeWorkspace
+          bundles={bundles}
+          title={template.workspaceTitle ?? `${template.id} · source`}
+          rootLabel={template.workspaceRoot ?? template.id}
+          height={workspaceHeight}
+        />
+      </div>
+    </section>
+  ) : (
+    <DocCodeWorkspace
+      bundles={bundles}
+      title={template.workspaceTitle ?? `${template.id} · source`}
+      rootLabel={template.workspaceRoot ?? template.id}
+      height={workspaceHeight}
+    />
+  )}
 
   <footer class="tmpl-detail__foot">
     <p>{footText}<a href="https://github.com/chenqi92/chufix" target="_blank" rel="noopener">chenqi92/chufix</a>{isEn ? '.' : '。'}</p>
   </footer>
 </div>
+
+<script>
+  // 由 admin-mini 的 Toolbar 「查看源码」按钮通过 CustomEvent 触发；这里切换 stage 的 data-source-open。
+  const stage = document.querySelector<HTMLElement>('[data-tmpl-stage]');
+  if (stage) {
+    window.addEventListener('chufix-tpl:toggle-source', (e) => {
+      const open = !!(e as CustomEvent<{ open: boolean }>).detail?.open;
+      stage.setAttribute('data-source-open', String(open));
+      if (open) {
+        const pane = stage.querySelector<HTMLElement>('[data-source-pane]');
+        pane?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+    stage.querySelector<HTMLButtonElement>('[data-source-close]')?.addEventListener('click', () => {
+      stage.setAttribute('data-source-open', 'false');
+      window.dispatchEvent(new CustomEvent('chufix-tpl:sync-source', { detail: { open: false } }));
+    });
+  }
+</script>
 
 <style>
   .tmpl-detail {
@@ -114,6 +162,59 @@ if (template.reactFiles && Object.keys(template.reactFiles).length) frameworks.p
     color: oklch(70% 0.13 220);
     border-color: color-mix(in oklch, oklch(70% 0.13 220), transparent 70%);
   }
+  .tmpl-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .tmpl-stage__preview {
+    display: flex;
+    flex-direction: column;
+  }
+  .tmpl-stage__preview > :global(div),
+  .tmpl-stage__preview > :global(*) {
+    flex: 1;
+    min-height: 0;
+  }
+  .tmpl-stage__source {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: var(--bg-1);
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-6);
+    overflow: hidden;
+  }
+  .tmpl-stage[data-source-open='true'] .tmpl-stage__source {
+    display: flex;
+  }
+  .tmpl-stage__source-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--line-1);
+  }
+  .tmpl-stage__source-title {
+    font-size: var(--t-12);
+    color: var(--fg-2);
+    font-weight: var(--w-medium);
+  }
+  .tmpl-stage__source-close {
+    background: transparent;
+    border: 1px solid var(--line-1);
+    color: var(--fg-2);
+    width: 24px;
+    height: 24px;
+    border-radius: var(--r-4);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .tmpl-stage__source-close:hover { color: var(--fg-1); }
   .tmpl-detail__foot {
     margin-top: 24px;
     padding-top: 16px;
