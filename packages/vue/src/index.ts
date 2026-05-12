@@ -866,6 +866,7 @@ export type {
   CodeBlockSize,
   CodeBlockTone,
   CodeWorkspaceFile,
+  CodeWorkspaceBundle,
   CodeWorkspaceProps,
   CodeTreeItem,
 } from './code/variants';

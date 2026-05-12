@@ -14,6 +14,8 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 import MaxHeightVueSource from '~/components/demos/code/MaxHeightVue.vue?raw';
 import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
 import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
+import BundlesVue from '~/components/demos/code/BundlesVue.vue';
+import BundlesVueSource from '~/components/demos/code/BundlesVue.vue?raw';
 
 ## 基础用法
 
@@ -100,6 +102,31 @@ import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
   <WorkspaceVue client:load />
 </DemoFrame>
 
+## 多框架 / 多变体（bundles）
+
+把同一份示例的多种实现塞到 `bundles`，CfCodeWorkspace 会在顶部自动出现「框架 tab + 变体 tab」。同一时刻只显示激活 bundle 的文件树与文件 tab。`framework` / `variant` 取值由你自己定义，'neutral' 表示该 bundle 不归任何框架组（适合放 CLI 命令、配置等）。
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfCodeWorkspace
+  title="counter · source"
+  root-label="counter"
+  :bundles="bundles"
+  tone="dark"
+  :height="380"
+/>`}
+  reactCode={`<CfCodeWorkspace
+  title="counter · source"
+  rootLabel="counter"
+  bundles={bundles}
+  tone="dark"
+  height={380}
+/>`}
+
+  vueSource={BundlesVueSource}>
+  <BundlesVue client:load />
+</DemoFrame>
+
 ## API · InlineCode
 
 | 属性 | 类型 | 默认值 | 说明 |
@@ -128,10 +155,12 @@ import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `files` | `CodeWorkspaceFile[]` | 必填 | 多文件列表 |
+| `files` | `CodeWorkspaceFile[]` | — | 单 bundle 模式的文件数组；与 `bundles` 二选一 |
+| `bundles` | `CodeWorkspaceBundle[]` | — | 多 bundle 模式；提供后自动渲染框架 / 变体 tab |
 | `title` | `string \| ReactNode` | — | 顶部标题 |
 | `rootLabel` / `root-label` | `string` | `'project'` | 左侧树根节点 |
 | `defaultFile` / `activeFile` | `string` | 首个文件 | 默认 / 受控激活文件 id |
+| `defaultBundle` / `activeBundle` | `string` | 首个 bundle | 默认 / 受控激活 bundle id |
 | `editable` | `boolean` | `false` | 编辑器模式 |
 | `readOnly` / `read-only` | `boolean` | `false` | 禁止编辑 |
 | `showLineNumbers` / `show-line-numbers` | `boolean` | `true` | 行号 |
@@ -150,5 +179,15 @@ interface CodeWorkspaceFile {
   language?: string;
   highlightedHtml?: string;
   readonly?: boolean;
+}
+
+interface CodeWorkspaceBundle {
+  id: string;
+  framework: 'vue' | 'react' | 'neutral' | string;
+  variant: 'ts' | 'js' | 'shell' | string;
+  frameworkLabel: string;
+  variantLabel: string;
+  label?: string;
+  files: CodeWorkspaceFile[];
 }
 ```

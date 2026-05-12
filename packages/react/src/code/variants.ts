@@ -62,10 +62,26 @@ export interface CodeWorkspaceFile {
   readonly?: boolean;
 }
 
-export interface CodeWorkspaceProps {
+/** 多框架 / 多变体源码包；详见 @chufix-design/vue 的同名接口注释。 */
+export interface CodeWorkspaceBundle {
+  id: string;
+  framework: 'vue' | 'react' | 'neutral' | (string & {});
+  variant: 'ts' | 'js' | 'shell' | (string & {});
+  frameworkLabel: string;
+  variantLabel: string;
+  label?: string;
   files: CodeWorkspaceFile[];
+}
+
+export interface CodeWorkspaceProps {
+  /** 单 bundle 模式：直接传文件数组。 */
+  files?: CodeWorkspaceFile[];
+  /** 多 bundle 模式：每包含若干文件 + 框架/变体标签。优先于 files。 */
+  bundles?: CodeWorkspaceBundle[];
   activeFile?: string;
   defaultFile?: string;
+  activeBundle?: string;
+  defaultBundle?: string;
   title?: import('react').ReactNode;
   rootLabel?: string;
   size?: CodeBlockSize;
@@ -80,6 +96,7 @@ export interface CodeWorkspaceProps {
   height?: number | string;
   className?: string;
   onActiveFileChange?: (file: CodeWorkspaceFile) => void;
+  onActiveBundleChange?: (bundleId: string) => void;
   onFileChange?: (file: CodeWorkspaceFile, value: string) => void;
   renderCode?: (file: CodeWorkspaceFile) => import('react').ReactNode;
 }

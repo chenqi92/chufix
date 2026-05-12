@@ -14,6 +14,8 @@ import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
 import MaxHeightVueSource from '~/components/demos/code/MaxHeightVue.vue?raw';
 import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
 import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
+import BundlesVue from '~/components/demos/code/BundlesVue.vue';
+import BundlesVueSource from '~/components/demos/code/BundlesVue.vue?raw';
 
 ## Basic usage
 
@@ -100,6 +102,31 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
   <WorkspaceVue client:load />
 </DemoFrame>
 
+## Multi-framework / multi-variant (bundles)
+
+Pass a `bundles` array of parallel implementations and CfCodeWorkspace renders both a framework tab row and a variant tab row at the top. Only the active bundle's tree and file tabs are visible at a time. `framework` / `variant` values are free-form — `'neutral'` excludes a bundle from the framework group (handy for CLI / config snippets).
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfCodeWorkspace
+  title="counter · source"
+  root-label="counter"
+  :bundles="bundles"
+  tone="dark"
+  :height="380"
+/>`}
+  reactCode={`<CfCodeWorkspace
+  title="counter · source"
+  rootLabel="counter"
+  bundles={bundles}
+  tone="dark"
+  height={380}
+/>`}
+
+  vueSource={BundlesVueSource}>
+  <BundlesVue client:load />
+</DemoFrame>
+
 ## API · InlineCode
 
 | Prop | Type | Default | Description |
@@ -128,10 +155,12 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `files` | `CodeWorkspaceFile[]` | required | Multi-file source list |
+| `files` | `CodeWorkspaceFile[]` | — | Single-bundle file list; mutually exclusive with `bundles` |
+| `bundles` | `CodeWorkspaceBundle[]` | — | Multi-bundle mode; renders framework / variant tabs when provided |
 | `title` | `string \| ReactNode` | — | Header title |
 | `rootLabel` / `root-label` | `string` | `'project'` | Tree root label |
 | `defaultFile` / `activeFile` | `string` | first file | Default / controlled active file id |
+| `defaultBundle` / `activeBundle` | `string` | first bundle | Default / controlled active bundle id |
 | `editable` | `boolean` | `false` | Editor mode |
 | `readOnly` / `read-only` | `boolean` | `false` | Disable editing |
 | `showLineNumbers` / `show-line-numbers` | `boolean` | `true` | Line numbers |
@@ -141,3 +170,24 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 | `tone` | `'auto' \| 'light' \| 'dark'` | `'auto'` | Surface tone; `auto` follows the global theme |
 | `trimIndent` / `trim-indent` | `boolean` | `false` | Dedent in display mode |
 | `highlightedHtml` | `CodeWorkspaceFile` field | — | Per-file external highlighted HTML |
+
+```ts
+interface CodeWorkspaceFile {
+  id?: string;
+  name: string;
+  content: string;
+  language?: string;
+  highlightedHtml?: string;
+  readonly?: boolean;
+}
+
+interface CodeWorkspaceBundle {
+  id: string;
+  framework: 'vue' | 'react' | 'neutral' | string;
+  variant: 'ts' | 'js' | 'shell' | string;
+  frameworkLabel: string;
+  variantLabel: string;
+  label?: string;
+  files: CodeWorkspaceFile[];
+}
+```

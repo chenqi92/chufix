@@ -8,6 +8,7 @@ import {
   codeFileName,
   codeWorkspaceClass,
   normalizeCodeIndent,
+  type CodeWorkspaceBundle,
   type CodeWorkspaceFile,
   type CodeWorkspaceProps,
 } from './variants';
@@ -15,8 +16,11 @@ import {
 export function CodeWorkspace(props: CodeWorkspaceProps) {
   const {
     files,
+    bundles,
     activeFile,
     defaultFile,
+    activeBundle,
+    defaultBundle,
     title,
     rootLabel = 'project',
     size = 'md',
@@ -31,11 +35,86 @@ export function CodeWorkspace(props: CodeWorkspaceProps) {
     height,
     className,
     onActiveFileChange,
+    onActiveBundleChange,
     onFileChange,
     renderCode,
   } = props;
 
-  const fallbackId = files[0] ? codeFileId(files[0]) : '';
+  const isBundleMode = !!(bundles && bundles.length > 0);
+  const bundleList: CodeWorkspaceBundle[] = bundles ?? [];
+
+  /* ---------- bundle 状态 ---------- */
+  const initialBundleId = useMemo(() => {
+    if (!isBundleMode) return '';
+    if (activeBundle && bundleList.some((b) => b.id === activeBundle)) return activeBundle;
+    if (defaultBundle && bundleList.some((b) => b.id === defaultBundle)) return defaultBundle;
+    return bundleList[0]?.id ?? '';
+    // 仅在初始/外部 active 切换时重算
+  }, [isBundleMode, activeBundle, defaultBundle, bundleList]);
+
+  const [innerBundle, setInnerBundle] = useState(initialBundleId);
+
+  useEffect(() => {
+    if (activeBundle && bundleList.some((b) => b.id === activeBundle)) {
+      setInnerBundle(activeBundle);
+    }
+  }, [activeBundle, bundleList]);
+  useEffect(() => {
+    if (!bundleList.some((b) => b.id === innerBundle)) {
+      setInnerBundle(bundleList[0]?.id ?? '');
+    }
+  }, [bundleList, innerBundle]);
+
+  const currentBundleId = activeBundle ?? innerBundle;
+  const currentBundle = bundleList.find((b) => b.id === currentBundleId);
+
+  /* ---------- framework / variant tab ---------- */
+  const frameworkOrder = useMemo(() => {
+    const out: string[] = [];
+    for (const b of bundleList) {
+      if (b.framework === 'neutral') continue;
+      if (!out.includes(b.framework as string)) out.push(b.framework as string);
+    }
+    return out;
+  }, [bundleList]);
+  const frameworkLabel = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const b of bundleList) {
+      if (b.framework === 'neutral') continue;
+      if (map[b.framework as string] == null) map[b.framework as string] = b.frameworkLabel;
+    }
+    return map;
+  }, [bundleList]);
+  const currentFramework = currentBundle?.framework ?? 'neutral';
+  const showFrameworkTabs = isBundleMode && frameworkOrder.length > 1;
+  const showVariantTabs = isBundleMode && bundleList.some((b) => {
+    if (b.framework === 'neutral') return false;
+    return bundleList.some(
+      (o) => o !== b && o.framework === b.framework && o.variant !== b.variant,
+    );
+  });
+
+  function firstBundleOfFramework(framework: string): string {
+    return bundleList.find((b) => b.framework === framework)?.id ?? '';
+  }
+
+  function selectBundle(id: string) {
+    if (!id || id === currentBundleId) return;
+    setInnerBundle(id);
+    onActiveBundleChange?.(id);
+    const next = bundleList.find((b) => b.id === id);
+    const firstFile = next?.files[0];
+    if (firstFile) {
+      const fid = codeFileId(firstFile);
+      setInnerActive(fid);
+      onActiveFileChange?.(firstFile);
+    }
+  }
+
+  /* ---------- 可见 files ---------- */
+  const visibleFiles: CodeWorkspaceFile[] = isBundleMode ? (currentBundle?.files ?? []) : (files ?? []);
+
+  const fallbackId = visibleFiles[0] ? codeFileId(visibleFiles[0]) : '';
   const [innerActive, setInnerActive] = useState(activeFile ?? defaultFile ?? fallbackId);
   const [draftValues, setDraftValues] = useState<Record<string, string>>({});
   const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
@@ -45,15 +124,15 @@ export function CodeWorkspace(props: CodeWorkspaceProps) {
   }, [activeFile]);
 
   useEffect(() => {
-    if (!files.some((file) => codeFileId(file) === innerActive)) {
+    if (!visibleFiles.some((file) => codeFileId(file) === innerActive)) {
       setInnerActive(fallbackId);
     }
-  }, [fallbackId, files, innerActive]);
+  }, [fallbackId, visibleFiles, innerActive]);
 
   const activeId = activeFile ?? innerActive;
-  const current = files.find((file) => codeFileId(file) === activeId) ?? files[0];
+  const current = visibleFiles.find((file) => codeFileId(file) === activeId) ?? visibleFiles[0];
   const language = current ? codeFileLanguage(current) : 'plaintext';
-  const treeItems = useMemo(() => buildCodeTree(files), [files]);
+  const treeItems = useMemo(() => buildCodeTree(visibleFiles), [visibleFiles]);
 
   const activeCode = current
     ? trimIndent && !editable
@@ -99,7 +178,12 @@ export function CodeWorkspace(props: CodeWorkspaceProps) {
   }
 
   return (
-    <div className={cls} style={rootStyle}>
+    <div
+      className={cls}
+      style={rootStyle}
+      data-active-framework={currentFramework}
+      data-active-bundle={currentBundleId || undefined}
+    >
       {title || copyable ? (
         <header className="cf-code-workspace__header">
           <div className="cf-code-workspace__title">
@@ -121,6 +205,43 @@ export function CodeWorkspace(props: CodeWorkspaceProps) {
             </button>
           ) : null}
         </header>
+      ) : null}
+
+      {(showFrameworkTabs || showVariantTabs) ? (
+        <div className="cf-code-workspace__bundles" role="tablist" aria-label="Framework">
+          {showFrameworkTabs ? (
+            <div className="cf-code-workspace__frameworks">
+              {frameworkOrder.map((framework) => (
+                <button
+                  key={framework}
+                  type="button"
+                  className="cf-code-workspace__framework-tab"
+                  aria-selected={currentFramework === framework ? 'true' : 'false'}
+                  onClick={() => selectBundle(firstBundleOfFramework(framework))}
+                >
+                  {frameworkLabel[framework]}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          {showVariantTabs ? (
+            <div className="cf-code-workspace__variants">
+              {bundleList.map((bundle) =>
+                bundle.framework !== 'neutral' && bundle.framework === currentFramework ? (
+                  <button
+                    key={bundle.id}
+                    type="button"
+                    className="cf-code-workspace__variant-tab"
+                    aria-selected={bundle.id === currentBundleId ? 'true' : 'false'}
+                    onClick={() => selectBundle(bundle.id)}
+                  >
+                    {bundle.variantLabel}
+                  </button>
+                ) : null,
+              )}
+            </div>
+          ) : null}
+        </div>
       ) : null}
 
       <div className="cf-code-workspace__shell">
@@ -158,7 +279,7 @@ export function CodeWorkspace(props: CodeWorkspaceProps) {
         <section className="cf-code-workspace__editor" aria-live="polite">
           {current ? (
             <div className="cf-code-workspace__tabs" role="tablist">
-              {files.map((file) => (
+              {visibleFiles.map((file) => (
                 <button
                   key={codeFileId(file)}
                   type="button"
