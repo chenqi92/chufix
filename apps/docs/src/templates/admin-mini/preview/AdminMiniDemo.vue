@@ -6,7 +6,7 @@
  * 右抽屉 SettingsDrawer 装主题/密度/菜单/主色；个人中心 + 修改密码用 Modal；
  * 7 个子页面随菜单切换。
  */
-import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue';
 import { CfAppShell, CfSidebar, CfNavMenu, CfBreadcrumb, CfCommandPalette, CfTour, toast } from '@chufix-design/vue';
 import type { SidebarEntry, SidebarItem, CommandPaletteItem, TourStep } from '@chufix-design/vue';
 import AdminHeader from './AdminHeader.vue';
@@ -22,6 +22,7 @@ import OperationLog from './pages/OperationLog.vue';
 import LoginLog from './pages/LoginLog.vue';
 import SystemSettings from './pages/SystemSettings.vue';
 import Org from './pages/Org.vue';
+import Menus from './pages/Menus.vue';
 import {
   ACCENT_HUE,
   DemoStateKey,
@@ -33,8 +34,9 @@ import {
   type DemoLocale,
 } from './state';
 
-type RouteId = 'dashboard' | 'users' | 'roles' | 'user-roles' | 'org' | 'dict' | 'op-log' | 'login-log' | 'sys-settings';
+type RouteId = 'dashboard' | 'users' | 'roles' | 'user-roles' | 'org' | 'dict' | 'op-log' | 'login-log' | 'menus' | 'sys-settings';
 
+/* 默认主题尽量跟宿主页面一致：SSR 时先放 dark-cool 占位，hydrate 后用 onMounted 读取宿主 <html> / <body> 上的 data-theme 覆盖。 */
 const theme = ref<DemoTheme>('dark-cool');
 const density = ref<DemoDensity>('comfortable');
 const menuForm = ref<DemoMenuForm>('sidebar');
@@ -64,9 +66,57 @@ function onGlobalKey(e: KeyboardEvent) {
     paletteOpen.value = !paletteOpen.value;
   }
 }
+/* ---------- 主题：从宿主页面继承默认值；把当前选择同步到 body 让 Teleport 出去的弹层（Modal / Drawer / Tour / Popover）也继承同一套主题。 ---------- */
+const HOST_THEME_BACKUP_KEY = '__chufix_admin_mini_theme_backup__';
+
+function applyToBody() {
+  if (typeof document === 'undefined') return;
+  const body = document.body;
+  body.setAttribute('data-theme', theme.value);
+  body.setAttribute('data-density', density.value);
+  body.style.setProperty('--accent-1', ACCENT_HUE[accent.value]);
+}
+
+function restoreHostTheme() {
+  if (typeof document === 'undefined') return;
+  const body = document.body;
+  const backup = (window as unknown as Record<string, unknown>)[HOST_THEME_BACKUP_KEY] as
+    | { theme: string | null; density: string | null; accent: string }
+    | undefined;
+  if (!backup) return;
+  if (backup.theme !== null) body.setAttribute('data-theme', backup.theme);
+  else body.removeAttribute('data-theme');
+  if (backup.density !== null) body.setAttribute('data-density', backup.density);
+  else body.removeAttribute('data-density');
+  if (backup.accent) body.style.setProperty('--accent-1', backup.accent);
+  else body.style.removeProperty('--accent-1');
+  delete (window as unknown as Record<string, unknown>)[HOST_THEME_BACKUP_KEY];
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('keydown', onGlobalKey);
+
+    // 备份宿主主题，以便卸载时还原
+    const body = document.body;
+    (window as unknown as Record<string, unknown>)[HOST_THEME_BACKUP_KEY] = {
+      theme: body.getAttribute('data-theme'),
+      density: body.getAttribute('data-density'),
+      accent: body.style.getPropertyValue('--accent-1') || '',
+    };
+
+    // 用宿主主题作为初始值（如果是已知值），否则保留组件默认 dark-cool
+    const hostTheme = body.getAttribute('data-theme') ?? document.documentElement.getAttribute('data-theme');
+    if (hostTheme === 'dark-cool' || hostTheme === 'dark-warm' || hostTheme === 'light' || hostTheme === 'dark') {
+      theme.value = hostTheme === 'dark' ? 'dark-cool' : (hostTheme as DemoTheme);
+    }
+    const hostDensity = body.getAttribute('data-density');
+    if (hostDensity === 'comfortable' || hostDensity === 'compact') {
+      density.value = hostDensity;
+    }
+
+    applyToBody();
+
     // 首次访问自动启动 tour，sessionStorage 标志防止反复弹
     try {
       if (!window.sessionStorage.getItem('chufix-tpl:admin-mini:tour-done')) {
@@ -79,8 +129,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (typeof window !== 'undefined') {
     window.removeEventListener('keydown', onGlobalKey);
+    restoreHostTheme();
   }
 });
+
+watch([theme, density, accent], applyToBody);
 
 const tourSteps = computed<TourStep[]>(() => [
   { target: '[data-tour="brand"]',    title: t.value.tour_brand_title,    description: t.value.tour_brand_desc,    placement: 'bottom' },
@@ -114,6 +167,7 @@ const sidebarItems = computed<SidebarEntry[]>(() => [
       { key: 'dict',         label: t.value.page_dict,         icon: iconSvg('M4 4h16v3H4zM4 10h16v3H4zM4 16h16v3H4z') },
       { key: 'op-log',       label: t.value.page_op_log,       icon: iconSvg('M5 3h11l3 3v15H5z M14 3v4h4') },
       { key: 'login-log',    label: t.value.page_login_log,    icon: iconSvg('M10 17l5-5-5-5v3H3v4h7v3z M21 3h-8v18h8V3z') },
+      { key: 'menus',        label: t.value.page_menus,        icon: iconSvg('M3 5h6v6H3zm0 8h6v6H3zm10-8h6v6h-6zm0 8h6v6h-6z') },
       { key: 'sys-settings', label: t.value.page_sys_settings, icon: iconSvg('M12 8a4 4 0 100 8 4 4 0 000-8zm9.4 4a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06A2 2 0 113.39 16.96l.06-.06a1.65 1.65 0 00.33-1.82A1.65 1.65 0 002.27 14H3a2 2 0 110-4h-.09c.36 0 .68-.13 1-.34A1.65 1.65 0 003.78 8 1.65 1.65 0 003.45 6.18l-.06-.06a2 2 0 112.83-2.83l.06.06c.5.5 1.24.63 1.82.33H8c.36 0 .68-.13 1-.34A1.65 1.65 0 0010 2.27V3a2 2 0 114 0v-.09c0 .36.13.68.34 1A1.65 1.65 0 0016 3.78a1.65 1.65 0 011.82.33l.06.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0021.4 9z') },
     ],
   },
@@ -212,6 +266,7 @@ const pageComp = computed(() => {
     case 'dict':       return Dict;
     case 'op-log':     return OperationLog;
     case 'login-log':    return LoginLog;
+    case 'menus':        return Menus;
     case 'sys-settings': return SystemSettings;
     default:             return Dashboard;
   }

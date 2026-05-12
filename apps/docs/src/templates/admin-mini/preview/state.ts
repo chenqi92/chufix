@@ -67,6 +67,18 @@ export interface DemoStrings {
   page_dict: string;
   page_op_log: string;
   page_login_log: string;
+  page_menus: string;
+  menu_title: string;
+  menu_icon: string;
+  menu_route: string;
+  menu_sort: string;
+  menu_visible: string;
+  menu_parent: string;
+  menu_no_parent: string;
+  menu_root_only: string;
+  menu_add_child: string;
+  menu_select_to_edit: string;
+  menu_hint: string;
   page_org: string;
   col_dept: string;
   org_total: string;
@@ -210,6 +222,18 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: '字典管理',
     page_op_log: '操作日志',
     page_login_log: '登录日志',
+    page_menus: '菜单管理',
+    menu_title: '名称',
+    menu_icon: '图标',
+    menu_route: '路由',
+    menu_sort: '排序',
+    menu_visible: '显示',
+    menu_parent: '上级菜单',
+    menu_no_parent: '（无上级 / 一级菜单）',
+    menu_root_only: '只有一级菜单可以新增子项。',
+    menu_add_child: '+ 新增子菜单',
+    menu_select_to_edit: '请选中左侧菜单后在此编辑。',
+    menu_hint: '左侧树展示完整菜单层级，点击节点可在右侧编辑名称、图标、路由与排序。',
     page_org: '组织架构',
     col_dept: '所属部门',
     org_total: '共 {n} 名成员',
@@ -347,6 +371,18 @@ export const STRINGS: Record<DemoLocale, DemoStrings> = {
     page_dict: 'Dictionary',
     page_op_log: 'Operation log',
     page_login_log: 'Login log',
+    page_menus: 'Menu management',
+    menu_title: 'Title',
+    menu_icon: 'Icon',
+    menu_route: 'Route',
+    menu_sort: 'Sort',
+    menu_visible: 'Visible',
+    menu_parent: 'Parent',
+    menu_no_parent: '(no parent / top-level)',
+    menu_root_only: 'Only top-level entries accept children.',
+    menu_add_child: '+ New child',
+    menu_select_to_edit: 'Select a node on the left to edit it.',
+    menu_hint: 'The tree on the left shows the menu hierarchy. Click any node to edit its title, icon, route and sort weight on the right.',
     page_org: 'Organization',
     col_dept: 'Department',
     org_total: '{n} members',

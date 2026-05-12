@@ -58,6 +58,31 @@ export interface LoginLog {
   status: 'success' | 'failed';
 }
 
+export interface MenuEntry {
+  id: string;
+  parentId: string | null;
+  title: string;
+  icon?: string;       // CfIcon name
+  route?: string;
+  sort: number;
+  visible: boolean;
+}
+
+export const initialMenus: MenuEntry[] = [
+  { id: 'm-dashboard', parentId: null,           title: '工作台',    icon: 'layout-dashboard', route: '/dashboard',    sort: 1, visible: true },
+  { id: 'm-authz',     parentId: null,           title: '权限',      icon: 'shield',           route: '',              sort: 2, visible: true },
+  { id: 'm-users',     parentId: 'm-authz',      title: '用户管理',  icon: 'users',            route: '/users',        sort: 1, visible: true },
+  { id: 'm-roles',     parentId: 'm-authz',      title: '角色管理',  icon: 'shield-check',     route: '/roles',        sort: 2, visible: true },
+  { id: 'm-user-roles',parentId: 'm-authz',      title: '用户角色',  icon: 'user-cog',         route: '/user-roles',   sort: 3, visible: true },
+  { id: 'm-org',       parentId: 'm-authz',      title: '组织架构',  icon: 'building-2',       route: '/org',          sort: 4, visible: true },
+  { id: 'm-system',    parentId: null,           title: '系统',      icon: 'settings',         route: '',              sort: 3, visible: true },
+  { id: 'm-dict',      parentId: 'm-system',     title: '字典管理',  icon: 'book-text',        route: '/dict',         sort: 1, visible: true },
+  { id: 'm-op-log',    parentId: 'm-system',     title: '操作日志',  icon: 'file-text',        route: '/op-log',       sort: 2, visible: true },
+  { id: 'm-login-log', parentId: 'm-system',     title: '登录日志',  icon: 'log-in',           route: '/login-log',    sort: 3, visible: true },
+  { id: 'm-menus',     parentId: 'm-system',     title: '菜单管理',  icon: 'list-tree',        route: '/menus',        sort: 4, visible: true },
+  { id: 'm-settings',  parentId: 'm-system',     title: '系统设置',  icon: 'sliders',          route: '/settings',     sort: 5, visible: true },
+];
+
 export const initialUsers: AdminUser[] = [
   { id: 1, username: 'admin', name: '系统管理员', email: 'admin@chufix.dev', phone: '13800000001', status: 'active', createdAt: '2025-09-01 10:21', deptKey: 'd-root' },
   { id: 2, username: 'ada',   name: 'Ada Lovelace', email: 'ada@chufix.dev',  phone: '13800000002', status: 'active', createdAt: '2025-10-12 14:03', deptKey: 'd-rnd-frontend' },

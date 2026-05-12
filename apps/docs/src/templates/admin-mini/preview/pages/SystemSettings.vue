@@ -50,70 +50,72 @@ const activeTab = ref<'general' | 'security' | 'backup'>('general');
 <template>
   <div class="adm-page">
     <CfTabs v-model="activeTab" variant="line">
-      <CfTabPanel value="general" :label="t.sys_general">
-        <div class="adm-settings">
-          <CfForm :model="form" layout="vertical">
-            <CfFormField :label="t.sys_log_retention" name="logRetention">
-              <div class="adm-settings__row">
-                <CfSlider
-                  v-model="form.logRetention"
-                  :min="7"
-                  :max="365"
-                  :step="1"
-                  show-value
-                  style="flex: 1;"
+      <template #default="{ active }">
+        <CfTabPanel v-show="active === 'general'" value="general" :label="t.sys_general">
+          <div class="adm-settings">
+            <CfForm :model="form" layout="vertical">
+              <CfFormField :label="t.sys_log_retention" name="logRetention">
+                <div class="adm-settings__row">
+                  <CfSlider
+                    v-model="form.logRetention"
+                    :min="7"
+                    :max="365"
+                    :step="1"
+                    show-value
+                    style="flex: 1;"
+                  />
+                  <CfTag size="sm" tone="info">{{ form.logRetention }} {{ state.locale.value === 'zh' ? '天' : 'days' }}</CfTag>
+                </div>
+                <p class="adm-settings__hint">{{ t.sys_log_retention_hint }}</p>
+              </CfFormField>
+
+              <CfFormField :label="t.sys_session_timeout" name="sessionTimeout">
+                <CfNumberInput v-model="form.sessionTimeout" :min="5" :max="240" :step="5" style="width: 160px;" />
+              </CfFormField>
+            </CfForm>
+          </div>
+        </CfTabPanel>
+
+        <CfTabPanel v-show="active === 'security'" value="security" :label="t.sys_security">
+          <div class="adm-settings">
+            <CfForm :model="form" layout="vertical">
+              <CfFormField :label="t.sys_two_factor" name="twoFactor">
+                <div class="adm-settings__row">
+                  <CfSwitch v-model="form.twoFactor" />
+                  <span class="adm-settings__hint adm-settings__hint--inline">{{ t.sys_two_factor_hint }}</span>
+                </div>
+              </CfFormField>
+
+              <CfFormField :label="t.sys_password_policy" name="passwordPolicy">
+                <CfRadioGroup v-model="form.passwordPolicy">
+                  <CfRadio value="basic">{{ t.sys_password_policy_basic }}</CfRadio>
+                  <CfRadio value="strict">{{ t.sys_password_policy_strict }}</CfRadio>
+                  <CfRadio value="paranoid">{{ t.sys_password_policy_paranoid }}</CfRadio>
+                </CfRadioGroup>
+              </CfFormField>
+            </CfForm>
+          </div>
+        </CfTabPanel>
+
+        <CfTabPanel v-show="active === 'backup'" value="backup" :label="t.sys_backup">
+          <div class="adm-settings">
+            <CfForm :model="form" layout="vertical">
+              <CfFormField :label="t.sys_next_backup" name="nextBackup">
+                <CfDatePicker v-model="form.nextBackup" :placeholder="t.sys_next_backup" style="width: 220px;" />
+              </CfFormField>
+
+              <CfFormField :label="t.sys_upload_logs" name="files">
+                <CfDropzone
+                  v-model="form.files"
+                  multiple
+                  :max-size="20 * 1024 * 1024"
+                  accept=".log,.txt,.gz,application/gzip,text/plain"
                 />
-                <CfTag size="sm" tone="info">{{ form.logRetention }} {{ state.locale.value === 'zh' ? '天' : 'days' }}</CfTag>
-              </div>
-              <p class="adm-settings__hint">{{ t.sys_log_retention_hint }}</p>
-            </CfFormField>
-
-            <CfFormField :label="t.sys_session_timeout" name="sessionTimeout">
-              <CfNumberInput v-model="form.sessionTimeout" :min="5" :max="240" :step="5" style="width: 160px;" />
-            </CfFormField>
-          </CfForm>
-        </div>
-      </CfTabPanel>
-
-      <CfTabPanel value="security" :label="t.sys_security">
-        <div class="adm-settings">
-          <CfForm :model="form" layout="vertical">
-            <CfFormField :label="t.sys_two_factor" name="twoFactor">
-              <div class="adm-settings__row">
-                <CfSwitch v-model="form.twoFactor" />
-                <span class="adm-settings__hint adm-settings__hint--inline">{{ t.sys_two_factor_hint }}</span>
-              </div>
-            </CfFormField>
-
-            <CfFormField :label="t.sys_password_policy" name="passwordPolicy">
-              <CfRadioGroup v-model="form.passwordPolicy">
-                <CfRadio value="basic">{{ t.sys_password_policy_basic }}</CfRadio>
-                <CfRadio value="strict">{{ t.sys_password_policy_strict }}</CfRadio>
-                <CfRadio value="paranoid">{{ t.sys_password_policy_paranoid }}</CfRadio>
-              </CfRadioGroup>
-            </CfFormField>
-          </CfForm>
-        </div>
-      </CfTabPanel>
-
-      <CfTabPanel value="backup" :label="t.sys_backup">
-        <div class="adm-settings">
-          <CfForm :model="form" layout="vertical">
-            <CfFormField :label="t.sys_next_backup" name="nextBackup">
-              <CfDatePicker v-model="form.nextBackup" :placeholder="t.sys_next_backup" style="width: 220px;" />
-            </CfFormField>
-
-            <CfFormField :label="t.sys_upload_logs" name="files">
-              <CfDropzone
-                v-model="form.files"
-                multiple
-                :max-size="20 * 1024 * 1024"
-                accept=".log,.txt,.gz,application/gzip,text/plain"
-              />
-            </CfFormField>
-          </CfForm>
-        </div>
-      </CfTabPanel>
+              </CfFormField>
+            </CfForm>
+          </div>
+        </CfTabPanel>
+      </template>
     </CfTabs>
 
     <footer class="adm-page__foot">

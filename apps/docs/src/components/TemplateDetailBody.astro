@@ -91,11 +91,11 @@ const codeToggleHideLabel = isEn ? 'Hide code' : '收起代码';
     const showLabel = toggle.dataset.showLabel ?? 'View code';
     const hideLabel = toggle.dataset.hideLabel ?? 'Hide code';
     toggle.addEventListener('click', () => {
-      const collapsed = section.getAttribute('data-collapsed') !== 'false';
-      const next = !collapsed;
-      section.setAttribute('data-collapsed', String(!next));
-      toggle.setAttribute('aria-expanded', String(next));
-      label.textContent = next ? hideLabel : showLabel;
+      const isCollapsed = section.getAttribute('data-collapsed') !== 'false';
+      const nextCollapsed = !isCollapsed; // 当前展开则收起，反之亦然
+      section.setAttribute('data-collapsed', String(nextCollapsed));
+      toggle.setAttribute('aria-expanded', String(!nextCollapsed));
+      label.textContent = nextCollapsed ? showLabel : hideLabel;
     });
   });
 </script>

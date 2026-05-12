@@ -18,6 +18,7 @@ import previewOpLog from './preview/pages/OperationLog.vue?raw';
 import previewLoginLog from './preview/pages/LoginLog.vue?raw';
 import previewSysSettings from './preview/pages/SystemSettings.vue?raw';
 import previewOrg from './preview/pages/Org.vue?raw';
+import previewMenus from './preview/pages/Menus.vue?raw';
 
 // React 镜像源码 —— 仅用于源码面板展示，不参与运行。结构与 Vue 文件一一对应。
 import srcReactApp from './source-react/AdminMiniDemo.tsx?raw';
@@ -50,6 +51,7 @@ const vueFiles: Record<string, string> = {
   'src/pages/LoginLog.vue':      previewLoginLog,
   'src/pages/SystemSettings.vue': previewSysSettings,
   'src/pages/Org.vue':            previewOrg,
+  'src/pages/Menus.vue':          previewMenus,
 };
 
 const reactFiles: Record<string, string> = {
