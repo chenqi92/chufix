@@ -67,6 +67,25 @@ export default function Demo() {
   <BasicVue client:load />
 </DemoFrame>
 
+## 尺寸
+
+3 档尺寸控制高度与字号，与同行的 Input / Textarea 保持一致。
+
+import SizesVue from '~/components/demos/select/SizesVue.vue';
+import SizesVueSource from '~/components/demos/select/SizesVue.vue?raw';
+
+<DemoFrame
+  vueCode={`<CfSelect v-model="v1" :options="options" size="sm" placeholder="size = sm" />
+<CfSelect v-model="v2" :options="options" size="md" placeholder="size = md" />
+<CfSelect v-model="v3" :options="options" size="lg" placeholder="size = lg" />`}
+  reactCode={`<CfSelect value={v1} options={options} size="sm" placeholder="size = sm" onChange={setV1} />
+<CfSelect value={v2} options={options} size="md" placeholder="size = md" onChange={setV2} />
+<CfSelect value={v3} options={options} size="lg" placeholder="size = lg" onChange={setV3} />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:load />
+</DemoFrame>
+
 ## 视觉变体
 
 3 种 variant 与 Input 一致：`outline`（默认）/ `filled` / `ghost`。
