@@ -20,6 +20,10 @@ import ServiceVue from '~/components/demos/modal/ServiceVue.vue';
 import ServiceVueSource from '~/components/demos/modal/ServiceVue.vue?raw';
 import StackedVue from '~/components/demos/modal/StackedVue.vue';
 import StackedVueSource from '~/components/demos/modal/StackedVue.vue?raw';
+import CustomFooterVue from '~/components/demos/modal/CustomFooterVue.vue';
+import CustomFooterVueSource from '~/components/demos/modal/CustomFooterVue.vue?raw';
+import ConfirmDeleteVue from '~/components/demos/modal/ConfirmDeleteVue.vue';
+import ConfirmDeleteVueSource from '~/components/demos/modal/ConfirmDeleteVue.vue?raw';
 
 ## 基础用法
 
@@ -107,6 +111,77 @@ if (ok) modal.success({ title: '已提交' });
 | `modal.danger(opts)` | error | 红色 OK + Cancel |
 | `modal.alert(opts)` | info | OK |
 | `modal.info / success / warning / error(opts)` | 同名 tone | OK |
+
+## 自定义 footer
+
+`footer` 具名插槽接收 `{ ok, cancel, loading }` 三个作用域参数，可以完全自渲染按钮组：
+插入"保存草稿"、"导出 PDF"、"导出 Excel" 等额外动作，同时复用组件内置的 ok/cancel 关闭逻辑与 `onBeforeOk` 等待态。
+
+<DemoFrame
+  vueCode={`<CfModal v-model:open="open" title="导出报告" size="sm">
+  <p>选择要导出的格式，并决定是否同时保存草稿。</p>
+
+  <template #footer="{ ok, cancel, loading }">
+    <CfButton variant="ghost"    :disabled="loading" @click="cancel">取消</CfButton>
+    <CfButton variant="tertiary" :loading="saving"    @click="saveDraft">保存草稿</CfButton>
+    <CfButton variant="primary"  :loading="loading"  @click="ok">导出 PDF</CfButton>
+  </template>
+</CfModal>`}
+  reactCode={`<CfModal open={open} onOpenChange={setOpen} title="导出报告" size="sm"
+  footer={({ ok, cancel, loading }) => (
+    <>
+      <CfButton variant="ghost" disabled={loading} onClick={cancel}>取消</CfButton>
+      <CfButton variant="tertiary" loading={saving} onClick={saveDraft}>保存草稿</CfButton>
+      <CfButton variant="primary" loading={loading} onClick={ok}>导出 PDF</CfButton>
+    </>
+  )}
+>
+  <p>选择要导出的格式，并决定是否同时保存草稿。</p>
+</CfModal>`}
+
+  vueSource={CustomFooterVueSource}>
+  <CustomFooterVue client:only="vue" />
+</DemoFrame>
+
+## 确认删除
+
+不可逆操作的标准弹窗：`tone="error"` 给出红色配色与图标，`okVariant="danger"` 让删除按钮也变红，
+`onBeforeOk` 异步等待后端响应；返回 `false` 时阻止关闭，留时间显示错误反馈。
+
+<DemoFrame
+  vueCode={`<CfModal
+  v-model:open="open"
+  tone="error"
+  title="确认删除？"
+  :description="\`将永久删除 \${target}，无法撤销。\`"
+  size="sm"
+  ok-text="删除"
+  ok-variant="danger"
+  cancel-text="取消"
+  :on-before-ok="async () => {
+    await doDelete();
+    return true;
+  }"
+/>`}
+  reactCode={`<CfModal
+  open={open}
+  onOpenChange={setOpen}
+  tone="error"
+  title="确认删除？"
+  description={\`将永久删除 \${target}，无法撤销。\`}
+  size="sm"
+  okText="删除"
+  okVariant="danger"
+  cancelText="取消"
+  onBeforeOk={async () => {
+    await doDelete();
+    return true;
+  }}
+/>`}
+
+  vueSource={ConfirmDeleteVueSource}>
+  <ConfirmDeleteVue client:only="vue" />
+</DemoFrame>
 
 ## 多模态栈
 

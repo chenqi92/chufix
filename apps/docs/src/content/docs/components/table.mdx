@@ -395,6 +395,7 @@ import AutoHeightVueSource from '~/components/demos/table/AutoHeightVue.vue?raw'
 | `showSummary` | `boolean` | `false` | 自动按 `column.summary` 渲染总计行 |
 | `summary` | `TableSummaryRow[]` | — | 额外手动总计行 |
 | `toolbar` | `'auto' \| 'none'` | `'none'` | 工具栏：搜索 + 列可见性 + 导出 |
+| `globalSearchFn` | `(search, row, i) => boolean` | — | 自定义全局搜索匹配逻辑；省略时默认对所有列做大小写不敏感子串匹配 |
 | `virtual` | `boolean` | `false` | 启用虚拟滚动（要求 `height` + 固定 `rowHeight`） |
 | `rowHeight` | `number` | `36` | 虚拟模式下每行高度（px） |
 | `overscan` | `number` | `6` | 虚拟模式上下额外渲染的行数 |
@@ -432,6 +433,7 @@ import AutoHeightVueSource from '~/components/demos/table/AutoHeightVue.vue?raw'
 | `filterable` | `boolean` | 启用此列过滤 |
 | `filterType` | `'text' \| 'select' \| 'number-range' \| 'date-range'` | 过滤面板类型 |
 | `filterOptions` | `{label,value}[]` | `select` 模式下的选项 |
+| `filterPlaceholder` | `string` | 过滤面板输入框的占位文案 |
 | `filterFn` | `(filterValue, row, i) => boolean` | 自定义过滤函数 |
 | `fixed` | `'left' \| 'right'` | 固定列 |
 | `resizable / reorderable / hideable` | `boolean` | 单列覆盖全局开关 |
@@ -450,6 +452,7 @@ import AutoHeightVueSource from '~/components/demos/table/AutoHeightVue.vue?raw'
 | `exportable` | `boolean` | `false` 时 CSV 导出跳过该列 |
 | `exportRender` | `(value, row, i) => string` | 导出时单元格的字符串化方式 |
 | `cellClass` | `string \| (row, i) => string` | 单元格 class |
+| `className` | `string` | 该列所有单元格（含表头与正文）共享的额外 class |
 
 ### Events / Slots
 
@@ -473,6 +476,7 @@ import AutoHeightVueSource from '~/components/demos/table/AutoHeightVue.vue?raw'
 | `#cell:<key>` | `{ row, index, value }` | 自定义单元格 |
 | `#empty` | — | 自定义空状态 |
 | `#toolbar-left` / `#toolbar-right` | — | 工具栏左右扩展槽 |
+| `#batch-actions` | `{ selectedKeys, clear, exportSelected }` | 多选模式下顶部 sticky 操作条；scoped 参数提供选中 keys、清空选择、导出选中行的能力 |
 
 ## 性能笔记
 

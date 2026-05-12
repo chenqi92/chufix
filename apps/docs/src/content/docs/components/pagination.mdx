@@ -82,7 +82,53 @@ import SizesVueSource from '~/components/demos/pagination/SizesVue.vue?raw';
   <SizesVue client:load />
 </DemoFrame>
 
+## 与外部 pageSize 选择器配合
+
+Pagination 自身不内置 "每页条数" 选择器，但与一个外部 Select 组合就能得到完整的列表分页栏。
+切换 pageSize 时通常需要重置到第 1 页，避免 page 越界。
+
+import WithPageSizeVue from '~/components/demos/pagination/WithPageSizeVue.vue';
+import WithPageSizeVueSource from '~/components/demos/pagination/WithPageSizeVue.vue?raw';
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { watch, ref } from 'vue';
+import { CfPagination, CfSelect } from '@chufix-design/vue';
+
+const page = ref(1);
+const pageSize = ref(10);
+const total = 243;
+
+watch(pageSize, () => { page.value = 1; });
+</script>
+
+<template>
+  <CfSelect v-model="pageSize" :options="pageOptions" size="sm" />
+  <CfPagination v-model="page" :total="total" :page-size="pageSize" size="sm" />
+</template>`}
+  reactCode={`import { useEffect, useState } from 'react';
+import { CfPagination, CfSelect } from '@chufix-design/react';
+
+export default function Demo() {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  useEffect(() => { setPage(1); }, [pageSize]);
+
+  return (
+    <>
+      <CfSelect value={pageSize} onChange={setPageSize} options={pageOptions} size="sm" />
+      <CfPagination value={page} onChange={setPage} total={243} pageSize={pageSize} size="sm" />
+    </>
+  );
+}`}
+
+  vueSource={WithPageSizeVueSource}>
+  <WithPageSizeVue client:load />
+</DemoFrame>
+
 ## API
+
+### Props
 
 | Prop | 类型 | 默认值 | 说明 |
 |---|---|---|---|
@@ -95,7 +141,10 @@ import SizesVueSource from '~/components/demos/pagination/SizesVue.vue?raw';
 | `showJumper` | `boolean` | `false` | 显示跳转输入 |
 | `showTotal` | `boolean` | `false` | 显示「共 N 条」文案 |
 
-事件：
+### Events
 
-- Vue：`@update:modelValue` —— `v-model` 自动监听
-- React：`onChange(page: number)`
+| Vue 事件            | React 回调  | 载荷类型 | 说明                  |
+| ------------------- | ----------- | -------- | --------------------- |
+| `update:modelValue` | `onChange`  | `number` | 切换页码时触发，1-based |
+
+{/* OMITTED: Slots — Pagination 是原子控件，无可插槽位置 */}
