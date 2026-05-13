@@ -239,6 +239,62 @@ export const sidebar: SidebarGroup[] = [
       c('TearOffTabs', '可撕离 Tab', 'tearofftab'),
     ],
   },
+  {
+    label: L('数据可视化 · 时序', 'Charts · Time series'),
+    items: [
+      c('LineChart', '折线图', 'linechart'),
+      c('AreaChart', '面积图', 'areachart'),
+      c('Sparkline', '缩略走势', 'sparkline'),
+      c('CandlestickChart', 'K 线图', 'candlestickchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 分类', 'Charts · Category'),
+    items: [
+      c('BarChart', '柱状图', 'barchart'),
+      c('Histogram', '直方图', 'histogram'),
+      c('StackedBar100', '占比柱', 'stackedbar100'),
+      c('BulletChart', '子弹图', 'bulletchart'),
+      c('WaterfallChart', '瀑布图', 'waterfallchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 占比', 'Charts · Composition'),
+    items: [
+      c('DonutChart', '环形图', 'donutchart'),
+      c('FunnelChart', '漏斗图', 'funnelchart'),
+      c('Treemap', '矩形树图', 'treemap'),
+      c('SankeyDiagram', '流向图', 'sankeydiagram'),
+      c('SunburstChart', '旭日图', 'sunburstchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 多维', 'Charts · Multi-dim'),
+    items: [
+      c('ScatterPlot', '散点图', 'scatterplot'),
+      c('BoxPlot', '箱线图', 'boxplot'),
+      c('RadarChart', '雷达图', 'radarchart'),
+      c('RidgePlot', '密度脊图', 'ridgeplot'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 单值与性能', 'Charts · Single & perf'),
+    items: [
+      c('Gauge', '仪表盘', 'gauge'),
+      c('MetricCard', '指标卡', 'metriccard'),
+      c('TimingBar', '请求瀑布', 'timingbar'),
+      c('LatencyHeatmap', '延迟热力', 'latencyheatmap'),
+      c('HeatmapChart', '通用热力', 'heatmapchart'),
+      c('ConnectionGraph', '连接图', 'connectiongraph'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 工具', 'Charts · Helpers'),
+    items: [
+      c('ChartToolbar', '图表工具栏', 'charttoolbar'),
+      c('ChartCrosshair', '十字线', 'chartcrosshair'),
+    ],
+  },
 ];
 
 /** 选 sidebar 当前 locale 的 label，方便 component 内 `pickLabel(item.label, locale)`。*/
