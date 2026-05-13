@@ -46,3 +46,28 @@ import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw'
 | `height` | `number` | `280` | SVG 高度 |
 | `nodeWidth` | `number` | `12` | 节点条宽 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `node-enter` | `onNodeEnter` | `SankeyNodeInteractionPayload` | 鼠标进入节点 |
+| `node-leave` | `onNodeLeave` | `SankeyNodeInteractionPayload` | 鼠标离开节点 |
+| `link-enter` | `onLinkEnter` | `SankeyLinkInteractionPayload` | 鼠标进入连接边 |
+| `link-leave` | `onLinkLeave` | `SankeyLinkInteractionPayload` | 鼠标离开连接边 |
+
+### 类型
+
+```ts
+interface SankeyNodeInteractionPayload {
+  node: SankeyNode;
+  nodeIndex: number;
+  nativeEvent?: PointerEvent;
+}
+
+interface SankeyLinkInteractionPayload {
+  link: SankeyLink;
+  linkIndex: number;
+  nativeEvent?: PointerEvent;
+}
+```

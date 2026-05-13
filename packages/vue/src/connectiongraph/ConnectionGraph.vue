@@ -1,13 +1,45 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { polar } from '../_charts/scale';
-import type { ConnectionGraphProps } from './variants';
+import type {
+  ConnectionGraphEdgeInteractionPayload,
+  ConnectionGraphNodeInteractionPayload,
+  ConnectionGraphProps,
+} from './variants';
 
 const props = withDefaults(defineProps<ConnectionGraphProps>(), {
   width: 480,
   height: 360,
   showLabels: true,
 });
+
+const emit = defineEmits<{
+  (e: 'node-enter', payload: ConnectionGraphNodeInteractionPayload): void;
+  (e: 'node-leave', payload: ConnectionGraphNodeInteractionPayload): void;
+  (e: 'edge-enter', payload: ConnectionGraphEdgeInteractionPayload): void;
+  (e: 'edge-leave', payload: ConnectionGraphEdgeInteractionPayload): void;
+}>();
+
+function onNodeEnter(id: string, ev: PointerEvent) {
+  const node = props.nodes?.find((n) => n.id === id);
+  if (!node) return;
+  emit('node-enter', { node, nativeEvent: ev });
+}
+function onNodeLeave(id: string, ev: PointerEvent) {
+  const node = props.nodes?.find((n) => n.id === id);
+  if (!node) return;
+  emit('node-leave', { node, nativeEvent: ev });
+}
+function onEdgeEnter(i: number, ev: PointerEvent) {
+  const edge = props.edges?.[i];
+  if (!edge) return;
+  emit('edge-enter', { edge, edgeIndex: i, nativeEvent: ev });
+}
+function onEdgeLeave(i: number, ev: PointerEvent) {
+  const edge = props.edges?.[i];
+  if (!edge) return;
+  emit('edge-leave', { edge, edgeIndex: i, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const nodes = props.nodes ?? [];
@@ -39,6 +71,7 @@ const layout = computed(() => {
         d: `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`,
         weight: e.weight ?? 1,
         colorIndex: e.colorIndex ?? i % 8,
+        edgeIndex: i,
       };
     })
     .filter((x): x is NonNullable<typeof x> => x != null);
@@ -78,8 +111,15 @@ const layout = computed(() => {
         stroke="currentColor"
         fill="none"
         opacity="0.4"
+        @pointerenter="(ev: PointerEvent) => onEdgeEnter(e.edgeIndex, ev)"
+        @pointerleave="(ev: PointerEvent) => onEdgeLeave(e.edgeIndex, ev)"
       />
-      <g v-for="n in layout.nodePoints" :key="n.id">
+      <g
+        v-for="n in layout.nodePoints"
+        :key="n.id"
+        @pointerenter="(ev: PointerEvent) => onNodeEnter(n.id, ev)"
+        @pointerleave="(ev: PointerEvent) => onNodeLeave(n.id, ev)"
+      >
         <circle
           :class="`cf-chart__bar--${n.colorIndex}`"
           :cx="n.x"

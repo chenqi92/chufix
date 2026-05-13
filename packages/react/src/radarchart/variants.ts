@@ -4,6 +4,12 @@ export interface RadarSeries {
   colorIndex?: number;
 }
 
+export interface RadarChartInteractionPayload {
+  series: RadarSeries;
+  seriesIndex: number;
+  nativeEvent?: unknown;
+}
+
 export interface RadarChartProps {
   axes: string[];
   series: RadarSeries[];
@@ -12,4 +18,6 @@ export interface RadarChartProps {
   showLegend?: boolean;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: RadarChartInteractionPayload) => void;
+  onItemLeave?: (payload: RadarChartInteractionPayload) => void;
 }

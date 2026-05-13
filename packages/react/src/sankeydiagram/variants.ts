@@ -11,6 +11,17 @@ export interface SankeyLink {
   value: number;
 }
 
+export interface SankeyNodeInteractionPayload {
+  node: SankeyNode;
+  nativeEvent?: unknown;
+}
+
+export interface SankeyLinkInteractionPayload {
+  link: SankeyLink;
+  linkIndex: number;
+  nativeEvent?: unknown;
+}
+
 export interface SankeyDiagramProps {
   nodes: SankeyNode[];
   links: SankeyLink[];
@@ -19,4 +30,8 @@ export interface SankeyDiagramProps {
   nodeWidth?: number;
   ariaLabel?: string;
   className?: string;
+  onNodeEnter?: (payload: SankeyNodeInteractionPayload) => void;
+  onNodeLeave?: (payload: SankeyNodeInteractionPayload) => void;
+  onLinkEnter?: (payload: SankeyLinkInteractionPayload) => void;
+  onLinkLeave?: (payload: SankeyLinkInteractionPayload) => void;
 }

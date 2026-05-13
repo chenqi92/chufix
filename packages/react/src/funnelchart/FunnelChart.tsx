@@ -9,6 +9,8 @@ export function FunnelChart(props: FunnelChartProps) {
     showLabels = true,
     ariaLabel = '漏斗图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -52,6 +54,14 @@ export function FunnelChart(props: FunnelChartProps) {
           className={`cf-chart__bar--${s.colorIndex}`}
           d={s.d}
           opacity={0.9}
+          onPointerEnter={(e) => {
+            const step = steps?.[i];
+            if (step) onItemEnter?.({ step, dataIndex: i, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const step = steps?.[i];
+            if (step) onItemLeave?.({ step, dataIndex: i, nativeEvent: e });
+          }}
         />
       ))}
       {showLabels

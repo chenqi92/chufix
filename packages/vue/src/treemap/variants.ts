@@ -12,6 +12,12 @@ export interface TreemapProps {
   ariaLabel?: string;
 }
 
+export interface TreemapInteractionPayload {
+  node: TreemapNode;
+  dataIndex: number;
+  nativeEvent?: PointerEvent;
+}
+
 interface RectNode extends TreemapNode {
   x: number;
   y: number;

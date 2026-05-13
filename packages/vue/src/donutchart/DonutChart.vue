@@ -1,13 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { arcPath } from '../_charts/scale';
-import type { DonutChartProps } from './variants';
+import type {
+  DonutChartInteractionPayload,
+  DonutChartProps,
+} from './variants';
 
 const props = withDefaults(defineProps<DonutChartProps>(), {
   size: 180,
   thickness: 24,
   showLegend: true,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: DonutChartInteractionPayload): void;
+  (e: 'item-leave', payload: DonutChartInteractionPayload): void;
+}>();
+
+function onEnter(i: number, pct: number, ev: PointerEvent) {
+  const segment = props.segments?.[i];
+  if (!segment) return;
+  emit('item-enter', { segment, dataIndex: i, pct, nativeEvent: ev });
+}
+function onLeave(i: number, pct: number, ev: PointerEvent) {
+  const segment = props.segments?.[i];
+  if (!segment) return;
+  emit('item-leave', { segment, dataIndex: i, pct, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const segs = props.segments ?? [];
@@ -44,6 +63,8 @@ const layout = computed(() => {
         :key="i"
         :class="`cf-chart__bar--${s.colorIndex}`"
         :d="s.d"
+        @pointerenter="(e: PointerEvent) => onEnter(i, s.pct, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(i, s.pct, e)"
       />
       <text
         v-if="centerValue != null"

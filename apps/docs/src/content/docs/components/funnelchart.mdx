@@ -47,3 +47,20 @@ import CompareVueSource from '~/components/demos/funnelchart/CompareVue.vue?raw'
 | `height` | `number` | `240` | SVG 高度 |
 | `showLabels` | `boolean` | `true` | 显示每段的 label / value |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `FunnelChartInteractionPayload` | 鼠标进入某层时触发 |
+| `item-leave` | `onItemLeave` | `FunnelChartInteractionPayload` | 鼠标离开某层时触发 |
+
+### 类型
+
+```ts
+interface FunnelChartInteractionPayload {
+  step: FunnelStep;
+  dataIndex: number;
+  nativeEvent?: PointerEvent;
+}
+```

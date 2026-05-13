@@ -24,3 +24,14 @@ export interface ConnectionGraphProps {
   showLabels?: boolean;
   ariaLabel?: string;
 }
+
+export interface ConnectionGraphNodeInteractionPayload {
+  node: GraphNode;
+  nativeEvent?: PointerEvent;
+}
+
+export interface ConnectionGraphEdgeInteractionPayload {
+  edge: GraphEdge;
+  edgeIndex: number;
+  nativeEvent?: PointerEvent;
+}

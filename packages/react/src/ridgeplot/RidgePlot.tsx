@@ -10,6 +10,8 @@ export function RidgePlot(props: RidgePlotProps) {
     overlap = 0.6,
     ariaLabel = '密度脊图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const data = useMemo(() => {
@@ -49,7 +51,18 @@ export function RidgePlot(props: RidgePlotProps) {
       aria-label={ariaLabel}
     >
       {data.map((r, i) => (
-        <g key={i} className={`cf-chart__series-${r.colorIndex}`}>
+        <g
+          key={i}
+          className={`cf-chart__series-${r.colorIndex}`}
+          onPointerEnter={(e) => {
+            const row = rows?.[i];
+            if (row) onItemEnter?.({ row, rowIndex: i, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const row = rows?.[i];
+            if (row) onItemLeave?.({ row, rowIndex: i, nativeEvent: e });
+          }}
+        >
           <path className="cf-chart__area" d={r.area} />
           <path className="cf-chart__line" d={r.line} />
           <text x={6} y={r.labelY}>

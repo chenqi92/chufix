@@ -10,3 +10,9 @@ export interface FunnelChartProps {
   showLabels?: boolean;
   ariaLabel?: string;
 }
+
+export interface FunnelChartInteractionPayload {
+  step: FunnelStep;
+  dataIndex: number;
+  nativeEvent?: PointerEvent;
+}

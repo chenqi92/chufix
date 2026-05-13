@@ -12,3 +12,10 @@ export interface BulletChartProps {
   label?: string;
   ariaLabel?: string;
 }
+
+export interface BulletChartInteractionPayload {
+  value: number;
+  target?: number;
+  max: number;
+  nativeEvent?: MouseEvent | PointerEvent;
+}

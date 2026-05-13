@@ -12,6 +12,8 @@ export function DonutChart(props: DonutChartProps) {
     centerValue,
     ariaLabel = '环形图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -51,6 +53,14 @@ export function DonutChart(props: DonutChartProps) {
             key={i}
             className={`cf-chart__bar--${s.colorIndex}`}
             d={s.d}
+            onPointerEnter={(e) => {
+              const seg = segments[i];
+              if (seg) onItemEnter?.({ segment: seg, dataIndex: i, pct: s.pct, nativeEvent: e });
+            }}
+            onPointerLeave={(e) => {
+              const seg = segments[i];
+              if (seg) onItemLeave?.({ segment: seg, dataIndex: i, pct: s.pct, nativeEvent: e });
+            }}
           />
         ))}
         {centerValue != null ? (

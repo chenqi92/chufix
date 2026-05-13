@@ -9,6 +9,8 @@ export function CandlestickChart(props: CandlestickChartProps) {
     height = 240,
     ariaLabel = 'K 线图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const candles = useMemo(() => {
@@ -46,6 +48,14 @@ export function CandlestickChart(props: CandlestickChartProps) {
         <g
           key={i}
           className={c.up ? 'cf-candlestick__up' : 'cf-candlestick__down'}
+          onPointerEnter={(e) => {
+            const candle = data?.[i];
+            if (candle) onItemEnter?.({ candle, dataIndex: i, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const candle = data?.[i];
+            if (candle) onItemLeave?.({ candle, dataIndex: i, nativeEvent: e });
+          }}
         >
           <line
             className="cf-candlestick__wick"

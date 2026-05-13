@@ -20,3 +20,14 @@ export interface SankeyDiagramProps {
   nodeWidth?: number;
   ariaLabel?: string;
 }
+
+export interface SankeyNodeInteractionPayload {
+  node: SankeyNode;
+  nativeEvent?: PointerEvent;
+}
+
+export interface SankeyLinkInteractionPayload {
+  link: SankeyLink;
+  linkIndex: number;
+  nativeEvent?: PointerEvent;
+}

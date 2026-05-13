@@ -46,3 +46,20 @@ import CompareVueSource from '~/components/demos/radarchart/CompareVue.vue?raw';
 | `max` | `number` | 数据最大值 | 标准化基准 |
 | `showLegend` | `boolean` | `true` | 显示图例 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `RadarChartInteractionPayload` | 鼠标进入某 series 多边形时触发 |
+| `item-leave` | `onItemLeave` | `RadarChartInteractionPayload` | 鼠标离开 series 时触发 |
+
+### 类型
+
+```ts
+interface RadarChartInteractionPayload {
+  series: RadarSeries;
+  seriesIndex: number;
+  nativeEvent?: PointerEvent;
+}
+```

@@ -13,3 +13,9 @@ export interface RadarChartProps {
   showLegend?: boolean;
   ariaLabel?: string;
 }
+
+export interface RadarChartInteractionPayload {
+  series: RadarSeries;
+  seriesIndex: number;
+  nativeEvent?: PointerEvent;
+}

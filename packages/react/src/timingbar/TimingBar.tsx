@@ -11,6 +11,8 @@ export function TimingBar(props: TimingBarProps) {
     labelMode = 'auto',
     ariaLabel = '请求瀑布图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -65,6 +67,14 @@ export function TimingBar(props: TimingBarProps) {
           y={0}
           width={p.width}
           height={height}
+          onPointerEnter={(e) => {
+            const phase = phases?.[i];
+            if (phase) onItemEnter?.({ phase, dataIndex: i, duration: p.duration, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const phase = phases?.[i];
+            if (phase) onItemLeave?.({ phase, dataIndex: i, duration: p.duration, nativeEvent: e });
+          }}
         >
           <title>
             {p.label}: {p.duration}ms

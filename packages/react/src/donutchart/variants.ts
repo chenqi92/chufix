@@ -4,6 +4,13 @@ export interface DonutSegment {
   colorIndex?: number;
 }
 
+export interface DonutChartInteractionPayload {
+  segment: DonutSegment;
+  dataIndex: number;
+  pct: number;
+  nativeEvent?: unknown;
+}
+
 export interface DonutChartProps {
   segments: DonutSegment[];
   size?: number;
@@ -13,4 +20,6 @@ export interface DonutChartProps {
   centerValue?: string | number;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: DonutChartInteractionPayload) => void;
+  onItemLeave?: (payload: DonutChartInteractionPayload) => void;
 }

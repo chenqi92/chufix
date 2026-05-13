@@ -11,6 +11,8 @@ export function RadarChart(props: RadarChartProps) {
     showLegend = true,
     ariaLabel = '雷达图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -76,6 +78,14 @@ export function RadarChart(props: RadarChartProps) {
             className={`cf-chart__bar--${p.idx}`}
             fillOpacity={0.2}
             strokeWidth={2}
+            onPointerEnter={(e) => {
+              const s = series?.[i];
+              if (s) onItemEnter?.({ series: s, seriesIndex: i, nativeEvent: e });
+            }}
+            onPointerLeave={(e) => {
+              const s = series?.[i];
+              if (s) onItemLeave?.({ series: s, seriesIndex: i, nativeEvent: e });
+            }}
           />
         ))}
       </svg>

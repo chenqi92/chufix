@@ -18,6 +18,7 @@ export function Sparkline(props: SparklineProps) {
     showDot = true,
     ariaLabel = '走势缩略图',
     className,
+    onClick,
   } = props;
 
   const svg = useMemo(() => {
@@ -52,6 +53,17 @@ export function Sparkline(props: SparklineProps) {
       height={height}
       role="img"
       aria-label={ariaLabel}
+      onClick={(ev) => {
+        if (!onClick || !data?.length) return;
+        const target = ev.currentTarget;
+        const rect = target.getBoundingClientRect();
+        const ratio = rect.width ? (ev.clientX - rect.left) / rect.width : 0;
+        const dataIndex = Math.max(
+          0,
+          Math.min(data.length - 1, Math.round(ratio * (data.length - 1))),
+        );
+        onClick({ dataIndex, value: data[dataIndex], nativeEvent: ev });
+      }}
     >
       {svg ? (
         <>

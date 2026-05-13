@@ -15,6 +15,7 @@ export function Gauge(props: GaugeProps) {
     tone = 'accent',
     ariaLabel,
     className,
+    onClick,
   } = props;
 
   const layout = useMemo(() => {
@@ -50,6 +51,11 @@ export function Gauge(props: GaugeProps) {
       height={size}
       role="img"
       aria-label={ariaLabel ?? label ?? '仪表盘'}
+      onClick={(ev) => {
+        if (!onClick) return;
+        const ratio = Math.max(0, Math.min(1, (value - min) / (max - min)));
+        onClick({ value, ratio, nativeEvent: ev });
+      }}
     >
       <path
         className="cf-gauge__track"

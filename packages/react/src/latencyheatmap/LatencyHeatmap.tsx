@@ -12,6 +12,8 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
     max,
     ariaLabel = '延迟热力图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -31,6 +33,9 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
       w: number;
       h: number;
       color: string;
+      row: number;
+      col: number;
+      value: number;
     }[] = [];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -42,6 +47,9 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
           w: cellW,
           h: cellH,
           color: ratioColor(ratio),
+          row: r,
+          col: c,
+          value: v,
         });
       }
     }
@@ -67,6 +75,26 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
           width={c.w}
           height={c.h}
           fill={c.color}
+          onPointerEnter={(e) =>
+            onItemEnter?.({
+              row: c.row,
+              col: c.col,
+              value: c.value,
+              rowLabel: rowLabels?.[c.row],
+              colLabel: colLabels?.[c.col],
+              nativeEvent: e,
+            })
+          }
+          onPointerLeave={(e) =>
+            onItemLeave?.({
+              row: c.row,
+              col: c.col,
+              value: c.value,
+              rowLabel: rowLabels?.[c.row],
+              colLabel: colLabels?.[c.col],
+              nativeEvent: e,
+            })
+          }
         />
       ))}
       {rowLabels?.map((label, i) => (

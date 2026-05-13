@@ -48,3 +48,22 @@ import BandsVueSource from '~/components/demos/bulletchart/BandsVue.vue?raw';
 | `width` | `number` | `480` | SVG 宽度 |
 | `height` | `number` | `32` | SVG 高度 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `BulletChartInteractionPayload` | 点击 bullet 区域 |
+| `item-enter` | `onItemEnter` | `BulletChartInteractionPayload` | 鼠标进入 bullet 区域 |
+| `item-leave` | `onItemLeave` | `BulletChartInteractionPayload` | 鼠标离开 bullet 区域 |
+
+### 类型
+
+```ts
+interface BulletChartInteractionPayload {
+  value: number;
+  target: number;
+  max: number;
+  nativeEvent?: PointerEvent | MouseEvent;
+}
+```

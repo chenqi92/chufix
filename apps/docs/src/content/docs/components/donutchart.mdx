@@ -50,3 +50,22 @@ import CenterVueSource from '~/components/demos/donutchart/CenterVue.vue?raw';
 | `centerValue / centerLabel` | `string \| number` | `—` | 中心文本 |
 | `showLegend` | `boolean` | `true` | 显示图例 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `DonutChartInteractionPayload` | 鼠标进入某扇区时触发 |
+| `item-leave` | `onItemLeave` | `DonutChartInteractionPayload` | 鼠标离开扇区时触发 |
+
+### 类型
+
+```ts
+interface DonutChartInteractionPayload {
+  segment: DonutSegment;
+  dataIndex: number;
+  /** 该段占总和的比例（0..1）。 */
+  pct: number;
+  nativeEvent?: PointerEvent;
+}
+```

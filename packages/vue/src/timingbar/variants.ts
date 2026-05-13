@@ -16,3 +16,10 @@ export interface TimingBarProps {
   labelMode?: 'auto' | 'all' | 'none';
   ariaLabel?: string;
 }
+
+export interface TimingBarInteractionPayload {
+  phase: TimingPhase;
+  dataIndex: number;
+  duration: number;
+  nativeEvent?: PointerEvent;
+}

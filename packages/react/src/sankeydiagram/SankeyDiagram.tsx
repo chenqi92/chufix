@@ -13,6 +13,10 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
     nodeWidth = 12,
     ariaLabel = 'Sankey 流向图',
     className,
+    onNodeEnter,
+    onNodeLeave,
+    onLinkEnter,
+    onLinkLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -74,6 +78,7 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
           d,
           strokeWidth: Math.max(1, Math.min(sNode.h, tNode.h) * 0.6),
           idx: i % 8,
+          linkIndex: i,
         };
       })
       .filter((x): x is NonNullable<typeof x> => x != null);
@@ -108,10 +113,28 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
           strokeWidth={p.strokeWidth}
           strokeOpacity={0.35}
           stroke="currentColor"
+          onPointerEnter={(e) => {
+            const link = links?.[p.linkIndex];
+            if (link) onLinkEnter?.({ link, linkIndex: p.linkIndex, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const link = links?.[p.linkIndex];
+            if (link) onLinkLeave?.({ link, linkIndex: p.linkIndex, nativeEvent: e });
+          }}
         />
       ))}
       {layout?.nodeRects.map((r) => (
-        <g key={r.id}>
+        <g
+          key={r.id}
+          onPointerEnter={(e) => {
+            const node = nodes?.find((n) => n.id === r.id);
+            if (node) onNodeEnter?.({ node, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const node = nodes?.find((n) => n.id === r.id);
+            if (node) onNodeLeave?.({ node, nativeEvent: e });
+          }}
+        >
           <rect
             className={`cf-chart__bar--${r.colorIndex}`}
             x={r.x}

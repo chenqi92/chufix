@@ -53,3 +53,20 @@ import SweepVueSource from '~/components/demos/gauge/SweepVue.vue?raw';
 | `unit` | `string` | `—` | 数值右侧的单位（如 `%`） |
 | `label` | `string` | `—` | 数值下方的小字标签 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `GaugeClickPayload` | 点击 gauge 区域 |
+
+### 类型
+
+```ts
+interface GaugeClickPayload {
+  value: number;
+  /** value 在 min..max 区间的归一比例（0..1）。 */
+  ratio: number;
+  nativeEvent?: PointerEvent | MouseEvent;
+}
+```

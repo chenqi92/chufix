@@ -12,3 +12,11 @@ export interface SparklineProps {
   showDot?: boolean;
   ariaLabel?: string;
 }
+
+export interface SparklineClickPayload {
+  /** Index of the data point nearest the click position. */
+  dataIndex: number;
+  /** Value at that index. */
+  value: number;
+  nativeEvent?: PointerEvent;
+}

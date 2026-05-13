@@ -4,6 +4,13 @@ export interface StackedBar100Series {
   colorIndex?: number;
 }
 
+export interface StackedBar100InteractionPayload {
+  segment: StackedBar100Series;
+  dataIndex: number;
+  pct: number;
+  nativeEvent?: unknown;
+}
+
 export interface StackedBar100Props {
   segments: StackedBar100Series[];
   width?: number;
@@ -11,4 +18,6 @@ export interface StackedBar100Props {
   showLegend?: boolean;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: StackedBar100InteractionPayload) => void;
+  onItemLeave?: (payload: StackedBar100InteractionPayload) => void;
 }

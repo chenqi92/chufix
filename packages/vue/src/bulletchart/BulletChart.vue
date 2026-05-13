@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { BulletChartProps } from './variants';
+import type {
+  BulletChartInteractionPayload,
+  BulletChartProps,
+} from './variants';
 
 const props = withDefaults(defineProps<BulletChartProps>(), {
   width: 240,
   height: 20,
   bands: () => [],
 });
+
+const emit = defineEmits<{
+  (e: 'click', payload: BulletChartInteractionPayload): void;
+  (e: 'item-enter', payload: BulletChartInteractionPayload): void;
+  (e: 'item-leave', payload: BulletChartInteractionPayload): void;
+}>();
+
+function buildPayload(ev: MouseEvent | PointerEvent): BulletChartInteractionPayload {
+  return { value: props.value, target: props.target, max: props.max, nativeEvent: ev };
+}
 
 const segs = computed(() => {
   const bands = props.bands ?? [];
@@ -31,7 +44,13 @@ const targetPct = computed(() =>
 <template>
   <div class="cf-bullet" role="img" :aria-label="ariaLabel ?? label ?? '子弹图'">
     <div v-if="label" class="cf-bullet__label">{{ label }}</div>
-    <div class="cf-bullet__track" :style="{ height: `${height}px` }">
+    <div
+      class="cf-bullet__track"
+      :style="{ height: `${height}px` }"
+      @click="(e: MouseEvent) => emit('click', buildPayload(e))"
+      @pointerenter="(e: PointerEvent) => emit('item-enter', buildPayload(e))"
+      @pointerleave="(e: PointerEvent) => emit('item-leave', buildPayload(e))"
+    >
       <span
         v-for="(s, i) in segs"
         :key="i"

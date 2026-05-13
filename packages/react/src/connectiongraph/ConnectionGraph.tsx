@@ -11,6 +11,10 @@ export function ConnectionGraph(props: ConnectionGraphProps) {
     showLabels = true,
     ariaLabel = '关系图',
     className,
+    onNodeEnter,
+    onNodeLeave,
+    onEdgeEnter,
+    onEdgeLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -39,6 +43,7 @@ export function ConnectionGraph(props: ConnectionGraphProps) {
           d: `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`,
           weight: e.weight ?? 1,
           colorIndex: e.colorIndex ?? i % 8,
+          edgeIndex: i,
         };
       })
       .filter((x): x is NonNullable<typeof x> => x != null);
@@ -76,10 +81,28 @@ export function ConnectionGraph(props: ConnectionGraphProps) {
           stroke="currentColor"
           fill="none"
           opacity={0.4}
+          onPointerEnter={(ev) => {
+            const edge = edges?.[e.edgeIndex];
+            if (edge) onEdgeEnter?.({ edge, edgeIndex: e.edgeIndex, nativeEvent: ev });
+          }}
+          onPointerLeave={(ev) => {
+            const edge = edges?.[e.edgeIndex];
+            if (edge) onEdgeLeave?.({ edge, edgeIndex: e.edgeIndex, nativeEvent: ev });
+          }}
         />
       ))}
       {layout?.nodePoints.map((n) => (
-        <g key={n.id}>
+        <g
+          key={n.id}
+          onPointerEnter={(ev) => {
+            const node = nodes?.find((x) => x.id === n.id);
+            if (node) onNodeEnter?.({ node, nativeEvent: ev });
+          }}
+          onPointerLeave={(ev) => {
+            const node = nodes?.find((x) => x.id === n.id);
+            if (node) onNodeLeave?.({ node, nativeEvent: ev });
+          }}
+        >
           <circle
             className={`cf-chart__bar--${n.colorIndex}`}
             cx={n.x}

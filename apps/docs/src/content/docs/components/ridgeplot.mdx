@@ -45,3 +45,20 @@ import SeasonsVueSource from '~/components/demos/ridgeplot/SeasonsVue.vue?raw';
 | `height` | `number` | `240` | SVG 高度 |
 | `overlap` | `0..1` | `0.6` | 行间重叠比例 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `RidgePlotInteractionPayload` | 鼠标进入某行密度曲线时触发 |
+| `item-leave` | `onItemLeave` | `RidgePlotInteractionPayload` | 鼠标离开某行时触发 |
+
+### 类型
+
+```ts
+interface RidgePlotInteractionPayload {
+  row: RidgeRow;
+  rowIndex: number;
+  nativeEvent?: PointerEvent;
+}
+```

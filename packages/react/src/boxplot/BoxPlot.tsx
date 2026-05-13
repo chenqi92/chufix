@@ -9,6 +9,8 @@ export function BoxPlot(props: BoxPlotProps) {
     height = 240,
     ariaLabel = '箱线图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const boxes = useMemo(() => {
@@ -53,7 +55,18 @@ export function BoxPlot(props: BoxPlotProps) {
       aria-label={ariaLabel}
     >
       {boxes?.map((b, i) => (
-        <g key={i} className={`cf-chart__series-${i % 8}`}>
+        <g
+          key={i}
+          className={`cf-chart__series-${i % 8}`}
+          onPointerEnter={(e) => {
+            const box = data?.[i];
+            if (box) onItemEnter?.({ box, dataIndex: i, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const box = data?.[i];
+            if (box) onItemLeave?.({ box, dataIndex: i, nativeEvent: e });
+          }}
+        >
           <line
             className="cf-chart__line"
             x1={b.cx}

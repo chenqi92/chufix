@@ -1,12 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { domainOf, linearScale } from '../_charts/scale';
-import type { BoxPlotProps } from './variants';
+import type {
+  BoxPlotInteractionPayload,
+  BoxPlotProps,
+} from './variants';
 
 const props = withDefaults(defineProps<BoxPlotProps>(), {
   width: 480,
   height: 240,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: BoxPlotInteractionPayload): void;
+  (e: 'item-leave', payload: BoxPlotInteractionPayload): void;
+}>();
+
+function onEnter(i: number, ev: PointerEvent) {
+  const box = props.data?.[i];
+  if (!box) return;
+  emit('item-enter', { box, dataIndex: i, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const box = props.data?.[i];
+  if (!box) return;
+  emit('item-leave', { box, dataIndex: i, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const data = props.data ?? [];
@@ -45,7 +64,13 @@ const layout = computed(() => {
     :aria-label="ariaLabel ?? '箱线图'"
   >
     <template v-if="layout">
-      <g v-for="(b, i) in layout" :key="i" :class="`cf-chart__series-${i % 8}`">
+      <g
+        v-for="(b, i) in layout"
+        :key="i"
+        :class="`cf-chart__series-${i % 8}`"
+        @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(i, e)"
+      >
         <line
           class="cf-chart__line"
           :x1="b.cx"

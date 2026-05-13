@@ -47,3 +47,22 @@ import RealVueSource from '~/components/demos/timingbar/RealVue.vue?raw';
 | `width` | `number` | `480` | SVG 宽度 |
 | `height` | `number` | `28` | SVG 高度 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `TimingBarInteractionPayload` | 鼠标进入某 phase 时触发 |
+| `item-leave` | `onItemLeave` | `TimingBarInteractionPayload` | 鼠标离开某 phase 时触发 |
+
+### 类型
+
+```ts
+interface TimingBarInteractionPayload {
+  phase: TimingPhase;
+  dataIndex: number;
+  /** end - start，单位 ms */
+  duration: number;
+  nativeEvent?: PointerEvent;
+}
+```

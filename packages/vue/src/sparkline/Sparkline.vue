@@ -6,7 +6,7 @@ import {
   linearScale,
   linePath,
 } from '../_charts/scale';
-import type { SparklineProps } from './variants';
+import type { SparklineClickPayload, SparklineProps } from './variants';
 
 const props = withDefaults(defineProps<SparklineProps>(), {
   width: 80,
@@ -16,6 +16,10 @@ const props = withDefaults(defineProps<SparklineProps>(), {
   colorIndex: 0,
   showDot: true,
 });
+
+const emit = defineEmits<{
+  (e: 'click', payload: SparklineClickPayload): void;
+}>();
 
 const svg = computed(() => {
   const w = props.width;
@@ -33,6 +37,20 @@ const svg = computed(() => {
   };
 });
 
+function onClick(ev: PointerEvent) {
+  const data = props.data ?? [];
+  if (!data.length) return;
+  const target = ev.currentTarget as SVGSVGElement | null;
+  if (!target) return;
+  const rect = target.getBoundingClientRect();
+  const ratio = rect.width ? (ev.clientX - rect.left) / rect.width : 0;
+  const dataIndex = Math.max(
+    0,
+    Math.min(data.length - 1, Math.round(ratio * (data.length - 1))),
+  );
+  emit('click', { dataIndex, value: data[dataIndex], nativeEvent: ev });
+}
+
 const cls = computed(() => [
   'cf-sparkline',
   `cf-chart__series-${props.colorIndex}`,
@@ -47,6 +65,7 @@ const cls = computed(() => [
     :height="height"
     role="img"
     :aria-label="ariaLabel ?? '走势缩略图'"
+    @click="onClick"
   >
     <template v-if="svg">
       <path v-if="filled" class="cf-chart__area" :d="svg.area" />

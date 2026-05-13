@@ -4,6 +4,12 @@ export interface TreemapNode {
   colorIndex?: number;
 }
 
+export interface TreemapInteractionPayload {
+  node: TreemapNode;
+  dataIndex: number;
+  nativeEvent?: unknown;
+}
+
 export interface TreemapProps {
   nodes: TreemapNode[];
   width?: number;
@@ -11,6 +17,8 @@ export interface TreemapProps {
   showLabels?: boolean;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: TreemapInteractionPayload) => void;
+  onItemLeave?: (payload: TreemapInteractionPayload) => void;
 }
 
 interface RectNode extends TreemapNode {

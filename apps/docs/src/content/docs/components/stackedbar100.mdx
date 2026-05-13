@@ -47,3 +47,22 @@ import CompareVueSource from '~/components/demos/stackedbar100/CompareVue.vue?ra
 | `height` | `number` | `24` | 柱高度 |
 | `showLegend` | `boolean` | `true` | 显示图例 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `StackedBar100InteractionPayload` | 鼠标进入某段时触发 |
+| `item-leave` | `onItemLeave` | `StackedBar100InteractionPayload` | 鼠标离开某段时触发 |
+
+### 类型
+
+```ts
+interface StackedBar100InteractionPayload {
+  segment: StackedBar100Series;
+  dataIndex: number;
+  /** 该段占总和的比例（0..1）。 */
+  pct: number;
+  nativeEvent?: PointerEvent;
+}
+```

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { linearScale } from '../_charts/scale';
-import type { TimingBarProps } from './variants';
+import type {
+  TimingBarInteractionPayload,
+  TimingBarProps,
+} from './variants';
 
 const props = withDefaults(defineProps<TimingBarProps>(), {
   width: 480,
@@ -9,6 +12,22 @@ const props = withDefaults(defineProps<TimingBarProps>(), {
   showAxis: true,
   labelMode: 'auto',
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: TimingBarInteractionPayload): void;
+  (e: 'item-leave', payload: TimingBarInteractionPayload): void;
+}>();
+
+function onEnter(i: number, ev: PointerEvent) {
+  const phase = props.phases?.[i];
+  if (!phase) return;
+  emit('item-enter', { phase, dataIndex: i, duration: phase.end - phase.start, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const phase = props.phases?.[i];
+  if (!phase) return;
+  emit('item-leave', { phase, dataIndex: i, duration: phase.end - phase.start, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const phases = props.phases ?? [];
@@ -66,6 +85,8 @@ const layout = computed(() => {
         :y="0"
         :width="p.width"
         :height="height"
+        @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(i, e)"
       >
         <title>{{ p.label }}: {{ p.duration }}ms</title>
       </rect>

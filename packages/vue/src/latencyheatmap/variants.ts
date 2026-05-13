@@ -11,6 +11,15 @@ export interface LatencyHeatmapProps {
   ariaLabel?: string;
 }
 
+export interface LatencyHeatmapInteractionPayload {
+  row: number;
+  col: number;
+  value: number;
+  rowLabel?: string;
+  colLabel?: string;
+  nativeEvent?: PointerEvent;
+}
+
 /** Compute color in OKLCH lerp from green→red based on ratio 0..1. */
 export function ratioColor(ratio: number): string {
   const r = Math.max(0, Math.min(1, ratio));

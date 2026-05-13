@@ -46,3 +46,28 @@ import MicroservicesVueSource from '~/components/demos/connectiongraph/Microserv
 | `height` | `number` | `360` | SVG 高度 |
 | `showLabels` | `boolean` | `true` | 显示节点 label |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `node-enter` | `onNodeEnter` | `ConnectionGraphNodeInteractionPayload` | 鼠标进入节点 |
+| `node-leave` | `onNodeLeave` | `ConnectionGraphNodeInteractionPayload` | 鼠标离开节点 |
+| `edge-enter` | `onEdgeEnter` | `ConnectionGraphEdgeInteractionPayload` | 鼠标进入边 |
+| `edge-leave` | `onEdgeLeave` | `ConnectionGraphEdgeInteractionPayload` | 鼠标离开边 |
+
+### 类型
+
+```ts
+interface ConnectionGraphNodeInteractionPayload {
+  node: GraphNode;
+  nodeIndex: number;
+  nativeEvent?: PointerEvent;
+}
+
+interface ConnectionGraphEdgeInteractionPayload {
+  edge: GraphEdge;
+  edgeIndex: number;
+  nativeEvent?: PointerEvent;
+}
+```

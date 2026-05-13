@@ -1,12 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { polar } from '../_charts/scale';
-import type { RadarChartProps } from './variants';
+import type {
+  RadarChartInteractionPayload,
+  RadarChartProps,
+} from './variants';
 
 const props = withDefaults(defineProps<RadarChartProps>(), {
   size: 240,
   showLegend: true,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: RadarChartInteractionPayload): void;
+  (e: 'item-leave', payload: RadarChartInteractionPayload): void;
+}>();
+
+function onEnter(i: number, ev: PointerEvent) {
+  const series = props.series?.[i];
+  if (!series) return;
+  emit('item-enter', { series, seriesIndex: i, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const series = props.series?.[i];
+  if (!series) return;
+  emit('item-leave', { series, seriesIndex: i, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const axes = props.axes ?? [];
@@ -77,6 +96,8 @@ const layout = computed(() => {
           :class="`cf-chart__bar--${p.idx}`"
           fill-opacity="0.2"
           stroke-width="2"
+          @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+          @pointerleave="(e: PointerEvent) => onLeave(i, e)"
         />
       </template>
     </svg>

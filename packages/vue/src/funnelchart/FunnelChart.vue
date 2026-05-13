@@ -1,12 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { FunnelChartProps } from './variants';
+import type {
+  FunnelChartInteractionPayload,
+  FunnelChartProps,
+} from './variants';
 
 const props = withDefaults(defineProps<FunnelChartProps>(), {
   width: 360,
   height: 240,
   showLabels: true,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: FunnelChartInteractionPayload): void;
+  (e: 'item-leave', payload: FunnelChartInteractionPayload): void;
+}>();
+
+function onEnter(i: number, ev: PointerEvent) {
+  const step = props.steps?.[i];
+  if (!step) return;
+  emit('item-enter', { step, dataIndex: i, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const step = props.steps?.[i];
+  if (!step) return;
+  emit('item-leave', { step, dataIndex: i, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const steps = props.steps ?? [];
@@ -52,6 +71,8 @@ const layout = computed(() => {
         :class="`cf-chart__bar--${s.colorIndex}`"
         :d="s.d"
         opacity="0.9"
+        @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(i, e)"
       />
       <template v-if="showLabels">
         <text

@@ -12,3 +12,10 @@ export interface GaugeProps {
   tone?: 'accent' | 'success' | 'warning' | 'error';
   ariaLabel?: string;
 }
+
+export interface GaugeClickPayload {
+  value: number;
+  /** Normalized ratio between min and max (0..1). */
+  ratio: number;
+  nativeEvent?: PointerEvent;
+}

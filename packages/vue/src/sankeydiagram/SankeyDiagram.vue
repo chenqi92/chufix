@@ -3,7 +3,9 @@ import { computed } from 'vue';
 import type {
   SankeyDiagramProps,
   SankeyLink,
+  SankeyLinkInteractionPayload,
   SankeyNode,
+  SankeyNodeInteractionPayload,
 } from './variants';
 
 const props = withDefaults(defineProps<SankeyDiagramProps>(), {
@@ -11,6 +13,34 @@ const props = withDefaults(defineProps<SankeyDiagramProps>(), {
   height: 280,
   nodeWidth: 12,
 });
+
+const emit = defineEmits<{
+  (e: 'node-enter', payload: SankeyNodeInteractionPayload): void;
+  (e: 'node-leave', payload: SankeyNodeInteractionPayload): void;
+  (e: 'link-enter', payload: SankeyLinkInteractionPayload): void;
+  (e: 'link-leave', payload: SankeyLinkInteractionPayload): void;
+}>();
+
+function onNodeEnter(id: string, ev: PointerEvent) {
+  const node = props.nodes?.find((n) => n.id === id);
+  if (!node) return;
+  emit('node-enter', { node, nativeEvent: ev });
+}
+function onNodeLeave(id: string, ev: PointerEvent) {
+  const node = props.nodes?.find((n) => n.id === id);
+  if (!node) return;
+  emit('node-leave', { node, nativeEvent: ev });
+}
+function onLinkEnter(i: number, ev: PointerEvent) {
+  const link = props.links?.[i];
+  if (!link) return;
+  emit('link-enter', { link, linkIndex: i, nativeEvent: ev });
+}
+function onLinkLeave(i: number, ev: PointerEvent) {
+  const link = props.links?.[i];
+  if (!link) return;
+  emit('link-leave', { link, linkIndex: i, nativeEvent: ev });
+}
 
 /* Simplified Sankey: assumes nodes' layer is precomputed (or 0/1). */
 const layout = computed(() => {
@@ -73,6 +103,7 @@ const layout = computed(() => {
       d,
       strokeWidth: Math.max(1, Math.min(sNode.h, tNode.h) * 0.6),
       idx: i % 8,
+      linkIndex: i,
     };
   }).filter((x): x is NonNullable<typeof x> => x != null);
 
@@ -108,8 +139,15 @@ const layout = computed(() => {
         :stroke-width="p.strokeWidth"
         stroke-opacity="0.35"
         stroke="currentColor"
+        @pointerenter="(e: PointerEvent) => onLinkEnter(p.linkIndex, e)"
+        @pointerleave="(e: PointerEvent) => onLinkLeave(p.linkIndex, e)"
       />
-      <g v-for="r in layout.nodeRects" :key="r.id">
+      <g
+        v-for="r in layout.nodeRects"
+        :key="r.id"
+        @pointerenter="(e: PointerEvent) => onNodeEnter(r.id, e)"
+        @pointerleave="(e: PointerEvent) => onNodeLeave(r.id, e)"
+      >
         <rect
           :class="`cf-chart__bar--${r.colorIndex}`"
           :x="r.x"
