@@ -45,11 +45,16 @@ function revert() {
 }
 
 const activeTab = ref<'general' | 'security' | 'backup'>('general');
+const tabItems = computed(() => [
+  { value: 'general', label: t.value.sys_general },
+  { value: 'security', label: t.value.sys_security },
+  { value: 'backup', label: t.value.sys_backup },
+]);
 </script>
 
 <template>
   <div class="adm-page">
-    <CfTabs v-model="activeTab" variant="line">
+    <CfTabs v-model="activeTab" :items="tabItems" variant="line">
       <template #default="{ active }">
         <CfTabPanel v-show="active === 'general'" value="general" :label="t.sys_general">
           <div class="adm-settings">

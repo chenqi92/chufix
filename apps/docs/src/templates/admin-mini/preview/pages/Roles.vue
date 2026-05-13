@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * 角色管理页 —— 完整 CRUD：
- *   - 新增 / 编辑（CfModal + CfForm + 多个 CfCheckbox 组成权限组）
+ *   - 新增 / 编辑（CfModal + CfForm + CfTreeView 组成菜单 / 按钮权限树）
  *   - 删除（CfConfirmDialog 二次确认）
  *   - 多选 + 批量删除
  *   - 列排序、列过滤（按权限维度）、分页
@@ -17,19 +17,66 @@ import {
   CfFormField,
   CfInput,
   CfTextarea,
-  CfCheckbox,
+  CfTreeView,
   CfConfirmDialog,
   CfHoverCard,
   toast,
 } from '@chufix-design/vue';
-import type { TableColumn } from '@chufix-design/vue';
+import type { TableColumn, TreeNode } from '@chufix-design/vue';
 import { DemoStateKey, STRINGS } from '../state';
 import { initialRoles, type AdminRole } from '../mock';
 
 const state = inject(DemoStateKey)!;
 const t = computed(() => STRINGS[state.locale.value]);
 
-const rows = ref<AdminRole[]>(initialRoles.map((r) => ({ ...r, permissions: [...r.permissions] })));
+const WILDCARD_PERMS: Record<string, string[]> = {
+  'user:*': ['menu:users', 'user:read', 'user:write'],
+  'role:*': ['menu:roles', 'role:read', 'role:write'],
+  'dict:*': ['menu:dict', 'dict:read', 'dict:write'],
+  'log:*': ['menu:op-log', 'log:read', 'log:export'],
+  '*': [
+    'menu:dashboard',
+    'menu:authz',
+    'menu:users',
+    'user:read',
+    'user:write',
+    'menu:roles',
+    'role:read',
+    'role:write',
+    'menu:user-roles',
+    'user-role:read',
+    'user-role:write',
+    'menu:org',
+    'org:read',
+    'org:write',
+    'menu:system',
+    'menu:dict',
+    'dict:read',
+    'dict:write',
+    'menu:op-log',
+    'log:read',
+    'log:export',
+    'menu:login-log',
+    'login-log:read',
+    'menu:menus',
+    'menu:read',
+    'menu:write',
+    'menu:settings',
+    'settings:read',
+    'settings:write',
+  ],
+};
+
+function normalizePermissions(perms: string[]): string[] {
+  const set = new Set<string>();
+  for (const perm of perms) {
+    const expanded = WILDCARD_PERMS[perm] ?? [perm];
+    for (const key of expanded) set.add(key);
+  }
+  return [...set];
+}
+
+const rows = ref<AdminRole[]>(initialRoles.map((r) => ({ ...r, permissions: normalizePermissions(r.permissions) })));
 const selected = ref<string[]>([]);
 
 const dialogOpen = ref(false);
@@ -42,20 +89,73 @@ const confirmOpen = ref(false);
 const pendingDelete = ref<AdminRole | null>(null);
 const batchConfirmOpen = ref(false);
 
-const ALL_PERMS = computed(() => [
-  { key: 'user:read',   label: t.value.perm_user_read },
-  { key: 'user:write',  label: t.value.perm_user_write },
-  { key: 'role:read',   label: t.value.perm_role_read },
-  { key: 'role:write',  label: t.value.perm_role_write },
-  { key: 'dict:read',   label: t.value.perm_dict_read },
-  { key: 'dict:write',  label: t.value.perm_dict_write },
-  { key: 'log:read',    label: t.value.perm_log_read },
-  { key: 'log:export',  label: t.value.perm_log_export },
-]);
+const permissionTree = computed<TreeNode[]>(() => {
+  const zh = state.locale.value === 'zh';
+  return [
+    { key: 'menu:dashboard', label: zh ? '菜单：工作台' : 'Menu: Dashboard' },
+    {
+      key: 'menu:authz',
+      label: zh ? '菜单：权限' : 'Menu: Permissions',
+      children: [
+        { key: 'menu:users', label: zh ? '用户管理' : 'Users', children: [
+          { key: 'user:read', label: t.value.perm_user_read },
+          { key: 'user:write', label: t.value.perm_user_write },
+        ] },
+        { key: 'menu:roles', label: zh ? '角色管理' : 'Roles', children: [
+          { key: 'role:read', label: t.value.perm_role_read },
+          { key: 'role:write', label: t.value.perm_role_write },
+        ] },
+        { key: 'menu:user-roles', label: zh ? '用户角色' : 'User roles', children: [
+          { key: 'user-role:read', label: zh ? '查看用户角色' : 'View user roles' },
+          { key: 'user-role:write', label: zh ? '分配用户角色' : 'Assign user roles' },
+        ] },
+        { key: 'menu:org', label: zh ? '组织架构' : 'Organization', children: [
+          { key: 'org:read', label: zh ? '查看组织' : 'View organization' },
+          { key: 'org:write', label: zh ? '维护组织' : 'Manage organization' },
+        ] },
+      ],
+    },
+    {
+      key: 'menu:system',
+      label: zh ? '菜单：系统' : 'Menu: System',
+      children: [
+        { key: 'menu:dict', label: zh ? '字典管理' : 'Dictionary', children: [
+          { key: 'dict:read', label: t.value.perm_dict_read },
+          { key: 'dict:write', label: t.value.perm_dict_write },
+        ] },
+        { key: 'menu:op-log', label: zh ? '操作日志' : 'Operation logs', children: [
+          { key: 'log:read', label: t.value.perm_log_read },
+          { key: 'log:export', label: t.value.perm_log_export },
+        ] },
+        { key: 'menu:login-log', label: zh ? '登录日志' : 'Login logs', children: [
+          { key: 'login-log:read', label: zh ? '查看登录日志' : 'View login logs' },
+        ] },
+        { key: 'menu:menus', label: zh ? '菜单管理' : 'Menu management', children: [
+          { key: 'menu:read', label: zh ? '查看菜单' : 'View menus' },
+          { key: 'menu:write', label: zh ? '维护菜单' : 'Manage menus' },
+        ] },
+        { key: 'menu:settings', label: zh ? '系统设置' : 'Settings', children: [
+          { key: 'settings:read', label: zh ? '查看设置' : 'View settings' },
+          { key: 'settings:write', label: zh ? '保存设置' : 'Save settings' },
+        ] },
+      ],
+    },
+  ];
+});
 
-function hasPerm(role: AdminRole, perm: string): boolean {
-  return role.permissions.some((p) => p === perm || p === perm.split(':')[0] + ':*' || p === '*');
-}
+const expandedPermissionKeys = computed(() => [
+  'menu:authz',
+  'menu:users',
+  'menu:roles',
+  'menu:user-roles',
+  'menu:org',
+  'menu:system',
+  'menu:dict',
+  'menu:op-log',
+  'menu:login-log',
+  'menu:menus',
+  'menu:settings',
+]);
 
 function openCreate() {
   editing.value = null;
@@ -108,13 +208,6 @@ function save(): boolean {
   }
   return true;
 }
-function togglePerm(key: string) {
-  const set = new Set(form.value.permissions);
-  if (set.has(key)) set.delete(key);
-  else set.add(key);
-  form.value.permissions = [...set];
-}
-
 const cols = computed<TableColumn<AdminRole>[]>(() => [
   { key: 'name', title: t.value.col_role_name, dataIndex: 'name', width: 180, sortable: true },
   { key: 'description', title: t.value.col_role_desc, dataIndex: 'description', ellipsis: true },
@@ -202,12 +295,16 @@ const cols = computed<TableColumn<AdminRole>[]>(() => [
           <CfTextarea v-model="form.description" :rows="2" />
         </CfFormField>
         <CfFormField :label="t.col_role_perms" name="permissions">
-          <div class="adm-roles__perms">
-            <label v-for="p in ALL_PERMS" :key="p.key" class="adm-roles__perm">
-              <CfCheckbox :model-value="form.permissions.includes(p.key)" @update:modelValue="togglePerm(p.key)" />
-              <span class="adm-roles__perm-label">{{ p.label }}</span>
-              <code class="adm-roles__perm-code">{{ p.key }}</code>
-            </label>
+          <div class="adm-roles__perm-tree">
+            <CfTreeView
+              v-model="form.permissions"
+              :nodes="permissionTree"
+              :default-expanded-keys="expandedPermissionKeys"
+              checkable
+              :cascade="true"
+              size="sm"
+              :show-line="true"
+            />
           </div>
         </CfFormField>
       </CfForm>
@@ -255,29 +352,12 @@ const cols = computed<TableColumn<AdminRole>[]>(() => [
 }
 .adm-page__count { color: var(--fg-3); font-size: var(--t-12); }
 
-.adm-roles__perms {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-.adm-roles__perm {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
+.adm-roles__perm-tree {
+  max-height: 320px;
+  overflow: auto;
+  padding: 8px;
   border: 1px solid var(--line-1);
   border-radius: var(--r-4);
-  cursor: pointer;
-}
-.adm-roles__perm:hover { border-color: var(--line-2); }
-.adm-roles__perm-label {
-  font-size: var(--t-12);
-  color: var(--fg-1);
-  flex: 1;
-}
-.adm-roles__perm-code {
-  font-size: var(--t-10);
-  color: var(--fg-3);
-  font-family: var(--font-mono);
+  background: var(--bg-1);
 }
 </style>

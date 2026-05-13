@@ -94,13 +94,22 @@ const cols = computed<TableColumn<OperationLog>[]>(() => [
 ]);
 
 function descItems(row: OperationLog): DescriptionItem[] {
+  const actionText = state.locale.value === 'zh'
+    ? ({ create: '新增用户', update: '更新角色权限', delete: '删除用户', login: '登录认证', export: '导出审计日志' } as Record<string, string>)[row.action] ?? row.action
+    : ({ create: 'Create user', update: 'Update role permissions', delete: 'Delete user', login: 'Login auth', export: 'Export audit logs' } as Record<string, string>)[row.action] ?? row.action;
+  const resultText = row.status === 'ok'
+    ? (state.locale.value === 'zh' ? '请求已完成，审计事件已写入日志。' : 'Request completed and audit event was persisted.')
+    : (state.locale.value === 'zh' ? '权限校验未通过，后端拒绝执行。' : 'Permission check failed and the backend rejected the request.');
   return [
-    { label: t.value.col_log_user,     value: row.user },
-    { label: t.value.col_log_action,   value: row.action },
-    { label: t.value.col_log_resource, value: row.resource },
-    { label: t.value.col_log_ip,       value: row.ip },
-    { label: t.value.col_log_at,       value: row.at },
-    { label: t.value.status,           value: row.status },
+    { term: t.value.col_log_user,     description: row.user },
+    { term: t.value.col_log_action,   description: `${row.action} · ${actionText}` },
+    { term: t.value.col_log_resource, description: row.resource },
+    { term: t.value.col_log_ip,       description: row.ip },
+    { term: t.value.col_log_at,       description: row.at },
+    { term: state.locale.value === 'zh' ? '请求编号' : 'Request ID', description: `REQ-${String(row.id).padStart(5, '0')}` },
+    { term: state.locale.value === 'zh' ? '请求方法' : 'Method', description: row.action === 'login' ? 'POST' : row.action === 'delete' ? 'DELETE' : row.action === 'create' ? 'POST' : 'PATCH' },
+    { term: t.value.status,           description: row.status === 'ok' ? t.value.status_ok : t.value.status_fail },
+    { term: state.locale.value === 'zh' ? '处理结果' : 'Result', description: resultText },
   ];
 }
 </script>

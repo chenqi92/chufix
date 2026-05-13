@@ -4,7 +4,7 @@
  * 关键 ChuFix 组件展示：
  *   - CfTreeView：层级结构、显示连接线、单选、节点图标
  *   - CfIconPicker：图标选择
- *   - CfForm + CfInput + CfNumberInput + CfSwitch + CfSelect：节点元数据
+ *   - CfForm + CfInput + CfNumberInput + CfSwitch + CfTreeSelect：节点元数据
  *   - CfSplitter：左右两栏可拖拽
  *   - CfConfirmDialog：删除二次确认
  */
@@ -17,7 +17,7 @@ import {
   CfInput,
   CfNumberInput,
   CfSwitch,
-  CfSelect,
+  CfTreeSelect,
   CfIconPicker,
   CfButton,
   CfConfirmDialog,
@@ -25,7 +25,7 @@ import {
   CfEmpty,
   toast,
 } from '@chufix-design/vue';
-import type { TreeNode } from '@chufix-design/vue';
+import type { TreeNode, TreeSelectNode } from '@chufix-design/vue';
 import { DemoStateKey, STRINGS } from '../state';
 import { initialMenus, type MenuEntry } from '../mock';
 
@@ -37,6 +37,7 @@ const selectedKey = ref<string | null>('m-dashboard');
 const expandedKeys = ref<string[]>(['m-authz', 'm-system']);
 
 const draft = ref<MenuEntry | null>(null);
+const isCreating = ref(false);
 
 function buildTree(list: MenuEntry[], parentId: string | null = null): TreeNode[] {
   return list
@@ -57,15 +58,55 @@ function buildTree(list: MenuEntry[], parentId: string | null = null): TreeNode[
 }
 const treeNodes = computed<TreeNode[]>(() => buildTree(menus.value));
 
-const parentOptions = computed(() => [
-  { value: '__root__', label: t.value.menu_no_parent },
-  ...menus.value
-    .filter((m) => m.parentId === null)
-    .map((m) => ({ value: m.id, label: m.title })),
-]);
+function collectMenuDescendantIds(id: string): string[] {
+  const out: string[] = [];
+  const visit = (parentId: string) => {
+    for (const child of menus.value.filter((m) => m.parentId === parentId)) {
+      out.push(child.id);
+      visit(child.id);
+    }
+  };
+  visit(id);
+  return out;
+}
+
+function buildParentTree(parentId: string | null, disabledIds: Set<string>): TreeSelectNode[] {
+  return menus.value
+    .filter((m) => m.parentId === parentId)
+    .sort((a, b) => a.sort - b.sort)
+    .map((m) => ({
+      value: m.id,
+      label: m.title,
+      disabled: disabledIds.has(m.id),
+      children: buildParentTree(m.id, disabledIds),
+    }));
+}
+
+const parentTreeOptions = computed<TreeSelectNode[]>(() => {
+  const disabledIds = new Set<string>();
+  if (draft.value && !isCreating.value) {
+    disabledIds.add(draft.value.id);
+    for (const id of collectMenuDescendantIds(draft.value.id)) disabledIds.add(id);
+  }
+  return [{
+    value: '__root__',
+    label: t.value.menu_no_parent,
+    children: buildParentTree(null, disabledIds),
+  }];
+});
+
+const parentSelectValue = computed({
+  get: () => draft.value?.parentId ?? '__root__',
+  set: (value: string | string[] | undefined) => {
+    if (!draft.value || Array.isArray(value)) return;
+    draft.value.parentId = value && value !== '__root__' ? value : null;
+  },
+});
 
 watch(selectedKey, (key) => {
+  if (isCreating.value && key === null) return;
   const found = key ? menus.value.find((m) => m.id === key) : null;
+  isCreating.value = false;
   draft.value = found ? { ...found } : null;
 }, { immediate: true });
 
@@ -76,7 +117,23 @@ function saveDraft() {
     toast.error(state.locale.value === 'zh' ? '名称必填' : 'Title is required');
     return;
   }
+  if (!isCreating.value) {
+    const disabledIds = new Set([d.id, ...collectMenuDescendantIds(d.id)]);
+    if (d.parentId && disabledIds.has(d.parentId)) {
+      toast.error(state.locale.value === 'zh' ? '不能选择自身或子级作为父级' : 'Cannot choose itself or a descendant as parent');
+      return;
+    }
+  }
+  if (isCreating.value) {
+    menus.value = [...menus.value, { ...d }];
+    if (d.parentId) expandedKeys.value = [...new Set([...expandedKeys.value, d.parentId])];
+    selectedKey.value = d.id;
+    isCreating.value = false;
+    toast.success(state.locale.value === 'zh' ? '已新增菜单' : 'Menu created');
+    return;
+  }
   menus.value = menus.value.map((m) => (m.id === d.id ? { ...d } : m));
+  if (d.parentId) expandedKeys.value = [...new Set([...expandedKeys.value, d.parentId])];
   toast.success(state.locale.value === 'zh' ? '已更新' : 'Updated');
 }
 
@@ -104,49 +161,25 @@ function confirmDelete() {
   );
 }
 
-function addChild() {
-  if (!selectedKey.value) return;
-  const parent = menus.value.find((m) => m.id === selectedKey.value);
-  if (!parent || parent.parentId !== null) {
-    toast.error(t.value.menu_root_only);
-    return;
-  }
-  const nextSort = menus.value.filter((m) => m.parentId === parent.id).length + 1;
-  const newMenu: MenuEntry = {
-    id: `m-${Date.now().toString(36)}`,
-    parentId: parent.id,
-    title: state.locale.value === 'zh' ? '新菜单' : 'New menu',
-    icon: 'square',
-    route: '/new',
-    sort: nextSort,
-    visible: true,
-  };
-  menus.value = [...menus.value, newMenu];
-  expandedKeys.value = [...new Set([...expandedKeys.value, parent.id])];
-  selectedKey.value = newMenu.id;
-  toast.success(state.locale.value === 'zh' ? '已新增' : 'Created');
-}
-
-function addRoot() {
+function openCreate() {
   const nextSort = menus.value.filter((m) => m.parentId === null).length + 1;
-  const newMenu: MenuEntry = {
+  isCreating.value = true;
+  selectedKey.value = null;
+  draft.value = {
     id: `m-${Date.now().toString(36)}`,
     parentId: null,
-    title: state.locale.value === 'zh' ? '新一级菜单' : 'New root menu',
+    title: state.locale.value === 'zh' ? '新菜单' : 'New menu',
     icon: 'square',
     route: '',
     sort: nextSort,
     visible: true,
   };
-  menus.value = [...menus.value, newMenu];
-  selectedKey.value = newMenu.id;
-  toast.success(state.locale.value === 'zh' ? '已新增一级菜单' : 'Created root menu');
 }
 
-const selectedIsRoot = computed(() => {
-  if (!selectedKey.value) return false;
-  return menus.value.find((m) => m.id === selectedKey.value)?.parentId === null;
-});
+function cancelCreate() {
+  isCreating.value = false;
+  selectedKey.value = menus.value[0]?.id ?? null;
+}
 </script>
 
 <template>
@@ -157,21 +190,13 @@ const selectedIsRoot = computed(() => {
       <template #start>
         <div class="adm-menus__tree">
           <header class="adm-menus__tree-head">
-            <CfButton size="sm" variant="primary" @click="addRoot">
-              + {{ state.locale.value === 'zh' ? '一级菜单' : 'Root' }}
-            </CfButton>
-            <CfButton
-              size="sm"
-              variant="tertiary"
-              :disabled="!selectedIsRoot"
-              @click="addChild"
-            >
-              {{ t.menu_add_child }}
+            <CfButton size="sm" variant="primary" @click="openCreate">
+              + {{ state.locale.value === 'zh' ? '新增菜单' : 'New menu' }}
             </CfButton>
             <CfButton
               size="sm"
               variant="danger"
-              :disabled="!selectedKey"
+              :disabled="!selectedKey || isCreating"
               @click="askDelete"
             >
               {{ t.delete }}
@@ -194,7 +219,7 @@ const selectedIsRoot = computed(() => {
         <div class="adm-menus__editor">
           <template v-if="draft">
             <header class="adm-menus__editor-head">
-              <h3>{{ draft.title || '—' }}</h3>
+              <h3>{{ isCreating ? (state.locale.value === 'zh' ? '新增菜单' : 'New menu') : (draft.title || '—') }}</h3>
               <span class="adm-menus__editor-meta">{{ draft.id }}</span>
             </header>
             <CfForm :model="draft" layout="vertical">
@@ -213,10 +238,12 @@ const selectedIsRoot = computed(() => {
               </CfFormField>
               <div class="adm-menus__row">
                 <CfFormField :label="t.menu_parent" name="parentId" style="flex: 1;">
-                  <CfSelect
-                    :model-value="draft.parentId ?? '__root__'"
-                    :disabled="true"
-                    :options="parentOptions"
+                  <CfTreeSelect
+                    v-model="parentSelectValue"
+                    :options="parentTreeOptions"
+                    searchable
+                    size="sm"
+                    :placeholder="t.menu_parent"
                   />
                 </CfFormField>
                 <CfFormField :label="t.menu_sort" name="sort" style="width: 120px;">
@@ -228,6 +255,7 @@ const selectedIsRoot = computed(() => {
               </CfFormField>
             </CfForm>
             <footer class="adm-menus__editor-foot">
+              <CfButton v-if="isCreating" variant="tertiary" @click="cancelCreate">{{ t.cancel }}</CfButton>
               <CfButton variant="primary" @click="saveDraft">{{ t.save }}</CfButton>
             </footer>
           </template>
@@ -302,6 +330,7 @@ const selectedIsRoot = computed(() => {
 }
 .adm-menus__editor-foot {
   display: flex;
+  gap: 8px;
   justify-content: flex-end;
   padding-top: 8px;
   border-top: 1px solid var(--line-1);
