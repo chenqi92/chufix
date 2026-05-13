@@ -43,5 +43,8 @@ import BandsVueSource from '~/components/demos/bulletchart/BandsVue.vue?raw';
 | `value` | `number` | `—` | 当前值 |
 | `target` | `number` | `—` | 目标值（垂直线） |
 | `max` | `number` | `—` | 最大值 |
-| `bands` | `{ upTo: number; tone? }[]` | `[]` | 质量带（poor/ok/good） |
-| `label` | `string` | `—` |  |
+| `bands` | `{ upTo: number; tone?: 'error' \| 'warning' \| 'success' }[]` | `[]` | 质量带；从左到右染色，配合 `upTo` 累计 |
+| `label` | `string` | `—` | 左侧标签 |
+| `width` | `number` | `480` | SVG 宽度 |
+| `height` | `number` | `32` | SVG 高度 |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |

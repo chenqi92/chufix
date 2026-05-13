@@ -40,6 +40,9 @@ import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw'
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `nodes` | `SankeyNode[]` | `—` | &#123; id, name, layer?, colorIndex? &#125;[] |
-| `links` | `SankeyLink[]` | `—` | &#123; source, target, value &#125;[] |
+| `nodes` | `SankeyNode[]` | `—` | `{ id, name, layer?, colorIndex? }[]` |
+| `links` | `SankeyLink[]` | `—` | `{ source, target, value }[]` |
+| `width` | `number` | `480` | SVG 宽度 |
+| `height` | `number` | `280` | SVG 高度 |
 | `nodeWidth` | `number` | `12` | 节点条宽 |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |

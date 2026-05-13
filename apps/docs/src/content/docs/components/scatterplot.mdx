@@ -38,7 +38,40 @@ import GroupsVueSource from '~/components/demos/scatterplot/GroupsVue.vue?raw';
 
 ## API
 
+### Props
+
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `data` | `ScatterPoint[]` | `—` | &#123; x, y, r?, group? &#125;[] |
-| `width / height` | `number` | `480 / 240` |  |
+| `data` | `ScatterPoint[]` | `—` | `{ x, y, r?, group?, label? }[]` |
+| `width` | `number` | `480` | SVG 宽度 |
+| `height` | `number` | `240` | SVG 高度 |
+| `showGrid` | `boolean` | `true` | 显示网格 |
+| `showTooltip` | `boolean` | `true` | 启用 hover tooltip |
+| `tooltipFormatter` | `(payload: ScatterPlotInteractionPayload) => string` | — | 完整 tooltip HTML 自渲染 |
+| `ariaLabel` | `string` | — | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `ScatterPlotInteractionPayload` | 鼠标进入某点时触发 |
+| `item-leave` | `onItemLeave` | `ScatterPlotInteractionPayload` | 鼠标离开时触发 |
+
+### 类型
+
+```ts
+interface ScatterPoint {
+  x: number;
+  y: number;
+  r?: number;       // 气泡半径（默认按数据自适应）
+  group?: string;   // 用于按组分色
+  label?: string;   // 单点标签
+}
+
+interface ScatterPlotInteractionPayload {
+  point: ScatterPoint;
+  dataIndex: number;
+  groupIndex: number;
+  nativeEvent?: MouseEvent;
+}
+```

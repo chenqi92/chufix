@@ -42,6 +42,11 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
 |---|---|---|---|
 | `label` | `string` | `—` | 顶部小标签 |
 | `value` | `string \| number` | `—` | 主数值 |
+| `prefix` | `string` | `—` | 数值前缀（如货币符号 `$`） |
+| `suffix` | `string` | `—` | 数值后缀（与 `unit` 同义，dashboard 风格） |
 | `unit` | `string` | `—` | 单位（数值后） |
+| `hint` | `string` | `—` | 数值下方的辅助说明小字 |
 | `delta` | `number` | `—` | 涨跌百分比，正负染色 |
-| `trend` | `number[]` | `—` | 内嵌 Sparkline 数据 |
+| `trend` | `number[] \| 'up' \| 'down' \| 'flat'` | `—` | 内嵌 Sparkline 数据；或传 `'up'`/`'down'`/`'flat'` 显示对应趋势图标 |
+| `deltaFn` | `(delta: number) => string` | `+N%` | 自定义 `delta` 文案格式化（如绝对值、保留小数位等） |
+| `ariaLabel` | `string` | `—` | 透传给根元素的 `aria-label` |

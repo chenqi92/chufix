@@ -40,6 +40,9 @@ import MicroservicesVueSource from '~/components/demos/connectiongraph/Microserv
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `nodes` | `GraphNode[]` | `—` | &#123; id, label, x?, y?, colorIndex?, size? &#125;[] |
-| `edges` | `GraphEdge[]` | `—` | &#123; source, target, weight?, colorIndex? &#125;[] |
-| `showLabels` | `boolean` | `true` |  |
+| `nodes` | `GraphNode[]` | `—` | `{ id, label, x?, y?, colorIndex?, size? }[]` |
+| `edges` | `GraphEdge[]` | `—` | `{ source, target, weight?, colorIndex? }[]` |
+| `width` | `number` | `480` | SVG 宽度 |
+| `height` | `number` | `360` | SVG 高度 |
+| `showLabels` | `boolean` | `true` | 显示节点 label |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
