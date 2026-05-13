@@ -37,4 +37,9 @@ import BasicVueSource from '~/components/demos/transfer/BasicVue.vue?raw';
 | `label` | `string` | 显示文本 |
 | `disabled` | `boolean` | 禁用，不可勾选 / 移动 |
 
-事件：`onChange(keys)` —— 已选 keys 数组变化时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string[]` | 已选 keys 数组变化时触发 |
+| `change` | `onChange` | `string[]` | 与 `update:modelValue` 同步触发，载荷相同 |

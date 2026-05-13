@@ -123,5 +123,16 @@ export default function Demo() {
 | `collapsible` | `boolean` | `false` | 启用 Enter / 空格在 `min` 与 `defaultSize` 间切换 |
 | `resizeFrom` | `'start' \| 'end'` | `'start'` | 数值绑定到哪一侧的尺寸 |
 
-事件：`update:modelValue` / `resize`（React 端：`onChange` / `onResize`）。
-Slot：`start` / `end`（React 用同名 prop 接 ReactNode）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `number` | 拖动结束或键盘提交时触发，载荷是新尺寸（按 `unit`） |
+| `resize` | `onResize` | `number` | 拖动过程中持续触发，载荷同上 |
+
+### Slots / Props
+
+| Slot | 说明 |
+|---|---|
+| `start` | 起始侧面板内容（React：`start` prop 接 ReactNode） |
+| `end` | 结束侧面板内容（React：`end` prop 接 ReactNode） |

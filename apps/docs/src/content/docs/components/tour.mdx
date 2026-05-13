@@ -29,7 +29,14 @@ import BasicVueSource from '~/components/demos/tour/BasicVue.vue?raw';
 | `current` | `number` | `—` | 受控当前步索引 |
 | `defaultCurrent` | `number` | `0` | 非受控初始步 |
 
-事件：`onOpenChange(open)` / `onCurrentChange(n)` / `onFinish()` / `onClose()`。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onOpenChange` | `boolean` | 显示状态变化时触发 |
+| `update:current` | `onCurrentChange` | `number` | 当前步索引变化时触发 |
+| `finish` | `onFinish` | — | 用户点击「完成」走完最后一步时触发 |
+| `close` | `onClose` | — | 用户主动关闭（点击 × 或外部）时触发 |
 
 ### TourStep
 

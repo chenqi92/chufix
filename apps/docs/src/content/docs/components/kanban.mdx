@@ -127,10 +127,12 @@ export default function Demo() {
 | `bordered` | `boolean` | `true` | 边框 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
 
-事件：
+### Events
 
-- `onChange(cols)` / `update:modelValue` — 看板任意变化
-- `onCardMove({ cardId, from, to, toIndex })` / `card-move` — 卡片移动后触发，包含来源列、目标列和目标位置索引
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `KanbanColumn[]` | 看板任意变化（拖动后新列状态） |
+| `cardMove` | `onCardMove` | `{ cardId: string; from: string; to: string; toIndex: number }` | 卡片完成跨列移动后触发；`from`/`to` 是列 id，`toIndex` 是目标位置 |
 
 类型导出：
 

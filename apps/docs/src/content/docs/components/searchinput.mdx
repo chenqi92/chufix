@@ -85,7 +85,10 @@ import DisabledVueSource from '~/components/demos/searchinput/DisabledVue.vue?ra
 | `clearable` | `boolean` | `true` | 显示清空按钮（值非空时） |
 | `shortcut` | `string` | — | 右侧 kbd 提示文本 |
 
-事件：
+## Events
 
-- Vue：`@update:modelValue`、`@search`、`@clear`
-- React：`onChange`、`onSearch`、`onClear`
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string` | 输入文本变化时触发 |
+| `search` | `onSearch` | `string` | 按 Enter 键时触发，载荷是当前 input 值 |
+| `clear` | `onClear` | — | 点击 × 清空按钮时触发；同时 modelValue 被置为空串 |

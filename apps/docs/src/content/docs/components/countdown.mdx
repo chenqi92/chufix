@@ -28,4 +28,9 @@ import BasicVueSource from '~/components/demos/countdown/BasicVue.vue?raw';
 | `interval` | `number` | `1000` | 刷新间隔（毫秒）；写 100 可取得百毫秒精度 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
 
-事件：`onFinish()` 归零；`onChange(remaining)` 每次 tick。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `finish` | `onFinish` | — | 倒计时归零时触发，且后续不再触发 `change` |
+| `change` | `onChange` | `number` | 每个 tick 触发；载荷是剩余毫秒数 |

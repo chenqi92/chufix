@@ -33,3 +33,9 @@ import BasicVueSource from '~/components/demos/backtop/BasicVue.vue?raw';
 | `target` | `string` | `—` | 要监听的容器选择器；省略时监听 `window` |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 按钮尺寸 |
 | `duration` | `number` | `320` | 平滑滚动时长（毫秒） |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | — | 用户点击按钮时触发；组件随后开始平滑滚回顶部 |

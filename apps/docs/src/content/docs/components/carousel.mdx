@@ -33,4 +33,8 @@ import BasicVueSource from '~/components/demos/carousel/BasicVue.vue?raw';
 | `indicators` | `boolean` | `true` | 显示底部指示点 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 视口高度档位 |
 
-事件：`onChange(index)` —— 当前索引变化时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `number` | 当前索引变化时触发（自动播放、点指示点、左右按钮、键盘滚动等都会触发） |

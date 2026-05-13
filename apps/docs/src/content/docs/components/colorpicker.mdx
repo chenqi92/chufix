@@ -64,6 +64,8 @@ export default function Demo() {
 
 ## API
 
+### Props
+
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` (Vue) / `value` (React) | `string` | `'#3b82f6'` | 颜色字符串，支持 hex / rgb / rgba / hsl / hsla 输入 |
@@ -73,7 +75,14 @@ export default function Demo() {
 | `panelOnly` | `boolean` | `false` | 不渲染触发器，直接展开面板 |
 | `disabled` | `boolean` | `false` | 禁用 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅触发器） |
+| `name` | `string` | — | 透传给隐式表单字段 |
+| `id` | `string` | — | 触发器 id |
 
-事件：`update:modelValue` / `change`（React 端：`onChange`）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string` | 颜色变化时触发；载荷格式跟随 `defaultFormat` |
+| `change` | `onChange` | `string` | 与 `update:modelValue` 同步触发，载荷相同 |
 
 > 颜色解析容忍 `#rgb` `#rgba` `#rrggbb` `#rrggbbaa` `rgb()` `rgba()` `hsl()` `hsla()` 多种写法；输入框失焦时自动尝试解析，无法解析时回滚到上一个有效值。

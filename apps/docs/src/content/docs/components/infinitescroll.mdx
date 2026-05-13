@@ -31,6 +31,16 @@ import BasicVueSource from '~/components/demos/infinitescroll/BasicVue.vue?raw';
 | `finished` | `boolean` | `false` | 已无更多数据 |
 | `threshold` | `number` | `100` | sentinel 进入视口前 N 像素就触发（rootMargin） |
 
-事件：`onLoad()` —— 应在事件中加载下一批数据。
+### Events
 
-Slot（Vue）：`loading` / `finished` 自定义底部提示文案。
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `load` | `onLoad` | — | sentinel 进入视口时触发；应在此回调内加载下一批数据 |
+
+### Slots
+
+| Slot | 说明 |
+|---|---|
+| `default` | 列表内容 |
+| `loading` | 自定义「加载中」提示 |
+| `finished` | 自定义「没有更多了」提示 |

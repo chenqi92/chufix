@@ -41,4 +41,9 @@ import BasicVueSource from '~/components/demos/cascader/BasicVue.vue?raw';
 | `disabled` | `boolean` | 禁用此项 |
 | `children` | `CascaderOption[]` | 下一级选项；省略代表叶节点 |
 
-事件：`onChange(path: string[])` —— 选中路径变化时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string[]` | 选中路径变化时触发，载荷是从根到叶的 value 序列 |
+| `change` | `onChange` | `string[]` | 与 `update:modelValue` 同步触发，载荷相同 |

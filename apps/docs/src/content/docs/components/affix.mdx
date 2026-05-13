@@ -35,3 +35,9 @@ import BasicVueSource from '~/components/demos/affix/BasicVue.vue?raw';
 | `offsetBottom` | `number` | `—` | 吸底时距离容器底部的像素偏移；与 `offsetTop` 二选一 |
 | `target` | `string` | `—` | 滚动容器选择器；省略时监听 `window` |
 | `zIndex` | `number` | `100` | 固定后的层级 |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `change` | `onChange` | `boolean` | 固定 / 不固定状态切换时触发，载荷是当前是否固定 |

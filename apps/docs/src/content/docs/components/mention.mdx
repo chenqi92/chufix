@@ -117,10 +117,12 @@ export default function Demo() {
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
 | `className` | `string` | `—` | 透传到根容器 |
 
-事件：
+## Events
 
-- `onChange(value)` / `update:modelValue` — 文本任意变化
-- `onSelect(option)` / `select` — 选中候选项时触发
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string` | 文本任意变化时触发 |
+| `select` | `onSelect` | `MentionOption` | 选中候选项时触发，载荷是被选中的原始 option |
 
 类型导出：
 
