@@ -1552,6 +1552,18 @@ a.cf-card .cf-card__header,
   width: 14px;
   height: 14px;
 }
+.cf-code-workspace__file-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  letter-spacing: 0;
+}
 .cf-code-workspace__file--vue .cf-code-workspace__file-icon  { color: oklch(70% 0.16 150); }
 .cf-code-workspace__file--tsx .cf-code-workspace__file-icon  { color: oklch(70% 0.14 235); }
 .cf-code-workspace__file--ts  .cf-code-workspace__file-icon  { color: oklch(65% 0.14 250); }
@@ -1591,20 +1603,57 @@ a.cf-card .cf-card__header,
   display: flex;
 }
 .cf-code-workspace__tab {
-  appearance: none;
-  border: 0;
+  display: inline-flex;
+  align-items: stretch;
+  flex: 0 0 auto;
   border-right: 1px solid var(--cf-code-workspace-border);
   background: transparent;
   color: var(--cf-code-workspace-muted);
-  padding: 0.45rem 0.85rem;
   font-family: var(--font-mono);
   font-size: var(--t-11);
-  cursor: pointer;
   white-space: nowrap;
   transition: background var(--dur-fast) var(--ease-out),
               color var(--dur-fast) var(--ease-out);
 }
+.cf-code-workspace__tab[data-open='false'] {
+  display: none;
+}
+.cf-code-workspace__tab-trigger,
+.cf-code-workspace__tab-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.cf-code-workspace__tab-trigger {
+  min-width: 0;
+  max-width: 180px;
+  padding: 0.45rem 0.35rem 0.45rem 0.85rem;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cf-code-workspace__tab-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  min-width: 28px;
+  color: color-mix(in oklch, var(--cf-code-workspace-muted), transparent 18%);
+  cursor: pointer;
+}
+.cf-code-workspace__tab-close svg {
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
 .cf-code-workspace__tab:hover { color: var(--cf-code-workspace-fg); }
+.cf-code-workspace__tab-close:hover {
+  color: var(--cf-code-workspace-fg);
+  background: color-mix(in oklch, var(--cf-code-workspace-active), transparent 35%);
+}
 .cf-code-workspace__tab[aria-selected='true'] {
   background: var(--cf-code-workspace-editor);
   color: var(--cf-code-workspace-fg);

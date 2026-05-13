@@ -248,22 +248,22 @@ const showVariantTabs = normalizedBundles.some(
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2 L8 14 L14 2 L11.5 2 L8 8.5 L4.5 2 Z"/></svg>
                   )}
                   {(fileKind(item.name) === 'tsx' || fileKind(item.name) === 'ts') && (
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3 H13 V13 H3 Z"/><path d="M5.5 6.5 H9.5 M7.5 6.5 V11 M11 10.5 Q11.5 11 12 11 Q13 11 13 10 Q13 9 12 9 Q11 9 11 8 Q11 7 12 7 Q12.5 7 13 7.3" /></svg>
+                    <span class="cf-code-workspace__file-glyph">TS</span>
                   )}
                   {(fileKind(item.name) === 'jsx' || fileKind(item.name) === 'js') && (
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3 H13 V13 H3 Z"/><path d="M8 6 V10.5 Q8 11.5 6.8 11.5 Q5.8 11.5 5.5 10.7 M11 10.7 Q11.5 11.5 12.4 11.5 Q13.2 11.5 13.2 10.7 Q13.2 10 12.4 9.8 L11.5 9.5 Q10.8 9.3 10.8 8.6 Q10.8 7.8 11.6 7.8 Q12.2 7.8 12.7 8.2" /></svg>
+                    <span class="cf-code-workspace__file-glyph">JS</span>
                   )}
                   {fileKind(item.name) === 'css' && (
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2.5 L4 13 L8 14.5 L12 13 L13 2.5 Z"/><path d="M5.5 5.5 H11 M5.5 8 H10.5"/></svg>
+                    <span class="cf-code-workspace__file-glyph">#</span>
                   )}
                   {fileKind(item.name) === 'json' && (
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 Q3 3 3 5.5 Q3 8 5 8 Q3 8 3 10.5 Q3 13 6 13"/><path d="M10 3 Q13 3 13 5.5 Q13 8 11 8 Q13 8 13 10.5 Q13 13 10 13"/></svg>
+                    <span class="cf-code-workspace__file-glyph">{'{}'}</span>
                   )}
                   {fileKind(item.name) === 'html' && (
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2.5 L4 13 L8 14.5 L12 13 L13 2.5 Z"/><path d="M5.5 5.5 H10.5 L10 9.5 L8 10 L6 9.5"/></svg>
+                    <span class="cf-code-workspace__file-glyph">&lt;&gt;</span>
                   )}
                   {fileKind(item.name) === 'md' && (
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4 H13.5 V12 H2.5 Z"/><path d="M4.5 10 V6 L6 8 L7.5 6 V10 M10 6 V10 M9 9 L10 10 L11 9"/></svg>
+                    <span class="cf-code-workspace__file-glyph">M</span>
                   )}
                   {fileKind(item.name) === 'default' && (
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5 H10 L13 5.5 V13.5 H4 Z"/><path d="M10 2.5 V5.5 H13"/></svg>
@@ -288,15 +288,34 @@ const showVariantTabs = normalizedBundles.some(
             {bundle.files.map((file, index) => {
               const fileId = `${bundle.id}::${file.name}`;
               return (
-                <button
-                  type="button"
+                <div
                   class="cf-code-workspace__tab"
-                  data-doc-code-tab={fileId}
-                  data-doc-code-tab-bundle={bundle.id}
+                  data-doc-code-tab-item={fileId}
+                  data-doc-code-tab-item-bundle={bundle.id}
+                  data-open="true"
                   aria-selected={index === 0 ? 'true' : 'false'}
                 >
-                  {fileName(file.name)}
-                </button>
+                  <button
+                    type="button"
+                    class="cf-code-workspace__tab-trigger"
+                    data-doc-code-tab={fileId}
+                    data-doc-code-tab-bundle={bundle.id}
+                    data-open="true"
+                  >
+                    {fileName(file.name)}
+                  </button>
+                  <button
+                    type="button"
+                    class="cf-code-workspace__tab-close"
+                    data-doc-code-tab-close={fileId}
+                    data-doc-code-tab-close-bundle={bundle.id}
+                    aria-label={`关闭 ${fileName(file.name)}`}
+                  >
+                    <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+                      <path d="M3.25 3.25L8.75 8.75M8.75 3.25L3.25 8.75" />
+                    </svg>
+                  </button>
+                </div>
               );
             })}
           </div>
@@ -308,6 +327,7 @@ const showVariantTabs = normalizedBundles.some(
           class="cf-doc-code__panel"
           data-doc-code-panel={file.fileId}
           data-doc-code-panel-bundle={file.bundleId}
+          data-open="true"
           data-active={file.fileId === defaultFileId ? 'true' : 'false'}
         >
           <div class="cf-code-workspace__meta">
@@ -340,7 +360,9 @@ const showVariantTabs = normalizedBundles.some(
     const trees = root.querySelectorAll<HTMLElement>('[data-doc-code-tree]');
     const fileBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-file]');
     const tabGroups = root.querySelectorAll<HTMLElement>('[data-doc-code-tabs]');
+    const tabItems = root.querySelectorAll<HTMLElement>('[data-doc-code-tab-item]');
     const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tab]');
+    const tabCloseBtns = root.querySelectorAll<HTMLButtonElement>('[data-doc-code-tab-close]');
     const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-doc-code-copy]');
 
@@ -352,10 +374,13 @@ const showVariantTabs = normalizedBundles.some(
     };
 
     const firstFileIdOfBundle = (bundleId: string) => {
-      const firstTab = root.querySelector<HTMLButtonElement>(
-        `[data-doc-code-tab-bundle="${bundleId}"]`,
+      const firstTab = root.querySelector<HTMLElement>(
+        `[data-doc-code-tab-item-bundle="${bundleId}"][data-open="true"]`,
       );
-      return firstTab?.dataset.docCodeTab ?? '';
+      return firstTab?.dataset.docCodeTabItem
+        ?? root.querySelector<HTMLElement>(`[data-doc-code-tab-item-bundle="${bundleId}"]`)
+          ?.dataset.docCodeTabItem
+        ?? '';
     };
 
     const firstBundleOfFramework = (framework: string) => {
@@ -392,15 +417,49 @@ const showVariantTabs = normalizedBundles.some(
 
     const activateFile = (fileId: string) => {
       if (!fileId) return;
+      const targetTab = root.querySelector<HTMLElement>(`[data-doc-code-tab-item="${fileId}"]`);
+      const targetPanel = root.querySelector<HTMLElement>(`[data-doc-code-panel="${fileId}"]`);
+      if (targetTab) targetTab.dataset.open = 'true';
+      if (targetPanel) targetPanel.dataset.open = 'true';
       fileBtns.forEach((btn) =>
         btn.setAttribute('aria-selected', String(btn.dataset.docCodeFile === fileId)),
       );
-      tabBtns.forEach((btn) =>
-        btn.setAttribute('aria-selected', String(btn.dataset.docCodeTab === fileId)),
-      );
+      tabItems.forEach((tab) => {
+        tab.setAttribute('aria-selected', String(tab.dataset.docCodeTabItem === fileId));
+      });
       panels.forEach((panel) => {
         panel.dataset.active = String(panel.dataset.docCodePanel === fileId);
       });
+      syncCopyTarget();
+    };
+
+    const closeFile = (fileId: string) => {
+      if (!fileId) return;
+      const tab = root.querySelector<HTMLElement>(`[data-doc-code-tab-item="${fileId}"]`);
+      const panel = root.querySelector<HTMLElement>(`[data-doc-code-panel="${fileId}"]`);
+      const isActive = panel?.dataset.active === 'true';
+      if (tab) {
+        tab.dataset.open = 'false';
+        tab.setAttribute('aria-selected', 'false');
+      }
+      if (panel) {
+        panel.dataset.open = 'false';
+        panel.dataset.active = 'false';
+      }
+      if (!isActive) return;
+
+      const bundleId = panel?.dataset.docCodePanelBundle ?? root.dataset.activeBundle ?? '';
+      const openTabs = Array.from(
+        root.querySelectorAll<HTMLElement>(
+          `[data-doc-code-tab-item-bundle="${bundleId}"][data-open="true"]`,
+        ),
+      );
+      const nextId = openTabs[0]?.dataset.docCodeTabItem ?? '';
+      if (nextId) {
+        activateFile(nextId);
+        return;
+      }
+      fileBtns.forEach((btn) => btn.setAttribute('aria-selected', 'false'));
       syncCopyTarget();
     };
 
@@ -421,6 +480,10 @@ const showVariantTabs = normalizedBundles.some(
 
     tabBtns.forEach((btn) =>
       btn.addEventListener('click', () => activateFile(btn.dataset.docCodeTab ?? '')),
+    );
+
+    tabCloseBtns.forEach((btn) =>
+      btn.addEventListener('click', () => closeFile(btn.dataset.docCodeTabClose ?? '')),
     );
 
     copyBtn?.addEventListener('click', async () => {

@@ -84,20 +84,29 @@ const codeToggleHideLabel = isEn ? 'Hide code' : '收起代码';
 
 <script>
   // 演示底部「查看代码」折叠/展开。和组件文档里 DemoFrame 的交互一致。
-  document.querySelectorAll<HTMLElement>('[data-tmpl-code]').forEach((section) => {
-    const toggle = section.querySelector<HTMLButtonElement>('[data-tmpl-code-toggle]');
-    const label = toggle?.querySelector<HTMLSpanElement>('.tmpl-stage__toggle-label');
-    if (!toggle || !label) return;
-    const showLabel = toggle.dataset.showLabel ?? 'View code';
-    const hideLabel = toggle.dataset.hideLabel ?? 'Hide code';
-    toggle.addEventListener('click', () => {
-      const isCollapsed = section.getAttribute('data-collapsed') !== 'false';
-      const nextCollapsed = !isCollapsed; // 当前展开则收起，反之亦然
-      section.setAttribute('data-collapsed', String(nextCollapsed));
-      toggle.setAttribute('aria-expanded', String(!nextCollapsed));
-      label.textContent = nextCollapsed ? showLabel : hideLabel;
+  function bindTemplateCodeToggles() {
+    document.querySelectorAll<HTMLElement>('[data-tmpl-code]').forEach((section) => {
+      if (section.dataset.bound === 'true') return;
+      const toggle = section.querySelector<HTMLButtonElement>('[data-tmpl-code-toggle]');
+      const label = toggle?.querySelector<HTMLSpanElement>('.tmpl-stage__toggle-label');
+      if (!toggle || !label) return;
+      section.dataset.bound = 'true';
+      const showLabel = toggle.dataset.showLabel ?? 'View code';
+      const hideLabel = toggle.dataset.hideLabel ?? 'Hide code';
+      toggle.addEventListener('click', () => {
+        const isCollapsed = section.getAttribute('data-collapsed') !== 'false';
+        const nextCollapsed = !isCollapsed; // 当前展开则收起，反之亦然
+        section.setAttribute('data-collapsed', String(nextCollapsed));
+        toggle.setAttribute('aria-expanded', String(!nextCollapsed));
+        label.textContent = nextCollapsed ? showLabel : hideLabel;
+      });
     });
-  });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindTemplateCodeToggles, { once: true });
+  } else {
+    bindTemplateCodeToggles();
+  }
 </script>
 
 <style>
