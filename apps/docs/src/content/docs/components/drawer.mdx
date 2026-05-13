@@ -22,6 +22,10 @@ import ServiceVue from '~/components/demos/drawer/ServiceVue.vue';
 import ServiceVueSource from '~/components/demos/drawer/ServiceVue.vue?raw';
 import NoMaskVue from '~/components/demos/drawer/NoMaskVue.vue';
 import NoMaskVueSource from '~/components/demos/drawer/NoMaskVue.vue?raw';
+import CustomFooterVue from '~/components/demos/drawer/CustomFooterVue.vue';
+import CustomFooterVueSource from '~/components/demos/drawer/CustomFooterVue.vue?raw';
+import StackedVue from '~/components/demos/drawer/StackedVue.vue';
+import StackedVueSource from '~/components/demos/drawer/StackedVue.vue?raw';
 
 ## 基础用法
 
@@ -101,6 +105,44 @@ import NoMaskVueSource from '~/components/demos/drawer/NoMaskVue.vue?raw';
   <NoCloseVue client:only="vue" />
 </DemoFrame>
 
+## 自定义 footer
+
+`footer` 具名插槽接收 `{ ok, cancel, loading }` 三个作用域参数，可以完全自渲染按钮组：插入"保存草稿"等额外动作，同时复用组件内置的 ok/cancel 关闭逻辑与 `onBeforeOk` 等待态。
+
+<DemoFrame
+  vueCode={`<CfDrawer v-model:open="open" title="编辑文章" :on-before-ok="publish">
+  <p>文章正文…</p>
+  <template #footer="{ ok, cancel, loading }">
+    <CfButton variant="ghost"    :disabled="loading" @click="cancel">取消</CfButton>
+    <CfButton variant="tertiary" :loading="saving"   @click="saveDraft">保存草稿</CfButton>
+    <CfButton variant="primary"  :loading="loading"  @click="ok">发布</CfButton>
+  </template>
+</CfDrawer>`}
+  reactCode={`<CfDrawer open={open} onOpenChange={setOpen} title="编辑文章" onBeforeOk={publish}
+  footer={({ ok, cancel, loading }) => (
+    <>
+      <CfButton variant="ghost" disabled={loading} onClick={cancel}>取消</CfButton>
+      <CfButton variant="tertiary" loading={saving} onClick={saveDraft}>保存草稿</CfButton>
+      <CfButton variant="primary" loading={loading} onClick={ok}>发布</CfButton>
+    </>
+  )}
+>
+  <p>文章正文…</p>
+</CfDrawer>`}
+
+  vueSource={CustomFooterVueSource}>
+  <CustomFooterVue client:only="vue" />
+</DemoFrame>
+
+## 多抽屉栈
+
+抽屉之间会自动维护一个 z-index 栈，每打开一层 z-index +10；Esc 只关闭最顶层。可以在一个抽屉内继续打开嵌套抽屉，不必关心层级管理。
+
+<DemoFrame
+  vueSource={StackedVueSource}>
+  <StackedVue client:only="vue" />
+</DemoFrame>
+
 ## 命令式服务
 
 `drawer.open / confirm / danger` 直接弹一个抽屉并返回 `Promise<boolean>` —— 不需要任何状态绑定。
@@ -153,6 +195,20 @@ const ok = await drawer.confirm({
 - Vue：`header` / 默认 / `footer` 三个具名插槽。`footer` 插槽接收 `{ ok, cancel, loading }` 用于自渲染按钮。
 - React：`header`、`footer`（可传 ReactNode 或 `({ ok, cancel, loading }) => ReactNode`）+ `children`。
 - 事件：`update:open` / `close` / `ok` / `cancel`。
+
+### Exposed 方法 (Vue ref)
+
+| 方法 | 说明 |
+| --- | --- |
+| `close()` | 编程式关闭抽屉（受 `onBeforeOk` 异步态保护） |
+| `ok()` | 编程式触发 OK 流程（含 `onBeforeOk` 校验） |
+
+通过 `ref` 拿到组件实例后调用：
+
+```vue
+<CfDrawer ref="drawerRef" v-model:open="open" title="设置" />
+<CfButton @click="drawerRef?.close()">从外部关闭</CfButton>
+```
 
 ### 服务方法
 

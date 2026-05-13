@@ -10,6 +10,12 @@ import VariantsVue from '~/components/demos/stepper/VariantsVue.vue';
 import VariantsVueSource from '~/components/demos/stepper/VariantsVue.vue?raw';
 import VerticalVue from '~/components/demos/stepper/VerticalVue.vue';
 import VerticalVueSource from '~/components/demos/stepper/VerticalVue.vue?raw';
+import SizesVue from '~/components/demos/stepper/SizesVue.vue';
+import SizesVueSource from '~/components/demos/stepper/SizesVue.vue?raw';
+import ClickableVue from '~/components/demos/stepper/ClickableVue.vue';
+import ClickableVueSource from '~/components/demos/stepper/ClickableVue.vue?raw';
+import ErrorVue from '~/components/demos/stepper/ErrorVue.vue';
+import ErrorVueSource from '~/components/demos/stepper/ErrorVue.vue?raw';
 
 ## 基础用法
 
@@ -91,6 +97,64 @@ export default function Demo() {
 
   vueSource={VerticalVueSource}>
   <VerticalVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 控制节点直径、字号与间距。`sm` 紧凑（适合多步流程的顶部进度条）/ `md` 默认 / `lg` 适合需要强调的关键流程。
+
+<DemoFrame
+  vueCode={`<CfStepper :items="items" :current="1" size="sm" />
+<CfStepper :items="items" :current="1" size="md" />
+<CfStepper :items="items" :current="1" size="lg" />`}
+  reactCode={`<CfStepper items={items} current={1} size="sm" />
+<CfStepper items={items} current={1} size="md" />
+<CfStepper items={items} current={1} size="lg" />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 可点击切换
+
+`clickable` 让每一步都变成可点击按钮，配合 `@change` (Vue) / `onChange` (React) 接收点击的索引和原始 item，自行更新 `current`。被禁用（`item.disabled`）的项依然无法点击。
+
+<DemoFrame
+  vueCode={`<CfStepper
+  :items="items"
+  :current="current"
+  clickable
+  @change="(i) => current = i"
+/>`}
+  reactCode={`<CfStepper
+  items={items}
+  current={current}
+  clickable
+  onChange={(i) => setCurrent(i)}
+/>`}
+
+  vueSource={ClickableVueSource}>
+  <ClickableVue client:load />
+</DemoFrame>
+
+## error 状态
+
+某步骤显式置 `status: 'error'` —— 节点会渲染 × 图标并应用红色 tone，后续步骤保持 pending。常用于校验失败或异步任务报错的可视化。
+
+<DemoFrame
+  vueCode={`<CfStepper :items="[
+  { title: '上传文件', description: '已完成', status: 'done' },
+  { title: '解析',     description: '识别失败',  status: 'error' },
+  { title: '导入',     description: '等待中' },
+]" />`}
+  reactCode={`<CfStepper items={[
+  { title: '上传文件', description: '已完成', status: 'done' },
+  { title: '解析',     description: '识别失败',  status: 'error' },
+  { title: '导入',     description: '等待中' },
+]} />`}
+
+  vueSource={ErrorVueSource}>
+  <ErrorVue client:load />
 </DemoFrame>
 
 ## API
