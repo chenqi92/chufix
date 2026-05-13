@@ -12,6 +12,10 @@ import SeparatorsVue from '~/components/demos/taginput/SeparatorsVue.vue';
 import SeparatorsVueSource from '~/components/demos/taginput/SeparatorsVue.vue?raw';
 import MaxValidateVue from '~/components/demos/taginput/MaxValidateVue.vue';
 import MaxValidateVueSource from '~/components/demos/taginput/MaxValidateVue.vue?raw';
+import SizesVue from '~/components/demos/taginput/SizesVue.vue';
+import SizesVueSource from '~/components/demos/taginput/SizesVue.vue?raw';
+import VariantsVue from '~/components/demos/taginput/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/taginput/VariantsVue.vue?raw';
 
 ## 基础用法
 
@@ -58,6 +62,40 @@ export default function Demo() {
 
   vueSource={TonesVueSource}>
   <TonesVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 与 Input、Select 保持一致 —— `sm` / `md` / `lg`。
+
+<DemoFrame
+  vueCode={`<CfTagInput v-model="a" size="sm" />
+<CfTagInput v-model="b" size="md" />
+<CfTagInput v-model="c" size="lg" />`}
+  reactCode={`<CfTagInput value={a} onChange={setA} size="sm" />
+<CfTagInput value={b} onChange={setB} size="md" />
+<CfTagInput value={c} onChange={setC} size="lg" />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 视觉变体
+
+`variant` —— `outline`（默认，带描边）/ `filled`（实底，密集表单常用）/ `ghost`（透明，悬停描边）。`error` 切到红色边框，常配合表单校验。
+
+<DemoFrame
+  vueCode={`<CfTagInput v-model="a" variant="outline" />
+<CfTagInput v-model="b" variant="filled" />
+<CfTagInput v-model="c" variant="ghost" />
+<CfTagInput v-model="d" error placeholder="error 态" />`}
+  reactCode={`<CfTagInput value={a} onChange={setA} variant="outline" />
+<CfTagInput value={b} onChange={setB} variant="filled" />
+<CfTagInput value={c} onChange={setC} variant="ghost" />
+<CfTagInput value={d} onChange={setD} error placeholder="error 态" />`}
+
+  vueSource={VariantsVueSource}>
+  <VariantsVue client:load />
 </DemoFrame>
 
 ## 自定义分隔符
@@ -128,6 +166,8 @@ export default function Demo() {
 
 ## API
 
+### Props
+
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` (Vue) / `value` (React) | `string[]` | `[]` | 当前标签数组 |
@@ -141,6 +181,14 @@ export default function Demo() {
 | `separators` | `string[]` | `['Enter']` | 触发提交的键，可包含 `'Enter'` `','` `' '` `'Tab'` 或单字符 |
 | `unique` | `boolean` | `true` | 是否去重，重复的输入会被忽略 |
 | `trim` | `boolean` | `true` | 提交前是否 trim |
-| `validate` | `(tag) => boolean` | `—` | 返回 `false` 的输入会被丢弃 |
+| `validate` | `(tag: string) => boolean` | `—` | 返回 `false` 的输入会被丢弃 |
+| `name` | `string` | — | 透传给隐式表单字段，用于原生表单提交 |
+| `id` | `string` | — | 根元素 id，便于外部 `<label for>` 关联 |
 
-事件：`update:modelValue` / `add` / `remove`（React 端：`onChange` / `onAdd` / `onRemove`）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string[]` | 标签数组发生变化时（新增或删除）触发 |
+| `add` | `onAdd` | `string` | 新增单个标签时触发，载荷是被添加的字符串 |
+| `remove` | `onRemove` | `(tag: string, index: number)` | 删除单个标签时触发；提供原值与位置索引 |
