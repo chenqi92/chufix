@@ -2,29 +2,81 @@
 import { computed } from 'vue';
 import { polar } from '../_charts/scale';
 import type {
+  RadarAxisInteractionPayload,
   RadarChartInteractionPayload,
   RadarChartProps,
+  RadarVertexInteractionPayload,
 } from './variants';
 
 const props = withDefaults(defineProps<RadarChartProps>(), {
   size: 240,
   showLegend: true,
+  showPoints: true,
 });
 
 const emit = defineEmits<{
   (e: 'item-enter', payload: RadarChartInteractionPayload): void;
   (e: 'item-leave', payload: RadarChartInteractionPayload): void;
+  (e: 'vertex-enter', payload: RadarVertexInteractionPayload): void;
+  (e: 'vertex-leave', payload: RadarVertexInteractionPayload): void;
+  (e: 'axis-enter', payload: RadarAxisInteractionPayload): void;
+  (e: 'axis-leave', payload: RadarAxisInteractionPayload): void;
 }>();
 
-function onEnter(i: number, ev: PointerEvent) {
+function onSeriesEnter(i: number, ev: PointerEvent) {
   const series = props.series?.[i];
   if (!series) return;
   emit('item-enter', { series, seriesIndex: i, nativeEvent: ev });
 }
-function onLeave(i: number, ev: PointerEvent) {
+function onSeriesLeave(i: number, ev: PointerEvent) {
   const series = props.series?.[i];
   if (!series) return;
   emit('item-leave', { series, seriesIndex: i, nativeEvent: ev });
+}
+
+function buildVertex(
+  seriesIndex: number,
+  axisIndex: number,
+  ev: PointerEvent,
+): RadarVertexInteractionPayload | null {
+  const series = props.series?.[seriesIndex];
+  const axisLabel = props.axes?.[axisIndex];
+  if (!series || axisLabel == null) return null;
+  return {
+    series,
+    seriesIndex,
+    axisIndex,
+    axisLabel,
+    value: series.values[axisIndex],
+    nativeEvent: ev,
+  };
+}
+function onVertexEnter(seriesIndex: number, axisIndex: number, ev: PointerEvent) {
+  const p = buildVertex(seriesIndex, axisIndex, ev);
+  if (p) emit('vertex-enter', p);
+}
+function onVertexLeave(seriesIndex: number, axisIndex: number, ev: PointerEvent) {
+  const p = buildVertex(seriesIndex, axisIndex, ev);
+  if (p) emit('vertex-leave', p);
+}
+
+function buildAxis(i: number, ev: PointerEvent): RadarAxisInteractionPayload | null {
+  const axisLabel = props.axes?.[i];
+  if (axisLabel == null) return null;
+  return {
+    axisIndex: i,
+    axisLabel,
+    values: (props.series ?? []).map((s) => s.values[i] ?? 0),
+    nativeEvent: ev,
+  };
+}
+function onAxisEnter(i: number, ev: PointerEvent) {
+  const p = buildAxis(i, ev);
+  if (p) emit('axis-enter', p);
+}
+function onAxisLeave(i: number, ev: PointerEvent) {
+  const p = buildAxis(i, ev);
+  if (p) emit('axis-leave', p);
 }
 
 const layout = computed(() => {
@@ -50,7 +102,7 @@ const layout = computed(() => {
       'M ' +
       points.map((p) => `${p.x} ${p.y}`).join(' L ') +
       ' Z';
-    return { idx: s.colorIndex ?? idx % 8, name: s.name, d };
+    return { idx: s.colorIndex ?? idx % 8, name: s.name, d, points };
   });
 
   return { cx, cy, r, axisPoints, grid, polygons };
@@ -76,11 +128,13 @@ const layout = computed(() => {
         <line
           v-for="(p, i) in layout.axisPoints"
           :key="`ax${i}`"
-          class="cf-chart__axis"
+          class="cf-chart__axis cf-radar__axis-line"
           :x1="layout.cx"
           :y1="layout.cy"
           :x2="p.x"
           :y2="p.y"
+          @pointerenter="(e: PointerEvent) => onAxisEnter(i, e)"
+          @pointerleave="(e: PointerEvent) => onAxisLeave(i, e)"
         />
         <text
           v-for="(p, i) in layout.axisPoints"
@@ -88,17 +142,36 @@ const layout = computed(() => {
           :x="p.x"
           :y="p.y - 6"
           text-anchor="middle"
+          class="cf-radar__axis-label"
+          @pointerenter="(e: PointerEvent) => onAxisEnter(i, e)"
+          @pointerleave="(e: PointerEvent) => onAxisLeave(i, e)"
         >{{ axes[i] }}</text>
         <path
           v-for="(p, i) in layout.polygons"
           :key="`p${i}`"
           :d="p.d"
-          :class="`cf-chart__bar--${p.idx}`"
+          :class="[`cf-chart__bar--${p.idx}`, 'cf-radar__polygon']"
           fill-opacity="0.2"
           stroke-width="2"
-          @pointerenter="(e: PointerEvent) => onEnter(i, e)"
-          @pointerleave="(e: PointerEvent) => onLeave(i, e)"
+          @pointerenter="(e: PointerEvent) => onSeriesEnter(i, e)"
+          @pointerleave="(e: PointerEvent) => onSeriesLeave(i, e)"
         />
+        <template v-if="showPoints">
+          <template v-for="(p, si) in layout.polygons" :key="`pts-${si}`">
+            <circle
+              v-for="(pt, ai) in p.points"
+              :key="`pt-${si}-${ai}`"
+              :class="[`cf-chart__bar--${p.idx}`, 'cf-radar__vertex']"
+              :cx="pt.x"
+              :cy="pt.y"
+              r="3"
+              @pointerenter="(e: PointerEvent) => onVertexEnter(si, ai, e)"
+              @pointerleave="(e: PointerEvent) => onVertexLeave(si, ai, e)"
+            >
+              <title>{{ p.name }} · {{ axes[ai] }}: {{ series[si].values[ai] }}</title>
+            </circle>
+          </template>
+        </template>
       </template>
     </svg>
     <ul v-if="showLegend && layout" class="cf-radar__legend">

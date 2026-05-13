@@ -203,6 +203,14 @@
 .cf-radar { display: inline-flex; align-items: center; gap: 16px; font-family: var(--font-sans); }
 .cf-radar__legend { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--t-12); color: var(--fg-2); }
 .cf-radar__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: currentColor; }
+.cf-radar__polygon { transition: fill-opacity var(--dur-instant) linear; cursor: pointer; }
+.cf-radar__polygon:hover { fill-opacity: 0.35; }
+.cf-radar__vertex { cursor: pointer; transition: r var(--dur-instant) linear; stroke: var(--bg-1); stroke-width: 1.5; }
+.cf-radar__vertex:hover { r: 5; }
+.cf-radar__axis-line { cursor: pointer; transition: stroke-width var(--dur-instant) linear; }
+.cf-radar__axis-line:hover { stroke-width: 2; }
+.cf-radar__axis-label { cursor: pointer; transition: fill var(--dur-instant) linear; }
+.cf-radar__axis-label:hover { fill: var(--accent-1); }
 
 /* crosshair */
 .cf-crosshair__line { stroke: var(--accent-1); stroke-width: 1; stroke-dasharray: 2 3; }

@@ -9,10 +9,15 @@ export function RadarChart(props: RadarChartProps) {
     size = 240,
     max,
     showLegend = true,
+    showPoints = true,
     ariaLabel = '雷达图',
     className,
     onItemEnter,
     onItemLeave,
+    onVertexEnter,
+    onVertexLeave,
+    onAxisEnter,
+    onAxisLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -31,7 +36,7 @@ export function RadarChart(props: RadarChartProps) {
         polar(cx, cy, r * (v / m), i * angleStep),
       );
       const d = 'M ' + points.map((p) => `${p.x} ${p.y}`).join(' L ') + ' Z';
-      return { idx: s.colorIndex ?? idx % 8, name: s.name, d };
+      return { idx: s.colorIndex ?? idx % 8, name: s.name, d, points };
     });
     return { cx, cy, r, axisPoints, grid, polygons };
   }, [axes, series, size, max]);
@@ -59,15 +64,53 @@ export function RadarChart(props: RadarChartProps) {
         {layout?.axisPoints.map((p, i) => (
           <line
             key={`ax${i}`}
-            className="cf-chart__axis"
+            className="cf-chart__axis cf-radar__axis-line"
             x1={layout.cx}
             y1={layout.cy}
             x2={p.x}
             y2={p.y}
+            onPointerEnter={(e) =>
+              onAxisEnter?.({
+                axisIndex: i,
+                axisLabel: axes[i],
+                values: series.map((s) => s.values[i] ?? 0),
+                nativeEvent: e,
+              })
+            }
+            onPointerLeave={(e) =>
+              onAxisLeave?.({
+                axisIndex: i,
+                axisLabel: axes[i],
+                values: series.map((s) => s.values[i] ?? 0),
+                nativeEvent: e,
+              })
+            }
           />
         ))}
         {layout?.axisPoints.map((p, i) => (
-          <text key={`tx${i}`} x={p.x} y={p.y - 6} textAnchor="middle">
+          <text
+            key={`tx${i}`}
+            x={p.x}
+            y={p.y - 6}
+            textAnchor="middle"
+            className="cf-radar__axis-label"
+            onPointerEnter={(e) =>
+              onAxisEnter?.({
+                axisIndex: i,
+                axisLabel: axes[i],
+                values: series.map((s) => s.values[i] ?? 0),
+                nativeEvent: e,
+              })
+            }
+            onPointerLeave={(e) =>
+              onAxisLeave?.({
+                axisIndex: i,
+                axisLabel: axes[i],
+                values: series.map((s) => s.values[i] ?? 0),
+                nativeEvent: e,
+              })
+            }
+          >
             {axes[i]}
           </text>
         ))}
@@ -75,7 +118,7 @@ export function RadarChart(props: RadarChartProps) {
           <path
             key={`p${i}`}
             d={p.d}
-            className={`cf-chart__bar--${p.idx}`}
+            className={`cf-chart__bar--${p.idx} cf-radar__polygon`}
             fillOpacity={0.2}
             strokeWidth={2}
             onPointerEnter={(e) => {
@@ -88,6 +131,43 @@ export function RadarChart(props: RadarChartProps) {
             }}
           />
         ))}
+        {showPoints
+          ? layout?.polygons.flatMap((p, si) =>
+              p.points.map((pt, ai) => (
+                <circle
+                  key={`pt-${si}-${ai}`}
+                  className={`cf-chart__bar--${p.idx} cf-radar__vertex`}
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={3}
+                  onPointerEnter={(e) =>
+                    onVertexEnter?.({
+                      series: series[si],
+                      seriesIndex: si,
+                      axisIndex: ai,
+                      axisLabel: axes[ai],
+                      value: series[si].values[ai],
+                      nativeEvent: e,
+                    })
+                  }
+                  onPointerLeave={(e) =>
+                    onVertexLeave?.({
+                      series: series[si],
+                      seriesIndex: si,
+                      axisIndex: ai,
+                      axisLabel: axes[ai],
+                      value: series[si].values[ai],
+                      nativeEvent: e,
+                    })
+                  }
+                >
+                  <title>
+                    {p.name} · {axes[ai]}: {series[si].values[ai]}
+                  </title>
+                </circle>
+              )),
+            )
+          : null}
       </svg>
       {showLegend && layout ? (
         <ul className="cf-radar__legend">
