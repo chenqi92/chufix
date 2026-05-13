@@ -16,16 +16,22 @@ export interface TreemapProps {
   height?: number;
   showLabels?: boolean;
   ariaLabel?: string;
-  /** Padding around children inside a parent (px). Default 4. */
-  childPadding?: number;
-  /** Height (px) reserved at the top of each parent for its label. Default 16. */
-  headerHeight?: number;
+  /** Padding around children inside a parent (px). Pass a function `(depth) => px`
+   *  to taper padding by nesting depth. Default 4. */
+  childPadding?: number | ((depth: number) => number);
+  /** Header height reserved at the top of each parent. Pass a function for
+   *  per-depth control. Default 16. */
+  headerHeight?: number | ((depth: number) => number);
   /** Allow click-to-drill (focus subtree as new root). Default true. */
   drillable?: boolean;
   /** Show the drill breadcrumb above the chart. Default true. */
   showBreadcrumb?: boolean;
   /** Layout algorithm. Default 'squarify' for cleaner aspect ratios. */
   layout?: TreemapLayout;
+  /** Controlled focus path (names from top siblings → current focus). Each
+   *  entry drills one level deeper. Empty array (or undefined) shows the
+   *  top-level. Pair with `@update:focusPath`. */
+  focusPath?: string[];
 }
 
 export interface TreemapInteractionPayload {
@@ -68,6 +74,14 @@ export function treemapValue(node: TreemapNode): number {
   return node.value ?? 0;
 }
 
+type DepthFn = (depth: number) => number;
+
+function resolveDepthFn(v: number | DepthFn | undefined, fallback: number): DepthFn {
+  if (typeof v === 'function') return v;
+  if (typeof v === 'number') return () => v;
+  return () => fallback;
+}
+
 /** Single-layer slice-and-dice within the given rectangle. */
 function sliceAndDice(
   nodes: TreemapNode[],
@@ -77,11 +91,13 @@ function sliceAndDice(
   y: number,
   width: number,
   height: number,
-  childPadding: number,
-  headerHeight: number,
+  padFn: DepthFn,
+  headerFn: DepthFn,
   fallbackColor: (i: number) => number,
   out: TreemapRect[],
 ) {
+  const childPadding = padFn(baseDepth);
+  const headerHeight = headerFn(baseDepth);
   const total = nodes.reduce((s, n) => s + treemapValue(n), 0) || 1;
   let cursorX = x;
   let cursorY = y;
@@ -141,8 +157,8 @@ function sliceAndDice(
         innerY,
         innerW,
         innerH,
-        childPadding,
-        headerHeight,
+        padFn,
+        headerFn,
         (idx) => n.children![idx].colorIndex ?? colorIndex,
         out,
       );
@@ -261,12 +277,14 @@ function squarifyLayer(
   y: number,
   width: number,
   height: number,
-  childPadding: number,
-  headerHeight: number,
+  padFn: DepthFn,
+  headerFn: DepthFn,
   fallbackColor: (i: number) => number,
   out: TreemapRect[],
 ) {
   if (width <= 0 || height <= 0 || !nodes.length) return;
+  const childPadding = padFn(baseDepth);
+  const headerHeight = headerFn(baseDepth);
   const totalValue = nodes.reduce((s, n) => s + treemapValue(n), 0);
   if (totalValue <= 0) return;
   const totalArea = width * height;
@@ -307,8 +325,8 @@ function squarifyLayer(
         atom.y + headerHeight,
         atom.w - childPadding * 2,
         atom.h - headerHeight - childPadding,
-        childPadding,
-        headerHeight,
+        padFn,
+        headerFn,
         (idx) => n.children![idx].colorIndex ?? colorIndex,
         out,
       );
@@ -317,8 +335,8 @@ function squarifyLayer(
 }
 
 export interface LayoutTreemapOptions {
-  childPadding?: number;
-  headerHeight?: number;
+  childPadding?: number | DepthFn;
+  headerHeight?: number | DepthFn;
   layout?: TreemapLayout;
 }
 
@@ -329,8 +347,8 @@ export function layoutTreemap(
   options: LayoutTreemapOptions = {},
 ): TreemapRect[] {
   const out: TreemapRect[] = [];
-  const childPadding = options.childPadding ?? 4;
-  const headerHeight = options.headerHeight ?? 16;
+  const padFn = resolveDepthFn(options.childPadding, 4);
+  const headerFn = resolveDepthFn(options.headerHeight, 16);
   const algorithm = options.layout ?? 'squarify';
   const layout = algorithm === 'squarify' ? squarifyLayer : sliceAndDice;
   layout(
@@ -341,8 +359,8 @@ export function layoutTreemap(
     0,
     width,
     height,
-    childPadding,
-    headerHeight,
+    padFn,
+    headerFn,
     (i) => i % 8,
     out,
   );

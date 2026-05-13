@@ -19,10 +19,23 @@ export interface SunburstChartProps {
   drillable?: boolean;
   /** Show the breadcrumb path above the chart. Default true (only matters when drillable). */
   showBreadcrumb?: boolean;
+  /** Controlled focus path (names from root → current focus, inclusive). Pair
+   *  with `@update:focusPath` (Vue) / `onFocusPathChange` (React). Leave
+   *  undefined for the default internal stack management. */
+  focusPath?: string[];
+  /** Transition style on drill:
+   *  - `'fade'` (default) — cheap fade + scale of the whole layer
+   *  - `'morph'` — true per-segment arc interpolation (startAngle / endAngle /
+   *    inner-outer radius lerp via rAF); newly-introduced segments grow from
+   *    a collapsed slice. */
+  tween?: 'fade' | 'morph';
+  /** Tween duration in ms when `tween='morph'`. Default 320. */
+  tweenDuration?: number;
   className?: string;
   onItemEnter?: (payload: SunburstChartInteractionPayload) => void;
   onItemLeave?: (payload: SunburstChartInteractionPayload) => void;
   onDrill?: (payload: SunburstDrillPayload) => void;
+  onFocusPathChange?: (focusPath: string[]) => void;
 }
 
 export interface SunburstSegment {

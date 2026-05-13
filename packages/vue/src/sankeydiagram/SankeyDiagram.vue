@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type {
   SankeyDiagramProps,
   SankeyDragPayload,
@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<SankeyDiagramProps>(), {
   height: 280,
   nodeWidth: 12,
   draggable: true,
+  minimizeCrossings: true,
+  crossingIterations: 4,
 });
 
 const emit = defineEmits<{
@@ -21,6 +23,8 @@ const emit = defineEmits<{
   (e: 'link-enter', payload: SankeyLinkInteractionPayload): void;
   (e: 'link-leave', payload: SankeyLinkInteractionPayload): void;
   (e: 'node-drag', payload: SankeyDragPayload): void;
+  (e: 'update:order', value: Record<number, string[]>): void;
+  (e: 'update:layerAssign', value: Record<string, number>): void;
 }>();
 
 function onNodeEnter(id: string, ev: PointerEvent) {
@@ -50,8 +54,23 @@ function onLinkLeave(i: number, ev: PointerEvent) {
  * drag-in-flight for cross-layer detection. */
 const yOverrides = ref<Record<string, number>>({});
 const xOverrides = ref<Record<string, number>>({});
-const layerOverrides = ref<Record<string, number>>({});
-const orderOverrides = ref<Record<number, string[]>>({});
+const layerOverrides = ref<Record<string, number>>({ ...(props.layerAssign ?? {}) });
+const orderOverrides = ref<Record<number, string[]>>({ ...(props.order ?? {}) });
+
+/* Mirror controlled props into local refs so internal layout always reads
+ * from one source. */
+watch(
+  () => props.order,
+  (next) => {
+    if (next != null) orderOverrides.value = { ...next };
+  },
+);
+watch(
+  () => props.layerAssign,
+  (next) => {
+    if (next != null) layerOverrides.value = { ...next };
+  },
+);
 
 interface PlacedEntry {
   x: number;
@@ -98,6 +117,44 @@ const baseLayout = computed(() => {
       if (bi != null) return 1;
       return 0;
     });
+  }
+
+  /* Barycenter sweep — reduces link crossings by re-sorting each layer by the
+   * mean order index of its neighbors. We do `crossingIterations` full passes
+   * (left → right then right → left counts as one). Layers with explicit
+   * user-supplied order are pinned and skipped. */
+  if (props.minimizeCrossings) {
+    const layerKeys = Object.keys(byLayer).map(Number).sort((a, b) => a - b);
+    const positionOf = new Map<string, number>();
+    function refreshPositions() {
+      positionOf.clear();
+      for (const l of layerKeys) {
+        byLayer[l].forEach((n, i) => positionOf.set(n.id, i));
+      }
+    }
+    refreshPositions();
+    function reorderLayer(layer: number, direction: 'in' | 'out') {
+      if (orderOverrides.value[layer]) return;
+      const group = byLayer[layer];
+      if (!group?.length) return;
+      const scored = group.map((n) => {
+        const neighbors = direction === 'in'
+          ? links.filter((l) => l.target === n.id).map((l) => positionOf.get(l.source))
+          : links.filter((l) => l.source === n.id).map((l) => positionOf.get(l.target));
+        const present = neighbors.filter((v): v is number => v != null);
+        const bary = present.length ? present.reduce((a, b) => a + b, 0) / present.length : positionOf.get(n.id) ?? 0;
+        return { node: n, bary };
+      });
+      scored.sort((a, b) => a.bary - b.bary);
+      byLayer[layer] = scored.map((s) => s.node);
+    }
+    const iters = Math.max(0, props.crossingIterations | 0);
+    for (let it = 0; it < iters; it++) {
+      for (let i = 1; i < layerKeys.length; i++) reorderLayer(layerKeys[i], 'in');
+      refreshPositions();
+      for (let i = layerKeys.length - 2; i >= 0; i--) reorderLayer(layerKeys[i], 'out');
+      refreshPositions();
+    }
   }
 
   const layerMax = Math.max(0, ...Object.keys(byLayer).map(Number));
@@ -255,14 +312,27 @@ function onNodePointerUp() {
   /* Commit overrides; reset transient drag-y/-x. */
   const nextLayerOverrides = { ...layerOverrides.value };
   if (layerChanged) nextLayerOverrides[d.id] = nearestLayer;
-  layerOverrides.value = nextLayerOverrides;
 
-  orderOverrides.value = { ...orderOverrides.value, [nearestLayer]: sorted };
-  /* If the node moved to a new layer, also recompute the source layer's order
-   * (it changed because the node left). */
+  const nextOrderOverrides: Record<number, string[]> = {
+    ...orderOverrides.value,
+    [nearestLayer]: sorted,
+  };
   if (layerChanged) {
     const srcRemaining = (b.byLayer[fromLayer] ?? []).filter((n) => n.id !== d.id).map((n) => n.id);
-    orderOverrides.value = { ...orderOverrides.value, [fromLayer]: srcRemaining };
+    nextOrderOverrides[fromLayer] = srcRemaining;
+  }
+
+  /* Controlled? Delegate to the parent via update events. Otherwise update
+   * internal state. The events fire in both cases so consumers can mirror. */
+  if (props.order != null) {
+    emit('update:order', nextOrderOverrides);
+  } else {
+    orderOverrides.value = nextOrderOverrides;
+  }
+  if (props.layerAssign != null) {
+    emit('update:layerAssign', nextLayerOverrides);
+  } else {
+    layerOverrides.value = nextLayerOverrides;
   }
 
   const nextX = { ...xOverrides.value };

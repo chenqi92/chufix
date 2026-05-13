@@ -86,11 +86,46 @@
 .cf-chart__bar--7 { fill: var(--viz-8); color: var(--viz-8); }
 
 /* sparkline variants */
+.cf-sparkline-wrap {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
 .cf-sparkline {
   display: inline-block;
   vertical-align: middle;
   width: 80px;
   height: 24px;
+}
+.cf-sparkline.is-interactive { cursor: crosshair; }
+
+.cf-sparkline__crosshair {
+  stroke: var(--accent-1);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  opacity: 0.7;
+  pointer-events: none;
+}
+.cf-sparkline__hover-dot {
+  fill: var(--bg-1);
+  stroke: var(--accent-1);
+  stroke-width: 1.6;
+  pointer-events: none;
+}
+
+.cf-sparkline__tooltip {
+  position: absolute;
+  padding: 2px 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-11);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 1;
 }
 
 /* gauge */

@@ -18,7 +18,7 @@ function polarPoint(cx: number, cy: number, r: number, angleDeg: number) {
 }
 
 /** Build an annular sector SVG path, sweeping clockwise from startAngle to endAngle (degrees). */
-function annularPath(
+export function annularPath(
   cx: number,
   cy: number,
   innerR: number,

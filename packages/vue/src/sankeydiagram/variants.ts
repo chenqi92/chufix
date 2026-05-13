@@ -21,6 +21,19 @@ export interface SankeyDiagramProps {
   ariaLabel?: string;
   /** Allow vertical drag of nodes to manually reorder a layer. Default true. */
   draggable?: boolean;
+  /** Run a barycenter sweep to minimize link crossings before layout.
+   *  Disabled (or skipped per-layer) when the user has manually reordered
+   *  that layer via drag. Default true. */
+  minimizeCrossings?: boolean;
+  /** Number of barycenter sweep iterations. Default 4. */
+  crossingIterations?: number;
+  /** Controlled per-layer node order: layer index → array of node ids. When
+   *  supplied, drag-induced reorders are dispatched via `@update:order`
+   *  instead of being mutated internally. */
+  order?: Record<number, string[]>;
+  /** Controlled per-node layer overrides: id → layer index. Pair with
+   *  `@update:layerAssign`. */
+  layerAssign?: Record<string, number>;
 }
 
 export interface SankeyDragPayload {

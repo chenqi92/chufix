@@ -10,6 +10,12 @@ export interface SparklineProps {
   colorIndex?: number;
   /** Highlight last point with a dot. */
   showDot?: boolean;
+  /** Enable pointer-tracked vertical crosshair + tooltip. Default false. */
+  interactive?: boolean;
+  /** Format the value shown in the tooltip. */
+  format?: (value: number, index: number) => string;
+  /** Optional labels for the X axis (shown in tooltip when present). */
+  labels?: string[];
   ariaLabel?: string;
 }
 
@@ -19,4 +25,12 @@ export interface SparklineClickPayload {
   /** Value at that index. */
   value: number;
   nativeEvent?: PointerEvent;
+}
+
+export interface SparklineHoverPayload {
+  /** Index of the data point nearest the cursor. */
+  dataIndex: number;
+  value: number;
+  label?: string;
+  nativeEvent: PointerEvent;
 }

@@ -24,6 +24,7 @@ const emit = defineEmits<{
   (e: 'item-enter', payload: TreemapInteractionPayload): void;
   (e: 'item-leave', payload: TreemapInteractionPayload): void;
   (e: 'drill', payload: TreemapDrillPayload): void;
+  (e: 'update:focusPath', value: string[]): void;
 }>();
 
 /* Stack of ancestor nodes from the top siblings → current focus.
@@ -31,14 +32,50 @@ const emit = defineEmits<{
  *   stack = [n]     → render n.children
  *   stack = [a, b]  → render b.children where b is a child of a
  */
-const stack = ref<TreemapNode[]>([]);
+const internalStack = ref<TreemapNode[]>([]);
 
 watch(
   () => props.nodes,
   () => {
-    stack.value = [];
+    internalStack.value = [];
   },
 );
+
+function resolveStack(siblings: TreemapNode[], path: string[] | undefined): TreemapNode[] {
+  if (!path?.length) return [];
+  const out: TreemapNode[] = [];
+  let pool: TreemapNode[] | undefined = siblings;
+  for (const name of path) {
+    const nextNode: TreemapNode | undefined = pool?.find((n) => n.name === name);
+    if (!nextNode) break;
+    out.push(nextNode);
+    pool = nextNode.children;
+  }
+  return out;
+}
+
+watch(
+  () => props.focusPath,
+  (next) => {
+    if (next == null) return;
+    internalStack.value = resolveStack(props.nodes ?? [], next);
+  },
+);
+
+const stack = computed<TreemapNode[]>(() => {
+  if (props.focusPath != null) return resolveStack(props.nodes ?? [], props.focusPath);
+  return internalStack.value;
+});
+
+function commitStack(next: TreemapNode[]) {
+  const path = next.map((n) => n.name);
+  if (props.focusPath != null) {
+    emit('update:focusPath', path);
+    return;
+  }
+  internalStack.value = next;
+  emit('update:focusPath', path);
+}
 
 const focusedChildren = computed<TreemapNode[]>(() => {
   if (!stack.value.length) return props.nodes ?? [];
@@ -96,7 +133,7 @@ function onRectClick(idx: number) {
   /* Only top-level rects of the current focus drill-in; nested children
    * already in view stay non-drillable to keep the affordance predictable. */
   if (!r || r.depth !== 0 || !r.hasChildren) return;
-  stack.value = [...stack.value, r.node];
+  commitStack([...stack.value, r.node]);
   emit('drill', { node: r.node, pathNames: pathFromRoot(r.node) });
 }
 
@@ -104,7 +141,7 @@ function drillTo(index: number) {
   if (!props.drillable) return;
   if (index === stack.value.length - 1) return;
   const next = index < 0 ? [] : stack.value.slice(0, index + 1);
-  stack.value = next;
+  commitStack(next);
   const node = next.length ? next[next.length - 1] : null;
   emit('drill', { node, pathNames: node ? pathFromRoot(node) : [] });
 }

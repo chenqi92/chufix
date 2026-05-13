@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -27,18 +28,37 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
     nodeWidth = 12,
     ariaLabel = 'Sankey 流向图',
     draggable = true,
+    minimizeCrossings = true,
+    crossingIterations = 4,
+    order: controlledOrder,
+    layerAssign: controlledLayerAssign,
     className,
     onNodeEnter,
     onNodeLeave,
     onLinkEnter,
     onLinkLeave,
     onNodeDrag,
+    onOrderChange,
+    onLayerAssignChange,
   } = props;
 
   const [yOverrides, setYOverrides] = useState<Record<string, number>>({});
   const [xOverrides, setXOverrides] = useState<Record<string, number>>({});
-  const [layerOverrides, setLayerOverrides] = useState<Record<string, number>>({});
-  const [orderOverrides, setOrderOverrides] = useState<Record<number, string[]>>({});
+  const [layerOverrides, setLayerOverrides] = useState<Record<string, number>>(() => ({
+    ...(controlledLayerAssign ?? {}),
+  }));
+  const [orderOverrides, setOrderOverrides] = useState<Record<number, string[]>>(() => ({
+    ...(controlledOrder ?? {}),
+  }));
+
+  /* Sync controlled props into local state so the layout always reads from
+   * one source of truth. */
+  useEffect(() => {
+    if (controlledOrder != null) setOrderOverrides({ ...controlledOrder });
+  }, [controlledOrder]);
+  useEffect(() => {
+    if (controlledLayerAssign != null) setLayerOverrides({ ...controlledLayerAssign });
+  }, [controlledLayerAssign]);
 
   const nodeLayer = useCallback(
     (n: SankeyNode) => layerOverrides[n.id] ?? n.layer ?? 0,
@@ -74,6 +94,44 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
         return 0;
       });
     }
+
+    /* Barycenter sweep — reduces link crossings by re-sorting each layer by the
+     * mean order index of its neighbors. Layers pinned via `orderOverrides`
+     * (either controlled or set by a drag) are skipped. */
+    if (minimizeCrossings) {
+      const layerKeys = Object.keys(byLayer).map(Number).sort((a, b) => a - b);
+      const positionOf = new Map<string, number>();
+      const refreshPositions = () => {
+        positionOf.clear();
+        for (const l of layerKeys) {
+          byLayer[l].forEach((n, i) => positionOf.set(n.id, i));
+        }
+      };
+      refreshPositions();
+      const reorderLayer = (layer: number, direction: 'in' | 'out') => {
+        if (orderOverrides[layer]) return;
+        const group = byLayer[layer];
+        if (!group?.length) return;
+        const scored = group.map((n) => {
+          const neighbors = direction === 'in'
+            ? links.filter((l) => l.target === n.id).map((l) => positionOf.get(l.source))
+            : links.filter((l) => l.source === n.id).map((l) => positionOf.get(l.target));
+          const present = neighbors.filter((v): v is number => v != null);
+          const bary = present.length ? present.reduce((a, b) => a + b, 0) / present.length : positionOf.get(n.id) ?? 0;
+          return { node: n, bary };
+        });
+        scored.sort((a, b) => a.bary - b.bary);
+        byLayer[layer] = scored.map((s) => s.node);
+      };
+      const iters = Math.max(0, crossingIterations | 0);
+      for (let it = 0; it < iters; it++) {
+        for (let i = 1; i < layerKeys.length; i++) reorderLayer(layerKeys[i], 'in');
+        refreshPositions();
+        for (let i = layerKeys.length - 2; i >= 0; i--) reorderLayer(layerKeys[i], 'out');
+        refreshPositions();
+      }
+    }
+
     const layerMax = Math.max(0, ...Object.keys(byLayer).map(Number));
     const layerSpacing = layerMax > 0 ? (width - nodeWidth) / layerMax : 0;
     const placed = new Map<string, PlacedEntry>();
@@ -92,7 +150,7 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
       }
     });
     return { placed, byLayer, layerSpacing };
-  }, [nodes, links, width, height, nodeWidth, nodeLayer, orderOverrides, inflowOf, outflowOf]);
+  }, [nodes, links, width, height, nodeWidth, nodeLayer, orderOverrides, minimizeCrossings, crossingIterations, inflowOf, outflowOf]);
 
   const layout = useMemo(() => {
     if (!baseLayout) return null;
@@ -217,15 +275,31 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
 
     const orderIndex = sorted.indexOf(d.id);
 
-    setLayerOverrides((prev) => (layerChanged ? { ...prev, [d.id]: nearestLayer } : prev));
-    setOrderOverrides((prev) => {
-      const next = { ...prev, [nearestLayer]: sorted };
-      if (layerChanged) {
-        const srcRemaining = (b.byLayer[fromLayer] ?? []).filter((n) => n.id !== d.id).map((n) => n.id);
-        next[fromLayer] = srcRemaining;
-      }
-      return next;
-    });
+    const nextLayerOverrides = { ...layerOverrides };
+    if (layerChanged) nextLayerOverrides[d.id] = nearestLayer;
+
+    const nextOrderOverrides: Record<number, string[]> = {
+      ...orderOverrides,
+      [nearestLayer]: sorted,
+    };
+    if (layerChanged) {
+      const srcRemaining = (b.byLayer[fromLayer] ?? []).filter((n) => n.id !== d.id).map((n) => n.id);
+      nextOrderOverrides[fromLayer] = srcRemaining;
+    }
+
+    /* Controlled? Delegate to the parent via callbacks. Otherwise update
+     * internal state. Callbacks fire in both cases so consumers can mirror. */
+    if (controlledOrder != null) {
+      onOrderChange?.(nextOrderOverrides);
+    } else {
+      setOrderOverrides(nextOrderOverrides);
+    }
+    if (controlledLayerAssign != null) {
+      onLayerAssignChange?.(nextLayerOverrides);
+    } else {
+      setLayerOverrides(nextLayerOverrides);
+    }
+
     setXOverrides((prev) => {
       const next = { ...prev };
       delete next[d.id];
@@ -245,7 +319,7 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
       orderIndex,
       layerChanged,
     });
-  }, [baseLayout, layout, nodes, nodeLayer, onNodeDrag]);
+  }, [baseLayout, layout, nodes, nodeLayer, layerOverrides, orderOverrides, controlledOrder, controlledLayerAssign, onNodeDrag, onOrderChange, onLayerAssignChange]);
 
   return (
     <svg

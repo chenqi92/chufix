@@ -1,10 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   layoutTreemap,
   treemapValue,
   type TreemapNode,
   type TreemapProps,
 } from './variants';
+
+function resolveStack(siblings: TreemapNode[], path: string[] | undefined): TreemapNode[] {
+  if (!path?.length) return [];
+  const out: TreemapNode[] = [];
+  let pool: TreemapNode[] | undefined = siblings;
+  for (const name of path) {
+    const nextNode: TreemapNode | undefined = pool?.find((n) => n.name === name);
+    if (!nextNode) break;
+    out.push(nextNode);
+    pool = nextNode.children;
+  }
+  return out;
+}
 
 export function Treemap(props: TreemapProps) {
   const {
@@ -18,16 +31,46 @@ export function Treemap(props: TreemapProps) {
     drillable = true,
     showBreadcrumb = true,
     layout = 'squarify',
+    focusPath,
     className,
     onItemEnter,
     onItemLeave,
     onDrill,
+    onFocusPathChange,
   } = props;
 
-  const [stack, setStack] = useState<TreemapNode[]>([]);
+  const [internalStack, setInternalStack] = useState<TreemapNode[]>(() =>
+    resolveStack(nodes ?? [], focusPath),
+  );
+
   useEffect(() => {
-    setStack([]);
-  }, [nodes]);
+    /* Reset when the underlying data changes — unless the consumer keeps
+     * driving via focusPath, in which case the next effect takes over. */
+    if (focusPath == null) setInternalStack([]);
+  }, [nodes]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (focusPath == null) return;
+    setInternalStack(resolveStack(nodes ?? [], focusPath));
+  }, [focusPath, nodes]);
+
+  const stack = useMemo<TreemapNode[]>(() => {
+    if (focusPath != null) return resolveStack(nodes ?? [], focusPath);
+    return internalStack;
+  }, [focusPath, nodes, internalStack]);
+
+  const commitStack = useCallback(
+    (next: TreemapNode[]) => {
+      const path = next.map((n) => n.name);
+      if (focusPath != null) {
+        onFocusPathChange?.(path);
+        return;
+      }
+      setInternalStack(next);
+      onFocusPathChange?.(path);
+    },
+    [focusPath, onFocusPathChange],
+  );
 
   const focusedChildren = useMemo<TreemapNode[]>(() => {
     if (!stack.length) return nodes ?? [];
@@ -51,7 +94,7 @@ export function Treemap(props: TreemapProps) {
     if (!drillable) return;
     const r = rects[idx];
     if (!r || r.depth !== 0 || !r.hasChildren) return;
-    setStack((prev) => [...prev, r.node]);
+    commitStack([...stack, r.node]);
     onDrill?.({ node: r.node, pathNames: pathFromRoot(r.node) });
   }
 
@@ -59,7 +102,7 @@ export function Treemap(props: TreemapProps) {
     if (!drillable) return;
     if (index === stack.length - 1) return;
     const next = index < 0 ? [] : stack.slice(0, index + 1);
-    setStack(next);
+    commitStack(next);
     const node = next.length ? next[next.length - 1] : null;
     onDrill?.({ node, pathNames: node ? pathFromRoot(node) : [] });
   }
