@@ -1,0 +1,32 @@
+---
+title: ParallelCoordinates 平行坐标
+description: 多组平行 Y 轴 + 折线穿越，多维度数据剖面可视化 —— 探索性分析、异常实例定位的数据科学利器。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/parallelcoordinates/BasicVue.vue';
+
+## 基础用法
+
+`axes` 定义维度（可选 `min` / `max` / `reversed` / `format`），每个 `item` 是一条折线，按 `group` 自动着色。鼠标悬停某条线高亮、其他变淡，便于在大量样本中定位特定实例。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `axes` | `{ key, label, min?, max?, reversed?, format? }[]` | — | 平行 Y 轴定义 |
+| `items` | `{ label, values: Record<key, number>, group?, color? }[]` | — | 折线数据 |
+| `height` | `number` | `280` | 像素高度 |
+| `ticks` | `number` | `5` | 每条轴的刻度数 |
+| `palette` | `string[]` | viz-1..8 | 按 group 自动分配 |
+| `highlight` | `number \| null` | `null` | 初始高亮的 item index |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件 payload：`{ index, item }`。
+
+> 用法提示：当某条轴语义"越小越好"（比如错误率），把 `reversed: true` 加上，所有 group 的"上方就是好"约定就能成立，对比立刻清晰。

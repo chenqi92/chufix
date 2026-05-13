@@ -1,0 +1,59 @@
+/* StreamGraph — stacked area with centered baseline. */
+
+.cf-streamgraph {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  position: relative;
+}
+.cf-streamgraph--sm { font-size: var(--t-11); }
+.cf-streamgraph--lg { font-size: var(--t-13); }
+
+.cf-streamgraph svg { width: 100%; display: block; }
+
+.cf-streamgraph__lane { transition: opacity var(--dur-fast) var(--ease-out); }
+
+.cf-streamgraph__axis-label { fill: var(--fg-3); font-size: 10px; font-variant-numeric: tabular-nums; }
+
+.cf-streamgraph__hits rect:focus-visible { outline: 2px solid var(--accent-1); outline-offset: -2px; }
+
+.cf-streamgraph__hover-line {
+  stroke: var(--accent-1);
+  stroke-dasharray: 3 3;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cf-streamgraph__tip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-12);
+  pointer-events: none;
+  max-width: 220px;
+}
+.cf-streamgraph__tip-cat { color: var(--fg-1); font-weight: var(--w-semibold); }
+.cf-streamgraph__tip-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+.cf-streamgraph__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}

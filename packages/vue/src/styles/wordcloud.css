@@ -1,0 +1,21 @@
+/* WordCloud — text-frequency cloud with spiral placement. */
+
+.cf-wordcloud {
+  display: inline-flex;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+}
+.cf-wordcloud--sm { font-size: var(--t-11); }
+.cf-wordcloud--lg { font-size: var(--t-13); }
+
+.cf-wordcloud svg { display: block; }
+
+.cf-wordcloud__word {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  outline: none;
+  font-family: inherit;
+  font-weight: var(--w-medium);
+}
+.cf-wordcloud__word:focus-visible { text-decoration: underline; }

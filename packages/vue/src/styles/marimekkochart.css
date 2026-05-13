@@ -1,0 +1,60 @@
+/* MarimekkoChart — 2D mosaic / variable-width stacked bars. */
+
+.cf-marimekko {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  position: relative;
+}
+.cf-marimekko--sm { font-size: var(--t-11); }
+.cf-marimekko--lg { font-size: var(--t-13); }
+
+.cf-marimekko svg { width: 100%; display: block; }
+
+.cf-marimekko__cell {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  outline: none;
+}
+.cf-marimekko__cell.is-dim { opacity: 0.35; }
+.cf-marimekko__cell rect:focus-visible { outline: 2px solid var(--bg-1); outline-offset: -3px; }
+
+.cf-marimekko__seg-label {
+  font-size: 11px;
+  fill: var(--fg-on-accent);
+  pointer-events: none;
+  font-weight: var(--w-medium);
+}
+
+.cf-marimekko__col-label {
+  font-size: 12px;
+  fill: var(--fg-1);
+  font-weight: var(--w-medium);
+}
+.cf-marimekko__col-pct {
+  font-size: 10px;
+  fill: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-marimekko__tip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-12);
+  pointer-events: none;
+}
+.cf-marimekko__tip-cat { color: var(--fg-1); font-weight: var(--w-semibold); }
+.cf-marimekko__tip-row { color: var(--fg-2); font-variant-numeric: tabular-nums; }
+.cf-marimekko__tip-row--muted { color: var(--fg-3); }

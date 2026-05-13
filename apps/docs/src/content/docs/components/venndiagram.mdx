@@ -1,0 +1,30 @@
+---
+title: VennDiagram 韦恩图
+description: 2 集合 / 3 集合重叠图 —— 用户群交叉、标签共现、A/B 测试覆盖，圆面积按 count 缩放。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/venndiagram/BasicVue.vue';
+
+## 基础用法
+
+`sets` 接 2 个或 3 个集合，圆面积按 `count` 缩放。`intersections` 数组指定交集区域的 count，组件用半混合（`mix-blend-mode: multiply`）展示重叠色块。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `sets` | `{ label, count, color? }[]` | — | 2 或 3 个集合 |
+| `intersections` | `{ sets: number[], count, label? }[]` | — | 交集数据（按 set index） |
+| `size` | `number` | `320` | SVG 边长 |
+| `format` | `(n) => string` | — | 计数格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `variant` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件 payload：`{ type: 'set' | 'intersection', setIndex?, set?, intersection? }`。
+
+> 注：组件渲染的"仅在 set i"标签 = `sets[i].count − Σ(包含 i 的所有 intersections)`。如果你的数据里已经包含重叠值，需自行减去。

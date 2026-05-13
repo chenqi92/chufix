@@ -1,0 +1,31 @@
+/* TornadoChart — diverging horizontal bars. */
+
+.cf-tornado {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+}
+.cf-tornado--sm { font-size: var(--t-11); }
+.cf-tornado--lg { font-size: var(--t-13); }
+
+.cf-tornado svg { width: 100%; display: block; }
+.cf-tornado__header { fill: var(--fg-1); font-weight: var(--w-semibold); font-size: var(--t-12); }
+.cf-tornado__axis { stroke: var(--line-2); stroke-width: 1; }
+
+.cf-tornado__row-label { fill: var(--fg-1); font-size: 11px; font-weight: var(--w-medium); }
+.cf-tornado__value {
+  fill: var(--fg-2);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  dominant-baseline: middle;
+}
+
+.cf-tornado__bar {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  outline: none;
+}
+.cf-tornado__bar:focus-visible { filter: brightness(1.1); }

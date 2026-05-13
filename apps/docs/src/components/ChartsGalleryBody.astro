@@ -35,6 +35,7 @@ const categories: ChartCategory[] = [
       ITEM('waterfallchart', 'WaterfallChart 瀑布图', 'WaterfallChart', '正负累计变化 + total 锚点', 'Signed cumulative deltas with total anchors', 'waterfallchart'),
       ITEM('paretochart', 'ParetoChart 帕累托图', 'ParetoChart', '降序柱 + 累计百分比 + 80/20 参考线', 'Descending bars + cumulative line + 80/20 reference', 'paretochart'),
       ITEM('polarbarchart', 'PolarBarChart 极坐标柱', 'PolarBarChart', '径向柱状,循环数据天然适合', 'Radial bar chart for cyclical data', 'polarbarchart'),
+      ITEM('tornadochart', 'TornadoChart 龙卷风图', 'TornadoChart', '中心轴对称的横向对比柱', 'Center-axis diverging horizontal bars', 'tornadochart'),
     ],
   },
   {
@@ -44,6 +45,11 @@ const categories: ChartCategory[] = [
     items: [
       ITEM('dualaxischart', 'DualAxisChart 双轴组合', 'DualAxisChart', '柱 + 折线双 Y 轴组合', 'Bar + line dual-Y combo', 'dualaxischart'),
       ITEM('slopechart', 'SlopeChart 斜率图', 'SlopeChart', 'A → B 两点平行连线', 'A → B parallel coordinates', 'slopechart'),
+      ITEM('marimekkochart', 'MarimekkoChart 马赛克图', 'MarimekkoChart', '变宽堆叠柱,列宽 × 段高同时表达双维度占比', 'Variable-width stacked bars for two-dim share', 'marimekkochart'),
+      ITEM('streamgraph', 'StreamGraph 河流图', 'StreamGraph', '居中堆叠面积,时序构成演变', 'Centered stacked-area for composition over time', 'streamgraph'),
+      ITEM('venndiagram', 'VennDiagram 韦恩图', 'VennDiagram', '2/3 集合重叠图', '2-set or 3-set overlap diagram', 'venndiagram'),
+      ITEM('parallelcoordinates', 'ParallelCoordinates 平行坐标', 'ParallelCoordinates', '多维数据折线穿越平行 Y 轴', 'Multi-dim polylines across parallel Y-axes', 'parallelcoordinates'),
+      ITEM('wordcloud', 'WordCloud 词云', 'WordCloud', '螺旋排布关键词,按频次缩放', 'Spiral-placed term frequency cloud', 'wordcloud'),
     ],
   },
   {
@@ -95,8 +101,8 @@ const categories: ChartCategory[] = [
 
 const heroTitle = isEn ? 'Charts · data visualization' : 'Charts 数据可视化';
 const heroLede = isEn
-  ? '29 pure-SVG charts, no third-party deps. All built on the internal _useScale / _arcPath / _polar utilities. The palette uses --viz-1..8 tokens (color-blind friendly) and follows your active ChuFix theme.'
-  : '29 个纯 SVG 图表，零三方依赖，全部基于内部 _useScale / _arcPath / _polar 工具函数实现。色板使用 --viz-1..8 token，色盲友好，与 ChuFix 主题切换联动。';
+  ? '35 pure-SVG charts, no third-party deps. All built on the internal _useScale / _arcPath / _polar utilities. The palette uses --viz-1..8 tokens (color-blind friendly) and follows your active ChuFix theme.'
+  : '35 个纯 SVG 图表，零三方依赖，全部基于内部 _useScale / _arcPath / _polar 工具函数实现。色板使用 --viz-1..8 token，色盲友好，与 ChuFix 主题切换联动。';
 ---
 
 <div class="charts-page">

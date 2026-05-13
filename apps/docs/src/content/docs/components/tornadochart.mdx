@@ -1,0 +1,33 @@
+---
+title: TornadoChart 龙卷风图
+description: 中心轴对称的横向柱图 —— 左右两侧分别表达两组对比量，敏感度分析 / 人口金字塔 / 男女对比 / AB 实验 都用得上。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tornadochart/BasicVue.vue';
+
+## 基础用法
+
+每一行 `{ label, left, right }` 在中心轴两侧画两条对称柱，按绝对值缩放到同一标尺。默认按"总幅度"降序排列，呈现经典的龙卷风形状。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `items` | `{ label, left, right, leftColor?, rightColor? }[]` | — | 数据数组 |
+| `leftLabel` | `string` | `'左'` | 左侧表头 |
+| `rightLabel` | `string` | `'右'` | 右侧表头 |
+| `leftColor` | `string` | accent | 左侧默认柱色 |
+| `rightColor` | `string` | warning | 右侧默认柱色 |
+| `rowHeight` | `number` | `24` | 单行像素高 |
+| `sortByMagnitude` | `boolean` | `true` | 按 (|left| + |right|) 降序排 |
+| `showValues` | `boolean` | `true` | 柱端显示数值 |
+| `format` | `(v) => string` | — | 数值格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件 payload：`{ index, item, side: 'left' | 'right' }`。

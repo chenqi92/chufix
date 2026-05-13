@@ -1,0 +1,35 @@
+---
+title: WordCloud
+description: Spiral-placed term frequency cloud — quickly surface tag weights, top comment keywords, dominant tech-stack terms.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/wordcloud/BasicVue.vue';
+
+## Basic usage
+
+Font size encodes `weight`; words are placed along an Archimedean spiral outward from center, avoiding overlap. `rotateRatio` controls vertical share; `seed` keeps the layout reproducible.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `{ text, weight, color?, rotate? }[]` | — | Data |
+| `width` | `number` | `480` | Canvas width |
+| `height` | `number` | `280` | Canvas height |
+| `minFont` | `number` | `12` | Min font px |
+| `maxFont` | `number` | `48` | Max font px |
+| `rotateRatio` | `number` | `0.3` | Vertical chance (0–1) |
+| `spiralStep` | `number` | `4` | Spiral step (smaller = tighter / slower) |
+| `palette` | `string[]` | viz-1..8 | Default colors |
+| `seed` | `number` | `1` | Reproducible-layout RNG seed |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font scale |
+
+Payload: `{ index, item }`.
+
+> Words that don't fit are silently dropped (no overlap). Tighten by lowering `spiralStep` or growing width/height.

@@ -1,0 +1,32 @@
+---
+title: ParallelCoordinates
+description: Multi-dimensional polylines across parallel Y-axes — the data-science staple for exploratory profiling and outlier spotting.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/parallelcoordinates/BasicVue.vue';
+
+## Basic usage
+
+`axes` defines each dimension (optional `min` / `max` / `reversed` / `format`). Each `item` becomes a polyline, auto-colored by `group`. Hover focuses one line and dims the rest, perfect for spotting a single instance among many.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `axes` | `{ key, label, min?, max?, reversed?, format? }[]` | — | Parallel Y-axis definitions |
+| `items` | `{ label, values: Record<key, number>, group?, color? }[]` | — | Polyline data |
+| `height` | `number` | `280` | Pixel height |
+| `ticks` | `number` | `5` | Tick count per axis |
+| `palette` | `string[]` | viz-1..8 | Auto-assigned by group |
+| `highlight` | `number \| null` | `null` | Initial highlighted item index |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font scale |
+
+Payload: `{ index, item }`.
+
+> Tip: for an axis where "smaller is better" (e.g. error rate), set `reversed: true` so "up = good" holds across all axes — comparisons stay visually consistent.

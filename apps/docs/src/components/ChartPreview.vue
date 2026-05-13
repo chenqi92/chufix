@@ -34,6 +34,12 @@ const map: Record<string, () => Promise<any>> = {
   paretochart: () => import('~/components/demos/paretochart/BasicVue.vue'),
   slopechart: () => import('~/components/demos/slopechart/BasicVue.vue'),
   polarbarchart: () => import('~/components/demos/polarbarchart/BasicVue.vue'),
+  marimekkochart: () => import('~/components/demos/marimekkochart/BasicVue.vue'),
+  tornadochart: () => import('~/components/demos/tornadochart/BasicVue.vue'),
+  wordcloud: () => import('~/components/demos/wordcloud/BasicVue.vue'),
+  venndiagram: () => import('~/components/demos/venndiagram/BasicVue.vue'),
+  streamgraph: () => import('~/components/demos/streamgraph/BasicVue.vue'),
+  parallelcoordinates: () => import('~/components/demos/parallelcoordinates/BasicVue.vue'),
 };
 
 const Comp = computed(() => {

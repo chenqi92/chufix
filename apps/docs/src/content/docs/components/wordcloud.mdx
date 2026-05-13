@@ -1,0 +1,35 @@
+---
+title: WordCloud 词云
+description: 螺旋排布的关键词频次云图 —— 标签词频、评论高频词、关键技术栈一眼看清重点。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/wordcloud/BasicVue.vue';
+
+## 基础用法
+
+按 `weight` 决定字号，按"阿基米德螺线"从中心向外放置，避免重叠。`rotateRatio` 控制竖排比例，`seed` 让布局可复现。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `items` | `{ text, weight, color?, rotate? }[]` | — | 数据数组 |
+| `width` | `number` | `480` | 画布宽 |
+| `height` | `number` | `280` | 画布高 |
+| `minFont` | `number` | `12` | 最小字号 |
+| `maxFont` | `number` | `48` | 最大字号 |
+| `rotateRatio` | `number` | `0.3` | 竖排概率（0–1） |
+| `spiralStep` | `number` | `4` | 螺线步长，越小越紧凑（也越慢） |
+| `palette` | `string[]` | viz-1..8 | 默认配色 |
+| `seed` | `number` | `1` | 可复现布局的随机种子 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件 payload：`{ index, item }`。
+
+> 注：放不下的词会被丢弃，不会拥挤覆盖。需要更紧凑时减小 `spiralStep` 或扩大 width/height。

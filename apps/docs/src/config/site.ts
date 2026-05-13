@@ -258,6 +258,7 @@ export const sidebar: SidebarGroup[] = [
       c('WaterfallChart', '瀑布图', 'waterfallchart'),
       c('ParetoChart', '帕累托图', 'paretochart'),
       c('PolarBarChart', '极坐标柱', 'polarbarchart'),
+      c('TornadoChart', '龙卷风图', 'tornadochart'),
     ],
   },
   {
@@ -265,6 +266,11 @@ export const sidebar: SidebarGroup[] = [
     items: [
       c('DualAxisChart', '双轴组合', 'dualaxischart'),
       c('SlopeChart', '斜率图', 'slopechart'),
+      c('MarimekkoChart', '马赛克图', 'marimekkochart'),
+      c('StreamGraph', '河流图', 'streamgraph'),
+      c('VennDiagram', '韦恩图', 'venndiagram'),
+      c('ParallelCoordinates', '平行坐标', 'parallelcoordinates'),
+      c('WordCloud', '词云', 'wordcloud'),
     ],
   },
   {

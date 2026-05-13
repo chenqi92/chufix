@@ -1,0 +1,30 @@
+---
+title: MarimekkoChart
+description: Variable-width stacked bars — column width encodes one dimension's share, in-bar segments encode another, answering "which region is biggest + what's the product mix inside" in one chart.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/marimekkochart/BasicVue.vue';
+
+## Basic usage
+
+Each column is one category (region / period); its width = column total / grand total. Segments inside stack vertically by value share. Classic for market share, order composition, demographic breakdown.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `columns` | `{ label, segments: { label, value, color? }[] }[]` | — | Column data |
+| `height` | `number` | `320` | Pixel height |
+| `showColumnLabels` | `boolean` | `true` | Top label + bottom % |
+| `showSegmentLabels` | `boolean` | `true` | Inline segment label when cell is large enough |
+| `format` | `(v, seg, col) => string` | — | Tooltip value formatter |
+| `palette` | `string[]` | viz-1..8 | Default segment colors |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font scale |
+
+Events: `@hover` / `@select` (React `onHover` / `onSelect`). Payload `{ column, segment, columnShare, segmentShare, cellShare }`.

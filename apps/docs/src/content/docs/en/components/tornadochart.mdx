@@ -1,0 +1,33 @@
+---
+title: TornadoChart
+description: Center-axis diverging bars — left/right groups for sensitivity analysis, population pyramids, gender split, AB-test side-by-side.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tornadochart/BasicVue.vue';
+
+## Basic usage
+
+Each row `{ label, left, right }` draws symmetric bars about the central axis, scaled by absolute value to a shared scale. Default order is descending by `|left| + |right|`, giving the classic tornado silhouette.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `{ label, left, right, leftColor?, rightColor? }[]` | — | Data |
+| `leftLabel` | `string` | `'左'` | Left header |
+| `rightLabel` | `string` | `'右'` | Right header |
+| `leftColor` | `string` | accent | Default left fill |
+| `rightColor` | `string` | warning | Default right fill |
+| `rowHeight` | `number` | `24` | Pixel row height |
+| `sortByMagnitude` | `boolean` | `true` | Sort by `\|left\| + \|right\|` desc |
+| `showValues` | `boolean` | `true` | Show numeric value at the bar end |
+| `format` | `(v) => string` | — | Value formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font scale |
+
+Payload: `{ index, item, side: 'left' | 'right' }`.

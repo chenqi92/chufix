@@ -1,0 +1,30 @@
+---
+title: VennDiagram
+description: 2-set or 3-set overlap diagram — audience intersections, tag co-occurrence, AB-test coverage. Circle areas scale by count.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/venndiagram/BasicVue.vue';
+
+## Basic usage
+
+Pass 2 or 3 `sets`; circle area is sized by `count`. `intersections` declares the count for each overlap region. The component uses `mix-blend-mode: multiply` so overlap colors blend naturally.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sets` | `{ label, count, color? }[]` | — | 2 or 3 sets |
+| `intersections` | `{ sets: number[], count, label? }[]` | — | Overlap data (by set index) |
+| `size` | `number` | `320` | SVG side length |
+| `format` | `(n) => string` | — | Count formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `variant` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font scale |
+
+Payload: `{ type: 'set' | 'intersection', setIndex?, set?, intersection? }`.
+
+> The "set i only" label shown by the component = `sets[i].count − Σ(all intersections that include i)`. If your input is already deduped, subtract upstream.

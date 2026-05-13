@@ -1,0 +1,30 @@
+---
+title: MarimekkoChart 马赛克图
+description: 变宽堆叠柱 —— 列宽表达一个维度的占比，柱内段高度表达另一个维度的占比，一张图同时回答"哪个区域大 + 区域内部什么产品多"。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/marimekkochart/BasicVue.vue';
+
+## 基础用法
+
+每一列是一个分类（如区域 / 时间段），列宽 = 该列总值占总盘的比例；列内 segments 像堆叠柱一样按值分配高度。市场份额、订单结构、人群构成都是经典场景。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `columns` | `{ label, segments: { label, value, color? }[] }[]` | — | 列数据 |
+| `height` | `number` | `320` | 像素高度 |
+| `showColumnLabels` | `boolean` | `true` | 顶部列名 + 底部占比 |
+| `showSegmentLabels` | `boolean` | `true` | 单元格够大时显示段名 |
+| `format` | `(v, seg, col) => string` | — | tooltip 值格式化 |
+| `palette` | `string[]` | viz-1..8 | segments 默认配色 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：`@hover` / `@select`（React `onHover` / `onSelect`），payload `{ column, segment, columnShare, segmentShare, cellShare }`。

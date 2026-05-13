@@ -1,0 +1,64 @@
+/* ParallelCoordinates — multi-axis polyline chart. */
+
+.cf-parallel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  position: relative;
+}
+.cf-parallel--sm { font-size: var(--t-11); }
+.cf-parallel--lg { font-size: var(--t-13); }
+
+.cf-parallel svg { width: 100%; display: block; }
+.cf-parallel__axis { stroke: var(--line-2); stroke-width: 1; }
+.cf-parallel__axis-title { fill: var(--fg-1); font-weight: var(--w-medium); font-size: 12px; }
+.cf-parallel__tick { fill: var(--fg-3); font-size: 10px; font-variant-numeric: tabular-nums; }
+
+.cf-parallel__line {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out), stroke-width var(--dur-fast) var(--ease-out);
+  outline: none;
+}
+.cf-parallel__line:focus-visible {
+  outline: 2px dashed var(--accent-1);
+}
+
+.cf-parallel__legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: var(--t-12);
+}
+.cf-parallel__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fg-2);
+}
+.cf-parallel__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.cf-parallel__tip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-12);
+  pointer-events: none;
+}
+.cf-parallel__tip-label { color: var(--fg-1); font-weight: var(--w-semibold); }
+.cf-parallel__tip-row { color: var(--fg-2); font-variant-numeric: tabular-nums; }

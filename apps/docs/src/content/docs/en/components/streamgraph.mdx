@@ -1,0 +1,31 @@
+---
+title: StreamGraph
+description: Centered stacked-area — an organic view of composition over time; easier to read each series' relative rise / fall than a zero-baseline stack.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/streamgraph/BasicVue.vue';
+
+## Basic usage
+
+`series` is multiple time-series sharing the `categories` X axis. Default `baseline="wiggle"` centers the stack (classic streamgraph). Switch to `"zero"` for a standard stacked area chart.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `categories` | `string[]` | — | Shared X-axis |
+| `series` | `{ label, data: number[], color? }[]` | — | Series array |
+| `height` | `number` | `240` | Pixel height |
+| `baseline` | `'wiggle' \| 'zero'` | `'wiggle'` | Centered vs. zero-baseline stack |
+| `smooth` | `boolean` | `true` | Bezier edge smoothing |
+| `palette` | `string[]` | viz-1..8 | Default colors |
+| `format` | `(v) => string` | — | Tooltip formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font scale |
+
+Payload: `{ index, category, values: Record<seriesLabel, number> }`.

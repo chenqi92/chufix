@@ -1,0 +1,63 @@
+/* VennDiagram — 2-set or 3-set overlap chart. */
+
+.cf-venn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  position: relative;
+}
+.cf-venn--sm { font-size: var(--t-11); }
+.cf-venn--lg { font-size: var(--t-13); }
+
+.cf-venn svg { display: block; }
+
+.cf-venn__circle {
+  cursor: pointer;
+  transition: fill-opacity var(--dur-fast) var(--ease-out);
+  mix-blend-mode: multiply;
+}
+.cf-venn__circle:hover { fill-opacity: 0.5; }
+
+.cf-venn__set-label {
+  fill: var(--fg-1);
+  font-weight: var(--w-semibold);
+  font-size: 12px;
+  pointer-events: none;
+}
+.cf-venn__set-count {
+  fill: var(--fg-2);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.cf-venn__inter-label {
+  fill: var(--fg-3);
+  font-size: 10px;
+  pointer-events: none;
+}
+.cf-venn__inter-count {
+  fill: var(--fg-1);
+  font-size: 12px;
+  font-weight: var(--w-semibold);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.cf-venn__tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-12);
+}
+.cf-venn__tip-label { color: var(--fg-1); font-weight: var(--w-medium); }
+.cf-venn__tip-row { color: var(--fg-2); font-variant-numeric: tabular-nums; }

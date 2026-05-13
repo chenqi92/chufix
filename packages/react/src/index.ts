@@ -46,6 +46,12 @@ import './styles/dualaxischart.css';
 import './styles/paretochart.css';
 import './styles/slopechart.css';
 import './styles/polarbarchart.css';
+import './styles/marimekkochart.css';
+import './styles/tornadochart.css';
+import './styles/wordcloud.css';
+import './styles/venndiagram.css';
+import './styles/streamgraph.css';
+import './styles/parallelcoordinates.css';
 import './styles/input.css';
 import './styles/flex.css';
 import './styles/grid.css';
@@ -593,6 +599,63 @@ export type {
   PolarBarSize,
   PolarBarHoverPayload,
 } from './polarbarchart/variants';
+
+export { MarimekkoChart as CfMarimekkoChart } from './marimekkochart/MarimekkoChart';
+export type { MarimekkoChartProps } from './marimekkochart/MarimekkoChart';
+export type {
+  MarimekkoProps,
+  MarimekkoColumn,
+  MarimekkoSegment,
+  MarimekkoSize,
+  MarimekkoHoverPayload,
+} from './marimekkochart/variants';
+
+export { TornadoChart as CfTornadoChart } from './tornadochart/TornadoChart';
+export type { TornadoChartProps } from './tornadochart/TornadoChart';
+export type {
+  TornadoProps,
+  TornadoItem,
+  TornadoSize,
+  TornadoHoverPayload,
+} from './tornadochart/variants';
+
+export { WordCloud as CfWordCloud } from './wordcloud/WordCloud';
+export type { WordCloudComponentProps } from './wordcloud/WordCloud';
+export type {
+  WordCloudProps,
+  WordCloudItem,
+  WordCloudSize,
+  WordCloudHoverPayload,
+} from './wordcloud/variants';
+
+export { VennDiagram as CfVennDiagram } from './venndiagram/VennDiagram';
+export type { VennDiagramProps } from './venndiagram/VennDiagram';
+export type {
+  VennProps,
+  VennSet,
+  VennIntersection,
+  VennSize,
+  VennHoverPayload,
+} from './venndiagram/variants';
+
+export { StreamGraph as CfStreamGraph } from './streamgraph/StreamGraph';
+export type { StreamGraphComponentProps } from './streamgraph/StreamGraph';
+export type {
+  StreamGraphProps,
+  StreamSeries,
+  StreamGraphSize,
+  StreamGraphHoverPayload,
+} from './streamgraph/variants';
+
+export { ParallelCoordinates as CfParallelCoordinates } from './parallelcoordinates/ParallelCoordinates';
+export type { ParallelCoordinatesProps } from './parallelcoordinates/ParallelCoordinates';
+export type {
+  ParallelProps,
+  ParallelAxis,
+  ParallelItem,
+  ParallelSize,
+  ParallelHoverPayload,
+} from './parallelcoordinates/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

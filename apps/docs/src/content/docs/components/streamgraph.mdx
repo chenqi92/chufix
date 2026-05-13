@@ -1,0 +1,31 @@
+---
+title: StreamGraph 河流图
+description: 居中堆叠面积图 —— 时序构成演变的有机表达，比传统堆叠面积更平衡、更易看清各 series 的相对消长。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/streamgraph/BasicVue.vue';
+
+## 基础用法
+
+`series` 是多条时间序列，共用 `categories` 横轴。默认 `baseline="wiggle"` 把堆叠居中（经典 streamgraph 形态），改成 `"zero"` 就退化为标准堆叠面积图。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `categories` | `string[]` | — | 共用的 X 轴 |
+| `series` | `{ label, data: number[], color? }[]` | — | 多条 series |
+| `height` | `number` | `240` | 像素高度 |
+| `baseline` | `'wiggle' \| 'zero'` | `'wiggle'` | 居中堆叠 vs 普通堆叠 |
+| `smooth` | `boolean` | `true` | 贝塞尔平滑边缘 |
+| `palette` | `string[]` | viz-1..8 | 默认配色 |
+| `format` | `(v) => string` | — | tooltip 值格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件 payload：`{ index, category, values: Record<seriesLabel, number> }`。

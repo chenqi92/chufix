@@ -46,6 +46,12 @@ import './styles/dualaxischart.css';
 import './styles/paretochart.css';
 import './styles/slopechart.css';
 import './styles/polarbarchart.css';
+import './styles/marimekkochart.css';
+import './styles/tornadochart.css';
+import './styles/wordcloud.css';
+import './styles/venndiagram.css';
+import './styles/streamgraph.css';
+import './styles/parallelcoordinates.css';
 import './styles/input.css';
 import './styles/flex.css';
 import './styles/grid.css';
@@ -579,6 +585,57 @@ export type {
   PolarBarSize,
   PolarBarHoverPayload,
 } from './polarbarchart/variants';
+
+export { default as CfMarimekkoChart } from './marimekkochart/MarimekkoChart.vue';
+export type {
+  MarimekkoProps,
+  MarimekkoColumn,
+  MarimekkoSegment,
+  MarimekkoSize,
+  MarimekkoHoverPayload,
+} from './marimekkochart/variants';
+
+export { default as CfTornadoChart } from './tornadochart/TornadoChart.vue';
+export type {
+  TornadoProps,
+  TornadoItem,
+  TornadoSize,
+  TornadoHoverPayload,
+} from './tornadochart/variants';
+
+export { default as CfWordCloud } from './wordcloud/WordCloud.vue';
+export type {
+  WordCloudProps,
+  WordCloudItem,
+  WordCloudSize,
+  WordCloudHoverPayload,
+} from './wordcloud/variants';
+
+export { default as CfVennDiagram } from './venndiagram/VennDiagram.vue';
+export type {
+  VennProps,
+  VennSet,
+  VennIntersection,
+  VennSize,
+  VennHoverPayload,
+} from './venndiagram/variants';
+
+export { default as CfStreamGraph } from './streamgraph/StreamGraph.vue';
+export type {
+  StreamGraphProps,
+  StreamSeries,
+  StreamGraphSize,
+  StreamGraphHoverPayload,
+} from './streamgraph/variants';
+
+export { default as CfParallelCoordinates } from './parallelcoordinates/ParallelCoordinates.vue';
+export type {
+  ParallelProps,
+  ParallelAxis,
+  ParallelItem,
+  ParallelSize,
+  ParallelHoverPayload,
+} from './parallelcoordinates/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
