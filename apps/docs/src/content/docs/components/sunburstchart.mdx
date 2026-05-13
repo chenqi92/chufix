@@ -1,0 +1,68 @@
+---
+title: SunburstChart 旭日图
+description: 多层径向树形分区图，从内圈到外圈代表父→子层级，扇形面积 ∝ 值。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sunburstchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sunburstchart/BasicVue.vue?raw';
+
+## 何时使用
+
+- 多层级占比：流量来源（渠道 → 平台）、成本归因（事业部 → 项目 → 任务）、文件系统大小（目录 → 子目录 → 文件）。
+- 与 [`CfTreemap`](./treemap/) 的差异：Treemap 是矩形 slice-and-dice，单层；Sunburst 是径向，**支持任意深度**。
+- 与 [`CfDonutChart`](./donutchart/) 的差异：DonutChart 是单环；Sunburst 是多环嵌套。
+- 不建议层级 > 4：外圈扇形过小、标签放不下，转用 Treemap 或 ScatterPlot 更可读。
+
+## 基础用法
+
+数据是一棵 `SunburstNode` 树。叶子节点提供 `value`，父节点的值=子节点求和。`colorIndex` 从内圈向外圈继承，外圈只能看不到时给 root 的孩子上色就够了。
+
+<DemoFrame
+  vueCode={`<CfSunburstChart :root="root" :size="320" />`}
+  reactCode={`<CfSunburstChart root={root} size={320} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `root` | `SunburstNode` | `—` | 根节点（其本身不渲染，孩子构成第 1 环） |
+| `size` | `number` | `240` | 直径 |
+| `innerRadiusRatio` | `0..1` | `0.2` | 中心留白半径占总半径的比例 |
+| `showLabels` | `boolean` | `true` | 大扇形上画标签 |
+| `labelMinAngle` | `number` | `12` | 小于该角度（度）的扇形不画标签 |
+| `ariaLabel` | `string` | `'旭日图'` |  |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `SunburstChartInteractionPayload` | 鼠标进入某扇形 |
+| `item-leave` | `onItemLeave` | `SunburstChartInteractionPayload` | 鼠标离开 |
+
+### 类型
+
+```ts
+interface SunburstNode {
+  name: string;
+  /** 叶子节点必填；父节点会从孩子求和。 */
+  value?: number;
+  /** 0..7，对应 --viz-1..8。父节点的色相会被孩子继承。 */
+  colorIndex?: number;
+  children?: SunburstNode[];
+}
+
+interface SunburstChartInteractionPayload {
+  node: SunburstNode;
+  /** 1 = 第一环；2 = 第二环；以此类推。 */
+  depth: number;
+  /** 从 root 到该节点的 name 路径（含 root.name）。 */
+  pathNames: string[];
+  /** node 及其后代的累计值。 */
+  totalValue: number;
+  nativeEvent?: PointerEvent;
+}
+```

@@ -1,0 +1,64 @@
+---
+title: WaterfallChart 瀑布图
+description: 财务 / 数值累计变化，正向涨绿、负向跌红，total 锚点贯穿。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/waterfallchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/waterfallchart/BasicVue.vue?raw';
+
+## 何时使用
+
+- 财务报告（收入—支出—净利润）、资源消耗追踪（容量—配额—剩余）、A/B 实验贡献度归因。
+- 与 [`CfBarChart`](./barchart/) 的差异：BarChart 是绝对值并列；Waterfall 强调"从 A 到 B 之间发生了哪些累计变化"。
+- 与 [`CfTimingBar`](./timingbar/) 的差异：TimingBar 是时间轴上的并行 phase；Waterfall 是值轴上的串行 delta。
+
+## 基础用法
+
+`kind: 'total'` 标记锚点柱（起始 / 中间小计 / 期末），其余条目默认是 `delta` 增量。
+
+<DemoFrame
+  vueCode={`<CfWaterfallChart :steps="steps" :value-formatter="(v) => \`\${v >= 0 ? '+' : ''}\${v} k\`" />`}
+  reactCode={`<CfWaterfallChart steps={steps} valueFormatter={(v) => \`\${v >= 0 ? '+' : ''}\${v} k\`} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `steps` | `WaterfallStep[]` | `—` | `{ label, value, kind?: 'delta' \| 'total' }[]` |
+| `width / height` | `number` | `480 / 240` |  |
+| `showGrid` | `boolean` | `true` | 显示 0 基准线 |
+| `showLabels` | `boolean` | `true` | 顶部数值 + 底部标签 |
+| `valueFormatter` | `(v: number) => string` | `v.toFixed(0)` | 数值格式化 |
+| `ariaLabel` | `string` | `'瀑布图'` |  |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `WaterfallChartInteractionPayload` | 鼠标进入某根柱 |
+| `item-leave` | `onItemLeave` | `WaterfallChartInteractionPayload` | 鼠标离开 |
+
+### 类型
+
+```ts
+interface WaterfallStep {
+  label: string;
+  /** 增量值；当 kind='total' 时是绝对锚点值。 */
+  value: number;
+  kind?: 'delta' | 'total';
+}
+
+interface WaterfallChartInteractionPayload {
+  step: WaterfallStep;
+  dataIndex: number;
+  /** 走到该柱后的累计值（含本柱）。 */
+  cumulative: number;
+  /** 本柱产生的变化量。 */
+  delta: number;
+  nativeEvent?: PointerEvent;
+}
+```

@@ -32,6 +32,7 @@ const categories: ChartCategory[] = [
       ITEM('histogram', 'Histogram 直方图', 'Histogram', '分箱直方图', 'Binned histogram', 'histogram'),
       ITEM('stackedbar100', 'StackedBar100 占比柱', 'StackedBar100', '横向 100% 堆叠柱', '100% stacked horizontal bars', 'stackedbar100'),
       ITEM('bulletchart', 'BulletChart 子弹图', 'BulletChart', '单值进度 + 目标线 + 质量带', 'Single-value progress with target & quality bands', 'bulletchart'),
+      ITEM('waterfallchart', 'WaterfallChart 瀑布图', 'WaterfallChart', '正负累计变化 + total 锚点', 'Signed cumulative deltas with total anchors', 'waterfallchart'),
     ],
   },
   {
@@ -43,6 +44,7 @@ const categories: ChartCategory[] = [
       ITEM('funnelchart', 'FunnelChart 漏斗图', 'FunnelChart', '逐层收窄的转化漏斗', 'Layered conversion funnel', 'funnelchart'),
       ITEM('treemap', 'Treemap 矩形树图', 'Treemap', '层级矩形面积图', 'Hierarchical rectangle area map', 'treemap'),
       ITEM('sankeydiagram', 'SankeyDiagram 流向图', 'SankeyDiagram', '节点 + 加权边的流向图', 'Weighted-edge node flow diagram', 'sankeydiagram'),
+      ITEM('sunburstchart', 'SunburstChart 旭日图', 'SunburstChart', '多层径向树形分区', 'Multi-layer radial partition', 'sunburstchart'),
     ],
   },
   {
@@ -65,6 +67,7 @@ const categories: ChartCategory[] = [
       ITEM('metriccard', 'MetricCard 指标卡', 'MetricCard', '数值 + 涨跌 + sparkline', 'Value + delta + sparkline', 'metriccard'),
       ITEM('timingbar', 'TimingBar 请求瀑布', 'TimingBar', '横向请求阶段瀑布图', 'Horizontal request-phase waterfall', 'timingbar'),
       ITEM('latencyheatmap', 'LatencyHeatmap 延迟热力', 'LatencyHeatmap', '二维矩阵热力图', '2D matrix heatmap', 'latencyheatmap'),
+      ITEM('heatmapchart', 'HeatmapChart 通用热力图', 'HeatmapChart', '可配置色阶的通用热力图', 'Generic heatmap with configurable color scale', 'heatmapchart'),
       ITEM('connectiongraph', 'ConnectionGraph 连接图', 'ConnectionGraph', '节点 + 边的关系图', 'Node-edge relationship graph', 'connectiongraph'),
     ],
   },
@@ -81,8 +84,8 @@ const categories: ChartCategory[] = [
 
 const heroTitle = isEn ? 'Charts · data visualization' : 'Charts 数据可视化';
 const heroLede = isEn
-  ? '22 pure-SVG charts, no third-party deps. All built on the internal _useScale / _arcPath / _polar utilities. The palette uses --viz-1..8 tokens (color-blind friendly) and follows your active ChuFix theme.'
-  : '22 个纯 SVG 图表，零三方依赖，全部基于内部 _useScale / _arcPath / _polar 工具函数实现。色板使用 --viz-1..8 token，色盲友好，与 ChuFix 主题切换联动。';
+  ? '25 pure-SVG charts, no third-party deps. All built on the internal _useScale / _arcPath / _polar utilities. The palette uses --viz-1..8 tokens (color-blind friendly) and follows your active ChuFix theme.'
+  : '25 个纯 SVG 图表，零三方依赖，全部基于内部 _useScale / _arcPath / _polar 工具函数实现。色板使用 --viz-1..8 token，色盲友好，与 ChuFix 主题切换联动。';
 ---
 
 <div class="charts-page">

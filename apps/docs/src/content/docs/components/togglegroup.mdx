@@ -1,0 +1,47 @@
+---
+title: ToggleGroup 切换组
+description: 按钮组形态的单选 / 多选状态切换。语义上"按下表示开"，对标 Radix ToggleGroup。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/togglegroup/BasicVue.vue';
+import BasicVueSource from '~/components/demos/togglegroup/BasicVue.vue?raw';
+
+## 何时使用
+
+- 多个按钮代表 **可切换状态**（粗体 / 斜体 / 下划线、对齐方式、视图模式）。
+- 与 [`CfTabs`](./tabs/) 的差别：Tabs 是导航（切换视图），ToggleGroup 是状态（设置数值）。
+- 与 [`CfRadio`](./radio/) 的差别：Radio 是表单字段；ToggleGroup 是工具栏控件，可以单选也可以多选。
+
+## 基础用法
+
+`mode="single"` 默认互斥；`mode="multi"` 允许多选并通过 `v-model` 双向绑定字符串数组。
+按下后会拿到 `aria-pressed="true"` 与 `--accent-soft` 染色。
+
+<DemoFrame
+  vueCode={`<CfToggleGroup v-model="align" :options="alignOptions" />
+<CfToggleGroup v-model="tags" :options="tagOptions" mode="multi" />`}
+  reactCode={`<CfToggleGroup value={align} onChange={({ value }) => setAlign(value)} options={alignOptions} />
+<CfToggleGroup value={tags} onChange={({ value }) => setTags(value)} options={tagOptions} mode="multi" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `options` | `ToggleOption[]` | `—` | `{ value, label, icon?, disabled? }[]` |
+| `modelValue` / `value` | `string \| string[] \| null` | `—` | Vue v-model；React 受控 value |
+| `mode` | `'single' \| 'multi'` | `'single'` | 单选可空 / 多选累计 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` |  |
+| `variant` | `'attached' \| 'separated'` | `'attached'` | 视觉上连接 / 分离 |
+| `disabled` | `boolean` | `false` | 整组禁用 |
+| `ariaLabel` | `string` | `—` | 透传 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | — | 新值 | v-model 同步 |
+| `change` | `onChange` | `ToggleGroupChangePayload` | `{ value, changedValue }`；`changedValue` 是本次点击的 option.value |

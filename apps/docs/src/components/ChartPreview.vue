@@ -27,6 +27,9 @@ const map: Record<string, () => Promise<any>> = {
   connectiongraph: () => import('~/components/demos/connectiongraph/BasicVue.vue'),
   charttoolbar: () => import('~/components/demos/charttoolbar/BasicVue.vue'),
   chartcrosshair: () => import('~/components/demos/chartcrosshair/BasicVue.vue'),
+  heatmapchart: () => import('~/components/demos/heatmapchart/BasicVue.vue'),
+  waterfallchart: () => import('~/components/demos/waterfallchart/BasicVue.vue'),
+  sunburstchart: () => import('~/components/demos/sunburstchart/BasicVue.vue'),
 };
 
 const Comp = computed(() => {

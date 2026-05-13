@@ -1,0 +1,62 @@
+---
+title: Typography 文本
+description: Heading / Text / Paragraph 三个原语，所有字号都绑定 design token（--t-48 … --t-11）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/typography/BasicVue.vue';
+import BasicVueSource from '~/components/demos/typography/BasicVue.vue?raw';
+
+## 何时使用
+
+- 营销页 / 文档 / 任何承担"标题—段落—内联文字"层级的页面。
+- 不要在按钮、Tag、表单 label 里使用：这些组件已经把字号锁定到了 `--ui-size`，再嵌一层 `<CfText>` 只会重复样式。
+- 三类各自负责：
+  - **CfHeading** — `<h1>` 到 `<h6>` 的语义标题；6 个 level 对应 6 个字号 token。
+  - **CfText** — 行内文本片段，默认 `<span>`，可换 `tag="strong"` / `tag="em"` / `tag="label"`。
+  - **CfParagraph** — 段落 `<p>`，自动 margin-block-end 与多行 `line-clamp`。
+
+## 基础用法
+
+<DemoFrame
+  vueCode={`<CfHeading :level="1">主标题</CfHeading>
+<CfHeading :level="3">小节标题</CfHeading>
+<CfParagraph>段落正文。<CfText variant="accent">accent 片段</CfText></CfParagraph>`}
+  reactCode={`<CfHeading level={1}>主标题</CfHeading>
+<CfHeading level={3}>小节标题</CfHeading>
+<CfParagraph>段落正文。<CfText variant="accent">accent 片段</CfText></CfParagraph>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API · CfHeading
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | 渲染为 `<h{level}>`，对应字号 48/40/32/28/22/18 |
+| `weight` | `'regular' \| 'medium' \| 'semibold' \| 'bold'` | `'semibold'` |  |
+| `variant` | `'default' \| 'muted' \| 'subtle' \| 'accent' \| 'success' \| 'warning' \| 'error'` | `'default'` | 颜色 tone |
+| `align` | `'start' \| 'center' \| 'end' \| 'justify'` | `'start'` |  |
+| `truncate` | `boolean` | `false` | 单行 ellipsis |
+
+## API · CfText
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `tag` | `'span' \| 'p' \| 'div' \| 'label' \| 'strong' \| 'em'` | `'span'` |  |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | 对应 11/12/14/16/18 |
+| `variant` | 同 Heading |  |  |
+| `weight` | 同 Heading |  |  |
+| `truncate` | `boolean` | `false` |  |
+
+## API · CfParagraph
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `size` / `variant` / `weight` / `align` | 同 Text |  |  |
+| `lineClamp` | `number` | `0` | `>0` 启用多行 ellipsis，line-clamp 行数 |
+
+## 关于 `variant="subtle"`
+
+⚠️ `--fg-3` 对 `--bg-1` 的对比度仅 ≈ 3.4–3.5（低于 WCAG AA 的 4.5）。
+请只用于 **辅助/装饰文本**（hint / caption / placeholder），不要承载关键信息。

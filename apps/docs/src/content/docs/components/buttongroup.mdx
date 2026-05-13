@@ -1,0 +1,42 @@
+---
+title: ButtonGroup 按钮组
+description: 把多个 CfButton 拼成连接式或分离式的一组，逻辑上代表"对同一对象的一组动作"。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/buttongroup/BasicVue.vue';
+import BasicVueSource from '~/components/demos/buttongroup/BasicVue.vue?raw';
+
+## 何时使用
+
+- 一组动作针对同一对象（对齐工具 / 复制粘贴 / 排序方向），可视为 "一个控件"。
+- 多按钮间是**互斥单选**或**多选切换**的场景：用 [`CfToggleGroup`](./togglegroup/) 而不是 ButtonGroup。
+
+## 基础用法
+
+`variant="attached"`（默认）共享圆角与边框，看起来像一个控件；`variant="separated"` 留间距，按钮各自独立。
+`orientation="vertical"` 把它竖起来。
+
+<DemoFrame
+  vueCode={`<CfButtonGroup>
+  <CfButton variant="tertiary">左</CfButton>
+  <CfButton variant="tertiary">中</CfButton>
+  <CfButton variant="tertiary">右</CfButton>
+</CfButtonGroup>`}
+  reactCode={`<CfButtonGroup>
+  <CfButton variant="tertiary">左</CfButton>
+  <CfButton variant="tertiary">中</CfButton>
+  <CfButton variant="tertiary">右</CfButton>
+</CfButtonGroup>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 排列方向 |
+| `variant` | `'attached' \| 'separated'` | `'attached'` | 连接式 / 分离式 |
+| `size` | `'sm' \| 'md' \| 'lg'` | — | 给子按钮统一尺寸 |
+| `ariaLabel` | `string` | — | 给 `<div role="group">` 一个名字，配合 screen reader |

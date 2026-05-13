@@ -65,6 +65,8 @@ export const sidebar: SidebarGroup[] = [
     label: L('表单', 'Form'),
     items: [
       c('Button', '按钮', 'button'),
+      c('ButtonGroup', '按钮组', 'buttongroup'),
+      c('ToggleGroup', '切换组', 'togglegroup'),
       c('IconButton', '图标按钮', 'iconbutton'),
       c('SplitButton', '分裂按钮', 'splitbutton'),
       c('Input', '输入框', 'input'),
@@ -117,6 +119,8 @@ export const sidebar: SidebarGroup[] = [
   {
     label: L('数据展示', 'Data display'),
     items: [
+      c('Typography', '文本', 'typography'),
+      c('Editable', '行内编辑', 'editable'),
       c('Tag', '标签', 'tag'),
       c('Badge', '徽标', 'badge'),
       c('ProtocolBadge', '协议徽标', 'protocolbadge'),
