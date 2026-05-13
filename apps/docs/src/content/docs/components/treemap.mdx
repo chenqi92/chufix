@@ -42,7 +42,9 @@ import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
 
 ## 嵌套层级 + 下钻
 
-给任意节点加 `children`,组件会用 slice-and-dice 递归排版,父矩形顶部留 `headerHeight` 像素当作分组标题。点击有子节点的顶层矩形 → 该子树成为新焦点;面包屑、↑ 上一层、底部 footer 都跟着切换。`drillable={false}` 即关掉钻取行为退回静态视图。
+给任意节点加 `children`,组件会递归排版,父矩形顶部留 `headerHeight` 像素当作分组标题。点击有子节点的顶层矩形 → 该子树成为新焦点;面包屑、↑ 上一层、底部 footer 都跟着切换。`drillable={false}` 即关掉钻取行为退回静态视图。
+
+默认 `layout="squarify"` 用经典的 Squarified Treemap 算法 (Bruls et al. 2000),贪心地让每个矩形的长宽比接近 1,长宽悬殊的数据集也能保持可读;需要传统纵横交替切分时传 `layout="slice-and-dice"` 退回旧行为。
 
 <DemoFrame
   vueCode={`<CfTreemap :nodes="nodes" :width="640" :height="320" @drill="onDrill" />`}
@@ -63,6 +65,7 @@ import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
 | `headerHeight` | `number` | `16` | 父矩形顶部留给标题的高度 |
 | `drillable` | `boolean` | `true` | 点击有子节点的顶层矩形钻取 |
 | `showBreadcrumb` | `boolean` | `true` | 钻取时显示面包屑 + ↑上一层按钮 |
+| `layout` | `'squarify' \| 'slice-and-dice'` | `'squarify'` | 排版算法,默认 squarify 优化长宽比 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
 
 ### Events

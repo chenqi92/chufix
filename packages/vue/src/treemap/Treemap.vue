@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<TreemapProps>(), {
   headerHeight: 16,
   drillable: true,
   showBreadcrumb: true,
+  layout: 'squarify',
 });
 
 const emit = defineEmits<{
@@ -49,6 +50,7 @@ const rects = computed(() =>
   layoutTreemap(focusedChildren.value, props.width, props.height, {
     childPadding: props.childPadding,
     headerHeight: props.headerHeight,
+    layout: props.layout,
   }),
 );
 

@@ -1,4 +1,10 @@
-import { useCallback, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 import type {
   SankeyDiagramProps,
   SankeyNode,
@@ -30,15 +36,45 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
   } = props;
 
   const [yOverrides, setYOverrides] = useState<Record<string, number>>({});
+  const [xOverrides, setXOverrides] = useState<Record<string, number>>({});
+  const [layerOverrides, setLayerOverrides] = useState<Record<string, number>>({});
+  const [orderOverrides, setOrderOverrides] = useState<Record<number, string[]>>({});
+
+  const nodeLayer = useCallback(
+    (n: SankeyNode) => layerOverrides[n.id] ?? n.layer ?? 0,
+    [layerOverrides],
+  );
+  const inflowOf = useCallback(
+    (id: string) => (links ?? []).filter((l) => l.target === id).reduce((a, l) => a + l.value, 0),
+    [links],
+  );
+  const outflowOf = useCallback(
+    (id: string) => (links ?? []).filter((l) => l.source === id).reduce((a, l) => a + l.value, 0),
+    [links],
+  );
 
   const baseLayout = useMemo(() => {
     if (!nodes?.length || !links?.length) return null;
-    const layerMax = nodes.reduce((m, n) => Math.max(m, n.layer ?? 0), 0);
     const byLayer: Record<number, SankeyNode[]> = {};
-    nodes.forEach((n) => {
-      const l = n.layer ?? 0;
+    for (const n of nodes) {
+      const l = nodeLayer(n);
       (byLayer[l] = byLayer[l] || []).push(n);
-    });
+    }
+    for (const layerStr of Object.keys(byLayer)) {
+      const layer = Number(layerStr);
+      const explicit = orderOverrides[layer];
+      if (!explicit) continue;
+      const idx = new Map(explicit.map((id, i) => [id, i] as const));
+      byLayer[layer].sort((a, b) => {
+        const ai = idx.get(a.id);
+        const bi = idx.get(b.id);
+        if (ai != null && bi != null) return ai - bi;
+        if (ai != null) return -1;
+        if (bi != null) return 1;
+        return 0;
+      });
+    }
+    const layerMax = Math.max(0, ...Object.keys(byLayer).map(Number));
     const layerSpacing = layerMax > 0 ? (width - nodeWidth) / layerMax : 0;
     const placed = new Map<string, PlacedEntry>();
     const innerH = height - 16;
@@ -46,31 +82,30 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
     Object.entries(byLayer).forEach(([layerStr, group]) => {
       const layer = Number(layerStr);
       const x = layer * layerSpacing;
-      const totalValue = group.reduce((s, n) => {
-        const inflow = links.filter((l) => l.target === n.id).reduce((a, l) => a + l.value, 0);
-        const outflow = links.filter((l) => l.source === n.id).reduce((a, l) => a + l.value, 0);
-        return s + Math.max(inflow, outflow);
-      }, 0);
+      const totalValue = group.reduce((s, n) => s + Math.max(inflowOf(n.id), outflowOf(n.id)), 0);
       const valuePx = innerH / Math.max(1, totalValue);
       let y = 8;
       for (const n of group) {
-        const inflow = links.filter((l) => l.target === n.id).reduce((a, l) => a + l.value, 0);
-        const outflow = links.filter((l) => l.source === n.id).reduce((a, l) => a + l.value, 0);
-        const h = Math.max(8, Math.max(inflow, outflow) * valuePx);
+        const h = Math.max(8, Math.max(inflowOf(n.id), outflowOf(n.id)) * valuePx);
         placed.set(n.id, { x, baseY: y, h, node: n, layer });
         y += h + 6;
       }
     });
-    return placed;
-  }, [nodes, links, width, height, nodeWidth]);
+    return { placed, byLayer, layerSpacing };
+  }, [nodes, links, width, height, nodeWidth, nodeLayer, orderOverrides, inflowOf, outflowOf]);
 
   const layout = useMemo(() => {
     if (!baseLayout) return null;
-    const positions = new Map<string, { x: number; y: number; h: number; baseY: number; node: SankeyNode }>();
-    baseLayout.forEach((entry, id) => {
-      const override = yOverrides[id] ?? 0;
-      const y = Math.max(0, Math.min(height - entry.h, entry.baseY + override));
-      positions.set(id, { x: entry.x, y, h: entry.h, baseY: entry.baseY, node: entry.node });
+    const { placed } = baseLayout;
+    const positions = new Map<
+      string,
+      { x: number; y: number; h: number; baseY: number; node: SankeyNode; layer: number }
+    >();
+    placed.forEach((entry, id) => {
+      const dx = xOverrides[id] ?? 0;
+      const dy = yOverrides[id] ?? 0;
+      const y = Math.max(0, Math.min(height - entry.h, entry.baseY + dy));
+      positions.set(id, { x: entry.x + dx, y, h: entry.h, baseY: entry.baseY, node: entry.node, layer: entry.layer });
     });
 
     const linkPaths = links
@@ -99,15 +134,20 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
       y: r.y,
       h: r.h,
       baseY: r.baseY,
+      layer: r.layer,
       name: r.node.name,
       colorIndex: r.node.colorIndex ?? 0,
     }));
-
     return { linkPaths, nodeRects };
-  }, [baseLayout, yOverrides, nodeWidth, height, links]);
+  }, [baseLayout, yOverrides, xOverrides, height, links, nodeWidth]);
 
-  /* Drag handling */
-  const dragRef = useRef<{ id: string; startY: number; startOverride: number } | null>(null);
+  const dragRef = useRef<{
+    id: string;
+    startX: number;
+    startY: number;
+    startXOverride: number;
+    startYOverride: number;
+  } | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
 
   const onNodePointerDown = useCallback(
@@ -116,31 +156,96 @@ export function SankeyDiagram(props: SankeyDiagramProps) {
       e.preventDefault();
       dragRef.current = {
         id,
+        startX: e.clientX,
         startY: e.clientY,
-        startOverride: yOverrides[id] ?? 0,
+        startXOverride: xOverrides[id] ?? 0,
+        startYOverride: yOverrides[id] ?? 0,
       };
       setDraggingId(id);
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
     },
-    [draggable, yOverrides],
+    [draggable, xOverrides, yOverrides],
   );
+
   const onNodePointerMove = useCallback((e: ReactPointerEvent) => {
     const d = dragRef.current;
     if (!d) return;
-    const delta = e.clientY - d.startY;
-    setYOverrides((prev) => ({ ...prev, [d.id]: d.startOverride + delta }));
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    setXOverrides((prev) => ({ ...prev, [d.id]: d.startXOverride + dx }));
+    setYOverrides((prev) => ({ ...prev, [d.id]: d.startYOverride + dy }));
   }, []);
+
   const onNodePointerUp = useCallback(() => {
     const d = dragRef.current;
     if (!d) return;
-    const node = nodes.find((n) => n.id === d.id);
-    const rect = layout?.nodeRects.find((r) => r.id === d.id);
     dragRef.current = null;
     setDraggingId(null);
-    if (node && rect) {
-      onNodeDrag?.({ node, y: rect.y, deltaY: rect.y - rect.baseY });
+
+    const b = baseLayout;
+    const rect = layout?.nodeRects.find((r) => r.id === d.id);
+    const node = nodes.find((n) => n.id === d.id);
+    if (!b || !rect || !node) return;
+
+    const layerSpacing = b.layerSpacing || 1;
+    const layerKeys = Object.keys(b.byLayer).map(Number).sort((a, b2) => a - b2);
+    const fromLayer = nodeLayer(node);
+    const droppedX = rect.x;
+    let nearestLayer = fromLayer;
+    let nearestDist = Infinity;
+    for (const l of layerKeys) {
+      const layerX = l * layerSpacing;
+      const dist = Math.abs(droppedX - layerX);
+      if (dist < nearestDist) {
+        nearestDist = dist;
+        nearestLayer = l;
+      }
     }
-  }, [layout, nodes, onNodeDrag]);
+    const layerChanged = nearestLayer !== fromLayer;
+
+    const destSiblings = (b.byLayer[nearestLayer] ?? []).filter((n) => n.id !== d.id);
+    const withDropped = [...destSiblings, node];
+    const dropY = rect.y + rect.h / 2;
+    const sorted = withDropped
+      .map((n) => {
+        if (n.id === d.id) return { id: n.id, y: dropY };
+        const placed = b.placed.get(n.id);
+        return { id: n.id, y: placed ? placed.baseY + placed.h / 2 : 0 };
+      })
+      .sort((a, c) => a.y - c.y)
+      .map((x) => x.id);
+
+    const orderIndex = sorted.indexOf(d.id);
+
+    setLayerOverrides((prev) => (layerChanged ? { ...prev, [d.id]: nearestLayer } : prev));
+    setOrderOverrides((prev) => {
+      const next = { ...prev, [nearestLayer]: sorted };
+      if (layerChanged) {
+        const srcRemaining = (b.byLayer[fromLayer] ?? []).filter((n) => n.id !== d.id).map((n) => n.id);
+        next[fromLayer] = srcRemaining;
+      }
+      return next;
+    });
+    setXOverrides((prev) => {
+      const next = { ...prev };
+      delete next[d.id];
+      return next;
+    });
+    setYOverrides((prev) => {
+      const next = { ...prev };
+      delete next[d.id];
+      return next;
+    });
+
+    onNodeDrag?.({
+      node,
+      y: rect.y,
+      deltaY: rect.y - rect.baseY,
+      layer: nearestLayer,
+      orderIndex,
+      layerChanged,
+    });
+  }, [baseLayout, layout, nodes, nodeLayer, onNodeDrag]);
 
   return (
     <svg

@@ -126,53 +126,60 @@ const canDrillUp = computed(() => stack.value.length > 1);
       role="img"
       :aria-label="ariaLabel ?? '旭日图'"
     >
-      <g>
-        <path
-          v-for="(seg, i) in layout.segments"
-          :key="i"
-          :class="[
-            'cf-sunburst__segment',
-            `cf-chart__bar--${seg.colorIndex}`,
-            drillable && seg.node.children?.length ? 'is-zoomable' : '',
-          ]"
-          :d="seg.path"
-          :tabindex="drillable && seg.node.children?.length ? 0 : undefined"
-          @pointerenter="(e: PointerEvent) => onEnter(i, e)"
-          @pointerleave="(e: PointerEvent) => onLeave(i, e)"
-          @click="onSegmentClick(i)"
-          @keydown.enter.prevent="onSegmentClick(i)"
-          @keydown.space.prevent="onSegmentClick(i)"
-        >
-          <title>{{ seg.node.name }}</title>
-        </path>
-        <template v-if="showLabels">
-          <text
-            v-for="(seg, i) in layout.segments.filter((s) => s.endAngle - s.startAngle >= labelMinAngle)"
-            :key="`l${i}`"
-            class="cf-sunburst__label"
-            :x="labelXY(seg).x"
-            :y="labelXY(seg).y"
-            text-anchor="middle"
-            dominant-baseline="central"
-          >{{ seg.node.name }}</text>
-        </template>
-
-        <!-- Center "up one level" affordance when drilled in. -->
-        <g
-          v-if="drillable && canDrillUp"
-          class="cf-sunburst__center"
-          :transform="`translate(${centerX}, ${centerY})`"
-          tabindex="0"
-          role="button"
-          aria-label="返回上一层"
-          @click="drillUp"
-          @keydown.enter.prevent="drillUp"
-          @keydown.space.prevent="drillUp"
-        >
-          <circle r="22" />
-          <text class="cf-sunburst__center-label" text-anchor="middle" dominant-baseline="middle" dy="-2">↑</text>
-          <text class="cf-sunburst__center-name" text-anchor="middle" dominant-baseline="middle" dy="14">{{ focused.name }}</text>
+      <!--
+        Focus is keyed by the full ancestor path so Vue's <Transition> swaps
+        the whole layer when the user drills in/out. Fade + scale gives a
+        cheap pseudo-zoom without per-segment path interpolation.
+      -->
+      <Transition name="cf-sunburst-fade" mode="out-in" appear>
+        <g :key="stack.map((n) => n.name).join('/')" class="cf-sunburst__layer">
+          <path
+            v-for="(seg, i) in layout.segments"
+            :key="i"
+            :class="[
+              'cf-sunburst__segment',
+              `cf-chart__bar--${seg.colorIndex}`,
+              drillable && seg.node.children?.length ? 'is-zoomable' : '',
+            ]"
+            :d="seg.path"
+            :tabindex="drillable && seg.node.children?.length ? 0 : undefined"
+            @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+            @pointerleave="(e: PointerEvent) => onLeave(i, e)"
+            @click="onSegmentClick(i)"
+            @keydown.enter.prevent="onSegmentClick(i)"
+            @keydown.space.prevent="onSegmentClick(i)"
+          >
+            <title>{{ seg.node.name }}</title>
+          </path>
+          <template v-if="showLabels">
+            <text
+              v-for="(seg, i) in layout.segments.filter((s) => s.endAngle - s.startAngle >= labelMinAngle)"
+              :key="`l${i}`"
+              class="cf-sunburst__label"
+              :x="labelXY(seg).x"
+              :y="labelXY(seg).y"
+              text-anchor="middle"
+              dominant-baseline="central"
+            >{{ seg.node.name }}</text>
+          </template>
         </g>
+      </Transition>
+
+      <!-- Center "up one level" stays outside the transition so it doesn't blink. -->
+      <g
+        v-if="drillable && canDrillUp"
+        class="cf-sunburst__center"
+        :transform="`translate(${centerX}, ${centerY})`"
+        tabindex="0"
+        role="button"
+        aria-label="返回上一层"
+        @click="drillUp"
+        @keydown.enter.prevent="drillUp"
+        @keydown.space.prevent="drillUp"
+      >
+        <circle r="22" />
+        <text class="cf-sunburst__center-label" text-anchor="middle" dominant-baseline="middle" dy="-2">↑</text>
+        <text class="cf-sunburst__center-name" text-anchor="middle" dominant-baseline="middle" dy="14">{{ focused.name }}</text>
       </g>
     </svg>
 

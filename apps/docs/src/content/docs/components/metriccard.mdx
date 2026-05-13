@@ -38,9 +38,11 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
   <GridVue client:load />
 </DemoFrame>
 
-## series 展开明细
+## series 展开明细 + 行点击下钻
 
 传入 `series` 数组,卡片右上角出现 chevron 按钮;点击后向下展开渠道 / 组件 / 来源等明细行,每行可带自己的 sparkline、delta 和色板点。可用 `defaultExpanded` 控制初始态,或 `expanded` + `@update:expanded` 做受控开关。
+
+每一行都是 `role="button"` + `tabindex=0`,点击或键盘 Enter / Space 触发 `@series-select` (payload `{ index, item }`),最适合"点 KPI 行 → 跳到下钻页面 / 打开 Drawer"的联动。
 
 <DemoFrame
   vueCode={`<CfMetricCard label="本月营收" value="12,060" :delta="6.4" :series="channels" />`}
@@ -67,6 +69,14 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
 | `defaultExpanded` | `boolean` | `false` | 非受控初始态 |
 | `expanded` | `boolean` | `—` | 受控展开标志，配合 `@update:expanded` (Vue) / `onExpandedChange` (React) |
 | `ariaLabel` | `string` | `—` | 透传给根元素的 `aria-label` |
+
+### 事件
+
+| Vue 事件 | React 回调 | payload | 说明 |
+| --- | --- | --- | --- |
+| `update:expanded` | `onExpandedChange` | `boolean` | 受控开关 |
+| `expand` | — | `{ expanded }` | 展开 / 收起触发 |
+| `series-select` | `onSeriesSelect` | `{ index, item }` | 明细行点击 / 键盘 Enter / Space |
 
 ### 类型
 

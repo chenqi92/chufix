@@ -90,7 +90,12 @@ export function SunburstChart(props: SunburstChartProps) {
         role="img"
         aria-label={ariaLabel}
       >
-        <g>
+        {/*
+          Key-based remount + keyframe runs every time the user drills in/out,
+          giving a cheap zoom-fade pseudo-animation without per-segment d-attr
+          interpolation. The center "↑" stays outside so it doesn't blink.
+        */}
+        <g key={stack.map((n) => n.name).join('/')} className="cf-sunburst__layer is-react-anim">
           {layout.segments.map((seg, i) => {
             const zoomable = drillable && !!seg.node.children?.length;
             return (
@@ -144,28 +149,28 @@ export function SunburstChart(props: SunburstChartProps) {
                   </text>
                 );
               })}
-
-          {drillable && canDrillUp && (
-            <g
-              className="cf-sunburst__center"
-              transform={`translate(${size / 2}, ${size / 2})`}
-              tabIndex={0}
-              role="button"
-              aria-label="返回上一层"
-              onClick={drillUp}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  drillUp();
-                }
-              }}
-            >
-              <circle r={22} />
-              <text className="cf-sunburst__center-label" textAnchor="middle" dominantBaseline="middle" dy="-2">↑</text>
-              <text className="cf-sunburst__center-name" textAnchor="middle" dominantBaseline="middle" dy="14">{focused.name}</text>
-            </g>
-          )}
         </g>
+
+        {drillable && canDrillUp && (
+          <g
+            className="cf-sunburst__center"
+            transform={`translate(${size / 2}, ${size / 2})`}
+            tabIndex={0}
+            role="button"
+            aria-label="返回上一层"
+            onClick={drillUp}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                drillUp();
+              }
+            }}
+          >
+            <circle r={22} />
+            <text className="cf-sunburst__center-label" textAnchor="middle" dominantBaseline="middle" dy="-2">↑</text>
+            <text className="cf-sunburst__center-name" textAnchor="middle" dominantBaseline="middle" dy="14">{focused.name}</text>
+          </g>
+        )}
       </svg>
 
       {drillable && canDrillUp && (

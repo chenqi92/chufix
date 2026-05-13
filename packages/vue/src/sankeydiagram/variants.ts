@@ -29,6 +29,12 @@ export interface SankeyDragPayload {
   y: number;
   /** Delta from the auto-layout y position. */
   deltaY: number;
+  /** Layer the node ended up in (may differ from its original layer). */
+  layer: number;
+  /** New 0-based order index within its (possibly new) layer. */
+  orderIndex: number;
+  /** True when the drop resulted in a layer change. */
+  layerChanged: boolean;
 }
 
 export interface SankeyNodeInteractionPayload {

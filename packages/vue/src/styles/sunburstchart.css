@@ -84,6 +84,34 @@
   pointer-events: none;
 }
 
+/* drill transition */
+.cf-sunburst__layer {
+  transform-origin: center center;
+  transform-box: fill-box;
+}
+/* Vue's <Transition> hook classes */
+.cf-sunburst-fade-enter-active,
+.cf-sunburst-fade-leave-active {
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.cf-sunburst-fade-enter-from { opacity: 0; transform: scale(0.92); }
+.cf-sunburst-fade-leave-to   { opacity: 0; transform: scale(1.08); }
+
+/* React side relies on key-based remount + keyframe (no Vue Transition). */
+@keyframes cf-sunburst-zoom-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.cf-sunburst__layer.is-react-anim { animation: cf-sunburst-zoom-in var(--dur-base) var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-sunburst-fade-enter-active,
+  .cf-sunburst-fade-leave-active { transition: none; }
+  .cf-sunburst-fade-enter-from,
+  .cf-sunburst-fade-leave-to { transform: none; }
+  .cf-sunburst__layer.is-react-anim { animation: none; }
+}
+
 .cf-sunburst__footer {
   display: inline-flex;
   gap: 8px;

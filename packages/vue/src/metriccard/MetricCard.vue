@@ -5,6 +5,7 @@ import type {
   MetricCardExpandPayload,
   MetricCardProps,
   MetricSeriesItem,
+  MetricSeriesSelectPayload,
 } from './variants';
 
 const props = withDefaults(defineProps<MetricCardProps>(), {
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<MetricCardProps>(), {
 const emit = defineEmits<{
   (e: 'update:expanded', value: boolean): void;
   (e: 'expand', payload: MetricCardExpandPayload): void;
+  (e: 'series-select', payload: MetricSeriesSelectPayload): void;
 }>();
 
 const deltaText = computed(() => {
@@ -122,7 +124,12 @@ function seriesDeltaTone(it: MetricSeriesItem): string {
       <li
         v-for="(it, i) in props.series"
         :key="i"
-        class="cf-metric__series-item"
+        :class="['cf-metric__series-item', 'is-clickable']"
+        role="button"
+        tabindex="0"
+        @click="emit('series-select', { index: i, item: it })"
+        @keydown.enter.prevent="emit('series-select', { index: i, item: it })"
+        @keydown.space.prevent="emit('series-select', { index: i, item: it })"
       >
         <span class="cf-metric__series-swatch" :style="it.color ? { background: it.color } : undefined" />
         <span class="cf-metric__series-label">{{ it.label }}</span>

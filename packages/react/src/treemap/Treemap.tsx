@@ -17,6 +17,7 @@ export function Treemap(props: TreemapProps) {
     headerHeight = 16,
     drillable = true,
     showBreadcrumb = true,
+    layout = 'squarify',
     className,
     onItemEnter,
     onItemLeave,
@@ -34,8 +35,8 @@ export function Treemap(props: TreemapProps) {
   }, [stack, nodes]);
 
   const rects = useMemo(
-    () => layoutTreemap(focusedChildren, width, height, { childPadding, headerHeight }),
-    [focusedChildren, width, height, childPadding, headerHeight],
+    () => layoutTreemap(focusedChildren, width, height, { childPadding, headerHeight, layout }),
+    [focusedChildren, width, height, childPadding, headerHeight, layout],
   );
 
   const canDrillUp = stack.length > 0;

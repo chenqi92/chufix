@@ -26,7 +26,6 @@ export interface MetricCardProps {
   /** Format the delta. Default: "+N%". */
   deltaFn?: (delta: number) => string;
   ariaLabel?: string;
-  className?: string;
   /** Optional breakdown rendered when the card is expanded. */
   series?: MetricSeriesItem[];
   /** Show the expand chevron when `series` is non-empty. Default true. */
@@ -35,9 +34,16 @@ export interface MetricCardProps {
   defaultExpanded?: boolean;
   /** Controlled expanded flag. Pair with `onExpandedChange`. */
   expanded?: boolean;
+  className?: string;
   onExpandedChange?: (expanded: boolean) => void;
+  onSeriesSelect?: (payload: MetricSeriesSelectPayload) => void;
 }
 
 export interface MetricCardExpandPayload {
   expanded: boolean;
+}
+
+export interface MetricSeriesSelectPayload {
+  index: number;
+  item: MetricSeriesItem;
 }

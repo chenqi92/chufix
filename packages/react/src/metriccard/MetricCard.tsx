@@ -20,6 +20,7 @@ export function MetricCard(props: MetricCardProps) {
     defaultExpanded = false,
     expanded,
     onExpandedChange,
+    onSeriesSelect,
   } = props;
 
   const [internal, setInternal] = useState(defaultExpanded);
@@ -111,7 +112,19 @@ export function MetricCard(props: MetricCardProps) {
       {canExpand && isExpanded && (
         <ul className="cf-metric__series" role="list">
           {series!.map((it, i) => (
-            <li key={i} className="cf-metric__series-item">
+            <li
+              key={i}
+              className="cf-metric__series-item is-clickable"
+              role="button"
+              tabIndex={0}
+              onClick={() => onSeriesSelect?.({ index: i, item: it })}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onSeriesSelect?.({ index: i, item: it });
+                }
+              }}
+            >
               <span className="cf-metric__series-swatch" style={it.color ? { background: it.color } : undefined} />
               <span className="cf-metric__series-label">{it.label}</span>
               <span className="cf-metric__series-value">

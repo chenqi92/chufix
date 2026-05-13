@@ -29,11 +29,17 @@ const links = [
 ];
 
 const lastDrag = ref<string>('');
+
+function onDrag(p: { node: { name: string }; deltaY: number; layer: number; orderIndex: number; layerChanged: boolean }) {
+  const dirY = p.deltaY > 0 ? '↓' : p.deltaY < 0 ? '↑' : '=';
+  const layerNote = p.layerChanged ? ` → 层 ${p.layer}` : '';
+  lastDrag.value = `${p.node.name} ${dirY}${Math.abs(Math.round(p.deltaY))}px · 位置 #${p.orderIndex + 1}${layerNote}`;
+}
 </script>
 
 <template>
   <p style="margin: 0 0 8px; color: var(--fg-3); font-size: 12px;">
-    任意节点上按住竖直拖拽即可手动重排该层顺序;所有连线实时跟随。
+    竖直拖拽 → 自动按落点 y 重排同层顺序;横向拖到另一列附近 → 节点跨层迁移,源层 / 目标层同时收紧。
   </p>
   <CfSankeyDiagram
     :nodes="nodes"
@@ -41,7 +47,7 @@ const lastDrag = ref<string>('');
     :width="640"
     :height="320"
     :node-width="14"
-    @node-drag="(p: { node: { name: string }; deltaY: number }) => lastDrag = `${p.node.name} ${p.deltaY > 0 ? '↓' : '↑'} ${Math.abs(Math.round(p.deltaY))}px`"
+    @node-drag="onDrag"
   />
   <p style="margin-top: 8px; font-size: 12px;">
     <CfTag tone="info" size="sm">last drag</CfTag>

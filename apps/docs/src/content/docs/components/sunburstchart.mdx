@@ -31,6 +31,8 @@ import DrillVueSource from '~/components/demos/sunburstchart/DrillVue.vue?raw';
 
 `drillable` 默认为 `true`。点击任意有子节点的扇形 → 该子树成为新根重新渲染；面包屑显示当前路径，中心圆形按钮（↑）或顶部面包屑都能回到上层。监听 `@drill` 拿到当前焦点节点 + 完整路径。
 
+焦点切换时整层做一次淡出 + 微缩动画（200ms），新焦点淡入 + 放大，营造"逐层钻取"的视觉过渡。`prefers-reduced-motion: reduce` 时动效自动关闭。
+
 <DemoFrame
   vueCode={`<CfSunburstChart :root="root" :size="340" @drill="onDrill" />`}
   reactCode={`<CfSunburstChart root={root} size={340} onDrill={onDrill} />`}

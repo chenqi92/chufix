@@ -38,9 +38,16 @@ import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw'
   <SimpleVue client:load />
 </DemoFrame>
 
-## 节点拖拽
+## 节点拖拽 + 跨层迁移
 
-`draggable` 默认 `true`。按住任意节点上下拖动可以手动重排该层顺序;所有连线实时跟随，监听 `@node-drag` 拿到落点偏移量。把 `draggable={false}` 关掉就退回到只读视图。
+`draggable` 默认 `true`。按住任意节点:
+
+- **竖直拖**: 落手后组件按 y 中心重排同层顺序,内部 `orderOverrides` 记忆这个顺序。
+- **横向拖到另一列**: 节点跨层迁移到最近的 layer,源层 / 目标层都会自动收紧 — 不需要外部重算。
+- 落手后清掉漂浮 offset,下次再拖从新的基础位置开始。
+- 监听 `@node-drag` 拿到完整 payload `{ node, y, deltaY, layer, orderIndex, layerChanged }`,可以反写到外部数据源做持久化。
+
+`draggable={false}` 退回只读视图。
 
 <DemoFrame
   vueCode={`<CfSankeyDiagram :nodes="nodes" :links="links" @node-drag="onDrag" />`}
@@ -69,7 +76,7 @@ import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw'
 | `node-leave` | `onNodeLeave` | `SankeyNodeInteractionPayload` | 鼠标离开节点 |
 | `link-enter` | `onLinkEnter` | `SankeyLinkInteractionPayload` | 鼠标进入连接边 |
 | `link-leave` | `onLinkLeave` | `SankeyLinkInteractionPayload` | 鼠标离开连接边 |
-| `node-drag` | `onNodeDrag` | `SankeyDragPayload` | 拖拽落手后,载荷含 `node` / `y` / `deltaY` |
+| `node-drag` | `onNodeDrag` | `SankeyDragPayload` | 拖拽落手后,载荷含 `node` / `y` / `deltaY` / `layer` / `orderIndex` / `layerChanged` |
 
 ### 类型
 

@@ -8,6 +8,8 @@ export interface TreemapNode {
   children?: TreemapNode[];
 }
 
+export type TreemapLayout = 'squarify' | 'slice-and-dice';
+
 export interface TreemapProps {
   nodes: TreemapNode[];
   width?: number;
@@ -22,6 +24,8 @@ export interface TreemapProps {
   drillable?: boolean;
   /** Show the drill breadcrumb above the chart. Default true. */
   showBreadcrumb?: boolean;
+  /** Layout algorithm. Default 'squarify' for cleaner aspect ratios. */
+  layout?: TreemapLayout;
   className?: string;
   onItemEnter?: (payload: TreemapInteractionPayload) => void;
   onItemLeave?: (payload: TreemapInteractionPayload) => void;
@@ -153,9 +157,173 @@ function sliceAndDice(
   });
 }
 
+/* ─────────── Squarified treemap (Bruls et al., 2000) ───────────
+ * At each step we greedily build a "row" of siblings inside the
+ * shortest side of the remaining rectangle. We add the next child to
+ * the row as long as the worst aspect ratio in the row keeps improving
+ * (or stays the same); otherwise we commit the current row and start a
+ * fresh row in the leftover rectangle. */
+
+interface ScaledItem<T> {
+  idx: number;
+  node: T;
+  area: number;
+}
+
+function worstRatio(areas: number[], side: number): number {
+  if (!areas.length || side <= 0) return Infinity;
+  let sum = 0;
+  let rMin = Infinity;
+  let rMax = 0;
+  for (const a of areas) {
+    sum += a;
+    if (a < rMin) rMin = a;
+    if (a > rMax) rMax = a;
+  }
+  if (sum <= 0) return Infinity;
+  const s2 = sum * sum;
+  const w2 = side * side;
+  return Math.max((w2 * rMax) / s2, s2 / (w2 * Math.max(rMin, 1e-9)));
+}
+
+interface PlacedAtoms {
+  idx: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+function layoutRowSquarify<T>(
+  row: ScaledItem<T>[],
+  rectX: number,
+  rectY: number,
+  rectW: number,
+  rectH: number,
+  out: PlacedAtoms[],
+): { x: number; y: number; w: number; h: number } {
+  const rowSum = row.reduce((s, r) => s + r.area, 0);
+  /* Horizontal=true means width >= height: the row consumes the LEFT slab. */
+  const horizontal = rectW >= rectH;
+  const side = horizontal ? rectH : rectW;
+  const slab = side > 0 ? rowSum / side : 0;
+  if (horizontal) {
+    let cy = rectY;
+    for (const item of row) {
+      const itemH = slab > 0 ? item.area / slab : 0;
+      out.push({ idx: item.idx, x: rectX, y: cy, w: slab, h: itemH });
+      cy += itemH;
+    }
+    return { x: rectX + slab, y: rectY, w: rectW - slab, h: rectH };
+  }
+  let cx = rectX;
+  for (const item of row) {
+    const itemW = slab > 0 ? item.area / slab : 0;
+    out.push({ idx: item.idx, x: cx, y: rectY, w: itemW, h: slab });
+    cx += itemW;
+  }
+  return { x: rectX, y: rectY + slab, w: rectW, h: rectH - slab };
+}
+
+function squarify<T>(
+  items: ScaledItem<T>[],
+  rect: { x: number; y: number; w: number; h: number },
+  out: PlacedAtoms[],
+): void {
+  let remaining = items;
+  let row: ScaledItem<T>[] = [];
+  let { x, y, w, h } = rect;
+
+  while (remaining.length) {
+    const c = remaining[0];
+    const side = Math.min(w, h);
+    if (side <= 0) {
+      /* Degenerate rect — place whatever's left in a thin strip and bail. */
+      const r = layoutRowSquarify([...row, ...remaining], x, y, w, h, out);
+      x = r.x; y = r.y; w = r.w; h = r.h;
+      return;
+    }
+    const rowAreas = row.map((r) => r.area);
+    const candAreas = [...rowAreas, c.area];
+    if (row.length === 0 || worstRatio(candAreas, side) <= worstRatio(rowAreas, side)) {
+      row.push(c);
+      remaining = remaining.slice(1);
+    } else {
+      const r = layoutRowSquarify(row, x, y, w, h, out);
+      x = r.x; y = r.y; w = r.w; h = r.h;
+      row = [];
+    }
+  }
+  if (row.length) layoutRowSquarify(row, x, y, w, h, out);
+}
+
+function squarifyLayer(
+  nodes: TreemapNode[],
+  basePath: string[],
+  baseDepth: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  childPadding: number,
+  headerHeight: number,
+  fallbackColor: (i: number) => number,
+  out: TreemapRect[],
+) {
+  if (width <= 0 || height <= 0 || !nodes.length) return;
+  const totalValue = nodes.reduce((s, n) => s + treemapValue(n), 0);
+  if (totalValue <= 0) return;
+  const totalArea = width * height;
+  const scale = totalArea / totalValue;
+
+  /* Squarify is sensitive to ordering — descending values produce the most
+   * even aspect ratios. Carry the original child index along so callbacks /
+   * colors stay stable. */
+  const items: ScaledItem<TreemapNode>[] = nodes
+    .map((n, idx) => ({ idx, node: n, area: treemapValue(n) * scale }))
+    .sort((a, b) => b.area - a.area);
+
+  const atoms: PlacedAtoms[] = [];
+  squarify(items, { x, y, w: width, h: height }, atoms);
+
+  for (const atom of atoms) {
+    const n = nodes[atom.idx];
+    const path = [...basePath, n.name];
+    const colorIndex = n.colorIndex ?? fallbackColor(atom.idx);
+    out.push({
+      node: n,
+      dataIndex: atom.idx,
+      depth: baseDepth,
+      path,
+      x: atom.x,
+      y: atom.y,
+      w: atom.w,
+      h: atom.h,
+      colorIndex,
+      hasChildren: !!n.children?.length,
+    });
+    if (n.children?.length && atom.w > childPadding * 2 + 4 && atom.h > headerHeight + childPadding * 2 + 4) {
+      squarifyLayer(
+        n.children,
+        path,
+        baseDepth + 1,
+        atom.x + childPadding,
+        atom.y + headerHeight,
+        atom.w - childPadding * 2,
+        atom.h - headerHeight - childPadding,
+        childPadding,
+        headerHeight,
+        (idx) => n.children![idx].colorIndex ?? colorIndex,
+        out,
+      );
+    }
+  }
+}
+
 export interface LayoutTreemapOptions {
   childPadding?: number;
   headerHeight?: number;
+  layout?: TreemapLayout;
 }
 
 export function layoutTreemap(
@@ -165,7 +333,11 @@ export function layoutTreemap(
   options: LayoutTreemapOptions = {},
 ): TreemapRect[] {
   const out: TreemapRect[] = [];
-  sliceAndDice(
+  const childPadding = options.childPadding ?? 4;
+  const headerHeight = options.headerHeight ?? 16;
+  const algorithm = options.layout ?? 'squarify';
+  const layout = algorithm === 'squarify' ? squarifyLayer : sliceAndDice;
+  layout(
     nodes,
     [],
     0,
@@ -173,8 +345,8 @@ export function layoutTreemap(
     0,
     width,
     height,
-    options.childPadding ?? 4,
-    options.headerHeight ?? 16,
+    childPadding,
+    headerHeight,
     (i) => i % 8,
     out,
   );

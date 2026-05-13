@@ -39,3 +39,8 @@ export interface MetricCardProps {
 export interface MetricCardExpandPayload {
   expanded: boolean;
 }
+
+export interface MetricSeriesSelectPayload {
+  index: number;
+  item: MetricSeriesItem;
+}
