@@ -12,6 +12,8 @@ import VariantsVue from '~/components/demos/daterangepicker/VariantsVue.vue';
 import VariantsVueSource from '~/components/demos/daterangepicker/VariantsVue.vue?raw';
 import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vue';
 import PlaceholderVueSource from '~/components/demos/daterangepicker/PlaceholderVue.vue?raw';
+import SizesVue from '~/components/demos/daterangepicker/SizesVue.vue';
+import SizesVueSource from '~/components/demos/daterangepicker/SizesVue.vue?raw';
 
 ## 基础用法
 
@@ -66,6 +68,22 @@ import PlaceholderVueSource from '~/components/demos/daterangepicker/Placeholder
   <VariantsVue client:load />
 </DemoFrame>
 
+## 三档尺寸
+
+`size` 与 Input / Button / DatePicker 保持一致 —— `sm` / `md` / `lg`。
+
+<DemoFrame
+  vueCode={`<CfDateRangePicker v-model="a" size="sm" />
+<CfDateRangePicker v-model="b" size="md" />
+<CfDateRangePicker v-model="c" size="lg" />`}
+  reactCode={`<CfDateRangePicker value={a} onChange={setA} size="sm" />
+<CfDateRangePicker value={b} onChange={setB} size="md" />
+<CfDateRangePicker value={c} onChange={setC} size="lg" />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
 ## 自定义占位 / 分隔符
 
 `placeholder` 是 `[startPlaceholder, endPlaceholder]` 二元组，`separator` 控制起止之间的连接词（默认「至」）。
@@ -82,6 +100,8 @@ import PlaceholderVueSource from '~/components/demos/daterangepicker/Placeholder
 
 ## API
 
+### Props
+
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` (Vue) / `value` (React) | `[string \| null, string \| null]` | `[null, null]` | 起止日期数组 |
@@ -96,5 +116,14 @@ import PlaceholderVueSource from '~/components/demos/daterangepicker/Placeholder
 | `minDate` / `maxDate` | `DateLike` | `—` | 可选范围 |
 | `disabledDate` | `(date: Date) => boolean` | `—` | 自定义禁用规则 |
 | `weekStartsOn` | `0 \| 1` | `1` | 0 = 周日开头，1 = 周一开头 |
+| `name` | `string` | — | 透传给隐式表单字段，用于原生表单提交 |
+| `id` | `string` | — | 触发器的 id，便于外部 `<label for>` 关联 |
 
-事件：`update:modelValue` / `change(start, end)`（React 端：`onChange(value, start, end)`）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange`（第一参数） | `[string \| null, string \| null]` | 起止 ISO 字符串数组 |
+| `change` | `onChange`（第二、三参数） | `(start: Date \| null, end: Date \| null)` | 同步触发；分别提供两端 Date 对象 |
+
+> React 端 `onChange(value, start, end)` 一次性提供三参 —— ISO 数组 + 起止 Date。
