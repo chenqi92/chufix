@@ -136,20 +136,51 @@ const columns: DataGridColumn<Row>[] = [
 
 ## API · DataGrid
 
-继承 [Table](/components/table/) 的所有列基础属性（`title` / `width` / `align` / `sortable` / `dataIndex` 等），额外加：
+继承 [Table](/components/table/) 的所有列基础属性（`title` / `width` / `align` / `sortable` / `dataIndex` 等）。
+
+### Props
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
+| `columns` | `DataGridColumn<T>[]` | `—` | 列定义；扩展自 `TableColumn` |
+| `rows` | `T[]` | `—` | 数据行 |
+| `rowKey` | `string \| (row, i) => string` | `—` | 行唯一 key |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 行高 |
+| `hoverable` | `boolean` | `true` | 鼠标悬停高亮 |
+| `loading` | `boolean` | `false` | 加载态 |
+| `emptyText` | `string` | `'暂无数据'` | 空状态文案 |
+| `selectable` | `'single' \| 'multiple'` | — | 选择模式 |
+| `modelValue` (Vue) / `value` (React) | `string \| string[] \| null` | — | 受控选中 row key（s） |
 | `maxHeight` | `number \| string` | `—` | 容器最大高度，启用 sticky thead + 纵向滚动 |
-| `onCellEdit` (React) / `cell-edit` (Vue) | `(edit) => void` | `—` | 单元格编辑提交回调 |
-| `onColumnResize` / `column-resize` | `(col, width) => void` | `—` | 列宽变化回调 |
 
-`DataGridColumn` 在 `TableColumn` 上加：
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string \| string[] \| null` | 选中行变化时触发 |
+| `cellEdit` | `onCellEdit` | `DataGridCellEdit<T>` | 单元格双击编辑提交后触发 |
+| `columnResize` | `onColumnResize` | `(col: DataGridColumn<T>, width: number)` | 用户拖动列宽松手后触发 |
+
+### DataGridColumn
+
+`DataGridColumn` 在 `TableColumn` 上扩展：
 
 | 属性 | 类型 | 说明 |
 |---|---|---|
 | `resizable` | `boolean` | 是否允许拖拽改宽 |
 | `minWidth` | `number` | 拖拽最小宽度 |
 | `editable` | `boolean` | 是否允许双击进入内联编辑 |
+
+### DataGridCellEdit
+
+```ts
+interface DataGridCellEdit<T> {
+  row: T;
+  rowIndex: number;
+  column: DataGridColumn<T>;
+  value: string;      // 用户输入的字符串值
+  previous: unknown;  // 编辑前的原值
+}
+```
 
 > 当前版本不内置虚拟滚动 / 列拖动（顺序）。如果数据量超过 1000 行，建议自行实现分页或上层数据切片，再把切片传入 `rows`。

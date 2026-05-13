@@ -82,4 +82,25 @@ import SizesVueSource from '~/components/demos/calendar/SizesVue.vue?raw';
 | `disabled` | `boolean` | `false` | 禁用全部交互 |
 | `className` | `string` | `—` | 透传到根容器 |
 
-事件：`onChange(date)` / `update:modelValue` 在选中日期时触发；`onMonthChange(month)` / `update:month` 在切换月份时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `Date \| null` | 选中日期时触发 |
+| `change` | `onChange` | `Date \| null` | 与 `update:modelValue` 同步触发，载荷相同 |
+| `update:month` | `onMonthChange` | `Date` | 切换月份时触发，载荷是新月的第 1 天 |
+
+### DayCell 类型
+
+通过 `buildMonthGrid()` 工具函数可以拿到逐格的 `DayCell`，便于自定义单元格渲染：
+
+```ts
+interface DayCell {
+  date: Date;       // 当前日期
+  iso: string;      // 'YYYY-MM-DD'
+  inMonth: boolean; // 是否属于当前显示月份
+  isToday: boolean;
+  isWeekend: boolean;
+  weekNumber: number; // ISO 周序
+}
+```

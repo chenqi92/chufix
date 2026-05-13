@@ -36,4 +36,8 @@ import BasicVueSource from '~/components/demos/anchor/BasicVue.vue?raw';
 | `label` | `string` | 显示文本 |
 | `children` | `AnchorItem[]` | 子锚点 |
 
-事件：`onChange(href)` —— 当前高亮的锚点变化时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `change` | `onChange` | `string` | 当前高亮的锚点变化时触发，载荷是新激活的 `href` |

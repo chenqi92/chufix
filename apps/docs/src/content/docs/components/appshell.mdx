@@ -139,5 +139,14 @@ export default function Demo() {
 | `bordered` | `boolean` | `true` | 侧栏是否描右边框 |
 | `sidebarCollapsed` | `boolean` | `false` | 是否收起侧栏（视觉宽度归 0） |
 
-Vue slot：`header` / `sidebar` / `aside` / `footer` / 默认（main）。
-React 用同名 prop 接 `ReactNode`，主内容传 `children`。
+### Slots / Children
+
+| Slot | 说明 |
+|---|---|
+| `default` | 主区域内容（React：`children`） |
+| `header` | 顶栏，默认 `position: sticky; top: 0` |
+| `sidebar` | 左侧栏，独立滚动 |
+| `aside` | 右侧栏，独立滚动 |
+| `footer` | 底栏 |
+
+React 端用同名 prop 接 `ReactNode`；主区域传 `children`。

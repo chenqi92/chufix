@@ -29,5 +29,6 @@ import BasicVueSource from '~/components/demos/qrcode/BasicVue.vue?raw';
 | `margin` | `number` | `2` | 留白模块数（quiet zone） |
 | `color` | `string` | `'currentColor'` | 暗格颜色 |
 | `background` | `string` | `'transparent'` | 背景色 |
+| `className` | `string` | `—` | 透传到根 SVG 的额外类名 |
 
 实现说明：内置 Byte-mode QR 编码器，自动选择最小可装下数据的版本（1–40）。算法改编自 Project Nayuki 的 MIT 参考实现。

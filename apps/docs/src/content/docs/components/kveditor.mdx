@@ -109,4 +109,8 @@ export default function Demo() {
 | `bordered` | `boolean` | `true` | 边框 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 |
 
-事件：`onChange(rows)` / `update:modelValue` 在任意行变化或自动追加时触发，传入完整行数组。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `KVRow[]` | 任意行编辑、删除或自动追加时触发，载荷是完整行数组 |
