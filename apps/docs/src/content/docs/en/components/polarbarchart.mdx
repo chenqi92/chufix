@@ -1,0 +1,37 @@
+---
+title: PolarBarChart
+description: Radial bar chart — circular layout fits cyclical data naturally (24-hour day / 7-day week / 12-month year) and packs tighter than a flat bar chart.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/polarbarchart/BasicVue.vue';
+
+## Basic usage
+
+Items are arranged around the circle in order; each bar's "height" extends from the inner ring outward, proportional to its value.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `{ label, value, color? }[]` | — | Data array (order = angle) |
+| `size` | `number` | `280` | SVG side length (square) |
+| `innerRatio` | `number` | `0.35` | Inner radius / outer radius |
+| `sweep` | `number` | `360` | Total sweep angle in degrees |
+| `startAngle` | `number` | `0` | Starting angle (0 = top, clockwise) |
+| `barColor` | `string` | accent | Default bar color |
+| `showLabels` | `boolean` | `true` | Show outer ring text |
+| `format` | `(v) => string` | — | Tooltip value formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `variant` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+
+Events:
+
+- Vue: `@hover` / `@select`
+- React: `onHover` / `onSelect`
+
+Payload: `{ index, item }`.

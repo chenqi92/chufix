@@ -42,6 +42,10 @@ import './styles/floatinginspector.css';
 import './styles/tearofftab.css';
 import './styles/templatepane.css';
 import './styles/charts.css';
+import './styles/dualaxischart.css';
+import './styles/paretochart.css';
+import './styles/slopechart.css';
+import './styles/polarbarchart.css';
 import './styles/input.css';
 import './styles/flex.css';
 import './styles/grid.css';
@@ -554,6 +558,41 @@ export type {
   ChartToolbarProps,
   LegendSeries,
 } from './charttoolbar/variants';
+
+export { DualAxisChart as CfDualAxisChart } from './dualaxischart/DualAxisChart';
+export type { DualAxisChartProps } from './dualaxischart/DualAxisChart';
+export type {
+  DualAxisProps,
+  DualAxisSize,
+  DualAxisHoverPayload,
+} from './dualaxischart/variants';
+
+export { ParetoChart as CfParetoChart } from './paretochart/ParetoChart';
+export type { ParetoChartProps } from './paretochart/ParetoChart';
+export type {
+  ParetoProps,
+  ParetoItem,
+  ParetoSize,
+  ParetoHoverPayload,
+} from './paretochart/variants';
+
+export { SlopeChart as CfSlopeChart } from './slopechart/SlopeChart';
+export type { SlopeChartProps } from './slopechart/SlopeChart';
+export type {
+  SlopeProps,
+  SlopeItem,
+  SlopeSize,
+  SlopeHoverPayload,
+} from './slopechart/variants';
+
+export { PolarBarChart as CfPolarBarChart } from './polarbarchart/PolarBarChart';
+export type { PolarBarChartProps } from './polarbarchart/PolarBarChart';
+export type {
+  PolarBarProps,
+  PolarBarItem,
+  PolarBarSize,
+  PolarBarHoverPayload,
+} from './polarbarchart/variants';
 
 export { Input as CfInput } from './input/Input';
 export type { InputProps, InputVariant, InputSize } from './input/variants';

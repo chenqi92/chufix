@@ -1,0 +1,35 @@
+---
+title: ParetoChart 帕累托图
+description: 降序柱 + 累计百分比线 + 80/20 参考线 —— 运维 / 质量 / 客服等领域定位"少数关键原因"的 ABC 分析标配。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/paretochart/BasicVue.vue';
+
+## 基础用法
+
+传入 `items: { label, value }[]`，组件自动按 value 降序排列、计算累计百分比、画出 cutoff 参考线（默认 80%）。鼠标悬停柱子或线点可看到该项绝对值和累计百分比。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `items` | `{ label, value, color? }[]` | — | 数据数组,组件内部排序 |
+| `height` | `number` | `260` | 像素高度 |
+| `cutoff` | `number` | `0.8` | 参考线位置（0–1） |
+| `barColor` | `string` | accent | 柱默认色 |
+| `lineColor` | `string` | warning | 累计线颜色 |
+| `formatValue` | `(v) => string` | — | 左轴 / 柱值格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：
+
+- Vue: `@hover` / `@select`
+- React: `onHover` / `onSelect`
+
+回调 payload：`{ index, item, cumulative, cumulativePct }`。

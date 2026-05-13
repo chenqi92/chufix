@@ -1,0 +1,95 @@
+/* DualAxisChart — bar + line with twin Y axes. */
+
+.cf-dual {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  position: relative;
+}
+.cf-dual--sm { font-size: var(--t-11); }
+.cf-dual--lg { font-size: var(--t-13); }
+
+.cf-dual__legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: var(--t-12);
+}
+.cf-dual__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fg-1);
+}
+.cf-dual__swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.cf-dual__swatch--line { width: 16px; height: 2px; border-radius: 1px; }
+
+.cf-dual svg {
+  width: 100%;
+  display: block;
+}
+.cf-dual__grid {
+  stroke: var(--line-1);
+  stroke-dasharray: 2 4;
+}
+.cf-dual__axis-label {
+  font-size: 10px;
+  fill: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+.cf-dual__axis-label--left { text-anchor: end; dominant-baseline: middle; }
+.cf-dual__axis-label--right { text-anchor: start; dominant-baseline: middle; }
+.cf-dual__axis-label--x { text-anchor: middle; }
+
+.cf-dual__bar {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  outline: none;
+}
+.cf-dual__bar:focus-visible {
+  filter: brightness(1.1);
+}
+.cf-dual__hover-line {
+  stroke: var(--accent-1);
+  stroke-dasharray: 3 3;
+  opacity: 0.45;
+}
+.cf-dual__tip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-12);
+  pointer-events: none;
+}
+.cf-dual__tip-cat {
+  font-weight: var(--w-semibold);
+  color: var(--fg-1);
+}
+.cf-dual__tip-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+.cf-dual__tip-row .cf-dual__swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}

@@ -256,6 +256,15 @@ export const sidebar: SidebarGroup[] = [
       c('StackedBar100', '占比柱', 'stackedbar100'),
       c('BulletChart', '子弹图', 'bulletchart'),
       c('WaterfallChart', '瀑布图', 'waterfallchart'),
+      c('ParetoChart', '帕累托图', 'paretochart'),
+      c('PolarBarChart', '极坐标柱', 'polarbarchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 对比与组合', 'Charts · Compare & combo'),
+    items: [
+      c('DualAxisChart', '双轴组合', 'dualaxischart'),
+      c('SlopeChart', '斜率图', 'slopechart'),
     ],
   },
   {

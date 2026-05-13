@@ -1,0 +1,35 @@
+---
+title: SlopeChart 斜率图
+description: A → B 两点连线 —— 上升 / 下降一目了然，做版本对比、AB 测试、季度回顾的轻量替代品。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/slopechart/BasicVue.vue';
+
+## 基础用法
+
+每一行 `{ label, before, after }` 在画布上画一条左到右的连线，颜色按变化方向上升绿 / 下降红 / 持平灰自动着色，悬停高亮单条并 dim 其他。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `items` | `{ label, before, after, color? }[]` | — | 数据数组 |
+| `beforeLabel` | `string` | `'之前'` | 左侧列名 |
+| `afterLabel` | `string` | `'之后'` | 右侧列名 |
+| `height` | `number` | `320` | 像素高度 |
+| `colorByDirection` | `boolean` | `true` | 自动按方向着色 |
+| `format` | `(v) => string` | — | 端点值格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：
+
+- Vue: `@hover` / `@select`
+- React: `onHover` / `onSelect`
+
+回调 payload：`{ index, item, delta }`，其中 `delta = after - before`。

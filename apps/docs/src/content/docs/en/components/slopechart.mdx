@@ -1,0 +1,35 @@
+---
+title: SlopeChart
+description: A → B parallel coordinates — directional changes pop instantly. A lightweight alternative for version comparisons, AB-tests, quarterly reviews.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/slopechart/BasicVue.vue';
+
+## Basic usage
+
+Each `{ label, before, after }` becomes a left-to-right line. Color is auto-set by direction: rising green / falling red / flat gray. Hover highlights the focused series and dims the rest.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `{ label, before, after, color? }[]` | — | Data array |
+| `beforeLabel` | `string` | `'之前'` | Left column header |
+| `afterLabel` | `string` | `'之后'` | Right column header |
+| `height` | `number` | `320` | Pixel height |
+| `colorByDirection` | `boolean` | `true` | Auto-color by direction |
+| `format` | `(v) => string` | — | Endpoint value formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+
+Events:
+
+- Vue: `@hover` / `@select`
+- React: `onHover` / `onSelect`
+
+Payload: `{ index, item, delta }` where `delta = after - before`.

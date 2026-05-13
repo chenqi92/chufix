@@ -1,0 +1,55 @@
+/* PolarBarChart — circular bar chart. */
+
+.cf-polar-bar {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+  position: relative;
+}
+.cf-polar-bar--sm { font-size: var(--t-11); }
+.cf-polar-bar--lg { font-size: var(--t-13); }
+
+.cf-polar-bar svg {
+  display: block;
+}
+.cf-polar-bar__ring {
+  fill: none;
+  stroke: var(--line-1);
+  stroke-dasharray: 2 4;
+}
+.cf-polar-bar__bar {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out);
+  outline: none;
+}
+.cf-polar-bar__bar:focus-visible { filter: brightness(1.1); }
+
+.cf-polar-bar__label {
+  font-size: 10px;
+  fill: var(--fg-3);
+  pointer-events: none;
+}
+
+.cf-polar-bar__tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-2);
+  font-size: var(--t-12);
+}
+.cf-polar-bar__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.cf-polar-bar__tip-label { color: var(--fg-1); font-weight: var(--w-medium); }
+.cf-polar-bar__tip-value { color: var(--fg-2); font-variant-numeric: tabular-nums; }

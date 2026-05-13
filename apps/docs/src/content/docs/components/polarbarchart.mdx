@@ -1,0 +1,37 @@
+---
+title: PolarBarChart 极坐标柱
+description: 径向柱状图 —— 周期性数据（一天 24 小时 / 一周 7 天 / 一年 12 月）天然适合圆周表达，比直角柱状更紧凑。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/polarbarchart/BasicVue.vue';
+
+## 基础用法
+
+数据按顺序沿圆周分配扇区，每个柱子的"高度"从内圈半径向外延伸，长度正比于值。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `items` | `{ label, value, color? }[]` | — | 数据数组,顺序即角度 |
+| `size` | `number` | `280` | SVG 边长(正方形) |
+| `innerRatio` | `number` | `0.35` | 内圈半径 / 外圈比例 |
+| `sweep` | `number` | `360` | 总扫过角度(度) |
+| `startAngle` | `number` | `0` | 起始角度(0 = 顶部,顺时针) |
+| `barColor` | `string` | accent | 默认柱色 |
+| `showLabels` | `boolean` | `true` | 显示外圈文字 |
+| `format` | `(v) => string` | — | 提示框值格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `variant` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：
+
+- Vue: `@hover` / `@select`
+- React: `onHover` / `onSelect`
+
+回调 payload：`{ index, item }`。

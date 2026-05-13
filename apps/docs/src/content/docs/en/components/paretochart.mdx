@@ -1,0 +1,35 @@
+---
+title: ParetoChart
+description: Descending bars + cumulative-percent line + 80/20 reference — the ABC-analysis staple for ops / quality / support teams to spot the "vital few" causes.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/paretochart/BasicVue.vue';
+
+## Basic usage
+
+Pass `items: { label, value }[]`. The component sorts by value descending, computes the cumulative percentage, and draws the cutoff reference line (default 80%). Hover any bar or line dot to see the value and cumulative percentage.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `{ label, value, color? }[]` | — | Data (sorted internally) |
+| `height` | `number` | `260` | Pixel height |
+| `cutoff` | `number` | `0.8` | Reference line position (0–1) |
+| `barColor` | `string` | accent | Default bar color |
+| `lineColor` | `string` | warning | Cumulative line color |
+| `formatValue` | `(v) => string` | — | Left axis / bar value formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+
+Events:
+
+- Vue: `@hover` / `@select`
+- React: `onHover` / `onSelect`
+
+Payload: `{ index, item, cumulative, cumulativePct }`.

@@ -30,6 +30,10 @@ const map: Record<string, () => Promise<any>> = {
   heatmapchart: () => import('~/components/demos/heatmapchart/BasicVue.vue'),
   waterfallchart: () => import('~/components/demos/waterfallchart/BasicVue.vue'),
   sunburstchart: () => import('~/components/demos/sunburstchart/BasicVue.vue'),
+  dualaxischart: () => import('~/components/demos/dualaxischart/BasicVue.vue'),
+  paretochart: () => import('~/components/demos/paretochart/BasicVue.vue'),
+  slopechart: () => import('~/components/demos/slopechart/BasicVue.vue'),
+  polarbarchart: () => import('~/components/demos/polarbarchart/BasicVue.vue'),
 };
 
 const Comp = computed(() => {

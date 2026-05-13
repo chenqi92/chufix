@@ -1,0 +1,35 @@
+---
+title: DualAxisChart
+description: Bar + line dual-Y combo — show absolute values (bars) and relative rates (line) on one chart. The most common business dashboard staple.
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/dualaxischart/BasicVue.vue';
+
+## Basic usage
+
+`bar` drives the left Y axis, `line` drives the right Y axis. Both share the `categories` X axis. Typical pairings: revenue + growth %, page views + bounce rate, orders + average order value.
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `categories` | `string[]` | — | Shared X-axis labels |
+| `bar` | `{ label, data, color? }` | — | Bar series (left Y) |
+| `line` | `{ label, data, color?, smooth? }` | — | Line series (right Y); `smooth` enables Bezier smoothing |
+| `height` | `number` | `240` | Pixel height |
+| `formatBar` | `(v) => string` | — | Bar value / left-axis formatter |
+| `formatLine` | `(v) => string` | — | Line value / right-axis formatter |
+| `ariaLabel` | `string` | — | SR label |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Font size scale |
+
+Events:
+
+- Vue: `@hover(payload \| null)` / `@select(payload)`
+- React: `onHover` / `onSelect`
+
+Payload: `{ index, category, barValue, lineValue }`.

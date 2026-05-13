@@ -1,0 +1,35 @@
+---
+title: DualAxisChart 组合图
+description: 柱 + 线双 Y 轴组合 —— 一图同时呈现绝对量（柱）和相对率（线），最常见的业务报表头牌。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/dualaxischart/BasicVue.vue';
+
+## 基础用法
+
+`bar` 走左侧 Y 轴，`line` 走右侧 Y 轴，两个数据集共用 `categories` 横轴。典型应用：营收 + 增长率、PV + 跳出率、订单量 + 客单价。
+
+<DemoFrame>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `categories` | `string[]` | — | 共用的 X 轴分类标签 |
+| `bar` | `{ label, data, color? }` | — | 柱状系列（驱动左 Y 轴） |
+| `line` | `{ label, data, color?, smooth? }` | — | 折线系列（驱动右 Y 轴），`smooth` 开启贝塞尔平滑 |
+| `height` | `number` | `240` | 像素高度 |
+| `formatBar` | `(v) => string` | — | 柱值 / 左轴刻度格式化 |
+| `formatLine` | `(v) => string` | — | 线值 / 右轴刻度格式化 |
+| `ariaLabel` | `string` | — | SR 描述 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号档位 |
+
+事件：
+
+- Vue: `@hover(payload \| null)` / `@select(payload)`
+- React: `onHover` / `onSelect`
+
+回调 payload：`{ index, category, barValue, lineValue }`。

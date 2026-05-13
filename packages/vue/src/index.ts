@@ -42,6 +42,10 @@ import './styles/floatinginspector.css';
 import './styles/tearofftab.css';
 import './styles/templatepane.css';
 import './styles/charts.css';
+import './styles/dualaxischart.css';
+import './styles/paretochart.css';
+import './styles/slopechart.css';
+import './styles/polarbarchart.css';
 import './styles/input.css';
 import './styles/flex.css';
 import './styles/grid.css';
@@ -544,6 +548,37 @@ export type {
   ChartToolbarProps,
   LegendSeries,
 } from './charttoolbar/variants';
+
+export { default as CfDualAxisChart } from './dualaxischart/DualAxisChart.vue';
+export type {
+  DualAxisProps,
+  DualAxisSize,
+  DualAxisHoverPayload,
+} from './dualaxischart/variants';
+
+export { default as CfParetoChart } from './paretochart/ParetoChart.vue';
+export type {
+  ParetoProps,
+  ParetoItem,
+  ParetoSize,
+  ParetoHoverPayload,
+} from './paretochart/variants';
+
+export { default as CfSlopeChart } from './slopechart/SlopeChart.vue';
+export type {
+  SlopeProps,
+  SlopeItem,
+  SlopeSize,
+  SlopeHoverPayload,
+} from './slopechart/variants';
+
+export { default as CfPolarBarChart } from './polarbarchart/PolarBarChart.vue';
+export type {
+  PolarBarProps,
+  PolarBarItem,
+  PolarBarSize,
+  PolarBarHoverPayload,
+} from './polarbarchart/variants';
 
 export { default as CfInput } from './input/Input.vue';
 export type { InputProps, InputVariant, InputSize } from './input/variants';
