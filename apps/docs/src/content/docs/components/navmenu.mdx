@@ -10,6 +10,12 @@ import VariantsVue from '~/components/demos/navmenu/VariantsVue.vue';
 import VariantsVueSource from '~/components/demos/navmenu/VariantsVue.vue?raw';
 import TriggerVue from '~/components/demos/navmenu/TriggerVue.vue';
 import TriggerVueSource from '~/components/demos/navmenu/TriggerVue.vue?raw';
+import ColumnsVue from '~/components/demos/navmenu/ColumnsVue.vue';
+import ColumnsVueSource from '~/components/demos/navmenu/ColumnsVue.vue?raw';
+import IconsVue from '~/components/demos/navmenu/IconsVue.vue';
+import IconsVueSource from '~/components/demos/navmenu/IconsVue.vue?raw';
+import DisabledVue from '~/components/demos/navmenu/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/navmenu/DisabledVue.vue?raw';
 
 ## 基础用法
 
@@ -81,6 +87,66 @@ const items: NavMenuItem[] = [/* ... */];
 
   vueSource={TriggerVueSource}>
   <TriggerVue client:load />
+</DemoFrame>
+
+## columns 列数
+
+`columns` 控制富面板每行多少列（1 / 2 / 3），每一项可以单独设置。链接较多时用 2-3 列横向展开，避免面板过高。
+
+<DemoFrame
+  vueCode={`const items: NavMenuItem[] = [
+  { key: 'one',   label: 'columns=1', columns: 1, links: [...] },
+  { key: 'two',   label: 'columns=2', columns: 2, links: [...] },
+  { key: 'three', label: 'columns=3', columns: 3, links: [...] },
+];
+
+<CfNavMenu :items="items" active="two" trigger="click" />`}
+  reactCode={`<CfNavMenu items={items} active="two" trigger="click" />`}
+
+  vueSource={ColumnsVueSource}>
+  <ColumnsVue client:load />
+</DemoFrame>
+
+## 链接图标
+
+`link.icon` 接收**原始 SVG 字符串**，组件通过 `v-html` 注入到链接前方。SVG 用 `currentColor` 描边会自动跟随面板文字色。
+
+<DemoFrame
+  vueCode={`const items: NavMenuItem[] = [
+  {
+    key: 'resources',
+    label: '资源',
+    columns: 2,
+    links: [
+      { label: '组件库', description: 'Vue 3 与 React 同源', href: '#', icon: '<svg ...>...</svg>' },
+      { label: 'CLI',    description: 'npx chufix add',     href: '#', icon: '<svg ...>...</svg>' },
+    ],
+  },
+];
+
+<CfNavMenu :items="items" active="resources" />`}
+  reactCode={`<CfNavMenu items={items} active="resources" />`}
+
+  vueSource={IconsVueSource}>
+  <IconsVue client:load />
+</DemoFrame>
+
+## 禁用项
+
+给 `item.disabled = true` 灰显该项并阻止 hover / click 打开富面板。常用于"即将上线"或权限不足的菜单。
+
+<DemoFrame
+  vueCode={`const items: NavMenuItem[] = [
+  { key: 'home',    label: '首页', href: '#' },
+  { key: 'pricing', label: '价格', href: '#', disabled: true },
+  { key: 'beta',    label: 'Beta（即将上线）', href: '#', disabled: true },
+];
+
+<CfNavMenu :items="items" active="home" />`}
+  reactCode={`<CfNavMenu items={items} active="home" />`}
+
+  vueSource={DisabledVueSource}>
+  <DisabledVue client:load />
 </DemoFrame>
 
 ## API

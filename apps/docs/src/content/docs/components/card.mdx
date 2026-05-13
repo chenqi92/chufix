@@ -111,8 +111,24 @@ export default function Demo() {
 
 ## API
 
+### Props
+
 | Prop          | 类型                                         | 默认值       | 说明                            |
 | ------------- | -------------------------------------------- | ------------ | ------------------------------- |
 | `variant`     | `'outlined' \| 'elevated' \| 'filled'`       | `'outlined'` | 视觉变体                        |
 | `interactive` | `boolean`                                    | `false`      | 整卡变成按钮（focus / hover）   |
 | `as`          | `string`（Vue）                              | `'div'`      | 渲染的 HTML tag                 |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `MouseEvent` | 卡片被点击时触发；`interactive=true` 时键盘 Enter 也会触发 |
+
+### Slots / Children
+
+| Slot | 说明 |
+|---|---|
+| `default` | 卡片主体内容（React 端：`children` 或 `<CfCardBody>`） |
+| `header` | 顶部段落（React 端：`<CfCardHeader>`），可省略 |
+| `footer` | 底部段落（React 端：`<CfCardFooter>`），可省略 |
