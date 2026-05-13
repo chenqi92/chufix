@@ -1,0 +1,11 @@
+/* ToggleGroup — visual on/off state on top of CfButton ghost/tertiary. */
+
+.cf-toggle-group__item[aria-pressed='true'] {
+  background: var(--accent-soft);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+.cf-toggle-group__item[aria-pressed='true']:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-2);
+}

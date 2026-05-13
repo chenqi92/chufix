@@ -1,0 +1,66 @@
+/* ChuFix Typography — Heading / Text / Paragraph.
+ * Heading levels map to the type scale; text sizes follow the same scale. */
+
+.cf-typo {
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+/* ---------- HEADING ---------- */
+.cf-typo-heading {
+  font-weight: var(--w-semibold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.cf-typo-heading--h1 { font-size: var(--t-48); line-height: var(--lh-48); letter-spacing: -0.02em; }
+.cf-typo-heading--h2 { font-size: var(--t-40); line-height: var(--lh-40); letter-spacing: -0.015em; }
+.cf-typo-heading--h3 { font-size: var(--t-32); line-height: var(--lh-32); }
+.cf-typo-heading--h4 { font-size: var(--t-28); line-height: var(--lh-28); }
+.cf-typo-heading--h5 { font-size: var(--t-22); line-height: var(--lh-22); }
+.cf-typo-heading--h6 { font-size: var(--t-18); line-height: var(--lh-18); font-weight: var(--w-medium); }
+
+/* ---------- TEXT ---------- */
+.cf-typo-text { line-height: 1.5; }
+.cf-typo-text--xs { font-size: var(--t-11); line-height: var(--lh-11); }
+.cf-typo-text--sm { font-size: var(--t-12); line-height: var(--lh-12); }
+.cf-typo-text--md { font-size: var(--t-14); line-height: var(--lh-14); }
+.cf-typo-text--lg { font-size: var(--t-16); line-height: var(--lh-16); }
+.cf-typo-text--xl { font-size: var(--t-18); line-height: var(--lh-18); }
+
+/* ---------- PARAGRAPH ---------- */
+.cf-typo-paragraph {
+  line-height: 1.6;
+  margin-block-end: var(--s-5);
+}
+.cf-typo-paragraph:last-child { margin-block-end: 0; }
+
+/* ---------- COLOR VARIANTS ---------- */
+.cf-typo--default { color: var(--fg-1); }
+.cf-typo--muted   { color: var(--fg-2); }
+.cf-typo--subtle  { color: var(--fg-3); }
+.cf-typo--accent  { color: var(--accent-1); }
+.cf-typo--success { color: var(--status-success); }
+.cf-typo--warning { color: var(--status-warning); }
+.cf-typo--error   { color: var(--status-error); }
+
+/* ---------- WEIGHTS ---------- */
+.cf-typo--w-regular  { font-weight: var(--w-regular); }
+.cf-typo--w-medium   { font-weight: var(--w-medium); }
+.cf-typo--w-semibold { font-weight: var(--w-semibold); }
+.cf-typo--w-bold     { font-weight: var(--w-bold); }
+
+/* ---------- ALIGN ---------- */
+.cf-typo--align-start   { text-align: start; }
+.cf-typo--align-center  { text-align: center; }
+.cf-typo--align-end     { text-align: end; }
+.cf-typo--align-justify { text-align: justify; }
+
+/* ---------- TRUNCATE (single-line) ---------- */
+.cf-typo--truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
+}

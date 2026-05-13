@@ -1,0 +1,16 @@
+/* CfSunburstChart — radial multi-layer treemap. */
+
+.cf-sunburst__segment {
+  stroke: var(--bg-1);
+  stroke-width: 1;
+  transition: opacity var(--dur-instant) linear;
+}
+.cf-sunburst__segment:hover { opacity: 0.85; }
+
+.cf-sunburst__label {
+  fill: var(--fg-on-accent, oklch(98% 0 0));
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  pointer-events: none;
+  user-select: none;
+}

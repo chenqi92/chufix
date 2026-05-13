@@ -1,0 +1,27 @@
+/* CfWaterfallChart — positive/negative deltas + absolute pillars. */
+
+.cf-waterfall__bar {
+  transition: opacity var(--dur-instant) linear;
+}
+.cf-waterfall__bar:hover { opacity: 0.85; }
+.cf-waterfall__bar--positive { fill: var(--status-success); }
+.cf-waterfall__bar--negative { fill: var(--status-error); }
+.cf-waterfall__bar--total    { fill: var(--accent-1); }
+
+.cf-waterfall__connector {
+  stroke: var(--line-2);
+  stroke-dasharray: 3 3;
+  stroke-width: 1;
+}
+
+.cf-waterfall__value {
+  fill: var(--fg-1);
+  font-size: var(--t-11);
+  font-weight: var(--w-medium);
+  pointer-events: none;
+}
+.cf-waterfall__label {
+  fill: var(--fg-2);
+  font-size: var(--t-11);
+  pointer-events: none;
+}

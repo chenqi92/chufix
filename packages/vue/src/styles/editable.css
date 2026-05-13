@@ -1,0 +1,80 @@
+/* CfEditable — click-to-edit inline text. */
+
+.cf-editable {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 1px var(--s-3);
+  border-radius: var(--r-input);
+  cursor: text;
+  position: relative;
+  color: var(--fg-1);
+  min-width: 4ch;
+  max-width: 100%;
+  transition: background var(--dur-instant) linear, box-shadow var(--dur-fast) linear;
+  outline: none;
+}
+.cf-editable:hover { background: var(--bg-2); }
+.cf-editable:focus-visible { box-shadow: var(--focus-ring); }
+.cf-editable--disabled { cursor: default; pointer-events: none; }
+.cf-editable--multiline { align-items: flex-start; }
+
+.cf-editable__text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.cf-editable__text--placeholder { color: var(--fg-3); font-style: italic; }
+
+.cf-editable__pencil {
+  width: 0.85em;
+  height: 0.85em;
+  color: var(--fg-3);
+  opacity: 0;
+  transition: opacity var(--dur-instant) linear;
+}
+.cf-editable:hover .cf-editable__pencil,
+.cf-editable:focus-visible .cf-editable__pencil {
+  opacity: 1;
+}
+
+.cf-editable--editing {
+  background: var(--bg-1);
+  padding: 0;
+  cursor: text;
+}
+.cf-editable__input {
+  font: inherit;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  border: 1px solid var(--accent-1);
+  border-radius: var(--r-input);
+  padding: var(--s-2) var(--s-3);
+  outline: none;
+  width: 100%;
+  min-width: 8ch;
+  box-shadow: var(--focus-ring);
+}
+.cf-editable__textarea {
+  resize: vertical;
+  min-height: calc(var(--lh-14) * 2);
+  font-family: var(--font-sans);
+}
+
+.cf-editable--invalid .cf-editable__input {
+  border-color: var(--status-error);
+  box-shadow: 0 0 0 3px var(--status-error-soft, oklch(66% 0.2 22 / 0.16));
+}
+.cf-editable__error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  font-size: var(--t-11);
+  color: var(--status-error);
+  white-space: nowrap;
+}
+
+.cf-editable--sm { font-size: var(--t-12); }
+.cf-editable--md { font-size: var(--t-14); }
+.cf-editable--lg { font-size: var(--t-16); }

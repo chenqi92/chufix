@@ -3,6 +3,13 @@ import './styles/a11y.css';
 import './styles/icon.css';
 import './styles/statusillustration.css';
 import './styles/button.css';
+import './styles/buttongroup.css';
+import './styles/togglegroup.css';
+import './styles/typography.css';
+import './styles/editable.css';
+import './styles/heatmapchart.css';
+import './styles/waterfallchart.css';
+import './styles/sunburstchart.css';
 import './styles/iconbutton.css';
 import './styles/toolbar.css';
 import './styles/colorswatch.css';
@@ -137,6 +144,41 @@ import './styles/map.css';
 
 export { default as CfButton } from './button/Button.vue';
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape } from './button/variants';
+
+export { default as CfButtonGroup } from './buttongroup/ButtonGroup.vue';
+export type {
+  ButtonGroupProps,
+  ButtonGroupOrientation,
+  ButtonGroupSize,
+  ButtonGroupVariant,
+} from './buttongroup/variants';
+
+export { default as CfHeading } from './typography/Heading.vue';
+export { default as CfText } from './typography/Text.vue';
+export { default as CfParagraph } from './typography/Paragraph.vue';
+export { default as CfEditable } from './editable/Editable.vue';
+export type { EditableProps, EditableSize, EditableCommitPayload } from './editable/variants';
+export type {
+  HeadingProps,
+  HeadingLevel,
+  TextProps,
+  TextSize,
+  TextVariant,
+  TextWeight,
+  TextAlign,
+  ParagraphProps,
+} from './typography/variants';
+
+export { default as CfToggleGroup } from './togglegroup/ToggleGroup.vue';
+export type {
+  ToggleGroupProps,
+  ToggleGroupMode,
+  ToggleGroupOrientation,
+  ToggleGroupSize,
+  ToggleGroupVariant,
+  ToggleOption,
+  ToggleGroupChangePayload,
+} from './togglegroup/variants';
 
 export { default as CfIconButton } from './iconbutton/IconButton.vue';
 export type {
@@ -464,6 +506,28 @@ export type { TimingBarProps, TimingPhase } from './timingbar/variants';
 
 export { default as CfLatencyHeatmap } from './latencyheatmap/LatencyHeatmap.vue';
 export type { LatencyHeatmapProps } from './latencyheatmap/variants';
+
+export { default as CfHeatmapChart } from './heatmapchart/HeatmapChart.vue';
+export type {
+  HeatmapChartProps,
+  HeatmapColorScale,
+  HeatmapChartInteractionPayload,
+} from './heatmapchart/variants';
+
+export { default as CfWaterfallChart } from './waterfallchart/WaterfallChart.vue';
+export type {
+  WaterfallChartProps,
+  WaterfallStep,
+  WaterfallStepKind,
+  WaterfallChartInteractionPayload,
+} from './waterfallchart/variants';
+
+export { default as CfSunburstChart } from './sunburstchart/SunburstChart.vue';
+export type {
+  SunburstChartProps,
+  SunburstNode,
+  SunburstChartInteractionPayload,
+} from './sunburstchart/variants';
 
 export { default as CfConnectionGraph } from './connectiongraph/ConnectionGraph.vue';
 export type {
