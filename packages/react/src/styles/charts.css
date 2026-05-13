@@ -199,6 +199,55 @@
 .cf-metric__hint { margin: 0; font-size: var(--t-11); color: var(--fg-3); line-height: var(--lh-14); }
 .cf-metric__trend { margin-top: 4px; width: 100%; }
 
+/* metric card: expand/collapse with series breakdown */
+.cf-metric--expandable .cf-metric__head { gap: 4px; }
+.cf-metric__toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-3);
+  color: var(--fg-3);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.cf-metric__toggle:hover { background: var(--bg-2); color: var(--fg-1); }
+.cf-metric--expandable.is-expanded .cf-metric__toggle { transform: rotate(180deg); color: var(--accent-1); }
+.cf-metric__toggle:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 1px; }
+
+.cf-metric__series {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--line-1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cf-metric__series-item {
+  display: grid;
+  grid-template-columns: 8px 1fr auto auto auto;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-12);
+  color: var(--fg-2);
+}
+.cf-metric__series-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-1);
+}
+.cf-metric__series-label { color: var(--fg-1); }
+.cf-metric__series-value { font-variant-numeric: tabular-nums; color: var(--fg-1); font-weight: var(--w-medium); }
+.cf-metric__series-prefix, .cf-metric__series-suffix { color: var(--fg-3); margin-right: 2px; margin-left: 2px; }
+.cf-metric__series-delta { font-size: var(--t-11); font-family: var(--font-mono); padding: 0 4px; border-radius: var(--r-3); }
+.cf-metric__series-trend { display: block; }
+
 /* radar */
 .cf-radar { display: inline-flex; align-items: center; gap: 16px; font-family: var(--font-sans); }
 .cf-radar__legend { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--t-12); color: var(--fg-2); }
@@ -265,3 +314,26 @@
 .cf-toolbar2__actions { display: inline-flex; gap: 4px; }
 .cf-toolbar2__btn { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: var(--r-3); background: var(--bg-2); color: var(--fg-2); cursor: pointer; font-size: 12px; }
 .cf-toolbar2__btn:hover { background: var(--bg-3); color: var(--fg-1); }
+
+/* Sankey draggable nodes */
+.cf-sankey.is-draggable .cf-sankey__node { cursor: ns-resize; touch-action: none; }
+.cf-sankey.is-draggable .cf-sankey__node rect { transition: filter var(--dur-fast) var(--ease-out); }
+.cf-sankey.is-draggable .cf-sankey__node:hover rect { filter: brightness(1.1); }
+.cf-sankey.is-draggable .cf-sankey__node.is-dragging rect { filter: brightness(1.15); }
+.cf-sankey__node text { user-select: none; pointer-events: none; }
+
+/* Treemap drill + breadcrumb */
+.cf-treemap-frame { display: flex; flex-direction: column; gap: 8px; font-family: var(--font-sans); }
+.cf-treemap__breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: var(--t-12); color: var(--fg-3); }
+.cf-treemap__crumb { appearance: none; border: 0; background: transparent; padding: 2px 8px; border-radius: var(--r-3); font: inherit; color: var(--fg-2); cursor: pointer; transition: background-color var(--dur-fast) var(--ease-out); }
+.cf-treemap__crumb:hover:not(:disabled) { background: var(--bg-2); color: var(--fg-1); }
+.cf-treemap__crumb.is-current { color: var(--accent-1); font-weight: var(--w-medium); cursor: default; }
+.cf-treemap__crumb:not(:last-child):not(.cf-treemap__up)::after { content: '›'; display: inline-block; margin-left: 6px; margin-right: -6px; opacity: 0.5; }
+.cf-treemap__up { margin-left: auto; appearance: none; border: 1px solid var(--line-1); background: var(--bg-2); padding: 2px 8px; border-radius: var(--r-3); font: inherit; color: var(--fg-2); cursor: pointer; }
+.cf-treemap__up:hover:not(:disabled) { background: var(--bg-3); color: var(--fg-1); }
+.cf-treemap__up:disabled { opacity: 0.4; cursor: not-allowed; }
+.cf-treemap.is-drillable .cf-treemap__cell.has-children.is-top { cursor: pointer; }
+.cf-treemap.is-drillable .cf-treemap__cell.has-children.is-top:hover rect { opacity: 0.5 !important; }
+.cf-treemap__footer { display: inline-flex; gap: 8px; align-items: baseline; font-size: var(--t-12); color: var(--fg-3); }
+.cf-treemap__focus-label { color: var(--fg-2); }
+.cf-treemap__focus-total { color: var(--accent-1); font-weight: var(--w-semibold); font-variant-numeric: tabular-nums; }

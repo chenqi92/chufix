@@ -6,6 +6,8 @@ description: Value + unit + delta + embedded sparkline trend.
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/metriccard/BasicVue.vue';
 import BasicVueSource from '~/components/demos/metriccard/BasicVue.vue?raw';
+import SeriesVue from '~/components/demos/metriccard/SeriesVue.vue';
+import SeriesVueSource from '~/components/demos/metriccard/SeriesVue.vue?raw';
 
 ## Basic usage
 
@@ -36,6 +38,17 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
   <GridVue client:load />
 </DemoFrame>
 
+## Expandable series breakdown
+
+Pass a `series` array and a chevron appears in the header; clicking it expands a list of channels / components / sources with their own sparkline, delta, and color dot. Use `defaultExpanded` for the initial state or controlled `expanded` + `onExpandedChange` to drive it externally.
+
+<DemoFrame
+  vueCode={`<CfMetricCard label="Revenue" value="12,060" :delta="6.4" :series="channels" />`}
+  reactCode={`<CfMetricCard label="Revenue" value="12,060" delta={6.4} series={channels} />`}
+  vueSource={SeriesVueSource}>
+  <SeriesVue client:load />
+</DemoFrame>
+
 ## API
 
 | Prop | Type | Default | Description |
@@ -45,3 +58,7 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
 | `unit` | `string` | `—` | Unit (after the value) |
 | `delta` | `number` | `—` | Percentage change; tinted by sign |
 | `trend` | `number[]` | `—` | Embedded sparkline data |
+| `series` | `MetricSeriesItem[]` | `—` | Items rendered when the card is expanded |
+| `expandable` | `boolean` | `true` | Show the chevron when `series` is present |
+| `defaultExpanded` | `boolean` | `false` | Initial expanded state (uncontrolled) |
+| `expanded` | `boolean` | `—` | Controlled expanded flag; pair with `onExpandedChange` |

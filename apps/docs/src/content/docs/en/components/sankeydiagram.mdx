@@ -6,6 +6,8 @@ description: Weighted flow diagram with nodes and links — node height equals f
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sankeydiagram/BasicVue.vue';
 import BasicVueSource from '~/components/demos/sankeydiagram/BasicVue.vue?raw';
+import DragVue from '~/components/demos/sankeydiagram/DragVue.vue';
+import DragVueSource from '~/components/demos/sankeydiagram/DragVue.vue?raw';
 
 ## Basic usage
 
@@ -36,6 +38,17 @@ import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw'
   <SimpleVue client:load />
 </DemoFrame>
 
+## Node drag
+
+`draggable` defaults to `true`. Press and drag any node vertically to manually reorder its layer; links update in real time. Subscribe to `@node-drag` / `onNodeDrag` for the drop-position delta. Set `draggable={false}` for a read-only view.
+
+<DemoFrame
+  vueCode={`<CfSankeyDiagram :nodes="nodes" :links="links" @node-drag="onDrag" />`}
+  reactCode={`<CfSankeyDiagram nodes={nodes} links={links} onNodeDrag={onDrag} />`}
+  vueSource={DragVueSource}>
+  <DragVue client:load />
+</DemoFrame>
+
 ## API
 
 | Prop | Type | Default | Description |
@@ -43,3 +56,4 @@ import SimpleVueSource from '~/components/demos/sankeydiagram/SimpleVue.vue?raw'
 | `nodes` | `SankeyNode[]` | `—` | &#123; id, name, layer?, colorIndex? &#125;[] |
 | `links` | `SankeyLink[]` | `—` | &#123; source, target, value &#125;[] |
 | `nodeWidth` | `number` | `12` | Node bar width |
+| `draggable` | `boolean` | `true` | Allow vertical drag to reorder nodes within a layer |

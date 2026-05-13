@@ -1,4 +1,41 @@
-/* CfSunburstChart — radial multi-layer treemap. */
+/* CfSunburstChart — radial multi-layer treemap with drill-down. */
+
+.cf-sunburst-frame {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+}
+
+.cf-sunburst__breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--t-12);
+  color: var(--fg-3);
+}
+.cf-sunburst__crumb {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 2px 8px;
+  border-radius: var(--r-3);
+  font: inherit;
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.cf-sunburst__crumb:hover:not(:disabled) { background: var(--bg-2); color: var(--fg-1); }
+.cf-sunburst__crumb.is-current { color: var(--accent-1); font-weight: var(--w-medium); cursor: default; }
+.cf-sunburst__crumb:not(:last-child)::after {
+  content: '›';
+  display: inline-block;
+  margin-left: 6px;
+  margin-right: -6px;
+  opacity: 0.5;
+}
 
 .cf-sunburst__segment {
   stroke: var(--bg-1);
@@ -6,6 +43,10 @@
   transition: opacity var(--dur-instant) linear;
 }
 .cf-sunburst__segment:hover { opacity: 0.85; }
+.cf-sunburst__segment.is-zoomable { cursor: pointer; }
+.cf-sunburst.is-drillable .cf-sunburst__segment.is-zoomable:focus-visible {
+  outline: 2px solid var(--accent-1);
+}
 
 .cf-sunburst__label {
   fill: var(--fg-on-accent, oklch(98% 0 0));
@@ -13,4 +54,46 @@
   font-weight: var(--w-medium);
   pointer-events: none;
   user-select: none;
+}
+
+/* Center "up one level" affordance */
+.cf-sunburst__center {
+  cursor: pointer;
+}
+.cf-sunburst__center circle {
+  fill: var(--bg-2);
+  stroke: var(--line-2);
+  stroke-width: 1;
+  transition: fill var(--dur-fast) var(--ease-out);
+}
+.cf-sunburst__center:hover circle { fill: var(--bg-3); }
+.cf-sunburst__center:focus-visible circle {
+  outline: none;
+  stroke: var(--accent-1);
+  stroke-width: 2;
+}
+.cf-sunburst__center-label {
+  fill: var(--fg-2);
+  font-size: 14px;
+  font-weight: var(--w-semibold);
+  pointer-events: none;
+}
+.cf-sunburst__center-name {
+  fill: var(--fg-3);
+  font-size: 9px;
+  pointer-events: none;
+}
+
+.cf-sunburst__footer {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: var(--t-12);
+  color: var(--fg-3);
+}
+.cf-sunburst__focus-label { color: var(--fg-2); }
+.cf-sunburst__focus-total {
+  color: var(--accent-1);
+  font-weight: var(--w-semibold);
+  font-variant-numeric: tabular-nums;
 }

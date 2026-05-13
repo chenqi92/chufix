@@ -1,11 +1,13 @@
 ---
 title: Treemap 矩形树图
-description: 层级矩形面积图，slice-and-dice 单层布局。
+description: 层级矩形面积图，支持任意深度嵌套 + 点击下钻聚焦。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treemap/BasicVue.vue';
 import BasicVueSource from '~/components/demos/treemap/BasicVue.vue?raw';
+import NestedVue from '~/components/demos/treemap/NestedVue.vue';
+import NestedVueSource from '~/components/demos/treemap/NestedVue.vue?raw';
 
 ## 基础用法
 
@@ -38,14 +40,29 @@ import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
   <LabeledVue client:load />
 </DemoFrame>
 
+## 嵌套层级 + 下钻
+
+给任意节点加 `children`,组件会用 slice-and-dice 递归排版,父矩形顶部留 `headerHeight` 像素当作分组标题。点击有子节点的顶层矩形 → 该子树成为新焦点;面包屑、↑ 上一层、底部 footer 都跟着切换。`drillable={false}` 即关掉钻取行为退回静态视图。
+
+<DemoFrame
+  vueCode={`<CfTreemap :nodes="nodes" :width="640" :height="320" @drill="onDrill" />`}
+  reactCode={`<CfTreemap nodes={nodes} width={640} height={320} onDrill={onDrill} />`}
+  vueSource={NestedVueSource}>
+  <NestedVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `nodes` | `TreemapNode[]` | `—` | `{ name, value, colorIndex? }[]` |
+| `nodes` | `TreemapNode[]` | `—` | `{ name, value?, colorIndex?, children? }[]` |
 | `width` | `number` | `480` | SVG 宽度 |
 | `height` | `number` | `240` | SVG 高度 |
 | `showLabels` | `boolean` | `true` | 在矩形内显示 name / value（足够大时） |
+| `childPadding` | `number` | `4` | 父矩形内子节点四周留白 |
+| `headerHeight` | `number` | `16` | 父矩形顶部留给标题的高度 |
+| `drillable` | `boolean` | `true` | 点击有子节点的顶层矩形钻取 |
+| `showBreadcrumb` | `boolean` | `true` | 钻取时显示面包屑 + ↑上一层按钮 |
 | `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
 
 ### Events
@@ -54,13 +71,33 @@ import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
 |---|---|---|---|
 | `item-enter` | `onItemEnter` | `TreemapInteractionPayload` | 鼠标进入某矩形时触发 |
 | `item-leave` | `onItemLeave` | `TreemapInteractionPayload` | 鼠标离开矩形时触发 |
+| `drill` | `onDrill` | `TreemapDrillPayload` | 钻取后的新焦点 + 完整路径 |
 
 ### 类型
 
 ```ts
+interface TreemapNode {
+  name: string;
+  value?: number;
+  colorIndex?: number;
+  /** 嵌套子节点;父节点的值会被自动计算为子节点之和。 */
+  children?: TreemapNode[];
+}
+
 interface TreemapInteractionPayload {
   node: TreemapNode;
+  /** 当前焦点的直接子节点中的索引。 */
   dataIndex: number;
+  /** 0 = 顶层矩形;1+ = 嵌套子矩形。 */
+  depth: number;
+  /** 从原始 root 到该节点的 name 路径。 */
+  pathNames: string[];
   nativeEvent?: PointerEvent;
+}
+
+interface TreemapDrillPayload {
+  /** 当前焦点,回到顶层时为 null。 */
+  node: TreemapNode | null;
+  pathNames: string[];
 }
 ```

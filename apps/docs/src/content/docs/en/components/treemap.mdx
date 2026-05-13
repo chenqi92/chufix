@@ -6,6 +6,8 @@ description: Hierarchical rectangle area chart, single-level slice-and-dice layo
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treemap/BasicVue.vue';
 import BasicVueSource from '~/components/demos/treemap/BasicVue.vue?raw';
+import NestedVue from '~/components/demos/treemap/NestedVue.vue';
+import NestedVueSource from '~/components/demos/treemap/NestedVue.vue?raw';
 
 ## Basic usage
 
@@ -38,9 +40,24 @@ import LabeledVueSource from '~/components/demos/treemap/LabeledVue.vue?raw';
   <LabeledVue client:load />
 </DemoFrame>
 
+## Nested hierarchy + drill-down
+
+Attach `children` to any node and the layout recurses with slice-and-dice; parent rectangles reserve `headerHeight` pixels at the top for their label. Click a top-level rectangle with children to drill in: the subtree becomes the new focus, with a breadcrumb, an ↑ Up button, and a footer tracking the current focus. Pass `drillable={false}` for a static nested view.
+
+<DemoFrame
+  vueCode={`<CfTreemap :nodes="nodes" :width="640" :height="320" @drill="onDrill" />`}
+  reactCode={`<CfTreemap nodes={nodes} width={640} height={320} onDrill={onDrill} />`}
+  vueSource={NestedVueSource}>
+  <NestedVue client:load />
+</DemoFrame>
+
 ## API
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `nodes` | `TreemapNode[]` | `—` | &#123; name, value, colorIndex? &#125;[] |
+| `nodes` | `TreemapNode[]` | `—` | &#123; name, value?, colorIndex?, children? &#125;[] |
 | `width / height` | `number` | `480 / 240` |  |
+| `childPadding` | `number` | `4` | Inner padding around children inside a parent |
+| `headerHeight` | `number` | `16` | Space reserved at the top of a parent for its label |
+| `drillable` | `boolean` | `true` | Click a top-level rect with children to drill in |
+| `showBreadcrumb` | `boolean` | `true` | Render breadcrumb + ↑ Up control when drilled |

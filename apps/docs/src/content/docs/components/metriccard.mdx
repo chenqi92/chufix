@@ -1,11 +1,13 @@
 ---
 title: MetricCard 指标卡
-description: 数值 + 单位 + 涨跌 + 内嵌 sparkline 趋势。
+description: 数值 + 单位 + 涨跌 + 内嵌 sparkline 趋势，支持展开 series 明细。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/metriccard/BasicVue.vue';
 import BasicVueSource from '~/components/demos/metriccard/BasicVue.vue?raw';
+import SeriesVue from '~/components/demos/metriccard/SeriesVue.vue';
+import SeriesVueSource from '~/components/demos/metriccard/SeriesVue.vue?raw';
 
 ## 基础用法
 
@@ -36,6 +38,17 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
   <GridVue client:load />
 </DemoFrame>
 
+## series 展开明细
+
+传入 `series` 数组,卡片右上角出现 chevron 按钮;点击后向下展开渠道 / 组件 / 来源等明细行,每行可带自己的 sparkline、delta 和色板点。可用 `defaultExpanded` 控制初始态,或 `expanded` + `@update:expanded` 做受控开关。
+
+<DemoFrame
+  vueCode={`<CfMetricCard label="本月营收" value="12,060" :delta="6.4" :series="channels" />`}
+  reactCode={`<CfMetricCard label="本月营收" value="12,060" delta={6.4} series={channels} />`}
+  vueSource={SeriesVueSource}>
+  <SeriesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
@@ -49,4 +62,24 @@ import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
 | `delta` | `number` | `—` | 涨跌百分比，正负染色 |
 | `trend` | `number[] \| 'up' \| 'down' \| 'flat'` | `—` | 内嵌 Sparkline 数据；或传 `'up'`/`'down'`/`'flat'` 显示对应趋势图标 |
 | `deltaFn` | `(delta: number) => string` | `+N%` | 自定义 `delta` 文案格式化（如绝对值、保留小数位等） |
+| `series` | `MetricSeriesItem[]` | `—` | 展开后展示的明细行 |
+| `expandable` | `boolean` | `true` | 有 series 时是否显示 chevron |
+| `defaultExpanded` | `boolean` | `false` | 非受控初始态 |
+| `expanded` | `boolean` | `—` | 受控展开标志，配合 `@update:expanded` (Vue) / `onExpandedChange` (React) |
 | `ariaLabel` | `string` | `—` | 透传给根元素的 `aria-label` |
+
+### 类型
+
+```ts
+interface MetricSeriesItem {
+  label: string;
+  value: string | number;
+  prefix?: string;
+  suffix?: string;
+  delta?: number;
+  /** 内嵌迷你 sparkline。 */
+  trend?: number[];
+  /** 行首色板点的颜色覆盖。 */
+  color?: string;
+}
+```

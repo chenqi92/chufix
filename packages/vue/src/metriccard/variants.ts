@@ -1,3 +1,15 @@
+export interface MetricSeriesItem {
+  label: string;
+  value: string | number;
+  prefix?: string;
+  suffix?: string;
+  delta?: number;
+  /** Optional inline sparkline. */
+  trend?: number[];
+  /** Optional color override for the swatch dot. */
+  color?: string;
+}
+
 export interface MetricCardProps {
   label: string;
   value: string | number;
@@ -14,4 +26,16 @@ export interface MetricCardProps {
   /** Format the delta. Default: "+N%". */
   deltaFn?: (delta: number) => string;
   ariaLabel?: string;
+  /** Optional breakdown rendered when the card is expanded. */
+  series?: MetricSeriesItem[];
+  /** Show the expand chevron when `series` is non-empty. Default true. */
+  expandable?: boolean;
+  /** Initial expanded state for uncontrolled cards. Default false. */
+  defaultExpanded?: boolean;
+  /** Controlled expanded flag. Pair with `@update:expanded`. */
+  expanded?: boolean;
+}
+
+export interface MetricCardExpandPayload {
+  expanded: boolean;
 }

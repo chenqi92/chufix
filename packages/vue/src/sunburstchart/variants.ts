@@ -15,6 +15,10 @@ export interface SunburstChartProps {
   /** Hide labels on segments whose sweep < this many degrees. Default 12. */
   labelMinAngle?: number;
   ariaLabel?: string;
+  /** Enable click-to-drill (focus subtree as new root). Default true. */
+  drillable?: boolean;
+  /** Show the breadcrumb path above the chart. Default true (only matters when drillable). */
+  showBreadcrumb?: boolean;
 }
 
 export interface SunburstSegment {
@@ -39,4 +43,10 @@ export interface SunburstChartInteractionPayload {
   /** Aggregate value of this node + descendants. */
   totalValue: number;
   nativeEvent?: PointerEvent;
+}
+
+export interface SunburstDrillPayload {
+  /** The node that became the new focus. Equals the original root when zoomed all the way out. */
+  node: SunburstNode;
+  pathNames: string[];
 }

@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Sparkline from '../sparkline/Sparkline.vue';
-import type { MetricCardProps } from './variants';
+import type {
+  MetricCardExpandPayload,
+  MetricCardProps,
+  MetricSeriesItem,
+} from './variants';
 
-const props = defineProps<MetricCardProps>();
+const props = withDefaults(defineProps<MetricCardProps>(), {
+  expandable: true,
+  defaultExpanded: false,
+});
+
+const emit = defineEmits<{
+  (e: 'update:expanded', value: boolean): void;
+  (e: 'expand', payload: MetricCardExpandPayload): void;
+}>();
 
 const deltaText = computed(() => {
   if (props.delta == null) return '';
@@ -28,13 +40,48 @@ const trendData = computed(() => {
 });
 
 const unitText = computed(() => props.suffix ?? props.unit);
+
+/* Controlled vs. uncontrolled expansion. */
+const internal = ref(props.defaultExpanded);
+watch(
+  () => props.expanded,
+  (v) => {
+    if (v != null) internal.value = v;
+  },
+  { immediate: true },
+);
+const isExpanded = computed(() => (props.expanded != null ? props.expanded : internal.value));
+
+const hasSeries = computed(() => !!(props.series && props.series.length));
+const canExpand = computed(() => props.expandable && hasSeries.value);
+
+function toggle() {
+  if (!canExpand.value) return;
+  const next = !isExpanded.value;
+  internal.value = next;
+  emit('update:expanded', next);
+  emit('expand', { expanded: next });
+}
+
+function seriesDeltaText(it: MetricSeriesItem): string {
+  if (it.delta == null) return '';
+  const sign = it.delta > 0 ? '+' : '';
+  return `${sign}${it.delta.toFixed(1)}%`;
+}
+function seriesDeltaTone(it: MetricSeriesItem): string {
+  if (it.delta == null) return 'neutral';
+  if (it.delta > 0) return 'positive';
+  if (it.delta < 0) return 'negative';
+  return 'neutral';
+}
 </script>
 
 <template>
   <article
-    class="cf-metric"
+    :class="['cf-metric', canExpand && 'cf-metric--expandable', isExpanded && 'is-expanded']"
     role="figure"
     :aria-label="ariaLabel ?? label"
+    :aria-expanded="canExpand ? isExpanded : undefined"
   >
     <header class="cf-metric__head">
       <span class="cf-metric__label">{{ label }}</span>
@@ -42,6 +89,18 @@ const unitText = computed(() => props.suffix ?? props.unit);
         v-if="delta != null"
         :class="['cf-metric__delta', `cf-metric__delta--${deltaTone}`]"
       >{{ deltaText }}</span>
+      <button
+        v-if="canExpand"
+        type="button"
+        class="cf-metric__toggle"
+        :aria-label="isExpanded ? '收起明细' : '展开明细'"
+        :aria-expanded="isExpanded"
+        @click="toggle"
+      >
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
     </header>
     <div class="cf-metric__value">
       <span v-if="prefix" class="cf-metric__prefix">{{ prefix }}</span>
@@ -58,5 +117,31 @@ const unitText = computed(() => props.suffix ?? props.unit);
       smooth
       class="cf-metric__trend"
     />
+
+    <ul v-if="canExpand && isExpanded" class="cf-metric__series" role="list">
+      <li
+        v-for="(it, i) in props.series"
+        :key="i"
+        class="cf-metric__series-item"
+      >
+        <span class="cf-metric__series-swatch" :style="it.color ? { background: it.color } : undefined" />
+        <span class="cf-metric__series-label">{{ it.label }}</span>
+        <span class="cf-metric__series-value">
+          <span v-if="it.prefix" class="cf-metric__series-prefix">{{ it.prefix }}</span>{{ it.value }}<span v-if="it.suffix" class="cf-metric__series-suffix">{{ it.suffix }}</span>
+        </span>
+        <span
+          v-if="it.delta != null"
+          :class="['cf-metric__series-delta', `cf-metric__delta--${seriesDeltaTone(it)}`]"
+        >{{ seriesDeltaText(it) }}</span>
+        <Sparkline
+          v-if="it.trend && it.trend.length"
+          :data="it.trend"
+          :width="64"
+          :height="18"
+          smooth
+          class="cf-metric__series-trend"
+        />
+      </li>
+    </ul>
   </article>
 </template>
