@@ -37,8 +37,18 @@ export function IconPicker({
       <button type="button" className="cf-iconpicker__trigger" disabled={disabled} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
         {value ? <Icon name={value} /> : null}
         <span className={`cf-iconpicker__value${value ? '' : ' is-placeholder'}`}>{value || placeholder}</span>
-        {clearable && value ? <span className="cf-iconpicker__clear" aria-hidden="true" onClick={clear}>×</span> : null}
-        <span className="cf-iconpicker__chevron" aria-hidden="true">⌄</span>
+        {clearable && value ? (
+          <span className="cf-iconpicker__clear" aria-hidden="true" onClick={clear}>
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+              <path d="M3 3 L9 9 M9 3 L3 9" />
+            </svg>
+          </span>
+        ) : null}
+        <span className="cf-iconpicker__chevron" aria-hidden="true">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 4.5 L6 7.5 L9 4.5" />
+          </svg>
+        </span>
       </button>
 
       {open ? (

@@ -5,9 +5,13 @@ description: Vertical primary navigation — supports groups, nested submenus, b
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sidebar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sidebar/BasicVue.vue?raw';
 import CollapsedVue from '~/components/demos/sidebar/CollapsedVue.vue';
+import CollapsedVueSource from '~/components/demos/sidebar/CollapsedVue.vue?raw';
 import BadgesVue from '~/components/demos/sidebar/BadgesVue.vue';
+import BadgesVueSource from '~/components/demos/sidebar/BadgesVue.vue?raw';
 import SizesVue from '~/components/demos/sidebar/SizesVue.vue';
+import SizesVueSource from '~/components/demos/sidebar/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -68,7 +72,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -79,7 +84,8 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfSidebar v-model="active" :items="items" collapsed />`}
   reactCode={`<CfSidebar value={active} items={items} collapsed onChange={setActive} />`}
->
+
+  vueSource={CollapsedVueSource}>
   <CollapsedVue client:load />
 </DemoFrame>
 
@@ -97,7 +103,8 @@ export default function Demo() {
 
 <CfSidebar v-model="active" :items="items" />`}
   reactCode={`<CfSidebar value={active} items={items} onChange={setActive} />`}
->
+
+  vueSource={BadgesVueSource}>
   <BadgesVue client:load />
 </DemoFrame>
 
@@ -112,7 +119,8 @@ export default function Demo() {
   reactCode={`<CfSidebar value={a} onChange={setA} items={items} size="sm" />
 <CfSidebar value={b} onChange={setB} items={items} size="md" />
 <CfSidebar value={c} onChange={setC} items={items} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

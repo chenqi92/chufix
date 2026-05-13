@@ -5,6 +5,7 @@ description: A single color sample, commonly used inside palettes — supports a
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/colorswatch/BasicVue.vue';
+import BasicVueSource from '~/components/demos/colorswatch/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -19,7 +20,8 @@ Any CSS color (including tokens like `var(--accent-1)`). `selected` shows a sele
 <CfColorSwatch color="var(--status-success)" />
 <CfColorSwatch color="#dc3545" />
 <CfColorSwatch add label="Add color" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -29,6 +31,7 @@ Any CSS color (including tokens like `var(--accent-1)`). `selected` shows a sele
 3 sizes, square / round shapes, with selectable and disabled states.
 
 import SizesVue from '~/components/demos/colorswatch/SizesVue.vue';
+import SizesVueSource from '~/components/demos/colorswatch/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfColorSwatch size="sm" color="var(--accent-1)" />
@@ -43,7 +46,8 @@ import SizesVue from '~/components/demos/colorswatch/SizesVue.vue';
 <CfColorSwatch shape="round" color="var(--accent-1)" />
 <CfColorSwatch selected color="var(--accent-1)" />
 <CfColorSwatch disabled color="var(--accent-1)" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

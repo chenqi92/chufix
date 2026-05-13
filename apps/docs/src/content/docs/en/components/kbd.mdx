@@ -5,9 +5,13 @@ description: Tiny typographic control for showing keyboard shortcuts; supports k
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/kbd/BasicVue.vue';
+import BasicVueSource from '~/components/demos/kbd/BasicVue.vue?raw';
 import CombosVue from '~/components/demos/kbd/CombosVue.vue';
+import CombosVueSource from '~/components/demos/kbd/CombosVue.vue?raw';
 import SingleVue from '~/components/demos/kbd/SingleVue.vue';
+import SingleVueSource from '~/components/demos/kbd/SingleVue.vue?raw';
 import SizesVue from '~/components/demos/kbd/SizesVue.vue';
+import SizesVueSource from '~/components/demos/kbd/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -16,7 +20,8 @@ The `keys` array renders multiple individual `<kbd>` elements joined by `separat
 <DemoFrame
   vueCode={`<CfKbd :keys="['Ctrl', 'K']" />`}
   reactCode={`<CfKbd keys={['Ctrl', 'K']} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -33,7 +38,8 @@ The `keys` array renders multiple individual `<kbd>` elements joined by `separat
 <CfKbd keys={['Ctrl', 'W']} />
 <CfKbd keys={['Ctrl', 'Shift', 'P']} />
 <CfKbd keys={['Esc', ':', 'q']} separator=" " />`}
->
+
+  vueSource={CombosVueSource}>
   <CombosVue client:load />
 </DemoFrame>
 
@@ -52,7 +58,8 @@ Omit `keys` and put the key name in the default slot / children — fits the "si
 <CfKbd>Esc</CfKbd>
 <CfKbd>Enter</CfKbd>
 <CfKbd>Space</CfKbd>`}
->
+
+  vueSource={SingleVueSource}>
   <SingleVue client:load />
 </DemoFrame>
 
@@ -67,7 +74,8 @@ Omit `keys` and put the key name in the default slot / children — fits the "si
   reactCode={`<CfKbd keys={['Ctrl', 'K']} size="sm" />
 <CfKbd keys={['Ctrl', 'K']} size="md" />
 <CfKbd keys={['Ctrl', 'K']} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

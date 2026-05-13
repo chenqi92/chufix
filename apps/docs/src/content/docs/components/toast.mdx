@@ -5,8 +5,11 @@ description: 全局通知 —— imperative API + 一次挂载的 Toaster，5 �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toast/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toast/BasicVue.vue?raw';
 import TypesVue from '~/components/demos/toast/TypesVue.vue';
+import TypesVueSource from '~/components/demos/toast/TypesVue.vue?raw';
 import PositionVue from '~/components/demos/toast/PositionVue.vue';
+import PositionVueSource from '~/components/demos/toast/PositionVue.vue?raw';
 
 ## 基础用法
 
@@ -35,7 +38,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -54,7 +58,8 @@ toast.success('保存成功');
 toast.error('保存失败');
 toast.warning('磁盘空间不足');
 toast.info('已复制到剪贴板');`}
->
+
+  vueSource={TypesVueSource}>
   <TypesVue client:only="vue" />
 </DemoFrame>
 
@@ -67,7 +72,8 @@ toast.info('已复制到剪贴板');`}
 <CfToaster position="bottom-center" />`}
   reactCode={`<CfToaster position="top-right" />
 <CfToaster position="bottom-center" />`}
->
+
+  vueSource={PositionVueSource}>
   <PositionVue client:only="vue" />
 </DemoFrame>
 

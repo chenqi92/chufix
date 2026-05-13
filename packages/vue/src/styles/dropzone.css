@@ -69,11 +69,12 @@
 .cf-dropzone--lg .cf-dropzone__icon { width: 32px; height: 32px; }
 
 .cf-dropzone__illustration {
-  width: 64px;
+  width: 88px;
   color: currentColor;
+  margin-bottom: 2px;
 }
-.cf-dropzone--sm .cf-dropzone__illustration { width: 48px; }
-.cf-dropzone--lg .cf-dropzone__illustration { width: 78px; }
+.cf-dropzone--sm .cf-dropzone__illustration { width: 68px; }
+.cf-dropzone--lg .cf-dropzone__illustration { width: 104px; }
 
 .cf-dropzone__title {
   font-weight: var(--w-medium);

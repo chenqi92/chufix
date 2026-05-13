@@ -5,8 +5,11 @@ description: 拖拽 + 点击双触发的文件选择器，内置文件列表、�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/dropzone/BasicVue.vue';
+import BasicVueSource from '~/components/demos/dropzone/BasicVue.vue?raw';
 import ConstraintsVue from '~/components/demos/dropzone/ConstraintsVue.vue';
+import ConstraintsVueSource from '~/components/demos/dropzone/ConstraintsVue.vue?raw';
 import ProgressVue from '~/components/demos/dropzone/ProgressVue.vue';
+import ProgressVueSource from '~/components/demos/dropzone/ProgressVue.vue?raw';
 
 ## 基础用法
 
@@ -36,7 +39,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -83,7 +87,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={ConstraintsVueSource}>
   <ConstraintsVue client:load />
 </DemoFrame>
 
@@ -124,7 +129,8 @@ export default function Demo() {
   }, [files]);
   return <CfDropzone value={files} statuses={statuses} onChange={setFiles} />;
 }`}
->
+
+  vueSource={ProgressVueSource}>
   <ProgressVue client:load />
 </DemoFrame>
 
@@ -143,6 +149,27 @@ export default function Demo() {
 | `statuses` | `DropzoneFileStatus[]` | `—` | 与文件平行的状态数组：`{ progress, status, error }` |
 | `hideList` | `boolean` | `false` | 不渲染内置文件列表，由你自定义 |
 
-事件：`update:modelValue` / `change` / `reject` / `remove`（React 端：`onChange` / `onReject` / `onRemove`）。
+### Events
 
-插槽：默认 slot 替换标题区域；`#icon` 替换默认上传插图（默认来自 `CfStatusIllustration variant="upload"`）。
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `File[]` | 文件列表变化时触发（新增或移除） |
+| `change` | `onChange` | `File[]` | 与 `update:modelValue` 同步触发，载荷相同 |
+| `reject` | `onReject` | `DropzoneRejection[]` | 一批被拒绝的文件，每项含 `{ file, reason }` |
+| `remove` | `onRemove` | `(file: File, index: number)` | 通过内置列表移除单个文件时触发 |
+
+### DropzoneRejection
+
+```ts
+interface DropzoneRejection {
+  file: File;
+  reason: 'too-large' | 'too-many' | 'wrong-type' | 'duplicate';
+}
+```
+
+### Slots
+
+| Slot | 说明 |
+|---|---|
+| `default` | 替换标题区域 |
+| `icon` | 替换默认上传插图（默认来自 `CfStatusIllustration variant="upload"`） |

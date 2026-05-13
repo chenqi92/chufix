@@ -5,9 +5,13 @@ description: dt / dd 风格的键值对展示 —— 横竖两种布局、多列
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/descriptionlist/BasicVue.vue';
+import BasicVueSource from '~/components/demos/descriptionlist/BasicVue.vue?raw';
 import ColumnsVue from '~/components/demos/descriptionlist/ColumnsVue.vue';
+import ColumnsVueSource from '~/components/demos/descriptionlist/ColumnsVue.vue?raw';
 import LayoutVue from '~/components/demos/descriptionlist/LayoutVue.vue';
+import LayoutVueSource from '~/components/demos/descriptionlist/LayoutVue.vue?raw';
 import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
+import SizesVueSource from '~/components/demos/descriptionlist/SizesVue.vue?raw';
 
 ## 基础用法
 
@@ -28,7 +32,8 @@ import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
 ];
 
 <CfDescriptionList items={items} termWidth={100} bordered title="订单信息" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -42,7 +47,8 @@ import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
 <CfDescriptionList :items="items" layout="vertical" bordered />`}
   reactCode={`<CfDescriptionList items={items} layout="horizontal" termWidth={80} bordered />
 <CfDescriptionList items={items} layout="vertical" bordered />`}
->
+
+  vueSource={LayoutVueSource}>
   <LayoutVue client:load />
 </DemoFrame>
 
@@ -53,7 +59,8 @@ import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
 <DemoFrame
   vueCode={`<CfDescriptionList :items="items" :columns="3" bordered :term-width="60" />`}
   reactCode={`<CfDescriptionList items={items} columns={3} bordered termWidth={60} />`}
->
+
+  vueSource={ColumnsVueSource}>
   <ColumnsVue client:load />
 </DemoFrame>
 
@@ -68,7 +75,8 @@ import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
   reactCode={`<CfDescriptionList items={items} size="sm" bordered title="size = sm" />
 <CfDescriptionList items={items} size="md" bordered title="size = md" />
 <CfDescriptionList items={items} size="lg" bordered title="size = lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

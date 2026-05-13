@@ -5,9 +5,13 @@ description: 设计稿一致的链接样式，4 种 variant、3 种尺寸、自�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/link/BasicVue.vue';
+import BasicVueSource from '~/components/demos/link/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/link/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/link/VariantsVue.vue?raw';
 import ExternalVue from '~/components/demos/link/ExternalVue.vue';
+import ExternalVueSource from '~/components/demos/link/ExternalVue.vue?raw';
 import StatesVue from '~/components/demos/link/StatesVue.vue';
+import StatesVueSource from '~/components/demos/link/StatesVue.vue?raw';
 
 ## 基础用法
 
@@ -18,7 +22,8 @@ import StatesVue from '~/components/demos/link/StatesVue.vue';
 <CfLink href="https://github.com/chenqi92/chufix">GitHub 仓库</CfLink>`}
   reactCode={`<CfLink href="#getting-started">前往入门指南</CfLink>
 <CfLink href="https://github.com/chenqi92/chufix">GitHub 仓库</CfLink>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -42,7 +47,8 @@ import StatesVue from '~/components/demos/link/StatesVue.vue';
 <div style={{ background: 'var(--accent-1)', color: 'var(--fg-on-accent)', padding: '6px 10px' }}>
   <CfLink href="#" variant="inverse">inverse</CfLink>
 </div>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -61,7 +67,8 @@ import StatesVue from '~/components/demos/link/StatesVue.vue';
   reactCode={`<CfLink href="https://github.com/chenqi92/chufix">自动识别</CfLink>
 <CfLink href="/internal" external>显式 external</CfLink>
 <CfLink href="#" target="_blank">target=_blank</CfLink>`}
->
+
+  vueSource={ExternalVueSource}>
   <ExternalVue client:load />
 </DemoFrame>
 
@@ -78,7 +85,8 @@ import StatesVue from '~/components/demos/link/StatesVue.vue';
 <CfLink href="#" size="md">默认</CfLink>
 <CfLink href="#" size="lg">大号</CfLink>
 <CfLink href="#" disabled>已禁用</CfLink>`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

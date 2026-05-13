@@ -5,6 +5,7 @@ description: "Crash report panel with four tabs: Crash Dialog, Stack Trace, Dump
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/crashpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/crashpane/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`crash.html`](https://github.com/chenqi92/chufix-design).
   'panel-dialog': <PanelA />,
   'panel-stack': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,11 +34,13 @@ Source: [`crash.html`](https://github.com/chenqi92/chufix-design).
 Each of the four tabs holds one atom: a Banner error summary, a `pre` stack trace, a Dropzone dump uploader, and a safe-mode entry point.
 
 import RealVue from '~/components/demos/crashpane/RealVue.vue';
+import RealVueSource from '~/components/demos/crashpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfCrashPane>...</CfCrashPane>`}
   reactCode={`<CfCrashPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

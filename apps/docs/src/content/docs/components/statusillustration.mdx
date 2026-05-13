@@ -5,10 +5,11 @@ description: 一组语义状态插图（empty / search / upload / success / 404 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statusillustration/BasicVue.vue?raw';
 
 ## 基础用法
 
-10 种 variant，统一主体（窗口 + 阴影），每种 variant 添加专属辅助元素与配色。
+10 种 variant，统一主体（层叠窗口 + 状态符号），每种 variant 添加专属辅助元素与配色。
 默认作为装饰图（`aria-hidden`），传 `title` 后变可访问图（含 `<title>`）。
 
 <DemoFrame
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
 <CfStatusIllustration variant="upload" />
 <CfStatusIllustration variant="success" />
 <CfStatusIllustration variant="not-found" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,6 +34,7 @@ import BasicVue from '~/components/demos/statusillustration/BasicVue.vue';
 `size` 控制 illustration 比例。常用 sm 在 inline 提示，md 默认，lg 在整页 Result。
 
 import SizesVue from '~/components/demos/statusillustration/SizesVue.vue';
+import SizesVueSource from '~/components/demos/statusillustration/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfStatusIllustration size="sm" />
@@ -40,7 +43,8 @@ import SizesVue from '~/components/demos/statusillustration/SizesVue.vue';
   reactCode={`<CfStatusIllustration size="sm" />
 <CfStatusIllustration size="md" />
 <CfStatusIllustration size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

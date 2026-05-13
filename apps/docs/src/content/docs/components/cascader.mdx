@@ -5,6 +5,7 @@ description: 多级选项的逐列展开选择器，路径式选取，常用于�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/cascader/BasicVue.vue';
+import BasicVueSource from '~/components/demos/cascader/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/cascader/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCascader v-model="value" :options="options" clearable />`}
   reactCode={`<CfCascader value={value} onChange={setValue} options={options} clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -39,4 +41,9 @@ import BasicVue from '~/components/demos/cascader/BasicVue.vue';
 | `disabled` | `boolean` | 禁用此项 |
 | `children` | `CascaderOption[]` | 下一级选项；省略代表叶节点 |
 
-事件：`onChange(path: string[])` —— 选中路径变化时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string[]` | 选中路径变化时触发，载荷是从根到叶的 value 序列 |
+| `change` | `onChange` | `string[]` | 与 `update:modelValue` 同步触发，载荷相同 |

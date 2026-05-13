@@ -5,8 +5,13 @@ description: 徽标 —— 独立 pill 或贴在子元素角落，dot / count �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/badge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/badge/BasicVue.vue?raw';
 import WrapVue from '~/components/demos/badge/WrapVue.vue';
+import WrapVueSource from '~/components/demos/badge/WrapVue.vue?raw';
 import MaxVue from '~/components/demos/badge/MaxVue.vue';
+import MaxVueSource from '~/components/demos/badge/MaxVue.vue?raw';
+import OffsetVue from '~/components/demos/badge/OffsetVue.vue';
+import OffsetVueSource from '~/components/demos/badge/OffsetVue.vue?raw';
 
 ## 独立 pill
 
@@ -39,7 +44,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -78,7 +84,8 @@ export default function Demo() {
 <CfBadge content="Pro" tone="info" placement="top-left">
   <CfButton variant="tertiary">账户</CfButton>
 </CfBadge>`}
->
+
+  vueSource={WrapVueSource}>
   <WrapVue client:load />
 </DemoFrame>
 
@@ -117,8 +124,31 @@ export default function Demo() {
 <CfBadge content={0} showZero tone="success">
   <CfButton>show-zero</CfButton>
 </CfBadge>`}
->
+
+  vueSource={MaxVueSource}>
   <MaxVue client:load />
+</DemoFrame>
+
+## 微调偏移
+
+`offset` 是在 `placement` 基础上叠加 `[x, y]` 像素偏移 —— 用来贴合不规则子元素（如圆形头像、带阴影的按钮）。正值方向：x 向右、y 向下。
+
+<DemoFrame
+  vueCode={`<CfBadge :content="3" :offset="[-4, 4]">
+  <CfButton variant="tertiary">向内</CfButton>
+</CfBadge>
+<CfBadge :content="3" :offset="[6, -6]">
+  <CfButton variant="tertiary">向外</CfButton>
+</CfBadge>`}
+  reactCode={`<CfBadge content={3} offset={[-4, 4]}>
+  <CfButton variant="tertiary">向内</CfButton>
+</CfBadge>
+<CfBadge content={3} offset={[6, -6]}>
+  <CfButton variant="tertiary">向外</CfButton>
+</CfBadge>`}
+
+  vueSource={OffsetVueSource}>
+  <OffsetVue client:load />
 </DemoFrame>
 
 ## API

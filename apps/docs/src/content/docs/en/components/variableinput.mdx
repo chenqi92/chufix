@@ -5,6 +5,9 @@ description: Enhanced Input that auto-detects `{{var}}` template variables and h
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/variableinput/BasicVue.vue?raw';
+import InteractiveVue from '~/components/demos/variableinput/InteractiveVue.vue';
+import InteractiveVueSource from '~/components/demos/variableinput/InteractiveVue.vue?raw';
 
 ## Basic usage
 
@@ -12,23 +15,28 @@ Implementation: a native input with transparent text underneath, plus an overlay
 Names listed in `variables` are treated as "known" and highlighted with accent; others are "unknown" and get a red squiggle.
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
-  reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
->
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
+## Variable interactions
+
+`variables` can be either a string list or an object list. Typing `{{` opens suggestions, and clicking a recognized variable opens details. The component only emits `variable-update` / `variable-create`; persistence stays in user code.
+
+<DemoFrame
+  vueSource={InteractiveVueSource}>
+  <InteractiveVue client:load />
+</DemoFrame>
 
 ## Mixed state
 
 A demo combining known (accent highlight) and unknown (red squiggle) variables.
 
 import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
+import InvalidVueSource from '~/components/demos/variableinput/InvalidVue.vue?raw';
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
-  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
->
+  vueSource={InvalidVueSource}>
   <InvalidVue client:load />
 </DemoFrame>
 
@@ -37,9 +45,20 @@ import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `modelValue` / `value` | `string` | `''` | Input value |
-| `variables` | `string[]` | `[]` | List of known variable names |
+| `variables` | `(string \| VariableOption)[]` | `[]` | Known variable names or variable objects |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
 | `variant` | `'outline' \| 'filled'` | `'outline'` | |
+| `suggest` | `boolean` | `true` | Show suggestions when typing `{{` |
+| `suggestTrigger` | `string` | `'{{'` | Suggestion trigger text |
+| `interactive` | `boolean` | `true` | Allow clicking variables to open the interaction popover |
+| `showVariablePopover` | `boolean` | `true` | Use the built-in variable detail popover |
 | `placeholder` / `disabled` / `error` | | | |
 
-> Autocomplete popup (typing `{{` triggers a candidate list) is planned for v2.
+| Event / extension | Description |
+|---|---|
+| `variable-select` / `onVariableSelect` | Fired when a suggestion is inserted |
+| `variable-click` / `onVariableClick` | Fired when a recognized variable is clicked |
+| `variable-update` / `onVariableUpdate` | Fired by the built-in update action; the component does not persist data |
+| `variable-create` / `onVariableCreate` | Fired by the create action for an unknown variable |
+| Vue `#option` / React `renderVariableOption` | Custom suggestion option rendering |
+| Vue `#variable-popover` / React `renderVariablePopover` | Custom variable detail popover rendering |

@@ -9,6 +9,8 @@ export function Treemap(props: TreemapProps) {
     showLabels = true,
     ariaLabel = '矩形树图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const rects = useMemo(
@@ -32,7 +34,17 @@ export function Treemap(props: TreemapProps) {
       aria-label={ariaLabel}
     >
       {rects.map((r, i) => (
-        <g key={i}>
+        <g
+          key={i}
+          onPointerEnter={(e) => {
+            const node = nodes?.[i];
+            if (node) onItemEnter?.({ node, dataIndex: i, nativeEvent: e });
+          }}
+          onPointerLeave={(e) => {
+            const node = nodes?.[i];
+            if (node) onItemLeave?.({ node, dataIndex: i, nativeEvent: e });
+          }}
+        >
           <rect
             className={`cf-chart__bar--${r.colorIndex}`}
             x={r.x}

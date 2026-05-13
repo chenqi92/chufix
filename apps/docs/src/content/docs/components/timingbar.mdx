@@ -5,6 +5,7 @@ description: 横向请求阶段瀑布图，每段一个 phase。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timingbar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTimingBar ... />`}
   reactCode={`<CfTimingBar ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/timingbar/BasicVue.vue';
 3 个并发 HTTP 请求的 timing 拼接：DNS / Connect / TLS / Wait / Receive 各色。
 
 import RealVue from '~/components/demos/timingbar/RealVue.vue';
+import RealVueSource from '~/components/demos/timingbar/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTimingBar :phases="phases" />`}
   reactCode={`<CfTimingBar phases={phases} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 
@@ -39,3 +43,26 @@ import RealVue from '~/components/demos/timingbar/RealVue.vue';
 | `phases` | `TimingPhase[]` | `—` | &#123; label, start, end, colorIndex? &#125;[]（ms） |
 | `showAxis` | `boolean` | `true` | 底部段标签 |
 | `labelMode` | `'auto' \| 'all' \| 'none'` | `'auto'` | 段标签显示策略，默认自动避让重叠 |
+| `totalLabel` | `string` | `—` | 顶部右侧的总耗时标签（如 `"1.4 s"`） |
+| `width` | `number` | `480` | SVG 宽度 |
+| `height` | `number` | `28` | SVG 高度 |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `TimingBarInteractionPayload` | 鼠标进入某 phase 时触发 |
+| `item-leave` | `onItemLeave` | `TimingBarInteractionPayload` | 鼠标离开某 phase 时触发 |
+
+### 类型
+
+```ts
+interface TimingBarInteractionPayload {
+  phase: TimingPhase;
+  dataIndex: number;
+  /** end - start，单位 ms */
+  duration: number;
+  nativeEvent?: PointerEvent;
+}
+```

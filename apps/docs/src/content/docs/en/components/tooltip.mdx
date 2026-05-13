@@ -5,8 +5,11 @@ description: Lightweight hint popup — 4 placements, auto-flip near viewport ed
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tooltip/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tooltip/BasicVue.vue?raw';
 import PlacementsVue from '~/components/demos/tooltip/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/tooltip/PlacementsVue.vue?raw';
 import AdvancedVue from '~/components/demos/tooltip/AdvancedVue.vue';
+import AdvancedVueSource from '~/components/demos/tooltip/AdvancedVue.vue?raw';
 
 ## Basic usage
 
@@ -31,7 +34,8 @@ export default function Demo() {
     </CfTooltip>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -48,7 +52,8 @@ export default function Demo() {
 <CfTooltip content="Bottom" placement="bottom"><CfButton>Bottom</CfButton></CfTooltip>
 <CfTooltip content="Left" placement="left"><CfButton>Left</CfButton></CfTooltip>
 <CfTooltip content="Right" placement="right"><CfButton>Right</CfButton></CfTooltip>`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:only="vue" />
 </DemoFrame>
 
@@ -79,7 +84,8 @@ export default function Demo() {
 <CfTooltip content="Long content wraps automatically..." maxWidth={220}>
   <CfButton>Long text</CfButton>
 </CfTooltip>`}
->
+
+  vueSource={AdvancedVueSource}>
   <AdvancedVue client:only="vue" />
 </DemoFrame>
 

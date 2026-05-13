@@ -5,8 +5,15 @@ description: 通用列表，支持选中（单选 / 多选）、分组、卡片�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/list/BasicVue.vue';
+import BasicVueSource from '~/components/demos/list/BasicVue.vue?raw';
 import GroupedVue from '~/components/demos/list/GroupedVue.vue';
+import GroupedVueSource from '~/components/demos/list/GroupedVue.vue?raw';
 import CardVue from '~/components/demos/list/CardVue.vue';
+import CardVueSource from '~/components/demos/list/CardVue.vue?raw';
+import SizesVue from '~/components/demos/list/SizesVue.vue';
+import SizesVueSource from '~/components/demos/list/SizesVue.vue?raw';
+import VariantsVue from '~/components/demos/list/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/list/VariantsVue.vue?raw';
 
 ## 单选
 
@@ -45,7 +52,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -56,8 +64,41 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfList v-model="value" selectable="multiple" :items="items" />`}
   reactCode={`<CfList value={value} selectable="multiple" items={items} onChange={setValue as any} />`}
->
+
+  vueSource={GroupedVueSource}>
   <GroupedVue client:load />
+</DemoFrame>
+
+## 三种 variant
+
+`variant` 控制视觉层次 —— `default`（紧凑，无分割线）/ `divided`（行间细分割线）/ `card`（每项独立卡片，自带间距）。
+
+<DemoFrame
+  vueCode={`<CfList variant="default" :items="items" />
+<CfList variant="divided" :items="items" />
+<CfList variant="card" :bordered="false" :items="items" />`}
+  reactCode={`<CfList variant="default" items={items} />
+<CfList variant="divided" items={items} />
+<CfList variant="card" bordered={false} items={items} />`}
+
+  vueSource={VariantsVueSource}>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 三档尺寸
+
+`size` 控制行高与字号 —— `sm` 适合长列表 / 紧凑后台、`md` 默认、`lg` 适合触摸友好的场景。
+
+<DemoFrame
+  vueCode={`<CfList size="sm" :items="items" />
+<CfList size="md" :items="items" />
+<CfList size="lg" :items="items" />`}
+  reactCode={`<CfList size="sm" items={items} />
+<CfList size="md" items={items} />
+<CfList size="lg" items={items} />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:load />
 </DemoFrame>
 
 ## 卡片化
@@ -67,11 +108,14 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfList :items="items" variant="card" :bordered="false" />`}
   reactCode={`<CfList items={items} variant="card" bordered={false} />`}
->
+
+  vueSource={CardVueSource}>
   <CardVue client:load />
 </DemoFrame>
 
 ## API
+
+### Props
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
@@ -84,6 +128,31 @@ export default function Demo() {
 | `hoverable` | `boolean` | `true` | 鼠标悬停高亮 |
 | `emptyText` | `string \| ReactNode` | `'暂无数据'` | 空状态文案 |
 
-`ListItem`：`{ key, label?, description?, leading?, trailing?, disabled?, group?, ...extra }`。
-事件：`update:modelValue` / `select`（React 端：`onChange` / `onSelect`）。
-插槽：默认 slot（Vue）或 `renderItem`（React）可完全覆盖每行的渲染。
+### ListItem
+
+```ts
+interface ListItem {
+  key: string;
+  label?: string;
+  description?: string;
+  leading?: string;   // 原始 SVG 字符串，通过 v-html 注入
+  trailing?: string;  // 原始 SVG 字符串
+  disabled?: boolean;
+  group?: string;     // 分组 key，相同 group 自动聚合
+  [extra: string]: unknown;
+}
+```
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string \| string[] \| null` | 选中项变化时触发，类型与 `modelValue` 保持一致 |
+| `select` | `onSelect` | `ListItem` | 点击单项时触发（包括非 selectable 模式），载荷是被点击的原始 item 对象 |
+
+### Slots
+
+| Slot | 作用域参数 | 说明 |
+|---|---|---|
+| `default` | `{ item: ListItem, selected: boolean }` | 完全自定义每行渲染（React 端：`renderItem={(item, selected) => ...}`） |
+| `empty` | — | 自定义空状态（React 端：传 ReactNode 给 `emptyText`） |

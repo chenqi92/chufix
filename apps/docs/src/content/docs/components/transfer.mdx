@@ -5,6 +5,7 @@ description: 两栏列表 + 中间箭头，把元素在「可选」与「已选�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/transfer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/transfer/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/transfer/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTransfer :data-source="data" v-model="target" searchable />`}
   reactCode={`<CfTransfer dataSource={data} value={target} onChange={setTarget} searchable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,4 +37,9 @@ import BasicVue from '~/components/demos/transfer/BasicVue.vue';
 | `label` | `string` | 显示文本 |
 | `disabled` | `boolean` | 禁用，不可勾选 / 移动 |
 
-事件：`onChange(keys)` —— 已选 keys 数组变化时触发。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string[]` | 已选 keys 数组变化时触发 |
+| `change` | `onChange` | `string[]` | 与 `update:modelValue` 同步触发，载荷相同 |

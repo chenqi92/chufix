@@ -5,8 +5,11 @@ description: Standalone pill or corner-attached marker — supports dot and coun
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/badge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/badge/BasicVue.vue?raw';
 import WrapVue from '~/components/demos/badge/WrapVue.vue';
+import WrapVueSource from '~/components/demos/badge/WrapVue.vue?raw';
 import MaxVue from '~/components/demos/badge/MaxVue.vue';
+import MaxVueSource from '~/components/demos/badge/MaxVue.vue?raw';
 
 ## Standalone pill
 
@@ -39,7 +42,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -78,7 +82,8 @@ Pass content into the default slot / children and Badge automatically positions 
 <CfBadge content="Pro" tone="info" placement="top-left">
   <CfButton variant="tertiary">Account</CfButton>
 </CfBadge>`}
->
+
+  vueSource={WrapVueSource}>
   <WrapVue client:load />
 </DemoFrame>
 
@@ -117,7 +122,8 @@ Pass content into the default slot / children and Badge automatically positions 
 <CfBadge content={0} showZero tone="success">
   <CfButton>show-zero</CfButton>
 </CfBadge>`}
->
+
+  vueSource={MaxVueSource}>
   <MaxVue client:load />
 </DemoFrame>
 

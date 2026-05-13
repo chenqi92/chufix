@@ -5,6 +5,7 @@ description: 桌面应用窗口顶栏。macOS 风格 traffic light + 居中标�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/titlebar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
 <CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
   reactCode={`<CfTitleBar platform="macos" title="orders.parquet" subtitle="protoforge" modified />
 <CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -27,6 +29,7 @@ import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
 同一组件，`platform` 切视觉。`hideControls=true` 用作普通 header bar。
 
 import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
+import PlatformsVueSource from '~/components/demos/titlebar/PlatformsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTitleBar platform="macos" title="…" subtitle="…" :modified="true" />
@@ -35,7 +38,8 @@ import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
   reactCode={`<CfTitleBar platform="macos" title="…" subtitle="…" modified />
 <CfTitleBar platform="windows" title="…" subtitle="…" />
 <CfTitleBar platform="linux" title="…" />`}
->
+
+  vueSource={PlatformsVueSource}>
   <PlatformsVue client:load />
 </DemoFrame>
 

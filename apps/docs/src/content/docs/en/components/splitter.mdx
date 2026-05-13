@@ -5,9 +5,13 @@ description: Drag the divider to resize two panels — horizontal / vertical, ke
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/splitter/BasicVue.vue';
+import BasicVueSource from '~/components/demos/splitter/BasicVue.vue?raw';
 import VerticalVue from '~/components/demos/splitter/VerticalVue.vue';
+import VerticalVueSource from '~/components/demos/splitter/VerticalVue.vue?raw';
 import PixelVue from '~/components/demos/splitter/PixelVue.vue';
+import PixelVueSource from '~/components/demos/splitter/PixelVue.vue?raw';
 import DisabledVue from '~/components/demos/splitter/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/splitter/DisabledVue.vue?raw';
 
 ## Basic usage
 
@@ -43,7 +47,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -65,7 +70,8 @@ export default function Demo() {
   end={<div>Console</div>}
   onChange={setSize}
 />`}
->
+
+  vueSource={VerticalVueSource}>
   <VerticalVue client:load />
 </DemoFrame>
 
@@ -87,7 +93,8 @@ export default function Demo() {
   start={<div>Sidebar — currently {size}px</div>}
   end={<div>Main</div>}
 />`}
->
+
+  vueSource={PixelVueSource}>
   <PixelVue client:load />
 </DemoFrame>
 
@@ -98,7 +105,8 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfSplitter v-model="size" disabled />`}
   reactCode={`<CfSplitter value={size} disabled />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 

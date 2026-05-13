@@ -5,6 +5,7 @@ description: 带加载占位、错误回退、懒加载的图片容器。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/image/BasicVue.vue';
+import BasicVueSource from '~/components/demos/image/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -15,7 +16,8 @@ import BasicVue from '~/components/demos/image/BasicVue.vue';
 <CfImage src="/broken.jpg" alt="加载失败示例" :width="160" :height="100" rounded bordered />`}
   reactCode={`<CfImage src="/photo.jpg" alt="风景" width={160} height={100} rounded bordered />
 <CfImage src="/broken.jpg" alt="加载失败示例" width={160} height={100} rounded bordered />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

@@ -14,6 +14,17 @@ export interface GraphEdge {
   colorIndex?: number;
 }
 
+export interface ConnectionGraphNodeInteractionPayload {
+  node: GraphNode;
+  nativeEvent?: unknown;
+}
+
+export interface ConnectionGraphEdgeInteractionPayload {
+  edge: GraphEdge;
+  edgeIndex: number;
+  nativeEvent?: unknown;
+}
+
 export interface ConnectionGraphProps {
   nodes: GraphNode[];
   edges: GraphEdge[];
@@ -22,4 +33,8 @@ export interface ConnectionGraphProps {
   showLabels?: boolean;
   ariaLabel?: string;
   className?: string;
+  onNodeEnter?: (payload: ConnectionGraphNodeInteractionPayload) => void;
+  onNodeLeave?: (payload: ConnectionGraphNodeInteractionPayload) => void;
+  onEdgeEnter?: (payload: ConnectionGraphEdgeInteractionPayload) => void;
+  onEdgeLeave?: (payload: ConnectionGraphEdgeInteractionPayload) => void;
 }

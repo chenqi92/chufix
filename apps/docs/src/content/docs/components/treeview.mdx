@@ -5,9 +5,13 @@ description: 嵌套树形展示，支持单选 / 复选框（带级联）、展�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treeview/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treeview/BasicVue.vue?raw';
 import CheckableVue from '~/components/demos/treeview/CheckableVue.vue';
+import CheckableVueSource from '~/components/demos/treeview/CheckableVue.vue?raw';
 import SizesVue from '~/components/demos/treeview/SizesVue.vue';
+import SizesVueSource from '~/components/demos/treeview/SizesVue.vue?raw';
 import NoLineVue from '~/components/demos/treeview/NoLineVue.vue';
+import NoLineVueSource from '~/components/demos/treeview/NoLineVue.vue?raw';
 
 ## 基础用法
 
@@ -66,7 +70,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -85,7 +90,8 @@ export default function Demo() {
 
 {/* 关闭级联 */}
 <CfTreeView nodes={nodes} value={checked} onChange={setChecked} checkable cascade={false} />`}
->
+
+  vueSource={CheckableVueSource}>
   <CheckableVue client:load />
 </DemoFrame>
 
@@ -100,7 +106,8 @@ export default function Demo() {
   reactCode={`<CfTreeView size="sm" nodes={nodes} />
 <CfTreeView size="md" nodes={nodes} />
 <CfTreeView size="lg" nodes={nodes} />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -111,11 +118,14 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfTreeView :nodes="nodes" :show-line="false" />`}
   reactCode={`<CfTreeView nodes={nodes} showLine={false} />`}
->
+
+  vueSource={NoLineVueSource}>
   <NoLineVue client:load />
 </DemoFrame>
 
 ## API
+
+### Props
 
 | Prop | 类型 | 默认值 | 说明 |
 |---|---|---|---|
@@ -125,22 +135,32 @@ export default function Demo() {
 | `selectedKey` | `string \| null` | `null` | 当前单选的 key |
 | `checkable` | `boolean` | `false` | 显示复选框 |
 | `cascade` | `boolean` | `true` | 父子勾选联动 |
+| `selectable` | `'single' \| 'multiple'` | `—` | 选择模式（仅影响交互，不影响 checkable） |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字号 + 内距 |
 | `showLine` | `boolean` | `true` | 显示嵌套连接线 |
 | `emptyText` | `string \| ReactNode` | `'暂无数据'` | 空状态文案 |
 
-`TreeNode`：
+### TreeNode
 
 ```ts
 interface TreeNode {
   key: string;
   label: string;
-  icon?: VNode | ReactNode;
+  icon?: string;          // 原始 SVG 字符串，通过 v-html 注入；用 currentColor 描边可继承节点文字色
   children?: TreeNode[];
   disabled?: boolean;
-  selectable?: boolean;
-  isLeaf?: boolean;
+  selectable?: boolean;   // 单独控制本节点是否可被单选高亮
+  isLeaf?: boolean;       // 强制视为叶子节点（用于懒加载占位）
 }
 ```
 
-事件：`update:modelValue` / `update:expandedKeys` / `update:selectedKey` / `select` / `expand` / `check`（React 端：`onChange` / `onExpandedKeysChange` / `onSelectedKeyChange` / `onSelect` / `onExpand` / `onCheck`）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string[]` | 勾选项变化时触发，仅在 `checkable=true` 时有效 |
+| `update:expandedKeys` | `onExpandedKeysChange` | `string[]` | 展开节点列表变化时触发 |
+| `update:selectedKey` | `onSelectedKeyChange` | `string \| null` | 单选节点变化时触发 |
+| `select` | `onSelect` | `TreeNode` | 点击节点（在可选状态下）时触发，载荷是原始 node |
+| `expand` | `onExpand` | `(node: TreeNode, expanded: boolean)` | 节点展开 / 折叠时触发 |
+| `check` | `onCheck` | `(node: TreeNode, checked: boolean)` | 节点勾选 / 取消时触发（仅 `checkable=true`） |

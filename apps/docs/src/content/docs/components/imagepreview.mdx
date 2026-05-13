@@ -5,6 +5,7 @@ description: 全屏图片查看器，支持滚轮缩放、鼠标拖拽、键盘 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/imagepreview/BasicVue.vue';
+import BasicVueSource from '~/components/demos/imagepreview/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/imagepreview/BasicVue.vue';
 <CfImagePreview v-model="open" :src="fullSrc" alt="示例" />`}
   reactCode={`<img src={thumbSrc} onClick={() => setOpen(true)} style={{ cursor: 'zoom-in' }} />
 <CfImagePreview open={open} onOpenChange={setOpen} src={fullSrc} alt="示例" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

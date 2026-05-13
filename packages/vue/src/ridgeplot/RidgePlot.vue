@@ -1,13 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { areaPath, linearScale, linePath } from '../_charts/scale';
-import type { RidgePlotProps } from './variants';
+import type {
+  RidgePlotInteractionPayload,
+  RidgePlotProps,
+} from './variants';
 
 const props = withDefaults(defineProps<RidgePlotProps>(), {
   width: 480,
   height: 240,
   overlap: 0.6,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: RidgePlotInteractionPayload): void;
+  (e: 'item-leave', payload: RidgePlotInteractionPayload): void;
+}>();
+
+function onEnter(i: number, ev: PointerEvent) {
+  const row = props.rows?.[i];
+  if (!row) return;
+  emit('item-enter', { row, rowIndex: i, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const row = props.rows?.[i];
+  if (!row) return;
+  emit('item-leave', { row, rowIndex: i, nativeEvent: ev });
+}
 
 const rows = computed(() => {
   const data = props.rows ?? [];
@@ -54,6 +73,8 @@ const rows = computed(() => {
       v-for="(r, i) in rows"
       :key="i"
       :class="`cf-chart__series-${r.colorIndex}`"
+      @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+      @pointerleave="(e: PointerEvent) => onLeave(i, e)"
     >
       <path class="cf-chart__area" :d="r.area" />
       <path class="cf-chart__line" :d="r.line" />

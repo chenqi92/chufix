@@ -12,3 +12,9 @@ export interface CandlestickChartProps {
   height?: number;
   ariaLabel?: string;
 }
+
+export interface CandlestickChartInteractionPayload {
+  candle: Candle;
+  dataIndex: number;
+  nativeEvent?: PointerEvent;
+}

@@ -5,6 +5,7 @@ description: SQL workbench shell with Editor / Console / History tabs.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sqlworkbench/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sqlworkbench/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`sql.html`](https://github.com/chenqi92/chufix-design).
   'panel-editor': <PanelA />,
   'panel-console': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

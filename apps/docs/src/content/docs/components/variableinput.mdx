@@ -5,6 +5,9 @@ description: Input 增强版，自动识别 `{{var}}` 模板变量并高亮；�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/variableinput/BasicVue.vue?raw';
+import InteractiveVue from '~/components/demos/variableinput/InteractiveVue.vue';
+import InteractiveVueSource from '~/components/demos/variableinput/InteractiveVue.vue?raw';
 
 ## 基础用法
 
@@ -12,23 +15,28 @@ import BasicVue from '~/components/demos/variableinput/BasicVue.vue';
 `variables` 数组里的名字算"已知"用 accent 高亮，其他算"未知"用红色波浪线。
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="url" :variables="['base_url', 'user_id']" />`}
-  reactCode={`<CfVariableAwareInput value={url} onChange={setUrl} variables={['base_url', 'user_id']} />`}
->
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
+## 变量交互
+
+`variables` 可以从字符串数组升级为对象数组。输入 `{{` 触发候选列表，点击已识别变量打开详情；组件只发出 `variable-update` / `variable-create` 事件，不直接保存业务数据。
+
+<DemoFrame
+  vueSource={InteractiveVueSource}>
+  <InteractiveVue client:load />
+</DemoFrame>
 
 ## 混合状态
 
 已知（accent 高亮）+ 未知（红色波浪线）的组合实例。
 
 import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
+import InvalidVueSource from '~/components/demos/variableinput/InvalidVue.vue?raw';
 
 <DemoFrame
-  vueCode={`<CfVariableAwareInput v-model="v" :variables="known" />`}
-  reactCode={`<CfVariableAwareInput value={v} onChange={setV} variables={known} />`}
->
+  vueSource={InvalidVueSource}>
   <InvalidVue client:load />
 </DemoFrame>
 
@@ -37,9 +45,20 @@ import InvalidVue from '~/components/demos/variableinput/InvalidVue.vue';
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` / `value` | `string` | `''` | 输入值 |
-| `variables` | `string[]` | `[]` | 已知变量名清单 |
+| `variables` | `(string \| VariableOption)[]` | `[]` | 已知变量名或变量对象清单 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
 | `variant` | `'outline' \| 'filled'` | `'outline'` | |
+| `suggest` | `boolean` | `true` | 是否在输入 `{{` 时展示候选列表 |
+| `suggestTrigger` | `string` | `'{{'` | 候选触发文本 |
+| `interactive` | `boolean` | `true` | 是否允许点击变量打开交互弹层 |
+| `showVariablePopover` | `boolean` | `true` | 是否使用内置变量详情弹层 |
 | `placeholder` / `disabled` / `error` | | | |
 
-> 自动补全浮层（输入 `{{` 触发候选列表）在 v2 加入。
+| 事件 / 扩展 | 说明 |
+|---|---|
+| `variable-select` / `onVariableSelect` | 从候选列表插入变量时触发 |
+| `variable-click` / `onVariableClick` | 点击已识别变量时触发 |
+| `variable-update` / `onVariableUpdate` | 内置弹层点击更新时触发，组件不直接保存 |
+| `variable-create` / `onVariableCreate` | 点击未知变量的创建入口时触发 |
+| Vue `#option` / React `renderVariableOption` | 自定义候选项渲染 |
+| Vue `#variable-popover` / React `renderVariablePopover` | 自定义变量详情弹层 |

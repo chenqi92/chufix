@@ -5,6 +5,7 @@ description: 12 种协议的彩色 + 字母双编码徽标。HTTP method 与传�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/protocolbadge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/protocolbadge/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -20,7 +21,8 @@ import BasicVue from '~/components/demos/protocolbadge/BasicVue.vue';
 <CfProtocolBadge kind="post" />
 <CfProtocolBadge kind="grpc" />
 <CfProtocolBadge kind="ws" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

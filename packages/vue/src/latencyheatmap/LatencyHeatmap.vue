@@ -1,11 +1,41 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ratioColor, type LatencyHeatmapProps } from './variants';
+import {
+  ratioColor,
+  type LatencyHeatmapInteractionPayload,
+  type LatencyHeatmapProps,
+} from './variants';
 
 const props = withDefaults(defineProps<LatencyHeatmapProps>(), {
   width: 480,
   height: 240,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: LatencyHeatmapInteractionPayload): void;
+  (e: 'item-leave', payload: LatencyHeatmapInteractionPayload): void;
+}>();
+
+function buildPayload(row: number, col: number, ev: PointerEvent): LatencyHeatmapInteractionPayload | null {
+  const value = props.data?.[row]?.[col];
+  if (value == null) return null;
+  return {
+    row,
+    col,
+    value,
+    rowLabel: props.rowLabels?.[row],
+    colLabel: props.colLabels?.[col],
+    nativeEvent: ev,
+  };
+}
+function onEnter(row: number, col: number, ev: PointerEvent) {
+  const p = buildPayload(row, col, ev);
+  if (p) emit('item-enter', p);
+}
+function onLeave(row: number, col: number, ev: PointerEvent) {
+  const p = buildPayload(row, col, ev);
+  if (p) emit('item-leave', p);
+}
 
 const layout = computed(() => {
   const data = props.data ?? [];
@@ -19,8 +49,10 @@ const layout = computed(() => {
   const padTop = props.colLabels ? 18 : 4;
   const cellW = (props.width - padLeft - 4) / cols;
   const cellH = (props.height - padTop - 4) / rows;
-  const cells: { x: number; y: number; w: number; h: number; color: string; label: number }[] =
-    [];
+  const cells: {
+    x: number; y: number; w: number; h: number; color: string; label: number;
+    row: number; col: number;
+  }[] = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const v = data[r][c];
@@ -32,6 +64,8 @@ const layout = computed(() => {
         h: cellH,
         color: ratioColor(ratio),
         label: v,
+        row: r,
+        col: c,
       });
     }
   }
@@ -41,10 +75,11 @@ const layout = computed(() => {
 
 <template>
   <svg
-    class="cf-chart"
+    class="cf-chart cf-latencyheatmap"
     :viewBox="`0 0 ${width} ${height}`"
     :width="width"
     :height="height"
+    :style="{ '--cf-latencyheatmap-width': `${width}px` }"
     role="img"
     :aria-label="ariaLabel ?? '延迟热力图'"
   >
@@ -52,12 +87,14 @@ const layout = computed(() => {
       <rect
         v-for="(c, i) in layout.cells"
         :key="i"
-        class="cf-heatmap__cell"
+        class="cf-latencyheatmap__cell"
         :x="c.x"
         :y="c.y"
         :width="c.w"
         :height="c.h"
         :fill="c.color"
+        @pointerenter="(e: PointerEvent) => onEnter(c.row, c.col, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(c.row, c.col, e)"
       />
       <template v-if="rowLabels">
         <text

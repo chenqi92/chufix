@@ -5,10 +5,15 @@ description: One-time password input cells — auto-advance to the next cell, Ba
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/otp/BasicVue.vue';
+import BasicVueSource from '~/components/demos/otp/BasicVue.vue?raw';
 import LengthsVue from '~/components/demos/otp/LengthsVue.vue';
+import LengthsVueSource from '~/components/demos/otp/LengthsVue.vue?raw';
 import TypesVue from '~/components/demos/otp/TypesVue.vue';
+import TypesVueSource from '~/components/demos/otp/TypesVue.vue?raw';
 import SeparatorVue from '~/components/demos/otp/SeparatorVue.vue';
+import SeparatorVueSource from '~/components/demos/otp/SeparatorVue.vue?raw';
 import SizesVue from '~/components/demos/otp/SizesVue.vue';
+import SizesVueSource from '~/components/demos/otp/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +22,8 @@ import SizesVue from '~/components/demos/otp/SizesVue.vue';
 <DemoFrame
   vueCode={`<CfOtpInput v-model="code" :length="6" />`}
   reactCode={`<CfOtpInput value={code} onChange={setCode} length={6} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,7 +38,8 @@ import SizesVue from '~/components/demos/otp/SizesVue.vue';
   reactCode={`<CfOtpInput value={a} onChange={setA} length={4} />
 <CfOtpInput value={b} onChange={setB} length={6} />
 <CfOtpInput value={c} onChange={setC} length={8} />`}
->
+
+  vueSource={LengthsVueSource}>
   <LengthsVue client:load />
 </DemoFrame>
 
@@ -45,7 +52,8 @@ import SizesVue from '~/components/demos/otp/SizesVue.vue';
 <CfOtpInput v-model="b" :length="6" type="alphanumeric" />`}
   reactCode={`<CfOtpInput value={a} onChange={setA} length={6} type="numeric" />
 <CfOtpInput value={b} onChange={setB} length={6} type="alphanumeric" />`}
->
+
+  vueSource={TypesVueSource}>
   <TypesVue client:load />
 </DemoFrame>
 
@@ -69,7 +77,8 @@ import SizesVue from '~/components/demos/otp/SizesVue.vue';
   autoFocus
   onComplete={setCompleted}
 />`}
->
+
+  vueSource={SeparatorVueSource}>
   <SeparatorVue client:load />
 </DemoFrame>
 
@@ -84,7 +93,8 @@ import SizesVue from '~/components/demos/otp/SizesVue.vue';
   reactCode={`<CfOtpInput value={a} onChange={setA} length={6} size="sm" />
 <CfOtpInput value={b} onChange={setB} length={6} size="md" />
 <CfOtpInput value={c} onChange={setC} length={6} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

@@ -5,8 +5,13 @@ description: Select 的可输入变体，键入即过滤选项，可选择允许
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/combobox/BasicVue.vue';
+import BasicVueSource from '~/components/demos/combobox/BasicVue.vue?raw';
 import CreateVue from '~/components/demos/combobox/CreateVue.vue';
+import CreateVueSource from '~/components/demos/combobox/CreateVue.vue?raw';
 import SizesVue from '~/components/demos/combobox/SizesVue.vue';
+import SizesVueSource from '~/components/demos/combobox/SizesVue.vue?raw';
+import FilterVue from '~/components/demos/combobox/FilterVue.vue';
+import FilterVueSource from '~/components/demos/combobox/FilterVue.vue?raw';
 
 ## 基础用法
 
@@ -43,7 +48,8 @@ export default function Demo() {
   const [value, setValue] = useState<string | number | null>('vue');
   return <CfCombobox value={value} options={options} clearable onChange={setValue} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -94,7 +100,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={CreateVueSource}>
   <CreateVue client:load />
 </DemoFrame>
 
@@ -107,11 +114,40 @@ export default function Demo() {
   reactCode={`<CfCombobox size="sm" options={options} />
 <CfCombobox size="md" options={options} />
 <CfCombobox size="lg" options={options} />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
+## 自定义过滤
+
+默认过滤函数对 `option.label` 和 `option.value` 做子串匹配。需要更复杂的匹配（拼音首字母、模糊匹配、字段权重）时传入自定义 `filter`。
+
+<DemoFrame
+  vueCode={`function fuzzy(query: string, opt: ComboboxOption) {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  return opt.label.toLowerCase().includes(q)
+      || String(opt.value).toLowerCase().includes(q);
+}
+
+<CfCombobox v-model="value" :options="options" :filter="fuzzy" />`}
+  reactCode={`const fuzzy = (query: string, opt: ComboboxOption) => {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  return opt.label.toLowerCase().includes(q)
+      || String(opt.value).toLowerCase().includes(q);
+};
+
+<CfCombobox value={value} options={options} filter={fuzzy} onChange={setValue} />`}
+
+  vueSource={FilterVueSource}>
+  <FilterVue client:load />
+</DemoFrame>
+
 ## API
+
+### Props
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
@@ -124,7 +160,15 @@ export default function Demo() {
 | `clearable` | `boolean` | `false` | 显示清除按钮 |
 | `error` | `boolean` | `false` | 错误态 |
 | `allowCreate` | `boolean` | `false` | 是否允许把输入作为新值提交 |
-| `filter` | `(query, option) => boolean` | 默认按 label 与 value 子串匹配 | 自定义过滤函数 |
+| `filter` | `(query: string, option: ComboboxOption) => boolean` | 默认按 label 与 value 子串匹配 | 自定义过滤函数 |
 | `emptyText` | `string` | `'无匹配项'` | 无结果时的占位文字 |
+| `name` | `string` | — | 透传给隐式表单字段，用于原生表单提交 |
+| `id` | `string` | — | 触发器的 id，便于外部 `<label for>` 关联 |
 
-事件：`update:modelValue` / `change` / `create`（React 端：`onChange` / `onCreate`）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string \| number \| null` | 值变化时触发 |
+| `change` | `onChange` | `string \| number \| null` | 与 `update:modelValue` 同步触发，载荷相同 |
+| `create` | `onCreate` | `string` | `allowCreate=true` 时，按 Enter 或点击「创建 xxx」选项时触发，载荷是用户输入的原始字符串 |

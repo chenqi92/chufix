@@ -5,6 +5,7 @@ description: 大字号数字展示 + 千分位 / 前后缀 / 倒计时，常用�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statistic/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statistic/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/statistic/BasicVue.vue';
   reactCode={`<CfStatistic label="今日访问" value={12384} />
 <CfStatistic label="收入" value={84520.42} prefix="¥" precision={2} />
 <CfStatistic label="转化率" value={3.2} suffix="%" precision={1} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,5 +38,10 @@ import BasicVue from '~/components/demos/statistic/BasicVue.vue';
 | `format` | `string` | `'HH:mm:ss'` | 倒计时格式（支持 DD / HH / mm / ss） |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 数字字号 |
 | `loading` | `boolean` | `false` | 加载态，数字位显示 `—` |
+| `className` | `string` | `—` | 透传到根元素的额外类名 |
 
-事件：`onFinish`（仅倒计时模式，归零时触发）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `finish` | `onFinish` | — | 仅倒计时模式（`countdown` 不为空时）有效；倒计时归零时触发 |

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import { ratioColor, type LatencyHeatmapProps } from './variants';
 
 export function LatencyHeatmap(props: LatencyHeatmapProps) {
@@ -12,6 +12,8 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
     max,
     ariaLabel = '延迟热力图',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -31,6 +33,9 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
       w: number;
       h: number;
       color: string;
+      row: number;
+      col: number;
+      value: number;
     }[] = [];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -42,6 +47,9 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
           w: cellW,
           h: cellH,
           color: ratioColor(ratio),
+          row: r,
+          col: c,
+          value: v,
         });
       }
     }
@@ -50,22 +58,43 @@ export function LatencyHeatmap(props: LatencyHeatmapProps) {
 
   return (
     <svg
-      className={['cf-chart', className].filter(Boolean).join(' ')}
+      className={['cf-chart', 'cf-latencyheatmap', className].filter(Boolean).join(' ')}
       viewBox={`0 0 ${width} ${height}`}
       width={width}
       height={height}
+      style={{ '--cf-latencyheatmap-width': `${width}px` } as CSSProperties}
       role="img"
       aria-label={ariaLabel}
     >
       {layout?.cells.map((c, i) => (
         <rect
           key={i}
-          className="cf-heatmap__cell"
+          className="cf-latencyheatmap__cell"
           x={c.x}
           y={c.y}
           width={c.w}
           height={c.h}
           fill={c.color}
+          onPointerEnter={(e) =>
+            onItemEnter?.({
+              row: c.row,
+              col: c.col,
+              value: c.value,
+              rowLabel: rowLabels?.[c.row],
+              colLabel: colLabels?.[c.col],
+              nativeEvent: e,
+            })
+          }
+          onPointerLeave={(e) =>
+            onItemLeave?.({
+              row: c.row,
+              col: c.col,
+              value: c.value,
+              rowLabel: rowLabels?.[c.row],
+              colLabel: colLabels?.[c.col],
+              nativeEvent: e,
+            })
+          }
         />
       ))}
       {rowLabels?.map((label, i) => (

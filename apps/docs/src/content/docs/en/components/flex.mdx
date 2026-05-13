@@ -5,6 +5,7 @@ description: Componentized flex-direction, align, justify, gap, and wrap for com
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/flex/BasicVue.vue';
+import BasicVueSource from '~/components/demos/flex/BasicVue.vue?raw';
 
 ## Basic Usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/flex/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfFlex align="center" justify="between" wrap gap="md">...</CfFlex>`}
   reactCode={`<CfFlex align="center" justify="between" wrap gap="md">...</CfFlex>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

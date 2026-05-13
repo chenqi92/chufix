@@ -5,9 +5,13 @@ description: 卡片容器 —— 3 种 variant、可交互整卡、Header / Body
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/card/BasicVue.vue';
+import BasicVueSource from '~/components/demos/card/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/card/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/card/VariantsVue.vue?raw';
 import SectionsVue from '~/components/demos/card/SectionsVue.vue';
+import SectionsVueSource from '~/components/demos/card/SectionsVue.vue?raw';
 import InteractiveVue from '~/components/demos/card/InteractiveVue.vue';
+import InteractiveVueSource from '~/components/demos/card/InteractiveVue.vue?raw';
 
 ## 基础用法
 
@@ -32,7 +36,8 @@ export default function Demo() {
     </CfCard>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -47,7 +52,8 @@ export default function Demo() {
   reactCode={`<CfCard variant="outlined">…</CfCard>
 <CfCard variant="elevated">…</CfCard>
 <CfCard variant="filled">…</CfCard>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -80,7 +86,8 @@ export default function Demo() {
     </CfCard>
   );
 }`}
->
+
+  vueSource={SectionsVueSource}>
   <SectionsVue client:load />
 </DemoFrame>
 
@@ -97,14 +104,31 @@ export default function Demo() {
   <CfCardHeader>整卡可点击</CfCardHeader>
   <CfCardBody>已点击 {clicked} 次</CfCardBody>
 </CfCard>`}
->
+
+  vueSource={InteractiveVueSource}>
   <InteractiveVue client:load />
 </DemoFrame>
 
 ## API
+
+### Props
 
 | Prop          | 类型                                         | 默认值       | 说明                            |
 | ------------- | -------------------------------------------- | ------------ | ------------------------------- |
 | `variant`     | `'outlined' \| 'elevated' \| 'filled'`       | `'outlined'` | 视觉变体                        |
 | `interactive` | `boolean`                                    | `false`      | 整卡变成按钮（focus / hover）   |
 | `as`          | `string`（Vue）                              | `'div'`      | 渲染的 HTML tag                 |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `MouseEvent` | 卡片被点击时触发；`interactive=true` 时键盘 Enter 也会触发 |
+
+### Slots / Children
+
+| Slot | 说明 |
+|---|---|
+| `default` | 卡片主体内容（React 端：`children` 或 `<CfCardBody>`） |
+| `header` | 顶部段落（React 端：`<CfCardHeader>`），可省略 |
+| `footer` | 底部段落（React 端：`<CfCardFooter>`），可省略 |

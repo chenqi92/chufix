@@ -5,9 +5,13 @@ description: Side-by-side two-month panel; two clicks confirm the range. Support
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/daterangepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/daterangepicker/BasicVue.vue?raw';
 import BoundsVue from '~/components/demos/daterangepicker/BoundsVue.vue';
+import BoundsVueSource from '~/components/demos/daterangepicker/BoundsVue.vue?raw';
 import VariantsVue from '~/components/demos/daterangepicker/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/daterangepicker/VariantsVue.vue?raw';
 import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vue';
+import PlaceholderVueSource from '~/components/demos/daterangepicker/PlaceholderVue.vue?raw';
 
 ## Basic usage
 
@@ -16,7 +20,8 @@ import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vu
 <DemoFrame
   vueCode={`<CfDateRangePicker v-model="value" clearable />`}
   reactCode={`<CfDateRangePicker value={value} onChange={setValue} clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -40,7 +45,8 @@ import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vu
   placeholder={['Start', 'End']}
   onChange={(v) => setValue(v)}
 />`}
->
+
+  vueSource={BoundsVueSource}>
   <BoundsVue client:load />
 </DemoFrame>
 
@@ -55,7 +61,8 @@ import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vu
   reactCode={`<CfDateRangePicker value={a} onChange={setA} variant="outline" />
 <CfDateRangePicker value={b} onChange={setB} variant="filled" />
 <CfDateRangePicker value={c} onChange={setC} variant="ghost" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -68,7 +75,8 @@ import PlaceholderVue from '~/components/demos/daterangepicker/PlaceholderVue.vu
 <CfDateRangePicker v-model="b" :placeholder="['Start', 'End']" separator="—" />`}
   reactCode={`<CfDateRangePicker value={a} placeholder={['Start date', 'End date']} separator="to" />
 <CfDateRangePicker value={b} placeholder={['Start', 'End']} separator="—" />`}
->
+
+  vueSource={PlaceholderVueSource}>
   <PlaceholderVue client:load />
 </DemoFrame>
 

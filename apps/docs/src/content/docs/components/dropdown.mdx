@@ -5,6 +5,15 @@ description: 下拉菜单 —— Popover + 列表 + 键盘导航。支持分组�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/dropdown/BasicVue.vue';
+import BasicVueSource from '~/components/demos/dropdown/BasicVue.vue?raw';
+import PlacementVue from '~/components/demos/dropdown/PlacementVue.vue';
+import PlacementVueSource from '~/components/demos/dropdown/PlacementVue.vue?raw';
+import DisabledVue from '~/components/demos/dropdown/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/dropdown/DisabledVue.vue?raw';
+import ControlledVue from '~/components/demos/dropdown/ControlledVue.vue';
+import ControlledVueSource from '~/components/demos/dropdown/ControlledVue.vue?raw';
+import IconItemsVue from '~/components/demos/dropdown/IconItemsVue.vue';
+import IconItemsVueSource from '~/components/demos/dropdown/IconItemsVue.vue?raw';
 
 ## 基础用法
 
@@ -59,8 +68,109 @@ export default function Demo() {
     </CfDropdown>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Placement 方向
+
+`placement` 决定菜单相对触发元素的位置：`top` / `bottom`（默认）/ `left` / `right`。空间不足时浮层会自动翻转到对侧。
+
+<DemoFrame
+  vueCode={`<CfDropdown :items="items" placement="top">    <CfButton>top</CfButton></CfDropdown>
+<CfDropdown :items="items" placement="bottom"> <CfButton>bottom</CfButton></CfDropdown>
+<CfDropdown :items="items" placement="left">   <CfButton>left</CfButton></CfDropdown>
+<CfDropdown :items="items" placement="right">  <CfButton>right</CfButton></CfDropdown>`}
+  reactCode={`<CfDropdown items={items} placement="top"><CfButton>top</CfButton></CfDropdown>
+<CfDropdown items={items} placement="bottom"><CfButton>bottom</CfButton></CfDropdown>
+<CfDropdown items={items} placement="left"><CfButton>left</CfButton></CfDropdown>
+<CfDropdown items={items} placement="right"><CfButton>right</CfButton></CfDropdown>`}
+
+  vueSource={PlacementVueSource}>
+  <PlacementVue client:only="vue" />
+</DemoFrame>
+
+## 禁用状态
+
+`disabled` 让 Dropdown 整体不可触发；通常同时给触发元素加 `disabled` 让视觉反馈一致。
+
+<DemoFrame
+  vueCode={`<CfDropdown :items="items">
+  <CfButton variant="secondary">正常 ▾</CfButton>
+</CfDropdown>
+<CfDropdown :items="items" disabled>
+  <CfButton variant="secondary" disabled>禁用 ▾</CfButton>
+</CfDropdown>`}
+  reactCode={`<CfDropdown items={items}>
+  <CfButton variant="secondary">正常 ▾</CfButton>
+</CfDropdown>
+<CfDropdown items={items} disabled>
+  <CfButton variant="secondary" disabled>禁用 ▾</CfButton>
+</CfDropdown>`}
+
+  vueSource={DisabledVueSource}>
+  <DisabledVue client:only="vue" />
+</DemoFrame>
+
+## 受控模式
+
+通过 `v-model:open` / `open + onOpenChange` 让父组件接管展开状态。
+常用于由外部事件触发（如键盘快捷键、右键菜单、引导提示）。
+
+<DemoFrame
+  vueCode={`<script setup lang="ts">
+import { ref } from 'vue';
+const open = ref(false);
+</script>
+
+<template>
+  <CfButton @click="open = !open">{{ open ? '关闭' : '打开' }}</CfButton>
+  <CfDropdown v-model:open="open" :items="items">
+    <CfButton variant="secondary">受控触发 ▾</CfButton>
+  </CfDropdown>
+</template>`}
+  reactCode={`import { useState } from 'react';
+
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <CfButton onClick={() => setOpen(!open)}>{open ? '关闭' : '打开'}</CfButton>
+      <CfDropdown open={open} onOpenChange={setOpen} items={items}>
+        <CfButton variant="secondary">受控触发 ▾</CfButton>
+      </CfDropdown>
+    </>
+  );
+}`}
+
+  vueSource={ControlledVueSource}>
+  <ControlledVue client:only="vue" />
+</DemoFrame>
+
+## 带图标的菜单项
+
+`DropdownItem.icon` 接收一段文本（emoji / 符号），会被原样渲染在 label 左侧。
+适合简洁标识；如果需要绘制矢量图标，建议改用嵌套组件方案，把整个菜单项写成自定义 trigger + content 的形式。
+
+<DemoFrame
+  vueCode={`const items = [
+  { key: 'edit',     label: '编辑',   icon: '✏️' },
+  { key: 'copy',     label: '复制',   icon: '📄' },
+  { key: 'download', label: '下载',   icon: '⬇️' },
+  { divider: true, label: '' },
+  { key: 'delete',   label: '删除',   icon: '🗑', tone: 'danger' },
+];`}
+  reactCode={`const items: DropdownItem[] = [
+  { key: 'edit',     label: '编辑',   icon: '✏️' },
+  { key: 'copy',     label: '复制',   icon: '📄' },
+  { key: 'download', label: '下载',   icon: '⬇️' },
+  { divider: true, label: '' },
+  { key: 'delete',   label: '删除',   icon: '🗑', tone: 'danger' },
+];`}
+
+  vueSource={IconItemsVueSource}>
+  <IconItemsVue client:only="vue" />
 </DemoFrame>
 
 ## API · Props

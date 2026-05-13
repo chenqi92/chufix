@@ -5,6 +5,7 @@ description: 圆环型当前值仪表，4 种 tone。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/gauge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/gauge/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/gauge/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfGauge ... />`}
   reactCode={`<CfGauge ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,6 +26,7 @@ import BasicVue from '~/components/demos/gauge/BasicVue.vue';
 `sweep` 决定圆环开口大小（180=半圆 270=三分之三 360=整圆）。
 
 import SweepVue from '~/components/demos/gauge/SweepVue.vue';
+import SweepVueSource from '~/components/demos/gauge/SweepVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfGauge :value="42" :sweep="180" label="180°" unit="%" />
@@ -32,7 +35,8 @@ import SweepVue from '~/components/demos/gauge/SweepVue.vue';
   reactCode={`<CfGauge value={42} sweep={180} label="180°" unit="%" />
 <CfGauge value={60} sweep={270} label="270°" unit="%" />
 <CfGauge value={78} sweep={360} label="360°" unit="%" />`}
->
+
+  vueSource={SweepVueSource}>
   <SweepVue client:load />
 </DemoFrame>
 
@@ -46,4 +50,23 @@ import SweepVue from '~/components/demos/gauge/SweepVue.vue';
 | `thickness` | `number` | `10` | 圆环厚 |
 | `sweep` | `number` | `270` | 扫角度（180=半圆 270=三分之三 360=整圆） |
 | `tone` | `'accent' \| 'success' \| 'warning' \| 'error'` | `'accent'` |  |
-| `unit / label` | `string` | `—` |  |
+| `unit` | `string` | `—` | 数值右侧的单位（如 `%`） |
+| `label` | `string` | `—` | 数值下方的小字标签 |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `GaugeClickPayload` | 点击 gauge 区域 |
+
+### 类型
+
+```ts
+interface GaugeClickPayload {
+  value: number;
+  /** value 在 min..max 区间的归一比例（0..1）。 */
+  ratio: number;
+  nativeEvent?: PointerEvent | MouseEvent;
+}
+```

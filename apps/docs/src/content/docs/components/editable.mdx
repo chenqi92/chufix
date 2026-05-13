@@ -1,0 +1,54 @@
+---
+title: Editable 行内编辑
+description: 点击文本即变为输入框；Enter 提交、Esc 取消、blur 自动提交，支持同步 / 异步校验。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/editable/BasicVue.vue';
+import BasicVueSource from '~/components/demos/editable/BasicVue.vue?raw';
+
+## 何时使用
+
+- 表格 / 详情面板 / 卡片头里**单字段**就地修改（标题、备注、标签）。
+- 与 [`CfInput`](./input/) 的差异：Input 是表单字段，永远展示边框；Editable 平时只展示文本，鼠标 hover 才出现编辑提示。
+- 不要替代整个表单：复杂修改请用 [`CfModal`](./modal/) + [`CfForm`](./form/)。
+
+## 基础用法
+
+单行 / 多行 / 禁用 / 同步异步校验都已经内置。`validate` 返回 `true` 才会提交，返回字符串视作错误信息。
+
+<DemoFrame
+  vueCode={`<CfEditable v-model="name" :validate="validateName" />
+<CfEditable v-model="description" multiline placeholder="点击添加描述..." />
+<CfEditable v-model="restricted" disabled />`}
+  reactCode={`<CfEditable value={name} onChange={setName} validate={validateName} />
+<CfEditable value={description} onChange={setDescription} multiline placeholder="点击添加描述..." />
+<CfEditable value={restricted} onChange={setRestricted} disabled />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `—` | Vue v-model；React 受控 value |
+| `placeholder` | `string` | `—` | 空值占位（斜体显示） |
+| `multiline` | `boolean` | `false` | 渲染为 `<textarea>` |
+| `disabled` | `boolean` | `false` | 完全只读 |
+| `showHint` | `boolean` | `true` | hover 时显示铅笔图标 |
+| `commitOnEnter` | `boolean` | `true` | 单行 Enter 提交；多行需 `Ctrl/Cmd+Enter` |
+| `maxLength` | `number` | `—` | 字符上限 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
+| `validate` | `(next) => boolean \| string \| Promise<...>` | `—` | 返回 `true` 才提交；字符串作为错误消息显示 |
+| `ariaLabel` | `string` | `—` | 透传到外层 `role="button"` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | 新值 | 提交时触发 |
+| `commit` | `onCommit` | `{ value, previous }` | 提交成功（值有变化） |
+| `cancel` | `onCancel` | — | Esc 撤销 |
+| `edit-start` | `onEditStart` | — | 进入编辑态 |
+| `invalid` | `onInvalid` | `string` | 校验失败时返回的错误消息 |

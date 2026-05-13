@@ -5,6 +5,7 @@ description: HTTP 状态码徽标，按 1xx / 2xx / 3xx / 4xx / 5xx 自动配色
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statuscodebadge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statuscodebadge/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/statuscodebadge/BasicVue.vue';
   reactCode={`<CfStatusCodeBadge code={200} reason="OK" />
 <CfStatusCodeBadge code={404} reason="Not Found" />
 <CfStatusCodeBadge code={500} reason="Internal" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

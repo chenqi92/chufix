@@ -5,6 +5,7 @@ description: Cmd+K global command search with grouped lists, character match hig
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/commandpalette/BasicVue.vue';
+import BasicVueSource from '~/components/demos/commandpalette/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -23,7 +24,8 @@ Each entry in `items` can carry a `group` for automatic grouping and a `shortcut
   items={items}
   onSelect={(id) => onPick(id)}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -33,11 +35,13 @@ Each entry in `items` can carry a `group` for automatic grouping and a `shortcut
 `hide-footer` hides the bottom "up/down to navigate, enter to select, Esc to close" hint to save vertical space.
 
 import HiddenFooterVue from '~/components/demos/commandpalette/HiddenFooterVue.vue';
+import HiddenFooterVueSource from '~/components/demos/commandpalette/HiddenFooterVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfCommandPalette ... hide-footer />`}
   reactCode={`<CfCommandPalette ... hideFooter />`}
->
+
+  vueSource={HiddenFooterVueSource}>
   <HiddenFooterVue client:load />
 </DemoFrame>
 

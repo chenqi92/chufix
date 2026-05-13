@@ -5,9 +5,13 @@ description: ChuFix 内置 SVG 图标组件，类型化 name，默认内联渲�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/icon/BasicVue.vue';
+import BasicVueSource from '~/components/demos/icon/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/icon/SizesVue.vue';
+import SizesVueSource from '~/components/demos/icon/SizesVue.vue?raw';
 import ColorsVue from '~/components/demos/icon/ColorsVue.vue';
+import ColorsVueSource from '~/components/demos/icon/ColorsVue.vue?raw';
 import MotionVue from '~/components/demos/icon/MotionVue.vue';
+import MotionVueSource from '~/components/demos/icon/MotionVue.vue?raw';
 import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
 
 ## 基础用法
@@ -27,7 +31,8 @@ import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
 <CfIcon name="check-circle" color="var(--status-success)" />
 <CfIcon name="loader" motion="spin" />
 <CfIcon name="alert-circle" title="错误" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -48,7 +53,8 @@ import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
 <CfIcon name="search" size="lg" />
 <CfIcon name="search" size="xl" />
 <CfIcon name="search" size={32} />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -65,7 +71,8 @@ import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
 <CfIcon name="alert-triangle" color="var(--status-warning)" size="lg" />
 <CfIcon name="x-circle" color="var(--status-error)" size="lg" />
 <CfIcon name="info" color="var(--status-info)" size="lg" />`}
->
+
+  vueSource={ColorsVueSource}>
   <ColorsVue client:load />
 </DemoFrame>
 
@@ -80,7 +87,8 @@ import IconGalleryVue from '~/components/demos/icon/IconGalleryVue.vue';
   reactCode={`<CfIcon name="loader" motion="spin" size="lg" />
 <CfIcon name="circle" motion="pulse" size="lg" />
 <CfIcon name="arrow-down" motion="bounce" size="lg" />`}
->
+
+  vueSource={MotionVueSource}>
   <MotionVue client:load />
 </DemoFrame>
 

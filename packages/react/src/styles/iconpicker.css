@@ -45,7 +45,25 @@
 .cf-iconpicker__clear,
 .cf-iconpicker__chevron {
   flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--fg-3);
+}
+.cf-iconpicker__clear svg,
+.cf-iconpicker__chevron svg {
+  width: 12px;
+  height: 12px;
+}
+.cf-iconpicker__clear { cursor: pointer; border-radius: var(--r-2); }
+.cf-iconpicker__clear:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-iconpicker__chevron {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-iconpicker.is-open .cf-iconpicker__chevron {
+  transform: rotate(180deg);
 }
 .cf-iconpicker__popup {
   position: absolute;

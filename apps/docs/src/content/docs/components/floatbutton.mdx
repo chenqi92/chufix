@@ -5,6 +5,7 @@ description: 固定在视口角落的圆形按钮，常用于「联系客服」�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/floatbutton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/floatbutton/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/floatbutton/BasicVue.vue';
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8..." />
   </svg>
 </CfFloatButton>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,4 +38,8 @@ import BasicVue from '~/components/demos/floatbutton/BasicVue.vue';
 | `bottom` / `right` / `top` / `left` | `number` | `bottom: 24, right: 24` | 距视口边缘的偏移；与 CSS 同义 |
 | `ariaLabel` | `string` | 等同 `tooltip` | 屏幕阅读器标签 |
 
-事件：`onClick(evt)` —— 点击按钮。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `MouseEvent` | 用户点击按钮时触发 |

@@ -5,6 +5,7 @@ description: A dropdown selector for tree data with search, multiple selection, 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treeselect/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treeselect/BasicVue.vue?raw';
 
 ## Basic Usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/treeselect/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTreeSelect v-model="value" :options="options" searchable clearable />`}
   reactCode={`<CfTreeSelect value={value} options={options} searchable clearable onChange={setValue} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

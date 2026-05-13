@@ -5,6 +5,7 @@ description: Card / Manifest / Permission / Marketplace 4 个 tab 的插件中�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pluginpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pluginpane/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/pluginpane/BasicVue.vue';
   'panel-card': <PanelA />,
   'panel-manifest': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

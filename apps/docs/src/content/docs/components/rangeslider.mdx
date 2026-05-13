@@ -5,6 +5,7 @@ description: 双 knob 范围选择器，支持键盘导航与悬停 tooltip。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/rangeslider/BasicVue.vue';
+import BasicVueSource from '~/components/demos/rangeslider/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/rangeslider/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfRangeSlider v-model="range" :min="0" :max="100" />`}
   reactCode={`<CfRangeSlider value={range} onChange={setRange} min={0} max={100} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -23,11 +25,13 @@ import BasicVue from '~/components/demos/rangeslider/BasicVue.vue';
 `tone` 控制填充色（success / warning / error）；与 `Slider` 共享 `--cf-rs-*` token。
 
 import TonesVue from '~/components/demos/rangeslider/TonesVue.vue';
+import TonesVueSource from '~/components/demos/rangeslider/TonesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRangeSlider v-model="v" tone="success" />`}
   reactCode={`<CfRangeSlider value={v} onChange={setV} tone="success" />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 

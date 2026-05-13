@@ -104,7 +104,13 @@ importers:
       '@chufix-design/tokens':
         specifier: workspace:*
         version: link:../tokens
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
     devDependencies:
+      '@types/prismjs':
+        specifier: ^1.26.5
+        version: 1.26.6
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.28
@@ -134,7 +140,13 @@ importers:
       '@chufix-design/tokens':
         specifier: workspace:*
         version: link:../tokens
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
     devDependencies:
+      '@types/prismjs':
+        specifier: ^1.26.5
+        version: 1.26.6
       '@vitejs/plugin-vue':
         specifier: ^5.1.4
         version: 5.2.4(vite@5.4.21(@types/node@24.12.2))(vue@3.5.34(typescript@5.9.3))
@@ -1087,6 +1099,9 @@ packages:
 
   '@types/node@24.12.2':
     resolution: {integrity: sha512-A1sre26ke7HDIuY/M23nd9gfB+nrmhtYyMINbjI1zHJxYteKR6qSMX56FsmjMcDb3SMcjJg5BiRRgOCC/yBD0g==}
+
+  '@types/prismjs@1.26.6':
+    resolution: {integrity: sha512-vqlvI7qlMvcCBbVe0AKAb4f97//Hy0EBTaiW8AalRnG/xAN5zOiWWyrNqNXeq8+KAuvRewjCVY1+IPxk4RdNYw==}
 
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
@@ -3902,6 +3917,8 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
     optional: true
+
+  '@types/prismjs@1.26.6': {}
 
   '@types/prop-types@15.7.15': {}
 

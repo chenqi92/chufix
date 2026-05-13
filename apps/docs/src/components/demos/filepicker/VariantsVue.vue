@@ -9,11 +9,9 @@ const c = ref<File[]>([]);
 <template>
   <div style="display: flex; flex-direction: column; gap: 12px;">
     <div>
-      <span style="font-size: 11px; color: var(--fg-3); margin-right: 8px;">single + outline</span>
       <CfFilePicker v-model="a" accept="image/*" />
     </div>
     <div>
-      <span style="font-size: 11px; color: var(--fg-3); margin-right: 8px;">multiple + plain + size lg</span>
       <CfFilePicker v-model="b" multiple variant="plain" size="lg" button-text="批量上传" />
     </div>
     <div>

@@ -1,12 +1,17 @@
 {
   "name": "docs",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview --host",
+    "demo-code:check": "node scripts/check-demo-code.mjs",
+    "pages:dev": "pnpm build && pnpm dlx wrangler pages dev dist",
+    "db:create": "pnpm dlx wrangler d1 create chufix-comments",
+    "db:migrate:local": "pnpm dlx wrangler d1 migrations apply chufix-comments --local",
+    "db:migrate:remote": "pnpm dlx wrangler d1 migrations apply chufix-comments --remote",
     "astro": "astro"
   },
   "dependencies": {

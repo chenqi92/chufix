@@ -13,3 +13,11 @@ export interface DonutChartProps {
   centerValue?: string | number;
   ariaLabel?: string;
 }
+
+export interface DonutChartInteractionPayload {
+  segment: DonutSegment;
+  dataIndex: number;
+  /** Percentage occupied by this segment (0–100). */
+  pct: number;
+  nativeEvent?: PointerEvent;
+}

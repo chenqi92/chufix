@@ -5,6 +5,7 @@ description: Horizontal carousel for images or custom content, with autoplay, lo
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/carousel/BasicVue.vue';
+import BasicVueSource from '~/components/demos/carousel/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/carousel/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCarousel :items="items" autoplay :interval="3000" />`}
   reactCode={`<CfCarousel items={items} autoplay interval={3000} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

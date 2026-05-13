@@ -5,9 +5,13 @@ description: 二态开关 —— 3 种尺寸、loading 与 disabled 态，原生
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/switch/BasicVue.vue';
+import BasicVueSource from '~/components/demos/switch/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/switch/SizesVue.vue';
+import SizesVueSource from '~/components/demos/switch/SizesVue.vue?raw';
 import StatesVue from '~/components/demos/switch/StatesVue.vue';
+import StatesVueSource from '~/components/demos/switch/StatesVue.vue?raw';
 import EventsVue from '~/components/demos/switch/EventsVue.vue';
+import EventsVueSource from '~/components/demos/switch/EventsVue.vue?raw';
 
 ## 基础用法
 
@@ -35,7 +39,8 @@ export default function Demo() {
     </CfSwitch>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -48,7 +53,8 @@ export default function Demo() {
   reactCode={`<CfSwitch size="sm">Small</CfSwitch>
 <CfSwitch size="md">Medium</CfSwitch>
 <CfSwitch size="lg">Large</CfSwitch>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -101,7 +107,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 
@@ -136,26 +143,37 @@ export default function Demo() {
 >
   自动同步
 </CfSwitch>`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 
 ## API
 
-| Prop       | 类型                   | 默认值  | 说明                              |
-| ---------- | ---------------------- | ------- | --------------------------------- |
-| `size`     | `'sm' \| 'md' \| 'lg'` | `'md'`  | 整体尺寸                          |
-| `disabled` | `boolean`              | `false` | 禁用                              |
-| `loading`  | `boolean`              | `false` | 显示 spinner，并暂时阻止切换      |
-| `name`     | `string`               | —       | 原生 input name                   |
-| `id`       | `string`               | —       | 原生 input id                     |
+### Props
 
-## Events
+| Prop         | 类型                   | 默认值  | 说明                                                        |
+| ------------ | ---------------------- | ------- | ----------------------------------------------------------- |
+| `modelValue` | `boolean`              | `false` | 受控值；React 端用 `checked` + `onChange` 或 `onCheckedChange` |
+| `size`       | `'sm' \| 'md' \| 'lg'` | `'md'`  | 整体尺寸                                                    |
+| `disabled`   | `boolean`              | `false` | 禁用                                                        |
+| `loading`    | `boolean`              | `false` | 显示 spinner，并暂时阻止切换                                |
+| `name`       | `string`               | —       | 原生 input name                                             |
+| `id`         | `string`               | —       | 原生 input id                                               |
+
+### Events
 
 | Vue 事件 | React 回调 | payload | 说明 |
 |---|---|---|---|
+| `update:modelValue` | — | `boolean` | v-model 隐式监听 |
 | `change` | `onCheckedChange` | `(checked, { event, checked, name })` | 切换状态变化 |
 | `focus` / `blur` | `onFocus` / `onBlur` | `FocusEvent` | 原生焦点事件 |
+
+### Slots / Children
+
+| Slot      | Props | 说明                                                  |
+| --------- | ----- | ----------------------------------------------------- |
+| `default` | —     | label 文案；React 端等价为 `children`，与开关右侧对齐 |
 
 ### 双向绑定
 

@@ -5,9 +5,13 @@ description: Horizontal or vertical divider with three line styles, optional lab
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/divider/BasicVue.vue';
+import BasicVueSource from '~/components/demos/divider/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/divider/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/divider/VariantsVue.vue?raw';
 import AlignVue from '~/components/demos/divider/AlignVue.vue';
+import AlignVueSource from '~/components/demos/divider/AlignVue.vue?raw';
 import VerticalVue from '~/components/demos/divider/VerticalVue.vue';
+import VerticalVueSource from '~/components/demos/divider/VerticalVue.vue?raw';
 
 ## Basic usage
 
@@ -20,7 +24,8 @@ Without props, renders a single horizontal solid line that separates surrounding
   reactCode={`<p>First paragraph</p>
 <CfDivider />
 <p>Second paragraph</p>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,7 +40,8 @@ Without props, renders a single horizontal solid line that separates surrounding
   reactCode={`<CfDivider variant="solid">solid</CfDivider>
 <CfDivider variant="dashed">dashed</CfDivider>
 <CfDivider variant="dotted">dotted</CfDivider>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -50,7 +56,8 @@ Without props, renders a single horizontal solid line that separates surrounding
   reactCode={`<CfDivider align="start">Start</CfDivider>
 <CfDivider align="center">Center</CfDivider>
 <CfDivider align="end">End</CfDivider>`}
->
+
+  vueSource={AlignVueSource}>
   <AlignVue client:load />
 </DemoFrame>
 
@@ -69,7 +76,8 @@ Without props, renders a single horizontal solid line that separates surrounding
 <span>Middle</span>
 <CfDivider orientation="vertical" variant="dashed" />
 <span>Right</span>`}
->
+
+  vueSource={VerticalVueSource}>
   <VerticalVue client:load />
 </DemoFrame>
 

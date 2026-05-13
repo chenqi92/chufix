@@ -5,8 +5,11 @@ description: HSV palette + hue slider + alpha slider + multi-format input — op
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/colorpicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/colorpicker/BasicVue.vue?raw';
 import AlphaVue from '~/components/demos/colorpicker/AlphaVue.vue';
+import AlphaVueSource from '~/components/demos/colorpicker/AlphaVue.vue?raw';
 import PanelVue from '~/components/demos/colorpicker/PanelVue.vue';
+import PanelVueSource from '~/components/demos/colorpicker/PanelVue.vue?raw';
 
 ## Basic usage
 
@@ -30,7 +33,8 @@ export default function Demo() {
   const [value, setValue] = useState('#3b82f6');
   return <CfColorPicker value={value} onChange={setValue} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +45,8 @@ Enabling `showAlpha` adds an alpha slider; the output automatically switches to 
 <DemoFrame
   vueCode={`<CfColorPicker v-model="value" show-alpha default-format="rgb" />`}
   reactCode={`<CfColorPicker value={value} showAlpha defaultFormat="rgb" onChange={setValue} />`}
->
+
+  vueSource={AlphaVueSource}>
   <AlphaVue client:load />
 </DemoFrame>
 
@@ -52,7 +57,8 @@ Enabling `showAlpha` adds an alpha slider; the output automatically switches to 
 <DemoFrame
   vueCode={`<CfColorPicker v-model="value" panel-only show-alpha />`}
   reactCode={`<CfColorPicker value={value} panelOnly showAlpha onChange={setValue} />`}
->
+
+  vueSource={PanelVueSource}>
   <PanelVue client:load />
 </DemoFrame>
 

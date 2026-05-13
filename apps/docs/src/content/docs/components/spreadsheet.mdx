@@ -5,7 +5,9 @@ description: A1 风格可编辑网格 —— 多选、键盘导航（方向键 /
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/spreadsheet/BasicVue.vue';
+import BasicVueSource from '~/components/demos/spreadsheet/BasicVue.vue?raw';
 import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
+import ImportVueSource from '~/components/demos/spreadsheet/ImportVue.vue?raw';
 
 ## 基础用法
 
@@ -18,7 +20,8 @@ import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
 - Delete / Backspace → 清空选区
 - Cmd/Ctrl + C / X / V → 与系统剪贴板互通 TSV
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -26,7 +29,8 @@ import ImportVue from '~/components/demos/spreadsheet/ImportVue.vue';
 
 剪贴板格式是标准 TSV（tab 分隔的文本），所以可以直接和 Excel / Numbers / Google Sheets 互拷数据：
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ImportVueSource}>
   <ImportVue client:load />
 </DemoFrame>
 

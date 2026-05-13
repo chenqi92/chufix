@@ -5,9 +5,17 @@ description: 竖直主导航，支持分组、嵌套子菜单、徽标、收起�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sidebar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sidebar/BasicVue.vue?raw';
 import CollapsedVue from '~/components/demos/sidebar/CollapsedVue.vue';
+import CollapsedVueSource from '~/components/demos/sidebar/CollapsedVue.vue?raw';
 import BadgesVue from '~/components/demos/sidebar/BadgesVue.vue';
+import BadgesVueSource from '~/components/demos/sidebar/BadgesVue.vue?raw';
 import SizesVue from '~/components/demos/sidebar/SizesVue.vue';
+import SizesVueSource from '~/components/demos/sidebar/SizesVue.vue?raw';
+import IconsVue from '~/components/demos/sidebar/IconsVue.vue';
+import IconsVueSource from '~/components/demos/sidebar/IconsVue.vue?raw';
+import ControlledOpenKeysVue from '~/components/demos/sidebar/ControlledOpenKeysVue.vue';
+import ControlledOpenKeysVueSource from '~/components/demos/sidebar/ControlledOpenKeysVue.vue?raw';
 
 ## 基础用法
 
@@ -68,7 +76,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -79,7 +88,8 @@ export default function Demo() {
 <DemoFrame
   vueCode={`<CfSidebar v-model="active" :items="items" collapsed />`}
   reactCode={`<CfSidebar value={active} items={items} collapsed onChange={setActive} />`}
->
+
+  vueSource={CollapsedVueSource}>
   <CollapsedVue client:load />
 </DemoFrame>
 
@@ -97,8 +107,72 @@ export default function Demo() {
 
 <CfSidebar v-model="active" :items="items" />`}
   reactCode={`<CfSidebar value={active} items={items} onChange={setActive} />`}
->
+
+  vueSource={BadgesVueSource}>
   <BadgesVue client:load />
+</DemoFrame>
+
+## 图标菜单
+
+`item.icon` 接收**原始 SVG 字符串**，组件通过 `v-html` 注入到 `.cf-sidebar__icon` 容器里。建议外层 svg 用 `currentColor` 描边/填充，这样会自动跟随当前菜单项的文字色（包括选中态的强调色）。
+
+<DemoFrame
+  vueCode={`const SVG = {
+  dashboard: '<svg viewBox="0 0 16 16" ... stroke="currentColor">...</svg>',
+  inbox: '<svg viewBox="0 0 16 16" ... stroke="currentColor">...</svg>',
+};
+
+const items: SidebarEntry[] = [
+  { key: 'dashboard', label: '工作台', icon: SVG.dashboard },
+  { key: 'inbox',     label: '收件箱', icon: SVG.inbox, badge: 5 },
+];
+
+<CfSidebar v-model="active" :items="items" />`}
+  reactCode={`const items: SidebarEntry[] = [
+  { key: 'dashboard', label: '工作台', icon: '<svg ...>...</svg>' },
+  { key: 'inbox',     label: '收件箱', icon: '<svg ...>...</svg>', badge: 5 },
+];
+
+<CfSidebar value={active} onChange={setActive} items={items} />`}
+
+  vueSource={IconsVueSource}>
+  <IconsVue client:load />
+</DemoFrame>
+
+## 受控 openKeys
+
+`v-model:open-keys` (Vue) / `openKeys` + `onOpenKeysChange` (React) 实现完全受控的展开状态 —— 配合按钮可以一键展开 / 收起所有分组，或在不同视图间同步展开状态。
+
+<DemoFrame
+  vueCode={`<script setup>
+const openKeys = ref(['team']);
+function expandAll() { openKeys.value = ['team', 'projects']; }
+function collapseAll() { openKeys.value = []; }
+</script>
+
+<template>
+  <CfButton size="sm" @click="expandAll">全部展开</CfButton>
+  <CfButton size="sm" @click="collapseAll">全部收起</CfButton>
+
+  <CfSidebar v-model="active" v-model:open-keys="openKeys" :items="items" />
+</template>`}
+  reactCode={`const [openKeys, setOpenKeys] = useState(['team']);
+
+<>
+  <CfButton size="sm" onClick={() => setOpenKeys(['team', 'projects'])}>全部展开</CfButton>
+  <CfButton size="sm" onClick={() => setOpenKeys([])}>全部收起</CfButton>
+
+  <CfSidebar
+    value={active}
+    onChange={setActive}
+    openKeys={openKeys}
+    onOpenKeysChange={setOpenKeys}
+    items={items}
+  />
+</>`}
+
+  vueSource={ControlledOpenKeysVueSource}>
+  <ControlledOpenKeysVue client:load />
 </DemoFrame>
 
 ## 三档尺寸
@@ -112,7 +186,8 @@ export default function Demo() {
   reactCode={`<CfSidebar value={a} onChange={setA} items={items} size="sm" />
 <CfSidebar value={b} onChange={setB} items={items} size="md" />
 <CfSidebar value={c} onChange={setC} items={items} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

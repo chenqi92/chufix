@@ -5,6 +5,7 @@ description: Modal 派生件，针对"二次确认"语义；支持 default / dan
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/confirmdialog/BasicVue.vue';
+import BasicVueSource from '~/components/demos/confirmdialog/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -29,7 +30,8 @@ import BasicVue from '~/components/demos/confirmdialog/BasicVue.vue';
   confirmText="永久删除"
   onConfirm={onConfirm}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -39,11 +41,13 @@ import BasicVue from '~/components/demos/confirmdialog/BasicVue.vue';
 把 confirm 钩到一个 1.5s 的异步操作，期间 confirm button 显示 spinner，cancel 被禁用。
 
 import LoadingVue from '~/components/demos/confirmdialog/LoadingVue.vue';
+import LoadingVueSource from '~/components/demos/confirmdialog/LoadingVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfConfirmDialog ... :loading="loading" @confirm="onConfirm" />`}
   reactCode={`<CfConfirmDialog ... loading={loading} onConfirm={onConfirm} />`}
->
+
+  vueSource={LoadingVueSource}>
   <LoadingVue client:load />
 </DemoFrame>
 

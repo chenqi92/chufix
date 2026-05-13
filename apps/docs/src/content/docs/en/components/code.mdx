@@ -5,10 +5,17 @@ description: InlineCode for inline snippets + CodeBlock for multi-line blocks �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/code/BasicVue.vue';
+import BasicVueSource from '~/components/demos/code/BasicVue.vue?raw';
 import InlineVue from '~/components/demos/code/InlineVue.vue';
+import InlineVueSource from '~/components/demos/code/InlineVue.vue?raw';
 import NumbersVue from '~/components/demos/code/NumbersVue.vue';
+import NumbersVueSource from '~/components/demos/code/NumbersVue.vue?raw';
 import MaxHeightVue from '~/components/demos/code/MaxHeightVue.vue';
+import MaxHeightVueSource from '~/components/demos/code/MaxHeightVue.vue?raw';
 import WorkspaceVue from '~/components/demos/code/WorkspaceVue.vue';
+import WorkspaceVueSource from '~/components/demos/code/WorkspaceVue.vue?raw';
+import BundlesVue from '~/components/demos/code/BundlesVue.vue';
+import BundlesVueSource from '~/components/demos/code/BundlesVue.vue?raw';
 
 ## Basic usage
 
@@ -21,7 +28,8 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 <CfCodeBlock :code="code" language="tsx" title="hello.tsx" />`}
   reactCode={`<p>Install with <CfInlineCode>npm i @chufix-design/react</CfInlineCode>.</p>
 <CfCodeBlock code={code} language="tsx" title="hello.tsx" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,7 +44,8 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
   reactCode={`<p>Common packages: <CfInlineCode>@chufix-design/vue</CfInlineCode>, <CfInlineCode>@chufix-design/react</CfInlineCode>.</p>
 <p>Command: <CfInlineCode>pnpm dev</CfInlineCode>.</p>
 <p>Small: <CfInlineCode size="sm">--config</CfInlineCode>.</p>`}
->
+
+  vueSource={InlineVueSource}>
   <InlineVue client:load />
 </DemoFrame>
 
@@ -47,7 +56,8 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 <DemoFrame
   vueCode={`<CfCodeBlock :code="code" language="js" title="fib.js" show-line-numbers />`}
   reactCode={`<CfCodeBlock code={code} language="js" title="fib.js" showLineNumbers />`}
->
+
+  vueSource={NumbersVueSource}>
   <NumbersVue client:load />
 </DemoFrame>
 
@@ -58,7 +68,8 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 <DemoFrame
   vueCode={`<CfCodeBlock :code="code" language="js" title="long-output.js" show-line-numbers :max-height="200" />`}
   reactCode={`<CfCodeBlock code={code} language="js" title="long-output.js" showLineNumbers maxHeight={200} />`}
->
+
+  vueSource={MaxHeightVueSource}>
   <MaxHeightVue client:load />
 </DemoFrame>
 
@@ -86,8 +97,34 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
   height={430}
   trimIndent
 />`}
->
+
+  vueSource={WorkspaceVueSource}>
   <WorkspaceVue client:load />
+</DemoFrame>
+
+## Multi-framework / multi-variant (bundles)
+
+Pass a `bundles` array of parallel implementations and CfCodeWorkspace renders both a framework tab row and a variant tab row at the top. Only the active bundle's tree and file tabs are visible at a time. `framework` / `variant` values are free-form — `'neutral'` excludes a bundle from the framework group (handy for CLI / config snippets).
+
+<DemoFrame
+  variant="wide"
+  vueCode={`<CfCodeWorkspace
+  title="counter · source"
+  root-label="counter"
+  :bundles="bundles"
+  tone="dark"
+  :height="380"
+/>`}
+  reactCode={`<CfCodeWorkspace
+  title="counter · source"
+  rootLabel="counter"
+  bundles={bundles}
+  tone="dark"
+  height={380}
+/>`}
+
+  vueSource={BundlesVueSource}>
+  <BundlesVue client:load />
 </DemoFrame>
 
 ## API · InlineCode
@@ -109,7 +146,7 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 | `maxHeight` | `number \| string` | `—` | Max height to enable vertical scrolling |
 | `startLine` | `number` | `1` | First line number |
 | `wrap` | `boolean` | `false` | Soft-wrap long lines |
-| `tone` | `'light' \| 'dark'` | `'light'` | Code surface tone |
+| `tone` | `'auto' \| 'light' \| 'dark'` | `'auto'` | Code surface tone; `auto` follows the global theme |
 | `trimIndent` | `boolean` | `false` | Remove common indentation |
 | `highlight` | `boolean` | `true` | Enable built-in lightweight highlighting |
 | `highlightedHtml` | `string` | — | Safe HTML from an external highlighter |
@@ -118,16 +155,39 @@ It includes lightweight syntax highlighting, line numbers, copy, dedent, and a d
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `files` | `CodeWorkspaceFile[]` | required | Multi-file source list |
+| `files` | `CodeWorkspaceFile[]` | — | Single-bundle file list; mutually exclusive with `bundles` |
+| `bundles` | `CodeWorkspaceBundle[]` | — | Multi-bundle mode; renders framework / variant tabs when provided |
 | `title` | `string \| ReactNode` | — | Header title |
 | `rootLabel` / `root-label` | `string` | `'project'` | Tree root label |
 | `defaultFile` / `activeFile` | `string` | first file | Default / controlled active file id |
+| `defaultBundle` / `activeBundle` | `string` | first bundle | Default / controlled active bundle id |
 | `editable` | `boolean` | `false` | Editor mode |
 | `readOnly` / `read-only` | `boolean` | `false` | Disable editing |
 | `showLineNumbers` / `show-line-numbers` | `boolean` | `true` | Line numbers |
 | `copyable` | `boolean` | `true` | Copy current file |
 | `height` | `number \| string` | — | Fixed workspace height |
 | `wrap` | `boolean` | `false` | Soft-wrap long lines |
-| `tone` | `'light' \| 'dark'` | `'light'` | Surface tone |
+| `tone` | `'auto' \| 'light' \| 'dark'` | `'auto'` | Surface tone; `auto` follows the global theme |
 | `trimIndent` / `trim-indent` | `boolean` | `false` | Dedent in display mode |
 | `highlightedHtml` | `CodeWorkspaceFile` field | — | Per-file external highlighted HTML |
+
+```ts
+interface CodeWorkspaceFile {
+  id?: string;
+  name: string;
+  content: string;
+  language?: string;
+  highlightedHtml?: string;
+  readonly?: boolean;
+}
+
+interface CodeWorkspaceBundle {
+  id: string;
+  framework: 'vue' | 'react' | 'neutral' | string;
+  variant: 'ts' | 'js' | 'shell' | string;
+  frameworkLabel: string;
+  variantLabel: string;
+  label?: string;
+  files: CodeWorkspaceFile[];
+}
+```

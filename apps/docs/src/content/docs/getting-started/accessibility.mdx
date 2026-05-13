@@ -3,7 +3,7 @@ title: 无障碍 a11y
 description: ChuFix 的无障碍基线 —— 焦点环、键盘导航、屏幕阅读器、reduced-motion、forced-colors、aria-* 一览。
 ---
 
-ChuFix 的所有组件都会被这层基线 a11y 规则覆盖，开箱即用。如果你做了显式覆盖，按下面的列表逐项核对就行。
+ChuFix 的所有组件都会被这层基线 a11y 规则覆盖，开箱即用。下面列出焦点环、键盘导航、屏幕阅读器、`prefers-reduced-motion`、`forced-colors`、`prefers-contrast` 各自的行为，方便你在自定义样式时对齐。
 
 ## 焦点环（focus ring）
 
@@ -68,13 +68,3 @@ a11y.css 在 `forced-colors: active` 模式下：
 ## prefers-contrast: more
 
 用户开启"提高对比度"时，把弱描边 `--line-1` 直接对齐到强描边 `--line-2`，整体看起来更分明。组件无需任何改动。
-
-## 自查清单
-
-新增组件或自定义样式时，至少跑一遍：
-
-1. 用 Tab / Shift+Tab 走一遍能否到达每一个交互元素，焦点环可见。
-2. 鼠标 hover ≠ 键盘 focus：hover 不应触发 focus 状态，反之亦然。
-3. `prefers-reduced-motion: reduce`（开发者工具 → Rendering → emulate）切到减少动效，没有 transform 滑入。
-4. Windows 高对比度（或 Chromium 的 `forced-colors: active` 模拟）下边框、文字仍可见。
-5. 屏幕阅读器宣读流畅、不重复 / 不遗漏（VoiceOver / NVDA 走一遍 happy path）。

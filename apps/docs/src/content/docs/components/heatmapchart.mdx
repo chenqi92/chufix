@@ -1,0 +1,63 @@
+---
+title: HeatmapChart 通用热力图
+description: 任意 rows × cols 矩阵的颜色编码，5 套色阶 + 自定义函数；LatencyHeatmap 的通用化版本。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/heatmapchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/heatmapchart/BasicVue.vue?raw';
+
+## 何时使用
+
+- 任何二维网格的"按值染色"需求：用户活跃度、性能矩阵、相关性矩阵、降级矩阵等。
+- 专门做接口延迟的语义图：用 [`CfLatencyHeatmap`](./latencyheatmap/)（绑定 green→yellow→red 的"延迟坏到极致"色相）。
+- HeatmapChart 与 LatencyHeatmap 的区别：**色阶可配置**。
+
+## 基础用法
+
+`colorScale` 接收 5 个预设之一，或一个 `(ratio: 0..1) => string` 自定义映射。
+
+<DemoFrame
+  vueCode={`<CfHeatmapChart :data="data" :row-labels="rowLabels" :col-labels="colLabels" />
+<CfHeatmapChart :data="data" color-scale="viridis" />
+<CfHeatmapChart :data="data" color-scale="mono-accent" show-value-labels />`}
+  reactCode={`<CfHeatmapChart data={data} rowLabels={rowLabels} colLabels={colLabels} />
+<CfHeatmapChart data={data} colorScale="viridis" />
+<CfHeatmapChart data={data} colorScale="mono-accent" showValueLabels />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `number[][]` | `—` | rows × cols 数值矩阵 |
+| `rowLabels` / `colLabels` | `string[]` | `—` | 行 / 列标签 |
+| `min` / `max` | `number` | 自动 | 颜色映射区间 |
+| `width` / `height` | `number` | `480 / 240` |  |
+| `colorScale` | `'green-red' \| 'blue-red' \| 'mono-accent' \| 'mono-blue' \| 'viridis' \| (ratio: number) => string` | `'green-red'` | 色阶预设或自定义函数 |
+| `showValueLabels` | `boolean` | `false` | 在每格内绘制数值 |
+| `valueDigits` | `number` | `0` | 数值小数位 |
+| `ariaLabel` | `string` | `'热力图'` |  |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `HeatmapChartInteractionPayload` | 鼠标进入某格 |
+| `item-leave` | `onItemLeave` | `HeatmapChartInteractionPayload` | 鼠标离开 |
+
+### 类型
+
+```ts
+interface HeatmapChartInteractionPayload {
+  row: number;
+  col: number;
+  value: number;
+  rowLabel?: string;
+  colLabel?: string;
+  ratio: number;
+  nativeEvent?: PointerEvent;
+}
+```

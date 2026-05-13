@@ -16,6 +16,25 @@
 - 顶部导航 hover 没有复现下划线污染：`Components / Charts / Blocks` hover 后 `text-decoration-line: none`。
 - 当前最影响 docs 可信度的问题集中在三类：SSR/hydration、浮层 Teleport、Blocks 示例 API 不匹配。
 
+## 修复进展
+
+已在后续提交中处理：
+
+- `Form.vue` 初始化快照不再直接 clone reactive proxy，Form demos 已恢复渲染。
+- CommandPalette / Modal / Drawer / ContextMenu / FloatingInspector / HoverCard / ImagePreview / Snackbar / Tour / GlobalSearch / DetachedPanel / Dropdown / Popover / Tooltip / Toast 已增加客户端挂载后渲染保护，避免关闭态 Teleport 造成导航消失或 hydration mismatch。
+- `MetricCard` Vue / React API 已补齐 `prefix` / `suffix` / `hint`，并兼容 `'up' | 'down' | 'flat'` trend preset，Blocks 中的 MetricCard 预览不再因 API 不匹配崩溃。
+- Countdown / Statistic 已改为 mounted 后启动动态倒计时或动画，避免 SSR 初始文本不一致。
+- Avatar / Tag / Spreadsheet / Table / Blocks 相关 demo 已清理外部 404、缺失 import、随机数据和不可写 const 绑定。
+- TimePicker / TimeRangePicker 已修复嵌套 button 导致的无效 HTML 与 hydration mismatch。
+- DonutChart / RadarChart / Gauge / ConnectionGraph 共用的 polar 坐标已稳定到 4 位小数，消除 Node 与浏览器三角函数尾差导致的 SVG path mismatch。
+- MethodBadge 别名页已补充真实 DemoFrame，不再只有 import 代码块。
+
+复核命令：
+
+- `pnpm --filter=@chufix-design/vue build`
+- `pnpm --filter=@chufix-design/react build`
+- `pnpm build:docs`
+
 ## P0 阻塞问题
 
 | 页面 / 范围 | 问题 | 证据 | 建议修复 |

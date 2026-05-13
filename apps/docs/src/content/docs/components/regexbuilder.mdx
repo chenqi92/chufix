@@ -5,6 +5,7 @@ description: 实时编译 + 测试匹配，错误友好提示，flags 用 chip �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/regexbuilder/BasicVue.vue';
+import BasicVueSource from '~/components/demos/regexbuilder/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -28,7 +29,8 @@ import BasicVue from '~/components/demos/regexbuilder/BasicVue.vue';
   testText={text}
   onTestTextChange={setText}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -38,11 +40,13 @@ import BasicVue from '~/components/demos/regexbuilder/BasicVue.vue';
 故意输入非法 pattern（如未匹配的方括号），错误信息显示在 input 下方红框内。
 
 import ErrorVue from '~/components/demos/regexbuilder/ErrorVue.vue';
+import ErrorVueSource from '~/components/demos/regexbuilder/ErrorVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRegexBuilder :pattern="'([unbalanced'" />`}
   reactCode={`<CfRegexBuilder pattern="([unbalanced" />`}
->
+
+  vueSource={ErrorVueSource}>
   <ErrorVue client:load />
 </DemoFrame>
 

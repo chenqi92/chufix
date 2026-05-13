@@ -5,6 +5,7 @@ description: Step-by-step highlight of key UI elements with explanation popovers
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tour/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tour/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ Each entry in `steps` is `{ target, title, description, placement }`. `target` i
 <DemoFrame
   vueCode={`<CfTour v-model="open" :steps="steps" />`}
   reactCode={`<CfTour open={open} onOpenChange={setOpen} steps={steps} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

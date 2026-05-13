@@ -5,9 +5,13 @@ description: 线性 / 圆形进度条，5 种语义色，支持不确定状态�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/progress/BasicVue.vue';
+import BasicVueSource from '~/components/demos/progress/BasicVue.vue?raw';
 import TonesVue from '~/components/demos/progress/TonesVue.vue';
+import TonesVueSource from '~/components/demos/progress/TonesVue.vue?raw';
 import CircleVue from '~/components/demos/progress/CircleVue.vue';
+import CircleVueSource from '~/components/demos/progress/CircleVue.vue?raw';
 import IndeterminateVue from '~/components/demos/progress/IndeterminateVue.vue';
+import IndeterminateVueSource from '~/components/demos/progress/IndeterminateVue.vue?raw';
 
 ## 基础用法
 
@@ -16,7 +20,8 @@ import IndeterminateVue from '~/components/demos/progress/IndeterminateVue.vue';
 <DemoFrame
   vueCode={`<CfProgress :value="value" show-label />`}
   reactCode={`<CfProgress value={value} showLabel />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -35,7 +40,8 @@ import IndeterminateVue from '~/components/demos/progress/IndeterminateVue.vue';
 <CfProgress value={60} tone="warning" showLabel />
 <CfProgress value={60} tone="danger" showLabel />
 <CfProgress value={60} tone="info" showLabel />`}
->
+
+  vueSource={TonesVueSource}>
   <TonesVue client:load />
 </DemoFrame>
 
@@ -52,7 +58,8 @@ import IndeterminateVue from '~/components/demos/progress/IndeterminateVue.vue';
 <CfProgress variant="circle" value={60} showLabel />
 <CfProgress variant="circle" size="lg" value={100} tone="success" showLabel />
 <CfProgress variant="circle" size="lg" indeterminate />`}
->
+
+  vueSource={CircleVueSource}>
   <CircleVue client:load />
 </DemoFrame>
 
@@ -67,7 +74,8 @@ import IndeterminateVue from '~/components/demos/progress/IndeterminateVue.vue';
   reactCode={`<CfProgress indeterminate />
 <CfProgress indeterminate tone="success" />
 <CfProgress indeterminate tone="danger" size="sm" />`}
->
+
+  vueSource={IndeterminateVueSource}>
   <IndeterminateVue client:load />
 </DemoFrame>
 

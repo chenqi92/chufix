@@ -5,6 +5,7 @@ description: Chart header bar — title + legend toggles + zoom / export / refre
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/charttoolbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/charttoolbar/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 <DemoFrame
   vueCode={`<CfChartToolbar ... />`}
   reactCode={`<CfChartToolbar ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 Click a legend chip to toggle a series; the LineChart below redraws in real time.
 
 import InteractiveVue from '~/components/demos/charttoolbar/InteractiveVue.vue';
+import InteractiveVueSource from '~/components/demos/charttoolbar/InteractiveVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfChartToolbar :series="series" @series-toggle="toggle" />
 <CfLineChart :series="visibleSeries" />`}
   reactCode={`<CfChartToolbar series={series} onSeriesToggle={toggle} />
 <CfLineChart series={visibleSeries} />`}
->
+
+  vueSource={InteractiveVueSource}>
   <InteractiveVue client:load />
 </DemoFrame>
 

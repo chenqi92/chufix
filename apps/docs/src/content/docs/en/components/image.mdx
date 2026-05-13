@@ -5,6 +5,7 @@ description: Image container with loading placeholder, error fallback, and lazy 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/image/BasicVue.vue';
+import BasicVueSource from '~/components/demos/image/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -15,7 +16,8 @@ Shows a skeleton shimmer while loading; on `onerror` switches to `fallback` (or 
 <CfImage src="/broken.jpg" alt="Failed to load" :width="160" :height="100" rounded bordered />`}
   reactCode={`<CfImage src="/photo.jpg" alt="Scenery" width={160} height={100} rounded bordered />
 <CfImage src="/broken.jpg" alt="Failed to load" width={160} height={100} rounded bordered />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

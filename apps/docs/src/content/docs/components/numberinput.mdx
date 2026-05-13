@@ -5,10 +5,15 @@ description: 数字输入框，带 +/− 步进按钮、min/max/step 约束、�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/numberinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/numberinput/BasicVue.vue?raw';
 import PrecisionVue from '~/components/demos/numberinput/PrecisionVue.vue';
+import PrecisionVueSource from '~/components/demos/numberinput/PrecisionVue.vue?raw';
 import SizesVue from '~/components/demos/numberinput/SizesVue.vue';
+import SizesVueSource from '~/components/demos/numberinput/SizesVue.vue?raw';
 import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
+import NoSteppersVueSource from '~/components/demos/numberinput/NoSteppersVue.vue?raw';
 import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
+import EventsVueSource from '~/components/demos/numberinput/EventsVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +22,8 @@ import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
 <DemoFrame
   vueCode={`<CfNumberInput v-model="value" :min="0" :max="100" />`}
   reactCode={`<CfNumberInput value={value} onChange={setValue} min={0} max={100} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,7 +38,8 @@ import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
   reactCode={`<CfNumberInput value={ratio} onChange={setRatio} step={0.05} min={0} max={1} />
 <CfNumberInput value={price} onChange={setPrice} step={0.1} precision={2} />
 <CfNumberInput value={optional} onChange={setOptional} placeholder="留空表示不限" />`}
->
+
+  vueSource={PrecisionVueSource}>
   <PrecisionVue client:load />
 </DemoFrame>
 
@@ -47,7 +54,8 @@ import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
   reactCode={`<CfNumberInput value={a} onChange={setA} size="sm" />
 <CfNumberInput value={b} onChange={setB} size="md" />
 <CfNumberInput value={c} onChange={setC} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -62,7 +70,8 @@ import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
   reactCode={`<CfNumberInput value={a} onChange={setA} />
 <CfNumberInput value={b} onChange={setB} hideSteppers />
 <CfNumberInput value={42} disabled />`}
->
+
+  vueSource={NoSteppersVueSource}>
   <NoSteppersVue client:load />
 </DemoFrame>
 
@@ -93,7 +102,8 @@ import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
   onStep={(value, meta) => console.log('step', value, meta.direction)}
   onInvalid={(meta) => console.log('invalid', meta.raw)}
 />`}
->
+
+  vueSource={EventsVueSource}>
   <EventsVue client:load />
 </DemoFrame>
 

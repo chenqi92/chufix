@@ -1,12 +1,15 @@
 import type { Locale } from '~/i18n/strings';
+import vuePackage from '../../../../packages/vue/package.json';
+
+const componentVersion = vuePackage.version;
 
 export const site = {
   title: 'ChuFix UI',
   nameZh: '础件',
   github: 'https://github.com/chenqi92/chufix',
-  docsRepo: 'https://github.com/chenqi92/chufix',
+  docsRepo: 'https://github.com/chenqi92/chufix/tree/main/apps/docs',
   npm: 'https://www.npmjs.com/org/chufix-design',
-  version: '0.2.1',
+  version: componentVersion,
   status: {
     label: { zh: '开发预览', en: 'Preview' },
     updatedAt: '2026-05-10',
@@ -16,8 +19,8 @@ export const site = {
       en: 'ChuFix UI is now published on npm',
     },
     announcement: {
-      zh: '@chufix-design/{tokens,icons,vue,react,cli} 已发布 v0.2.1。新增授权 Blocks 与状态插画优化，TimelineGantt / Pivot / Spreadsheet 等能力持续增强。',
-      en: '@chufix-design/{tokens,icons,vue,react,cli} v0.2.1 is live with new auth blocks, refined state artwork, and ongoing TimelineGantt / Pivot / Spreadsheet upgrades.',
+      zh: '@chufix-design/{tokens,icons,vue,react,cli} 已发布。新增授权 Blocks 与状态插画优化，TimelineGantt / Pivot / Spreadsheet 等能力持续增强。',
+      en: '@chufix-design/{tokens,icons,vue,react,cli} is live with new auth blocks, refined state artwork, and ongoing TimelineGantt / Pivot / Spreadsheet upgrades.',
     },
   },
 };
@@ -62,6 +65,8 @@ export const sidebar: SidebarGroup[] = [
     label: L('表单', 'Form'),
     items: [
       c('Button', '按钮', 'button'),
+      c('ButtonGroup', '按钮组', 'buttongroup'),
+      c('ToggleGroup', '切换组', 'togglegroup'),
       c('IconButton', '图标按钮', 'iconbutton'),
       c('SplitButton', '分裂按钮', 'splitbutton'),
       c('Input', '输入框', 'input'),
@@ -114,6 +119,8 @@ export const sidebar: SidebarGroup[] = [
   {
     label: L('数据展示', 'Data display'),
     items: [
+      c('Typography', '文本', 'typography'),
+      c('Editable', '行内编辑', 'editable'),
       c('Tag', '标签', 'tag'),
       c('Badge', '徽标', 'badge'),
       c('ProtocolBadge', '协议徽标', 'protocolbadge'),
@@ -230,6 +237,62 @@ export const sidebar: SidebarGroup[] = [
       c('DetachedPanel', '浮动面板', 'detachedpanel'),
       c('FloatingInspector', '浮动检查器', 'floatinginspector'),
       c('TearOffTabs', '可撕离 Tab', 'tearofftab'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 时序', 'Charts · Time series'),
+    items: [
+      c('LineChart', '折线图', 'linechart'),
+      c('AreaChart', '面积图', 'areachart'),
+      c('Sparkline', '缩略走势', 'sparkline'),
+      c('CandlestickChart', 'K 线图', 'candlestickchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 分类', 'Charts · Category'),
+    items: [
+      c('BarChart', '柱状图', 'barchart'),
+      c('Histogram', '直方图', 'histogram'),
+      c('StackedBar100', '占比柱', 'stackedbar100'),
+      c('BulletChart', '子弹图', 'bulletchart'),
+      c('WaterfallChart', '瀑布图', 'waterfallchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 占比', 'Charts · Composition'),
+    items: [
+      c('DonutChart', '环形图', 'donutchart'),
+      c('FunnelChart', '漏斗图', 'funnelchart'),
+      c('Treemap', '矩形树图', 'treemap'),
+      c('SankeyDiagram', '流向图', 'sankeydiagram'),
+      c('SunburstChart', '旭日图', 'sunburstchart'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 多维', 'Charts · Multi-dim'),
+    items: [
+      c('ScatterPlot', '散点图', 'scatterplot'),
+      c('BoxPlot', '箱线图', 'boxplot'),
+      c('RadarChart', '雷达图', 'radarchart'),
+      c('RidgePlot', '密度脊图', 'ridgeplot'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 单值与性能', 'Charts · Single & perf'),
+    items: [
+      c('Gauge', '仪表盘', 'gauge'),
+      c('MetricCard', '指标卡', 'metriccard'),
+      c('TimingBar', '请求瀑布', 'timingbar'),
+      c('LatencyHeatmap', '延迟热力', 'latencyheatmap'),
+      c('HeatmapChart', '通用热力', 'heatmapchart'),
+      c('ConnectionGraph', '连接图', 'connectiongraph'),
+    ],
+  },
+  {
+    label: L('数据可视化 · 工具', 'Charts · Helpers'),
+    items: [
+      c('ChartToolbar', '图表工具栏', 'charttoolbar'),
+      c('ChartCrosshair', '十字线', 'chartcrosshair'),
     ],
   },
 ];

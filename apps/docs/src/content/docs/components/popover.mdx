@@ -5,9 +5,17 @@ description: Tooltip 的可交互变体 —— 支持任意富内容、表单、
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/popover/BasicVue.vue';
+import BasicVueSource from '~/components/demos/popover/BasicVue.vue?raw';
 import TriggersVue from '~/components/demos/popover/TriggersVue.vue';
+import TriggersVueSource from '~/components/demos/popover/TriggersVue.vue?raw';
 import PlacementVue from '~/components/demos/popover/PlacementVue.vue';
+import PlacementVueSource from '~/components/demos/popover/PlacementVue.vue?raw';
 import WidthVue from '~/components/demos/popover/WidthVue.vue';
+import WidthVueSource from '~/components/demos/popover/WidthVue.vue?raw';
+import DisabledVue from '~/components/demos/popover/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/popover/DisabledVue.vue?raw';
+import CloseBehaviorVue from '~/components/demos/popover/CloseBehaviorVue.vue';
+import CloseBehaviorVueSource from '~/components/demos/popover/CloseBehaviorVue.vue?raw';
 
 ## 基础用法
 
@@ -34,7 +42,8 @@ import WidthVue from '~/components/demos/popover/WidthVue.vue';
 >
   <CfButton variant="secondary">点击展开</CfButton>
 </CfPopover>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -58,7 +67,8 @@ import WidthVue from '~/components/demos/popover/WidthVue.vue';
 <CfPopover trigger="manual" open={open} onOpenChange={setOpen} content={...}>
   <CfButton onClick={() => setOpen(!open)}>manual</CfButton>
 </CfPopover>`}
->
+
+  vueSource={TriggersVueSource}>
   <TriggersVue client:only="vue" />
 </DemoFrame>
 
@@ -75,7 +85,8 @@ import WidthVue from '~/components/demos/popover/WidthVue.vue';
 <CfPopover placement="bottom">…</CfPopover>
 <CfPopover placement="left">…</CfPopover>
 <CfPopover placement="right">…</CfPopover>`}
->
+
+  vueSource={PlacementVueSource}>
   <PlacementVue client:only="vue" />
 </DemoFrame>
 
@@ -88,8 +99,60 @@ import WidthVue from '~/components/demos/popover/WidthVue.vue';
 <CfPopover placement="bottom" :width="320"><CfButton>固定 320</CfButton></CfPopover>`}
   reactCode={`<CfPopover placement="bottom" content={...}><CfButton>自适应</CfButton></CfPopover>
 <CfPopover placement="bottom" width={320} content={...}><CfButton>固定 320</CfButton></CfPopover>`}
->
+
+  vueSource={WidthVueSource}>
   <WidthVue client:only="vue" />
+</DemoFrame>
+
+## 控制关闭路径
+
+默认 popover 在三种情形会关闭：点击外部、按 Esc、再次点击触发器。把 `closeOnOutside` / `closeOnEsc` 单独置 false 可锁死对应路径 —— 常用于内嵌表单 popover，避免误触关闭丢失输入。
+
+<DemoFrame
+  vueCode={`<CfPopover :close-on-outside="false">
+  <CfButton variant="secondary">外部点击不关</CfButton>
+  <template #content>仅 Esc 或再点触发器才能关</template>
+</CfPopover>
+
+<CfPopover :close-on-esc="false">
+  <CfButton variant="secondary">Esc 不关</CfButton>
+  <template #content>仅外部点击或再点触发器才能关</template>
+</CfPopover>`}
+  reactCode={`<CfPopover closeOnOutside={false} content={...}>
+  <CfButton variant="secondary">外部点击不关</CfButton>
+</CfPopover>
+
+<CfPopover closeOnEsc={false} content={...}>
+  <CfButton variant="secondary">Esc 不关</CfButton>
+</CfPopover>`}
+
+  vueSource={CloseBehaviorVueSource}>
+  <CloseBehaviorVue client:only="vue" />
+</DemoFrame>
+
+## 禁用 popover
+
+`disabled` 让触发器失去任何打开 popover 的能力 —— 触发器本身依然渲染、可点击，但不会弹出浮层。常用于权限或条件互斥的场景。
+
+<DemoFrame
+  vueCode={`<CfPopover :disabled="disabled">
+  <CfButton variant="secondary">点击展开</CfButton>
+  <template #content>内容…</template>
+</CfPopover>
+
+<CfButton size="sm" variant="ghost" @click="disabled = !disabled">
+  {{ disabled ? '启用' : '禁用' }} popover
+</CfButton>`}
+  reactCode={`<CfPopover disabled={disabled} content={...}>
+  <CfButton variant="secondary">点击展开</CfButton>
+</CfPopover>
+
+<CfButton size="sm" variant="ghost" onClick={() => setDisabled(!disabled)}>
+  {disabled ? '启用' : '禁用'} popover
+</CfButton>`}
+
+  vueSource={DisabledVueSource}>
+  <DisabledVue client:only="vue" />
 </DemoFrame>
 
 ## API · Props

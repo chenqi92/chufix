@@ -15,6 +15,12 @@ export interface ResultProps {
   status?: ResultStatus;
   title?: ReactNode;
   description?: ReactNode;
+  /**
+   * Custom illustration image. Use this when a product wants to replace the
+   * built-in token-colored SVG with a branded or domain-specific asset.
+   */
+  image?: string;
+  imageAlt?: string;
   icon?: ReactNode;
   extra?: ReactNode;
   size?: ResultSize;

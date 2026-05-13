@@ -5,6 +5,7 @@ description: Value + unit + delta + embedded sparkline trend.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/metriccard/BasicVue.vue';
+import BasicVueSource from '~/components/demos/metriccard/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 <DemoFrame
   vueCode={`<CfMetricCard ... />`}
   reactCode={`<CfMetricCard ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 Pair with `grid-template-columns: repeat(auto-fit, minmax(...))` for adaptive density.
 
 import GridVue from '~/components/demos/metriccard/GridVue.vue';
+import GridVueSource from '~/components/demos/metriccard/GridVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfMetricCard label="…" value="…" :delta="…" :trend="[…]" />`}
   reactCode={`<CfMetricCard label="…" value="…" delta={…} trend={[…]} />`}
->
+
+  vueSource={GridVueSource}>
   <GridVue client:load />
 </DemoFrame>
 

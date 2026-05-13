@@ -5,6 +5,7 @@ description: Binned histogram with one bar per bin.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/histogram/BasicVue.vue';
+import BasicVueSource from '~/components/demos/histogram/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 <DemoFrame
   vueCode={`<CfHistogram ... />`}
   reactCode={`<CfHistogram ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors come from the `--viz-1..8` tokens and are colorblind-friendly.
 Normal vs. long-tail distribution — for long-tailed data, consider log-scale bin labels.
 
 import DistributionsVue from '~/components/demos/histogram/DistributionsVue.vue';
+import DistributionsVueSource from '~/components/demos/histogram/DistributionsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfHistogram :bins="bins" />`}
   reactCode={`<CfHistogram bins={bins} />`}
->
+
+  vueSource={DistributionsVueSource}>
   <DistributionsVue client:load />
 </DemoFrame>
 

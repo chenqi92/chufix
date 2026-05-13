@@ -5,9 +5,15 @@ description: 单展开 / 多展开两种模式，3 种边框样式（bordered / 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/accordion/BasicVue.vue';
+import BasicVueSource from '~/components/demos/accordion/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/accordion/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/accordion/VariantsVue.vue?raw';
 import MultipleVue from '~/components/demos/accordion/MultipleVue.vue';
+import MultipleVueSource from '~/components/demos/accordion/MultipleVue.vue?raw';
 import DisabledVue from '~/components/demos/accordion/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/accordion/DisabledVue.vue?raw';
+import CustomSlotsVue from '~/components/demos/accordion/CustomSlotsVue.vue';
+import CustomSlotsVueSource from '~/components/demos/accordion/CustomSlotsVue.vue?raw';
 
 ## 基础用法
 
@@ -36,7 +42,8 @@ const items = [
 ];
 
 <CfAccordion items={items} mode="single" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -53,7 +60,8 @@ const items = [
   reactCode={`<CfAccordion items={items} variant="bordered" />
 <CfAccordion items={items} variant="flush" />
 <CfAccordion items={items} variant="separated" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -74,7 +82,8 @@ const items = [
   variant="separated"
   defaultValue={['q1', 'q3']}
 />`}
->
+
+  vueSource={MultipleVueSource}>
   <MultipleVue client:load />
 </DemoFrame>
 
@@ -97,11 +106,56 @@ const items = [
 ];
 
 <CfAccordion items={items} defaultValue="a" />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 
+## 自定义标题与面板内容 (具名插槽)
+
+`item.title` / `item.content` 只能是字符串。需要在标题里加 tag、副标题、图标，或在面板内放表格、列表、表单等富内容时用**动态具名插槽**：
+
+- `#title-${item.value}` —— 自定义该项的标题
+- `#${item.value}` —— 自定义该项的面板内容
+
+只有提供了对应插槽的项才走自渲染，其他项继续按 `item.title` / `item.content` 渲染。
+
+<DemoFrame
+  vueCode={`<CfAccordion :items="items" variant="separated" :default-open="'shipping'">
+  <template #title-shipping>
+    运输方式
+    <CfTag size="sm" tone="success" variant="soft">免运费</CfTag>
+  </template>
+
+  <template #shipping>
+    <table>
+      <tr><th>地区</th><th>时效</th><th>运费</th></tr>
+      <tr><td>本地</td><td>1–2 天</td><td>免</td></tr>
+      <tr><td>跨省</td><td>3–5 天</td><td>免</td></tr>
+    </table>
+  </template>
+</CfAccordion>`}
+  reactCode={`<CfAccordion
+  items={items}
+  variant="separated"
+  defaultValue="shipping"
+  renderTitle={(item) =>
+    item.value === 'shipping' ? (
+      <>运输方式 <CfTag size="sm" tone="success">免运费</CfTag></>
+    ) : item.title
+  }
+  renderContent={(item) =>
+    item.value === 'shipping' ? <ShippingTable /> : item.content
+  }
+/>`}
+
+  vueSource={CustomSlotsVueSource}>
+  <CustomSlotsVue client:load />
+</DemoFrame>
+
 ## API
+
+### Props
 
 | Prop | 类型 | 默认值 | 说明 |
 |---|---|---|---|
@@ -112,3 +166,16 @@ const items = [
 | `defaultOpen` (Vue) / `defaultValue` (React) | `string \| string[]` | — | 非受控初始展开 |
 
 > `mode="single"` 时受控 / 非受控值是 `string`；`mode="multiple"` 时是 `string[]`。
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string \| string[]` | 展开状态变化时触发；`single` 模式是 `string`，`multiple` 模式是 `string[]` |
+
+### Slots (Vue)
+
+| Slot 名 | 说明 |
+|---|---|
+| `title-${item.value}` | 动态具名 —— 自定义指定项的标题 |
+| `${item.value}` | 动态具名 —— 自定义指定项的面板内容 |

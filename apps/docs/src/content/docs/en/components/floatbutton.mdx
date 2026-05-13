@@ -5,6 +5,7 @@ description: A circular button anchored to a viewport corner. Common entry point
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/floatbutton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/floatbutton/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -21,7 +22,8 @@ Default `position: fixed`, with `bottom` and `right` set to 24px. `tooltip` is s
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8..." />
   </svg>
 </CfFloatButton>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

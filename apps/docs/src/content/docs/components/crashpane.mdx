@@ -5,6 +5,7 @@ description: Crash Dialog / Stack Trace / Dump Uploader / Safe Mode 4 个 tab �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/crashpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/crashpane/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/crashpane/BasicVue.vue';
   'panel-dialog': <PanelA />,
   'panel-stack': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,11 +34,13 @@ import BasicVue from '~/components/demos/crashpane/BasicVue.vue';
 4 个 tab 各放一个原子：Banner 错误概要 / pre 堆栈追踪 / Dropzone dump 上传 / 安全模式入口。
 
 import RealVue from '~/components/demos/crashpane/RealVue.vue';
+import RealVueSource from '~/components/demos/crashpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfCrashPane>...</CfCrashPane>`}
   reactCode={`<CfCrashPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

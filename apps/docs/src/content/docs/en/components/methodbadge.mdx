@@ -3,7 +3,30 @@ title: MethodBadge
 description: Alias of ProtocolBadge dedicated to the HTTP method context. API is identical.
 ---
 
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/methodbadge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/methodbadge/BasicVue.vue?raw';
+
 `CfMethodBadge` is an alias export for [`CfProtocolBadge`](/components/protocolbadge/). When the context is unambiguously about HTTP methods, importing `CfMethodBadge` expresses intent more precisely; at runtime it is the same component.
+
+## Basic Usage
+
+Use it when the value is specifically an HTTP method. Colors and sizing follow `ProtocolBadge`.
+
+<DemoFrame
+  vueCode={`<CfMethodBadge kind="get" />
+<CfMethodBadge kind="post" />
+<CfMethodBadge kind="put" />
+<CfMethodBadge kind="delete" />`}
+  reactCode={`<CfMethodBadge kind="get" />
+<CfMethodBadge kind="post" />
+<CfMethodBadge kind="put" />
+<CfMethodBadge kind="delete" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## Import
 
 ```ts
 // Vue

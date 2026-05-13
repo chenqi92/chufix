@@ -5,6 +5,7 @@ description: 国家码下拉 + 号码输入。内置 12 个常见国家，可通
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/phoneinput/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfPhoneInput v-model="phone" v-model:country="country" />`}
   reactCode={`<CfPhoneInput value={phone} onChange={setPhone} country={country} onCountryChange={setCountry} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -23,13 +25,15 @@ import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
 `error` 切红边，`disabled` 整体灰化。
 
 import StatesVue from '~/components/demos/phoneinput/StatesVue.vue';
+import StatesVueSource from '~/components/demos/phoneinput/StatesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfPhoneInput v-model="v" :error="true" />
 <CfPhoneInput v-model="v" disabled />`}
   reactCode={`<CfPhoneInput value={v} onChange={setV} error />
 <CfPhoneInput value={v} onChange={setV} disabled />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

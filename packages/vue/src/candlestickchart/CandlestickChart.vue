@@ -1,12 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { domainOf, linearScale } from '../_charts/scale';
-import type { CandlestickChartProps } from './variants';
+import type {
+  CandlestickChartInteractionPayload,
+  CandlestickChartProps,
+} from './variants';
 
 const props = withDefaults(defineProps<CandlestickChartProps>(), {
   width: 480,
   height: 240,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: CandlestickChartInteractionPayload): void;
+  (e: 'item-leave', payload: CandlestickChartInteractionPayload): void;
+}>();
+
+function onEnter(i: number, ev: PointerEvent) {
+  const candle = props.data?.[i];
+  if (!candle) return;
+  emit('item-enter', { candle, dataIndex: i, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const candle = props.data?.[i];
+  if (!candle) return;
+  emit('item-leave', { candle, dataIndex: i, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const d = props.data ?? [];
@@ -49,6 +68,8 @@ const layout = computed(() => {
         v-for="(c, i) in layout"
         :key="i"
         :class="c.up ? 'cf-candlestick__up' : 'cf-candlestick__down'"
+        @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(i, e)"
       >
         <line
           class="cf-candlestick__wick"

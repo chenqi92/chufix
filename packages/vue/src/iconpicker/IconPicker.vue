@@ -44,8 +44,16 @@ function clear(event: MouseEvent) {
     <button type="button" class="cf-iconpicker__trigger" :disabled="disabled" :aria-expanded="open" @click="open = !open">
       <CfIcon v-if="modelValue" :name="modelValue" />
       <span class="cf-iconpicker__value" :class="{ 'is-placeholder': !modelValue }">{{ modelValue || placeholder }}</span>
-      <span v-if="clearable && modelValue" class="cf-iconpicker__clear" aria-hidden="true" @click="clear">×</span>
-      <span class="cf-iconpicker__chevron" aria-hidden="true">⌄</span>
+      <span v-if="clearable && modelValue" class="cf-iconpicker__clear" aria-hidden="true" @click="clear">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M3 3 L9 9 M9 3 L3 9" />
+        </svg>
+      </span>
+      <span class="cf-iconpicker__chevron" aria-hidden="true">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 4.5 L6 7.5 L9 4.5" />
+        </svg>
+      </span>
     </button>
 
     <div v-if="open" class="cf-iconpicker__popup" role="listbox">

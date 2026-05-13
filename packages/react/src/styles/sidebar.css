@@ -85,9 +85,12 @@
 .cf-sidebar--sm .cf-sidebar__link { padding: 5px 8px; }
 .cf-sidebar--lg .cf-sidebar__link { padding: 9px 12px; }
 
-.cf-sidebar__link:hover {
+.cf-sidebar__link:hover,
+.cf-sidebar__link:focus,
+.cf-sidebar__link:focus-visible {
   background: var(--bg-2);
   color: var(--fg-1);
+  text-decoration: none;
 }
 
 .cf-sidebar__item.is-active > .cf-sidebar__link {

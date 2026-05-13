@@ -5,6 +5,7 @@ description: 分箱直方图，每个 bin 一个柱。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/histogram/BasicVue.vue';
+import BasicVueSource from '~/components/demos/histogram/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/histogram/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfHistogram ... />`}
   reactCode={`<CfHistogram ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,18 +26,45 @@ import BasicVue from '~/components/demos/histogram/BasicVue.vue';
 正态分布 / 长尾分布对比 — 长尾时建议用对数刻度的 bin label。
 
 import DistributionsVue from '~/components/demos/histogram/DistributionsVue.vue';
+import DistributionsVueSource from '~/components/demos/histogram/DistributionsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfHistogram :bins="bins" />`}
   reactCode={`<CfHistogram bins={bins} />`}
->
+
+  vueSource={DistributionsVueSource}>
   <DistributionsVue client:load />
 </DemoFrame>
 
 ## API
 
+### Props
+
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `bins` | `HistogramBin[]` | `—` | &#123; label, count &#125;[] |
-| `colorIndex` | `0..7` | `0` |  |
+| `bins` | `HistogramBin[]` | `—` | `{ label, count }[]` 分箱数据 |
+| `width` | `number` | `480` | SVG 宽度 |
+| `height` | `number` | `200` | SVG 高度 |
+| `colorIndex` | `0..7` | `0` | 柱体颜色（`--viz-1..8`） |
 | `showLabels` | `boolean` | `true` | bin label 显示开关 |
+| `showTooltip` | `boolean` | `true` | 启用 hover tooltip |
+| `tooltipFormatter` | `(payload: HistogramInteractionPayload) => string` | — | 完整 tooltip HTML 自渲染 |
+| `ariaLabel` | `string` | — | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `HistogramInteractionPayload` | 鼠标进入某 bin 时触发 |
+| `item-leave` | `onItemLeave` | `HistogramInteractionPayload` | 鼠标离开时触发 |
+
+### 类型
+
+```ts
+interface HistogramInteractionPayload {
+  label: string;
+  count: number;
+  dataIndex: number;
+  nativeEvent?: MouseEvent;
+}
+```

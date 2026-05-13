@@ -5,9 +5,13 @@ description: Compose multiple Input / Button / Select / static labels into one u
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/inputgroup/BasicVue.vue';
+import BasicVueSource from '~/components/demos/inputgroup/BasicVue.vue?raw';
 import UrlVue from '~/components/demos/inputgroup/UrlVue.vue';
+import UrlVueSource from '~/components/demos/inputgroup/UrlVue.vue?raw';
 import AddonVue from '~/components/demos/inputgroup/AddonVue.vue';
+import AddonVueSource from '~/components/demos/inputgroup/AddonVue.vue?raw';
 import StretchVue from '~/components/demos/inputgroup/StretchVue.vue';
+import StretchVueSource from '~/components/demos/inputgroup/StretchVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +26,8 @@ InputGroup is a pure styling wrapper. Put form controls inside in order; adjacen
   <span className="cf-input-group__addon">@</span>
   <CfInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="username" />
 </CfInputGroup>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +46,8 @@ The most common combination â€” "URL input + protocol select + submit button" â€
   <CfInput value={host} onChange={(e) => setHost(e.target.value)} placeholder="example.com" />
   <CfButton>Visit</CfButton>
 </CfInputGroup>`}
->
+
+  vueSource={UrlVueSource}>
   <UrlVue client:load />
 </DemoFrame>
 
@@ -72,7 +78,8 @@ The most common combination â€” "URL input + protocol select + submit button" â€
   <CfInput value={url} onChange={(e) => setUrl(e.target.value)} placeholder="example.com" />
   <span className="cf-input-group__addon">/path</span>
 </CfInputGroup>`}
->
+
+  vueSource={AddonVueSource}>
   <AddonVue client:load />
 </DemoFrame>
 
@@ -89,7 +96,8 @@ The most common combination â€” "URL input + protocol select + submit button" â€
   <CfInput value={q} onChange={(e) => setQ(e.target.value)} placeholder="Searchâ€¦" />
   <CfButton variant="primary">Search</CfButton>
 </CfInputGroup>`}
->
+
+  vueSource={StretchVueSource}>
   <StretchVue client:load />
 </DemoFrame>
 

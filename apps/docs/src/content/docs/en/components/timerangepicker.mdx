@@ -5,6 +5,7 @@ description: Two TimePickers paired up to select a "start – end" time range.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timerangepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timerangepicker/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/timerangepicker/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTimeRangePicker v-model="range" clearable />`}
   reactCode={`<CfTimeRangePicker value={range} onChange={setRange} clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

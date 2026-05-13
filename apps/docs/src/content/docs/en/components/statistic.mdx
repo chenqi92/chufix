@@ -5,6 +5,7 @@ description: Large numeric display with thousand separators, prefix/suffix, and 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/statistic/BasicVue.vue';
+import BasicVueSource from '~/components/demos/statistic/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ When `value` is a number, thousand separators are applied automatically. `precis
   reactCode={`<CfStatistic label="Today's visits" value={12384} />
 <CfStatistic label="Revenue" value={84520.42} prefix="¥" precision={2} />
 <CfStatistic label="Conversion" value={3.2} suffix="%" precision={1} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

@@ -5,8 +5,11 @@ description: 自定义主题滚动条容器，scrollbar-gutter stable + overscro
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/scrollarea/BasicVue.vue';
+import BasicVueSource from '~/components/demos/scrollarea/BasicVue.vue?raw';
 import HorizontalVue from '~/components/demos/scrollarea/HorizontalVue.vue';
+import HorizontalVueSource from '~/components/demos/scrollarea/HorizontalVue.vue?raw';
 import BothVue from '~/components/demos/scrollarea/BothVue.vue';
+import BothVueSource from '~/components/demos/scrollarea/BothVue.vue?raw';
 
 ## 基础用法
 
@@ -29,7 +32,8 @@ import BothVue from '~/components/demos/scrollarea/BothVue.vue';
     ))}
   </ul>
 </CfScrollArea>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -48,7 +52,8 @@ import BothVue from '~/components/demos/scrollarea/BothVue.vue';
     {tags.map((t) => <span key={t}>{t}</span>)}
   </div>
 </CfScrollArea>`}
->
+
+  vueSource={HorizontalVueSource}>
   <HorizontalVue client:load />
 </DemoFrame>
 
@@ -63,7 +68,8 @@ import BothVue from '~/components/demos/scrollarea/BothVue.vue';
   reactCode={`<CfScrollArea bordered axis="both" maxWidth={420} maxHeight={200}>
   <div>{/* 18 × 12 网格 */}</div>
 </CfScrollArea>`}
->
+
+  vueSource={BothVueSource}>
   <BothVue client:load />
 </DemoFrame>
 

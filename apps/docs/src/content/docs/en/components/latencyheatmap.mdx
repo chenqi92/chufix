@@ -5,6 +5,7 @@ description: 2D matrix heatmap with green→yellow→red OKLCH hue lerp.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/latencyheatmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/latencyheatmap/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 <DemoFrame
   vueCode={`<CfLatencyHeatmap ... />`}
   reactCode={`<CfLatencyHeatmap ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 Rows = Mon–Sun, columns = hours. Colors map to `oklch(70% 0.16 H)` where H lerps from 152 (green) → 78 (yellow) → 22 (red).
 
 import WeekVue from '~/components/demos/latencyheatmap/WeekVue.vue';
+import WeekVueSource from '~/components/demos/latencyheatmap/WeekVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfLatencyHeatmap :data="data" :row-labels="days" :col-labels="hours" />`}
   reactCode={`<CfLatencyHeatmap data={data} rowLabels={days} colLabels={hours} />`}
->
+
+  vueSource={WeekVueSource}>
   <WeekVue client:load />
 </DemoFrame>
 

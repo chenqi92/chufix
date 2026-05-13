@@ -33,7 +33,6 @@ const locale = getLocaleFromUrl(Astro.url);
     const idToLink = new Map();
     links.forEach((a) => idToLink.set(a.dataset.tocLink, a));
 
-    const scrollRoot = document.querySelector('.docs-main');
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -45,7 +44,7 @@ const locale = getLocaleFromUrl(Astro.url);
           }
         });
       },
-      { root: scrollRoot, rootMargin: '-24px 0px -72% 0px', threshold: 0 },
+      { root: null, rootMargin: '-96px 0px -72% 0px', threshold: 0 },
     );
     idToLink.forEach((_, id) => {
       const node = document.getElementById(id);

@@ -1,3 +1,10 @@
+export interface BulletChartInteractionPayload {
+  value: number;
+  target?: number;
+  max: number;
+  nativeEvent?: unknown;
+}
+
 export interface BulletChartProps {
   value: number;
   target?: number;
@@ -8,4 +15,7 @@ export interface BulletChartProps {
   label?: string;
   ariaLabel?: string;
   className?: string;
+  onClick?: (payload: BulletChartInteractionPayload) => void;
+  onItemEnter?: (payload: BulletChartInteractionPayload) => void;
+  onItemLeave?: (payload: BulletChartInteractionPayload) => void;
 }

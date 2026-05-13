@@ -1,12 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { StackedBar100Props } from './variants';
+import type {
+  StackedBar100InteractionPayload,
+  StackedBar100Props,
+} from './variants';
 
 const props = withDefaults(defineProps<StackedBar100Props>(), {
   width: 480,
   height: 24,
   showLegend: true,
 });
+
+const emit = defineEmits<{
+  (e: 'item-enter', payload: StackedBar100InteractionPayload): void;
+  (e: 'item-leave', payload: StackedBar100InteractionPayload): void;
+}>();
+
+function onEnter(i: number, pct: number, ev: PointerEvent) {
+  const segment = props.segments?.[i];
+  if (!segment) return;
+  emit('item-enter', { segment, dataIndex: i, pct, nativeEvent: ev });
+}
+function onLeave(i: number, pct: number, ev: PointerEvent) {
+  const segment = props.segments?.[i];
+  if (!segment) return;
+  emit('item-leave', { segment, dataIndex: i, pct, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const segs = props.segments ?? [];
@@ -38,6 +57,8 @@ const layout = computed(() => {
         :class="[`cf-stacked100__seg`, `cf-chart__bar--${seg.colorIndex}`]"
         :style="{ width: `${seg.pct}%` }"
         :title="`${seg.name}: ${seg.value}`"
+        @pointerenter="(e: PointerEvent) => onEnter(i, seg.pct, e)"
+        @pointerleave="(e: PointerEvent) => onLeave(i, seg.pct, e)"
       />
     </div>
     <ul v-if="showLegend" class="cf-stacked100__legend">

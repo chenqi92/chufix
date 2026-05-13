@@ -10,7 +10,11 @@ export function BulletChart(props: BulletChartProps) {
     label,
     ariaLabel,
     className,
+    onClick,
+    onItemEnter,
+    onItemLeave,
   } = props;
+  const payload = (e: unknown) => ({ value, target, max, nativeEvent: e });
 
   const segs: { x: number; w: number; tone: string }[] = [];
   let prev = 0;
@@ -32,7 +36,13 @@ export function BulletChart(props: BulletChartProps) {
       aria-label={ariaLabel ?? label ?? '子弹图'}
     >
       {label ? <div className="cf-bullet__label">{label}</div> : null}
-      <div className="cf-bullet__track" style={{ height: `${height}px` }}>
+      <div
+        className="cf-bullet__track"
+        style={{ height: `${height}px` }}
+        onClick={(e) => onClick?.(payload(e))}
+        onPointerEnter={(e) => onItemEnter?.(payload(e))}
+        onPointerLeave={(e) => onItemLeave?.(payload(e))}
+      >
         {segs.map((s, i) => (
           <span
             key={i}

@@ -1,49 +1,117 @@
 ---
-import DocCodeWorkspace from './DocCodeWorkspace.astro';
+import DocCodeBlock from './DocCodeBlock.astro';
+import { buildDemoCodeGroups } from './docCode';
 
 interface Props {
   vueCode?: string;
+  vueSource?: string;
   reactCode?: string;
+  reactSource?: string;
   cliCode?: string;
+  cliSource?: string;
   variant?: 'default' | 'wide' | 'compact';
 }
-type DocCodeFile = {
-  id: string;
-  name: string;
-  content: string;
-  lang: 'vue' | 'tsx' | 'bash';
-};
-const { vueCode, reactCode, cliCode, variant = 'default' } = Astro.props;
 
-const codeTabs: DocCodeFile[] = [];
-if (vueCode) codeTabs.push({ id: 'vue', name: 'src/App.vue', content: vueCode, lang: 'vue' });
-if (reactCode) codeTabs.push({ id: 'react', name: 'src/App.tsx', content: reactCode, lang: 'tsx' });
-if (cliCode) codeTabs.push({ id: 'cli', name: 'scripts/setup.sh', content: cliCode, lang: 'bash' });
+const {
+  vueCode,
+  vueSource,
+  reactCode,
+  reactSource,
+  cliCode,
+  cliSource,
+  variant = 'default',
+} = Astro.props;
+
+const codeGroups = buildDemoCodeGroups({
+  vueCode,
+  vueSource,
+  reactCode,
+  reactSource,
+  cliCode,
+  cliSource,
+});
+const codeTabs = codeGroups.flatMap((group) => group.files);
+const defaultFramework = codeGroups[0]?.framework;
+const defaultFileId = codeGroups[0]?.files[0]?.id;
 ---
 
 <div class:list={['cf-demo', variant !== 'default' && `cf-demo--${variant}`]} data-demo-frame>
   <div class="cf-demo__preview">
+    <div class="cf-demo__preview-tools" aria-label="预览背景">
+      <span class="cf-demo__preview-tools-label">背景</span>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="transparent" data-active="true" aria-label="透明背景" title="透明背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--transparent"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="light" aria-label="白色背景" title="白色背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--light"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="muted" aria-label="浅灰背景" title="浅灰背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--muted"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="dark" aria-label="深色背景" title="深色背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--dark"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="accent" aria-label="品牌淡色背景" title="品牌淡色背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--accent"></span>
+      </button>
+    </div>
     <div class="cf-demo__pane-content">
       <slot />
     </div>
   </div>
 
-  {codeTabs.length > 0 && (
+  {codeGroups.length > 0 && (
     <div class="cf-demo__code-section" data-collapsed="true">
-      <button
-        class="cf-demo__toggle"
-        type="button"
-        aria-expanded="false"
-        data-demo-toggle
-      >
+      <button class="cf-demo__toggle" type="button" aria-expanded="false" data-demo-toggle>
         <svg class="cf-demo__toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         <span class="cf-demo__toggle-label">查看代码</span>
       </button>
 
-      <div class="cf-demo__code-body">
-        <DocCodeWorkspace files={codeTabs} title="Demo source" rootLabel="demo" />
+      <div class="cf-demo__code-body cf-doc-code">
+        <div class="cf-demo__code-bar">
+          <div class="cf-demo__switchers">
+            <div class="cf-demo__tabs" role="tablist" aria-label="Framework">
+              {codeGroups.map((group) => (
+                <button
+                  type="button"
+                  class="cf-demo__tab"
+                  data-demo-framework={group.framework}
+                  aria-selected={group.framework === defaultFramework ? 'true' : 'false'}
+                >
+                  {group.label}
+                </button>
+              ))}
+            </div>
+            <div class="cf-demo__variant-tabs" role="tablist" aria-label="Language">
+              {codeGroups.map((group) => (
+                <div
+                  class="cf-demo__variant-group"
+                  data-demo-variant-group={group.framework}
+                  data-active={group.framework === defaultFramework ? 'true' : 'false'}
+                >
+                  {group.files.map((file) => (
+                    <button
+                      type="button"
+                      class="cf-demo__variant-tab"
+                      data-demo-tab={file.id}
+                      data-demo-tab-framework={group.framework}
+                      data-demo-tab-name={file.name}
+                      aria-selected={file.id === defaultFileId ? 'true' : 'false'}
+                    >
+                      {file.variantLabel}
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+          <span class="cf-demo__code-current" data-demo-code-current>{codeGroups[0]?.files[0]?.name}</span>
+        </div>
+        {codeTabs.map((tab) => (
+          <DocCodeBlock id={tab.id} code={tab.content} lang={tab.lang} active={tab.id === defaultFileId} />
+        ))}
       </div>
     </div>
   )}
@@ -51,8 +119,18 @@ if (cliCode) codeTabs.push({ id: 'cli', name: 'scripts/setup.sh', content: cliCo
 
 <script>
   function bind(root: HTMLElement) {
+    if (root.dataset.demoBound === 'true') return;
+    root.dataset.demoBound = 'true';
+
     const toggle = root.querySelector<HTMLButtonElement>('[data-demo-toggle]');
     const section = root.querySelector<HTMLElement>('.cf-demo__code-section');
+    const frameworkBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-framework]');
+    const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-tab]');
+    const variantGroups = root.querySelectorAll<HTMLElement>('[data-demo-variant-group]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
+    const current = root.querySelector<HTMLElement>('[data-demo-code-current]');
+    const bgBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-bg]');
+    const preview = root.querySelector<HTMLElement>('.cf-demo__preview');
     const floatingSelector = [
       '.cf-select.is-open',
       '.cf-combobox.is-open',
@@ -75,6 +153,59 @@ if (cliCode) codeTabs.push({ id: 'cli', name: 'scripts/setup.sh', content: cliCo
         syncFloatingState();
       });
     }
+
+    const activate = (id: string) => {
+      const selected = Array.from(tabBtns).find((btn) => btn.dataset.demoTab === id);
+      const framework = selected?.dataset.demoTabFramework ?? '';
+      frameworkBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.demoFramework === framework)));
+      variantGroups.forEach((group) => (group.dataset.active = String(group.dataset.demoVariantGroup === framework)));
+      tabBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.demoTab === id)));
+      panels.forEach((panel) => (panel.dataset.active = String(panel.dataset.docCodePanel === id)));
+      if (current && selected?.dataset.demoTabName) current.textContent = selected.dataset.demoTabName;
+    };
+
+    frameworkBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const framework = btn.dataset.demoFramework ?? '';
+        const firstTab = root.querySelector<HTMLButtonElement>(`[data-demo-tab-framework="${framework}"]`);
+        if (firstTab) activate(firstTab.dataset.demoTab ?? '');
+      });
+    });
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => activate(btn.dataset.demoTab ?? ''));
+    });
+
+    bgBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const bg = btn.dataset.demoBg ?? 'transparent';
+        if (preview) preview.dataset.demoBg = bg;
+        bgBtns.forEach((item) => {
+          const active = item === btn;
+          item.dataset.active = String(active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+      });
+      btn.setAttribute('aria-pressed', String(btn.dataset.active === 'true'));
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-demo-copy]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copy ?? '';
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          /* clipboard blocked */
+        }
+        const label = btn.dataset.copyLabel ?? '复制';
+        btn.textContent = btn.dataset.copiedLabel ?? '已复制';
+        btn.dataset.copied = 'true';
+        setTimeout(() => {
+          btn.textContent = label;
+          btn.dataset.copied = 'false';
+        }, 1400);
+      });
+    });
 
     const observer = new MutationObserver(syncFloatingState);
     observer.observe(root, {

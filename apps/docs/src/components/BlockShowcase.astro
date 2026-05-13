@@ -1,10 +1,15 @@
 ---
 import { getLocaleFromUrl } from '~/i18n/utils';
 import { t } from '~/i18n/strings';
+import DocCodeBlock from './DocCodeBlock.astro';
 import DocCodeWorkspace from './DocCodeWorkspace.astro';
+import { asSingleBundle, buildDemoCodeGroups } from './docCode';
 
 /**
- * Multi-file code showcase for Blocks pages — preview + file-tab code view.
+ * Code showcase for Blocks pages.
+ * - single-page blocks (Vue + React file pair): renders preview + collapsible
+ *   framework-tabbed code (same layout as DemoFrame on chart pages).
+ * - multi-file blocks (>2 files or non Vue/React mix): falls back to file-tree workspace.
  */
 export interface BlockFile {
   name: string;
@@ -19,52 +24,190 @@ interface Props {
 }
 const { id, files, cli, previewHeight } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
+
 const heightStyle =
   previewHeight != null
     ? typeof previewHeight === 'number'
       ? `${previewHeight}px`
       : previewHeight
     : '480px';
+
+const vueFile = files.find((f) => f.lang === 'vue');
+const reactFile = files.find((f) => f.lang === 'tsx');
+const isSinglePage =
+  files.length <= 2 &&
+  Boolean(vueFile || reactFile) &&
+  files.every((f) => f.lang === 'vue' || f.lang === 'tsx');
+
+const codeGroups = isSinglePage
+  ? buildDemoCodeGroups({
+      vueSource: vueFile?.content,
+      reactSource: reactFile?.content,
+    })
+  : [];
+const codeTabs = codeGroups.flatMap((group) => group.files);
+const defaultFramework = codeGroups[0]?.framework;
+const defaultFileId = codeGroups[0]?.files[0]?.id;
+
+const bundles = isSinglePage ? [] : [asSingleBundle(files, 'Source')];
 ---
 
-<section class="cf-block" data-block-showcase data-block-id={id}>
-  <header class="cf-block__bar">
-    <div class="cf-block__modes" role="tablist" aria-label={t(locale, 'block.aria.modes')}>
-      <button class="cf-block__mode" data-mode="preview" aria-selected="true">{t(locale, 'block.modes.preview')}</button>
-      <button class="cf-block__mode" data-mode="code" aria-selected="false">{t(locale, 'block.modes.code')}</button>
-    </div>
-    {cli && (
+<section class="cf-block cf-demo" data-block-showcase data-block-id={id}>
+  {cli && (
+    <header class="cf-block__bar">
       <div class="cf-block__cli">
         <code>{cli}</code>
         <button class="cf-block__copy" type="button" data-copy={cli} title={t(locale, 'block.copy.cli')} data-copy-label={t(locale, 'block.copy.copy')} data-copied-label={t(locale, 'block.copy.copied')}>{t(locale, 'block.copy.copy')}</button>
       </div>
-    )}
-  </header>
+    </header>
+  )}
 
-  <div class="cf-block__body">
-    <div class="cf-block__preview" data-pane="preview" data-active="true" style={`min-height: ${heightStyle};`}>
-      <div class="cf-block__preview-frame">
-        <slot />
-      </div>
+  <div class="cf-demo__preview" style={`min-height: ${heightStyle};`}>
+    <div class="cf-demo__preview-tools" aria-label="预览背景">
+      <span class="cf-demo__preview-tools-label">背景</span>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="transparent" data-active="true" aria-label="透明背景" title="透明背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--transparent"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="light" aria-label="白色背景" title="白色背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--light"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="muted" aria-label="浅灰背景" title="浅灰背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--muted"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="dark" aria-label="深色背景" title="深色背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--dark"></span>
+      </button>
+      <button class="cf-demo__bg-option" type="button" data-demo-bg="accent" aria-label="品牌淡色背景" title="品牌淡色背景">
+        <span class="cf-demo__bg-swatch cf-demo__bg-swatch--accent"></span>
+      </button>
     </div>
-    <div class="cf-block__code" data-pane="code" data-active="false">
-      <DocCodeWorkspace files={files} title={`${id} source`} rootLabel={`blocks/${id}`} height="min(720px, 72vh)" />
+    <div class="cf-demo__pane-content">
+      <slot />
     </div>
   </div>
+
+  {isSinglePage && codeGroups.length > 0 && (
+    <div class="cf-demo__code-section" data-collapsed="true">
+      <button class="cf-demo__toggle" type="button" aria-expanded="false" data-demo-toggle>
+        <svg class="cf-demo__toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="cf-demo__toggle-label">查看代码</span>
+      </button>
+
+      <div class="cf-demo__code-body cf-doc-code">
+        <div class="cf-demo__code-bar">
+          <div class="cf-demo__switchers">
+            <div class="cf-demo__tabs" role="tablist" aria-label="Framework">
+              {codeGroups.map((group) => (
+                <button
+                  type="button"
+                  class="cf-demo__tab"
+                  data-demo-framework={group.framework}
+                  aria-selected={group.framework === defaultFramework ? 'true' : 'false'}
+                >
+                  {group.label}
+                </button>
+              ))}
+            </div>
+            <div class="cf-demo__variant-tabs" role="tablist" aria-label="Language">
+              {codeGroups.map((group) => (
+                <div
+                  class="cf-demo__variant-group"
+                  data-demo-variant-group={group.framework}
+                  data-active={group.framework === defaultFramework ? 'true' : 'false'}
+                >
+                  {group.files.map((file) => (
+                    <button
+                      type="button"
+                      class="cf-demo__variant-tab"
+                      data-demo-tab={file.id}
+                      data-demo-tab-framework={group.framework}
+                      data-demo-tab-name={file.name}
+                      aria-selected={file.id === defaultFileId ? 'true' : 'false'}
+                    >
+                      {file.variantLabel}
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+          <span class="cf-demo__code-current" data-demo-code-current>{codeGroups[0]?.files[0]?.name}</span>
+        </div>
+        {codeTabs.map((tab) => (
+          <DocCodeBlock id={tab.id} code={tab.content} lang={tab.lang} active={tab.id === defaultFileId} />
+        ))}
+      </div>
+    </div>
+  )}
+
+  {!isSinglePage && (
+    <div class="cf-block__code-multi">
+      <DocCodeWorkspace bundles={bundles} title={`${id} source`} rootLabel={`blocks/${id}`} height="min(720px, 72vh)" />
+    </div>
+  )}
 </section>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-block-showcase]').forEach((root) => {
-    const modeBtns = root.querySelectorAll<HTMLButtonElement>('.cf-block__mode');
-    const panes = root.querySelectorAll<HTMLElement>('[data-pane]');
+  function bindBlock(root: HTMLElement) {
+    if (root.dataset.blockBound === 'true') return;
+    root.dataset.blockBound = 'true';
 
-    modeBtns.forEach((b) =>
-      b.addEventListener('click', () => {
-        const mode = b.dataset.mode!;
-        modeBtns.forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
-        panes.forEach((p) => (p.dataset.active = p.dataset.pane === mode ? 'true' : 'false'));
-      }),
-    );
+    const toggle = root.querySelector<HTMLButtonElement>('[data-demo-toggle]');
+    const section = root.querySelector<HTMLElement>('.cf-demo__code-section');
+    const frameworkBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-framework]');
+    const tabBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-tab]');
+    const variantGroups = root.querySelectorAll<HTMLElement>('[data-demo-variant-group]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
+    const current = root.querySelector<HTMLElement>('[data-demo-code-current]');
+    const bgBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-bg]');
+    const preview = root.querySelector<HTMLElement>('.cf-demo__preview');
+
+    if (toggle && section) {
+      toggle.addEventListener('click', () => {
+        const collapsed = section.dataset.collapsed === 'true';
+        section.dataset.collapsed = String(!collapsed);
+        toggle.setAttribute('aria-expanded', String(collapsed));
+        const label = toggle.querySelector<HTMLElement>('.cf-demo__toggle-label');
+        if (label) label.textContent = collapsed ? '收起代码' : '查看代码';
+      });
+    }
+
+    const activate = (id: string) => {
+      const selected = Array.from(tabBtns).find((btn) => btn.dataset.demoTab === id);
+      const framework = selected?.dataset.demoTabFramework ?? '';
+      frameworkBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.demoFramework === framework)));
+      variantGroups.forEach((group) => (group.dataset.active = String(group.dataset.demoVariantGroup === framework)));
+      tabBtns.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset.demoTab === id)));
+      panels.forEach((panel) => (panel.dataset.active = String(panel.dataset.docCodePanel === id)));
+      if (current && selected?.dataset.demoTabName) current.textContent = selected.dataset.demoTabName;
+    };
+
+    frameworkBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const framework = btn.dataset.demoFramework ?? '';
+        const firstTab = root.querySelector<HTMLButtonElement>(`[data-demo-tab-framework="${framework}"]`);
+        if (firstTab) activate(firstTab.dataset.demoTab ?? '');
+      });
+    });
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => activate(btn.dataset.demoTab ?? ''));
+    });
+
+    bgBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const bg = btn.dataset.demoBg ?? 'transparent';
+        if (preview) preview.dataset.demoBg = bg;
+        bgBtns.forEach((item) => {
+          const active = item === btn;
+          item.dataset.active = String(active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+      });
+      btn.setAttribute('aria-pressed', String(btn.dataset.active === 'true'));
+    });
 
     root.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
       b.addEventListener('click', async () => {
@@ -78,5 +221,54 @@ const heightStyle =
         } catch {}
       }),
     );
-  });
+  }
+
+  function bindAllBlocks() {
+    document.querySelectorAll<HTMLElement>('[data-block-showcase]').forEach(bindBlock);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindAllBlocks, { once: true });
+  } else {
+    bindAllBlocks();
+  }
 </script>
+
+<style>
+  .cf-block__bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+  .cf-block__cli {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--bg-2);
+    border: 1px solid var(--line-1);
+    border-radius: var(--r-input);
+    font-family: var(--font-mono);
+    font-size: var(--t-12);
+    color: var(--fg-2);
+  }
+  .cf-block__cli code {
+    font-family: inherit;
+    background: transparent;
+    color: var(--fg-1);
+    padding: 0;
+  }
+  .cf-block__copy {
+    background: transparent;
+    border: 0;
+    color: var(--fg-3);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--t-11);
+    padding: 0;
+  }
+  .cf-block__copy:hover { color: var(--fg-1); }
+  .cf-block__code-multi {
+    margin-top: 12px;
+  }
+</style>

@@ -5,6 +5,7 @@ description: A 24-column Row / Col grid system for page ratios, gutters, offsets
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/grid/BasicVue.vue';
+import BasicVueSource from '~/components/demos/grid/BasicVue.vue?raw';
 
 ## Basic Usage
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/grid/BasicVue.vue';
   <CfCol span={12}>50%</CfCol>
   <CfCol span={6}>25%</CfCol>
 </CfRow>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

@@ -5,8 +5,15 @@ description: 轻量浮层提示 —— 4 种 placement、自动避让视口边�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/tooltip/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tooltip/BasicVue.vue?raw';
 import PlacementsVue from '~/components/demos/tooltip/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/tooltip/PlacementsVue.vue?raw';
 import AdvancedVue from '~/components/demos/tooltip/AdvancedVue.vue';
+import AdvancedVueSource from '~/components/demos/tooltip/AdvancedVue.vue?raw';
+import DisabledVue from '~/components/demos/tooltip/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/tooltip/DisabledVue.vue?raw';
+import ContentSlotVue from '~/components/demos/tooltip/ContentSlotVue.vue';
+import ContentSlotVueSource from '~/components/demos/tooltip/ContentSlotVue.vue?raw';
 
 ## 基础用法
 
@@ -31,7 +38,8 @@ export default function Demo() {
     </CfTooltip>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -48,7 +56,8 @@ export default function Demo() {
 <CfTooltip content="底部" placement="bottom"><CfButton>Bottom</CfButton></CfTooltip>
 <CfTooltip content="左侧" placement="left"><CfButton>Left</CfButton></CfTooltip>
 <CfTooltip content="右侧" placement="right"><CfButton>Right</CfButton></CfTooltip>`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:only="vue" />
 </DemoFrame>
 
@@ -79,11 +88,65 @@ export default function Demo() {
 <CfTooltip content="内容比较长，会自动换行..." maxWidth={220}>
   <CfButton>长文本</CfButton>
 </CfTooltip>`}
->
+
+  vueSource={AdvancedVueSource}>
   <AdvancedVue client:only="vue" />
 </DemoFrame>
 
+## 富文本内容 (slot)
+
+`content` prop 只能传字符串。需要在浮层里渲染加粗、`<kbd>`、链接、表格等富内容时用 `#content` 具名插槽（React 端：`content` 直接接收 ReactNode）。
+
+<DemoFrame
+  vueCode={`<CfTooltip placement="bottom" :max-width="260">
+  <CfButton variant="tertiary">富文本内容</CfButton>
+  <template #content>
+    <strong>键盘快捷键</strong>
+    <kbd>⌘</kbd> + <kbd>K</kbd> 打开命令面板
+  </template>
+</CfTooltip>`}
+  reactCode={`<CfTooltip
+  placement="bottom"
+  maxWidth={260}
+  content={<>
+    <strong>键盘快捷键</strong>
+    <kbd>⌘</kbd> + <kbd>K</kbd> 打开命令面板
+  </>}
+>
+  <CfButton variant="tertiary">富文本内容</CfButton>
+</CfTooltip>`}
+
+  vueSource={ContentSlotVueSource}>
+  <ContentSlotVue client:only="vue" />
+</DemoFrame>
+
+## 禁用 tooltip
+
+`disabled` 让 tooltip 完全不显示 —— 用于按条件屏蔽提示（如某些表单字段已 valid 时不再提示规则）。和 `v-show="false"` 包裹触发器不同，触发器本身依然渲染、可点击。
+
+<DemoFrame
+  vueCode={`<CfTooltip content="只在启用时才出现" :disabled="disabled">
+  <CfButton variant="tertiary">悬停我</CfButton>
+</CfTooltip>
+
+<CfButton size="sm" variant="ghost" @click="disabled = !disabled">
+  {{ disabled ? '启用' : '禁用' }} tooltip
+</CfButton>`}
+  reactCode={`<CfTooltip content="只在启用时才出现" disabled={disabled}>
+  <CfButton variant="tertiary">悬停我</CfButton>
+</CfTooltip>
+
+<CfButton size="sm" variant="ghost" onClick={() => setDisabled(!disabled)}>
+  {disabled ? '启用' : '禁用'} tooltip
+</CfButton>`}
+
+  vueSource={DisabledVueSource}>
+  <DisabledVue client:only="vue" />
+</DemoFrame>
+
 ## API
+
+### Props
 
 | Prop        | 类型                                       | 默认值  | 说明                                |
 | ----------- | ------------------------------------------ | ------- | ----------------------------------- |
@@ -94,3 +157,10 @@ export default function Demo() {
 | `disabled`  | `boolean`                                  | `false` | 完全不显示                          |
 | `offset`    | `number`                                   | `8`     | 触发器与浮层之间的间距（像素）      |
 | `maxWidth`  | `number \| string`                         | —       | 限制最大宽度，超出换行              |
+
+### Slots
+
+| Slot | 作用域参数 | 说明 |
+|---|---|---|
+| `default` | — | 触发元素（React 端：`children`） |
+| `content` | — | 浮层富文本内容（覆盖 `content` prop） |

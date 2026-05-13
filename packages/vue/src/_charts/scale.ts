@@ -81,6 +81,11 @@ export function ticks(domain: NumberDomain, count = 5): number[] {
   return Array.from({ length: count }, (_, i) => domain.min + i * step);
 }
 
+function stableCoord(value: number): number {
+  const rounded = Number(value.toFixed(4));
+  return Object.is(rounded, -0) ? 0 : rounded;
+}
+
 /** Polar coords helper (degrees). */
 export function polar(
   cx: number,
@@ -89,7 +94,10 @@ export function polar(
   angleDeg: number,
 ): { x: number; y: number } {
   const a = ((angleDeg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+  return {
+    x: stableCoord(cx + r * Math.cos(a)),
+    y: stableCoord(cy + r * Math.sin(a)),
+  };
 }
 
 /** Donut / pie arc path between two angles (degrees). */

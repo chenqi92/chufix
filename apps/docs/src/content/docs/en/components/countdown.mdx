@@ -5,6 +5,7 @@ description: Counts down to a target timestamp. Supports format strings with DD/
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/countdown/BasicVue.vue';
+import BasicVueSource from '~/components/demos/countdown/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/countdown/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCountDown :target="target" format="HH:mm:ss" size="lg" @finish="onDone" />`}
   reactCode={`<CfCountDown target={target} format="HH:mm:ss" size="lg" onFinish={onDone} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

@@ -3,8 +3,31 @@ title: MethodBadge HTTP 方法徽标
 description: ProtocolBadge 的别名，专用于 HTTP method 上下文。API 完全一致。
 ---
 
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/methodbadge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/methodbadge/BasicVue.vue?raw';
+
 `CfMethodBadge` 是 [`CfProtocolBadge`](/components/protocolbadge/) 的别名导出。当上下文明确只涉及 HTTP method 时，
 import `CfMethodBadge` 更精确表达意图，运行时与底层组件相同。
+
+## 基础用法
+
+仅展示 HTTP method 语义，颜色和尺寸规则沿用 `ProtocolBadge`。
+
+<DemoFrame
+  vueCode={`<CfMethodBadge kind="get" />
+<CfMethodBadge kind="post" />
+<CfMethodBadge kind="put" />
+<CfMethodBadge kind="delete" />`}
+  reactCode={`<CfMethodBadge kind="get" />
+<CfMethodBadge kind="post" />
+<CfMethodBadge kind="put" />
+<CfMethodBadge kind="delete" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 导入
 
 ```ts
 // Vue

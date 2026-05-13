@@ -5,6 +5,7 @@ description: Column-by-column expanding picker for hierarchical options — path
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/cascader/BasicVue.vue';
+import BasicVueSource from '~/components/demos/cascader/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/cascader/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfCascader v-model="value" :options="options" clearable />`}
   reactCode={`<CfCascader value={value} onChange={setValue} options={options} clearable />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

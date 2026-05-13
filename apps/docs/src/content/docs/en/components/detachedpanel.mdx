@@ -5,6 +5,7 @@ description: Draggable floating panel teleported to body. Use with TearOffTab / 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/detachedpanel/BasicVue.vue';
+import BasicVueSource from '~/components/demos/detachedpanel/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -18,7 +19,8 @@ Hold the header to drag it; `resizable` enables the browser-native resize handle
   reactCode={`<CfDetachedPanel open={open} onOpenChange={setOpen} title="Inspector" width={320}>
   <div>Panel content…</div>
 </CfDetachedPanel>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -28,13 +30,15 @@ Hold the header to drag it; `resizable` enables the browser-native resize handle
 Multiple DetachedPanels can be open simultaneously; layer them explicitly via `zIndex`. `resizable=true` enables the browser-native resize handle.
 
 import MultipleVue from '~/components/demos/detachedpanel/MultipleVue.vue';
+import MultipleVueSource from '~/components/demos/detachedpanel/MultipleVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfDetachedPanel v-model:open="a" :width="280" />
 <CfDetachedPanel v-model:open="b" resizable />`}
   reactCode={`<CfDetachedPanel open={a} onOpenChange={setA} width={280} />
 <CfDetachedPanel open={b} onOpenChange={setB} resizable />`}
->
+
+  vueSource={MultipleVueSource}>
   <MultipleVue client:load />
 </DemoFrame>
 

@@ -5,9 +5,13 @@ description: Design-consistent link styling — 4 variants, 3 sizes, auto extern
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/link/BasicVue.vue';
+import BasicVueSource from '~/components/demos/link/BasicVue.vue?raw';
 import VariantsVue from '~/components/demos/link/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/link/VariantsVue.vue?raw';
 import ExternalVue from '~/components/demos/link/ExternalVue.vue';
+import ExternalVueSource from '~/components/demos/link/ExternalVue.vue?raw';
 import StatesVue from '~/components/demos/link/StatesVue.vue';
+import StatesVueSource from '~/components/demos/link/StatesVue.vue?raw';
 
 ## Basic usage
 
@@ -18,7 +22,8 @@ The two most common cases — in-page anchor jumps and external URLs. External l
 <CfLink href="https://github.com/chenqi92/chufix">GitHub repo</CfLink>`}
   reactCode={`<CfLink href="#getting-started">Go to getting started</CfLink>
 <CfLink href="https://github.com/chenqi92/chufix">GitHub repo</CfLink>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -42,7 +47,8 @@ The two most common cases — in-page anchor jumps and external URLs. External l
 <div style={{ background: 'var(--accent-1)', color: 'var(--fg-on-accent)', padding: '6px 10px' }}>
   <CfLink href="#" variant="inverse">inverse</CfLink>
 </div>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -61,7 +67,8 @@ Three triggers cause the component to treat a link as external — auto trailing
   reactCode={`<CfLink href="https://github.com/chenqi92/chufix">Auto-detected</CfLink>
 <CfLink href="/internal" external>Explicit external</CfLink>
 <CfLink href="#" target="_blank">target=_blank</CfLink>`}
->
+
+  vueSource={ExternalVueSource}>
   <ExternalVue client:load />
 </DemoFrame>
 
@@ -78,7 +85,8 @@ Three triggers cause the component to treat a link as external — auto trailing
 <CfLink href="#" size="md">Default</CfLink>
 <CfLink href="#" size="lg">Large</CfLink>
 <CfLink href="#" disabled>Disabled</CfLink>`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

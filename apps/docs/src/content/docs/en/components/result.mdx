@@ -5,7 +5,9 @@ description: Full-page feedback for completed / failed / exception states — su
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/result/BasicVue.vue';
+import BasicVueSource from '~/components/demos/result/BasicVue.vue?raw';
 import StatusesVue from '~/components/demos/result/StatusesVue.vue';
+import StatusesVueSource from '~/components/demos/result/StatusesVue.vue?raw';
 
 ## Basic usage
 
@@ -27,7 +29,8 @@ import StatusesVue from '~/components/demos/result/StatusesVue.vue';
     <CfButton variant="tertiary">Submit another</CfButton>
   </>}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -42,7 +45,8 @@ import StatusesVue from '~/components/demos/result/StatusesVue.vue';
   reactCode={`<CfResult status="404" size="sm" description="The page may have moved or been deleted." />
 <CfResult status="403" size="sm" description="Your account doesn't have access." />
 <CfResult status="500" size="sm" description="The service is temporarily unavailable. Please try again later." />`}
->
+
+  vueSource={StatusesVueSource}>
   <StatusesVue client:load />
 </DemoFrame>
 

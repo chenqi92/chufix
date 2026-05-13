@@ -5,6 +5,7 @@ description: Horizontal button-group container with separators, vertical orienta
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toolbar/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -26,7 +27,8 @@ import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
   <CfButton variant="ghost" size="sm">Duplicate</CfButton>
   <CfButton variant="ghost" size="sm">Delete</CfButton>
 </CfToolbar>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,13 +38,15 @@ import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
 `orientation="vertical"` stacks vertically; `variant="plain"` removes background and border, useful as a bare button group.
 
 import VerticalVue from '~/components/demos/toolbar/VerticalVue.vue';
+import VerticalVueSource from '~/components/demos/toolbar/VerticalVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfToolbar orientation="vertical">…</CfToolbar>
 <CfToolbar variant="plain">…</CfToolbar>`}
   reactCode={`<CfToolbar orientation="vertical">…</CfToolbar>
 <CfToolbar variant="plain">…</CfToolbar>`}
->
+
+  vueSource={VerticalVueSource}>
   <VerticalVue client:load />
 </DemoFrame>
 

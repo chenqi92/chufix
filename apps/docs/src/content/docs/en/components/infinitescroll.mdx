@@ -5,6 +5,7 @@ description: Auto-loads the next page when scrolled to the bottom; based on Inte
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/infinitescroll/BasicVue.vue';
+import BasicVueSource from '~/components/demos/infinitescroll/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ Place the list inside the component slot. When the bottom sentinel enters the vi
   reactCode={`<CfInfiniteScroll loading={loading} finished={finished} onLoad={loadMore}>
   <ul>...</ul>
 </CfInfiniteScroll>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

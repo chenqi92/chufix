@@ -5,6 +5,7 @@ description: 行内微缩走势线，常用于 KPI 卡的趋势线。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sparkline/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfSparkline ... />`}
   reactCode={`<CfSparkline ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/sparkline/BasicVue.vue';
 通过 `colorIndex`（0..7）选 `--viz-1..8` 任一色号，色盲友好且与图表系列色统一。
 
 import ColorsVue from '~/components/demos/sparkline/ColorsVue.vue';
+import ColorsVueSource from '~/components/demos/sparkline/ColorsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSparkline :data="data" :color-index="0" filled smooth />
 <CfSparkline :data="data" :color-index="3" filled smooth />`}
   reactCode={`<CfSparkline data={data} colorIndex={0} filled smooth />
 <CfSparkline data={data} colorIndex={3} filled smooth />`}
->
+
+  vueSource={ColorsVueSource}>
   <ColorsVue client:load />
 </DemoFrame>
 
@@ -44,3 +48,22 @@ import ColorsVue from '~/components/demos/sparkline/ColorsVue.vue';
 | `smooth` | `boolean` | `false` | 平滑曲线 |
 | `colorIndex` | `0..7` | `0` | 颜色索引（--viz-&#123;n+1&#125;） |
 | `showDot` | `boolean` | `true` | 高亮最后一个点 |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label`，提升屏幕阅读器可读性 |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `click` | `onClick` | `SparklineClickPayload` | 点击 sparkline；按点击位置自动定位最近的数据点索引 |
+
+### 类型
+
+```ts
+interface SparklineClickPayload {
+  /** 距点击位置最近的数据点索引。 */
+  dataIndex: number;
+  /** 该索引对应的数值。 */
+  value: number;
+  nativeEvent?: PointerEvent | MouseEvent;
+}
+```

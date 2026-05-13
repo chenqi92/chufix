@@ -5,10 +5,15 @@ description: 数字 + 标签 + 趋势的指标卡片，适合 dashboard 顶部�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/stat/BasicVue.vue';
+import BasicVueSource from '~/components/demos/stat/BasicVue.vue?raw';
 import TrendsVue from '~/components/demos/stat/TrendsVue.vue';
+import TrendsVueSource from '~/components/demos/stat/TrendsVue.vue?raw';
 import VariantsVue from '~/components/demos/stat/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/stat/VariantsVue.vue?raw';
 import SizesVue from '~/components/demos/stat/SizesVue.vue';
+import SizesVueSource from '~/components/demos/stat/SizesVue.vue?raw';
 import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
+import LoadingVueSource from '~/components/demos/stat/LoadingVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +22,8 @@ import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
 <DemoFrame
   vueCode={`<CfStat label="今日访问" :value="12384" variant="outlined" />`}
   reactCode={`<CfStat label="今日访问" value={12384} variant="outlined" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,7 +38,8 @@ import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
   reactCode={`<CfStat label="今日访问" value={12384} trend={{ delta: '+12.4%', label: '环比昨日' }} variant="outlined" />
 <CfStat label="转化率" value="3.2" suffix="%" trend={{ delta: '-0.4%', label: '环比昨日' }} variant="outlined" />
 <CfStat label="收入" value={84520} prefix="¥" trend={{ delta: 0, label: '与昨日持平' }} variant="outlined" />`}
->
+
+  vueSource={TrendsVueSource}>
   <TrendsVue client:load />
 </DemoFrame>
 
@@ -47,7 +54,8 @@ import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
   reactCode={`<CfStat label="default" value={42} />
 <CfStat label="outlined" value={42} variant="outlined" />
 <CfStat label="soft" value={42} variant="soft" />`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 
@@ -62,7 +70,8 @@ import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
   reactCode={`<CfStat label="size = sm" value={42} size="sm" variant="outlined" />
 <CfStat label="size = md" value={42} size="md" variant="outlined" />
 <CfStat label="size = lg" value={42} size="lg" variant="outlined" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -75,7 +84,8 @@ import LoadingVue from '~/components/demos/stat/LoadingVue.vue';
 <CfStat label="正常状态" :value="123" variant="outlined" />`}
   reactCode={`<CfStat label="数据加载中" value={0} loading variant="outlined" />
 <CfStat label="正常状态" value={123} variant="outlined" />`}
->
+
+  vueSource={LoadingVueSource}>
   <LoadingVue client:load />
 </DemoFrame>
 

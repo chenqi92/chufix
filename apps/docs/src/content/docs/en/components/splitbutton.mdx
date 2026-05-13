@@ -5,6 +5,7 @@ description: A primary button + dropdown arrow combo for related actions.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/splitbutton/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ The main button fires `click`; the arrow opens the dropdown; selecting an item f
   reactCode={`<CfSplitButton items={items} onClick={save} onSelect={(v) => onPick(v)}>
   Save
 </CfSplitButton>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -27,6 +29,7 @@ The main button fires `click`; the arrow opens the dropdown; selecting an item f
 Three sizes follow the `--control-h` token.
 
 import SizesVue from '~/components/demos/splitbutton/SizesVue.vue';
+import SizesVueSource from '~/components/demos/splitbutton/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSplitButton size="sm" :items="items">Small</CfSplitButton>
@@ -35,7 +38,8 @@ import SizesVue from '~/components/demos/splitbutton/SizesVue.vue';
   reactCode={`<CfSplitButton size="sm" items={items}>Small</CfSplitButton>
 <CfSplitButton size="md" items={items}>Medium</CfSplitButton>
 <CfSplitButton size="lg" items={items}>Large</CfSplitButton>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

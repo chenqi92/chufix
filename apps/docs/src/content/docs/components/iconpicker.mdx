@@ -5,6 +5,7 @@ description: 从内置图标集中搜索并选择图标，适合菜单配置、�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/iconpicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/iconpicker/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/iconpicker/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfIconPicker v-model="icon" searchable clearable />`}
   reactCode={`<CfIconPicker value={icon} searchable clearable onChange={setIcon} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

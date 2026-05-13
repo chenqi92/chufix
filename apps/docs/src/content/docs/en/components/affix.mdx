@@ -5,6 +5,7 @@ description: Switch an element to fixed positioning when it scrolls past — han
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/affix/BasicVue.vue';
+import BasicVueSource from '~/components/demos/affix/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/affix/BasicVue.vue';
     <div className="toolbar">This row sticks once it reaches the top</div>
   </CfAffix>
 </div>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

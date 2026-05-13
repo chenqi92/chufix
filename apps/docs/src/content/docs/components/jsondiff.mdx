@@ -5,8 +5,11 @@ description: 对两个 JSON 值做行级 LCS diff，按 add / del / eq 三种状
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/jsondiff/BasicVue.vue';
+import BasicVueSource from '~/components/demos/jsondiff/BasicVue.vue?raw';
 import NoNumbersVue from '~/components/demos/jsondiff/NoNumbersVue.vue';
+import NoNumbersVueSource from '~/components/demos/jsondiff/NoNumbersVue.vue?raw';
 import SizesVue from '~/components/demos/jsondiff/SizesVue.vue';
+import SizesVueSource from '~/components/demos/jsondiff/SizesVue.vue?raw';
 
 ## 基础用法
 
@@ -20,7 +23,8 @@ import SizesVue from '~/components/demos/jsondiff/SizesVue.vue';
 <DemoFrame
   vueCode={`<CfJsonDiff :left="left" :right="right" />`}
   reactCode={`<CfJsonDiff left={left} right={right} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -31,7 +35,8 @@ import SizesVue from '~/components/demos/jsondiff/SizesVue.vue';
 <DemoFrame
   vueCode={`<CfJsonDiff :left="before" :right="after" :line-numbers="false" />`}
   reactCode={`<CfJsonDiff left={before} right={after} lineNumbers={false} />`}
->
+
+  vueSource={NoNumbersVueSource}>
   <NoNumbersVue client:load />
 </DemoFrame>
 
@@ -46,7 +51,8 @@ import SizesVue from '~/components/demos/jsondiff/SizesVue.vue';
   reactCode={`<CfJsonDiff left={left} right={right} size="sm" />
 <CfJsonDiff left={left} right={right} size="md" />
 <CfJsonDiff left={left} right={right} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

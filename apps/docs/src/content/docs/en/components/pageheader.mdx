@@ -5,9 +5,13 @@ description: All-in-one page header with title + description + breadcrumb + acti
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/pageheader/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pageheader/BasicVue.vue?raw';
 import WithTabsVue from '~/components/demos/pageheader/WithTabsVue.vue';
+import WithTabsVueSource from '~/components/demos/pageheader/WithTabsVue.vue?raw';
 import SizesVue from '~/components/demos/pageheader/SizesVue.vue';
+import SizesVueSource from '~/components/demos/pageheader/SizesVue.vue?raw';
 import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
+import NoBorderVueSource from '~/components/demos/pageheader/NoBorderVue.vue?raw';
 
 ## Basic usage
 
@@ -47,7 +51,8 @@ import NoBorderVue from '~/components/demos/pageheader/NoBorderVue.vue';
     </>
   }
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -76,7 +81,8 @@ Embed Tabs directly in the `tabs` slot / prop and they will sit flush with the h
   actions={<><CfButton size="sm" variant="tertiary">Share</CfButton><CfButton size="sm" variant="primary">Deploy</CfButton></>}
   tabs={<CfTabs value={tab} items={items} onChange={setTab} />}
 />`}
->
+
+  vueSource={WithTabsVueSource}>
   <WithTabsVue client:load />
 </DemoFrame>
 
@@ -91,7 +97,8 @@ Embed Tabs directly in the `tabs` slot / prop and they will sit flush with the h
   reactCode={`<CfPageHeader title="size = sm" description="Compact header" size="sm" />
 <CfPageHeader title="size = md" description="Default size" size="md" />
 <CfPageHeader title="size = lg" description="Landing-page emphasis" size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -110,7 +117,8 @@ Embed Tabs directly in the `tabs` slot / prop and they will sit flush with the h
   description="bordered=false drops the bottom divider"
   bordered={false}
 />`}
->
+
+  vueSource={NoBorderVueSource}>
   <NoBorderVue client:load />
 </DemoFrame>
 

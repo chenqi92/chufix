@@ -5,6 +5,7 @@ description: "API debugging panel with five tabs: Collection, Request, Response,
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/domainpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/domainpane/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`domain.html`](https://github.com/chenqi92/chufix-design).
   'panel-collection': <PanelA />,
   'panel-request': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,11 +34,13 @@ Source: [`domain.html`](https://github.com/chenqi92/chufix-design).
 Five tabs combine into a Postman-style prototype: CfTreeView for the collection, CfMethodBadge + CfKVEditor for the request, CfStatusCodeBadge + CfDescriptionList for the response.
 
 import RealVue from '~/components/demos/domainpane/RealVue.vue';
+import RealVueSource from '~/components/demos/domainpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfDomainPane>...</CfDomainPane>`}
   reactCode={`<CfDomainPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

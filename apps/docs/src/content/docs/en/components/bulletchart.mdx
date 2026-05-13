@@ -5,6 +5,7 @@ description: Single-value progress bar with a target marker and qualitative band
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/bulletchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/bulletchart/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 <DemoFrame
   vueCode={`<CfBulletChart ... />`}
   reactCode={`<CfBulletChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ Colors come from the `--viz-1..8` tokens and are color-blind friendly.
 `bands` provides three colored segments and `target` draws a vertical line; when the value exceeds the target the bar extends past it.
 
 import BandsVue from '~/components/demos/bulletchart/BandsVue.vue';
+import BandsVueSource from '~/components/demos/bulletchart/BandsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfBulletChart :value="92" :target="80" :max="100" :bands="bands" />`}
   reactCode={`<CfBulletChart value={92} target={80} max={100} bands={bands} />`}
->
+
+  vueSource={BandsVueSource}>
   <BandsVue client:load />
 </DemoFrame>
 

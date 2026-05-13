@@ -5,6 +5,7 @@ description: Horizontally scrolling text or elements at a constant speed; for an
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/marquee/BasicVue.vue';
+import BasicVueSource from '~/components/demos/marquee/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/marquee/BasicVue.vue';
   reactCode={`<CfMarquee duration={20}>
   📢 The system will undergo maintenance tonight at 23:00...
 </CfMarquee>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

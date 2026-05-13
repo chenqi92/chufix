@@ -10,10 +10,12 @@ interface ToasterProps {
     | 'bottom-right'
     | 'bottom-left'
     | 'bottom-center';
+  teleport?: boolean;
 }
 
 const props = withDefaults(defineProps<ToasterProps>(), {
   position: 'top-right',
+  teleport: true,
 });
 
 const items = ref<ToastItem[]>([]);
@@ -64,42 +66,44 @@ function dismiss(id: string) {
 </script>
 
 <template>
-  <Teleport v-if="canRender" to="body">
-    <div :class="`cf-toaster cf-toaster--${props.position}`" role="region" aria-label="通知">
-      <TransitionGroup name="cf-toast" tag="div" class="cf-toaster__list">
-        <div
-          v-for="item in items"
-          :key="item.id"
-          :class="['cf-toast', `cf-toast--${item.type}`]"
-          role="status"
-        >
-          <span class="cf-toast__icon" aria-hidden="true">
-            <svg v-if="item.type === 'success'" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <svg v-else-if="item.type === 'error'" viewBox="0 0 16 16" fill="none">
-              <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-            <svg v-else-if="item.type === 'warning'" viewBox="0 0 16 16" fill="none">
-              <path d="M8 4v5M8 12v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-            <svg v-else-if="item.type === 'info'" viewBox="0 0 16 16" fill="none">
-              <path d="M8 7v5M8 4.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          </span>
-          <div class="cf-toast__body">
-            <div v-if="item.title" class="cf-toast__title">{{ item.title }}</div>
-            <div v-if="item.description" class="cf-toast__desc">{{ item.description }}</div>
+  <div class="cf-toaster-host">
+    <Teleport v-if="canRender" to="body" :disabled="!props.teleport">
+      <div :class="`cf-toaster cf-toaster--${props.position}`" role="region" aria-label="通知">
+        <TransitionGroup name="cf-toast" tag="div" class="cf-toaster__list">
+          <div
+            v-for="item in items"
+            :key="item.id"
+            :class="['cf-toast', `cf-toast--${item.type}`]"
+            role="status"
+          >
+            <span class="cf-toast__icon" aria-hidden="true">
+              <svg v-if="item.type === 'success'" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <svg v-else-if="item.type === 'error'" viewBox="0 0 16 16" fill="none">
+                <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <svg v-else-if="item.type === 'warning'" viewBox="0 0 16 16" fill="none">
+                <path d="M8 4v5M8 12v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <svg v-else-if="item.type === 'info'" viewBox="0 0 16 16" fill="none">
+                <path d="M8 7v5M8 4.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div class="cf-toast__body">
+              <div v-if="item.title" class="cf-toast__title">{{ item.title }}</div>
+              <div v-if="item.description" class="cf-toast__desc">{{ item.description }}</div>
+            </div>
+            <button
+              v-if="item.dismissible"
+              type="button"
+              class="cf-toast__close"
+              aria-label="关闭"
+              @click="dismiss(item.id)"
+            >×</button>
           </div>
-          <button
-            v-if="item.dismissible"
-            type="button"
-            class="cf-toast__close"
-            aria-label="关闭"
-            @click="dismiss(item.id)"
-          >×</button>
-        </div>
-      </TransitionGroup>
-    </div>
-  </Teleport>
+        </TransitionGroup>
+      </div>
+    </Teleport>
+  </div>
 </template>

@@ -5,6 +5,7 @@ description: ⌘K 全局命令搜索，分组列表 + 命中字符高亮 + 键�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/commandpalette/BasicVue.vue';
+import BasicVueSource from '~/components/demos/commandpalette/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -23,7 +24,8 @@ import BasicVue from '~/components/demos/commandpalette/BasicVue.vue';
   items={items}
   onSelect={(id) => onPick(id)}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -33,11 +35,13 @@ import BasicVue from '~/components/demos/commandpalette/BasicVue.vue';
 `hide-footer` 隐藏底部"↑↓ 导航 · ↵ 选择 · Esc 关闭"提示，节省竖向空间。
 
 import HiddenFooterVue from '~/components/demos/commandpalette/HiddenFooterVue.vue';
+import HiddenFooterVueSource from '~/components/demos/commandpalette/HiddenFooterVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfCommandPalette ... hide-footer />`}
   reactCode={`<CfCommandPalette ... hideFooter />`}
->
+
+  vueSource={HiddenFooterVueSource}>
   <HiddenFooterVue client:load />
 </DemoFrame>
 

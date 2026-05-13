@@ -5,6 +5,7 @@ description: Notification history panel with unread count, mark-all-read, and cl
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/notificationcenter/BasicVue.vue';
+import BasicVueSource from '~/components/demos/notificationcenter/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -24,7 +25,8 @@ Unread items show a colored dot on the left.
   onMarkAllRead={markAllRead}
   onClearAll={clearAll}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -34,11 +36,13 @@ Unread items show a colored dot on the left.
 When `items: []`, `emptyText` is shown; replace with custom copy as needed.
 
 import EmptyVue from '~/components/demos/notificationcenter/EmptyVue.vue';
+import EmptyVueSource from '~/components/demos/notificationcenter/EmptyVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfNotificationCenter :items="[]" empty-text="You're all caught up" />`}
   reactCode={`<CfNotificationCenter items={[]} emptyText="You're all caught up" />`}
->
+
+  vueSource={EmptyVueSource}>
   <EmptyVue client:load />
 </DemoFrame>
 

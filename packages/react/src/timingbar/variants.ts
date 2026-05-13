@@ -5,6 +5,13 @@ export interface TimingPhase {
   colorIndex?: number;
 }
 
+export interface TimingBarInteractionPayload {
+  phase: TimingPhase;
+  dataIndex: number;
+  duration: number;
+  nativeEvent?: unknown;
+}
+
 export interface TimingBarProps {
   phases: TimingPhase[];
   width?: number;
@@ -15,4 +22,6 @@ export interface TimingBarProps {
   labelMode?: 'auto' | 'all' | 'none';
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: TimingBarInteractionPayload) => void;
+  onItemLeave?: (payload: TimingBarInteractionPayload) => void;
 }

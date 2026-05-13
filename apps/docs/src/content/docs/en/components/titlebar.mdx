@@ -5,6 +5,7 @@ description: Desktop app window header. macOS-style traffic lights with centered
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/titlebar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/titlebar/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ The header has `-webkit-app-region: drag` by default, so a Tauri / Electron host
 <CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
   reactCode={`<CfTitleBar platform="macos" title="orders.parquet" subtitle="protoforge" modified />
 <CfTitleBar platform="windows" title="orders.parquet" subtitle="protoforge" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -27,6 +29,7 @@ The header has `-webkit-app-region: drag` by default, so a Tauri / Electron host
 Same component, `platform` switches the look. Use `hideControls=true` for a plain header bar.
 
 import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
+import PlatformsVueSource from '~/components/demos/titlebar/PlatformsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfTitleBar platform="macos" title="…" subtitle="…" :modified="true" />
@@ -35,7 +38,8 @@ import PlatformsVue from '~/components/demos/titlebar/PlatformsVue.vue';
   reactCode={`<CfTitleBar platform="macos" title="…" subtitle="…" modified />
 <CfTitleBar platform="windows" title="…" subtitle="…" />
 <CfTitleBar platform="linux" title="…" />`}
->
+
+  vueSource={PlatformsVueSource}>
   <PlatformsVue client:load />
 </DemoFrame>
 

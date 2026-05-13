@@ -9,6 +9,7 @@ import {
   codeFileName,
   codeWorkspaceClass,
   normalizeCodeIndent,
+  type CodeWorkspaceBundle,
   type CodeWorkspaceFile,
   type CodeWorkspaceProps,
 } from './variants';
@@ -21,18 +22,100 @@ const props = withDefaults(defineProps<CodeWorkspaceProps>(), {
   editable: false,
   readOnly: false,
   wrap: false,
-  tone: 'light',
+  tone: 'auto',
   trimIndent: false,
   highlight: true,
 });
 
 const emit = defineEmits<{
   (e: 'update:activeFile', value: string): void;
+  (e: 'update:activeBundle', value: string): void;
   (e: 'change', payload: { file: CodeWorkspaceFile; value: string }): void;
 }>();
 
+/* ---------- 模式判断：bundles 优先于 files ---------- */
+const isBundleMode = computed(() => Array.isArray(props.bundles) && props.bundles.length > 0);
+const bundles = computed<CodeWorkspaceBundle[]>(() => props.bundles ?? []);
+
+/* ---------- 当前激活 bundle ---------- */
+const initialBundleId = computed(() => {
+  if (!isBundleMode.value) return '';
+  if (props.activeBundle && bundles.value.some((b) => b.id === props.activeBundle)) return props.activeBundle;
+  if (props.defaultBundle && bundles.value.some((b) => b.id === props.defaultBundle)) return props.defaultBundle;
+  return bundles.value[0]?.id ?? '';
+});
+const innerBundle = ref(initialBundleId.value);
+watch(
+  () => props.activeBundle,
+  (next) => {
+    if (next && bundles.value.some((b) => b.id === next)) innerBundle.value = next;
+  },
+);
+watch(
+  () => bundles.value.map((b) => b.id).join('|'),
+  () => {
+    if (!bundles.value.some((b) => b.id === innerBundle.value)) {
+      innerBundle.value = bundles.value[0]?.id ?? '';
+    }
+  },
+);
+const activeBundleId = computed(() => (props.activeBundle ?? innerBundle.value));
+const activeBundle = computed(() => bundles.value.find((b) => b.id === activeBundleId.value));
+
+/* ---------- 框架 / 变体 tab ---------- */
+const frameworkOrder = computed(() => {
+  const out: string[] = [];
+  for (const b of bundles.value) {
+    if (b.framework === 'neutral') continue;
+    if (!out.includes(b.framework as string)) out.push(b.framework as string);
+  }
+  return out;
+});
+const frameworkLabel = computed(() => {
+  const map: Record<string, string> = {};
+  for (const b of bundles.value) {
+    if (b.framework === 'neutral') continue;
+    map[b.framework as string] ??= b.frameworkLabel;
+  }
+  return map;
+});
+const activeFramework = computed(() => activeBundle.value?.framework ?? 'neutral');
+const showFrameworkTabs = computed(() => isBundleMode.value && frameworkOrder.value.length > 1);
+const showVariantTabs = computed(() => {
+  if (!isBundleMode.value) return false;
+  return bundles.value.some((b) => {
+    if (b.framework === 'neutral') return false;
+    return bundles.value.some(
+      (o) => o !== b && o.framework === b.framework && o.variant !== b.variant,
+    );
+  });
+});
+function firstBundleOfFramework(framework: string): string {
+  return bundles.value.find((b) => b.framework === framework)?.id ?? '';
+}
+function selectBundle(id: string) {
+  if (!id || id === activeBundleId.value) return;
+  innerBundle.value = id;
+  emit('update:activeBundle', id);
+  // bundle 切换时把 active 文件落到该 bundle 的第一个文件
+  const bundle = bundles.value.find((b) => b.id === id);
+  const firstFile = bundle?.files[0];
+  if (firstFile) {
+    const fid = codeFileId(firstFile);
+    innerActive.value = fid;
+    emit('update:activeFile', fid);
+  }
+}
+
+/* ---------- 当前可见的 files（来自激活 bundle 或 props.files） ---------- */
+const visibleFiles = computed<CodeWorkspaceFile[]>(() => {
+  if (isBundleMode.value) return activeBundle.value?.files ?? [];
+  return props.files ?? [];
+});
+
+/* ---------- 当前激活文件（沿用旧逻辑） ---------- */
 const fallbackId = computed(() => {
-  const first = props.files[0];
+  const first = visibleFiles.value[0];
   return first ? codeFileId(first) : '';
 });
 
@@ -48,17 +131,17 @@ watch(
 );
 
 watch(fallbackId, (next) => {
-  if (!props.files.some((file) => codeFileId(file) === innerActive.value)) {
+  if (!visibleFiles.value.some((file) => codeFileId(file) === innerActive.value)) {
     innerActive.value = next;
   }
 });
 
 const activeId = computed(() => props.activeFile ?? innerActive.value);
 const activeFile = computed(() =>
-  props.files.find((file) => codeFileId(file) === activeId.value) ?? props.files[0],
+  visibleFiles.value.find((file) => codeFileId(file) === activeId.value) ?? visibleFiles.value[0],
 );
 const activeLanguage = computed(() => activeFile.value ? codeFileLanguage(activeFile.value) : 'plaintext');
-const treeItems = computed(() => buildCodeTree(props.files));
+const treeItems = computed(() => buildCodeTree(visibleFiles.value));
 
 const activeCode = computed(() => {
   if (!activeFile.value) return '';
@@ -112,7 +195,12 @@ async function copy() {
 </script>
 
 <template>
-  <div :class="cls" :style="heightStyle">
+  <div
+    :class="cls"
+    :style="heightStyle"
+    :data-active-framework="activeFramework"
+    :data-active-bundle="activeBundleId || undefined"
+  >
     <header v-if="title || copyable" class="cf-code-workspace__header">
       <div class="cf-code-workspace__title">
         <span class="cf-code-workspace__traffic" aria-hidden="true">
@@ -130,6 +218,39 @@ async function copy() {
         {{ copyState === 'copied' ? '已复制' : '复制' }}
       </button>
     </header>
+
+    <div
+      v-if="showFrameworkTabs || showVariantTabs"
+      class="cf-code-workspace__bundles"
+      role="tablist"
+      aria-label="Framework"
+    >
+      <div v-if="showFrameworkTabs" class="cf-code-workspace__frameworks">
+        <button
+          v-for="framework in frameworkOrder"
+          :key="framework"
+          type="button"
+          class="cf-code-workspace__framework-tab"
+          :aria-selected="activeFramework === framework ? 'true' : 'false'"
+          @click="selectBundle(firstBundleOfFramework(framework))"
+        >
+          {{ frameworkLabel[framework] }}
+        </button>
+      </div>
+      <div v-if="showVariantTabs" class="cf-code-workspace__variants">
+        <template v-for="bundle in bundles" :key="bundle.id">
+          <button
+            v-if="bundle.framework !== 'neutral' && bundle.framework === activeFramework"
+            type="button"
+            class="cf-code-workspace__variant-tab"
+            :aria-selected="bundle.id === activeBundleId ? 'true' : 'false'"
+            @click="selectBundle(bundle.id)"
+          >
+            {{ bundle.variantLabel }}
+          </button>
+        </template>
+      </div>
+    </div>
 
     <div class="cf-code-workspace__shell">
       <aside class="cf-code-workspace__tree" aria-label="Code files">
@@ -163,7 +284,7 @@ async function copy() {
       <section class="cf-code-workspace__editor" aria-live="polite">
         <div v-if="activeFile" class="cf-code-workspace__tabs" role="tablist">
           <button
-            v-for="file in files"
+            v-for="file in visibleFiles"
             :key="codeFileId(file)"
             type="button"
             class="cf-code-workspace__tab"

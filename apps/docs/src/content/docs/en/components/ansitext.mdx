@@ -5,6 +5,7 @@ description: Parses ANSI escape sequences (\x1b[...m) and renders them as colore
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/ansitext/BasicVue.vue';
+import BasicVueSource from '~/components/demos/ansitext/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ Colors map to design tokens and follow the active theme; 24-bit truecolor escape
 <DemoFrame
   vueCode={`<CfAnsiText :text="terminalOutput" />`}
   reactCode={`<CfAnsiText text={terminalOutput} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ Colors map to design tokens and follow the active theme; 24-bit truecolor escape
 `sm / md / lg` adjusts font size and line height — `sm` for compact toast logs, `lg` for terminal panels.
 
 import SizesVue from '~/components/demos/ansitext/SizesVue.vue';
+import SizesVueSource from '~/components/demos/ansitext/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfAnsiText :text="log" size="sm" />
 <CfAnsiText :text="log" size="lg" />`}
   reactCode={`<CfAnsiText text={log} size="sm" />
 <CfAnsiText text={log} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

@@ -5,6 +5,7 @@ description: Built-in minimal markdown renderer with split / edit / preview mode
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/markdowneditor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/markdowneditor/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ For richer needs (tables, task lists, extended syntax), pass a custom `render`.
 <DemoFrame
   vueCode={`<CfMarkdownEditor v-model="md" :mode="mode" @update:mode="setMode" />`}
   reactCode={`<CfMarkdownEditor value={md} onChange={setMd} mode={mode} onModeChange={setMode} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ For richer needs (tables, task lists, extended syntax), pass a custom `render`.
 Combine `readOnly` with `size="sm"` for a compact preview panel (e.g. commit message preview).
 
 import SizesVue from '~/components/demos/markdowneditor/SizesVue.vue';
+import SizesVueSource from '~/components/demos/markdowneditor/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfMarkdownEditor v-model="md" mode="preview" size="sm" read-only />`}
   reactCode={`<CfMarkdownEditor value={md} onChange={set} mode="preview" size="sm" readOnly />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

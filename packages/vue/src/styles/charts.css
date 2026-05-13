@@ -36,9 +36,16 @@
 }
 .cf-chart__bar {
   fill: var(--viz-1);
+  transition: opacity var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out);
 }
 .cf-chart__dot {
   fill: var(--viz-1);
+}
+.cf-chart__bar:hover,
+.cf-chart__bar.is-active,
+.cf-chart__dot:hover {
+  filter: brightness(1.08);
+  opacity: 0.88;
 }
 
 /* per-series colors, split by element so lines never get filled.
@@ -62,21 +69,21 @@
 .cf-chart__series-7 .cf-chart__area { fill: var(--viz-8); }
 
 .cf-chart__series-0 .cf-chart__dot,
-.cf-chart__bar--0 { fill: var(--viz-1); }
+.cf-chart__bar--0 { fill: var(--viz-1); color: var(--viz-1); }
 .cf-chart__series-1 .cf-chart__dot,
-.cf-chart__bar--1 { fill: var(--viz-2); }
+.cf-chart__bar--1 { fill: var(--viz-2); color: var(--viz-2); }
 .cf-chart__series-2 .cf-chart__dot,
-.cf-chart__bar--2 { fill: var(--viz-3); }
+.cf-chart__bar--2 { fill: var(--viz-3); color: var(--viz-3); }
 .cf-chart__series-3 .cf-chart__dot,
-.cf-chart__bar--3 { fill: var(--viz-4); }
+.cf-chart__bar--3 { fill: var(--viz-4); color: var(--viz-4); }
 .cf-chart__series-4 .cf-chart__dot,
-.cf-chart__bar--4 { fill: var(--viz-5); }
+.cf-chart__bar--4 { fill: var(--viz-5); color: var(--viz-5); }
 .cf-chart__series-5 .cf-chart__dot,
-.cf-chart__bar--5 { fill: var(--viz-6); }
+.cf-chart__bar--5 { fill: var(--viz-6); color: var(--viz-6); }
 .cf-chart__series-6 .cf-chart__dot,
-.cf-chart__bar--6 { fill: var(--viz-7); }
+.cf-chart__bar--6 { fill: var(--viz-7); color: var(--viz-7); }
 .cf-chart__series-7 .cf-chart__dot,
-.cf-chart__bar--7 { fill: var(--viz-8); }
+.cf-chart__bar--7 { fill: var(--viz-8); color: var(--viz-8); }
 
 /* sparkline variants */
 .cf-sparkline {
@@ -128,8 +135,14 @@
   font-family: var(--font-mono);
 }
 
-/* heatmap cells */
-.cf-heatmap__cell {
+.cf-latencyheatmap {
+  width: var(--cf-latencyheatmap-width, 480px);
+  max-width: 100%;
+  height: auto;
+}
+
+/* latency heatmap cells */
+.cf-latencyheatmap__cell {
   stroke: var(--bg-1);
   stroke-width: 1;
 }
@@ -190,11 +203,55 @@
 .cf-radar { display: inline-flex; align-items: center; gap: 16px; font-family: var(--font-sans); }
 .cf-radar__legend { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--t-12); color: var(--fg-2); }
 .cf-radar__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: currentColor; }
+.cf-radar__polygon { transition: fill-opacity var(--dur-instant) linear; cursor: pointer; }
+.cf-radar__polygon:hover { fill-opacity: 0.35; }
+.cf-radar__vertex { cursor: pointer; transition: r var(--dur-instant) linear; stroke: var(--bg-1); stroke-width: 1.5; }
+.cf-radar__vertex:hover { r: 5; }
+.cf-radar__axis-line { cursor: pointer; transition: stroke-width var(--dur-instant) linear; }
+.cf-radar__axis-line:hover { stroke-width: 2; }
+.cf-radar__axis-label { cursor: pointer; transition: fill var(--dur-instant) linear; }
+.cf-radar__axis-label:hover { fill: var(--accent-1); }
 
 /* crosshair */
 .cf-crosshair__line { stroke: var(--accent-1); stroke-width: 1; stroke-dasharray: 2 3; }
 .cf-crosshair__tip > rect { fill: var(--bg-3); stroke: var(--line-2); stroke-width: 1; }
 .cf-crosshair__tip > text { fill: var(--fg-1); font-size: var(--t-11); }
+
+/* in-chart legend + tooltip */
+.cf-chart-legend__item {
+  cursor: pointer;
+  outline: none;
+}
+.cf-chart-legend__item text {
+  fill: var(--fg-2);
+  font-size: var(--t-11);
+}
+.cf-chart-legend__item.is-hidden {
+  opacity: 0.38;
+}
+.cf-chart-legend__item.is-hidden text {
+  text-decoration: line-through;
+}
+.cf-chart-legend__item:focus-visible text {
+  fill: var(--fg-1);
+  text-decoration: underline;
+}
+.cf-chart-tooltip > rect {
+  fill: var(--bg-1);
+  stroke: var(--line-2);
+  stroke-width: 1;
+  filter: drop-shadow(0 8px 18px rgb(0 0 0 / 0.16));
+}
+.cf-chart-tooltip text {
+  fill: var(--fg-1);
+  font-size: var(--t-11);
+}
+.cf-chart-tooltip__title {
+  font-weight: var(--w-medium);
+}
+.cf-chart-hitarea {
+  cursor: crosshair;
+}
 
 /* chart toolbar */
 .cf-toolbar2 { display: flex; align-items: center; gap: 12px; padding: 8px 10px; background: var(--bg-1); border-bottom: 1px solid var(--line-1); font-family: var(--font-sans); font-size: var(--t-12); }

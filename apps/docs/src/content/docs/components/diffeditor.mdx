@@ -5,6 +5,7 @@ description: 行级 LCS diff，支持 split / unified 双模式，行号 + +/- �
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/diffeditor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/diffeditor/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/diffeditor/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfDiffEditor :left="oldText" :right="newText" />`}
   reactCode={`<CfDiffEditor left={oldText} right={newText} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -23,11 +25,13 @@ import BasicVue from '~/components/demos/diffeditor/BasicVue.vue';
 `mode="unified"` 单栏紧凑显示，删除行红、新增行绿、未变行白。
 
 import UnifiedVue from '~/components/demos/diffeditor/UnifiedVue.vue';
+import UnifiedVueSource from '~/components/demos/diffeditor/UnifiedVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfDiffEditor :left="a" :right="b" mode="unified" />`}
   reactCode={`<CfDiffEditor left={a} right={b} mode="unified" />`}
->
+
+  vueSource={UnifiedVueSource}>
   <UnifiedVue client:load />
 </DemoFrame>
 

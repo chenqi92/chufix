@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { layoutTreemap, type TreemapProps } from './variants';
+import {
+  layoutTreemap,
+  type TreemapInteractionPayload,
+  type TreemapProps,
+} from './variants';
 
 const props = withDefaults(defineProps<TreemapProps>(), {
   width: 480,
@@ -8,12 +12,28 @@ const props = withDefaults(defineProps<TreemapProps>(), {
   showLabels: true,
 });
 
+const emit = defineEmits<{
+  (e: 'item-enter', payload: TreemapInteractionPayload): void;
+  (e: 'item-leave', payload: TreemapInteractionPayload): void;
+}>();
+
 const rects = computed(() =>
   layoutTreemap(props.nodes ?? [], props.width, props.height).map((r, i) => ({
     ...r,
     colorIndex: r.colorIndex ?? i % 8,
   })),
 );
+
+function onEnter(i: number, ev: PointerEvent) {
+  const node = props.nodes?.[i];
+  if (!node) return;
+  emit('item-enter', { node, dataIndex: i, nativeEvent: ev });
+}
+function onLeave(i: number, ev: PointerEvent) {
+  const node = props.nodes?.[i];
+  if (!node) return;
+  emit('item-leave', { node, dataIndex: i, nativeEvent: ev });
+}
 </script>
 
 <template>
@@ -25,7 +45,12 @@ const rects = computed(() =>
     role="img"
     :aria-label="ariaLabel ?? '矩形树图'"
   >
-    <g v-for="(r, i) in rects" :key="i">
+    <g
+      v-for="(r, i) in rects"
+      :key="i"
+      @pointerenter="(e: PointerEvent) => onEnter(i, e)"
+      @pointerleave="(e: PointerEvent) => onLeave(i, e)"
+    >
       <rect
         :class="`cf-chart__bar--${r.colorIndex}`"
         :x="r.x"

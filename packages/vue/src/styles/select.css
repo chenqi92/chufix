@@ -48,7 +48,7 @@
 
 .cf-select.is-error .cf-select__trigger { border-color: var(--status-error); }
 .cf-select.is-error.is-open .cf-select__trigger {
-  box-shadow: 0 0 0 2px var(--bg-1), 0 0 0 4px var(--status-error);
+  box-shadow: 0 0 0 2px var(--status-error);
 }
 
 .cf-select--filled .cf-select__trigger {

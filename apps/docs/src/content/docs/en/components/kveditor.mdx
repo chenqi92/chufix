@@ -5,8 +5,11 @@ description: Editor for HTTP headers / query params / env vars and other key-val
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/kveditor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/kveditor/BasicVue.vue?raw';
 import HeadersVue from '~/components/demos/kveditor/HeadersVue.vue';
+import HeadersVueSource from '~/components/demos/kveditor/HeadersVue.vue?raw';
 import StatesVue from '~/components/demos/kveditor/StatesVue.vue';
+import StatesVueSource from '~/components/demos/kveditor/StatesVue.vue?raw';
 
 ## Basic usage
 
@@ -47,7 +50,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -71,7 +75,8 @@ Turn on `showToggle` to add a leftmost checkbox column — disabled rows keep `e
   showToggle
   showDescription
 />`}
->
+
+  vueSource={HeadersVueSource}>
   <HeadersVue client:load />
 </DemoFrame>
 
@@ -84,7 +89,8 @@ Turn on `showToggle` to add a leftmost checkbox column — disabled rows keep `e
 <CfKVEditor :model-value="env" disabled />`}
   reactCode={`<CfKVEditor value={env} readonly />
 <CfKVEditor value={env} disabled />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

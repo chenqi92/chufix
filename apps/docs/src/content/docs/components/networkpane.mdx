@@ -5,6 +5,7 @@ description: HAR / Hex / PCAP / Cert / Cookie 5 个 tab 的网络抓包面板。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/networkpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/networkpane/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/networkpane/BasicVue.vue';
   'panel-har': <PanelA />,
   'panel-hex': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,6 +34,7 @@ import BasicVue from '~/components/demos/networkpane/BasicVue.vue';
 5 个 tab 各放对应原子：HAR Timeline 用 CfTimingBar；Hex Viewer 用 pre + 等宽字体；Cert 字段用 CfDescriptionList。
 
 import RealVue from '~/components/demos/networkpane/RealVue.vue';
+import RealVueSource from '~/components/demos/networkpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfNetworkPane>
@@ -39,7 +42,8 @@ import RealVue from '~/components/demos/networkpane/RealVue.vue';
   ...
 </CfNetworkPane>`}
   reactCode={`<CfNetworkPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

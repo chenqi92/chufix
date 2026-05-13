@@ -5,8 +5,19 @@ description: 多行输入 —— 与 Input 同色系，支持自动撑高、字�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/textarea/BasicVue.vue';
+import BasicVueSource from '~/components/demos/textarea/BasicVue.vue?raw';
+import VariantsVue from '~/components/demos/textarea/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/textarea/VariantsVue.vue?raw';
+import SizesVue from '~/components/demos/textarea/SizesVue.vue';
+import SizesVueSource from '~/components/demos/textarea/SizesVue.vue?raw';
+import StatesVue from '~/components/demos/textarea/StatesVue.vue';
+import StatesVueSource from '~/components/demos/textarea/StatesVue.vue?raw';
 import CountVue from '~/components/demos/textarea/CountVue.vue';
+import CountVueSource from '~/components/demos/textarea/CountVue.vue?raw';
 import AutoResizeVue from '~/components/demos/textarea/AutoResizeVue.vue';
+import AutoResizeVueSource from '~/components/demos/textarea/AutoResizeVue.vue?raw';
+import ResizeVue from '~/components/demos/textarea/ResizeVue.vue';
+import ResizeVueSource from '~/components/demos/textarea/ResizeVue.vue?raw';
 
 ## 基础用法
 
@@ -37,8 +48,58 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
+</DemoFrame>
+
+## 视觉变体
+
+`outline` 是默认描边，`filled` 提供浅色填充背景（密集表单常用），`ghost` 完全透明只在交互态显示边界。
+与 Input 的同名变体一一对应，可以在同一个表单里混用而不破坏视觉一致性。
+
+<DemoFrame
+  vueCode={`<CfTextarea variant="outline" placeholder="outline" :rows="2" />
+<CfTextarea variant="filled"  placeholder="filled"  :rows="2" />
+<CfTextarea variant="ghost"   placeholder="ghost"   :rows="2" />`}
+  reactCode={`<CfTextarea variant="outline" placeholder="outline" rows={2} />
+<CfTextarea variant="filled"  placeholder="filled"  rows={2} />
+<CfTextarea variant="ghost"   placeholder="ghost"   rows={2} />`}
+
+  vueSource={VariantsVueSource}>
+  <VariantsVue client:load />
+</DemoFrame>
+
+## 尺寸
+
+3 档尺寸控制字号与内边距，与 Input 的 size 一致。表单中通常与同行 Input 保持一致。
+
+<DemoFrame
+  vueCode={`<CfTextarea size="sm" placeholder="size = sm" :rows="2" />
+<CfTextarea size="md" placeholder="size = md" :rows="2" />
+<CfTextarea size="lg" placeholder="size = lg" :rows="2" />`}
+  reactCode={`<CfTextarea size="sm" placeholder="size = sm" rows={2} />
+<CfTextarea size="md" placeholder="size = md" rows={2} />
+<CfTextarea size="lg" placeholder="size = lg" rows={2} />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:load />
+</DemoFrame>
+
+## 状态
+
+`disabled` 完全禁用、`readonly` 只读（可选中复制不能修改）、`error` 让边框与焦点环变红用于校验失败提示。
+
+<DemoFrame
+  vueCode={`<CfTextarea v-model="a" disabled :rows="2" />
+<CfTextarea v-model="b" readonly :rows="2" />
+<CfTextarea v-model="c" error    :rows="2" />`}
+  reactCode={`<CfTextarea value={a} onChange={(e) => setA(e.target.value)} disabled rows={2} />
+<CfTextarea value={b} onChange={(e) => setB(e.target.value)} readOnly rows={2} />
+<CfTextarea value={c} onChange={(e) => setC(e.target.value)} error    rows={2} />`}
+
+  vueSource={StatesVueSource}>
+  <StatesVue client:load />
 </DemoFrame>
 
 ## 字符计数
@@ -61,7 +122,8 @@ export default function Demo() {
   maxLength={50}
   showCount
 />`}
->
+
+  vueSource={CountVueSource}>
   <CountVue client:load />
 </DemoFrame>
 
@@ -83,19 +145,58 @@ export default function Demo() {
   autoResize
   placeholder="自动撑高的多行输入"
 />`}
->
+
+  vueSource={AutoResizeVueSource}>
   <AutoResizeVue client:load />
+</DemoFrame>
+
+## Resize 控制
+
+`resize` 决定用户拖拽时允许的方向。`none` 完全锁定，`vertical` 是默认行为，`horizontal` 仅横向，`both` 横纵都可拖。
+当 `auto-resize` 开启时本属性会被覆盖为 `none`。
+
+<DemoFrame
+  vueCode={`<CfTextarea resize="none"       placeholder="resize = none"       :rows="2" />
+<CfTextarea resize="vertical"   placeholder="resize = vertical"   :rows="2" />
+<CfTextarea resize="horizontal" placeholder="resize = horizontal" :rows="2" />
+<CfTextarea resize="both"       placeholder="resize = both"       :rows="2" />`}
+  reactCode={`<CfTextarea resize="none"       placeholder="resize = none"       rows={2} />
+<CfTextarea resize="vertical"   placeholder="resize = vertical"   rows={2} />
+<CfTextarea resize="horizontal" placeholder="resize = horizontal" rows={2} />
+<CfTextarea resize="both"       placeholder="resize = both"       rows={2} />`}
+
+  vueSource={ResizeVueSource}>
+  <ResizeVue client:load />
 </DemoFrame>
 
 ## API
 
-| Prop         | 类型                                            | 默认值       | 说明                                      |
-| ------------ | ----------------------------------------------- | ------------ | ----------------------------------------- |
-| `variant`    | `'outline' \| 'filled' \| 'ghost'`              | `'outline'`  | 视觉变体，与 Input 一致                   |
-| `size`       | `'sm' \| 'md' \| 'lg'`                          | `'md'`       | 字号 / 内边距                             |
-| `rows`       | `number`                                        | `3`          | 初始行数                                  |
-| `resize`     | `'none' \| 'vertical' \| 'horizontal' \| 'both'`| `'vertical'` | 用户拖拽 resize 行为                      |
-| `autoResize` | `boolean`                                       | `false`      | 内容增减时自动调整高度（覆盖 `resize`）   |
-| `error`      | `boolean`                                       | `false`      | 错误状态边框 / 焦点环                      |
-| `maxlength`  | `number`                                        | —            | 字符上限（属性名 React 端为 `maxLength`） |
-| `showCount`  | `boolean`                                       | `false`      | 右下角显示字符计数                        |
+### Props
+
+| Prop          | 类型                                            | 默认值       | 说明                                          |
+| ------------- | ----------------------------------------------- | ------------ | --------------------------------------------- |
+| `modelValue`  | `string`                                        | `''`         | 双向绑定值；React 端用 `value` + `onChange`   |
+| `variant`     | `'outline' \| 'filled' \| 'ghost'`              | `'outline'`  | 视觉变体，与 Input 一致                       |
+| `size`        | `'sm' \| 'md' \| 'lg'`                          | `'md'`       | 字号 / 内边距                                 |
+| `rows`        | `number`                                        | `3`          | 初始行数                                      |
+| `placeholder` | `string`                                        | —            | 占位文案                                      |
+| `disabled`    | `boolean`                                       | `false`      | 禁用                                          |
+| `readonly`    | `boolean`                                       | `false`      | 只读（可选中复制，不可修改；React 端 `readOnly`）|
+| `error`       | `boolean`                                       | `false`      | 错误状态边框 / 焦点环                          |
+| `resize`      | `'none' \| 'vertical' \| 'horizontal' \| 'both'`| `'vertical'` | 用户拖拽 resize 行为                          |
+| `autoResize`  | `boolean`                                       | `false`      | 内容增减时自动调整高度（覆盖 `resize`）       |
+| `maxlength`   | `number`                                        | —            | 字符上限（React 端为 `maxLength`）            |
+| `showCount`   | `boolean`                                       | `false`      | 右下角显示字符计数                            |
+
+`name` / `id` 是直接透传到原生 `<textarea>` 的 HTML 标准属性，用于参与表单提交或 label 关联，使用方式与原生一致。
+
+### Events
+
+| Event               | 载荷类型      | 说明                              |
+| ------------------- | ------------- | --------------------------------- |
+| `update:modelValue` | `string`      | 输入触发，v-model 隐式监听        |
+| `change`            | `string`      | 原生 change 事件转发（失焦时）    |
+| `focus`             | `FocusEvent`  | 获得焦点                          |
+| `blur`              | `FocusEvent`  | 失去焦点                          |
+
+{/* OMITTED: Slots — Textarea 是原子输入控件，无可插槽位置 */}

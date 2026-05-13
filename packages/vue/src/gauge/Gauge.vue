@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { polar } from '../_charts/scale';
-import type { GaugeProps } from './variants';
+import type { GaugeClickPayload, GaugeProps } from './variants';
 
 const props = withDefaults(defineProps<GaugeProps>(), {
   min: 0,
@@ -11,6 +11,18 @@ const props = withDefaults(defineProps<GaugeProps>(), {
   sweep: 270,
   tone: 'accent',
 });
+
+const emit = defineEmits<{
+  (e: 'click', payload: GaugeClickPayload): void;
+}>();
+
+function onClick(ev: PointerEvent) {
+  const ratio = Math.max(
+    0,
+    Math.min(1, (props.value - props.min) / (props.max - props.min)),
+  );
+  emit('click', { value: props.value, ratio, nativeEvent: ev });
+}
 
 const layout = computed(() => {
   const cx = props.size / 2;
@@ -58,6 +70,7 @@ const toneColor = computed(() => {
     :height="size"
     role="img"
     :aria-label="ariaLabel ?? label ?? '仪表盘'"
+    @click="onClick"
   >
     <path class="cf-gauge__track" :d="layout.trackPath" :stroke-width="thickness" />
     <path

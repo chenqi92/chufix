@@ -5,8 +5,11 @@ description: 当前位置链路导航，最后一项为当前页（不可点）�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/breadcrumb/BasicVue.vue';
+import BasicVueSource from '~/components/demos/breadcrumb/BasicVue.vue?raw';
 import SeparatorsVue from '~/components/demos/breadcrumb/SeparatorsVue.vue';
+import SeparatorsVueSource from '~/components/demos/breadcrumb/SeparatorsVue.vue?raw';
 import LongVue from '~/components/demos/breadcrumb/LongVue.vue';
+import LongVueSource from '~/components/demos/breadcrumb/LongVue.vue?raw';
 
 ## 基础用法
 
@@ -27,7 +30,8 @@ import LongVue from '~/components/demos/breadcrumb/LongVue.vue';
 ];
 
 <CfBreadcrumb items={items} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -44,7 +48,8 @@ import LongVue from '~/components/demos/breadcrumb/LongVue.vue';
 <CfBreadcrumb items={items} separator="›" />
 <CfBreadcrumb items={items} separator="·" />
 <CfBreadcrumb items={items} separator="→" />`}
->
+
+  vueSource={SeparatorsVueSource}>
   <SeparatorsVue client:load />
 </DemoFrame>
 
@@ -63,7 +68,8 @@ import LongVue from '~/components/demos/breadcrumb/LongVue.vue';
 
 <CfBreadcrumb :items="items" separator="›" />`}
   reactCode={`<CfBreadcrumb items={items} separator="›" />`}
->
+
+  vueSource={LongVueSource}>
   <LongVue client:load />
 </DemoFrame>
 

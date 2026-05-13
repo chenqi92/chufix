@@ -5,6 +5,7 @@ description: 右键打开的菜单。支持分隔符、快捷键、危险项；�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
+import BasicVueSource from '~/components/demos/contextmenu/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
   reactCode={`<CfContextMenu items={items} onSelect={onPick}>
   <div>右键这里</div>
 </CfContextMenu>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -27,11 +29,13 @@ import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
 `disabled` 灰化、`danger` 红字、`separator: true` 画分隔行。
 
 import NestedVue from '~/components/demos/contextmenu/NestedVue.vue';
+import NestedVueSource from '~/components/demos/contextmenu/NestedVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfContextMenu :items="items">…</CfContextMenu>`}
   reactCode={`<CfContextMenu items={items}>…</CfContextMenu>`}
->
+
+  vueSource={NestedVueSource}>
   <NestedVue client:load />
 </DemoFrame>
 

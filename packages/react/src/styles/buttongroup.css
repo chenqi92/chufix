@@ -1,0 +1,47 @@
+/* ChuFix ButtonGroup — connected or separated row/column of CfButton. */
+
+.cf-btn-group {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.cf-btn-group--horizontal { flex-direction: row; }
+.cf-btn-group--vertical   { flex-direction: column; align-items: stretch; }
+
+/* Separated variant: simple gap, each button keeps its own radius. */
+.cf-btn-group--separated.cf-btn-group--horizontal { gap: var(--s-2); }
+.cf-btn-group--separated.cf-btn-group--vertical   { gap: var(--s-2); }
+
+/* Attached variant: collapse inner radii so buttons read as one control. */
+.cf-btn-group--attached > .cf-btn,
+.cf-btn-group--attached > .cf-icon-btn {
+  border-radius: 0;
+  position: relative;
+}
+.cf-btn-group--attached.cf-btn-group--horizontal > :first-child {
+  border-top-left-radius: var(--r-button);
+  border-bottom-left-radius: var(--r-button);
+}
+.cf-btn-group--attached.cf-btn-group--horizontal > :last-child {
+  border-top-right-radius: var(--r-button);
+  border-bottom-right-radius: var(--r-button);
+}
+.cf-btn-group--attached.cf-btn-group--vertical > :first-child {
+  border-top-left-radius: var(--r-button);
+  border-top-right-radius: var(--r-button);
+}
+.cf-btn-group--attached.cf-btn-group--vertical > :last-child {
+  border-bottom-left-radius: var(--r-button);
+  border-bottom-right-radius: var(--r-button);
+}
+
+/* Suppress the duplicated border between adjacent buttons. */
+.cf-btn-group--attached.cf-btn-group--horizontal > * + * { margin-left: -1px; }
+.cf-btn-group--attached.cf-btn-group--vertical   > * + * { margin-top: -1px; }
+
+/* On focus/hover, lift the active button so its border wins. */
+.cf-btn-group--attached > *:hover,
+.cf-btn-group--attached > *:focus-visible,
+.cf-btn-group--attached > *[aria-pressed='true'] {
+  z-index: 1;
+}

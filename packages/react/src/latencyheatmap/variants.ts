@@ -1,3 +1,12 @@
+export interface LatencyHeatmapInteractionPayload {
+  row: number;
+  col: number;
+  value: number;
+  rowLabel?: string;
+  colLabel?: string;
+  nativeEvent?: unknown;
+}
+
 export interface LatencyHeatmapProps {
   data: number[][];
   rowLabels?: string[];
@@ -8,6 +17,8 @@ export interface LatencyHeatmapProps {
   max?: number;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: LatencyHeatmapInteractionPayload) => void;
+  onItemLeave?: (payload: LatencyHeatmapInteractionPayload) => void;
 }
 
 export function ratioColor(ratio: number): string {

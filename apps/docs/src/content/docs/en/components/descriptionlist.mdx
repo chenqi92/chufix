@@ -5,9 +5,13 @@ description: Key-value display in dt/dd style — horizontal or vertical layout,
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/descriptionlist/BasicVue.vue';
+import BasicVueSource from '~/components/demos/descriptionlist/BasicVue.vue?raw';
 import ColumnsVue from '~/components/demos/descriptionlist/ColumnsVue.vue';
+import ColumnsVueSource from '~/components/demos/descriptionlist/ColumnsVue.vue?raw';
 import LayoutVue from '~/components/demos/descriptionlist/LayoutVue.vue';
+import LayoutVueSource from '~/components/demos/descriptionlist/LayoutVue.vue?raw';
 import SizesVue from '~/components/demos/descriptionlist/SizesVue.vue';
+import SizesVueSource from '~/components/demos/descriptionlist/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -28,7 +32,8 @@ Pass data via `items`: each entry has `term` and `description`. `termWidth` cont
 ];
 
 <CfDescriptionList items={items} termWidth={100} bordered title="Order info" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -42,7 +47,8 @@ Pass data via `items`: each entry has `term` and `description`. `termWidth` cont
 <CfDescriptionList :items="items" layout="vertical" bordered />`}
   reactCode={`<CfDescriptionList items={items} layout="horizontal" termWidth={80} bordered />
 <CfDescriptionList items={items} layout="vertical" bordered />`}
->
+
+  vueSource={LayoutVueSource}>
   <LayoutVue client:load />
 </DemoFrame>
 
@@ -53,7 +59,8 @@ Pass data via `items`: each entry has `term` and `description`. `termWidth` cont
 <DemoFrame
   vueCode={`<CfDescriptionList :items="items" :columns="3" bordered :term-width="60" />`}
   reactCode={`<CfDescriptionList items={items} columns={3} bordered termWidth={60} />`}
->
+
+  vueSource={ColumnsVueSource}>
   <ColumnsVue client:load />
 </DemoFrame>
 
@@ -68,7 +75,8 @@ Pass data via `items`: each entry has `term` and `description`. `termWidth` cont
   reactCode={`<CfDescriptionList items={items} size="sm" bordered title="size = sm" />
 <CfDescriptionList items={items} size="md" bordered title="size = md" />
 <CfDescriptionList items={items} size="lg" bordered title="size = lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

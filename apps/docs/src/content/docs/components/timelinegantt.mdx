@@ -5,14 +5,18 @@ description: 横向时间轴 + 多行任务条 —— today 标线、周末高�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timelinegantt/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timelinegantt/BasicVue.vue?raw';
 import EditableVue from '~/components/demos/timelinegantt/EditableVue.vue';
+import EditableVueSource from '~/components/demos/timelinegantt/EditableVue.vue?raw';
 import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
+import GroupedVueSource from '~/components/demos/timelinegantt/GroupedVue.vue?raw';
 
 ## 基础用法
 
 `rows` 是任务行数组；每行的 `bars` 是该行上的若干时间段。`start` / `end` 决定可视范围，`day-width` 控制一天的像素宽度，今天会用一条蓝色竖线标出。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -20,7 +24,8 @@ import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
 
 `editable` 打开后，条体可拖拽整体移动；左右边缘出现把柄，可以单边缩放。变更通过 `@bar-change` 事件抛出 `{ bar, row, next: { start, end }, meta }`，宿主自己回写到 model。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={EditableVueSource}>
   <EditableVue client:only="vue" />
 </DemoFrame>
 
@@ -28,7 +33,8 @@ import GroupedVue from '~/components/demos/timelinegantt/GroupedVue.vue';
 
 行可以带 `group: string` —— 渲染时自动按首次出现顺序插入分组标题（侧栏 + 主体一起对齐）。`dependencies` 数组以 bar id 配对，组件在主体上画一条带箭头的折线，表示前置/后置关系。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={GroupedVueSource}>
   <GroupedVue client:only="vue" />
 </DemoFrame>
 

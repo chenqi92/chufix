@@ -5,9 +5,13 @@ description: 把多个 Input / Button / Select / 静态标签拼到一起，共�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/inputgroup/BasicVue.vue';
+import BasicVueSource from '~/components/demos/inputgroup/BasicVue.vue?raw';
 import UrlVue from '~/components/demos/inputgroup/UrlVue.vue';
+import UrlVueSource from '~/components/demos/inputgroup/UrlVue.vue?raw';
 import AddonVue from '~/components/demos/inputgroup/AddonVue.vue';
+import AddonVueSource from '~/components/demos/inputgroup/AddonVue.vue?raw';
 import StretchVue from '~/components/demos/inputgroup/StretchVue.vue';
+import StretchVueSource from '~/components/demos/inputgroup/StretchVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +26,8 @@ InputGroup 是一个纯样式包裹层。把表单控件按顺序放入，相邻
   <span className="cf-input-group__addon">@</span>
   <CfInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="username" />
 </CfInputGroup>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -41,7 +46,8 @@ InputGroup 是一个纯样式包裹层。把表单控件按顺序放入，相邻
   <CfInput value={host} onChange={(e) => setHost(e.target.value)} placeholder="example.com" />
   <CfButton>访问</CfButton>
 </CfInputGroup>`}
->
+
+  vueSource={UrlVueSource}>
   <UrlVue client:load />
 </DemoFrame>
 
@@ -72,7 +78,8 @@ InputGroup 是一个纯样式包裹层。把表单控件按顺序放入，相邻
   <CfInput value={url} onChange={(e) => setUrl(e.target.value)} placeholder="example.com" />
   <span className="cf-input-group__addon">/path</span>
 </CfInputGroup>`}
->
+
+  vueSource={AddonVueSource}>
   <AddonVue client:load />
 </DemoFrame>
 
@@ -89,7 +96,8 @@ InputGroup 是一个纯样式包裹层。把表单控件按顺序放入，相邻
   <CfInput value={q} onChange={(e) => setQ(e.target.value)} placeholder="搜索…" />
   <CfButton variant="primary">搜索</CfButton>
 </CfInputGroup>`}
->
+
+  vueSource={StretchVueSource}>
   <StretchVue client:load />
 </DemoFrame>
 

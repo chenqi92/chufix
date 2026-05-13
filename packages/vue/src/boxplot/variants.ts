@@ -14,3 +14,9 @@ export interface BoxPlotProps {
   height?: number;
   ariaLabel?: string;
 }
+
+export interface BoxPlotInteractionPayload {
+  box: BoxStat;
+  dataIndex: number;
+  nativeEvent?: PointerEvent;
+}

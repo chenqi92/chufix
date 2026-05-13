@@ -5,6 +5,7 @@ description: 当滚动经过元素时让其切换为固定定位，常用于工�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/affix/BasicVue.vue';
+import BasicVueSource from '~/components/demos/affix/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -21,7 +22,8 @@ import BasicVue from '~/components/demos/affix/BasicVue.vue';
     <div className="toolbar">这一行会在滚动到顶部时吸住</div>
   </CfAffix>
 </div>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -33,3 +35,9 @@ import BasicVue from '~/components/demos/affix/BasicVue.vue';
 | `offsetBottom` | `number` | `—` | 吸底时距离容器底部的像素偏移；与 `offsetTop` 二选一 |
 | `target` | `string` | `—` | 滚动容器选择器；省略时监听 `window` |
 | `zIndex` | `number` | `100` | 固定后的层级 |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `change` | `onChange` | `boolean` | 固定 / 不固定状态切换时触发，载荷是当前是否固定 |

@@ -5,6 +5,7 @@ description: A menu opened by right-click. Supports separators, shortcuts, and d
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/contextmenu/BasicVue.vue';
+import BasicVueSource from '~/components/demos/contextmenu/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -17,7 +18,8 @@ Wrap a target region. After a right-click triggers the `contextmenu` event, the 
   reactCode={`<CfContextMenu items={items} onSelect={onPick}>
   <div>Right-click here</div>
 </CfContextMenu>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -27,11 +29,13 @@ Wrap a target region. After a right-click triggers the `contextmenu` event, the 
 `disabled` greys an item out, `danger` turns it red, and `separator: true` draws a divider row.
 
 import NestedVue from '~/components/demos/contextmenu/NestedVue.vue';
+import NestedVueSource from '~/components/demos/contextmenu/NestedVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfContextMenu :items="items">…</CfContextMenu>`}
   reactCode={`<CfContextMenu items={items}>…</CfContextMenu>`}
->
+
+  vueSource={NestedVueSource}>
   <NestedVue client:load />
 </DemoFrame>
 

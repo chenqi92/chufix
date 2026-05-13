@@ -5,6 +5,7 @@ description: Protocol monitor shell with SSE / MQTT / Kafka / gRPC tabs.
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/protocolpane/BasicVue.vue';
+import BasicVueSource from '~/components/demos/protocolpane/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -22,7 +23,8 @@ Source: [`protocols.html`](https://github.com/chenqi92/chufix-design).
   'panel-sse': <PanelA />,
   'panel-mqtt': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -32,6 +34,7 @@ Source: [`protocols.html`](https://github.com/chenqi92/chufix-design).
 Replace the placeholders with concrete visualizations — one per tab: SSE timeline / MQTT topic tree / Kafka partition table / gRPC method list.
 
 import RealVue from '~/components/demos/protocolpane/RealVue.vue';
+import RealVueSource from '~/components/demos/protocolpane/RealVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfProtocolPane>
@@ -41,7 +44,8 @@ import RealVue from '~/components/demos/protocolpane/RealVue.vue';
   <template #panel-grpc><CfList ... /></template>
 </CfProtocolPane>`}
   reactCode={`<CfProtocolPane slots={{...}} />`}
->
+
+  vueSource={RealVueSource}>
   <RealVue client:load />
 </DemoFrame>
 

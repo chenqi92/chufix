@@ -5,6 +5,7 @@ description: Country code dropdown + number input. Ships with 12 common countrie
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/phoneinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/phoneinput/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -13,7 +14,8 @@ The country segment has its own background; the dropdown supports fuzzy search. 
 <DemoFrame
   vueCode={`<CfPhoneInput v-model="phone" v-model:country="country" />`}
   reactCode={`<CfPhoneInput value={phone} onChange={setPhone} country={country} onCountryChange={setCountry} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -23,13 +25,15 @@ The country segment has its own background; the dropdown supports fuzzy search. 
 `error` switches to a red border; `disabled` greys the whole control.
 
 import StatesVue from '~/components/demos/phoneinput/StatesVue.vue';
+import StatesVueSource from '~/components/demos/phoneinput/StatesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfPhoneInput v-model="v" :error="true" />
 <CfPhoneInput v-model="v" disabled />`}
   reactCode={`<CfPhoneInput value={v} onChange={setV} error />
 <CfPhoneInput value={v} onChange={setV} disabled />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

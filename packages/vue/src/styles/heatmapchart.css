@@ -1,0 +1,13 @@
+/* Generic HeatmapChart (cf-heatmap) — shares structure with cf-latencyheatmap. */
+.cf-heatmap__cell {
+  stroke: var(--bg-1);
+  stroke-width: 1;
+  transition: opacity var(--dur-instant) linear;
+}
+.cf-heatmap__cell:hover { opacity: 0.85; }
+.cf-heatmap__value {
+  fill: var(--fg-1);
+  font-size: var(--t-11);
+  pointer-events: none;
+  user-select: none;
+}

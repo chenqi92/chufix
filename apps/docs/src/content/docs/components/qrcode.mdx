@@ -5,6 +5,7 @@ description: 把文本 / URL 编码为二维码 SVG，纯客户端零依赖（By
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
+import BasicVueSource from '~/components/demos/qrcode/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfQRCode :value="value" :size="160" ecc="M" />`}
   reactCode={`<CfQRCode value={value} size={160} ecc="M" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -27,5 +29,6 @@ import BasicVue from '~/components/demos/qrcode/BasicVue.vue';
 | `margin` | `number` | `2` | 留白模块数（quiet zone） |
 | `color` | `string` | `'currentColor'` | 暗格颜色 |
 | `background` | `string` | `'transparent'` | 背景色 |
+| `className` | `string` | `—` | 透传到根 SVG 的额外类名 |
 
 实现说明：内置 Byte-mode QR 编码器，自动选择最小可装下数据的版本（1–40）。算法改编自 Project Nayuki 的 MIT 参考实现。

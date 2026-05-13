@@ -1,5 +1,15 @@
+import Prism from 'prismjs';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+
 export type CodeBlockSize = 'sm' | 'md' | 'lg';
-export type CodeBlockTone = 'light' | 'dark';
+export type CodeBlockTone = 'auto' | 'light' | 'dark';
 
 export interface InlineCodeProps {
   size?: 'sm' | 'md';
@@ -52,10 +62,26 @@ export interface CodeWorkspaceFile {
   readonly?: boolean;
 }
 
-export interface CodeWorkspaceProps {
+/** 多框架 / 多变体源码包；详见 @chufix-design/vue 的同名接口注释。 */
+export interface CodeWorkspaceBundle {
+  id: string;
+  framework: 'vue' | 'react' | 'neutral' | (string & {});
+  variant: 'ts' | 'js' | 'shell' | (string & {});
+  frameworkLabel: string;
+  variantLabel: string;
+  label?: string;
   files: CodeWorkspaceFile[];
+}
+
+export interface CodeWorkspaceProps {
+  /** 单 bundle 模式：直接传文件数组。 */
+  files?: CodeWorkspaceFile[];
+  /** 多 bundle 模式：每包含若干文件 + 框架/变体标签。优先于 files。 */
+  bundles?: CodeWorkspaceBundle[];
   activeFile?: string;
   defaultFile?: string;
+  activeBundle?: string;
+  defaultBundle?: string;
   title?: import('react').ReactNode;
   rootLabel?: string;
   size?: CodeBlockSize;
@@ -70,6 +96,7 @@ export interface CodeWorkspaceProps {
   height?: number | string;
   className?: string;
   onActiveFileChange?: (file: CodeWorkspaceFile) => void;
+  onActiveBundleChange?: (bundleId: string) => void;
   onFileChange?: (file: CodeWorkspaceFile, value: string) => void;
   renderCode?: (file: CodeWorkspaceFile) => import('react').ReactNode;
 }
@@ -252,8 +279,48 @@ function tokenPattern(group: ReturnType<typeof languageGroup>): RegExp | null {
   return /\/\/.*|\/\*.*?\*\/|(['"`])(?:\\.|(?!\1)[\s\S])*?\1|\b(?:as|async|await|break|case|catch|class|const|continue|default|else|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|return|switch|throw|true|try|type|undefined|while)\b|\b\d+(?:\.\d+)?\b/g;
 }
 
+function prismLanguage(language?: string): string {
+  const lang = (language ?? '').toLowerCase();
+  switch (lang) {
+    case 'bash':
+    case 'sh':
+    case 'shell':
+    case 'zsh':
+      return 'bash';
+    case 'html':
+    case 'vue':
+    case 'xml':
+    case 'svg':
+      return 'markup';
+    case 'js':
+    case 'mjs':
+    case 'cjs':
+      return 'javascript';
+    case 'ts':
+      return 'typescript';
+    case 'jsonc':
+      return 'json';
+    default:
+      return lang || 'plain';
+  }
+}
+
+function highlightWithPrism(source: string, language?: string): string | null {
+  const lang = prismLanguage(language);
+  const grammar = Prism.languages[lang];
+  if (!grammar) return null;
+  try {
+    return Prism.highlight(source, grammar, lang);
+  } catch {
+    return null;
+  }
+}
+
 export function highlightCode(code: string, language?: string, trimIndent?: boolean): string {
   const source = trimIndent ? normalizeCodeIndent(code) : code;
+  const prismHtml = highlightWithPrism(source, language);
+  if (prismHtml) return prismHtml;
+
   const group = languageGroup(language);
   const pattern = tokenPattern(group);
   if (!pattern) return escapeHtml(source);

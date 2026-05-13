@@ -5,6 +5,7 @@ description: 顺序事件流，每条带圆点 / 连线 / 时间戳，常用于�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/timeline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/timeline/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -13,7 +14,8 @@ import BasicVue from '~/components/demos/timeline/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfTimeline :items="items" />`}
   reactCode={`<CfTimeline items={items} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -25,6 +27,7 @@ import BasicVue from '~/components/demos/timeline/BasicVue.vue';
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 节点字号与点的尺寸 |
 | `mode` | `'left' \| 'right' \| 'alternate'` | `'left'` | 内容相对连线的位置 |
 | `reverse` | `boolean` | `false` | 反序渲染（最新在最上） |
+| `className` | `string` | `—` | 透传到根元素的额外类名 |
 
 ### TimelineItem
 
@@ -35,3 +38,4 @@ import BasicVue from '~/components/demos/timeline/BasicVue.vue';
 | `content` | `string` | 详细描述 |
 | `time` | `string` | 时间戳文本 |
 | `color` | `'primary' \| 'success' \| 'warning' \| 'danger' \| 'neutral'` | 圆点颜色 |
+| `icon` | `unknown` | 替换圆点的自定义 icon 节点（Vue VNode 或 React ReactNode） |

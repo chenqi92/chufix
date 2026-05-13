@@ -5,8 +5,11 @@ description: Global notifications — imperative API plus a one-mount Toaster, 5
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toast/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toast/BasicVue.vue?raw';
 import TypesVue from '~/components/demos/toast/TypesVue.vue';
+import TypesVueSource from '~/components/demos/toast/TypesVue.vue?raw';
 import PositionVue from '~/components/demos/toast/PositionVue.vue';
+import PositionVueSource from '~/components/demos/toast/PositionVue.vue?raw';
 
 ## Basic usage
 
@@ -35,7 +38,8 @@ export default function Demo() {
     </>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -54,7 +58,8 @@ toast.success('Saved');
 toast.error('Save failed');
 toast.warning('Disk space low');
 toast.info('Copied to clipboard');`}
->
+
+  vueSource={TypesVueSource}>
   <TypesVue client:only="vue" />
 </DemoFrame>
 
@@ -67,7 +72,8 @@ toast.info('Copied to clipboard');`}
 <CfToaster position="bottom-center" />`}
   reactCode={`<CfToaster position="top-right" />
 <CfToaster position="bottom-center" />`}
->
+
+  vueSource={PositionVueSource}>
   <PositionVue client:only="vue" />
 </DemoFrame>
 

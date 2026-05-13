@@ -5,9 +5,13 @@ description: An interactive variant of Tooltip — hosts arbitrary rich content,
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/popover/BasicVue.vue';
+import BasicVueSource from '~/components/demos/popover/BasicVue.vue?raw';
 import TriggersVue from '~/components/demos/popover/TriggersVue.vue';
+import TriggersVueSource from '~/components/demos/popover/TriggersVue.vue?raw';
 import PlacementVue from '~/components/demos/popover/PlacementVue.vue';
+import PlacementVueSource from '~/components/demos/popover/PlacementVue.vue?raw';
 import WidthVue from '~/components/demos/popover/WidthVue.vue';
+import WidthVueSource from '~/components/demos/popover/WidthVue.vue?raw';
 
 ## Basic usage
 
@@ -34,7 +38,8 @@ Unlike Tooltip, Popover supports any interactive content (inputs, buttons, lists
 >
   <CfButton variant="secondary">Click to expand</CfButton>
 </CfPopover>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -58,7 +63,8 @@ Unlike Tooltip, Popover supports any interactive content (inputs, buttons, lists
 <CfPopover trigger="manual" open={open} onOpenChange={setOpen} content={...}>
   <CfButton onClick={() => setOpen(!open)}>manual</CfButton>
 </CfPopover>`}
->
+
+  vueSource={TriggersVueSource}>
   <TriggersVue client:only="vue" />
 </DemoFrame>
 
@@ -75,7 +81,8 @@ Unlike Tooltip, Popover supports any interactive content (inputs, buttons, lists
 <CfPopover placement="bottom">…</CfPopover>
 <CfPopover placement="left">…</CfPopover>
 <CfPopover placement="right">…</CfPopover>`}
->
+
+  vueSource={PlacementVueSource}>
   <PlacementVue client:only="vue" />
 </DemoFrame>
 
@@ -88,7 +95,8 @@ Unlike Tooltip, Popover supports any interactive content (inputs, buttons, lists
 <CfPopover placement="bottom" :width="320"><CfButton>Fixed 320</CfButton></CfPopover>`}
   reactCode={`<CfPopover placement="bottom" content={...}><CfButton>Auto</CfButton></CfPopover>
 <CfPopover placement="bottom" width={320} content={...}><CfButton>Fixed 320</CfButton></CfPopover>`}
->
+
+  vueSource={WidthVueSource}>
   <WidthVue client:only="vue" />
 </DemoFrame>
 

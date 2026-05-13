@@ -3,6 +3,12 @@ export interface FunnelStep {
   value: number;
 }
 
+export interface FunnelChartInteractionPayload {
+  step: FunnelStep;
+  dataIndex: number;
+  nativeEvent?: unknown;
+}
+
 export interface FunnelChartProps {
   steps: FunnelStep[];
   width?: number;
@@ -10,4 +16,6 @@ export interface FunnelChartProps {
   showLabels?: boolean;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: FunnelChartInteractionPayload) => void;
+  onItemLeave?: (payload: FunnelChartInteractionPayload) => void;
 }

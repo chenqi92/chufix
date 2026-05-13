@@ -5,6 +5,7 @@ description: Color + initial dual-coded badges for 12 protocols. Shared style ac
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/protocolbadge/BasicVue.vue';
+import BasicVueSource from '~/components/demos/protocolbadge/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -20,7 +21,8 @@ Colors are driven by `--proto-*` tokens; the initial-letter encoding keeps them 
 <CfProtocolBadge kind="post" />
 <CfProtocolBadge kind="grpc" />
 <CfProtocolBadge kind="ws" />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

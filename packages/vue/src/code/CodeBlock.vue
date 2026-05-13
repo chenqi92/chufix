@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<CodeBlockProps>(), {
   copyable: true,
   startLine: 1,
   wrap: false,
-  tone: 'light',
+  tone: 'auto',
   trimIndent: false,
   highlight: true,
 });

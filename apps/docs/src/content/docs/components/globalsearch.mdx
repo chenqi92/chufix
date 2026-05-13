@@ -5,6 +5,7 @@ description: 全屏覆盖式应用级搜索，支持分类切换 + 分组列表 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/globalsearch/BasicVue.vue';
+import BasicVueSource from '~/components/demos/globalsearch/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -24,7 +25,8 @@ import BasicVue from '~/components/demos/globalsearch/BasicVue.vue';
   results={results}
   onSelect={onSelect}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -34,11 +36,13 @@ import BasicVue from '~/components/demos/globalsearch/BasicVue.vue';
 18 个跨 5 个类目的结果。点击顶部 chip 过滤；类目数量 ≤ 1 时自动隐藏 chip 行。
 
 import CategoriesVue from '~/components/demos/globalsearch/CategoriesVue.vue';
+import CategoriesVueSource from '~/components/demos/globalsearch/CategoriesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfGlobalSearch ... :show-categories="true" />`}
   reactCode={`<CfGlobalSearch ... showCategories />`}
->
+
+  vueSource={CategoriesVueSource}>
   <CategoriesVue client:load />
 </DemoFrame>
 

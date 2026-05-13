@@ -5,6 +5,7 @@ description: Lightweight code-editing container — textarea + line numbers + Ta
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/codeeditor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/codeeditor/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -14,7 +15,8 @@ For highlighting, wrap an overlay around it on the consumer side (see the overla
 <DemoFrame
   vueCode={`<CfCodeEditor v-model="code" language="typescript" :rows="12" />`}
   reactCode={`<CfCodeEditor value={code} onChange={setCode} language="typescript" rows={12} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,6 +26,7 @@ For highlighting, wrap an overlay around it on the consumer side (see the overla
 A handful of state combinations: read-only doc samples, soft-wrapped long text, and a no-line-number compact mode.
 
 import StatesVue from '~/components/demos/codeeditor/StatesVue.vue';
+import StatesVueSource from '~/components/demos/codeeditor/StatesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfCodeEditor v-model="code" read-only />
@@ -32,7 +35,8 @@ import StatesVue from '~/components/demos/codeeditor/StatesVue.vue';
   reactCode={`<CfCodeEditor value={code} onChange={set} readOnly />
 <CfCodeEditor value={text} onChange={set} wrap />
 <CfCodeEditor value={snip} onChange={set} showLineNumbers={false} />`}
->
+
+  vueSource={StatesVueSource}>
   <StatesVue client:load />
 </DemoFrame>
 

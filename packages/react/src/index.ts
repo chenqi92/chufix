@@ -3,6 +3,13 @@ import './styles/a11y.css';
 import './styles/icon.css';
 import './styles/statusillustration.css';
 import './styles/button.css';
+import './styles/buttongroup.css';
+import './styles/togglegroup.css';
+import './styles/typography.css';
+import './styles/editable.css';
+import './styles/heatmapchart.css';
+import './styles/waterfallchart.css';
+import './styles/sunburstchart.css';
 import './styles/iconbutton.css';
 import './styles/toolbar.css';
 import './styles/colorswatch.css';
@@ -136,6 +143,40 @@ import './styles/map.css';
  * names? Alias on import: `import { CfButton as Button } from '@chufix-design/react'`. */
 
 export { Button as CfButton } from './button/Button';
+export { ButtonGroup as CfButtonGroup } from './buttongroup/ButtonGroup';
+export type {
+  ButtonGroupProps,
+  ButtonGroupOrientation,
+  ButtonGroupSize,
+  ButtonGroupVariant,
+} from './buttongroup/variants';
+
+export { Heading as CfHeading } from './typography/Heading';
+export { Text as CfText } from './typography/Text';
+export { Paragraph as CfParagraph } from './typography/Paragraph';
+export { Editable as CfEditable } from './editable/Editable';
+export type { EditableProps, EditableSize, EditableCommitPayload } from './editable/variants';
+export type {
+  HeadingProps,
+  HeadingLevel,
+  TextProps,
+  TextSize,
+  TextVariant,
+  TextWeight,
+  TextAlign,
+  ParagraphProps,
+} from './typography/variants';
+
+export { ToggleGroup as CfToggleGroup } from './togglegroup/ToggleGroup';
+export type {
+  ToggleGroupProps,
+  ToggleGroupMode,
+  ToggleGroupOrientation,
+  ToggleGroupSize,
+  ToggleGroupVariant,
+  ToggleOption,
+  ToggleGroupChangePayload,
+} from './togglegroup/variants';
 export type {
   ButtonProps,
   ButtonVariant,
@@ -270,8 +311,15 @@ export { VariableAwareInput as CfVariableAwareInput } from './variableinput/Vari
 export type {
   VariableAwareInputProps,
   VariableAwareInputSize,
+  VariableAwareInputScope,
+  VariableAwareInputVariable,
+  VariableAwareInputVariableOption,
+  NormalizedVariableOption as VariableAwareInputOption,
   VariableAwareInputVariant,
   Token as VariableAwareInputToken,
+  VariableToken as VariableAwareInputVariableToken,
+  VariableAwareInputVariableEvent,
+  VariableAwareInputVariableUpdate,
 } from './variableinput/variants';
 
 export { CodeEditor as CfCodeEditor } from './codeeditor/CodeEditor';
@@ -468,6 +516,28 @@ export type { TimingBarProps, TimingPhase } from './timingbar/variants';
 
 export { LatencyHeatmap as CfLatencyHeatmap } from './latencyheatmap/LatencyHeatmap';
 export type { LatencyHeatmapProps } from './latencyheatmap/variants';
+
+export { HeatmapChart as CfHeatmapChart } from './heatmapchart/HeatmapChart';
+export type {
+  HeatmapChartProps,
+  HeatmapColorScale,
+  HeatmapChartInteractionPayload,
+} from './heatmapchart/variants';
+
+export { WaterfallChart as CfWaterfallChart } from './waterfallchart/WaterfallChart';
+export type {
+  WaterfallChartProps,
+  WaterfallStep,
+  WaterfallStepKind,
+  WaterfallChartInteractionPayload,
+} from './waterfallchart/variants';
+
+export { SunburstChart as CfSunburstChart } from './sunburstchart/SunburstChart';
+export type {
+  SunburstChartProps,
+  SunburstNode,
+  SunburstChartInteractionPayload,
+} from './sunburstchart/variants';
 
 export { ConnectionGraph as CfConnectionGraph } from './connectiongraph/ConnectionGraph';
 export type {
@@ -897,6 +967,7 @@ export type {
   CodeBlockSize,
   CodeBlockTone,
   CodeWorkspaceFile,
+  CodeWorkspaceBundle,
   CodeWorkspaceProps,
   CodeTreeItem,
 } from './code/variants';

@@ -5,28 +5,51 @@ description: 数据表格 —— 多列排序、列拖拽 / 调宽、固定列�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/table/BasicVue.vue';
+import BasicVueSource from '~/components/demos/table/BasicVue.vue?raw';
 import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+import SelectionVueSource from '~/components/demos/table/SelectionVue.vue?raw';
 import MultiSortVue from '~/components/demos/table/MultiSortVue.vue';
+import MultiSortVueSource from '~/components/demos/table/MultiSortVue.vue?raw';
 import ResizeReorderVue from '~/components/demos/table/ResizeReorderVue.vue';
+import ResizeReorderVueSource from '~/components/demos/table/ResizeReorderVue.vue?raw';
 import PinVue from '~/components/demos/table/PinVue.vue';
+import PinVueSource from '~/components/demos/table/PinVue.vue?raw';
 import ExpandTreeVue from '~/components/demos/table/ExpandTreeVue.vue';
+import ExpandTreeVueSource from '~/components/demos/table/ExpandTreeVue.vue?raw';
 import SummarySearchVue from '~/components/demos/table/SummarySearchVue.vue';
+import SummarySearchVueSource from '~/components/demos/table/SummarySearchVue.vue?raw';
 import VirtualVue from '~/components/demos/table/VirtualVue.vue';
+import VirtualVueSource from '~/components/demos/table/VirtualVue.vue?raw';
 import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
+import RowReorderVueSource from '~/components/demos/table/RowReorderVue.vue?raw';
 import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
+import InlineEditVueSource from '~/components/demos/table/InlineEditVue.vue?raw';
 import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
+import CsvExportVueSource from '~/components/demos/table/CsvExportVue.vue?raw';
 import PersistVue from '~/components/demos/table/PersistVue.vue';
+import PersistVueSource from '~/components/demos/table/PersistVue.vue?raw';
 import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
+import MergeRowsVueSource from '~/components/demos/table/MergeRowsVue.vue?raw';
 import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
+import CellSelectVueSource from '~/components/demos/table/CellSelectVue.vue?raw';
 import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
+import ColVirtualVueSource from '~/components/demos/table/ColVirtualVue.vue?raw';
 import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
+import TreeDragVueSource from '~/components/demos/table/TreeDragVue.vue?raw';
 import PasteVue from '~/components/demos/table/PasteVue.vue';
+import PasteVueSource from '~/components/demos/table/PasteVue.vue?raw';
 import HistoryVue from '~/components/demos/table/HistoryVue.vue';
+import HistoryVueSource from '~/components/demos/table/HistoryVue.vue?raw';
 import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
+import VarHeightVueSource from '~/components/demos/table/VarHeightVue.vue?raw';
 import RowEditVue from '~/components/demos/table/RowEditVue.vue';
+import RowEditVueSource from '~/components/demos/table/RowEditVue.vue?raw';
 import BatchVue from '~/components/demos/table/BatchVue.vue';
+import BatchVueSource from '~/components/demos/table/BatchVue.vue?raw';
 import PinnedRowsVue from '~/components/demos/table/PinnedRowsVue.vue';
+import PinnedRowsVueSource from '~/components/demos/table/PinnedRowsVue.vue?raw';
 import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
+import AutoHeightVueSource from '~/components/demos/table/AutoHeightVue.vue?raw';
 
 `CfTable` 是组件库里功能最完整的"主力"组件之一。设计取舍：
 
@@ -38,7 +61,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `columns` + `rows` + 可选 `rowKey`。`column.format` 做展示格式化，`column.render` 接收渲染函数返回 VNode / 字符串。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -46,7 +70,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 单选 `selectable="single"` / 多选 `selectable="multiple"`。`v-model` 接受 `string` 或 `string[]`，由 `rowKey` 决定。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SelectionVueSource}>
   <SelectionVue client:load />
 </DemoFrame>
 
@@ -54,7 +79,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 打开 `multi-sort` 后，按住 <kbd>Shift</kbd> / <kbd>⌘</kbd> 点列头追加次级排序。同列再次点击循环 asc → desc → 取消。表头显示当前列在排序队列中的序号。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={MultiSortVueSource}>
   <MultiSortVue client:load />
 </DemoFrame>
 
@@ -64,7 +90,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 打开 `resizable` 后每列右边出现 6px 的 col-resize 区。拖拽实时更新内部 state，`@update:columns-state` 把新宽度送出来用于持久化。`reorderable` 让表头可拖拽换序。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ResizeReorderVueSource}>
   <ResizeReorderVue client:load />
 </DemoFrame>
 
@@ -74,7 +101,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `column.fixed: 'left' | 'right'` 把列钉在两侧，超长内容横向滚动时仍可见。配合 `sticky-header` + `:height` 表头同时粘顶。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PinVueSource}>
   <PinVue client:load />
 </DemoFrame>
 
@@ -85,7 +113,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 - 传 `expand-render` —— 渲染自定义展开内容（订单详情、嵌套图表等）。
 - 行数据自带 `children` —— 自动当作树形数据递归渲染，每层 `tree-indent` 像素的缩进。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ExpandTreeVueSource}>
   <ExpandTreeVue client:load />
 </DemoFrame>
 
@@ -95,7 +124,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 把 `toolbar="auto"` 打开就出现全局搜索与列可见性菜单。`column.filterable` 给每列加漏斗按钮，`filterType` 切到 `select` / `number-range` / 默认文本。`column.summary` 接 `'sum' | 'avg' | 'count'` 或函数；表底自动出一行**总计**，跟着过滤结果实时变。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SummarySearchVueSource}>
   <SummarySearchVue client:load />
 </DemoFrame>
 
@@ -105,7 +135,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 打开 `virtual` 后表体只渲染当前可见的行 + 上下 `overscan` 缓冲，DOM 节点数恒定在几十个。要求所有行使用固定 `row-height`（缺省 36px）。建议配合 `:height` + `sticky-header`。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={VirtualVueSource}>
   <VirtualVue client:load />
 </DemoFrame>
 
@@ -115,7 +146,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `row-reorderable` 在最左侧加一列 ⋮⋮ 拖把柄。拖动整行换序，`@update:rows` 把新数组送出来；想监听 from/to 索引就用 `@row-reorder`。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={RowReorderVueSource}>
   <RowReorderVue client:load />
 </DemoFrame>
 
@@ -129,7 +161,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 - 提交时机：Enter / blur；取消：Esc。
 - `@cell-edit` 抛出 `{ row, column, oldValue, newValue, index }`，由你写回数据源。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={InlineEditVueSource}>
   <InlineEditVue client:load />
 </DemoFrame>
 
@@ -145,7 +178,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 - 完全自定义：`@export` 事件接到 CSV 字符串，自己 download 或上传到服务端。
 - 命令式调用：组件 `exportCsv()` 已通过 `defineExpose` 暴露。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={CsvExportVueSource}>
   <CsvExportVue client:load />
 </DemoFrame>
 
@@ -153,7 +187,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `persistKey="<key>"` 让组件把当前 `columnsState`（隐藏 / 顺序 / 宽度）写到 `localStorage['cf-table:<key>']`，下次访问自动恢复。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PersistVueSource}>
   <PersistVue client:load />
 </DemoFrame>
 
@@ -163,7 +198,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 给某列加 `mergeRows: true`，连续相同值的单元格会自动合并 rowSpan。需要更细粒度的合并条件可以传函数：`mergeRows: (cur, prev) => cur.groupId === prev.groupId`。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={MergeRowsVueSource}>
   <MergeRowsVue client:load />
 </DemoFrame>
 
@@ -177,7 +213,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 - Shift 单击 / 鼠标拖动 → 矩形选区
 - <kbd>Ctrl/⌘ + C</kbd> → 复制为 TSV 到剪贴板，可以直接粘到 Excel / Numbers / Google Sheets
 
-<DemoFrame>
+<DemoFrame
+  vueSource={CellSelectVueSource}>
   <CellSelectVue client:load />
 </DemoFrame>
 
@@ -187,7 +224,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 100+ 列且每列内容简单（如二维数据矩阵）时，启用 `col-virtual` + 默认 `col-width` 让横向滚动也只渲染可见列；和 `virtual` 一起开就是双向虚拟化。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ColVirtualVueSource}>
   <ColVirtualVue client:load />
 </DemoFrame>
 
@@ -203,7 +241,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 不会让你把祖先放进自己的后代里。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={TreeDragVueSource}>
   <TreeDragVue client:load />
 </DemoFrame>
 
@@ -213,7 +252,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 在 `cell-selectable` 上再加 `cell-pastable`：单击或框选起点单元格，按 <kbd>Ctrl/⌘ + V</kbd> 粘贴整片 TSV / CSV，从起点开始按行写回；`column.editable` 控制每格能否写、`column.editValidate` 拦截非法值。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PasteVueSource}>
   <PasteVue client:load />
 </DemoFrame>
 
@@ -223,7 +263,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `history-enabled` 把 sort / filter / search / pagination / columnsState 的每一次变化记到内存栈，监听 <kbd>Ctrl/⌘ + Z</kbd> 撤销、<kbd>Ctrl/⌘ + Shift + Z</kbd> / <kbd>Ctrl + Y</kbd> 重做。`history-depth` 控制最多保留多少步（默认 50）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={HistoryVueSource}>
   <HistoryVue client:load />
 </DemoFrame>
 
@@ -233,7 +274,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `virtual` 默认要求所有行高一致。如果每行高度不固定（比如 body 是 markdown 渲染、有多张图片），传 `:get-row-height="(idx) => 42"` 让组件按累计偏移做二分查找定位可见窗口。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={VarHeightVueSource}>
   <VarHeightVue client:load />
 </DemoFrame>
 
@@ -243,7 +285,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 把 `edit-mode="row"` 打开，双击任意行进入整行编辑：所有 `editable` 列同时变为 input，行尾单独多出一行 Save / Cancel 按钮。Enter 提交、Esc 取消，校验失败保留编辑态。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={RowEditVueSource}>
   <RowEditVue client:load />
 </DemoFrame>
 
@@ -253,7 +296,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `batch-actions` + `selectable="multiple"`：选中至少一行后，表头上方出现 sticky 的批量操作条，自带 计数 / 导出选中 / 清空，可以通过 `#batch-actions` 插槽塞自定义按钮（接到 `selectedKeys`）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BatchVueSource}>
   <BatchVue client:load />
 </DemoFrame>
 
@@ -261,7 +305,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `pinned-row-keys` 的列表里所有 rowKey 会置顶并 sticky 到表体顶部，下面的内容滚动时它们一直可见。常用于"自选"、"高优先级"等需要永远先看到的行。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PinnedRowsVueSource}>
   <PinnedRowsVue client:load />
 </DemoFrame>
 
@@ -269,7 +314,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `virtual` 默认按固定 rowHeight。如果 row 内容确实需要等浏览器渲染才能知道高度（富文本、图片、嵌套布局），开启 `auto-row-height`：组件内置 ResizeObserver 监听每个可见行的真实高度并写回累积偏移表。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AutoHeightVueSource}>
   <AutoHeightVue client:load />
 </DemoFrame>
 
@@ -349,6 +395,7 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 | `showSummary` | `boolean` | `false` | 自动按 `column.summary` 渲染总计行 |
 | `summary` | `TableSummaryRow[]` | — | 额外手动总计行 |
 | `toolbar` | `'auto' \| 'none'` | `'none'` | 工具栏：搜索 + 列可见性 + 导出 |
+| `globalSearchFn` | `(search, row, i) => boolean` | — | 自定义全局搜索匹配逻辑；省略时默认对所有列做大小写不敏感子串匹配 |
 | `virtual` | `boolean` | `false` | 启用虚拟滚动（要求 `height` + 固定 `rowHeight`） |
 | `rowHeight` | `number` | `36` | 虚拟模式下每行高度（px） |
 | `overscan` | `number` | `6` | 虚拟模式上下额外渲染的行数 |
@@ -386,6 +433,7 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 | `filterable` | `boolean` | 启用此列过滤 |
 | `filterType` | `'text' \| 'select' \| 'number-range' \| 'date-range'` | 过滤面板类型 |
 | `filterOptions` | `{label,value}[]` | `select` 模式下的选项 |
+| `filterPlaceholder` | `string` | 过滤面板输入框的占位文案 |
 | `filterFn` | `(filterValue, row, i) => boolean` | 自定义过滤函数 |
 | `fixed` | `'left' \| 'right'` | 固定列 |
 | `resizable / reorderable / hideable` | `boolean` | 单列覆盖全局开关 |
@@ -404,6 +452,7 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 | `exportable` | `boolean` | `false` 时 CSV 导出跳过该列 |
 | `exportRender` | `(value, row, i) => string` | 导出时单元格的字符串化方式 |
 | `cellClass` | `string \| (row, i) => string` | 单元格 class |
+| `className` | `string` | 该列所有单元格（含表头与正文）共享的额外 class |
 
 ### Events / Slots
 
@@ -427,6 +476,7 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 | `#cell:<key>` | `{ row, index, value }` | 自定义单元格 |
 | `#empty` | — | 自定义空状态 |
 | `#toolbar-left` / `#toolbar-right` | — | 工具栏左右扩展槽 |
+| `#batch-actions` | `{ selectedKeys, clear, exportSelected }` | 多选模式下顶部 sticky 操作条；scoped 参数提供选中 keys、清空选择、导出选中行的能力 |
 
 ## 性能笔记
 

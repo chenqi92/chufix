@@ -13,3 +13,9 @@ export interface RidgePlotProps {
   overlap?: number;
   ariaLabel?: string;
 }
+
+export interface RidgePlotInteractionPayload {
+  row: RidgeRow;
+  rowIndex: number;
+  nativeEvent?: PointerEvent;
+}

@@ -4,10 +4,6 @@ import { site } from '~/config/site';
 import { getLocaleFromUrl } from '~/i18n/utils';
 import { t } from '~/i18n/strings';
 import SiteNav from '~/components/SiteNav.astro';
-/* MUST be the barrel import; deep import (@chufix-design/vue/src/toast/CfToaster.vue)
- * loads a different copy of the toast store than the dist-bundled one used
- * by `import { toast } from '@chufix-design/vue'` in demos, breaking pub/sub. */
-import { CfToaster } from '@chufix-design/vue';
 
 interface Props {
   title?: string;
@@ -24,6 +20,8 @@ const statusLabel = site.status.label[locale];
 const announceTitle = site.status.announcementTitle[locale];
 const announceBody = site.status.announcement[locale];
 const updatedLabel = t(locale, 'announce.updated');
+const closeAnnouncementLabel = locale === 'en' ? 'Dismiss announcement' : '关闭公告';
+const announcementStorageKey = `chufix:announcement:${site.status.updatedAt}`;
 ---
 
 <!doctype html>
@@ -40,15 +38,60 @@ const updatedLabel = t(locale, 'announce.updated');
   </head>
   <body>
     <SiteNav />
-    <aside class="site-announcement" aria-label={announceTitle}>
+    <aside
+      class="site-announcement"
+      aria-label={announceTitle}
+      data-site-announcement
+      data-announcement-key={announcementStorageKey}
+    >
       <div class="site-announcement__inner">
         <span class="site-announcement__badge">{statusLabel}</span>
         <strong>{announceTitle}</strong>
         <span>{announceBody}</span>
         <span class="site-announcement__date">{updatedLabel} {site.status.updatedAt}</span>
+        <button
+          class="site-announcement__close"
+          type="button"
+          aria-label={closeAnnouncementLabel}
+          title={closeAnnouncementLabel}
+          data-site-announcement-close
+        >
+          ×
+        </button>
       </div>
     </aside>
+    <script is:inline>
+      (() => {
+        const announcement = document.querySelector('[data-site-announcement]');
+        const close = document.querySelector('[data-site-announcement-close]');
+        const key = announcement?.getAttribute('data-announcement-key');
+        if (!announcement || !close || !key) return;
+        try {
+          if (localStorage.getItem(key) === 'hidden') {
+            announcement.hidden = true;
+          }
+          close.addEventListener('click', () => {
+            localStorage.setItem(key, 'hidden');
+            announcement.hidden = true;
+          });
+        } catch {
+          close.addEventListener('click', () => {
+            announcement.hidden = true;
+          });
+        }
+      })();
+    </script>
     <slot />
-    <CfToaster client:only="vue" position="top-right" />
+    <div id="docs-toaster-root"></div>
+    <script>
+      import { createApp } from 'vue';
+      import { CfToaster } from '@chufix-design/vue';
+
+      const root = document.getElementById('docs-toaster-root');
+      if (root && !root.dataset.mounted) {
+        root.dataset.mounted = 'true';
+        createApp(CfToaster, { position: 'top-right', teleport: false }).mount(root);
+      }
+    </script>
   </body>
 </html>

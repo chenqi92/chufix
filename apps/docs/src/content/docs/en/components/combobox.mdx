@@ -5,8 +5,11 @@ description: A typeable variant of Select — typing filters the options, with o
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/combobox/BasicVue.vue';
+import BasicVueSource from '~/components/demos/combobox/BasicVue.vue?raw';
 import CreateVue from '~/components/demos/combobox/CreateVue.vue';
+import CreateVueSource from '~/components/demos/combobox/CreateVue.vue?raw';
 import SizesVue from '~/components/demos/combobox/SizesVue.vue';
+import SizesVueSource from '~/components/demos/combobox/SizesVue.vue?raw';
 
 ## Basic usage
 
@@ -43,7 +46,8 @@ export default function Demo() {
   const [value, setValue] = useState<string | number | null>('vue');
   return <CfCombobox value={value} options={options} clearable onChange={setValue} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -94,7 +98,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={CreateVueSource}>
   <CreateVue client:load />
 </DemoFrame>
 
@@ -107,7 +112,8 @@ export default function Demo() {
   reactCode={`<CfCombobox size="sm" options={options} />
 <CfCombobox size="md" options={options} />
 <CfCombobox size="lg" options={options} />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

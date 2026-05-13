@@ -5,10 +5,21 @@ description: 输入框 + 月历面板 —— 日 / 月 / 年三视图、约束�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/datepicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/datepicker/BasicVue.vue?raw';
 import BoundsVue from '~/components/demos/datepicker/BoundsVue.vue';
+import BoundsVueSource from '~/components/demos/datepicker/BoundsVue.vue?raw';
 import FormatVue from '~/components/demos/datepicker/FormatVue.vue';
+import FormatVueSource from '~/components/demos/datepicker/FormatVue.vue?raw';
 import PresetsVue from '~/components/demos/datepicker/PresetsVue.vue';
+import PresetsVueSource from '~/components/demos/datepicker/PresetsVue.vue?raw';
 import WeekNumberVue from '~/components/demos/datepicker/WeekNumberVue.vue';
+import WeekNumberVueSource from '~/components/demos/datepicker/WeekNumberVue.vue?raw';
+import SizesVue from '~/components/demos/datepicker/SizesVue.vue';
+import SizesVueSource from '~/components/demos/datepicker/SizesVue.vue?raw';
+import VariantsVue from '~/components/demos/datepicker/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/datepicker/VariantsVue.vue?raw';
+import WeekStartsOnVue from '~/components/demos/datepicker/WeekStartsOnVue.vue';
+import WeekStartsOnVueSource from '~/components/demos/datepicker/WeekStartsOnVue.vue?raw';
 
 ## 基础用法
 
@@ -32,8 +43,53 @@ export default function Demo() {
   const [value, setValue] = useState<string | null>('2026-05-09');
   return <CfDatePicker value={value} clearable onChange={(v) => setValue(v)} />;
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
+</DemoFrame>
+
+## 三档尺寸 / 三种变体
+
+`size`（`sm`/`md`/`lg`）与 Input、Button 保持一致。`variant` —— `outline`（默认）/ `filled`（实底，密集表单常用）/ `ghost`（透明，悬停描边，文档/工具栏内嵌常用）。`error` 让边框变红，用于表单校验提示。
+
+<DemoFrame
+  vueCode={`<CfDatePicker v-model="a" size="sm" />
+<CfDatePicker v-model="b" size="md" />
+<CfDatePicker v-model="c" size="lg" />`}
+  reactCode={`<CfDatePicker value={a} onChange={setA} size="sm" />
+<CfDatePicker value={b} onChange={setB} size="md" />
+<CfDatePicker value={c} onChange={setC} size="lg" />`}
+
+  vueSource={SizesVueSource}>
+  <SizesVue client:only="vue" />
+</DemoFrame>
+
+<DemoFrame
+  vueCode={`<CfDatePicker v-model="a" variant="outline" />
+<CfDatePicker v-model="b" variant="filled" />
+<CfDatePicker v-model="c" variant="ghost" />
+<CfDatePicker v-model="d" error placeholder="错误态" />`}
+  reactCode={`<CfDatePicker value={a} onChange={setA} variant="outline" />
+<CfDatePicker value={b} onChange={setB} variant="filled" />
+<CfDatePicker value={c} onChange={setC} variant="ghost" />
+<CfDatePicker value={d} onChange={setD} error placeholder="错误态" />`}
+
+  vueSource={VariantsVueSource}>
+  <VariantsVue client:only="vue" />
+</DemoFrame>
+
+## 周起始日
+
+`weekStartsOn` 切换一周从哪天开始 —— `1` 周一（默认，ISO 8601 / 大多中文场景）；`0` 周日（北美场景）。仅改变面板表头与日期排布，不影响 v-model 值。
+
+<DemoFrame
+  vueCode={`<CfDatePicker v-model="a" :week-starts-on="1" />  <!-- 周一开头 -->
+<CfDatePicker v-model="b" :week-starts-on="0" />  <!-- 周日开头 --> `}
+  reactCode={`<CfDatePicker value={a} onChange={setA} weekStartsOn={1} />
+<CfDatePicker value={b} onChange={setB} weekStartsOn={0} />`}
+
+  vueSource={WeekStartsOnVueSource}>
+  <WeekStartsOnVue client:only="vue" />
 </DemoFrame>
 
 ## 范围 + disabledDate
@@ -76,7 +132,8 @@ export default function Demo() {
     />
   );
 }`}
->
+
+  vueSource={BoundsVueSource}>
   <BoundsVue client:load />
 </DemoFrame>
 
@@ -91,7 +148,8 @@ export default function Demo() {
   reactCode={`<CfDatePicker value={a} format="YYYY-MM-DD" onChange={(v) => setA(v)} />
 <CfDatePicker value={b} format="YYYY 年 M 月 D 日" onChange={(v) => setB(v)} />
 <CfDatePicker value={c} format="DD/MM/YYYY" onChange={(v) => setC(v)} />`}
->
+
+  vueSource={FormatVueSource}>
   <FormatVue client:load />
 </DemoFrame>
 
@@ -99,7 +157,8 @@ export default function Demo() {
 
 `presets` 接受一个 `{ label, value }` 数组，在面板左侧渲染一列预设按钮。`value` 可以是固定 Date / ISO 字符串，或是一个返回它们的函数（每次点击重新求值，适合"今天" / "7 天前"这类相对日期）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PresetsVueSource}>
   <PresetsVue client:only="vue" />
 </DemoFrame>
 
@@ -107,7 +166,8 @@ export default function Demo() {
 
 `show-week-number` 在日期网格左侧加一列 ISO 8601 周数（周一为一周起点）。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={WeekNumberVueSource}>
   <WeekNumberVue client:only="vue" />
 </DemoFrame>
 
@@ -125,6 +185,8 @@ export default function Demo() {
 
 ## API
 
+### Props
+
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `modelValue` (Vue) / `value` (React) | `Date \| string \| number \| null` | `null` | 当前日期，输入容忍 ISO / 时间戳 / Date |
@@ -141,5 +203,14 @@ export default function Demo() {
 | `view` | `'day' \| 'month' \| 'year'` | `'day'` | 初始打开视图 |
 | `showWeekNumber` | `boolean` | `false` | 在日期网格前加一列 ISO 周序 |
 | `presets` | `DatePickerPreset[]` | — | 快捷预设按钮：`{ label, value: Date \| string \| () => ... }` |
+| `name` | `string` | — | 透传给隐式表单字段，用于原生表单提交 |
+| `id` | `string` | — | 触发器的 id，便于外部 `<label for>` 关联 |
 
-事件：`update:modelValue` / `change`（React 端：`onChange(value, date)`，第二参数是 `Date \| null`）。
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange`（第一参数） | `string \| null` | 日期变化时触发，载荷是 ISO `'YYYY-MM-DD'` 或 `null` |
+| `change` | `onChange`（第二参数） | `Date \| null` | 同步触发；载荷是 JS `Date` 对象（便于直接做 `< / >` 比较） |
+
+> React 端 `onChange(value, date)` 同时接收两个参数 —— 第一个是 ISO 字符串（与 `value` 同型），第二个是 `Date \| null`。

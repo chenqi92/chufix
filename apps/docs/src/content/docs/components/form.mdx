@@ -5,18 +5,32 @@ description: 表单封装层 —— 三种布局、规则校验、异步 validat
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/form/BasicVue.vue';
+import BasicVueSource from '~/components/demos/form/BasicVue.vue?raw';
 import LayoutVue from '~/components/demos/form/LayoutVue.vue';
+import LayoutVueSource from '~/components/demos/form/LayoutVue.vue?raw';
 import ValidationVue from '~/components/demos/form/ValidationVue.vue';
+import ValidationVueSource from '~/components/demos/form/ValidationVue.vue?raw';
 import ComplexVue from '~/components/demos/form/ComplexVue.vue';
+import ComplexVueSource from '~/components/demos/form/ComplexVue.vue?raw';
 import RulesVue from '~/components/demos/form/RulesVue.vue';
+import RulesVueSource from '~/components/demos/form/RulesVue.vue?raw';
 import AsyncRuleVue from '~/components/demos/form/AsyncRuleVue.vue';
+import AsyncRuleVueSource from '~/components/demos/form/AsyncRuleVue.vue?raw';
 import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
+import ImperativeVueSource from '~/components/demos/form/ImperativeVue.vue?raw';
+import DisabledVue from '~/components/demos/form/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/form/DisabledVue.vue?raw';
+import SizesVue from '~/components/demos/form/SizesVue.vue';
+import SizesVueSource from '~/components/demos/form/SizesVue.vue?raw';
+import ScopedSlotVue from '~/components/demos/form/ScopedSlotVue.vue';
+import ScopedSlotVueSource from '~/components/demos/form/ScopedSlotVue.vue?raw';
 
 ## 基础用法
 
 `<CfForm>` 提供布局上下文，`<CfFormField>` 包裹每一个表单项，统一渲染 label、必填星号、提示 / 错误文案。最简形式只是个布局封装。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -28,7 +42,8 @@ import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
 - `horizontal` —— label 与控件同行，配合 `labelWidth` 对齐
 - `inline` —— 所有字段挤在一行，常用于搜索条 / 工具栏
 
-<DemoFrame>
+<DemoFrame
+  vueSource={LayoutVueSource}>
   <LayoutVue client:load />
 </DemoFrame>
 
@@ -36,7 +51,8 @@ import ImperativeVue from '~/components/demos/form/ImperativeVue.vue';
 
 最直接的用法：父组件自己写校验逻辑，把错误文案塞进每个字段的 `error` 属性。这种模式不依赖 Form 的内置 validator，适合你已经在用 zod / valibot / yup 等库的项目。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ValidationVueSource}>
   <ValidationVue client:load />
 </DemoFrame>
 
@@ -60,7 +76,8 @@ const rules: Record<string, FieldRules> = {
 };
 ```
 
-<DemoFrame>
+<DemoFrame
+  vueSource={RulesVueSource}>
   <RulesVue client:load />
 </DemoFrame>
 
@@ -68,7 +85,8 @@ const rules: Record<string, FieldRules> = {
 
 `validator` 可以返回 Promise — 典型场景是"用户名是否被占用"这种需要查后端的校验。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncRuleVueSource}>
   <AsyncRuleVue client:load />
 </DemoFrame>
 
@@ -86,7 +104,8 @@ const rules: Record<string, FieldRules> = {
 
 提交时如果有错，组件会自动滚动到第一个出错字段并 focus，可通过 `:scroll-to-error="false"` 关闭。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ImperativeVueSource}>
   <ImperativeVue client:load />
 </DemoFrame>
 
@@ -94,8 +113,70 @@ const rules: Record<string, FieldRules> = {
 
 混合 Input / Select / Textarea / Button 的真实表单模板。
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ComplexVueSource}>
   <ComplexVue client:load />
+</DemoFrame>
+
+## 全局禁用
+
+Form 顶层的 `disabled` 会沿上下文向下传，让所有 FormField 内部的控件统一进入 disabled 视觉态。
+常用于 "查看模式 / 编辑模式" 的切换 —— 不需要逐个给 Input / Select 加 disabled。
+
+<DemoFrame
+  vueSource={DisabledVueSource}>
+  <DisabledVue client:load />
+</DemoFrame>
+
+## 尺寸
+
+Form 的 `size` 会作为子控件的默认 size，子控件如果显式指定 size 会覆盖父级。
+适合表单整体调节信息密度。
+
+<DemoFrame
+  vueSource={SizesVueSource}>
+  <SizesVue client:load />
+</DemoFrame>
+
+## FormField 作用域插槽
+
+FormField 默认插槽暴露 `{ id, describedBy, invalid }` 三个变量，用于把第三方或自定义控件正确接入 a11y 体系：
+
+- `id` —— 控件 id，与 label 的 `for` 关联，自动生成
+- `describedBy` —— 提示 / 错误文案的 id，写到控件的 `aria-describedby`
+- `invalid` —— 当前字段是否有错误，写到 `aria-invalid`
+
+适合需要嵌入原生 input、富文本编辑器、第三方控件库等场景。
+
+<DemoFrame
+  vueCode={`<CfForm :model="model" :rules="rules" @submit="onSubmit">
+  <CfFormField label="资源地址" name="url" hint="必须是 http(s):// 开头">
+    <template #default="{ id, describedBy, invalid }">
+      <input
+        :id="id"
+        v-model="model.url"
+        :aria-describedby="describedBy"
+        :aria-invalid="invalid"
+      />
+    </template>
+  </CfFormField>
+</CfForm>`}
+  reactCode={`<CfForm model={model} rules={rules} onSubmit={onSubmit}>
+  <CfFormField label="资源地址" name="url" hint="必须是 http(s):// 开头">
+    {({ id, describedBy, invalid }) => (
+      <input
+        id={id}
+        value={model.url}
+        onChange={(e) => setModel({ ...model, url: e.target.value })}
+        aria-describedby={describedBy}
+        aria-invalid={invalid}
+      />
+    )}
+  </CfFormField>
+</CfForm>`}
+
+  vueSource={ScopedSlotVueSource}>
+  <ScopedSlotVue client:load />
 </DemoFrame>
 
 ## API · Form Props
@@ -124,6 +205,12 @@ const rules: Record<string, FieldRules> = {
 | `error` | `string \| ReactNode` | 显式错误文案；非空时优先于规则错误 |
 | `for` (Vue) / `htmlFor` (React) | `string` | 自定义 input id；省略则自动生成 |
 | `layout` | `FormLayout` | 覆盖父级 Form 布局（单字段调整） |
+
+## API · FormField Slots
+
+| Slot      | Scoped props                                    | 说明                                                                  |
+| --------- | ----------------------------------------------- | --------------------------------------------------------------------- |
+| `default` | `{ id: string; describedBy: string; invalid: boolean }` | 控件位置；scoped 参数用于把 `aria-describedby` / `aria-invalid` / `id` 绑到自定义控件。React 端 `children` 是函数式签名 `({ id, describedBy, invalid }) => ReactNode` |
 
 ## FieldRule 字段
 

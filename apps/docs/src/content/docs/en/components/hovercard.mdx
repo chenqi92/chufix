@@ -5,6 +5,7 @@ description: Long-delay (700ms) rich preview card. Suited to hover previews for 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/hovercard/BasicVue.vue';
+import BasicVueSource from '~/components/demos/hovercard/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -18,7 +19,8 @@ Wrap any trigger element; place the card body in the `content` slot. Delays and 
   reactCode={`<CfHoverCard placement="bottom" trigger={<span>@jane.l</span>}>
   …
 </CfHoverCard>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -28,11 +30,13 @@ Wrap any trigger element; place the card body in the `content` slot. Delays and 
 `top / bottom / left / right` — placement is computed automatically. The demo here uses a 200ms short delay for ease of viewing.
 
 import PlacementsVue from '~/components/demos/hovercard/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/hovercard/PlacementsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfHoverCard placement="top">…</CfHoverCard>`}
   reactCode={`<CfHoverCard placement="top" trigger={…}>…</CfHoverCard>`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:load />
 </DemoFrame>
 

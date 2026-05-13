@@ -5,9 +5,13 @@ description: 预设 search 图标 + 清空按钮 + 可选快捷键提示的输�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/searchinput/BasicVue.vue';
+import BasicVueSource from '~/components/demos/searchinput/BasicVue.vue?raw';
 import ShortcutVue from '~/components/demos/searchinput/ShortcutVue.vue';
+import ShortcutVueSource from '~/components/demos/searchinput/ShortcutVue.vue?raw';
 import SizesVue from '~/components/demos/searchinput/SizesVue.vue';
+import SizesVueSource from '~/components/demos/searchinput/SizesVue.vue?raw';
 import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
+import DisabledVueSource from '~/components/demos/searchinput/DisabledVue.vue?raw';
 
 ## 基础用法
 
@@ -25,7 +29,8 @@ import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
   placeholder="搜索文档…"
   onSearch={(v) => console.log(v)}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,7 +41,8 @@ import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
 <DemoFrame
   vueCode={`<CfSearchInput v-model="q" placeholder="按 Ctrl K 聚焦" shortcut="Ctrl K" />`}
   reactCode={`<CfSearchInput value={q} onChange={setQ} placeholder="按 Ctrl K 聚焦" shortcut="Ctrl K" />`}
->
+
+  vueSource={ShortcutVueSource}>
   <ShortcutVue client:load />
 </DemoFrame>
 
@@ -51,7 +57,8 @@ import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
   reactCode={`<CfSearchInput value={a} onChange={setA} size="sm" />
 <CfSearchInput value={b} onChange={setB} size="md" />
 <CfSearchInput value={c} onChange={setC} size="lg" />`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 
@@ -62,7 +69,8 @@ import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
 <DemoFrame
   vueCode={`<CfSearchInput model-value="（已禁用）" disabled />`}
   reactCode={`<CfSearchInput value="（已禁用）" disabled />`}
->
+
+  vueSource={DisabledVueSource}>
   <DisabledVue client:load />
 </DemoFrame>
 
@@ -77,7 +85,10 @@ import DisabledVue from '~/components/demos/searchinput/DisabledVue.vue';
 | `clearable` | `boolean` | `true` | 显示清空按钮（值非空时） |
 | `shortcut` | `string` | — | 右侧 kbd 提示文本 |
 
-事件：
+## Events
 
-- Vue：`@update:modelValue`、`@search`、`@clear`
-- React：`onChange`、`onSearch`、`onClear`
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `string` | 输入文本变化时触发 |
+| `search` | `onSearch` | `string` | 按 Enter 键时触发，载荷是当前 input 值 |
+| `clear` | `onClear` | — | 点击 × 清空按钮时触发；同时 modelValue 被置为空串 |

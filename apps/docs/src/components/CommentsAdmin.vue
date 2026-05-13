@@ -9,6 +9,7 @@ import {
   CfInput,
   CfTextarea,
 } from '@chufix-design/vue';
+import CommentEmojiPicker from './CommentEmojiPicker.vue';
 
 type CommentStatus = 'pending' | 'approved' | 'rejected';
 type FilterStatus = CommentStatus | 'all';
@@ -21,6 +22,8 @@ interface CommentItem {
   role?: 'user' | 'admin';
   content: string;
   status: CommentStatus;
+  moderationReason?: string | null;
+  matchedTerms?: string | null;
   createdAt: string;
   updatedAt: string;
   ipHash?: string | null;
@@ -35,7 +38,12 @@ const filters: { value: FilterStatus; label: string }[] = [
   { value: 'rejected', label: '已拒绝' },
   { value: 'all', label: '全部' },
 ];
-const quickEmojis = ['👍', '❤️', '🎉', '👀', '🙌', '💡'];
+const emojiCategories = [
+  { id: 'recent', label: '常用', emojis: ['👍', '❤️', '🎉', '👀', '🙌', '💡', '✅', '🙏'] },
+  { id: 'mood', label: '情绪', emojis: ['😀', '🙂', '😍', '🤔', '😅', '😢', '😮', '😎'] },
+  { id: 'action', label: '动作', emojis: ['👏', '🚀', '🔥', '✨', '💪', '🤝', '📌', '🛠️'] },
+  { id: 'signal', label: '信号', emojis: ['⭐', '⚠️', '❗', '❓', '💬', '📣', '🔍', '🧩'] },
+];
 
 const authenticated = ref(false);
 const checking = ref(true);
@@ -78,6 +86,18 @@ function statusTone(status: CommentStatus) {
 
 function shortHash(value?: string | null) {
   return value ? value.slice(0, 12) : '未记录';
+}
+
+function formatMatchedTerms(value?: string | null) {
+  if (!value) return '无';
+  try {
+    const terms = JSON.parse(value) as { phrase?: string; action?: string }[];
+    return terms
+      .map((item) => `${item.phrase || 'unknown'} / ${item.action || 'review'}`)
+      .join('、') || '无';
+  } catch {
+    return value;
+  }
 }
 
 async function checkSession() {
@@ -186,8 +206,27 @@ async function updateComment(id: string, action: 'approve' | 'reject' | 'pending
   }
 }
 
-async function reply(item: CommentItem, emoji?: string) {
-  const content = (emoji ?? replyDraft.value[item.id] ?? '').trim();
+async function deleteComment(id: string) {
+  if (!window.confirm('确认删除这条评论及其回复？此操作不可恢复。')) return;
+  busyId.value = id;
+  try {
+    const res = await fetch(`${commentsApi}?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      credentials: 'same-origin',
+    });
+    if (!res.ok) throw new Error('delete failed');
+    await loadComments();
+  } finally {
+    busyId.value = '';
+  }
+}
+
+function insertReplyEmoji(id: string, emoji: string) {
+  replyDraft.value[id] = Array.from(`${replyDraft.value[id] ?? ''}${emoji}`).slice(0, 600).join('');
+}
+
+async function reply(item: CommentItem) {
+  const content = (replyDraft.value[item.id] ?? '').trim();
   if (!content) return;
 
   busyId.value = item.id;
@@ -289,6 +328,18 @@ onMounted(checkSession);
               <p>{{ item.content }}</p>
               <dl class="comments-admin-card__trace">
                 <div>
+                  <dt>父评论</dt>
+                  <dd>{{ item.parentId || '顶层留言' }}</dd>
+                </div>
+                <div>
+                  <dt>审核原因</dt>
+                  <dd>{{ item.moderationReason || '无' }}</dd>
+                </div>
+                <div>
+                  <dt>命中规则</dt>
+                  <dd>{{ formatMatchedTerms(item.matchedTerms) }}</dd>
+                </div>
+                <div>
                   <dt>IP Hash</dt>
                   <dd>{{ shortHash(item.ipHash) }}</dd>
                 </div>
@@ -325,6 +376,14 @@ onMounted(checkSession);
                 >
                   退回待审
                 </CfButton>
+                <CfButton
+                  variant="ghost"
+                  size="sm"
+                  :loading="busyId === item.id"
+                  @click="deleteComment(item.id)"
+                >
+                  删除
+                </CfButton>
               </div>
 
               <div class="comments-admin-card__reply">
@@ -333,26 +392,20 @@ onMounted(checkSession);
                   placeholder="以维护者身份回复"
                   :rows="2"
                   auto-resize
+                  :disabled="item.status !== 'approved'"
                 />
                 <div class="comments-admin-card__reply-actions">
-                  <div class="comments-admin-card__emoji">
-                    <CfButton
-                      v-for="emoji in quickEmojis"
-                      :key="emoji"
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      shape="square"
-                      :aria-label="`回复 ${emoji}`"
-                      @click="reply(item, emoji)"
-                    >
-                      {{ emoji }}
-                    </CfButton>
-                  </div>
+                  <CommentEmojiPicker
+                    :categories="emojiCategories"
+                    label="表情"
+                    panel-label="选择回复表情"
+                    :disabled="item.status !== 'approved'"
+                    @select="(emoji) => insertReplyEmoji(item.id, emoji)"
+                  />
                   <CfButton
                     size="sm"
                     variant="secondary"
-                    :disabled="!replyDraft[item.id]?.trim()"
+                    :disabled="item.status !== 'approved' || !replyDraft[item.id]?.trim()"
                     :loading="busyId === item.id"
                     @click="reply(item)"
                   >
@@ -510,11 +563,6 @@ onMounted(checkSession);
 }
 .comments-admin-card__reply {
   margin-top: 0.85rem;
-}
-.comments-admin-card__emoji {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
 }
 @media (max-width: 640px) {
   .comments-admin__header,

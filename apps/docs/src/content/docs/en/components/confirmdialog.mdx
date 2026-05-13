@@ -5,6 +5,7 @@ description: Modal-derived component for confirmation prompts, with default and 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/confirmdialog/BasicVue.vue';
+import BasicVueSource from '~/components/demos/confirmdialog/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -29,7 +30,8 @@ Built-in icon, title, description, and cancel/confirm buttons. `tone="danger"` s
   confirmText="Delete permanently"
   onConfirm={onConfirm}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -39,11 +41,13 @@ Built-in icon, title, description, and cancel/confirm buttons. `tone="danger"` s
 Hook confirm to a 1.5s async operation. The confirm button shows a spinner during the wait and the cancel button is disabled.
 
 import LoadingVue from '~/components/demos/confirmdialog/LoadingVue.vue';
+import LoadingVueSource from '~/components/demos/confirmdialog/LoadingVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfConfirmDialog ... :loading="loading" @confirm="onConfirm" />`}
   reactCode={`<CfConfirmDialog ... loading={loading} onConfirm={onConfirm} />`}
->
+
+  vueSource={LoadingVueSource}>
   <LoadingVue client:load />
 </DemoFrame>
 

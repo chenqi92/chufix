@@ -5,6 +5,7 @@ description: 单行胶囊通知，自带 action 按钮（如 Undo），支持 6 
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/snackbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/snackbar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -28,7 +29,8 @@ import BasicVue from '~/components/demos/snackbar/BasicVue.vue';
   actionShortcut="⌘Z"
   onAction={undo}
 />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -38,11 +40,13 @@ import BasicVue from '~/components/demos/snackbar/BasicVue.vue';
 默认 `bottom-center`，常用替代是 `top-right`（不挡底部内容）。
 
 import PlacementsVue from '~/components/demos/snackbar/PlacementsVue.vue';
+import PlacementsVueSource from '~/components/demos/snackbar/PlacementsVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSnackbar v-model:open="open" placement="bottom-right" message="…" />`}
   reactCode={`<CfSnackbar open={open} onOpenChange={setOpen} placement="bottom-right" message="…" />`}
->
+
+  vueSource={PlacementsVueSource}>
   <PlacementsVue client:load />
 </DemoFrame>
 

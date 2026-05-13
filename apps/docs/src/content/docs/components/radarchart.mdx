@@ -5,6 +5,7 @@ description: 多维度对比的多边形图，支持多 series。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/radarchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfRadarChart ... />`}
   reactCode={`<CfRadarChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,11 +26,13 @@ import BasicVue from '~/components/demos/radarchart/BasicVue.vue';
 3 套方案在 6 维度上的对比，颜色循环 `--viz-*`。
 
 import CompareVue from '~/components/demos/radarchart/CompareVue.vue';
+import CompareVueSource from '~/components/demos/radarchart/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfRadarChart :axes="axes" :series="threeSeries" />`}
   reactCode={`<CfRadarChart axes={axes} series={threeSeries} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 
@@ -39,4 +43,48 @@ import CompareVue from '~/components/demos/radarchart/CompareVue.vue';
 | `axes` | `string[]` | `—` | 维度名 |
 | `series` | `RadarSeries[]` | `—` | &#123; name, values: number[], colorIndex? &#125;[] |
 | `size` | `number` | `240` |  |
-| `max` | `number` | `数据最大值` | 标准化基准 |
+| `max` | `number` | 数据最大值 | 标准化基准 |
+| `showLegend` | `boolean` | `true` | 显示图例 |
+| `showPoints` | `boolean` | `true` | 顶点处画 3px dot；触发 `vertex-*` 事件 |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+雷达图有三个层级的交互：**整条 series（多边形）** / **单顶点（series × axis 的交叉点）** / **轴本身**。
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `RadarChartInteractionPayload` | 鼠标进入某 series 多边形 |
+| `item-leave` | `onItemLeave` | `RadarChartInteractionPayload` | 鼠标离开 series |
+| `vertex-enter` | `onVertexEnter` | `RadarVertexInteractionPayload` | 鼠标进入某顶点 dot（精确到 series × axis） |
+| `vertex-leave` | `onVertexLeave` | `RadarVertexInteractionPayload` | 鼠标离开顶点 |
+| `axis-enter` | `onAxisEnter` | `RadarAxisInteractionPayload` | 鼠标进入轴线或轴标签 |
+| `axis-leave` | `onAxisLeave` | `RadarAxisInteractionPayload` | 鼠标离开轴线/轴标签 |
+
+### 类型
+
+```ts
+interface RadarChartInteractionPayload {
+  series: RadarSeries;
+  seriesIndex: number;
+  nativeEvent?: PointerEvent;
+}
+
+interface RadarVertexInteractionPayload {
+  series: RadarSeries;
+  seriesIndex: number;
+  /** 0..axes.length-1 */
+  axisIndex: number;
+  axisLabel: string;
+  value: number;
+  nativeEvent?: PointerEvent;
+}
+
+interface RadarAxisInteractionPayload {
+  axisIndex: number;
+  axisLabel: string;
+  /** 各 series 在该轴上的值，按 seriesIndex 排列。 */
+  values: number[];
+  nativeEvent?: PointerEvent;
+}
+```

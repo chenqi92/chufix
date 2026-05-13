@@ -5,6 +5,7 @@ description: Editor / Console / History 3 个 tab 的 SQL 工作台外壳。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/sqlworkbench/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sqlworkbench/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -22,7 +23,8 @@ import BasicVue from '~/components/demos/sqlworkbench/BasicVue.vue';
   'panel-editor': <PanelA />,
   'panel-console': <PanelB />,
 }} />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

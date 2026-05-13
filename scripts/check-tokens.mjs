@@ -47,6 +47,38 @@ const localAllow = new Set([
   '--diff-add-fg',
   '--diff-del-bg',
   '--diff-del-fg',
+  /* Code component theme-scope vars set on .cf-code / [data-theme] inside code.css */
+  '--cf-code-bg',
+  '--cf-code-border',
+  '--cf-code-head-bg',
+  '--cf-code-muted',
+  '--cf-code-fg',
+  '--cf-code-gutter-bg',
+  '--cf-code-token-keyword',
+  '--cf-code-token-string',
+  '--cf-code-token-number',
+  '--cf-code-token-comment',
+  '--cf-code-token-tag',
+  '--cf-code-token-property',
+  /* CodeWorkspace theme-scope vars set on .cf-code-workspace / [data-theme] inside code.css */
+  '--cf-code-workspace-bg',
+  '--cf-code-workspace-head',
+  '--cf-code-workspace-tree',
+  '--cf-code-workspace-editor',
+  '--cf-code-workspace-border',
+  '--cf-code-workspace-fg',
+  '--cf-code-workspace-muted',
+  /* Flex / Grid / Row / Col responsive parameters set via inline style from props */
+  '--cf-flex-gap',
+  '--cf-grid-min',
+  '--cf-grid-columns',
+  '--cf-grid-gap',
+  '--cf-row-gutter-x',
+  '--cf-row-gutter-y',
+  '--cf-col-active-span',
+  '--cf-col-active-offset',
+  '--cf-col-active-push',
+  '--cf-col-active-pull',
   '--cf-col-xs-span',
   '--cf-col-xs-offset',
   '--cf-col-xs-push',
@@ -71,6 +103,8 @@ const localAllow = new Set([
   '--cf-col-xxl-offset',
   '--cf-col-xxl-push',
   '--cf-col-xxl-pull',
+  /* TreeSelect: per-row indent set via inline style on .cf-tree-node */
+  '--cf-tree-depth',
 ]);
 
 /* ── 3. walk style dirs ── */

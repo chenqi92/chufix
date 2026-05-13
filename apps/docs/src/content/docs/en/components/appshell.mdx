@@ -5,8 +5,11 @@ description: A header + sidebar + main + aside + footer CSS Grid layout — a re
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/appshell/BasicVue.vue';
+import BasicVueSource from '~/components/demos/appshell/BasicVue.vue?raw';
 import WithAsideVue from '~/components/demos/appshell/WithAsideVue.vue';
+import WithAsideVueSource from '~/components/demos/appshell/WithAsideVue.vue?raw';
 import VariantsVue from '~/components/demos/appshell/VariantsVue.vue';
+import VariantsVueSource from '~/components/demos/appshell/VariantsVue.vue?raw';
 
 ## Basic usage
 
@@ -61,7 +64,8 @@ export default function Demo() {
     </CfAppShell>
   );
 }`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -106,7 +110,8 @@ The `aside` slot enables the rightmost column — useful for detail panels, outl
 >
   <div>Main content</div>
 </CfAppShell>`}
->
+
+  vueSource={WithAsideVueSource}>
   <WithAsideVue client:load />
 </DemoFrame>
 
@@ -119,7 +124,8 @@ The `aside` slot enables the rightmost column — useful for detail panels, outl
 <CfAppShell variant="spacious">…</CfAppShell>`}
   reactCode={`<CfAppShell variant="condensed">…</CfAppShell>
 <CfAppShell variant="spacious">…</CfAppShell>`}
->
+
+  vueSource={VariantsVueSource}>
   <VariantsVue client:load />
 </DemoFrame>
 

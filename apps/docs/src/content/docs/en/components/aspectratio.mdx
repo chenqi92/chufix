@@ -5,8 +5,11 @@ description: Container that locks its child to a fixed aspect ratio (via CSS asp
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/aspectratio/BasicVue.vue';
+import BasicVueSource from '~/components/demos/aspectratio/BasicVue.vue?raw';
 import RatiosVue from '~/components/demos/aspectratio/RatiosVue.vue';
+import RatiosVueSource from '~/components/demos/aspectratio/RatiosVue.vue?raw';
 import ImageVue from '~/components/demos/aspectratio/ImageVue.vue';
+import ImageVueSource from '~/components/demos/aspectratio/ImageVue.vue?raw';
 
 ## Basic usage
 
@@ -19,7 +22,8 @@ import ImageVue from '~/components/demos/aspectratio/ImageVue.vue';
   reactCode={`<CfAspectRatio ratio={16 / 9}>
   <div>16 / 9 content</div>
 </CfAspectRatio>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -40,7 +44,8 @@ A visual reference for video, card thumbnails, portrait avatars, vertical video,
 <CfAspectRatio ratio={1}>…</CfAspectRatio>
 <CfAspectRatio ratio={3 / 4}>…</CfAspectRatio>
 <CfAspectRatio ratio={9 / 16}>…</CfAspectRatio>`}
->
+
+  vueSource={RatiosVueSource}>
   <RatiosVue client:load />
 </DemoFrame>
 
@@ -63,7 +68,8 @@ Child nodes are stretched with `position: absolute; inset: 0`. Common `<img>` / 
 <CfAspectRatio ratio={16 / 9}>
   <iframe src="https://www.youtube.com/embed/..." allowFullScreen />
 </CfAspectRatio>`}
->
+
+  vueSource={ImageVueSource}>
   <ImageVue client:load />
 </DemoFrame>
 

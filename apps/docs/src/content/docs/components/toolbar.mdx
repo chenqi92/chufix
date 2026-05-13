@@ -5,6 +5,7 @@ description: 水平按钮组容器，支持分隔符、垂直方向、3 档尺�
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toolbar/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -26,7 +27,8 @@ import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
   <CfButton variant="ghost" size="sm">Duplicate</CfButton>
   <CfButton variant="ghost" size="sm">Delete</CfButton>
 </CfToolbar>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -36,13 +38,15 @@ import BasicVue from '~/components/demos/toolbar/BasicVue.vue';
 `orientation="vertical"` 垂直堆叠；`variant="plain"` 取消背景与边框，作为纯按钮组使用。
 
 import VerticalVue from '~/components/demos/toolbar/VerticalVue.vue';
+import VerticalVueSource from '~/components/demos/toolbar/VerticalVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfToolbar orientation="vertical">…</CfToolbar>
 <CfToolbar variant="plain">…</CfToolbar>`}
   reactCode={`<CfToolbar orientation="vertical">…</CfToolbar>
 <CfToolbar variant="plain">…</CfToolbar>`}
->
+
+  vueSource={VerticalVueSource}>
   <VerticalVue client:load />
 </DemoFrame>
 

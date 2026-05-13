@@ -11,3 +11,10 @@ export interface StackedBar100Props {
   showLegend?: boolean;
   ariaLabel?: string;
 }
+
+export interface StackedBar100InteractionPayload {
+  segment: StackedBar100Series;
+  dataIndex: number;
+  pct: number;
+  nativeEvent?: PointerEvent;
+}

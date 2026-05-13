@@ -5,19 +5,28 @@ description: Dialog with built-in portal, focus trap, scroll lock, tone variants
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/modal/BasicVue.vue';
+import BasicVueSource from '~/components/demos/modal/BasicVue.vue?raw';
 import SizesVue from '~/components/demos/modal/SizesVue.vue';
+import SizesVueSource from '~/components/demos/modal/SizesVue.vue?raw';
 import BehaviorVue from '~/components/demos/modal/BehaviorVue.vue';
+import BehaviorVueSource from '~/components/demos/modal/BehaviorVue.vue?raw';
 import TonesVue from '~/components/demos/modal/TonesVue.vue';
+import TonesVueSource from '~/components/demos/modal/TonesVue.vue?raw';
 import AsyncVue from '~/components/demos/modal/AsyncVue.vue';
+import AsyncVueSource from '~/components/demos/modal/AsyncVue.vue?raw';
 import DraggableVue from '~/components/demos/modal/DraggableVue.vue';
+import DraggableVueSource from '~/components/demos/modal/DraggableVue.vue?raw';
 import ServiceVue from '~/components/demos/modal/ServiceVue.vue';
+import ServiceVueSource from '~/components/demos/modal/ServiceVue.vue?raw';
 import StackedVue from '~/components/demos/modal/StackedVue.vue';
+import StackedVueSource from '~/components/demos/modal/StackedVue.vue?raw';
 
 ## Basic usage
 
 `v-model:open` (Vue) or `open + onOpenChange` (React) for two-way binding. The component handles portal-to-body, focus trap, body scroll lock, ESC close, overlay click, and fade + scale transitions internally.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:only="vue" />
 </DemoFrame>
 
@@ -25,7 +34,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 `size` controls the max width. `full` fills nearly the entire viewport. `width` / `min-height` accept custom pixel values.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SizesVueSource}>
   <SizesVue client:only="vue" />
 </DemoFrame>
 
@@ -33,7 +43,8 @@ import StackedVue from '~/components/demos/modal/StackedVue.vue';
 
 By default any close path works: overlay click, ESC, top-right ×. Disable individually with `closeOnOverlay` / `closeOnEsc` / `showClose`. While async (`onBeforeOk` in flight) every close path is blocked automatically.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BehaviorVueSource}>
   <BehaviorVue client:only="vue" />
 </DemoFrame>
 
@@ -41,7 +52,8 @@ By default any close path works: overlay click, ESC, top-right ×. Disable indiv
 
 `tone="info | success | warning | error"` adds a circular tone icon plus accent color in the header. `tone="error"` automatically switches the default OK button to danger red.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={TonesVueSource}>
   <TonesVue client:only="vue" />
 </DemoFrame>
 
@@ -49,7 +61,8 @@ By default any close path works: overlay click, ESC, top-right ×. Disable indiv
 
 Pass `okText` / `cancelText` and the component renders the default footer buttons. `onBeforeOk` accepts an async function — return `false` or throw to keep the dialog open and restore the loading state; resolve normally to close and emit `@ok`.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AsyncVueSource}>
   <AsyncVue client:only="vue" />
 </DemoFrame>
 
@@ -57,7 +70,8 @@ Pass `okText` / `cancelText` and the component renders the default footer button
 
 `draggable` turns the title bar into a drag handle. `resizable` adds a corner handle for diagonal resizing. Both are PointerEvent-based with zero third-party deps.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={DraggableVueSource}>
   <DraggableVue client:only="vue" />
 </DemoFrame>
 
@@ -79,7 +93,8 @@ const ok = await modal.confirm({
 if (ok) modal.success({ title: 'Submitted' });
 ```
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ServiceVueSource}>
   <ServiceVue client:only="vue" />
 </DemoFrame>
 
@@ -97,7 +112,8 @@ Service method signatures:
 
 Each open Modal is pushed onto an internal stack with z-index auto-incremented by 10. ESC only closes the topmost one, and closing pops it from the stack — so you can open a Modal from inside another Modal without thinking about layering.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={StackedVueSource}>
   <StackedVue client:only="vue" />
 </DemoFrame>
 

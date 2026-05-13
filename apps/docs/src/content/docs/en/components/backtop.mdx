@@ -5,6 +5,7 @@ description: Floating button that appears after scrolling past a threshold and s
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/backtop/BasicVue.vue';
+import BasicVueSource from '~/components/demos/backtop/BasicVue.vue?raw';
 
 ## Basic usage
 
@@ -19,7 +20,8 @@ import BasicVue from '~/components/demos/backtop/BasicVue.vue';
   {Array.from({ length: 24 }, (_, i) => <p key={i}>Paragraph {i + 1}…</p>)}
   <CfBackTop target=".scroll-root" visibilityHeight={120} />
 </div>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 

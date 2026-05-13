@@ -8,10 +8,18 @@ export interface BoxStat {
   outliers?: number[];
 }
 
+export interface BoxPlotInteractionPayload {
+  box: BoxStat;
+  dataIndex: number;
+  nativeEvent?: unknown;
+}
+
 export interface BoxPlotProps {
   data: BoxStat[];
   width?: number;
   height?: number;
   ariaLabel?: string;
   className?: string;
+  onItemEnter?: (payload: BoxPlotInteractionPayload) => void;
+  onItemLeave?: (payload: BoxPlotInteractionPayload) => void;
 }

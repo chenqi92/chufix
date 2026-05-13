@@ -5,6 +5,7 @@ description: 主按钮 + 下拉箭头复合，用于一组相关动作。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
+import BasicVueSource from '~/components/demos/splitbutton/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -17,7 +18,8 @@ import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
   reactCode={`<CfSplitButton items={items} onClick={save} onSelect={(v) => onPick(v)}>
   Save
 </CfSplitButton>`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -27,6 +29,7 @@ import BasicVue from '~/components/demos/splitbutton/BasicVue.vue';
 3 档尺寸跟着 `--control-h` token 变化。
 
 import SizesVue from '~/components/demos/splitbutton/SizesVue.vue';
+import SizesVueSource from '~/components/demos/splitbutton/SizesVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfSplitButton size="sm" :items="items">Small</CfSplitButton>
@@ -35,7 +38,8 @@ import SizesVue from '~/components/demos/splitbutton/SizesVue.vue';
   reactCode={`<CfSplitButton size="sm" items={items}>Small</CfSplitButton>
 <CfSplitButton size="md" items={items}>Medium</CfSplitButton>
 <CfSplitButton size="lg" items={items}>Large</CfSplitButton>`}
->
+
+  vueSource={SizesVueSource}>
   <SizesVue client:load />
 </DemoFrame>
 

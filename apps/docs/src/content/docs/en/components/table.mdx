@@ -5,28 +5,51 @@ description: Data table — multi-column sort, column reorder & resize, pinned c
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/table/BasicVue.vue';
+import BasicVueSource from '~/components/demos/table/BasicVue.vue?raw';
 import SelectionVue from '~/components/demos/table/SelectionVue.vue';
+import SelectionVueSource from '~/components/demos/table/SelectionVue.vue?raw';
 import MultiSortVue from '~/components/demos/table/MultiSortVue.vue';
+import MultiSortVueSource from '~/components/demos/table/MultiSortVue.vue?raw';
 import ResizeReorderVue from '~/components/demos/table/ResizeReorderVue.vue';
+import ResizeReorderVueSource from '~/components/demos/table/ResizeReorderVue.vue?raw';
 import PinVue from '~/components/demos/table/PinVue.vue';
+import PinVueSource from '~/components/demos/table/PinVue.vue?raw';
 import ExpandTreeVue from '~/components/demos/table/ExpandTreeVue.vue';
+import ExpandTreeVueSource from '~/components/demos/table/ExpandTreeVue.vue?raw';
 import SummarySearchVue from '~/components/demos/table/SummarySearchVue.vue';
+import SummarySearchVueSource from '~/components/demos/table/SummarySearchVue.vue?raw';
 import VirtualVue from '~/components/demos/table/VirtualVue.vue';
+import VirtualVueSource from '~/components/demos/table/VirtualVue.vue?raw';
 import RowReorderVue from '~/components/demos/table/RowReorderVue.vue';
+import RowReorderVueSource from '~/components/demos/table/RowReorderVue.vue?raw';
 import InlineEditVue from '~/components/demos/table/InlineEditVue.vue';
+import InlineEditVueSource from '~/components/demos/table/InlineEditVue.vue?raw';
 import CsvExportVue from '~/components/demos/table/CsvExportVue.vue';
+import CsvExportVueSource from '~/components/demos/table/CsvExportVue.vue?raw';
 import PersistVue from '~/components/demos/table/PersistVue.vue';
+import PersistVueSource from '~/components/demos/table/PersistVue.vue?raw';
 import MergeRowsVue from '~/components/demos/table/MergeRowsVue.vue';
+import MergeRowsVueSource from '~/components/demos/table/MergeRowsVue.vue?raw';
 import CellSelectVue from '~/components/demos/table/CellSelectVue.vue';
+import CellSelectVueSource from '~/components/demos/table/CellSelectVue.vue?raw';
 import ColVirtualVue from '~/components/demos/table/ColVirtualVue.vue';
+import ColVirtualVueSource from '~/components/demos/table/ColVirtualVue.vue?raw';
 import TreeDragVue from '~/components/demos/table/TreeDragVue.vue';
+import TreeDragVueSource from '~/components/demos/table/TreeDragVue.vue?raw';
 import PasteVue from '~/components/demos/table/PasteVue.vue';
+import PasteVueSource from '~/components/demos/table/PasteVue.vue?raw';
 import HistoryVue from '~/components/demos/table/HistoryVue.vue';
+import HistoryVueSource from '~/components/demos/table/HistoryVue.vue?raw';
 import VarHeightVue from '~/components/demos/table/VarHeightVue.vue';
+import VarHeightVueSource from '~/components/demos/table/VarHeightVue.vue?raw';
 import RowEditVue from '~/components/demos/table/RowEditVue.vue';
+import RowEditVueSource from '~/components/demos/table/RowEditVue.vue?raw';
 import BatchVue from '~/components/demos/table/BatchVue.vue';
+import BatchVueSource from '~/components/demos/table/BatchVue.vue?raw';
 import PinnedRowsVue from '~/components/demos/table/PinnedRowsVue.vue';
+import PinnedRowsVueSource from '~/components/demos/table/PinnedRowsVue.vue?raw';
 import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
+import AutoHeightVueSource from '~/components/demos/table/AutoHeightVue.vue?raw';
 
 `CfTable` is one of the most feature-complete components in the library. Design choices:
 
@@ -38,7 +61,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 `columns` + `rows` + optional `rowKey`. `column.format` formats values; `column.render` returns VNodes / strings.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -46,7 +70,8 @@ import AutoHeightVue from '~/components/demos/table/AutoHeightVue.vue';
 
 Single-select via `selectable="single"`, multi-select via `selectable="multiple"`. `v-model` accepts a `string` or `string[]` keyed by `rowKey`.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SelectionVueSource}>
   <SelectionVue client:load />
 </DemoFrame>
 
@@ -54,7 +79,8 @@ Single-select via `selectable="single"`, multi-select via `selectable="multiple"
 
 With `multi-sort` enabled, hold <kbd>Shift</kbd> / <kbd>⌘</kbd> while clicking a header to add a secondary sort. Clicking the same column again cycles asc → desc → off. The header shows the column's index in the sort queue.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={MultiSortVueSource}>
   <MultiSortVue client:load />
 </DemoFrame>
 
@@ -64,7 +90,8 @@ Sort priority follows the order of the `sort` array. For full control bind `:sor
 
 With `resizable`, every column gets a 6px col-resize handle on its right edge. Dragging updates internal state in real time; `@update:columns-state` exposes the new widths for persistence. `reorderable` makes headers drag-and-drop reorderable.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ResizeReorderVueSource}>
   <ResizeReorderVue client:load />
 </DemoFrame>
 
@@ -74,7 +101,8 @@ Per-column overrides: `resizable: false` / `reorderable: false`.
 
 `column.fixed: 'left' | 'right'` pins columns to either side so they stay visible during horizontal scroll. Combine with `sticky-header` + `:height` for a sticky top row.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PinVueSource}>
   <PinVue client:load />
 </DemoFrame>
 
@@ -85,7 +113,8 @@ Per-column overrides: `resizable: false` / `reorderable: false`.
 - Pass `expand-render` to render custom expanded content (order details, nested charts, etc.).
 - If a row carries a `children` array, the table treats it as tree data and indents each level by `tree-indent` pixels.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ExpandTreeVueSource}>
   <ExpandTreeVue client:load />
 </DemoFrame>
 
@@ -95,7 +124,8 @@ Per-column overrides: `resizable: false` / `reorderable: false`.
 
 Set `toolbar="auto"` to surface global search + column visibility menu. `column.filterable` puts a funnel button in each column header; `filterType` toggles between `select` / `number-range` / plain text. `column.summary` accepts `'sum' | 'avg' | 'count'` or a function — a **summary** row is rendered at the bottom and updates with the filtered result.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={SummarySearchVueSource}>
   <SummarySearchVue client:load />
 </DemoFrame>
 
@@ -105,7 +135,8 @@ Set `toolbar="auto"` to surface global search + column visibility menu. `column.
 
 With `virtual` enabled, the body only renders visible rows + an `overscan` buffer above/below — DOM count stays in the dozens. Requires every row to use a fixed `row-height` (default 36px). Combine with `:height` + `sticky-header`.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={VirtualVueSource}>
   <VirtualVue client:load />
 </DemoFrame>
 
@@ -115,7 +146,8 @@ A 50,000-row dataset renders ~30 `<tr>` elements at any time. Sort / filter / pi
 
 `row-reorderable` adds a ⋮⋮ drag handle column on the left. Drag a row to reorder; `@update:rows` emits the new array. Use `@row-reorder` if you also want from/to indices.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={RowReorderVueSource}>
   <RowReorderVue client:load />
 </DemoFrame>
 
@@ -129,7 +161,8 @@ Add `editable: true` to a column with optional `editType: 'text' | 'number' | 's
 - Commit: Enter / blur. Cancel: Esc.
 - `@cell-edit` emits `{ row, column, oldValue, newValue, index }` — the parent decides how to write back.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={InlineEditVueSource}>
   <InlineEditVue client:load />
 </DemoFrame>
 
@@ -145,7 +178,8 @@ Add `editable: true` to a column with optional `editType: 'text' | 'number' | 's
 - Fully custom: `@export` gives you the CSV string — download or upload as you wish.
 - Imperative: the component exposes `exportCsv()` via `defineExpose`.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={CsvExportVueSource}>
   <CsvExportVue client:load />
 </DemoFrame>
 
@@ -153,7 +187,8 @@ Add `editable: true` to a column with optional `editType: 'text' | 'number' | 's
 
 Setting `persistKey="<key>"` makes the table write the current `columnsState` (hidden / order / widths) to `localStorage['cf-table:<key>']` and restore it on next mount.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PersistVueSource}>
   <PersistVue client:load />
 </DemoFrame>
 
@@ -163,7 +198,8 @@ When fully controlled (you pass `:columns-state`), persistence is skipped — yo
 
 Add `mergeRows: true` to a column and consecutive cells with equal values are merged into a single rowSpan. For finer control pass a function: `mergeRows: (cur, prev) => cur.groupId === prev.groupId`.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={MergeRowsVueSource}>
   <MergeRowsVue client:load />
 </DemoFrame>
 
@@ -177,7 +213,8 @@ Merges never cross tree levels (different `parentKey` rows are not joined).
 - Shift-click / mouse drag → rectangular selection
 - <kbd>Ctrl/⌘ + C</kbd> → copies as TSV to the clipboard, ready to paste into Excel / Numbers / Google Sheets
 
-<DemoFrame>
+<DemoFrame
+  vueSource={CellSelectVueSource}>
   <CellSelectVue client:load />
 </DemoFrame>
 
@@ -187,7 +224,8 @@ Merges never cross tree levels (different `parentKey` rows are not joined).
 
 When you have 100+ columns of simple cells (think 2-D matrices), enabling `col-virtual` + a default `col-width` virtualizes the horizontal axis too. Combine with `virtual` for full bidirectional virtual scrolling.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={ColVirtualVueSource}>
   <ColVirtualVue client:load />
 </DemoFrame>
 
@@ -203,7 +241,8 @@ Add `tree-reorderable` on top of `row-reorderable` and the drop UI splits each t
 
 Ancestor-into-descendant moves are blocked.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={TreeDragVueSource}>
   <TreeDragVue client:load />
 </DemoFrame>
 
@@ -213,7 +252,8 @@ Ancestor-into-descendant moves are blocked.
 
 On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a starting cell, paste TSV / CSV from your clipboard with <kbd>Ctrl/⌘ + V</kbd>, and the data flows back into cells starting at that anchor. `column.editable` decides which cells accept writes; `column.editValidate` rejects invalid values.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PasteVueSource}>
   <PasteVue client:load />
 </DemoFrame>
 
@@ -223,7 +263,8 @@ On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a st
 
 `history-enabled` records every change to sort / filter / search / pagination / columnsState into an in-memory stack. <kbd>Ctrl/⌘ + Z</kbd> undoes, <kbd>Ctrl/⌘ + Shift + Z</kbd> / <kbd>Ctrl + Y</kbd> redoes. `history-depth` caps the stack size (default 50).
 
-<DemoFrame>
+<DemoFrame
+  vueSource={HistoryVueSource}>
   <HistoryVue client:load />
 </DemoFrame>
 
@@ -233,7 +274,8 @@ On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a st
 
 `virtual` defaults to a single `rowHeight`. For rows of varying height (markdown body, image gallery, etc.), pass `:get-row-height="(idx) => 42"` and the table builds cumulative offsets, then binary-searches for the visible window on each scroll.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={VarHeightVueSource}>
   <VarHeightVue client:load />
 </DemoFrame>
 
@@ -243,7 +285,8 @@ On top of `cell-selectable`, enable `cell-pastable`. Click (or shift-frame) a st
 
 Set `edit-mode="row"` and double-click any row to enter row-edit mode: every `editable` column becomes an input simultaneously, and a Save / Cancel row appears below. Enter commits, Esc cancels. Validation failure keeps the row in edit mode.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={RowEditVueSource}>
   <RowEditVue client:load />
 </DemoFrame>
 
@@ -253,7 +296,8 @@ Each cell change still emits `@cell-edit` (same as cell mode); the parent decide
 
 `batch-actions` + `selectable="multiple"`: when at least one row is selected, a sticky bar appears above the table — built-in count / Export selected / Clear, plus a `#batch-actions` slot for custom buttons (which receives `selectedKeys`).
 
-<DemoFrame>
+<DemoFrame
+  vueSource={BatchVueSource}>
   <BatchVue client:load />
 </DemoFrame>
 
@@ -261,7 +305,8 @@ Each cell change still emits `@cell-edit` (same as cell mode); the parent decide
 
 `pinned-row-keys` lifts those rows to the top and makes them sticky inside the scroll container. Useful for "watchlist" / "high priority" rows that should always stay visible.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={PinnedRowsVueSource}>
   <PinnedRowsVue client:load />
 </DemoFrame>
 
@@ -269,7 +314,8 @@ Each cell change still emits `@cell-edit` (same as cell mode); the parent decide
 
 `virtual` defaults to a fixed `rowHeight`. When row content really needs to render before height is known (rich text, images, nested layout), enable `auto-row-height`: the component runs ResizeObserver on every visible row and writes measured heights back into the offset table.
 
-<DemoFrame>
+<DemoFrame
+  vueSource={AutoHeightVueSource}>
   <AutoHeightVue client:load />
 </DemoFrame>
 

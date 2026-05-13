@@ -5,6 +5,7 @@ description: 逐层收窄的转化漏斗，每层显示绝对值。
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/funnelchart/BasicVue.vue?raw';
 
 ## 基础用法
 
@@ -14,7 +15,8 @@ import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
 <DemoFrame
   vueCode={`<CfFunnelChart ... />`}
   reactCode={`<CfFunnelChart ... />`}
->
+
+  vueSource={BasicVueSource}>
   <BasicVue client:load />
 </DemoFrame>
 
@@ -24,13 +26,15 @@ import BasicVue from '~/components/demos/funnelchart/BasicVue.vue';
 健康漏斗（每段流失 30-50%）vs 流失严重漏斗（92% 直接流失）。
 
 import CompareVue from '~/components/demos/funnelchart/CompareVue.vue';
+import CompareVueSource from '~/components/demos/funnelchart/CompareVue.vue?raw';
 
 <DemoFrame
   vueCode={`<CfFunnelChart :steps="good" />
 <CfFunnelChart :steps="bad" />`}
   reactCode={`<CfFunnelChart steps={good} />
 <CfFunnelChart steps={bad} />`}
->
+
+  vueSource={CompareVueSource}>
   <CompareVue client:load />
 </DemoFrame>
 
@@ -38,5 +42,25 @@ import CompareVue from '~/components/demos/funnelchart/CompareVue.vue';
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
-| `steps` | `FunnelStep[]` | `—` | &#123; label, value &#125;[]，从上到下值递减 |
-| `width / height / showLabels` | `` | `` |  |
+| `steps` | `FunnelStep[]` | `—` | `{ label, value }[]`，从上到下值递减 |
+| `width` | `number` | `360` | SVG 宽度 |
+| `height` | `number` | `240` | SVG 高度 |
+| `showLabels` | `boolean` | `true` | 显示每段的 label / value |
+| `ariaLabel` | `string` | `—` | 透传给根 `<svg>` 的 `aria-label` |
+
+### Events
+
+| Vue 事件 | React 回调 | 载荷类型 | 说明 |
+|---|---|---|---|
+| `item-enter` | `onItemEnter` | `FunnelChartInteractionPayload` | 鼠标进入某层时触发 |
+| `item-leave` | `onItemLeave` | `FunnelChartInteractionPayload` | 鼠标离开某层时触发 |
+
+### 类型
+
+```ts
+interface FunnelChartInteractionPayload {
+  step: FunnelStep;
+  dataIndex: number;
+  nativeEvent?: PointerEvent;
+}
+```

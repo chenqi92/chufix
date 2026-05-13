@@ -8,6 +8,8 @@ export function StackedBar100(props: StackedBar100Props) {
     showLegend = true,
     ariaLabel = '占比柱',
     className,
+    onItemEnter,
+    onItemLeave,
   } = props;
 
   const layout = useMemo(() => {
@@ -42,6 +44,14 @@ export function StackedBar100(props: StackedBar100Props) {
             className={`cf-stacked100__seg cf-chart__bar--${seg.colorIndex}`}
             style={{ width: `${seg.pct}%` }}
             title={`${seg.name}: ${seg.value}`}
+            onPointerEnter={(e) => {
+              const s = segments?.[i];
+              if (s) onItemEnter?.({ segment: s, dataIndex: i, pct: seg.pct, nativeEvent: e });
+            }}
+            onPointerLeave={(e) => {
+              const s = segments?.[i];
+              if (s) onItemLeave?.({ segment: s, dataIndex: i, pct: seg.pct, nativeEvent: e });
+            }}
           />
         ))}
       </div>
