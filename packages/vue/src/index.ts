@@ -161,6 +161,14 @@ import './styles/toolcallcard.css';
 import './styles/artifactcard.css';
 import './styles/chatlist.css';
 import './styles/promptcomposer.css';
+import './styles/speeddial.css';
+import './styles/bulkselectionbar.css';
+import './styles/columnvisibilitymenu.css';
+import './styles/masonry.css';
+import './styles/virtuallist.css';
+import './styles/virtualgrid.css';
+import './styles/treetable.css';
+import './styles/filterpanel.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1256,6 +1264,25 @@ export type {
   IconStrokeWidth,
 } from './icon/variants';
 export type { IconName } from '@chufix-design/icons';
+
+// Data / virtualization / SpeedDial
+export { default as CfSpeedDial } from './speeddial/SpeedDial.vue';
+export type { SpeedDialProps, SpeedDialAction, SpeedDialDirection, SpeedDialPosition, SpeedDialTrigger, SpeedDialLabelMode } from './speeddial/variants';
+export { default as CfBulkSelectionBar } from './bulkselectionbar/BulkSelectionBar.vue';
+export type { BulkSelectionBarProps, BulkBarPosition } from './bulkselectionbar/variants';
+export { default as CfColumnVisibilityMenu } from './columnvisibilitymenu/ColumnVisibilityMenu.vue';
+export type { ColumnVisibilityMenuProps, ColumnConfig, ColumnPin } from './columnvisibilitymenu/variants';
+export { default as CfMasonry } from './masonry/Masonry.vue';
+export type { MasonryProps } from './masonry/variants';
+export { default as CfVirtualList } from './virtuallist/VirtualList.vue';
+export type { VirtualListProps, VirtualWindow, ItemHeight } from './virtuallist/variants';
+export { default as CfVirtualGrid } from './virtualgrid/VirtualGrid.vue';
+export type { VirtualGridProps, GridWindow } from './virtualgrid/variants';
+export { default as CfTreeTable } from './treetable/TreeTable.vue';
+export type { TreeTableProps, TreeTableColumn, FlatTreeRow } from './treetable/variants';
+export { default as CfFilterPanel } from './filterpanel/FilterPanel.vue';
+export { default as CfFilterSection } from './filterpanel/FilterSection.vue';
+export type { FilterPanelProps, FilterSectionProps, SavedView } from './filterpanel/variants';
 
 // AI / LLM chat components
 export { default as CfStreamingText } from './streamingtext/StreamingText.vue';

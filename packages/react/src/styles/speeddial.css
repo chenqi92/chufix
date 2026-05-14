@@ -1,0 +1,150 @@
+/* ChuFix SpeedDial — expandable FAB with multiple sub-actions. */
+
+.cf-speeddial {
+  position: fixed;
+  z-index: var(--z-fab);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  --speeddial-gap: 12px;
+}
+
+.cf-speeddial--bottom-right { right: calc(16px + var(--safe-area-right)); bottom: calc(16px + var(--safe-area-bottom)); flex-direction: column-reverse; }
+.cf-speeddial--bottom-left  { left:  calc(16px + var(--safe-area-left));  bottom: calc(16px + var(--safe-area-bottom)); flex-direction: column-reverse; }
+.cf-speeddial--bottom-center{ left: 50%; transform: translateX(-50%); bottom: calc(16px + var(--safe-area-bottom)); flex-direction: column-reverse; }
+.cf-speeddial--top-right    { right: calc(16px + var(--safe-area-right)); top: calc(16px + var(--safe-area-top)); flex-direction: column; }
+.cf-speeddial--top-left     { left:  calc(16px + var(--safe-area-left));  top: calc(16px + var(--safe-area-top)); flex-direction: column; }
+
+.cf-speeddial--up    { flex-direction: column-reverse; }
+.cf-speeddial--down  { flex-direction: column; }
+.cf-speeddial--left  { flex-direction: row-reverse; }
+.cf-speeddial--right { flex-direction: row; }
+
+.cf-speeddial__trigger {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  cursor: pointer;
+  box-shadow: var(--shadow-3);
+  transition: transform var(--dur-base) var(--ease-spring),
+              box-shadow var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+  z-index: 2;
+}
+
+.cf-speeddial__trigger:hover { background: var(--accent-2); box-shadow: var(--shadow-4); }
+.cf-speeddial__trigger:active { transform: scale(0.95); }
+.cf-speeddial__trigger:focus-visible { outline: none; box-shadow: var(--shadow-3), var(--focus-ring); }
+
+.cf-speeddial__trigger-icon {
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+.cf-speeddial.is-open .cf-speeddial__trigger-icon { transform: rotate(45deg); }
+
+.cf-speeddial__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--speeddial-gap);
+  align-items: center;
+}
+
+.cf-speeddial--up .cf-speeddial__list,
+.cf-speeddial--down .cf-speeddial__list,
+.cf-speeddial--bottom-right .cf-speeddial__list,
+.cf-speeddial--bottom-left .cf-speeddial__list,
+.cf-speeddial--bottom-center .cf-speeddial__list,
+.cf-speeddial--top-right .cf-speeddial__list,
+.cf-speeddial--top-left .cf-speeddial__list {
+  flex-direction: column;
+  margin-bottom: var(--speeddial-gap);
+}
+
+.cf-speeddial--down .cf-speeddial__list,
+.cf-speeddial--top-right .cf-speeddial__list,
+.cf-speeddial--top-left .cf-speeddial__list {
+  margin-top: var(--speeddial-gap);
+  margin-bottom: 0;
+}
+
+.cf-speeddial--left .cf-speeddial__list,
+.cf-speeddial--right .cf-speeddial__list {
+  flex-direction: row;
+  margin: 0 var(--speeddial-gap);
+}
+
+.cf-speeddial__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-speeddial--bottom-left .cf-speeddial__item,
+.cf-speeddial--top-left .cf-speeddial__item,
+.cf-speeddial--right .cf-speeddial__item {
+  flex-direction: row-reverse;
+}
+
+.cf-speeddial__action {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  box-shadow: var(--shadow-2);
+  transition: background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.cf-speeddial__action:hover:not(:disabled) {
+  background: var(--bg-inset);
+  box-shadow: var(--shadow-3);
+}
+
+.cf-speeddial__action:disabled { opacity: 0.5; cursor: not-allowed; }
+.cf-speeddial__action:focus-visible { outline: none; box-shadow: var(--shadow-2), var(--focus-ring); }
+
+.cf-speeddial__label {
+  display: inline-block;
+  padding: 4px 8px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+  color: var(--fg-1);
+  white-space: nowrap;
+  box-shadow: var(--shadow-1);
+}
+
+.cf-speeddial--labels-hover .cf-speeddial__label {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.cf-speeddial--labels-hover .cf-speeddial__item:hover .cf-speeddial__label,
+.cf-speeddial--labels-hover .cf-speeddial__item:focus-within .cf-speeddial__label {
+  opacity: 1;
+}
+
+.cf-speeddial--labels-never .cf-speeddial__label {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-speeddial__trigger-icon { transition: none; }
+}

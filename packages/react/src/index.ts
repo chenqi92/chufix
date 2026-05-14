@@ -161,6 +161,14 @@ import './styles/toolcallcard.css';
 import './styles/artifactcard.css';
 import './styles/chatlist.css';
 import './styles/promptcomposer.css';
+import './styles/speeddial.css';
+import './styles/bulkselectionbar.css';
+import './styles/columnvisibilitymenu.css';
+import './styles/masonry.css';
+import './styles/virtuallist.css';
+import './styles/virtualgrid.css';
+import './styles/treetable.css';
+import './styles/filterpanel.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1294,6 +1302,25 @@ export type {
   MapCanvasEvent,
   MapTone,
 } from './map/variants';
+
+// Data / virtualization / SpeedDial
+export { SpeedDial as CfSpeedDial } from './speeddial/SpeedDial';
+export type { SpeedDialProps, SpeedDialAction, SpeedDialDirection, SpeedDialPosition, SpeedDialTrigger, SpeedDialLabelMode } from './speeddial/variants';
+export { BulkSelectionBar as CfBulkSelectionBar } from './bulkselectionbar/BulkSelectionBar';
+export type { BulkSelectionBarProps, BulkBarPosition } from './bulkselectionbar/variants';
+export { ColumnVisibilityMenu as CfColumnVisibilityMenu } from './columnvisibilitymenu/ColumnVisibilityMenu';
+export type { ColumnVisibilityMenuProps, ColumnConfig, ColumnPin } from './columnvisibilitymenu/variants';
+export { Masonry as CfMasonry } from './masonry/Masonry';
+export type { MasonryProps } from './masonry/variants';
+export { VirtualList as CfVirtualList, type VirtualListHandle } from './virtuallist/VirtualList';
+export type { VirtualListProps, VirtualWindow, ItemHeight } from './virtuallist/variants';
+export { VirtualGrid as CfVirtualGrid } from './virtualgrid/VirtualGrid';
+export type { VirtualGridProps, GridWindow } from './virtualgrid/variants';
+export { TreeTable as CfTreeTable } from './treetable/TreeTable';
+export type { TreeTableProps, TreeTableColumn, FlatTreeRow } from './treetable/variants';
+export { FilterPanel as CfFilterPanel } from './filterpanel/FilterPanel';
+export { FilterSection as CfFilterSection } from './filterpanel/FilterSection';
+export type { FilterPanelProps, FilterSectionProps, SavedView } from './filterpanel/variants';
 
 // AI / LLM chat components
 export { StreamingText as CfStreamingText } from './streamingtext/StreamingText';

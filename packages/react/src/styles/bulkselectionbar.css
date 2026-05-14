@@ -1,0 +1,81 @@
+/* ChuFix BulkSelectionBar — floating bar that appears when items are selected. */
+
+.cf-bulkbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-3);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  z-index: var(--z-sticky);
+}
+
+.cf-bulkbar--sticky-top {
+  position: sticky;
+  top: calc(8px + var(--safe-area-top));
+  margin: 0 auto;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+}
+
+.cf-bulkbar--sticky-bottom {
+  position: sticky;
+  bottom: calc(16px + var(--safe-area-bottom));
+  margin: 0 auto;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+}
+
+.cf-bulkbar--inline {
+  width: 100%;
+}
+
+.cf-bulkbar__count {
+  font-weight: var(--w-semibold);
+  white-space: nowrap;
+  color: var(--fg-1);
+}
+
+.cf-bulkbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-left: 1px solid var(--line-1);
+  padding-left: 12px;
+  margin-left: 4px;
+}
+
+.cf-bulkbar__actions:empty { display: none; border: 0; padding: 0; margin: 0; }
+
+.cf-bulkbar__clear {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  font: inherit;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--r-3);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.cf-bulkbar__clear:hover { background: var(--bg-inset); color: var(--fg-1); }
+.cf-bulkbar__clear:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.cf-bulkbar-enter-active,
+.cf-bulkbar-leave-active { transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-spring); }
+.cf-bulkbar-enter-from,
+.cf-bulkbar-leave-to { opacity: 0; transform: translateY(8px); }
+.cf-bulkbar--sticky-top.cf-bulkbar-enter-from,
+.cf-bulkbar--sticky-top.cf-bulkbar-leave-to { transform: translateY(-8px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-bulkbar-enter-active,
+  .cf-bulkbar-leave-active { transition: none; }
+}

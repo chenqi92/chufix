@@ -1,0 +1,104 @@
+/* ChuFix TreeTable — table with hierarchical row expansion. */
+
+.cf-treetable {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+  background: var(--bg-3);
+}
+
+.cf-treetable__head {
+  display: flex;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--w-semibold);
+  color: var(--fg-3);
+}
+
+.cf-treetable__head-cell {
+  padding: 8px 12px;
+}
+
+.cf-treetable__body {
+  display: block;
+}
+
+.cf-treetable__row {
+  display: flex;
+  border-bottom: 1px solid var(--line-1);
+  cursor: default;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.cf-treetable__row:last-child {
+  border-bottom: 0;
+}
+
+.cf-treetable__row:hover { background: var(--bg-inset); }
+
+.cf-treetable.is-striped .cf-treetable__row:nth-child(even) { background: oklch(from var(--bg-3) calc(l - 0.01) c h); }
+.cf-treetable.is-striped .cf-treetable__row:nth-child(even):hover { background: var(--bg-inset); }
+
+.cf-treetable__cell {
+  flex: 1 1 0;
+  padding: 8px 12px;
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cf-treetable--sm .cf-treetable__cell { padding: 6px 10px; font-size: var(--t-12); line-height: var(--lh-12); }
+
+.cf-treetable__cell[data-align='right'] { justify-content: flex-end; text-align: right; font-variant-numeric: tabular-nums; }
+.cf-treetable__cell[data-align='center'] { justify-content: center; text-align: center; }
+
+.cf-treetable__cell-text {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-treetable__indent {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.cf-treetable__chevron {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--fg-3);
+  border-radius: var(--r-2);
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  flex: 0 0 16px;
+}
+
+.cf-treetable__chevron:hover { background: var(--bg-2); color: var(--fg-1); }
+.cf-treetable__chevron.is-open { transform: rotate(90deg); }
+.cf-treetable__chevron:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.cf-treetable__leaf-spacer {
+  display: inline-block;
+  width: 16px;
+  flex: 0 0 16px;
+}

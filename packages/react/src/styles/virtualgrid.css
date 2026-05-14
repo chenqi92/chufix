@@ -1,0 +1,19 @@
+/* ChuFix VirtualGrid — 2D virtualized grid (image gallery / card walls). */
+
+.cf-vgrid {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+}
+
+.cf-vgrid__inner {
+  width: 100%;
+}
+
+.cf-vgrid__cell {
+  will-change: transform;
+}

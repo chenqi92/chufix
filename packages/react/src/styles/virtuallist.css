@@ -1,0 +1,29 @@
+/* ChuFix VirtualList — windowed list with overscan. */
+
+.cf-vlist {
+  position: relative;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+}
+
+.cf-vlist__inner {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+}
+
+.cf-vlist__pad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.cf-vlist__row {
+  width: 100%;
+}
