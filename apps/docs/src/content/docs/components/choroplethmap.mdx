@@ -1,0 +1,47 @@
+---
+title: ChoroplethMap 分级填色
+description: 按数据值给 GeoJSON 区域填色，内置 sequential / diverging 色阶，含 hover tooltip 和图例。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/choroplethmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/choroplethmap/BasicVue.vue?raw';
+
+## 基础用法
+
+`data` 行通过 `idField` 与 feature `properties[idField]` 匹配。`domain` 不传时自动取 min / max；`colorScale` 接受 `'sequential' | 'diverging'` 或自定义 `(value, domain) => color` 函数。
+
+<DemoFrame
+  vueCode={`<CfChoroplethMap
+  :geojson="geo"
+  :data="[{ id: 'N', value: 820 }, { id: 'S', value: 410 }]"
+  idField="id"
+  colorScale="sequential"
+  unit=" 万"
+/>`}
+  reactCode={`<CfChoroplethMap
+  geojson={geo}
+  data={[{ id: 'N', value: 820 }, { id: 'S', value: 410 }]}
+  idField="id"
+  colorScale="sequential"
+  unit=" 万"
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `geojson` | `FeatureCollection` | — | 区域 GeoJSON |
+| `data` | `{ id, value, name? }[]` | — | 数据行 |
+| `idField` | `string` | `'id'` | feature 中匹配 id 的属性名 |
+| `nameField` | `string` | `'name'` | feature 中作为名称回退的属性名 |
+| `domain` | `[min, max]` | 自动 | 色阶值域 |
+| `colorScale` | `'sequential' \| 'diverging' \| (v, domain) => string` | `'sequential'` | 色阶 |
+| `extent` | `MapBounds` | 自动 fit | 投影范围 |
+| `width` / `height` | `number` | `480` / `280` | SVG 尺寸 |
+| `tooltip` | `boolean` | `true` | hover 显示 tooltip |
+| `legend` | `boolean` | `true` | 显示底部图例 |
+| `unit` | `string` | — | 值后缀（图例 / tooltip） |

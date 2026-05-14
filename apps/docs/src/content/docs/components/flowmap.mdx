@@ -1,0 +1,44 @@
+---
+title: FlowMap 迁徙地图
+description: 在简单底图上画起点→终点的弧线，线宽按 value 自动映射，支持箭头与标签。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/flowmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/flowmap/BasicVue.vue?raw';
+
+## 基础用法
+
+`points` 是带经纬度的节点列表，`edges` 通过 `from / to` 关联 id。`value` 自动映射到 `widthRange` 区间；`curvature` 控制弧线曲率（0 = 直线）。
+
+<DemoFrame
+  vueCode={`<CfFlowMap
+  :geojson="geo"
+  :points="[{ id: 'BJ', name: '北京', lng: 30, lat: 60 }]"
+  :edges="[{ from: 'BJ', to: 'SH', value: 120 }]"
+  :showLabels="true"
+/>`}
+  reactCode={`<CfFlowMap
+  geojson={geo}
+  points={[{ id: 'BJ', name: '北京', lng: 30, lat: 60 }]}
+  edges={[{ from: 'BJ', to: 'SH', value: 120 }]}
+  showLabels
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `points` | `{ id, name?, lng, lat }[]` | — | 节点 |
+| `edges` | `{ from, to, value?, label? }[]` | — | 起→终边 |
+| `geojson` | `FeatureCollection` | — | 可选底图 |
+| `extent` | `MapBounds` | 自动 | 投影范围 |
+| `width` / `height` | `number` | `480` / `280` | SVG 尺寸 |
+| `widthRange` | `[number, number]` | `[0.6, 3]` | value → 线宽映射 |
+| `curvature` | `number` | `0.22` | 弧线弯曲度，0 为直线 |
+| `showArrow` | `boolean` | `true` | 显示箭头 |
+| `showNodes` | `boolean` | `true` | 显示节点圆点 |
+| `showLabels` | `boolean` | `false` | 显示节点名称 |

@@ -1,0 +1,59 @@
+---
+title: FormSchema Schema 表单
+description: 用字段数组声明式生成表单，搭配 useFormValidation 完成校验、提交、重置。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/formschema/BasicVue.vue';
+import BasicVueSource from '~/components/demos/formschema/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfFormSchema` 接收 `fields: FormFieldDef[]`，按声明顺序渲染。内部每个字段被 `CfFieldRow` 包装，支持 text / textarea / number / select / checkbox / radio / switch / password。和 `useFormValidation` 组合就能完成"声明 + 校验 + 提交"全流程。
+
+<DemoFrame
+  vueCode={`const fields = [
+  { name: 'name', label: '姓名', type: 'text', required: true },
+  { name: 'role', label: '角色', type: 'select', options: [...] },
+];
+
+const form = useFormValidation({ initialValues: { name: '', role: 'viewer' }, schema: { name: v => !v && '姓名必填' } });
+
+<CfFormSchema :fields :modelValue="form.values" :errors="form.errors" @update:modelValue="onModelUpdate" />`}
+  reactCode={`const fields = [
+  { name: 'name', label: '姓名', type: 'text', required: true },
+  { name: 'role', label: '角色', type: 'select', options: [...] },
+];
+
+const form = useFormValidation({ initialValues: { name: '', role: 'viewer' }, schema: { name: v => !v && '姓名必填' } });
+
+<CfFormSchema fields={fields} value={form.values} errors={form.errors} onChange={onChange} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## FormFieldDef
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `name` | `string` | 字段 key |
+| `label` | `string` | 显示标题 |
+| `type` | `'text' \| 'password' \| 'textarea' \| 'number' \| 'select' \| 'checkbox' \| 'radio' \| 'switch'` | 控件类型 |
+| `hint` / `placeholder` | `string` | 提示 / 占位文案 |
+| `required` / `disabled` | `boolean` | 必填 / 禁用 |
+| `options` | `{ label, value }[]` | select / radio 用 |
+| `min` / `max` / `step` | `number` | number 用 |
+| `span` | `number` | 在 `CfFormGrid` 中的跨列数 |
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `fields` | `FormFieldDef[]` | — | 字段定义 |
+| `modelValue` (Vue) / `value` (React) | `Record<string, unknown>` | — | 当前值（受控） |
+| `@update:modelValue` (Vue) / `onChange` (React) | `(v) => void` | — | 值变更回调 |
+| `errors` | `Record<string, string>` | — | 字段错误信息 |
+| `layout` | `'vertical' \| 'horizontal'` | `'vertical'` | 字段 label 位置 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 控件尺寸 |
+| `disabled` | `boolean` | `false` | 整表禁用 |
+| `onFieldChange` | `(name, v) => void` | — | 单字段变化通知 |

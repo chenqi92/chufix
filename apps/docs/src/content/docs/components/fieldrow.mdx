@@ -1,0 +1,36 @@
+---
+title: FieldRow 字段行
+description: 表单字段统一外壳：label / 必填星标 / hint / 错误信息 / 控件容器。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/fieldrow/BasicVue.vue';
+import BasicVueSource from '~/components/demos/fieldrow/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfFieldRow` 把 label、required 星标、hint、错误信息和控件包装成一行；不依赖任何特定输入组件，原生 `<input>` 或 `CfInput` 都行。
+
+<DemoFrame
+  vueCode={`<CfFieldRow label="姓名" required hint="2 - 20 字">
+  <input class="cf-input" />
+</CfFieldRow>`}
+  reactCode={`<CfFieldRow label="姓名" required hint="2 - 20 字">
+  <input className="cf-input" />
+</CfFieldRow>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `label` | `string` | — | 字段标题 |
+| `required` | `boolean` | `false` | 显示必填星标 |
+| `hint` | `string` | — | 提示文案，错误显示时被隐藏 |
+| `error` | `string` | — | 错误信息，存在时控件加红色边框 |
+| `htmlFor` | `string` | — | 关联控件 id |
+| `layout` | `'vertical' \| 'horizontal'` | `'vertical'` | 标签位置 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 字体 / 间距尺寸 |
+| `extraLabel` | `slot` / `ReactNode` | — | 右上角辅助文字（例如 "可选"） |

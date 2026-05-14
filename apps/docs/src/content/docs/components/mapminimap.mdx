@@ -1,0 +1,42 @@
+---
+title: MapMiniMap 缩略地图
+description: 极简 SVG 缩略地图，画底图轮廓 + 当前视口矩形，常作为大地图的导航器。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/mapminimap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/mapminimap/BasicVue.vue?raw';
+
+## 基础用法
+
+传入 GeoJSON FeatureCollection 作为底图，`visibleRect` 指定主地图当前视口范围；`extent` 控制整张缩略图覆盖的经纬度边界。无外部依赖、无 canvas，直接 SVG 渲染。
+
+<DemoFrame
+  vueCode={`<CfMapMiniMap
+  :geojson="geo"
+  :extent="{ north: 80, south: 0, east: 120, west: -60 }"
+  :visibleRect="{ north: 60, south: 20, east: 60, west: 0 }"
+  :width="240"
+  :height="140"
+/>`}
+  reactCode={`<CfMapMiniMap
+  geojson={geo}
+  extent={{ north: 80, south: 0, east: 120, west: -60 }}
+  visibleRect={{ north: 60, south: 20, east: 60, west: 0 }}
+  width={240}
+  height={140}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `geojson` | `{ type: 'FeatureCollection'; features: GeoJsonFeature[] }` | — | 底图 GeoJSON（Polygon / MultiPolygon） |
+| `extent` | `MapBounds` | `WORLD_BOUNDS` | 缩略图覆盖范围 `{ north, south, east, west }` |
+| `visibleRect` | `MapBounds` | — | 当前视口矩形 |
+| `width` / `height` | `number` | `160` / `90` | SVG 尺寸 |
+
+辅助函数：`WORLD_BOUNDS`、`projectToBox(lng, lat, bounds, w, h)`、`polygonToPath(coords, multi, bounds, w, h)` 可直接 import 使用。

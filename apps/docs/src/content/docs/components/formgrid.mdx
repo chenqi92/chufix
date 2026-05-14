@@ -1,0 +1,32 @@
+---
+title: FormGrid 表单栅格
+description: 按容器宽度自适应的栅格布局，支持每个断点指定列数。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/formgrid/BasicVue.vue';
+import BasicVueSource from '~/components/demos/formgrid/BasicVue.vue?raw';
+
+## 基础用法
+
+`columns` 接受固定列数（`2`）或断点对象（`{ sm: 1, md: 2, lg: 3 }`）。断点对齐 token：`sm 640 / md 768 / lg 1024 / xl 1280`。基于 `ResizeObserver` 监听**容器宽度**，不依赖 viewport 媒体查询，因此在 drawer / split pane 里也能正确响应。
+
+<DemoFrame
+  vueCode={`<CfFormGrid :columns="{ sm: 1, md: 2, lg: 3 }">
+  <CfFieldRow label="字段 A">...</CfFieldRow>
+  <CfFieldRow label="字段 B">...</CfFieldRow>
+</CfFormGrid>`}
+  reactCode={`<CfFormGrid columns={{ sm: 1, md: 2, lg: 3 }}>
+  <CfFieldRow label="字段 A">...</CfFieldRow>
+  <CfFieldRow label="字段 B">...</CfFieldRow>
+</CfFormGrid>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `columns` | `number \| { sm?, md?, lg?, xl? }` | `{ sm: 1, md: 2 }` | 列数 |
+| `gap` | `number` | `16` | 单元间距 (px) |

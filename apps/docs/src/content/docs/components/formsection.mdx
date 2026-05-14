@@ -1,0 +1,32 @@
+---
+title: FormSection 表单分组
+description: 给表单切分逻辑段落 — 标题 / 描述 / 锚点 / 可折叠。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/formsection/BasicVue.vue';
+import BasicVueSource from '~/components/demos/formsection/BasicVue.vue?raw';
+
+## 基础用法
+
+长表单建议拆成若干 `CfFormSection`：标题 + 描述 + 内部任意控件。`anchor` 给出 `id` 方便通过 `CfToc` 跳转；`collapsible` 让进阶字段可折叠。
+
+<DemoFrame
+  vueCode={`<CfFormSection title="账号信息" anchor="account">...</CfFormSection>
+<CfFormSection title="高级设置" collapsible :defaultOpen="false">...</CfFormSection>`}
+  reactCode={`<CfFormSection title="账号信息" anchor="account">...</CfFormSection>
+<CfFormSection title="高级设置" collapsible defaultOpen={false}>...</CfFormSection>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `title` | `string` | — | 区段标题 |
+| `description` | `string` | — | 描述文字 |
+| `anchor` | `string` | — | 区段 id，用于 Toc / 链接锚点 |
+| `collapsible` | `boolean` | `false` | 是否可折叠 |
+| `defaultOpen` | `boolean` | `true` | 折叠状态初始值 |
+| `open` | `boolean` | — | 受控展开（与 `onOpenChange` 配合） |

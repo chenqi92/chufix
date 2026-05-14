@@ -284,6 +284,23 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('表单进阶', 'Form advanced'),
+    items: [
+      c('FieldRow', '字段行', 'fieldrow'),
+      c('FormGrid', '表单栅格', 'formgrid'),
+      c('FormSection', '表单分组', 'formsection'),
+      c('FormSchema', 'Schema 表单', 'formschema'),
+    ],
+  },
+  {
+    label: L('地图扩展', 'Map extras'),
+    items: [
+      c('MapMiniMap', '缩略地图', 'mapminimap'),
+      c('ChoroplethMap', '分级填色', 'choroplethmap'),
+      c('FlowMap', '迁徙地图', 'flowmap'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

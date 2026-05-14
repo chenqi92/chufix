@@ -137,6 +137,32 @@ useSwipe(viewportRef, {
 });
 ```
 
+## 表单
+
+### `useFormValidation` —— Schema 表单状态
+
+接受 `initialValues` 与可选 `schema`（每字段一个或多个 validator）。Validator 同步或异步均可，返回错误字符串或 `undefined`。返回值含 `values / errors / touched / isValid / isDirty / isSubmitting`、以及 `setValue / setError / setTouched / validate / reset / submit`。`validateOn` 支持 `'change' | 'blur' | 'submit'`。
+
+```ts
+const form = useFormValidation({
+  initialValues: { name: '', email: '' },
+  validateOn: 'change',
+  schema: {
+    name: (v) => (!v ? '必填' : undefined),
+    email: [
+      (v) => (!v ? '必填' : undefined),
+      async (v) => ((await checkEmail(v)) ? undefined : '已被占用'),
+    ],
+  },
+});
+
+await form.submit(async (values) => {
+  await api.create(values);
+});
+```
+
+Vue / React 两端 API 镜像：Vue 返回值即响应式 Proxy，React 用 `useState` 重渲。`CfFormSchema` 把该 hook 与字段定义对接，常常一起使用。
+
 ## DOM 与事件
 
 ### `useEventListener` —— 自动挂载/卸载
