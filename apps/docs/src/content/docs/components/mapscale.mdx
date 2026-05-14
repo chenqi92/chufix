@@ -1,0 +1,32 @@
+---
+title: MapScale 比例尺
+description: 根据 lat + zoom 自动算"米/像素"，挑一个 1/2/5 ×10ⁿ 的整齐刻度作为比例尺。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/mapscale/BasicVue.vue';
+import BasicVueSource from '~/components/demos/mapscale/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfMapScale` 用 Web Mercator 的"米/像素"公式 `40075016.686 × cos(lat) / 2^(zoom + 8)` 把当前像素长度反推成实际距离，然后挑一个最大不超过 `maxWidth` 的整齐数值（1/2/5/10/20/50/100/...）。`unit` 切到 `'imperial'` 时显示 ft / mi。在 `CfMapTile` 内自动跟随 viewport；独立使用时需要显式传 `lat` / `zoom`。
+
+<DemoFrame
+  vueCode={`<CfMapScale inline :lat="40" :zoom="8" />
+<CfMapScale inline :lat="40" :zoom="14" unit="imperial" />`}
+  reactCode={`<CfMapScale inline lat={40} zoom={8} />
+<CfMapScale inline lat={40} zoom={14} unit="imperial" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `lat` | `number` | — | 测量点纬度（独立使用必填） |
+| `zoom` | `number` | — | 当前 zoom（独立使用必填） |
+| `unit` | `'metric' \| 'imperial'` | `'metric'` | 显示单位 |
+| `maxWidth` | `number` | `120` | 比例尺最大像素长度 |
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | `'bottom-left'` | 角落定位 |
+| `inline` | `boolean` | `false` | 内联 |

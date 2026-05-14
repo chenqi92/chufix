@@ -1,0 +1,67 @@
+---
+title: MapTile 瓦片地图
+description: XYZ 瓦片底图 + pointer 拖动 + 滚轮缩放，向子组件提供 Web Mercator 投影注入。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/maptile/BasicVue.vue';
+import BasicVueSource from '~/components/demos/maptile/BasicVue.vue?raw';
+import OverlayVue from '~/components/demos/maptile/OverlayVue.vue';
+import OverlayVueSource from '~/components/demos/maptile/OverlayVue.vue?raw';
+
+## 基础用法
+
+`CfMapTile` 用 Web Mercator 投影加载 XYZ 瓦片，pointer 拖动平移、滚轮缩放，默认走 OpenStreetMap 公共瓦片源。所有放进默认插槽的子组件都能通过 inject / context 拿到当前 viewport 与投影函数，从而把 SVG / canvas 图层精准对齐到瓦片上。
+
+<DemoFrame
+  vueCode={`<CfMapTile :center="{ lng: 116.4, lat: 39.9 }" :zoom="4" :width="560" :height="320">
+  <CfMapScale position="bottom-left" />
+</CfMapTile>`}
+  reactCode={`<CfMapTile center={{ lng: 116.4, lat: 39.9 }} zoom={4} width={560} height={320}>
+  <CfMapScale position="bottom-left" />
+</CfMapTile>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 叠加图层
+
+把 `CfBubbleMap` / `CfHeatMap` / `CfChoroplethMap` / `CfFlowMap` / `CfMarkerCluster` 直接当做子节点，它们会自动接 `MapTile` 注入的投影；同时显示 `CfMapLegend` 与 `CfMapScale` 控件。所有图层共用一份 viewport，缩放 / 平移 时同步更新。
+
+<DemoFrame
+  vueCode={`<CfMapTile :center="{ lng: 112, lat: 32 }" :zoom="4">
+  <CfBubbleMap :data="cities" unit=" 万" />
+  <CfMapLegend kind="size" :domain="[1000, 2500]" title="人口" unit=" 万" position="top-left" />
+  <CfMapScale position="bottom-left" />
+</CfMapTile>`}
+  reactCode={`<CfMapTile center={{ lng: 112, lat: 32 }} zoom={4}>
+  <CfBubbleMap data={cities} unit=" 万" />
+  <CfMapLegend kind="size" domain={[1000, 2500]} title="人口" unit=" 万" position="top-left" />
+  <CfMapScale position="bottom-left" />
+</CfMapTile>`}
+  vueSource={OverlayVueSource}>
+  <OverlayVue client:only="vue" />
+</DemoFrame>
+
+## 瓦片源
+
+`tileSource` 接受 `{ url, attribution?, subdomains?, maxZoom? }`；URL 支持 `{z}/{x}/{y}` 与 `{s}` 占位。内置两个常量：
+
+- **`OSM_TILES`**（默认）—— `https://tile.openstreetmap.org/{z}/{x}/{y}.png`，使用请遵守 [OSM 公共瓦片政策](https://operations.osmfoundation.org/policies/tiles/)；生产环境建议自建瓦片或用商用服务（Mapbox、MapTiler、Stadia 等）。
+- **`CARTO_DARK_TILES`** —— CartoDB Dark Matter，适配暗色主题。
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `center` | `{ lng, lat }` | `{ lng: 0, lat: 20 }` | 初始中心 |
+| `zoom` | `number` | `2` | 初始缩放（可小数） |
+| `minZoom` / `maxZoom` | `number` | `0 / 19` | 缩放夹紧 |
+| `tileSource` | `TileSource` | `OSM_TILES` | 瓦片源 |
+| `width` / `height` | `number` | `480 / 320` | 容器尺寸 |
+| `showZoomControl` | `boolean` | `true` | 右上角 ± 按钮 |
+| `showAttribution` | `boolean` | `true` | 右下角版权字 |
+| `staticView` | `boolean` | `false` | 禁用所有交互 |
+| `@update:center` / `@update:zoom` / `@move` | event | — | 视口变化通知 |
+
+辅助导出：`OSM_TILES` / `CARTO_DARK_TILES` / `lngLatToTile` / `tileToLngLat` / `makeProjection` / `makeUnproject` / `metersPerPixel`。

@@ -301,6 +301,17 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('交互地图', 'Interactive map'),
+    items: [
+      c('MapTile', '瓦片地图', 'maptile'),
+      c('BubbleMap', '气泡地图', 'bubblemap'),
+      c('HeatMap', '地理热力', 'heatmap'),
+      c('MarkerCluster', '标记聚合', 'markercluster'),
+      c('MapLegend', '图例', 'maplegend'),
+      c('MapScale', '比例尺', 'mapscale'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

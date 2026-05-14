@@ -1,0 +1,36 @@
+---
+title: MarkerCluster 标记聚合
+description: 网格聚合算法把密集标记合并成可点击的数字气泡，缓解视觉拥挤。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/markercluster/BasicVue.vue';
+import BasicVueSource from '~/components/demos/markercluster/BasicVue.vue?raw';
+
+## 基础用法
+
+按 `cellSize`（像素粒度）切网格、把同格内的点聚合成一个数字气泡；少于 `minClusterSize` 的网格保持原始 dot。点击气泡能拿回 `ClusterGroup`，里面有 `members` 数组，你可以拿去做"展开 / 缩放进去"的下钻动作。
+
+<DemoFrame
+  vueCode={`<CfMarkerCluster :data="points" :geojson="geo" :cellSize="50" @clusterClick="onClick" />`}
+  reactCode={`<CfMarkerCluster data={points} geojson={geo} cellSize={50} onClusterClick={onClick} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 工具函数
+
+`gridCluster(data, project, cellSize, minClusterSize)` 与 `clusterRadius(count)` 均直接 export，可在组件外复用做自定义渲染。
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `data` | `MarkerDatum[]` | — | `{ id, lng, lat, name?, weight?, data? }` |
+| `geojson` | `FeatureCollection` | — | 独立使用时的底图 |
+| `extent` / `projection` | — | 自动 | 见 BubbleMap |
+| `cellSize` | `number` | `60` | 聚合网格尺寸 (px) |
+| `minClusterSize` | `number` | `2` | 少于此数不聚合 |
+| `clustersOnly` | `boolean` | `false` | 只画聚合气泡，不画单点 |
+| `@clusterClick` / `onClusterClick` | `(c: ClusterGroup) => void` | — | 气泡点击 |
+| `@markerClick` / `onMarkerClick` | `(m) => void` | — | 单点点击 |

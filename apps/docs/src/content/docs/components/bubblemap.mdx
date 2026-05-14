@@ -1,0 +1,34 @@
+---
+title: BubbleMap 气泡地图
+description: 按值定半径的点位地图，面积比例缩放、tooltip，可叠加在 CfMapTile 上。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/bubblemap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/bubblemap/BasicVue.vue?raw';
+
+## 基础用法
+
+`data` 行带 `{ id, lng, lat, value }`，组件按 `radiusRange` 把 value 通过开方映射到半径（保证视觉面积线性，而非线性"看起来过大"）。在 `CfMapTile` 内嵌套时自动接入瓦片视口；独立使用时给个 `geojson` 底图或 `extent` 即可。
+
+<DemoFrame
+  vueCode={`<CfBubbleMap :data="data" :geojson="geo" unit=" 万" />`}
+  reactCode={`<CfBubbleMap data={data} geojson={geo} unit=" 万" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `data` | `BubbleDatum[]` | — | `{ id, lng, lat, value, name?, tone? }` |
+| `geojson` | `FeatureCollection` | — | 可选底图（独立使用时） |
+| `extent` | `MapBounds` | 自动 | 独立投影范围 |
+| `projection` | `(lng, lat) => {x, y}` | — | 显式覆盖投影（一般由 `CfMapTile` 注入） |
+| `width` / `height` | `number` | `480 / 280` | 独立使用尺寸 |
+| `radiusRange` | `[number, number]` | `[3, 24]` | 半径区间 (px) |
+| `domain` | `[number, number]` | 自动 | value 域 |
+| `fill` / `stroke` / `opacity` | `string / string / number` | accent token / 0.55 | 视觉调整 |
+| `tooltip` | `boolean` | `true` | hover 提示 |
+| `unit` | `string` | — | tooltip 后缀 |

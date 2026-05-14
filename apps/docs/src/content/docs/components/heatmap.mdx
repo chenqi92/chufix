@@ -1,0 +1,43 @@
+---
+title: HeatMap 地理热力
+description: Canvas KDE 渲染的地理密度热图，可叠加在 CfMapTile 上；不是日历热力（→ CalendarHeatmap）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/heatmap/BasicVue.vue';
+import BasicVueSource from '~/components/demos/heatmap/BasicVue.vue?raw';
+
+## 基础用法
+
+输入点位 `{ lng, lat, weight? }`，组件用径向渐变核 + 颜色 LUT 在 `<canvas>` 上画出密度热图。每个点的强度叠加，最终走梯度 stops 着色。
+
+<DemoFrame
+  vueCode={`<CfHeatMap :data="points" :geojson="geo" :radius="28" />`}
+  reactCode={`<CfHeatMap data={points} geojson={geo} radius={28} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 与 CalendarHeatmap 的区别
+
+| | HeatMap | CalendarHeatmap |
+|---|---|---|
+| 输入 | 地理点位 `{ lng, lat }` | 日历日期 `{ date, count }` |
+| 渲染 | canvas 密度核 | SVG 格子方块 |
+| 用途 | 地图密度分析 | GitHub 风格活跃热力 |
+
+两者无依赖关系，按场景选择即可。
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `data` | `HeatPoint[]` | — | `{ lng, lat, weight? }` |
+| `geojson` | `FeatureCollection` | — | 可选底图 |
+| `extent` | `MapBounds` | 自动 | 独立投影范围 |
+| `projection` | `(lng, lat) => {x, y}` | — | 显式投影 |
+| `width` / `height` | `number` | `480 / 280` | 独立使用尺寸 |
+| `radius` | `number` | `32` | 每个点的核半径 (px) |
+| `maxIntensity` | `number` | 自动 | 强度上限 |
+| `gradient` | `Array<{ stop, color }>` | cool→warm | 颜色 LUT |
+| `opacity` | `number` | `0.7` | 整体透明度 |

@@ -1,0 +1,38 @@
+---
+title: MapLegend 图例
+description: 配套地图组件的颜色 / 大小图例；连续 + 分级两种模式；可作角落覆盖层或内联使用。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/maplegend/BasicVue.vue';
+import BasicVueSource from '~/components/demos/maplegend/BasicVue.vue?raw';
+
+## 基础用法
+
+- **分级模式**：传 `stops: { value, swatch, label? }[]`，每行一行色块 + 标签。
+- **连续模式（color）**：传 `gradient: { offset, color }[]` + `domain: [min, max]`，画一条横向色条 + 两端数字。
+- **连续模式（size）**：`kind="size"` + `domain`，画三个递增的圆点。
+
+<DemoFrame
+  vueCode={`<CfMapLegend inline :stops="stops" title="人口" unit=" 万" />
+<CfMapLegend inline :gradient="grad" :domain="[0, 2500]" />
+<CfMapLegend inline kind="size" :domain="[100, 2000]" />`}
+  reactCode={`<CfMapLegend inline stops={stops} title="人口" unit=" 万" />
+<CfMapLegend inline gradient={grad} domain={[0, 2500]} />
+<CfMapLegend inline kind="size" domain={[100, 2000]} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `kind` | `'color' \| 'size'` | `'color'` | 图例类型 |
+| `stops` | `MapLegendStop[]` | — | 分级 stops |
+| `gradient` | `{ offset, color }[]` | — | 连续 color 模式 |
+| `domain` | `[min, max]` | — | 连续模式两端值 |
+| `title` | `string` | — | 顶部标题 |
+| `unit` | `string` | — | 值后缀 |
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | `'bottom-right'` | 角落定位（非 inline 时） |
+| `inline` | `boolean` | `false` | 内联（不 fixed） |
