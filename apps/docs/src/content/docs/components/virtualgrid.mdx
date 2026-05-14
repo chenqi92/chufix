@@ -1,0 +1,49 @@
+---
+title: VirtualGrid 虚拟网格
+description: 2D 虚拟滚动网格，自动列数（基于 minColumnWidth）+ 行虚拟化；适合大图墙 / 缩略图 / 卡片墙。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/virtualgrid/BasicVue.vue';
+import BasicVueSource from '~/components/demos/virtualgrid/BasicVue.vue?raw';
+
+## 基础用法
+
+不同于 `Masonry`，`VirtualGrid` **每个单元格高度一致**——这是它能做行虚拟化的前提。列数自动按 `minColumnWidth` 算出，每格宽度均分容器。5000 个 cell 也只渲染当前可见行。
+
+<DemoFrame
+  vueCode={`<CfVirtualGrid
+  :items="items"
+  :item-height="120"
+  :min-column-width="120"
+  :gap="8"
+  :height="360"
+>
+  <template #default="{ item }">
+    <div class="tile" :style="{ background: item.color }">#{{ item.id + 1 }}</div>
+  </template>
+</CfVirtualGrid>`}
+  reactCode={`<CfVirtualGrid
+  items={items}
+  itemHeight={120}
+  minColumnWidth={120}
+  gap={8}
+  height={360}
+  renderItem={(item) => <div className="tile" style={{ background: item.color }}>#{item.id + 1}</div>}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `items` | `T[]` | `—` | 数据数组 |
+| `itemHeight` | `number` | `—` | 每格高度（px，固定） |
+| `minColumnWidth` | `number` | `200` | 单元格最小宽，决定列数 |
+| `columns` | `number` | `—` | 强制列数，覆盖 minColumnWidth |
+| `gap` | `number` | `8` | 行 / 列间距 |
+| `overscan` | `number` | `2` | 视口外预渲染行 |
+| `height` | `number \| string` | `'100%'` | 容器高 |
+| `itemKey` | `(item, i) => string \| number` | `i` | 稳定 key |

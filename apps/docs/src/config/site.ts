@@ -246,6 +246,19 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('数据 / 列表', 'Data & lists'),
+    items: [
+      c('VirtualList', '虚拟列表', 'virtuallist'),
+      c('VirtualGrid', '虚拟网格', 'virtualgrid'),
+      c('TreeTable', '树形表格', 'treetable'),
+      c('Masonry', '瀑布流', 'masonry'),
+      c('FilterPanel', '筛选侧栏', 'filterpanel'),
+      c('BulkSelectionBar', '批量操作条', 'bulkselectionbar'),
+      c('ColumnVisibilityMenu', '列设置', 'columnvisibilitymenu'),
+      c('SpeedDial', '速拨按钮', 'speeddial'),
+    ],
+  },
+  {
     label: L('AI 对话', 'AI chat'),
     items: [
       c('ChatList', '对话列表', 'chatlist'),

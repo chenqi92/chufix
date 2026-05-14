@@ -1,0 +1,53 @@
+---
+title: TreeTable 树形表格
+description: 表格行可展开成子行；indent + chevron 控制；变形自 CfTable + 树形数据。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/treetable/BasicVue.vue';
+import BasicVueSource from '~/components/demos/treetable/BasicVue.vue?raw';
+
+## 基础用法
+
+数据是嵌套结构（默认 `children` 字段，可改 `childrenKey`）。第一列自动渲染缩进 + chevron。只有展开的分支才参与渲染（节省 DOM），整个树用 `defaultExpandedKeys` 初始化。
+
+<DemoFrame
+  vueCode={`<CfTreeTable
+  :data="data"
+  :columns="columns"
+  :default-expanded-keys="['0', '0.1']"
+/>`}
+  reactCode={`<CfTreeTable
+  data={data}
+  columns={columns}
+  defaultExpandedKeys={['0', '0.1']}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 与 CfTable / CfTreeView 的区别
+
+- `CfTable`：扁平数据，无树形展开
+- `CfTreeView`：单列树形（文件树 / 大纲），无多列
+- `CfTreeTable`：多列 + 树形展开（资源管理器、组织架构、文件浏览器、嵌套报表）
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `data` | `T[]` | `—` | 嵌套数据数组 |
+| `columns` | `TreeTableColumn<T>[]` | `—` | 列定义 |
+| `childrenKey` | `string` | `'children'` | 子节点字段名 |
+| `defaultExpandedKeys` | `string[]` | `[]` | 初始展开行的 id（默认 id = 路径如 `'0.1'`） |
+| `rowKey` | `(row, path) => string` | 路径 join | 自定义行 id |
+| `indentSize` | `number` | `16` | 每层缩进（px） |
+| `striped` | `boolean` | `true` | 行斑马纹 |
+| `size` | `'sm' \| 'md'` | `'md'` | 行高 |
+
+### Events
+
+| Vue | React | payload |
+|---|---|---|
+| `row-click` | `onRowClick` | `(row, flat)` |
+| `expand` | `onExpand` | `(id, expanded)` |

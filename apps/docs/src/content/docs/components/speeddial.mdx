@@ -1,0 +1,41 @@
+---
+title: SpeedDial 速拨按钮
+description: 可展开的 FAB，多个子操作；4 方向 + click/hover 触发；hover 显示标签。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/speeddial/BasicVue.vue';
+import BasicVueSource from '~/components/demos/speeddial/BasicVue.vue?raw';
+
+## 基础用法
+
+主按钮点击 / hover 后展开 `actions` 数组里的所有子操作。展开方向（`direction`）和位置（`position`）独立配置；label 默认 hover 出现，可改为 always / never。
+
+<DemoFrame
+  vueCode={`<CfSpeedDial :actions="[
+  { key: 'note', label: '记事', iconPath: '...' },
+  { key: 'photo', label: '拍照', iconPath: '...' },
+]" @action="onAction" />`}
+  reactCode={`<CfSpeedDial actions={[
+  { key: 'note', label: '记事', iconPath: '...' },
+  { key: 'photo', label: '拍照', iconPath: '...' },
+]} onAction={onAction} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 与 Fab 的区别
+
+`CfFab` 是单一主操作；`CfSpeedDial` 是"主操作之外，还想暴露 2–5 个二级操作"的场景。两者底层共享设计 token（圆形、accent 主色、shadow），不互相依赖。
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `actions` | `SpeedDialAction[]` | `—` | 子操作列表 |
+| `direction` | `'up' \| 'down' \| 'left' \| 'right'` | `'up'` | 展开方向 |
+| `position` | `'bottom-right' \| 'bottom-left' \| 'bottom-center' \| 'top-right' \| 'top-left'` | `'bottom-right'` | 角落位置（含 safe-area） |
+| `trigger` | `'click' \| 'hover'` | `'click'` | 触发方式 |
+| `showLabels` | `'hover' \| 'always' \| 'never'` | `'hover'` | 标签显示模式 |
+| `open` / `defaultOpen` | `boolean` | — / `false` | 受控 / 默认展开 |
+| `ariaLabel` | `string` | `'展开操作'` | 主按钮 aria-label |

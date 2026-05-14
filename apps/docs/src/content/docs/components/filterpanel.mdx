@@ -1,0 +1,70 @@
+---
+title: FilterPanel 筛选侧栏
+description: 筛选侧栏壳层 + FilterSection 子项；可选「已保存视图」行；统一的应用 / 重置 footer。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/filterpanel/BasicVue.vue';
+import BasicVueSource from '~/components/demos/filterpanel/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfFilterPanel` 是壳层（header + saved views row + body + footer）；具体筛选项通过 `CfFilterSection` 划分章节，每个 section 可折叠、可显示当前应用数。
+
+<DemoFrame
+  vueCode={`<CfFilterPanel
+  :saved-views="views"
+  :active-view-id="activeView"
+  :active-filters="3"
+  @view-change="activeView = $event"
+>
+  <CfFilterSection title="搜索">
+    <CfInput v-model="query" placeholder="..." />
+  </CfFilterSection>
+  <CfFilterSection title="状态" :count="2">
+    <label><CfCheckbox v-model="status.open" /> 进行中</label>
+  </CfFilterSection>
+</CfFilterPanel>`}
+  reactCode={`<CfFilterPanel
+  savedViews={views}
+  activeViewId={activeView}
+  activeFilters={3}
+  onViewChange={setActiveView}
+>
+  <CfFilterSection title="搜索">
+    <CfInput value={query} onChange={setQuery} placeholder="..." />
+  </CfFilterSection>
+  <CfFilterSection title="状态" count={2}>
+    <label><CfCheckbox checked={status.open} onChange={...} /> 进行中</label>
+  </CfFilterSection>
+</CfFilterPanel>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## CfFilterPanel API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `title` | `string` | `'筛选'` | 头部标题 |
+| `savedViews` | `SavedView[]` | `—` | 顶部已保存视图横排；省略则不渲染该行 |
+| `activeViewId` | `string` | `—` | 当前激活的视图 id |
+| `activeFilters` | `number` | `—` | 头部右侧 badge 显示已应用筛选数 |
+| `showFooter` | `boolean` | `true` | 显示 清空 / 应用 footer |
+| `applying` | `boolean` | `false` | apply 按钮 loading 态 |
+
+### Events
+
+| Vue | React | payload |
+|---|---|---|
+| `view-change` | `onViewChange` | `(id, view)` |
+| `apply` | `onApply` | — |
+| `reset` | `onReset` | — |
+
+## CfFilterSection API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `title` | `string` | `—` | 章节标题 |
+| `count` | `number` | `—` | 章节内已应用筛选数 |
+| `open` / `defaultOpen` | `boolean` | — / `true` | 受控 / 默认展开 |

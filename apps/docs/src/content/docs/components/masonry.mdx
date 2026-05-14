@@ -1,0 +1,31 @@
+---
+title: Masonry 瀑布流布局
+description: CSS columns 实现的瀑布流；自动列数（基于 minColumnWidth）或固定列数；零 JS 布局开销。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/masonry/BasicVue.vue';
+import BasicVueSource from '~/components/demos/masonry/BasicVue.vue?raw';
+
+## 基础用法
+
+底层用浏览器原生 `columns: N` + `break-inside: avoid`——零 JS 布局开销，只用 `useResizeObserver` 在容器宽度变化时重算列数。子元素填充顺序是 top-to-bottom-left-to-right（与严格"最短列优先"略不同，但在 95% 场景视觉等价），但渲染足够流畅，且 SSR 友好。
+
+<DemoFrame
+  vueCode={`<CfMasonry :min-column-width="160" :gap="8">
+  <div v-for="h in heights" :style="{ height: \`\${h}px\` }">...</div>
+</CfMasonry>`}
+  reactCode={`<CfMasonry minColumnWidth={160} gap={8}>
+  {heights.map(h => <div style={{ height: \`\${h}px\` }}>...</div>)}
+</CfMasonry>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `columns` | `number` | 自动 | 固定列数，优先于 `minColumnWidth` |
+| `minColumnWidth` | `number` | `240` | 自动列数模式下的列最小宽度（px） |
+| `gap` | `number` | `12` | 列间距 + 行间距（px） |

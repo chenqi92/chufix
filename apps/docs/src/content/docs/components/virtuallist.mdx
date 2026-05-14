@@ -1,0 +1,51 @@
+---
+title: VirtualList 虚拟列表
+description: 只渲染可见行 + overscan 的虚拟列表，支持固定 / 变高行；十万行无掉帧。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/virtuallist/BasicVue.vue';
+import BasicVueSource from '~/components/demos/virtuallist/BasicVue.vue?raw';
+
+## 基础用法
+
+`itemHeight` 接受 number（固定高）或 `(item, index) => number`（变高）。固定高场景几乎零开销（O(1) 计算窗口）；变高场景线性遍历，约 10k 行内无感知。
+
+<DemoFrame
+  vueCode={`<CfVirtualList :items="items" :item-height="48" :height="320" :item-key="(it) => it.id">
+  <template #default="{ item }">
+    <div class="row"><strong>{{ item.title }}</strong></div>
+  </template>
+</CfVirtualList>`}
+  reactCode={`<CfVirtualList
+  items={items}
+  itemHeight={48}
+  height={320}
+  itemKey={(it) => it.id}
+  renderItem={(item) => <div className="row"><strong>{item.title}</strong></div>}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 与 Table / DataGrid 的关系
+
+`CfVirtualList` 是"纯列表"的虚拟化底座；`CfTable` / `CfDataGrid` 当前不内置虚拟化，需要时把数据塞进 `CfVirtualList` 自定义渲染。后续版本可能把它作为 `CfDataGrid` 的可选 mode。
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `items` | `T[]` | `—` | 数据数组 |
+| `itemHeight` | `number \| (item, i) => number` | `—` | 行高，固定或函数 |
+| `overscan` | `number` | `5` | 视口外预渲染行数 |
+| `height` | `number \| string` | `'100%'` | 容器高 |
+| `scrollToIndex` | `number` | `—` | 命令式滚到该 index |
+| `itemKey` | `(item, i) => string \| number` | `i` | 稳定 key |
+| `className` | `string` | `—` | 根 class |
+
+### Imperative API
+
+| 方法 | 说明 |
+|---|---|
+| `scrollTo(offset)` | 手动滚到 px 偏移 — Vue 用 template ref，React 用 forwardRef 暴露 |

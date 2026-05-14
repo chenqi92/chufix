@@ -1,0 +1,39 @@
+---
+title: ColumnVisibilityMenu 列显隐菜单
+description: 表格列的显隐 / 排序 / 固定（pin left/right）控制；HTML5 拖拽 + 上下移动按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/columnvisibilitymenu/BasicVue.vue';
+import BasicVueSource from '~/components/demos/columnvisibilitymenu/BasicVue.vue?raw';
+
+## 基础用法
+
+`modelValue` 是 `ColumnConfig` 数组，含 `key / label / visible / pinned / locked`。组件不直接操作表格——它只输出"用户期望的列配置"，由消费方应用到 `CfTable` / `CfDataGrid` / `CfTreeTable` 上。`locked: true` 的列禁止隐藏 / 改 pin。
+
+<DemoFrame
+  vueCode={`<CfColumnVisibilityMenu v-model="columns" />`}
+  reactCode={`<CfColumnVisibilityMenu value={columns} onChange={setColumns} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `ColumnConfig[]` | `—` | 当前列配置 |
+| `showPinning` | `boolean` | `true` | 显示 L / R pin 按钮 |
+| `showReorder` | `boolean` | `true` | 显示拖拽 handle + 上下箭头 |
+| `triggerLabel` | `string` | `'列设置'` | 触发按钮文案 |
+| `menuLabel` | `string` | `'列显示与排序'` | 菜单标题 + aria |
+
+### ColumnConfig
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `key` | `string` | 列 id |
+| `label` | `string` | 显示名 |
+| `visible` | `boolean` | 当前显隐 |
+| `pinned` | `'left' \| 'right' \| null` | 固定到边 |
+| `locked` | `boolean` | 不可改（灰显） |

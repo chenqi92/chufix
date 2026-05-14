@@ -1,0 +1,43 @@
+---
+title: BulkSelectionBar 批量操作条
+description: 选中项时浮出的浮条，显示"已选 N 项" + 自定义 action 按钮 + 清空按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/bulkselectionbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/bulkselectionbar/BasicVue.vue?raw';
+
+## 基础用法
+
+`count` 是当前选中项数；`hideWhenEmpty=true`（默认）时 count=0 自动隐藏。slot/children 放 action 按钮。`position` 有 `sticky-top` / `sticky-bottom` / `inline` 三档。
+
+<DemoFrame
+  vueCode={`<CfBulkSelectionBar :count="selected.length" :total="12" @clear="selected = []">
+  <CfButton size="sm">归档</CfButton>
+  <CfButton size="sm">删除</CfButton>
+</CfBulkSelectionBar>`}
+  reactCode={`<CfBulkSelectionBar count={selected.length} total={12} onClear={() => setSelected([])}>
+  <CfButton size="sm">归档</CfButton>
+  <CfButton size="sm">删除</CfButton>
+</CfBulkSelectionBar>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `count` | `number` | `—` | 当前选中数 |
+| `total` | `number` | `—` | 总数；提供后渲染 `N / total` |
+| `hideWhenEmpty` | `boolean` | `true` | count=0 时隐藏 |
+| `position` | `'sticky-top' \| 'sticky-bottom' \| 'inline'` | `'sticky-bottom'` | 定位 |
+| `label` | `string` | 自动 | 覆盖文案 |
+| `showClear` | `boolean` | `true` | 显示内置清空按钮 |
+| `clearLabel` | `string` | `'清空'` | 清空按钮文案 |
+
+### Events
+
+| Vue | React | 说明 |
+|---|---|---|
+| `clear` | `onClear` | 清空按钮点击 |
