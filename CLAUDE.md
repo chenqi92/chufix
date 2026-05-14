@@ -141,14 +141,10 @@ src/components/demos/button/
 - `packages/tokens` —— `@chufix/tokens`，CSS 变量 + Tailwind preset
 - `packages/vue` —— `@chufix/vue`，Vue 3 SFC 组件
 - `packages/react` —— `@chufix/react`，React 18 函数式组件
-- `apps/docs` —— Astro 文档站（开发主战场）
+- `apps/docs` —— Astro 文档站（开发主战场，Cloudflare Pages 直接监听这一目录）
 - `examples/vite-vue` —— **烟囱测试**：最小 Vite + Vue 项目，每次大改后必须能跑通
-- `chufix-docs/`（独立部署仓库的本地副本）—— `apps/docs` 的 snapshot，依赖路径用 `file:../chufix/packages/*`
 
-发布到 GitHub 的两个仓库：
-
-- 主仓库：`chenqi92/chufix`
-- 文档独立仓库：`chenqi92/chufix-docs`
+GitHub 仓库：`chenqi92/chufix`（主仓库，Cloudflare Pages 也从这里构建）。早期存在的独立部署仓 `chenqi92/chufix-docs` 已废弃删除，不要再引用。
 
 ## 8. CSS 共享策略
 
@@ -290,71 +286,21 @@ Vue 的 `<Teleport to="body">` 在 SSR 期间会输出特殊占位符，hydrate 
 
 为什么：每个独立实例可以在 prop 里写死值，让用户一眼看到"点这个按钮，对应这段代码效果"。共享 ref 的写法在 Vue Transition / appear 等场景下偶发"看起来切了，但视觉上没切"的错觉。
 
-## 11. 变更同步策略 + 部署
+## 11. 部署：Cloudflare Pages 直接监听 apps/docs
 
-### 11.1 工作仓 / 部署仓 双轨
+Cloudflare Pages 项目（项目名 `chufix-docs`，对应 `wrangler.*.example` 里的 `name`）直接绑定到 `chenqi92/chufix` 仓库 `main` 分支，构建目录 `apps/docs`，输出 `apps/docs/dist`。**push main 即自动部署**，不需要任何同步脚本或第二个仓库。
 
-- **工作仓** `chenqi92/chufix`（本目录）：monorepo，packages + apps + examples 全在这。开发主要在这里
-- **部署仓** `chenqi92/chufix-docs`（本地 clone 在 `E:/workspace-freq/chukit-docs/`，未来可能改名为 `chufix-docs/`）：独立仓库，**Cloudflare Pages 监听这一份**，push main 即自动部署
+历史上曾有 `pnpm sync:docs` + 独立部署仓 `chenqi92/chufix-docs` 的双轨方案（vendor 模式 / file:./vendor/* / chukit-docs 本地副本等），那套已经全部废弃，相关脚本和仓库都已删除。再看到 `sync:docs` / `chukit-docs` / vendor 模式的引用都视为陈旧文档。
 
-部署仓里 docs 的依赖 `@chufix/{tokens,vue,react}` 必须能在 Cloudflare 构建机器上离线解析 —— 因此采用 **vendor 模式**：把 packages 的 `src/` + `dist/` + 改写过的 `package.json` 拷贝到 `chukit-docs/vendor/`，部署仓的 `package.json` 引用 `file:./vendor/*`。
+### 11.1 部署关键文件
 
-不要再在部署仓 `package.json` 里写 `file:../chukit/packages/*` —— Cloudflare clone 时没有兄弟目录，会报 `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND`。
-
-### 11.2 同步流程：一条命令
-
-修改 `apps/docs/` 或 `packages/` 后，在工作仓根目录跑：
-
-```bash
-pnpm sync:docs
-```
-
-这条命令做的事（见 `scripts/sync-docs.mjs`）：
-1. `pnpm --filter @chufix/vue build` + `pnpm --filter @chufix/react build`，刷新 `dist/`
-2. 把 `apps/docs/{src,public}` 完整覆盖到 `chukit-docs/{src,public}`
-3. 把 `packages/{tokens,vue,react}/{src,dist,package.json}` 拷到 `chukit-docs/vendor/{tokens,vue,react}/`
-4. 改写每个 vendor 包的 `package.json`：`workspace:* → file:../tokens`，剥掉 devDependencies 与 scripts
-5. 改写 `chukit-docs/package.json` 里 `@chufix/*` 的依赖路径为 `file:./vendor/*`
-
-跑完后 `cd ../../chukit-docs`，`git add -A && git commit && git push`，Cloudflare 自动重新构建并发布。
-
-### 11.3 部署关键文件
-
-放在 `apps/docs/public/` 下，会被 sync 复制到部署仓 `public/`，最终原样进入 `dist/` 根：
+放在 `apps/docs/public/` 下，构建后原样进入 `apps/docs/dist/` 根：
 
 - `_headers` —— 控制响应头：`/_astro/*`、`*.css`、`*.js`、`*.woff2` 设 `max-age=31536000, immutable`；HTML 设 `max-age=0, must-revalidate`；安全头 `X-Frame-Options DENY` / `X-Content-Type-Options nosniff` / `Referrer-Policy strict-origin-when-cross-origin`
 - `_redirects` —— 路径重定向，例如 `/docs/* /:splat 301`
 - `robots.txt` —— `Allow: /` + `Sitemap: https://docs.chufix.com/sitemap-index.xml`
 
-修改这三个文件**只改 `apps/docs/public/`**，sync 会自动覆盖部署仓那一份。
-
-### 11.4 部署仓 .gitignore 不能含裸 `dist`
-
-部署仓 `chufix-docs/.gitignore` 必须把 `dist` 写成 `/dist`（带前导斜杠），不能是裸 `dist`。原因：
-
-- 裸 `dist` 是个 glob 模式，会忽略**任何路径下**叫 `dist` 的目录，包括 `vendor/{vue,react}/dist/`
-- 这会导致 vendor 里的构建产物（`index.js` / `style.css` 等）被 git 静默丢弃
-- 推上去后 Cloudflare 拉到的 vendor 只有 `src/` 没有 `dist/`，构建时报 `Failed to resolve entry for package "@chufix/vue"`
-
-正确写法：
-
-```gitignore
-node_modules
-/dist          # 只忽略仓库根的 Astro 构建产物
-.astro
-...
-```
-
-`pnpm sync:docs` 会在每次同步时检测这一项，发现裸 `dist` 时打印警告。
-
-### 11.5 部署仓 package.json 不可改
-
-部署仓的 `package.json` 是由 sync 自动生成的；除了 `packageManager` 与 `dependencies/devDependencies` 的版本号，**人不要去改它**——下次 sync 都会被覆盖。如果要新增运行时依赖（比如 `@astrojs/sitemap`）：
-1. 先在 `apps/docs/package.json` 里加上
-2. 然后在 sync 脚本里给部署仓的 `package.json` 加同名依赖（或者扩展 sync 让它从 apps/docs/package.json merge 一下）
-3. 跑一次 `pnpm sync:docs`，`pnpm install` 重新生成 lockfile，再 commit 部署仓
-
-## 11.6 ⚠ 批量改名时一定要大小写敏感
+## 11.2 ⚠ 批量改名时一定要大小写敏感
 
 PowerShell `-replace` / JS `replace(/.../g)` **默认大小写敏感**，但 PowerShell 的 `-replace` 实际是 `-ireplace` 别名，**默认不敏感**。批量把组件名 `Button` 重命名成 `CfButton` 时如果忘了用大小写敏感，模式 `<Button` 会同时匹配到 `<button>` 这种原生 HTML 标签，把 `<button class="cf-btn">` 改成 `<CfButton class="cf-btn">`，瞬间炸出几十个"undefined component" 错误。
 
@@ -379,7 +325,6 @@ JavaScript `replace` / Bun `Bun.file().text()` 默认就是大小写敏感，没
 - 改 docs 后跑 `pnpm --filter docs build` 验证静态站点能生成
 - 改 token 或组件 CSS 后跑 `pnpm tokens:check`，确保 var(--xxx) 引用都能在 tokens.css 找到（带 fallback 的 `var(--x, default)` 跳过，视为可选 knob）
 - **新增 token 或重命名 token 后，跑 `examples/vite-vue` 验证最终消费者看到的页面没出现"无阴影/无圆角/颜色变白"等 var 失值现象**
-- 准备发布或推到部署仓时只用 `pnpm sync:docs`，不要手动 `cp -r`
 - 不要让 dev server 在大批量字符串替换期间运行（watch 会反复重启拖慢操作）
 - **样式看起来"丢了"时**：第一反应不是去翻每个 CSS 文件，而是检查 `apps/docs/src/styles/global.css` 是否在 `@import '@chufix/vue/style.css'`，并检查 `packages/vue/dist/style.css` 是否是最新 build。九成是这两个之一。剩下一成是组件 CSS 里写了 tokens.css 里没定义的变量名（参见 §8.3）。
 
@@ -400,4 +345,4 @@ JavaScript `replace` / Bun `Bun.file().text()` 默认就是大小写敏感，没
 11. `apps/docs/src/pages/index.astro` —— 首页"现在已经有什么"加 pill；更新组件计数文案
 12. 在 docs DemoFrame 里检查 hover/focus/展开态：无多余下划线、无列表缩进污染、浮层不被裁切、代码行号不偏移
 13. 跑 `pnpm --filter @chufix/vue build && pnpm --filter @chufix/react build && pnpm tokens:check && pnpm --filter docs build`
-14. 跑 `pnpm sync:docs` 同步到部署仓，commit + push 两个仓库
+14. commit + push 主仓库 `chenqi92/chufix`，Cloudflare Pages 自动从 `apps/docs/` 重新构建并发布
