@@ -145,7 +145,6 @@ import './styles/timerangepicker.css';
 import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
-import './styles/map.css';
 import './styles/bottomsheet.css';
 import './styles/pulltorefresh.css';
 import './styles/swipeaction.css';
@@ -173,15 +172,6 @@ import './styles/fieldrow.css';
 import './styles/formgrid.css';
 import './styles/formsection.css';
 import './styles/formschema.css';
-import './styles/mapminimap.css';
-import './styles/choroplethmap.css';
-import './styles/flowmap.css';
-import './styles/maptile.css';
-import './styles/maplegend.css';
-import './styles/mapscale.css';
-import './styles/bubblemap.css';
-import './styles/heatmap.css';
-import './styles/markercluster.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1302,19 +1292,7 @@ export type { TourProps, TourStep, TourPlacement } from './tour/variants';
 export { QRCode as CfQRCode } from './qrcode/QRCode';
 export type { QRCodeProps, QrEcc } from './qrcode/variants';
 
-export { Map as CfMap } from './map/Map';
-export type {
-  MapProps,
-  MapCoord,
-  MapMarker,
-  MapOverlay,
-  MapRoute,
-  MapViewport,
-  MapMarkerEvent,
-  MapOverlayEvent,
-  MapCanvasEvent,
-  MapTone,
-} from './map/variants';
+// CfMap and the geographic map family moved to `@chufix-design/maps-react`
 
 // Data / virtualization / SpeedDial
 export { SpeedDial as CfSpeedDial } from './speeddial/SpeedDial';
@@ -1375,7 +1353,7 @@ export type { FabProps, FabSize, FabVariant, FabPosition } from './fab/variants'
 export { TabBar as CfTabBar } from './tabbar/TabBar';
 export type { TabBarProps, TabBarItem, TabBarVariant } from './tabbar/variants';
 
-// Form advanced + map family
+// Form advanced
 export { FieldRow as CfFieldRow } from './fieldrow/FieldRow';
 export type { FieldRowProps, FieldRowLayout, FieldRowSize } from './fieldrow/variants';
 export { FormGrid as CfFormGrid } from './formgrid/FormGrid';
@@ -1389,50 +1367,11 @@ export type {
   FormFieldType,
   FormFieldOption,
 } from './formschema/variants';
-export { MapMiniMap as CfMapMiniMap } from './mapminimap/MapMiniMap';
-export type { MapMiniMapProps, MapBounds, GeoJsonFeature } from './mapminimap/variants';
-export { WORLD_BOUNDS, projectToBox, polygonToPath } from './mapminimap/variants';
-export { ChoroplethMap as CfChoroplethMap } from './choroplethmap/ChoroplethMap';
-export type {
-  ChoroplethMapProps,
-  ChoroplethDatum,
-  ColorScaleKind,
-  ColorScaleFn,
-} from './choroplethmap/variants';
-export { FlowMap as CfFlowMap } from './flowmap/FlowMap';
-export type { FlowMapProps, FlowPoint, FlowEdge } from './flowmap/variants';
-
-// Interactive map family (tile-based + overlay layers)
-export { MapTile as CfMapTile, type MapTileHandle } from './maptile/MapTile';
-export type { MapTileProps, TileSource, LngLat, Viewport, MapTileContext } from './maptile/variants';
-export { OSM_TILES, CARTO_DARK_TILES, MapTileCtx } from './maptile/variants';
-export {
-  lngLatToTile,
-  tileToLngLat,
-  makeProjection,
-  makeUnproject,
-  metersPerPixel,
-} from './maptile/mercator';
-export { MapLegend as CfMapLegend } from './maplegend/MapLegend';
-export type {
-  MapLegendProps,
-  MapLegendStop,
-  MapLegendKind,
-  MapLegendPosition,
-} from './maplegend/variants';
-export { MapScale as CfMapScale } from './mapscale/MapScale';
-export type { MapScaleProps, MapScaleUnit, MapScalePosition } from './mapscale/variants';
-export { BubbleMap as CfBubbleMap } from './bubblemap/BubbleMap';
-export type { BubbleMapProps, BubbleDatum } from './bubblemap/variants';
-export { HeatMap as CfHeatMap } from './heatmap/HeatMap';
-export type { HeatMapProps, HeatPoint } from './heatmap/variants';
-export { MarkerCluster as CfMarkerCluster } from './markercluster/MarkerCluster';
-export type {
-  MarkerClusterProps,
-  MarkerDatum,
-  ClusterGroup,
-  ClusterResult,
-} from './markercluster/variants';
+// Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
+// CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was
+// moved to `@chufix-design/maps-react`. Install separately:
+//   pnpm add @chufix-design/maps-react
+// and import from there.
 
 // Hooks (React utility hooks, no UI).
 export * from './hooks';

@@ -145,7 +145,6 @@ import './styles/timerangepicker.css';
 import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
-import './styles/map.css';
 import './styles/bottomsheet.css';
 import './styles/pulltorefresh.css';
 import './styles/swipeaction.css';
@@ -173,15 +172,6 @@ import './styles/fieldrow.css';
 import './styles/formgrid.css';
 import './styles/formsection.css';
 import './styles/formschema.css';
-import './styles/mapminimap.css';
-import './styles/choroplethmap.css';
-import './styles/flowmap.css';
-import './styles/maptile.css';
-import './styles/maplegend.css';
-import './styles/mapscale.css';
-import './styles/bubblemap.css';
-import './styles/heatmap.css';
-import './styles/markercluster.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1256,19 +1246,7 @@ export type { TourProps, TourStep, TourPlacement } from './tour/variants';
 export { default as CfQRCode } from './qrcode/QRCode.vue';
 export type { QRCodeProps, QrEcc } from './qrcode/variants';
 
-export { default as CfMap } from './map/Map.vue';
-export type {
-  MapProps,
-  MapCoord,
-  MapMarker,
-  MapOverlay,
-  MapRoute,
-  MapViewport,
-  MapMarkerEvent,
-  MapOverlayEvent,
-  MapCanvasEvent,
-  MapTone,
-} from './map/variants';
+// CfMap and the geographic map family moved to `@chufix-design/maps-vue`
 
 export { default as CfIcon } from './icon/Icon.vue';
 export type {
@@ -1337,7 +1315,7 @@ export type { FabProps, FabSize, FabVariant, FabPosition } from './fab/variants'
 export { default as CfTabBar } from './tabbar/TabBar.vue';
 export type { TabBarProps, TabBarItem, TabBarVariant } from './tabbar/variants';
 
-// Form advanced + map family
+// Form advanced
 export { default as CfFieldRow } from './fieldrow/FieldRow.vue';
 export type { FieldRowProps, FieldRowLayout, FieldRowSize } from './fieldrow/variants';
 export { default as CfFormGrid } from './formgrid/FormGrid.vue';
@@ -1351,50 +1329,12 @@ export type {
   FormFieldType,
   FormFieldOption,
 } from './formschema/variants';
-export { default as CfMapMiniMap } from './mapminimap/MapMiniMap.vue';
-export type { MapMiniMapProps, MapBounds, GeoJsonFeature } from './mapminimap/variants';
-export { WORLD_BOUNDS, projectToBox, polygonToPath } from './mapminimap/variants';
-export { default as CfChoroplethMap } from './choroplethmap/ChoroplethMap.vue';
-export type {
-  ChoroplethMapProps,
-  ChoroplethDatum,
-  ColorScaleKind,
-  ColorScaleFn,
-} from './choroplethmap/variants';
-export { default as CfFlowMap } from './flowmap/FlowMap.vue';
-export type { FlowMapProps, FlowPoint, FlowEdge } from './flowmap/variants';
 
-// Interactive map family (tile-based + overlay layers)
-export { default as CfMapTile } from './maptile/MapTile.vue';
-export type { MapTileProps, TileSource, LngLat, Viewport, MapTileContext } from './maptile/variants';
-export { OSM_TILES, CARTO_DARK_TILES } from './maptile/variants';
-export {
-  lngLatToTile,
-  tileToLngLat,
-  makeProjection,
-  makeUnproject,
-  metersPerPixel,
-} from './maptile/mercator';
-export { default as CfMapLegend } from './maplegend/MapLegend.vue';
-export type {
-  MapLegendProps,
-  MapLegendStop,
-  MapLegendKind,
-  MapLegendPosition,
-} from './maplegend/variants';
-export { default as CfMapScale } from './mapscale/MapScale.vue';
-export type { MapScaleProps, MapScaleUnit, MapScalePosition } from './mapscale/variants';
-export { default as CfBubbleMap } from './bubblemap/BubbleMap.vue';
-export type { BubbleMapProps, BubbleDatum } from './bubblemap/variants';
-export { default as CfHeatMap } from './heatmap/HeatMap.vue';
-export type { HeatMapProps, HeatPoint } from './heatmap/variants';
-export { default as CfMarkerCluster } from './markercluster/MarkerCluster.vue';
-export type {
-  MarkerClusterProps,
-  MarkerDatum,
-  ClusterGroup,
-  ClusterResult,
-} from './markercluster/variants';
+// Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
+// CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was
+// moved to `@chufix-design/maps-vue`. Install separately:
+//   pnpm add @chufix-design/maps-vue
+// and import from there.
 
 // Composables (Vue 3 composition-API utilities, no UI).
 export * from './composables';
