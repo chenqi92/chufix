@@ -169,6 +169,13 @@ import './styles/virtuallist.css';
 import './styles/virtualgrid.css';
 import './styles/treetable.css';
 import './styles/filterpanel.css';
+import './styles/fieldrow.css';
+import './styles/formgrid.css';
+import './styles/formsection.css';
+import './styles/formschema.css';
+import './styles/mapminimap.css';
+import './styles/choroplethmap.css';
+import './styles/flowmap.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1323,6 +1330,33 @@ export { default as CfFab } from './fab/Fab.vue';
 export type { FabProps, FabSize, FabVariant, FabPosition } from './fab/variants';
 export { default as CfTabBar } from './tabbar/TabBar.vue';
 export type { TabBarProps, TabBarItem, TabBarVariant } from './tabbar/variants';
+
+// Form advanced + map family
+export { default as CfFieldRow } from './fieldrow/FieldRow.vue';
+export type { FieldRowProps, FieldRowLayout, FieldRowSize } from './fieldrow/variants';
+export { default as CfFormGrid } from './formgrid/FormGrid.vue';
+export type { FormGridProps, FormGridColumns } from './formgrid/variants';
+export { default as CfFormSection } from './formsection/FormSection.vue';
+export type { FormSectionProps } from './formsection/variants';
+export { default as CfFormSchema } from './formschema/FormSchema.vue';
+export type {
+  FormSchemaProps,
+  FormFieldDef,
+  FormFieldType,
+  FormFieldOption,
+} from './formschema/variants';
+export { default as CfMapMiniMap } from './mapminimap/MapMiniMap.vue';
+export type { MapMiniMapProps, MapBounds, GeoJsonFeature } from './mapminimap/variants';
+export { WORLD_BOUNDS, projectToBox, polygonToPath } from './mapminimap/variants';
+export { default as CfChoroplethMap } from './choroplethmap/ChoroplethMap.vue';
+export type {
+  ChoroplethMapProps,
+  ChoroplethDatum,
+  ColorScaleKind,
+  ColorScaleFn,
+} from './choroplethmap/variants';
+export { default as CfFlowMap } from './flowmap/FlowMap.vue';
+export type { FlowMapProps, FlowPoint, FlowEdge } from './flowmap/variants';
 
 // Composables (Vue 3 composition-API utilities, no UI).
 export * from './composables';

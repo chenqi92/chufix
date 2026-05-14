@@ -18,6 +18,17 @@ export { useThrottledFn, type ThrottledFn, type ThrottleOptions } from './useThr
 export { useDrag, type DragOptions, type DragState } from './useDrag';
 export { useSwipe, type SwipeOptions, type SwipeDirection } from './useSwipe';
 
+// Form validation
+export {
+  useFormValidation,
+  type Validator,
+  type FieldSchema,
+  type FormSchema,
+  type ValidateMode,
+  type UseFormValidationOptions,
+  type FormApi,
+} from './useFormValidation';
+
 // DOM / events
 export { useEventListener } from './useEventListener';
 export { useClickOutside } from './useClickOutside';

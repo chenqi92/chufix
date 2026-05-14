@@ -1,0 +1,13 @@
+/* ChuFix FormGrid — breakpoint-aware columns for form fields. */
+
+.cf-formgrid {
+  width: 100%;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+}
+
+/* Optional span helper for individual children. Apply via inline style: --cf-formgrid-span: 2;
+   or add cf-formgrid__span-{n} class manually. */
+.cf-formgrid > [data-span] {
+  grid-column: span var(--cf-formgrid-span, attr(data-span number));
+}

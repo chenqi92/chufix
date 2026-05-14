@@ -1,0 +1,79 @@
+/* ChuFix FieldRow — unified label / control / hint / error wrapper. */
+
+.cf-fieldrow {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+}
+
+.cf-fieldrow--vertical { flex-direction: column; }
+
+.cf-fieldrow--horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cf-fieldrow--horizontal .cf-fieldrow__head {
+  flex: 0 0 140px;
+  padding-top: 8px;
+}
+
+.cf-fieldrow--horizontal .cf-fieldrow__control,
+.cf-fieldrow--horizontal .cf-fieldrow__error,
+.cf-fieldrow--horizontal .cf-fieldrow__hint {
+  flex: 1 1 auto;
+}
+
+.cf-fieldrow__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+}
+
+.cf-fieldrow--sm .cf-fieldrow__head { font-size: var(--t-12); line-height: var(--lh-12); }
+.cf-fieldrow--lg .cf-fieldrow__head { font-size: var(--t-14); line-height: var(--lh-14); }
+
+.cf-fieldrow__label {
+  color: var(--fg-1);
+  font-weight: var(--w-medium);
+}
+
+.cf-fieldrow__req {
+  color: var(--status-error);
+  margin-left: 2px;
+}
+
+.cf-fieldrow__extra {
+  color: var(--fg-3);
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  margin-left: auto;
+}
+
+.cf-fieldrow__control {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cf-fieldrow__hint,
+.cf-fieldrow__error {
+  margin: 0;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+}
+
+.cf-fieldrow__hint { color: var(--fg-3); }
+.cf-fieldrow__error { color: var(--status-error); }
+
+.cf-fieldrow.has-error :is(.cf-input, .cf-textarea, .cf-select__trigger, .cf-combobox__input, .cf-number__input) {
+  border-color: var(--status-error);
+}
+.cf-fieldrow.has-error :is(.cf-input, .cf-textarea, .cf-select__trigger, .cf-combobox__input, .cf-number__input):focus-visible {
+  box-shadow: 0 0 0 3px oklch(from var(--status-error) l c h / 0.25);
+}

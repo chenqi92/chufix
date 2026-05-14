@@ -1,0 +1,65 @@
+/* ChuFix FormSection — titled / collapsible group of fields. */
+
+.cf-formsection {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-1);
+}
+
+.cf-formsection:last-child { border-bottom: 0; }
+
+.cf-formsection__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  outline: none;
+}
+
+.cf-formsection__head.is-clickable {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cf-formsection__head.is-clickable:hover .cf-formsection__title { color: var(--accent-1); }
+.cf-formsection__head:focus-visible { box-shadow: var(--focus-ring); border-radius: var(--r-3); }
+
+.cf-formsection__head-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cf-formsection__title {
+  margin: 0;
+  font-size: var(--t-16);
+  line-height: var(--lh-16);
+  font-weight: var(--w-semibold);
+  color: var(--fg-1);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.cf-formsection__description {
+  margin: 4px 0 0;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+}
+
+.cf-formsection__caret {
+  flex: 0 0 14px;
+  color: var(--fg-3);
+  margin-top: 6px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.cf-formsection.is-open .cf-formsection__caret { transform: rotate(180deg); }
+
+.cf-formsection__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

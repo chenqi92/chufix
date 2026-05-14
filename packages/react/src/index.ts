@@ -169,6 +169,13 @@ import './styles/virtuallist.css';
 import './styles/virtualgrid.css';
 import './styles/treetable.css';
 import './styles/filterpanel.css';
+import './styles/fieldrow.css';
+import './styles/formgrid.css';
+import './styles/formsection.css';
+import './styles/formschema.css';
+import './styles/mapminimap.css';
+import './styles/choroplethmap.css';
+import './styles/flowmap.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1361,6 +1368,33 @@ export { Fab as CfFab } from './fab/Fab';
 export type { FabProps, FabSize, FabVariant, FabPosition } from './fab/variants';
 export { TabBar as CfTabBar } from './tabbar/TabBar';
 export type { TabBarProps, TabBarItem, TabBarVariant } from './tabbar/variants';
+
+// Form advanced + map family
+export { FieldRow as CfFieldRow } from './fieldrow/FieldRow';
+export type { FieldRowProps, FieldRowLayout, FieldRowSize } from './fieldrow/variants';
+export { FormGrid as CfFormGrid } from './formgrid/FormGrid';
+export type { FormGridProps, FormGridColumns } from './formgrid/variants';
+export { FormSection as CfFormSection } from './formsection/FormSection';
+export type { FormSectionProps } from './formsection/variants';
+export { FormSchema as CfFormSchema } from './formschema/FormSchema';
+export type {
+  FormSchemaProps,
+  FormFieldDef,
+  FormFieldType,
+  FormFieldOption,
+} from './formschema/variants';
+export { MapMiniMap as CfMapMiniMap } from './mapminimap/MapMiniMap';
+export type { MapMiniMapProps, MapBounds, GeoJsonFeature } from './mapminimap/variants';
+export { WORLD_BOUNDS, projectToBox, polygonToPath } from './mapminimap/variants';
+export { ChoroplethMap as CfChoroplethMap } from './choroplethmap/ChoroplethMap';
+export type {
+  ChoroplethMapProps,
+  ChoroplethDatum,
+  ColorScaleKind,
+  ColorScaleFn,
+} from './choroplethmap/variants';
+export { FlowMap as CfFlowMap } from './flowmap/FlowMap';
+export type { FlowMapProps, FlowPoint, FlowEdge } from './flowmap/variants';
 
 // Hooks (React utility hooks, no UI).
 export * from './hooks';

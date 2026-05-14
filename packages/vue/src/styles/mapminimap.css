@@ -1,0 +1,24 @@
+/* ChuFix MapMiniMap — tiny overview map with current-viewport indicator. */
+
+.cf-mapminimap {
+  display: block;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.cf-mapminimap__bg { fill: var(--bg-inset); }
+
+.cf-mapminimap__land {
+  fill: var(--bg-2);
+  stroke: var(--line-1);
+  stroke-width: 0.4;
+}
+
+.cf-mapminimap__viewport {
+  fill: oklch(from var(--accent-1) l c h / 0.18);
+  stroke: var(--accent-1);
+  stroke-width: 1.2;
+}

@@ -1,0 +1,45 @@
+/* ChuFix FlowMap — origin-destination flow lines on a simple map. */
+
+.cf-flowmap {
+  display: block;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  font-family: var(--font-sans);
+}
+
+.cf-flowmap__bg { fill: var(--bg-inset); }
+
+.cf-flowmap__land {
+  fill: var(--bg-2);
+  stroke: var(--line-1);
+  stroke-width: 0.4;
+}
+
+.cf-flowmap__arc {
+  fill: none;
+  stroke: var(--accent-1);
+  stroke-opacity: 0.78;
+  stroke-linecap: round;
+  transition: stroke-opacity var(--dur-fast) var(--ease-out);
+}
+
+.cf-flowmap__arc:hover {
+  stroke-opacity: 1;
+}
+
+.cf-flowmap__arrow-head {
+  fill: var(--accent-1);
+}
+
+.cf-flowmap__dot {
+  fill: var(--accent-2);
+  stroke: var(--bg-0);
+  stroke-width: 1;
+}
+
+.cf-flowmap__label {
+  font-size: var(--t-11);
+  fill: var(--fg-2);
+  pointer-events: none;
+}

@@ -1,0 +1,78 @@
+/* ChuFix FormSchema — fields-driven auto form renderer. */
+
+.cf-formschema {
+  display: contents;
+  font-family: var(--font-sans);
+}
+
+.cf-formschema__checkbox,
+.cf-formschema__switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  color: var(--fg-1);
+}
+
+.cf-formschema__checkbox input,
+.cf-formschema__switch input {
+  /* Use the same look as the dedicated CfCheckbox if available; here we just keep the native one. */
+}
+
+/* Lightweight switch */
+.cf-formschema__switch input { position: absolute; opacity: 0; pointer-events: none; }
+.cf-formschema__switch-track {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  background: var(--bg-inset);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-pill);
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.cf-formschema__switch-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-3);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-1);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-formschema__switch input:checked + .cf-formschema__switch-track {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+}
+.cf-formschema__switch input:checked + .cf-formschema__switch-track .cf-formschema__switch-thumb {
+  transform: translateX(14px);
+  background: var(--fg-on-accent);
+}
+.cf-formschema__switch input:focus-visible + .cf-formschema__switch-track { box-shadow: var(--focus-ring); }
+.cf-formschema__switch input:disabled ~ * { opacity: 0.5; cursor: not-allowed; }
+
+.cf-formschema__radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cf-formschema__radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  color: var(--fg-1);
+}
+
+.cf-formschema__radio input:disabled ~ * { opacity: 0.5; cursor: not-allowed; }
