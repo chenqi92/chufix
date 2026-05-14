@@ -1,0 +1,73 @@
+/* ChuFix TokenMeter — segmented usage bar for LLM context windows. */
+
+.cf-tokenmeter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-sans);
+  color: var(--fg-2);
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+}
+
+.cf-tokenmeter__head {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-tokenmeter__used { color: var(--fg-1); font-weight: var(--w-semibold); font-size: var(--t-13); line-height: var(--lh-13); }
+.cf-tokenmeter__sep  { color: var(--fg-3); }
+.cf-tokenmeter__limit { color: var(--fg-3); }
+
+.cf-tokenmeter__bar {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 8px;
+  background: var(--bg-inset);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+
+.cf-tokenmeter--compact .cf-tokenmeter__bar { height: 4px; }
+.cf-tokenmeter--compact .cf-tokenmeter__head { font-size: var(--t-11); line-height: var(--lh-11); }
+
+.cf-tokenmeter__seg {
+  height: 100%;
+  transition: width var(--dur-base) var(--ease-out);
+}
+
+.cf-tokenmeter__seg--accent  { background: var(--accent-1); }
+.cf-tokenmeter__seg--info    { background: var(--status-info); }
+.cf-tokenmeter__seg--success { background: var(--status-success); }
+.cf-tokenmeter__seg--warning { background: var(--status-warning); }
+.cf-tokenmeter__seg--error   { background: var(--status-error); }
+
+.cf-tokenmeter__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  color: var(--fg-3);
+}
+
+.cf-tokenmeter__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-tokenmeter__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  flex: 0 0 8px;
+}
+
+.cf-tokenmeter__legend-value {
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}

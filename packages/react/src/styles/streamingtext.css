@@ -1,0 +1,59 @@
+/* ChuFix StreamingText — token-by-token text reveal with cursor. */
+
+.cf-streaming {
+  display: inline;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  line-height: var(--lh-14);
+}
+
+.cf-streaming__body {
+  display: inline;
+}
+
+.cf-streaming__body p {
+  margin: 0;
+}
+.cf-streaming__body p + p {
+  margin-top: 8px;
+}
+.cf-streaming__body strong {
+  font-weight: var(--w-semibold);
+}
+.cf-streaming__body em {
+  font-style: italic;
+}
+
+.cf-streaming__code {
+  display: inline-block;
+  padding: 0 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-inset);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+}
+
+.cf-streaming__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  background: var(--accent-1);
+  animation: cf-streaming-blink 1s steps(2, end) infinite;
+}
+
+.cf-streaming__cursor--block {
+  width: 0.5em;
+  background: var(--accent-1);
+  opacity: 0.7;
+}
+
+@keyframes cf-streaming-blink {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-streaming__cursor { animation: none; opacity: 1; }
+}

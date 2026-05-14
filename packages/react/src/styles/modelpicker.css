@@ -1,0 +1,160 @@
+/* ChuFix ModelPicker — select with capability badges and context window. */
+
+.cf-modelpicker {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  min-width: 220px;
+}
+
+.cf-modelpicker.is-disabled { opacity: 0.6; pointer-events: none; }
+
+.cf-modelpicker__trigger {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 10px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border-radius: var(--r-input);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--ui-size);
+  line-height: var(--ui-line);
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.cf-modelpicker__trigger:hover { background: var(--bg-inset); }
+.cf-modelpicker__trigger:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.cf-modelpicker__selected {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-modelpicker__label {
+  font-weight: var(--w-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-modelpicker__placeholder {
+  flex: 1 1 auto;
+  color: var(--fg-3);
+}
+
+.cf-modelpicker__caret {
+  flex: 0 0 14px;
+  color: var(--fg-3);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.cf-modelpicker.is-open .cf-modelpicker__caret { transform: rotate(180deg); }
+
+.cf-modelpicker__menu {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-input);
+  box-shadow: var(--shadow-3);
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.cf-modelpicker__group {
+  padding: 6px 10px 2px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  color: var(--fg-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--w-semibold);
+}
+
+.cf-modelpicker__option {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  padding: 8px 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--fg-1);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.cf-modelpicker__option:hover:not(:disabled) { background: var(--bg-inset); }
+.cf-modelpicker__option.is-active { background: var(--accent-soft); }
+.cf-modelpicker__option:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cf-modelpicker__option-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cf-modelpicker__option-label {
+  font-size: var(--t-14);
+  line-height: var(--lh-14);
+  font-weight: var(--w-medium);
+}
+
+.cf-modelpicker__option-desc {
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+  color: var(--fg-3);
+}
+
+.cf-modelpicker__option-meta {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.cf-modelpicker__cap {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-1);
+  color: var(--fg-2);
+  border-radius: var(--r-pill);
+}
+
+.cf-modelpicker__ctx {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  border-radius: var(--r-pill);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--w-semibold);
+}

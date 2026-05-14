@@ -1,0 +1,233 @@
+/* ChuFix PromptComposer — chat input with attachments + slash/mention popup. */
+
+.cf-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-6);
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.cf-prompt:focus-within { border-color: var(--accent-1); }
+
+.cf-prompt.is-disabled { opacity: 0.6; pointer-events: none; }
+
+.cf-prompt__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed var(--line-1);
+}
+
+.cf-prompt__attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px 2px 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+  max-width: 240px;
+}
+
+.cf-prompt__attachment-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-2);
+  object-fit: cover;
+  flex: 0 0 24px;
+}
+
+.cf-prompt__attachment-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cf-prompt__attachment-name {
+  font-weight: var(--w-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-prompt__attachment-size {
+  color: var(--fg-3);
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+}
+
+.cf-prompt__attachment-remove {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-pill);
+  font: inherit;
+  line-height: 1;
+}
+
+.cf-prompt__attachment-remove:hover { background: var(--bg-2); color: var(--fg-1); }
+
+.cf-prompt__editor {
+  position: relative;
+}
+
+.cf-prompt__textarea {
+  width: 100%;
+  resize: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-1);
+  font: inherit;
+  font-size: var(--t-14);
+  line-height: 22px;
+  padding: 4px 0;
+  outline: none;
+  min-height: 22px;
+  max-height: calc(8 * 22px + 16px);
+  overflow-y: auto;
+}
+
+.cf-prompt__textarea::placeholder { color: var(--fg-3); }
+
+.cf-prompt__popup {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 4px);
+  z-index: var(--z-popover);
+  min-width: 220px;
+  max-width: 320px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-3);
+  padding: 4px 0;
+}
+
+.cf-prompt__popup-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 6px 10px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--fg-1);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.cf-prompt__popup-item.is-active,
+.cf-prompt__popup-item:hover {
+  background: var(--bg-inset);
+}
+
+.cf-prompt__popup-label {
+  font-weight: var(--w-medium);
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+}
+
+.cf-prompt__popup-trigger {
+  font-family: var(--font-mono);
+  color: var(--accent-1);
+  margin-right: 4px;
+}
+
+.cf-prompt__popup-desc {
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  color: var(--fg-3);
+}
+
+.cf-prompt__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-prompt__toolbar-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cf-prompt__toolbar-right {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-prompt__icon-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg-3);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.cf-prompt__icon-btn:hover:not(:disabled) {
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border-color: var(--line-1);
+}
+
+.cf-prompt__icon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cf-prompt__file-input {
+  display: none;
+}
+
+.cf-prompt__hint {
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  color: var(--fg-3);
+}
+
+.cf-prompt__send {
+  appearance: none;
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  border: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.cf-prompt__send:hover:not(:disabled) { background: var(--accent-2); }
+.cf-prompt__send:active:not(:disabled) { background: var(--accent-3); }
+.cf-prompt__send:disabled { opacity: 0.5; cursor: not-allowed; }
+.cf-prompt__send:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.cf-prompt__send.is-stop {
+  background: var(--status-error);
+}

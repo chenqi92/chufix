@@ -1,0 +1,128 @@
+/* ChuFix ArtifactCard — wrapper for AI-generated code / doc / svg / image / data. */
+
+.cf-artifact {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-4);
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+}
+
+.cf-artifact__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--bg-2);
+}
+
+.cf-artifact__kind {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-3);
+  background: var(--accent-soft);
+  color: var(--accent-1);
+  flex: 0 0 28px;
+}
+
+.cf-artifact__title-block {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cf-artifact__title {
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  font-weight: var(--w-semibold);
+  color: var(--fg-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-artifact__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  color: var(--fg-3);
+}
+
+.cf-artifact__kind-label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--w-semibold);
+}
+
+.cf-artifact__lang {
+  font-family: var(--font-mono);
+  background: var(--bg-inset);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-2);
+  padding: 0 4px;
+  color: var(--fg-2);
+}
+
+.cf-artifact__actions {
+  display: inline-flex;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.cf-artifact__action {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg-3);
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-3);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.cf-artifact__action:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border-color: var(--line-1);
+}
+
+.cf-artifact__action:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.cf-artifact__preview {
+  padding: 0;
+  background: var(--bg-3);
+  color: var(--fg-1);
+  max-height: 360px;
+  overflow: auto;
+}
+
+.cf-artifact__preview > * {
+  max-width: 100%;
+}
+
+.cf-artifact--svg .cf-artifact__preview,
+.cf-artifact--image .cf-artifact__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-inset);
+  padding: 16px;
+}

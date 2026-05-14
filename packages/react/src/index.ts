@@ -151,6 +151,16 @@ import './styles/pulltorefresh.css';
 import './styles/swipeaction.css';
 import './styles/fab.css';
 import './styles/tabbar.css';
+import './styles/streamingtext.css';
+import './styles/citationmark.css';
+import './styles/tokenmeter.css';
+import './styles/chatbubble.css';
+import './styles/modelpicker.css';
+import './styles/thinkingtrace.css';
+import './styles/toolcallcard.css';
+import './styles/artifactcard.css';
+import './styles/chatlist.css';
+import './styles/promptcomposer.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1284,6 +1294,34 @@ export type {
   MapCanvasEvent,
   MapTone,
 } from './map/variants';
+
+// AI / LLM chat components
+export { StreamingText as CfStreamingText } from './streamingtext/StreamingText';
+export type { StreamingTextProps, StreamingCursor, StreamingFormat } from './streamingtext/variants';
+export { CitationMark as CfCitationMark } from './citationmark/CitationMark';
+export type { CitationMarkProps, CitationSource } from './citationmark/variants';
+export { TokenMeter as CfTokenMeter } from './tokenmeter/TokenMeter';
+export type { TokenMeterProps, TokenMeterSegment, TokenMeterTone } from './tokenmeter/variants';
+export { ChatBubble as CfChatBubble } from './chatbubble/ChatBubble';
+export type { ChatBubbleProps, ChatRole, ChatBubbleState, ChatAuthor } from './chatbubble/variants';
+export { ModelPicker as CfModelPicker } from './modelpicker/ModelPicker';
+export type { ModelPickerProps, ModelOption } from './modelpicker/variants';
+export { ThinkingTrace as CfThinkingTrace } from './thinkingtrace/ThinkingTrace';
+export type { ThinkingTraceProps, ThinkingStatus } from './thinkingtrace/variants';
+export { ToolCallCard as CfToolCallCard } from './toolcallcard/ToolCallCard';
+export type { ToolCallCardProps, ToolCallStatus } from './toolcallcard/variants';
+export { ArtifactCard as CfArtifactCard } from './artifactcard/ArtifactCard';
+export type { ArtifactCardProps, ArtifactKind, ArtifactActions } from './artifactcard/variants';
+export { ChatList as CfChatList, type ChatListHandle } from './chatlist/ChatList';
+export type { ChatListProps, ChatGroupBy } from './chatlist/variants';
+export { PromptComposer as CfPromptComposer } from './promptcomposer/PromptComposer';
+export type {
+  PromptComposerProps,
+  PromptAttachment,
+  SlashCommand,
+  MentionItem,
+  SubmitKey,
+} from './promptcomposer/variants';
 
 // Mobile / touch components
 export { BottomSheet as CfBottomSheet } from './bottomsheet/BottomSheet';

@@ -1,0 +1,73 @@
+/* ChuFix ThinkingTrace — collapsible reasoning area shown above an assistant reply. */
+
+.cf-thinking {
+  display: block;
+  border-left: 2px solid var(--line-1);
+  padding-left: 12px;
+  margin: 4px 0 8px;
+  font-family: var(--font-sans);
+}
+
+.cf-thinking.is-thinking { border-left-color: var(--accent-1); }
+
+.cf-thinking__head {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 0;
+  padding: 2px 0;
+  font: inherit;
+  color: var(--fg-3);
+  cursor: pointer;
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+}
+
+.cf-thinking__head:hover { color: var(--fg-2); }
+.cf-thinking__head:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--r-3); }
+
+.cf-thinking__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: var(--accent-1);
+}
+
+.cf-thinking.is-done .cf-thinking__icon { color: var(--status-success); }
+
+.cf-thinking__icon-spin {
+  animation: cf-thinking-spin 1s linear infinite;
+}
+
+@keyframes cf-thinking-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-thinking__icon-spin { animation-duration: 0ms; }
+}
+
+.cf-thinking__label {
+  font-weight: var(--w-medium);
+}
+
+.cf-thinking__caret {
+  transition: transform var(--dur-fast) var(--ease-out);
+  color: var(--fg-3);
+}
+
+.cf-thinking.is-open .cf-thinking__caret { transform: rotate(180deg); }
+
+.cf-thinking__body {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-radius: var(--r-3);
+  background: var(--bg-inset);
+  color: var(--fg-2);
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+  white-space: pre-wrap;
+  word-break: break-word;
+}

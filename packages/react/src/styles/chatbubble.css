@@ -1,0 +1,177 @@
+/* ChuFix ChatBubble — single conversational message with author + actions. */
+
+.cf-chatbubble {
+  display: flex;
+  gap: 12px;
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  padding: 8px 0;
+  --bubble-bg: var(--bg-3);
+  --bubble-border: var(--line-1);
+  --bubble-fg: var(--fg-1);
+}
+
+.cf-chatbubble--align-end {
+  flex-direction: row-reverse;
+}
+
+.cf-chatbubble__avatar {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  background: var(--bg-2);
+  color: var(--fg-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: var(--t-11);
+  line-height: 1;
+  font-weight: var(--w-semibold);
+}
+
+.cf-chatbubble__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cf-chatbubble--user .cf-chatbubble__avatar { background: var(--accent-soft); color: var(--accent-1); }
+.cf-chatbubble--system .cf-chatbubble__avatar { background: oklch(from var(--fg-3) l c h / 0.15); }
+
+.cf-chatbubble__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cf-chatbubble--align-end .cf-chatbubble__main {
+  align-items: flex-end;
+}
+
+.cf-chatbubble__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+}
+
+.cf-chatbubble__name { color: var(--fg-2); font-weight: var(--w-medium); }
+.cf-chatbubble__time { color: var(--fg-3); font-variant-numeric: tabular-nums; }
+
+.cf-chatbubble__body {
+  display: inline-block;
+  padding: 10px 14px;
+  background: var(--bubble-bg);
+  color: var(--bubble-fg);
+  border: 1px solid var(--bubble-border);
+  border-radius: var(--r-6);
+  font-size: var(--t-14);
+  line-height: var(--lh-14);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.cf-chatbubble__body[data-role='user'] {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+  border-color: transparent;
+}
+
+.cf-chatbubble__body[data-role='system'] {
+  background: var(--bg-inset);
+  color: var(--fg-2);
+  border-style: dashed;
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+}
+
+.cf-chatbubble__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  background: currentColor;
+  animation: cf-chatbubble-blink 1s steps(2, end) infinite;
+}
+
+@keyframes cf-chatbubble-blink { to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-chatbubble__cursor { animation: none; opacity: 1; }
+}
+
+.cf-chatbubble__error {
+  color: var(--status-error);
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cf-chatbubble__error-retry {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--status-error);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cf-chatbubble__actions {
+  display: inline-flex;
+  gap: 4px;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.cf-chatbubble:hover .cf-chatbubble__actions,
+.cf-chatbubble:focus-within .cf-chatbubble__actions {
+  opacity: 1;
+}
+
+.cf-chatbubble--state-streaming .cf-chatbubble__actions,
+.cf-chatbubble--state-sending .cf-chatbubble__actions {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cf-chatbubble__action {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg-3);
+  border-radius: var(--r-3);
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.cf-chatbubble__action:hover {
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border-color: var(--line-1);
+}
+
+.cf-chatbubble__action:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.cf-chatbubble--state-sending .cf-chatbubble__body { opacity: 0.6; }

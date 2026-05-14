@@ -151,6 +151,16 @@ import './styles/pulltorefresh.css';
 import './styles/swipeaction.css';
 import './styles/fab.css';
 import './styles/tabbar.css';
+import './styles/streamingtext.css';
+import './styles/citationmark.css';
+import './styles/tokenmeter.css';
+import './styles/chatbubble.css';
+import './styles/modelpicker.css';
+import './styles/thinkingtrace.css';
+import './styles/toolcallcard.css';
+import './styles/artifactcard.css';
+import './styles/chatlist.css';
+import './styles/promptcomposer.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1246,6 +1256,34 @@ export type {
   IconStrokeWidth,
 } from './icon/variants';
 export type { IconName } from '@chufix-design/icons';
+
+// AI / LLM chat components
+export { default as CfStreamingText } from './streamingtext/StreamingText.vue';
+export type { StreamingTextProps, StreamingCursor, StreamingFormat } from './streamingtext/variants';
+export { default as CfCitationMark } from './citationmark/CitationMark.vue';
+export type { CitationMarkProps, CitationSource } from './citationmark/variants';
+export { default as CfTokenMeter } from './tokenmeter/TokenMeter.vue';
+export type { TokenMeterProps, TokenMeterSegment, TokenMeterTone } from './tokenmeter/variants';
+export { default as CfChatBubble } from './chatbubble/ChatBubble.vue';
+export type { ChatBubbleProps, ChatRole, ChatBubbleState, ChatAuthor } from './chatbubble/variants';
+export { default as CfModelPicker } from './modelpicker/ModelPicker.vue';
+export type { ModelPickerProps, ModelOption } from './modelpicker/variants';
+export { default as CfThinkingTrace } from './thinkingtrace/ThinkingTrace.vue';
+export type { ThinkingTraceProps, ThinkingStatus } from './thinkingtrace/variants';
+export { default as CfToolCallCard } from './toolcallcard/ToolCallCard.vue';
+export type { ToolCallCardProps, ToolCallStatus } from './toolcallcard/variants';
+export { default as CfArtifactCard } from './artifactcard/ArtifactCard.vue';
+export type { ArtifactCardProps, ArtifactKind, ArtifactActions } from './artifactcard/variants';
+export { default as CfChatList } from './chatlist/ChatList.vue';
+export type { ChatListProps, ChatGroupBy } from './chatlist/variants';
+export { default as CfPromptComposer } from './promptcomposer/PromptComposer.vue';
+export type {
+  PromptComposerProps,
+  PromptAttachment,
+  SlashCommand,
+  MentionItem,
+  SubmitKey,
+} from './promptcomposer/variants';
 
 // Mobile / touch components
 export { default as CfBottomSheet } from './bottomsheet/BottomSheet.vue';
