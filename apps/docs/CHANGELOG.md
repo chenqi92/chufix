@@ -1,5 +1,15 @@
 # docs
 
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`88ad8e1`](https://github.com/chenqi92/chufix/commit/88ad8e1ee0b584be7bfe6153413fbaf91793535f)]:
+  - @chufix-design/tokens@0.5.0
+  - @chufix-design/icons@0.5.0
+  - @chufix-design/vue@0.5.0
+  - @chufix-design/react@0.5.0
+
 ## 0.3.2
 
 ### Patch Changes
