@@ -1,15 +1,21 @@
 ---
 title: TreeSelect 树形选择
-description: 把树形数据放进下拉选择器，支持搜索、多选、清空与禁用节点。
+description: 树形数据下拉选择器，支持展开/折叠、多选级联、indeterminate、搜索、清空、禁用节点。
 ---
 
 import DemoFrame from '~/components/DemoFrame.astro';
 import BasicVue from '~/components/demos/treeselect/BasicVue.vue';
 import BasicVueSource from '~/components/demos/treeselect/BasicVue.vue?raw';
+import MultiVue from '~/components/demos/treeselect/MultiVue.vue';
+import MultiVueSource from '~/components/demos/treeselect/MultiVue.vue?raw';
+import ExpandVue from '~/components/demos/treeselect/ExpandVue.vue';
+import ExpandVueSource from '~/components/demos/treeselect/ExpandVue.vue?raw';
+import NoLinesVue from '~/components/demos/treeselect/NoLinesVue.vue';
+import NoLinesVueSource from '~/components/demos/treeselect/NoLinesVue.vue?raw';
 
 ## 基础用法
 
-`CfTreeSelect` 面向部门、权限、资源目录、地区等层级数据。选项通过 `children` 描述树结构，搜索会匹配节点自身与路径。
+`CfTreeSelect` 面向部门、权限、资源目录、地区等层级数据。每个分支节点旁边有展开/折叠按钮（chevron），搜索时会自动展开命中节点的所有祖先。
 
 <DemoFrame
   vueCode={`<CfTreeSelect v-model="value" :options="options" searchable clearable />`}
@@ -19,20 +25,81 @@ import BasicVueSource from '~/components/demos/treeselect/BasicVue.vue?raw';
   <BasicVue client:load />
 </DemoFrame>
 
+## 多选与级联
+
+`multiple` 开启多选；默认开启 `cascade`：点击父节点会级联选中所有可用子节点；当部分子节点被选中时，父节点显示 indeterminate 状态。`disabled` 子节点不会被级联影响。
+
+<DemoFrame
+  vueCode={`<CfTreeSelect
+  v-model="value"
+  :options="options"
+  multiple
+  searchable
+  clearable
+  :default-expanded-keys="['platform']"
+/>`}
+  reactCode={`<CfTreeSelect
+  value={value}
+  options={options}
+  multiple
+  searchable
+  clearable
+  defaultExpandedKeys={['platform']}
+  onChange={setValue}
+/>`}
+
+  vueSource={MultiVueSource}>
+  <MultiVue client:load />
+</DemoFrame>
+
+## 默认展开节点
+
+`defaultExpandedKeys` 接受节点 value 数组，或字符串 `'all'` 一次性展开整棵树。未列出的分支节点会保持折叠。
+
+<DemoFrame
+  vueCode={`<CfTreeSelect :options="options" default-expanded-keys="all" searchable />
+<CfTreeSelect :options="options" :default-expanded-keys="['cn', 'cn-east']" />`}
+  reactCode={`<CfTreeSelect options={options} defaultExpandedKeys="all" searchable />
+<CfTreeSelect options={options} defaultExpandedKeys={['cn', 'cn-east']} />`}
+
+  vueSource={ExpandVueSource}>
+  <ExpandVue client:load />
+</DemoFrame>
+
+## 关闭引导线
+
+层级关系默认通过竖向引导线展示。在节点文本较长或想要更紧凑外观时，`showLines={false}` 只保留缩进。
+
+<DemoFrame
+  vueCode={`<CfTreeSelect :options="options" :show-lines="false" default-expanded-keys="all" />`}
+  reactCode={`<CfTreeSelect options={options} showLines={false} defaultExpandedKeys="all" />`}
+
+  vueSource={NoLinesVueSource}>
+  <NoLinesVue client:load />
+</DemoFrame>
+
 ## API
 
 | 属性 | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `options` | `TreeSelectNode[]` | `—` | 树节点列表 |
-| `value` / `modelValue` | `string / string[]` | `—` | 当前值 |
+| `value` / `modelValue` | `string \| string[]` | `—` | 当前值；多选时为数组 |
 | `placeholder` | `string` | `请选择` | 空值占位 |
 | `multiple` | `boolean` | `false` | 多选 |
-| `searchable` | `boolean` | `false` | 显示搜索输入 |
+| `cascade` | `boolean` | `true` | 多选时父节点点击是否级联选中后代 |
+| `searchable` | `boolean` | `false` | 显示搜索输入；匹配会沿路径展开祖先 |
 | `clearable` | `boolean` | `false` | 显示清空按钮 |
 | `disabled` | `boolean` | `false` | 禁用 |
-| `size` | `sm / md / lg` | `md` | 尺寸 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `defaultExpandedKeys` | `string[] \| 'all'` | `—` | 初始展开节点；`'all'` 全展开，未传则只显示根节点 |
+| `showLines` | `boolean` | `true` | 显示层级引导线 |
 
-事件：Vue `update:modelValue` / `change(value, node)`，React `onChange(value, node)`。
+### Events
+
+| Vue 事件 | React 回调 | payload | 说明 |
+|---|---|---|---|
+| `update:modelValue` | `onChange` | `(value, node)` | 选中变化；`node` 为最近点击的叶子节点（多选场景） |
+| `change` | `onChange` | `(value, node)` | 同上 |
 
 ### TreeSelectNode
 
@@ -40,5 +107,5 @@ import BasicVueSource from '~/components/demos/treeselect/BasicVue.vue?raw';
 |---|---|---|
 | `value` | `string` | 唯一值 |
 | `label` | `string` | 展示文本 |
-| `disabled` | `boolean` | 禁用节点 |
+| `disabled` | `boolean` | 禁用节点（级联也不会勾选） |
 | `children` | `TreeSelectNode[]` | 子节点 |

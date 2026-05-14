@@ -13,7 +13,7 @@
   gap: 8px;
   padding: 0 10px;
   border: 1px solid var(--line-2);
-  border-radius: var(--r-6);
+  border-radius: var(--r-input);
   background: var(--bg-1);
   color: var(--fg-1);
   font: inherit;
@@ -28,10 +28,7 @@
 .cf-treeselect.is-open .cf-treeselect__trigger {
   border-color: var(--accent-1);
 }
-.cf-treeselect.is-disabled {
-  opacity: var(--disabled-opacity);
-  pointer-events: none;
-}
+.cf-treeselect.is-disabled { opacity: var(--disabled-opacity); pointer-events: none; }
 .cf-treeselect__value {
   min-width: 0;
   flex: 1;
@@ -39,81 +36,180 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.cf-treeselect__value.is-placeholder {
+.cf-treeselect__value.is-placeholder { color: var(--fg-3); }
+.cf-treeselect__clear {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--fg-3);
+  font-size: var(--t-14);
+  line-height: 1;
+  border-radius: var(--r-2);
+  cursor: pointer;
 }
-.cf-treeselect__clear,
+.cf-treeselect__clear:hover { background: var(--bg-2); color: var(--fg-1); }
 .cf-treeselect__chevron {
   flex: 0 0 auto;
   color: var(--fg-3);
+  transition: transform var(--dur-fast) var(--ease-out);
 }
+.cf-treeselect.is-open .cf-treeselect__chevron { transform: rotate(180deg); }
+
+/* ---------- POPUP ---------- */
 .cf-treeselect__popup {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
   z-index: var(--z-popover);
   width: min(360px, 92vw);
-  max-height: 320px;
-  padding: 8px;
-  overflow: auto;
+  max-height: 360px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
   border: 1px solid var(--line-1);
-  border-radius: var(--r-6);
-  background: var(--bg-1);
+  border-radius: var(--r-card);
+  background: var(--bg-elevated, var(--bg-1));
   box-shadow: var(--shadow-3);
 }
 .cf-treeselect__search {
   width: 100%;
   height: 30px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   padding: 0 8px;
   border: 1px solid var(--line-1);
-  border-radius: var(--r-4);
+  border-radius: var(--r-input);
   background: var(--bg-inset);
   color: var(--fg-1);
   font: inherit;
   font-size: var(--t-12);
 }
-.cf-treeselect__option {
+.cf-treeselect__search:focus-visible {
+  outline: none;
+  border-color: var(--accent-1);
+  box-shadow: var(--focus-ring);
+}
+.cf-treeselect__list {
+  flex: 1;
+  overflow: auto;
+  padding: 2px;
+}
+
+/* ---------- ROW ---------- */
+.cf-treeselect__row {
   --cf-tree-depth: 0;
-  width: 100%;
-  min-height: 30px;
+  --cf-tree-indent: 16px;
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 8px 0 calc(8px + var(--cf-tree-depth) * 16px);
-  border: 0;
+  min-height: 28px;
   border-radius: var(--r-4);
-  background: transparent;
   color: var(--fg-2);
-  font: inherit;
   font-size: var(--t-13);
+  transition: background var(--dur-instant) linear;
+}
+.cf-treeselect__row:hover { background: var(--bg-2); color: var(--fg-1); }
+.cf-treeselect__row.is-selected { background: var(--accent-soft); color: var(--accent-1); }
+.cf-treeselect__row.is-disabled { opacity: var(--disabled-opacity); pointer-events: none; }
+
+/* Indent placeholders — one per depth level, also draws the optional guide line. */
+.cf-treeselect__indent {
+  position: relative;
+  flex: 0 0 var(--cf-tree-indent);
+  height: 28px;
+}
+.cf-treeselect__popup.has-lines .cf-treeselect__indent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--line-1);
+}
+
+/* ---------- EXPAND CHEVRON ---------- */
+.cf-treeselect__expand {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-right: 2px;
+  background: transparent;
+  border: 0;
+  color: var(--fg-3);
+  cursor: pointer;
+  border-radius: var(--r-2);
+}
+.cf-treeselect__expand:hover { background: var(--bg-3); color: var(--fg-1); }
+.cf-treeselect__expand.is-placeholder { cursor: default; }
+.cf-treeselect__expand.is-placeholder:hover { background: transparent; }
+.cf-treeselect__expand-icon {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-treeselect__expand-icon.is-open { transform: rotate(90deg); }
+
+/* ---------- ROW BUTTON ---------- */
+.cf-treeselect__row-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px 0 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: inherit;
   text-align: left;
   cursor: pointer;
+  border-radius: var(--r-4);
 }
-.cf-treeselect__option:hover {
-  background: var(--bg-2);
-  color: var(--fg-1);
-}
-.cf-treeselect__option.is-selected {
-  background: var(--accent-soft);
-  color: var(--accent-1);
-}
-.cf-treeselect__option.is-disabled {
-  opacity: var(--disabled-opacity);
-  cursor: not-allowed;
-}
-.cf-treeselect__branch {
-  width: 10px;
-  height: 1px;
-  background: var(--line-2);
-}
+.cf-treeselect__row-btn:disabled { cursor: not-allowed; }
 .cf-treeselect__label {
   min-width: 0;
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .cf-treeselect__check {
+  flex: 0 0 auto;
   color: var(--accent-1);
 }
+
+/* ---------- CHECKBOX (multi mode) ---------- */
+.cf-treeselect__checkbox {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  background: var(--bg-1);
+  color: var(--fg-on-accent, oklch(98% 0 0));
+  transition: background var(--dur-instant) linear, border-color var(--dur-instant) linear;
+}
+.cf-treeselect__checkbox.is-checked,
+.cf-treeselect__checkbox.is-indeterminate {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+}
+.cf-treeselect__indeterminate-bar {
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+}
+
 .cf-treeselect__empty {
   padding: 20px 8px;
   color: var(--fg-3);

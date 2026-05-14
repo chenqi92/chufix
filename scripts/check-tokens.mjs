@@ -105,6 +105,7 @@ const localAllow = new Set([
   '--cf-col-xxl-pull',
   /* TreeSelect: per-row indent set via inline style on .cf-tree-node */
   '--cf-tree-depth',
+  '--cf-tree-indent',
 ]);
 
 /* ── 3. walk style dirs ── */
