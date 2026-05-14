@@ -14,6 +14,8 @@ import NoSteppersVue from '~/components/demos/numberinput/NoSteppersVue.vue';
 import NoSteppersVueSource from '~/components/demos/numberinput/NoSteppersVue.vue?raw';
 import EventsVue from '~/components/demos/numberinput/EventsVue.vue';
 import EventsVueSource from '~/components/demos/numberinput/EventsVue.vue?raw';
+import AffixVue from '~/components/demos/numberinput/AffixVue.vue';
+import AffixVueSource from '~/components/demos/numberinput/AffixVue.vue?raw';
 
 ## 基础用法
 
@@ -41,6 +43,22 @@ import EventsVueSource from '~/components/demos/numberinput/EventsVue.vue?raw';
 
   vueSource={PrecisionVueSource}>
   <PrecisionVue client:load />
+</DemoFrame>
+
+## 前缀与单位
+
+`prefix` / `suffix` 可以直接传字符串，也可以用同名插槽塞自定义节点。常见用法是币种、百分号、单位（kg / ms / px）。前后缀和输入框共用同一条边框，不会破坏聚焦态。
+
+<DemoFrame
+  vueCode={`<CfNumberInput v-model="price" prefix="￥" suffix="元" :step="0.1" :precision="2" />
+<CfNumberInput v-model="ratio" suffix="%" :min="0" :max="100" :step="5" />
+<CfNumberInput v-model="weight" suffix="kg" :step="0.1" :precision="1" />`}
+  reactCode={`<CfNumberInput value={price} onChange={setPrice} prefix="￥" suffix="元" step={0.1} precision={2} />
+<CfNumberInput value={ratio} onChange={setRatio} suffix="%" min={0} max={100} step={5} />
+<CfNumberInput value={weight} onChange={setWeight} suffix="kg" step={0.1} precision={1} />`}
+
+  vueSource={AffixVueSource}>
+  <AffixVue client:load />
 </DemoFrame>
 
 ## 三档尺寸
@@ -128,6 +146,8 @@ import EventsVueSource from '~/components/demos/numberinput/EventsVue.vue?raw';
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 高度 |
 | `hideSteppers` | `boolean` | `false` | 隐藏 +/− 按钮（仍可键盘步进） |
 | `placeholder` | `string` | `—` | 占位文本（值为 `null` 时显示） |
+| `prefix` | `string \| slot \| ReactNode` | `—` | 前缀（币种、图标）；Vue 也可用 `prefix` 插槽 |
+| `suffix` | `string \| slot \| ReactNode` | `—` | 后缀（百分号、单位）；Vue 也可用 `suffix` 插槽 |
 | `disabled` | `boolean` | `false` | 禁用 |
 | `name` | `string` | `—` | 原生 input name，参与表单提交 |
 | `id` | `string` | `—` | 原生 input id |

@@ -1,4 +1,4 @@
-import type { FocusEventHandler } from 'react';
+import type { FocusEventHandler, ReactNode } from 'react';
 
 export type NumberInputSize = 'sm' | 'md' | 'lg';
 
@@ -15,6 +15,10 @@ export interface NumberInputProps {
   step?: number;
   precision?: number;
   hideSteppers?: boolean;
+  /** Inline prefix node (e.g. `¥`, an icon). */
+  prefix?: ReactNode;
+  /** Inline suffix node (e.g. `kg`, `%`). */
+  suffix?: ReactNode;
   onChange?: (v: number | null, meta: NumberInputChangeMeta) => void;
   onInput?: (raw: string) => void;
   onStep?: (v: number, meta: NumberInputStepMeta) => void;

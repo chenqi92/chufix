@@ -14,6 +14,10 @@ export interface NumberInputProps {
   precision?: number;
   /** Hide +/- buttons (still steps with arrow keys). */
   hideSteppers?: boolean;
+  /** Inline prefix text (e.g. `¥`, `≈`). For richer markup, use the `prefix` slot. */
+  prefix?: string;
+  /** Inline suffix text (e.g. `kg`, `%`, `元/月`). For richer markup, use the `suffix` slot. */
+  suffix?: string;
 }
 
 export type NumberInputChangeReason = 'commit' | 'blur' | 'enter' | 'step' | 'home' | 'end';

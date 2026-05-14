@@ -135,6 +135,9 @@ const canDecrement = computed(
 
 <template>
   <div :class="cls" :data-disabled="disabled || undefined">
+    <span v-if="$slots.prefix || prefix" class="cf-number__affix cf-number__affix--prefix">
+      <slot name="prefix">{{ prefix }}</slot>
+    </span>
     <input
       ref="inputEl"
       :id="id"
@@ -154,6 +157,9 @@ const canDecrement = computed(
       @focus="(event) => emit('focus', event)"
       @keydown="onKeyDown"
     />
+    <span v-if="$slots.suffix || suffix" class="cf-number__affix cf-number__affix--suffix">
+      <slot name="suffix">{{ suffix }}</slot>
+    </span>
     <div v-if="!hideSteppers" class="cf-number__steppers">
       <button
         type="button"

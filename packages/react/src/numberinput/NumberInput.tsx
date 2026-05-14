@@ -28,6 +28,8 @@ export function NumberInput(props: NumberInputProps) {
     step = 1,
     precision,
     hideSteppers = false,
+    prefix,
+    suffix,
     onChange,
     onInput,
     onStep,
@@ -135,6 +137,9 @@ export function NumberInput(props: NumberInputProps) {
 
   return (
     <div className={numberInputClass({ size })} data-disabled={disabled || undefined}>
+      {prefix != null ? (
+        <span className="cf-number__affix cf-number__affix--prefix">{prefix}</span>
+      ) : null}
       <input
         ref={inputRef}
         id={id}
@@ -154,6 +159,9 @@ export function NumberInput(props: NumberInputProps) {
         onFocus={onFocus}
         onKeyDown={onKeyDown}
       />
+      {suffix != null ? (
+        <span className="cf-number__affix cf-number__affix--suffix">{suffix}</span>
+      ) : null}
       {!hideSteppers && (
         <div className="cf-number__steppers">
           <button

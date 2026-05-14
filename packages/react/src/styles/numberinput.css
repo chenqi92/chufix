@@ -38,6 +38,19 @@
 }
 .cf-number__native::placeholder { color: var(--fg-3); text-align: left; }
 
+.cf-number__affix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+  user-select: none;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.cf-number__affix--prefix { border-right: 1px solid var(--line-1); }
+.cf-number__affix--suffix { border-left: 1px solid var(--line-1); }
+
 .cf-number__steppers {
   display: flex;
   flex-direction: column;
