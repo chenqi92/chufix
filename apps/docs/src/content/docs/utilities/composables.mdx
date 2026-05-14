@@ -1,0 +1,239 @@
+---
+title: Composables & Hooks 工具函数
+description: ChuFix 提供的 25 个零 UI、零依赖工具函数。Vue 端走 composition API、React 端走 hooks，命名与参数完全对齐。
+---
+
+ChuFix 把"组件之外但开发里反复要写"的逻辑收成两套工具函数：`@chufix-design/vue` 走 Vue 3 组合式 API、`@chufix-design/react` 走 React 18 hooks。两套实现的函数名、参数顺序、返回字段一一对齐，方便跨框架团队对照。
+
+```ts
+// Vue 3
+import { useDebouncedFn, useClickOutside, useLocalStorage } from '@chufix-design/vue';
+
+// React 18
+import { useDebouncedFn, useClickOutside, useLocalStorage } from '@chufix-design/react';
+```
+
+> ⚠ 这些 utility 必须走 barrel 导入（`@chufix-design/vue` / `@chufix-design/react`），不要走 `…/src/...` 深路径——深路径会绕过 dist 单 chunk，导致 module 单例失效。
+
+---
+
+## 异步与提交保护
+
+### `useSingleFlight` —— 合并并发调用
+
+同一时刻只允许一份执行，并发调用复用同一个 Promise；适合"避免重复请求"。
+
+```ts
+const flight = useSingleFlight();
+const data = await flight.run(() => fetchUser(id));
+```
+
+### `useSubmitGuard` —— 防重复提交
+
+`isSubmitting` 状态 + `cooldownMs` 冷却期；冷却期内调用会被跳过并写入 `lastSkipped`。
+
+```ts
+const guard = useSubmitGuard({ cooldownMs: 1500 });
+async function onSubmit() {
+  await guard.run(async () => {
+    await api.createOrder();
+  });
+}
+// guard.isSubmitting / guard.lastError / guard.lastSkipped / guard.reset()
+```
+
+### `useAsync` —— 异步状态管家
+
+`data` / `error` / `loading` 三态 + `run` / `reset`；并发调用会丢弃过期结果（通过 callSeq）。
+
+```ts
+const { data, error, loading, run } = useAsync(fetchUser, { immediate: true });
+```
+
+### `useRetry` —— 指数退避重试
+
+`baseMs * 2^attempt` + jitter，支持 `maxAttempts` 与 `shouldRetry(err)`。
+
+```ts
+await useRetry(() => fetch(url), { maxAttempts: 3, baseMs: 200 });
+```
+
+### `usePolling` —— 周期性拉取
+
+`pauseOnHidden`（默认 true）让浏览器隐藏时停止；`immediate` 决定挂载是否立即触发；调用重叠时跳过本轮。
+
+```ts
+const poll = usePolling(fetchStatus, { intervalMs: 5000, immediate: true });
+poll.start(); poll.stop();
+```
+
+---
+
+## 节流与防抖
+
+### `useDebouncedRef` / `useDebouncedValue`
+
+- Vue: `useDebouncedRef(initial, delayMs)` 返回 `Ref<T>`，写入后延迟生效。
+- React: `useDebouncedValue(value, delayMs)` 返回延迟后的值。
+
+```ts
+// Vue
+const search = useDebouncedRef('', 300);
+
+// React
+const debounced = useDebouncedValue(search, 300);
+```
+
+### `useDebouncedFn` —— 防抖函数
+
+返回带 `cancel` / `flush` 的可调用对象。
+
+```ts
+const onResize = useDebouncedFn(() => recompute(), 200);
+onResize();      // 触发
+onResize.flush(); // 立即执行 pending 调用
+onResize.cancel();
+```
+
+### `useThrottledFn` —— 节流函数
+
+支持 `leading` / `trailing` 配置。
+
+```ts
+const onScroll = useThrottledFn(() => track(), 100, { leading: true, trailing: true });
+```
+
+---
+
+## DOM 与事件
+
+### `useEventListener` —— 自动挂载/卸载
+
+接受 `window` / `document` / `ref` / `RefObject` 等多种 target，组件卸载时自动 detach。
+
+```ts
+useEventListener(window, 'keydown', (e) => { /* ... */ });
+useEventListener(buttonRef, 'click', onClick);
+```
+
+### `useClickOutside` —— 点外关闭
+
+监听 `pointerdown`；适合 dropdown / popover / 抽屉。
+
+```ts
+// Vue
+const popRef = ref<HTMLElement | null>(null);
+useClickOutside(popRef, () => (open.value = false));
+
+// React
+const popRef = useRef<HTMLDivElement>(null);
+useClickOutside(popRef, () => setOpen(false));
+```
+
+### `useFocusTrap` —— Tab/Shift+Tab 困住焦点
+
+Modal / Drawer / CommandPalette 必用。卸载或 `enabled=false` 时自动归还焦点。
+
+```ts
+useFocusTrap(modalRef, () => open.value);   // Vue：传 getter 或 ref
+useFocusTrap(modalRef, open);                // React：传 boolean
+```
+
+### `useScrollLock` —— 锁滚动
+
+引用计数：多个组件同时锁也只锁一次；自动补 `paddingRight` 避免页面跳动。
+
+### `useHotkeys` —— 快捷键
+
+`mod` 自动适配 Mac (`Meta`) / Win/Linux (`Ctrl`)；默认忽略 input/textarea 内的击键。
+
+```ts
+useHotkeys({
+  'mod+k': () => openPalette(),
+  'esc': () => close(),
+});
+```
+
+### `useMediaQuery` —— 媒体查询
+
+```ts
+const isMobile = useMediaQuery('(max-width: 640px)');
+```
+
+### `useIntersectionObserver` —— 可见性
+
+`once: true` 命中后自动停止（懒加载、曝光统计）。
+
+### `useResizeObserver` —— 尺寸观察
+
+回调收到 `ResizeObserverEntry`，无需自己 new。
+
+---
+
+## 存储
+
+### `useLocalStorage` / `useSessionStorage`
+
+跨标签页同步（监听 `storage` 事件）；序列化默认 `JSON.parse/stringify`，可传 `serializer` 自定义。
+
+```ts
+// Vue: 返回 Ref<T>
+const theme = useLocalStorage('cf-theme', 'dark');
+
+// React: 返回 [value, setValue]
+const [theme, setTheme] = useLocalStorage('cf-theme', 'dark');
+```
+
+### `useClipboard` —— 复制到剪贴板
+
+优先 `navigator.clipboard`，失败回退到 `document.execCommand('copy')`。
+
+```ts
+const { copy, copied, copy: write } = useClipboard();
+await copy('hello');
+```
+
+---
+
+## 主题与偏好
+
+### `useTheme` —— 读写 `[data-theme]`
+
+监听 `<html>` 的 `data-theme` 变化，支持 `'dark-cool'` / `'dark-warm'` / `'light'`。
+
+```ts
+const theme = useTheme();
+theme.set('light');     // 写入 <html data-theme>
+theme.cycle();          // 在三套之间循环
+```
+
+### `useDensity` —— 读写 `[data-density]`
+
+同上，对应 `'comfortable'` / `'compact'`。
+
+### `useReducedMotion` —— 用户的减弱动画偏好
+
+封装 `prefers-reduced-motion: reduce`。
+
+---
+
+## 小工具
+
+| 函数 | 说明 |
+|---|---|
+| `useId(prefix?)` | 生成稳定 ID；React 端基于 `React.useId`，Vue 端基于自增计数 |
+| `usePrevious(value)` | 返回上一帧的值 |
+| `useToggle(initial?)` | `{ state, toggle, set, on, off }` 布尔翻转 |
+| `useTimeout(fn, ms, { startOnMount? })` | 带 `start / cancel` 的 setTimeout |
+| `useInterval(fn, ms, { startOnMount? })` | 带 `start / cancel` 的 setInterval |
+| `useCounter(initial?, { min?, max? })` | `{ count, inc, dec, set, reset }` 受限计数 |
+
+---
+
+## 命名差异
+
+只有 1 处微差：`useDebouncedRef`（Vue，自定义 ref） vs `useDebouncedValue`（React，返回值）。Vue 也导出了 `useDebouncedValue` 别名以方便跨端共享代码。其余 24 个函数名两端完全一致。
+
+## SSR 与 `window`
+
+所有依赖 `window` / `document` 的 utility 都在组件挂载后才访问 DOM；SSR 期间它们返回安全的默认值（如 `useMediaQuery` 在 SSR 返回 `false`）。Vue 端在 `onMounted` 中初始化，React 端在 `useEffect` 中初始化。

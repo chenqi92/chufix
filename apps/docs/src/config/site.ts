@@ -55,6 +55,12 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('工具函数', 'Utilities'),
+    items: [
+      { label: L('Composables & Hooks', 'Composables & Hooks'), href: '/utilities/composables/' },
+    ],
+  },
+  {
     label: L('组件总览', 'Components overview'),
     items: [
       { label: L('所有组件', 'All components'), href: '/components/' },

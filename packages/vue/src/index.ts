@@ -1241,3 +1241,6 @@ export type {
   IconStrokeWidth,
 } from './icon/variants';
 export type { IconName } from '@chufix-design/icons';
+
+// Composables (Vue 3 composition-API utilities, no UI).
+export * from './composables';
