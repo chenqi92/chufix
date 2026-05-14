@@ -1,0 +1,55 @@
+---
+title: PullToRefresh 下拉刷新
+description: 在可滚动容器顶部下拉触发刷新；带阈值反馈、弹性阻尼、受控刷新状态。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pulltorefresh/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pulltorefresh/BasicVue.vue?raw';
+
+## 基础用法
+
+容器仅在 `scrollTop === 0` 时启动手势，下拉距离按指数衰减阻尼到 `maxDistance`；超过 `threshold` 即"释放可刷新"，松手触发 `onRefresh`。回调若返回 Promise，组件会等待 Promise 落定再收回 spinner；也可以用受控 `refreshing` prop 自行控制状态。
+
+<DemoFrame
+  vueCode={`<CfPullToRefresh :threshold="64" @refresh="onRefresh">
+  <ul>
+    <li v-for="item in items" :key="item">{{ item }}</li>
+  </ul>
+</CfPullToRefresh>`}
+  reactCode={`<CfPullToRefresh threshold={64} onRefresh={onRefresh}>
+  <ul>
+    {items.map(item => <li key={item}>{item}</li>)}
+  </ul>
+</CfPullToRefresh>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 三种文案
+
+`stage` 经历 `idle → pulling → ready → refreshing` 四态。Vue 端通过具名插槽 `pulling` / `ready` / `refreshing` 覆盖文案；React 端用同名 props（`pullingLabel` / `readyLabel` / `refreshingLabel`）。
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `threshold` | `number` | `64` | 触发刷新的下拉距离（px） |
+| `maxDistance` | `number` | `96` | 最大下拉位移（阻尼上限） |
+| `refreshing` | `boolean` | `false` | 受控刷新状态（传入则忽略自动 spinner 收回） |
+| `disabled` | `boolean` | `false` | 禁用手势 |
+
+### Events / callbacks
+
+| Vue | React | 说明 |
+|---|---|---|
+| `refresh` | `onRefresh` | 释放后触发；可返回 Promise |
+| `update:refreshing` | — | 内部 spinner 状态变化（仅 Vue 受控模式有意义） |
+
+### Vue 插槽 / React props 文案
+
+| Vue 插槽 | React prop | 默认 |
+|---|---|---|
+| `#pulling` | `pullingLabel` | `下拉刷新` |
+| `#ready` | `readyLabel` | `释放刷新` |
+| `#refreshing` | `refreshingLabel` | `加载中...` |

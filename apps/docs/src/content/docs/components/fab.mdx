@@ -1,0 +1,60 @@
+---
+title: Fab 主操作按钮
+description: 移动端主操作按钮（Floating Action Button）。固定贴边、自动适配 iOS 安全区、可选 extended pill、滚动隐藏、徽标。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/fab/BasicVue.vue';
+import BasicVueSource from '~/components/demos/fab/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfFab` 是 Material Design 风格的主操作按钮。固定 `position: fixed`、贴右下角（默认），自动加上 `safe-area-inset-*` 防止盖住 iOS home indicator。传 `label` 自动启用 extended pill 形态；icon 通过同名插槽（Vue）或 `icon` prop（React）传入。
+
+<DemoFrame
+  vueCode={`<CfFab aria-label="新建" position="bottom-right">
+  <template #icon><svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z" fill="currentColor" /></svg></template>
+</CfFab>
+
+<CfFab label="新建任务" extended position="bottom-center">
+  <template #icon>...</template>
+</CfFab>
+
+<CfFab variant="secondary" :badge="3" position="bottom-left" aria-label="消息">
+  <template #icon>...</template>
+</CfFab>`}
+  reactCode={`<CfFab ariaLabel="新建" position="bottom-right" icon={<svg>...</svg>} />
+<CfFab label="新建任务" extended position="bottom-center" icon={<svg>...</svg>} />
+<CfFab variant="secondary" badge={3} position="bottom-left" ariaLabel="消息" icon={<svg>...</svg>} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 与 FloatButton 的区别
+
+`CfFloatButton` 是"任意贴边按钮"工具，几乎没有内置样式 / 行为；`CfFab` 是产品级主操作模式：
+
+| | `CfFab` | `CfFloatButton` |
+|---|---|---|
+| 语义 | 单一主操作 | 任意悬浮按钮 |
+| size / variant | `sm/md/lg`、`primary/secondary/tertiary` | 由 children 决定 |
+| extended pill | ✅ | ❌ |
+| hideOnScroll | ✅ | ❌ |
+| badge | ✅ | ❌ |
+| safe-area | ✅ 自动 | ❌ |
+
+需要"在角落漂多个按钮"用 FloatButton；需要"主操作"用 Fab。
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `label` | `string` | `—` | 可见文字（自动 extended） |
+| `extended` | `boolean` | 自动 | 强制 extended 模式 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 40 / 56 / 64 px |
+| `variant` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` | 视觉权重 |
+| `position` | `'bottom-right' \| 'bottom-left' \| 'bottom-center'` | `'bottom-right'` | 角落位置；与 `safe-area-*` 自动叠加 |
+| `hideOnScroll` | `boolean` | `false` | 向下滚隐藏、向上滚出现 |
+| `badge` | `number \| string` | `—` | 数字 / 文字徽标；falsy 时隐藏 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `ariaLabel` | `string` | `—` | 必传（仅 icon FAB） |

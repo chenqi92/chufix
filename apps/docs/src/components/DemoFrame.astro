@@ -54,6 +54,11 @@ const defaultFileId = codeGroups[0]?.files[0]?.id;
       <button class="cf-demo__bg-option" type="button" data-demo-bg="accent" aria-label="品牌淡色背景" title="品牌淡色背景">
         <span class="cf-demo__bg-swatch cf-demo__bg-swatch--accent"></span>
       </button>
+      <span class="cf-demo__preview-tools-divider" aria-hidden="true"></span>
+      <span class="cf-demo__preview-tools-label">视口</span>
+      <button class="cf-demo__vp-option" type="button" data-demo-vp="desktop" data-active="true" aria-label="桌面视口" title="桌面视口">Desktop</button>
+      <button class="cf-demo__vp-option" type="button" data-demo-vp="414" aria-label="414px 视口" title="414px (iPhone Pro)">414</button>
+      <button class="cf-demo__vp-option" type="button" data-demo-vp="375" aria-label="375px 视口" title="375px (iPhone SE)">375</button>
     </div>
     <div class="cf-demo__pane-content">
       <slot />
@@ -130,7 +135,9 @@ const defaultFileId = codeGroups[0]?.files[0]?.id;
     const panels = root.querySelectorAll<HTMLElement>('[data-doc-code-panel]');
     const current = root.querySelector<HTMLElement>('[data-demo-code-current]');
     const bgBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-bg]');
+    const vpBtns = root.querySelectorAll<HTMLButtonElement>('[data-demo-vp]');
     const preview = root.querySelector<HTMLElement>('.cf-demo__preview');
+    const paneContent = root.querySelector<HTMLElement>('.cf-demo__pane-content');
     const floatingSelector = [
       '.cf-select.is-open',
       '.cf-combobox.is-open',
@@ -187,6 +194,27 @@ const defaultFileId = codeGroups[0]?.files[0]?.id;
         });
       });
       btn.setAttribute('aria-pressed', String(btn.dataset.active === 'true'));
+    });
+
+    const VP_KEY = 'cf-demo-viewport';
+    const applyVp = (vp: string) => {
+      if (paneContent) paneContent.dataset.demoVp = vp;
+      if (preview) preview.dataset.demoVp = vp;
+      vpBtns.forEach((item) => {
+        const active = (item.dataset.demoVp ?? '') === vp;
+        item.dataset.active = String(active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+    };
+    let savedVp: string | null = null;
+    try { savedVp = localStorage.getItem(VP_KEY); } catch { /* ignore */ }
+    applyVp(savedVp ?? 'desktop');
+    vpBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const vp = btn.dataset.demoVp ?? 'desktop';
+        applyVp(vp);
+        try { localStorage.setItem(VP_KEY, vp); } catch { /* ignore */ }
+      });
     });
 
     root.querySelectorAll<HTMLButtonElement>('[data-demo-copy]').forEach((btn) => {

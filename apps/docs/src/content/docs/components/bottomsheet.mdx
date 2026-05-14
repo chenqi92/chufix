@@ -1,0 +1,89 @@
+---
+title: BottomSheet 底部弹层
+description: 移动端底部弹起的模态面板，支持多停靠点（snap points）、grabber 拖动、下滑关闭、iOS 安全区适配。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/bottomsheet/BasicVue.vue';
+import BasicVueSource from '~/components/demos/bottomsheet/BasicVue.vue?raw';
+import SnapVue from '~/components/demos/bottomsheet/SnapVue.vue';
+import SnapVueSource from '~/components/demos/bottomsheet/SnapVue.vue?raw';
+
+## 基础用法
+
+`CfBottomSheet` 是移动端原生模式：从屏幕底部弹起的模态面板，圆角朝上、底部贴住视口（iOS 上自动 `padding-bottom: env(safe-area-inset-bottom)`）。顶部默认有 grabber 拖动条，下滑超过 panel 高度 1/3 或快速向下滑动即关闭。
+
+<DemoFrame
+  vueCode={`<CfBottomSheet v-model:open="open" title="选择操作" :snap-points="['40%', '90%']">
+  <ul>
+    <li>编辑</li>
+    <li>分享</li>
+    <li style="color: var(--status-error);">删除</li>
+  </ul>
+</CfBottomSheet>`}
+  reactCode={`<CfBottomSheet open={open} onOpenChange={setOpen} title="选择操作" snapPoints={['40%', '90%']}>
+  <ul>
+    <li>编辑</li>
+    <li>分享</li>
+    <li style={{ color: 'var(--status-error)' }}>删除</li>
+  </ul>
+</CfBottomSheet>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 多停靠点（snap points）
+
+`snapPoints` 接受 `number`（px）/ `'40%'`（视口高度百分比）/ `'auto'`（按内容自适应，最高 90vh）。拖动 grabber 时面板高度跟手移动，释放后吸附到最近的 snap point；拖到最低 snap point 之下 1/2 或快速下拉则关闭。
+
+<DemoFrame
+  vueCode={`<CfBottomSheet
+  v-model:open="open"
+  :snap-points="[180, '50%', '90%']"
+  :initial-snap="1"
+  @snap-change="onSnap"
+/>`}
+  reactCode={`<CfBottomSheet
+  open={open}
+  onOpenChange={setOpen}
+  snapPoints={[180, '50%', '90%']}
+  initialSnap={1}
+  onSnapChange={onSnap}
+/>`}
+  vueSource={SnapVueSource}>
+  <SnapVue client:only="vue" />
+</DemoFrame>
+
+## 与 Drawer 的关系
+
+`CfDrawer placement="bottom"` 是更通用的"贴底抽屉"，可用于桌面端尺寸调整、tone 状态、自定义 footer、resizable 等场景。`CfBottomSheet` 专为移动端模态体验设计：内置 snap points、grabber、swipe-to-dismiss、safe-area，没有 footer / resize 等桌面端 props。
+
+| 选哪个 | 场景 |
+|---|---|
+| `CfBottomSheet` | 移动端模态、列表选择、操作面板、半屏详情 |
+| `CfDrawer placement="bottom"` | 桌面端弹起、可调高度、需要 OK/Cancel footer 时 |
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `open` / `modelValue` | `boolean` | `false` | 开关状态 |
+| `snapPoints` | `(number \| string)[]` | `['40%', '90%']` | 停靠高度数组；数字=px，`'N%'`=视口高度百分比，`'auto'`=内容高 |
+| `initialSnap` | `number` | `0` | 初始 snap 索引 |
+| `showGrabber` | `boolean` | `true` | 顶部拖动条 |
+| `dismissible` | `boolean` | `true` | 拖到最低 snap point 之下时关闭 |
+| `maskClosable` | `boolean` | `true` | 点遮罩关闭 |
+| `closeOnEsc` | `boolean` | `true` | Esc 关闭 |
+| `mask` | `boolean` | `true` | 渲染遮罩 |
+| `title` | `string` | `—` | 标题文本 |
+| `to` | `string` | `'body'` | Vue Teleport 目标 |
+| `container` | `HTMLElement \| null` | `null` | React portal 容器（默认 body） |
+| `zIndex` | `number` | `var(--z-bottomsheet)` | 自定义 z-index |
+
+### Events
+
+| Vue | React | payload |
+|---|---|---|
+| `update:open` | `onOpenChange` | `boolean` |
+| `snap-change` | `onSnapChange` | `index: number` |
+| `close` | — | — |

@@ -105,6 +105,38 @@ const onScroll = useThrottledFn(() => track(), 100, { leading: true, trailing: t
 
 ---
 
+## 手势
+
+### `useDrag` —— 通用拖拽底座
+
+基于 `pointerdown` + `setPointerCapture` 的拖拽追踪：累计位移、最近 100ms 速度、轴向限制、bounds 夹紧、阈值起拖。`BottomSheet` / `PullToRefresh` / `SwipeAction` 与 `Drawer` 下滑关闭都建立在它之上，组件外也可直接消费。
+
+```ts
+const ref = useTemplateRef('panel');
+useDrag(ref, {
+  axis: 'y',
+  bounds: { min: 0 },
+  onMove(s) { offset.value = s.dy; },
+  onEnd(s) { if (s.vy > 0.3) close(); },
+});
+```
+
+### `useSwipe` —— 四方向识别
+
+`useDrag` 之上的轻量包装：在释放时根据"位移阈值或速度阈值"判定 `'up' / 'down' / 'left' / 'right'`，已被 `Carousel` 接入用于左右滑切换。
+
+```ts
+useSwipe(viewportRef, {
+  axis: 'x',
+  threshold: 32,
+  velocity: 0.3,
+  onSwipe(dir) {
+    if (dir === 'left') next();
+    if (dir === 'right') prev();
+  },
+});
+```
+
 ## DOM 与事件
 
 ### `useEventListener` —— 自动挂载/卸载

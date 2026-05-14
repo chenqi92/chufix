@@ -1,0 +1,66 @@
+---
+title: SwipeAction 滑动操作
+description: 列表行项左右滑暴露快捷动作；釋放后按速度或位移吸附打开 / 回弹；点外自动关闭。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/swipeaction/BasicVue.vue';
+import BasicVueSource from '~/components/demos/swipeaction/BasicVue.vue?raw';
+
+## 基础用法
+
+行内容写在默认 slot/children 中；`left` 数组里的 action 通过"向右滑（`dx > 0`）"暴露，`right` 数组通过"向左滑（`dx < 0`）"暴露。tone 选项 `primary / danger / success / warning / info` 对应 ChuFix 语义色，对应 Action 背景。
+
+释放时若位移超过 rail 宽度的一半，或释放速度 `|vx| > 0.3 px/ms`，则吸附打开；否则回弹。点击 rail 内的按钮会触发 `action` 事件并自动关闭。点击容器外（默认开启 `closeOnOutsideTap`）也会关闭。
+
+<DemoFrame
+  vueCode={`<CfSwipeAction
+  :left="[{ key: 'star', label: '收藏', tone: 'primary' }]"
+  :right="[
+    { key: 'archive', label: '归档', tone: 'warning' },
+    { key: 'delete',  label: '删除', tone: 'danger' },
+  ]"
+  @action="onAction"
+>
+  <div class="row">会议纪要 — 2026 Q2</div>
+</CfSwipeAction>`}
+  reactCode={`<CfSwipeAction
+  left={[{ key: 'star', label: '收藏', tone: 'primary' }]}
+  right={[
+    { key: 'archive', label: '归档', tone: 'warning' },
+    { key: 'delete',  label: '删除', tone: 'danger' },
+  ]}
+  onAction={onAction}
+>
+  <div className="row">会议纪要 — 2026 Q2</div>
+</CfSwipeAction>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `left` | `SwipeActionItem[]` | `[]` | 右滑暴露的左侧 rail |
+| `right` | `SwipeActionItem[]` | `[]` | 左滑暴露的右侧 rail |
+| `threshold` | `number` | `24` | 起拖位移阈值（px） |
+| `closeOnOutsideTap` | `boolean` | `true` | 点外关闭 |
+| `disabled` | `boolean` | `false` | 禁用手势 |
+
+### SwipeActionItem
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `key` | `string` | 稳定 id，`action` 事件携带 |
+| `label` | `string` | 显示文本 |
+| `tone` | `'default' \| 'primary' \| 'danger' \| 'success' \| 'warning' \| 'info'` | 语义色 |
+| `onClick` | `() => void` | 点击该 action 时调用 |
+
+### Events / callbacks
+
+| Vue | React | payload |
+|---|---|---|
+| `action` | `onAction` | `(key, item)` |
+| `open` | `onOpen` | `'left' \| 'right'` |
+| `close` | `onClose` | — |

@@ -246,6 +246,16 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('移动端 / 触控', 'Mobile & touch'),
+    items: [
+      c('BottomSheet', '底部弹层', 'bottomsheet'),
+      c('PullToRefresh', '下拉刷新', 'pulltorefresh'),
+      c('SwipeAction', '滑动操作', 'swipeaction'),
+      c('Fab', '主操作按钮', 'fab'),
+      c('TabBar', '底部导航', 'tabbar'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

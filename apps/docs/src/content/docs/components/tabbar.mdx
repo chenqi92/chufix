@@ -1,0 +1,52 @@
+---
+title: TabBar 底部导航栏
+description: 移动端底部路由级导航。图标 + 标签 + 徽标；line/fill 两种激活样式；iOS 安全区适配。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tabbar/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tabbar/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfTabBar` 是手机 app 底部的路由切换栏。每个 item 必须有 `key` 和图标；`label` 可选（纯图标也合法）。默认 `fixed` 贴底、`safeArea` 在 iOS 上补 `padding-bottom`。受控传 `v-model` / `value+onChange`，外接 vue-router / react-router 来切页面。
+
+<DemoFrame
+  vueCode={`<CfTabBar v-model="active" :items="items" />`}
+  reactCode={`<CfTabBar value={active} onChange={setActive} items={items} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 与 Tabs 的区别
+
+`CfTabs` 是"内容区切换"，多个 `<CfTabPanel>` 配合；`CfTabBar` 是"应用路由切换"，固定贴底、不包含内容面板。两者语义和定位都不同。
+
+| | `CfTabBar` | `CfTabs` |
+|---|---|---|
+| 角色 | 路由 / 应用主导航 | 内容分组 |
+| 定位 | 底部 fixed（默认） | 内联 |
+| 与 router | 外接 | 内部 v-model |
+| 触摸热区 | ≥ `--touch-target-min`（48px） | 桌面尺寸 |
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `items` | `TabBarItem[]` | `—` | 导航项列表 |
+| `modelValue` (Vue) / `value` (React) | `string` | `—` | 当前 key |
+| `fixed` | `boolean` | `true` | `position: fixed` 贴底 |
+| `safeArea` | `boolean` | `true` | 加 `padding-bottom: var(--safe-area-bottom)` |
+| `variant` | `'line' \| 'fill'` | `'line'` | 激活样式 |
+| `ariaLabel` | `string` | `'主导航'` | 无障碍标签 |
+
+### TabBarItem
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `key` | `string` | 唯一标识 |
+| `label` | `string?` | 文字（可省略） |
+| `iconPath` | `string?` | SVG path data（最轻量） |
+| `icon` | `ReactNode?` (React) / slot `icon-{key}` (Vue) | 自定义图标节点 |
+| `badge` | `number \| string?` | 角标；falsy 时隐藏 |
+| `disabled` | `boolean?` | 禁用 |
