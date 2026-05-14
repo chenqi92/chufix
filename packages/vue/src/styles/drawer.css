@@ -37,7 +37,36 @@
 .cf-drawer__panel--left   { width: 100%; height: 100%; border-radius: 0 var(--r-8) var(--r-8) 0; }
 .cf-drawer__panel--right  { width: 100%; height: 100%; border-radius: var(--r-8) 0 0 var(--r-8); }
 .cf-drawer__panel--top    { width: 100%; border-radius: 0 0 var(--r-8) var(--r-8); }
-.cf-drawer__panel--bottom { width: 100%; border-radius: var(--r-8) var(--r-8) 0 0; }
+.cf-drawer__panel--bottom {
+  width: 100%;
+  border-radius: var(--r-8) var(--r-8) 0 0;
+  padding-bottom: var(--safe-area-bottom);
+}
+
+/* top grabber bar (placement='bottom' only) */
+.cf-drawer__grabber {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.cf-drawer__grabber.is-dismissible {
+  cursor: grab;
+  touch-action: none;
+}
+.cf-drawer__grabber.is-dismissible:active {
+  cursor: grabbing;
+}
+.cf-drawer__grabber-bar {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--line-2);
+}
 
 .cf-drawer__panel--left.cf-drawer__panel--sm,
 .cf-drawer__panel--right.cf-drawer__panel--sm   { max-width: 280px; }

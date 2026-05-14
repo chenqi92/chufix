@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useSwipe } from '../composables/useSwipe';
 import { carouselClass, type CarouselProps } from './variants';
 
 const props = withDefaults(defineProps<CarouselProps>(), {
@@ -58,6 +59,15 @@ watch(() => [props.autoplay, props.interval, hovered.value, total.value], startT
 
 const cls = computed(() => carouselClass({ size: props.size, className: props.className }));
 const trackStyle = computed(() => ({ transform: `translateX(-${current.value * 100}%)` }));
+
+const viewportRef = ref<HTMLElement | null>(null);
+useSwipe(viewportRef, {
+  axis: 'x',
+  onSwipe(dir) {
+    if (dir === 'left') next();
+    else if (dir === 'right') prev();
+  },
+});
 </script>
 
 <template>
@@ -66,7 +76,7 @@ const trackStyle = computed(() => ({ transform: `translateX(-${current.value * 1
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
   >
-    <div class="cf-carousel__viewport">
+    <div ref="viewportRef" class="cf-carousel__viewport">
       <div class="cf-carousel__track" :style="trackStyle">
         <div
           v-for="(item, i) in items"

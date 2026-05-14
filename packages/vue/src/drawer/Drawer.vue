@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useDrag } from '../composables/useDrag';
 import {
   trapFocus,
   lockBodyScroll,
@@ -29,6 +30,14 @@ const props = withDefaults(defineProps<DrawerProps>(), {
   okVariant: 'primary',
   to: 'body',
 });
+
+const isBottom = computed(() => props.placement === 'bottom');
+const effectiveGrabber = computed(() => (props.showGrabber ?? isBottom.value) && isBottom.value);
+const effectiveDismissible = computed(
+  () => (props.dismissible ?? isBottom.value) && isBottom.value && !props.resizable,
+);
+const dismissOffset = ref(0);
+const grabberRef = ref<HTMLDivElement | null>(null);
 
 const emit = defineEmits<{
   (e: 'update:open', value: boolean): void;
@@ -156,6 +165,28 @@ function onResizePointerEnd() {
   resize.value = null;
 }
 
+/* dismissible swipe-down on grabber (placement='bottom' only) */
+useDrag(grabberRef, {
+  axis: 'y',
+  bounds: { min: 0 },
+  onMove(s) {
+    if (!effectiveDismissible.value) return;
+    dismissOffset.value = s.dy;
+  },
+  onEnd(s) {
+    if (!effectiveDismissible.value) return;
+    const panelH = panelRef.value?.getBoundingClientRect().height ?? 200;
+    const past = s.dy > panelH / 3;
+    const fast = s.vy > 0.3;
+    if (past || fast) {
+      dismissOffset.value = 0;
+      close();
+    } else {
+      dismissOffset.value = 0;
+    }
+  },
+});
+
 /* panel style */
 const panelStyle = computed(() => {
   const out: Record<string, string | undefined> = {};
@@ -177,6 +208,10 @@ const panelStyle = computed(() => {
       out.maxHeight = `${sizeOverride.value.height}px`;
       out.height = '100%';
     }
+  }
+  if (effectiveDismissible.value && dismissOffset.value > 0) {
+    out.transform = `translateY(${dismissOffset.value}px)`;
+    out.transition = 'none';
   }
   return out;
 });
@@ -228,6 +263,15 @@ defineExpose({ close, ok: onOk });
           :aria-describedby="description ? 'cf-drawer-desc' : undefined"
           tabindex="-1"
         >
+          <div
+            v-if="effectiveGrabber"
+            ref="grabberRef"
+            class="cf-drawer__grabber"
+            :class="effectiveDismissible && 'is-dismissible'"
+            aria-hidden="true"
+          >
+            <span class="cf-drawer__grabber-bar" />
+          </div>
           <div
             v-if="title || $slots.header || tone !== 'default'"
             class="cf-drawer__header"

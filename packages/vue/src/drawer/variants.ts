@@ -19,6 +19,15 @@ export interface DrawerProps {
   height?: number | string;
   /** Make panel resizable from its inner edge (drag to grow/shrink). */
   resizable?: boolean;
+  /** Show a top grabber bar (placement='bottom' only). Default true for bottom. */
+  showGrabber?: boolean;
+  /**
+   * Allow closing by swiping the panel toward its edge (currently
+   * placement='bottom' only; drag down past 1/3 panel height or velocity
+   * > 0.3 px/ms releases). Default true for placement='bottom'. Mutually
+   * exclusive with `resizable`.
+   */
+  dismissible?: boolean;
   /** Render mask layer. Set false for non-modal drawers. */
   mask?: boolean;
   /** Footer alignment when using built-in footer slot/area. */

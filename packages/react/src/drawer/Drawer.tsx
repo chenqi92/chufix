@@ -15,6 +15,7 @@ import {
   unlockBodyScroll,
   type FocusTrap,
 } from '../modal/dom';
+import { useDrag } from '../hooks/useDrag';
 import {
   pushDrawer,
   topMostDrawerCloseFn,
@@ -41,6 +42,8 @@ export function Drawer(props: DrawerProps) {
     width,
     height,
     resizable = false,
+    showGrabber,
+    dismissible,
     mask = true,
     footerAlign = 'end',
     okText,
@@ -161,6 +164,29 @@ export function Drawer(props: DrawerProps) {
     resizeRef.current = null;
   };
 
+  const isBottom = placement === 'bottom';
+  const effectiveGrabber = (showGrabber ?? isBottom) && isBottom;
+  const effectiveDismissible = (dismissible ?? isBottom) && isBottom && !resizable;
+  const grabberRef = useRef<HTMLDivElement | null>(null);
+  const [dismissOffset, setDismissOffset] = useState(0);
+
+  useDrag(grabberRef, {
+    axis: 'y',
+    bounds: { min: 0 },
+    onMove(s) {
+      if (!effectiveDismissible) return;
+      setDismissOffset(s.dy);
+    },
+    onEnd(s) {
+      if (!effectiveDismissible) return;
+      const panelH = panelRef.current?.getBoundingClientRect().height ?? 200;
+      const past = s.dy > panelH / 3;
+      const fast = s.vy > 0.3;
+      setDismissOffset(0);
+      if (past || fast) close();
+    },
+  });
+
   const panelStyle = useMemo<CSSProperties>(() => {
     const out: CSSProperties = {};
     const isHoriz = placement === 'left' || placement === 'right';
@@ -184,8 +210,12 @@ export function Drawer(props: DrawerProps) {
       }
     }
     if (!mask) out.pointerEvents = 'auto';
+    if (effectiveDismissible && dismissOffset > 0) {
+      out.transform = `translateY(${dismissOffset}px)`;
+      out.transition = 'none';
+    }
     return out;
-  }, [placement, width, height, sizeOverride, mask]);
+  }, [placement, width, height, sizeOverride, mask, effectiveDismissible, dismissOffset]);
 
   const overlayStyle = useMemo<CSSProperties>(() => {
     const out: CSSProperties = { zIndex: computedZ };
@@ -240,6 +270,17 @@ export function Drawer(props: DrawerProps) {
         aria-describedby={description ? 'cf-drawer-desc' : undefined}
         tabIndex={-1}
       >
+        {effectiveGrabber && (
+          <div
+            ref={grabberRef}
+            className={['cf-drawer__grabber', effectiveDismissible ? 'is-dismissible' : '']
+              .filter(Boolean)
+              .join(' ')}
+            aria-hidden
+          >
+            <span className="cf-drawer__grabber-bar" />
+          </div>
+        )}
         {showHeader && (
           <div className="cf-drawer__header">
             {tone !== 'default' && (

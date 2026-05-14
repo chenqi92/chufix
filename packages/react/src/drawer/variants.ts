@@ -19,6 +19,14 @@ export interface BaseDrawerProps {
   width?: number | string;
   height?: number | string;
   resizable?: boolean;
+  /** Show a top grabber bar (placement='bottom' only). Default true for bottom. */
+  showGrabber?: boolean;
+  /**
+   * Allow closing by dragging the panel down past 1/3 panel height or
+   * release velocity > 0.3 px/ms. Default true for placement='bottom'.
+   * Mutually exclusive with `resizable`.
+   */
+  dismissible?: boolean;
   mask?: boolean;
   footerAlign?: DrawerFooterAlign;
   okText?: string;

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSwipe } from '../hooks/useSwipe';
 import { carouselClass, type CarouselProps } from './variants';
 
 export function Carousel(props: CarouselProps) {
@@ -49,13 +50,22 @@ export function Carousel(props: CarouselProps) {
 
   const cls = carouselClass({ size, className });
 
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  useSwipe(viewportRef, {
+    axis: 'x',
+    onSwipe(dir) {
+      if (dir === 'left') go(current + 1);
+      else if (dir === 'right') go(current - 1);
+    },
+  });
+
   return (
     <div
       className={cls}
       onMouseEnter={() => (hoveredRef.current = true)}
       onMouseLeave={() => (hoveredRef.current = false)}
     >
-      <div className="cf-carousel__viewport">
+      <div ref={viewportRef} className="cf-carousel__viewport">
         <div className="cf-carousel__track" style={{ transform: `translateX(-${current * 100}%)` }}>
           {items.map((item, i) => (
             <div key={item.key ?? i} className="cf-carousel__slide">
