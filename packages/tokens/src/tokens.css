@@ -525,6 +525,25 @@
   --s-10: 40px;
   --s-11: 48px;
   --s-12: 64px;
+
+  /* Touch target minimum (Apple HIG 44pt / Material 48dp — take the larger). */
+  --touch-target-min: 48px;
+}
+
+/* ---------- BREAKPOINTS (mobile-first, aligned with Tailwind defaults) ---------- */
+:root {
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}
+
+/* ---------- SAFE AREA (iOS notch / home indicator; non-iOS falls back to 0) ---------- */
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
 }
 
 /* ---------- DENSITY ---------- */
@@ -588,10 +607,12 @@
   --z-sticky: 100;
   --z-titlebar: 200;
   --z-statusbar: 200;
+  --z-fab: 950;
   --z-dropdown: 1000;
   --z-popover: 1100;
   --z-tooltip: 1200;
   --z-drawer: 1300;
+  --z-bottomsheet: 1350;
   --z-modal: 1400;
   --z-cmdpalette: 1500;
   --z-toast: 1600;

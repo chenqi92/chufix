@@ -14,6 +14,10 @@ export { useDebouncedRef } from './useDebouncedRef';
 export { useDebouncedFn, type DebouncedFn } from './useDebouncedFn';
 export { useThrottledFn, type ThrottledFn, type ThrottleOptions } from './useThrottledFn';
 
+// Gestures
+export { useDrag, type DragOptions, type DragState } from './useDrag';
+export { useSwipe, type SwipeOptions, type SwipeDirection } from './useSwipe';
+
 // DOM / events
 export { useEventListener } from './useEventListener';
 export { useClickOutside } from './useClickOutside';
