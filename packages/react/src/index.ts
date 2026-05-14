@@ -146,6 +146,11 @@ import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
 import './styles/map.css';
+import './styles/bottomsheet.css';
+import './styles/pulltorefresh.css';
+import './styles/swipeaction.css';
+import './styles/fab.css';
+import './styles/tabbar.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1279,6 +1284,18 @@ export type {
   MapCanvasEvent,
   MapTone,
 } from './map/variants';
+
+// Mobile / touch components
+export { BottomSheet as CfBottomSheet } from './bottomsheet/BottomSheet';
+export type { BottomSheetProps, SheetSnap } from './bottomsheet/variants';
+export { PullToRefresh as CfPullToRefresh } from './pulltorefresh/PullToRefresh';
+export type { PullToRefreshProps, PullStage } from './pulltorefresh/variants';
+export { SwipeAction as CfSwipeAction } from './swipeaction/SwipeAction';
+export type { SwipeActionProps, SwipeActionItem, SwipeActionTone } from './swipeaction/variants';
+export { Fab as CfFab } from './fab/Fab';
+export type { FabProps, FabSize, FabVariant, FabPosition } from './fab/variants';
+export { TabBar as CfTabBar } from './tabbar/TabBar';
+export type { TabBarProps, TabBarItem, TabBarVariant } from './tabbar/variants';
 
 // Hooks (React utility hooks, no UI).
 export * from './hooks';

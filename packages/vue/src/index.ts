@@ -146,6 +146,11 @@ import './styles/calendarheatmap.css';
 import './styles/tour.css';
 import './styles/qrcode.css';
 import './styles/map.css';
+import './styles/bottomsheet.css';
+import './styles/pulltorefresh.css';
+import './styles/swipeaction.css';
+import './styles/fab.css';
+import './styles/tabbar.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1241,6 +1246,18 @@ export type {
   IconStrokeWidth,
 } from './icon/variants';
 export type { IconName } from '@chufix-design/icons';
+
+// Mobile / touch components
+export { default as CfBottomSheet } from './bottomsheet/BottomSheet.vue';
+export type { BottomSheetProps, SheetSnap } from './bottomsheet/variants';
+export { default as CfPullToRefresh } from './pulltorefresh/PullToRefresh.vue';
+export type { PullToRefreshProps, PullStage } from './pulltorefresh/variants';
+export { default as CfSwipeAction } from './swipeaction/SwipeAction.vue';
+export type { SwipeActionProps, SwipeActionItem, SwipeActionTone } from './swipeaction/variants';
+export { default as CfFab } from './fab/Fab.vue';
+export type { FabProps, FabSize, FabVariant, FabPosition } from './fab/variants';
+export { default as CfTabBar } from './tabbar/TabBar.vue';
+export type { TabBarProps, TabBarItem, TabBarVariant } from './tabbar/variants';
 
 // Composables (Vue 3 composition-API utilities, no UI).
 export * from './composables';

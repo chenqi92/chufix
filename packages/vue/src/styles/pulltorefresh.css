@@ -1,0 +1,53 @@
+/* ChuFix PullToRefresh — drag-from-top to trigger refresh. */
+
+.cf-ptr {
+  position: relative;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  font-family: var(--font-sans);
+  color: var(--fg-2);
+}
+
+.cf-ptr__indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  overflow: hidden;
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+  color: var(--fg-2);
+  user-select: none;
+}
+
+.cf-ptr__spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--accent-1);
+}
+
+.cf-ptr__spinner.is-spinning .cf-ptr__spinner-arc {
+  animation: cf-ptr-spin 800ms linear infinite;
+}
+
+@keyframes cf-ptr-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cf-ptr__label {
+  font-size: var(--t-12);
+  line-height: var(--lh-12);
+}
+
+.cf-ptr__content {
+  min-height: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-ptr__spinner-arc { animation-duration: 0ms !important; }
+}

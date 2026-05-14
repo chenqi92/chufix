@@ -1,0 +1,65 @@
+/* ChuFix SwipeAction — horizontal swipe reveals side rails of action buttons. */
+
+.cf-swipeaction {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-2);
+  border-radius: var(--r-4);
+  font-family: var(--font-sans);
+  touch-action: pan-y;
+}
+
+.cf-swipeaction[data-disabled] {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.cf-swipeaction__content {
+  position: relative;
+  background: var(--bg-3);
+  color: var(--fg-1);
+  cursor: grab;
+  touch-action: pan-y;
+  transition: transform var(--dur-base) var(--ease-out);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.cf-swipeaction__content:active { cursor: grabbing; }
+
+.cf-swipeaction__rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+}
+.cf-swipeaction__rail--left  { left: 0; transform: translateX(-100%); }
+.cf-swipeaction__rail--right { right: 0; transform: translateX(100%); }
+
+.cf-swipeaction__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  min-width: var(--touch-target-min);
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--t-13);
+  line-height: var(--lh-13);
+  font-weight: var(--w-medium);
+  color: var(--fg-on-accent);
+  background: var(--accent-1);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+.cf-swipeaction__btn:hover { filter: brightness(1.05); }
+.cf-swipeaction__btn:active { filter: brightness(0.95); }
+
+.cf-swipeaction__btn--primary { background: var(--accent-1); color: var(--fg-on-accent); }
+.cf-swipeaction__btn--danger  { background: var(--status-error); color: var(--fg-on-accent); }
+.cf-swipeaction__btn--success { background: var(--status-success); color: var(--fg-on-accent); }
+.cf-swipeaction__btn--warning { background: var(--status-warning); color: var(--fg-on-accent); }
+.cf-swipeaction__btn--info    { background: var(--status-info); color: var(--fg-on-accent); }

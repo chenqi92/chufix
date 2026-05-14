@@ -1,0 +1,100 @@
+/* ChuFix TabBar — bottom-anchored mobile navigation. */
+
+.cf-tabbar {
+  display: flex;
+  width: 100%;
+  background: var(--bg-3);
+  border-top: 1px solid var(--line-1);
+  font-family: var(--font-sans);
+}
+
+.cf-tabbar--fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  box-shadow: 0 -1px 0 var(--line-1);
+}
+
+.cf-tabbar--safe-area {
+  padding-bottom: var(--safe-area-bottom);
+}
+
+.cf-tabbar__item {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: var(--touch-target-min);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--fg-3);
+  font-family: inherit;
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  position: relative;
+}
+
+.cf-tabbar__item:hover:not(:disabled) { color: var(--fg-2); }
+.cf-tabbar__item:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cf-tabbar__item.is-active { color: var(--accent-1); }
+
+.cf-tabbar--line .cf-tabbar__item.is-active::after {
+  content: '';
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 0;
+  height: 2px;
+  background: var(--accent-1);
+  border-radius: 0 0 var(--r-2) var(--r-2);
+}
+
+.cf-tabbar--fill .cf-tabbar__item.is-active {
+  background: var(--accent-soft);
+}
+
+.cf-tabbar__icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+.cf-tabbar__icon svg { width: 22px; height: 22px; }
+
+.cf-tabbar__label {
+  font-weight: var(--w-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.cf-tabbar__badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  border-radius: var(--r-pill);
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  font-weight: var(--w-semibold);
+  box-shadow: 0 0 0 2px var(--bg-3);
+}

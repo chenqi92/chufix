@@ -1,0 +1,115 @@
+/* ChuFix Fab — primary mobile action floating above content. */
+
+.cf-fab {
+  position: fixed;
+  z-index: var(--z-fab);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-size: var(--t-14);
+  line-height: var(--lh-14);
+  font-weight: var(--w-semibold);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: var(--shadow-3);
+  transition: transform var(--dur-base) var(--ease-spring),
+              opacity var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+
+.cf-fab:hover { box-shadow: var(--shadow-4); }
+.cf-fab:active { transform: scale(0.96); }
+.cf-fab:disabled { cursor: not-allowed; opacity: 0.5; box-shadow: var(--shadow-2); }
+.cf-fab:focus-visible { outline: none; box-shadow: var(--shadow-3), var(--focus-ring); }
+
+/* sizes */
+.cf-fab--sm { width: 40px; height: 40px; padding: 0 12px; }
+.cf-fab--md { width: 56px; height: 56px; padding: 0 16px; }
+.cf-fab--lg { width: 64px; height: 64px; padding: 0 20px; }
+
+/* extended (pill with label) */
+.cf-fab--extended { width: auto; min-width: var(--touch-target-min); padding: 0 20px 0 16px; }
+.cf-fab--extended.cf-fab--sm { height: 40px; padding: 0 16px 0 12px; }
+.cf-fab--extended.cf-fab--lg { height: 64px; padding: 0 24px 0 20px; }
+
+/* variants */
+.cf-fab--primary {
+  background: var(--accent-1);
+  color: var(--fg-on-accent);
+}
+.cf-fab--primary:hover { background: var(--accent-2); }
+.cf-fab--primary:active { background: var(--accent-3); }
+
+.cf-fab--secondary {
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border-color: var(--line-1);
+}
+.cf-fab--secondary:hover { background: var(--bg-inset); }
+
+.cf-fab--tertiary {
+  background: var(--accent-soft);
+  color: var(--accent-1);
+}
+.cf-fab--tertiary:hover { background: oklch(from var(--accent-soft) l c h / 0.24); }
+
+/* position (with safe-area for iOS) */
+.cf-fab--bottom-right {
+  right: calc(16px + var(--safe-area-right));
+  bottom: calc(16px + var(--safe-area-bottom));
+}
+.cf-fab--bottom-left {
+  left: calc(16px + var(--safe-area-left));
+  bottom: calc(16px + var(--safe-area-bottom));
+}
+.cf-fab--bottom-center {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(16px + var(--safe-area-bottom));
+}
+.cf-fab--bottom-center:active { transform: translateX(-50%) scale(0.96); }
+
+/* hide-on-scroll */
+.cf-fab.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(120%);
+}
+.cf-fab--bottom-center.is-hidden { transform: translateX(-50%) translateY(120%); }
+
+.cf-fab__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cf-fab__icon svg { width: 24px; height: 24px; }
+
+.cf-fab__label {
+  white-space: nowrap;
+}
+
+.cf-fab__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--status-error);
+  color: var(--fg-on-accent);
+  border-radius: var(--r-pill);
+  font-size: var(--t-11);
+  line-height: var(--lh-11);
+  font-weight: var(--w-semibold);
+  box-shadow: 0 0 0 2px var(--bg-1);
+}

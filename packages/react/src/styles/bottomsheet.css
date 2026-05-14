@@ -1,0 +1,91 @@
+/* ChuFix BottomSheet — modal sheet anchored to the viewport bottom. */
+
+.cf-sheet__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bottomsheet);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: oklch(0% 0 0 / 0.45);
+  backdrop-filter: blur(2px);
+  font-family: var(--font-sans);
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.cf-sheet__overlay--no-mask {
+  background: transparent !important;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+
+.cf-sheet__panel {
+  pointer-events: auto;
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border-top: 1px solid var(--line-1);
+  box-shadow: var(--shadow-4);
+  border-radius: var(--r-8) var(--r-8) 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  outline: none;
+  padding-bottom: var(--safe-area-bottom);
+  transition: height var(--dur-base) var(--ease-out);
+}
+
+.cf-sheet__grabber {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.cf-sheet__grabber:active { cursor: grabbing; }
+
+.cf-sheet__grabber-bar {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--line-2);
+}
+
+.cf-sheet__header {
+  flex: 0 0 auto;
+  padding: 4px 16px 12px;
+  border-bottom: 1px solid var(--line-1);
+}
+
+.cf-sheet__title {
+  margin: 0;
+  font-size: var(--t-16);
+  line-height: var(--lh-16);
+  font-weight: var(--w-semibold);
+  color: var(--fg-1);
+}
+
+.cf-sheet__content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* enter/leave: slide from below + fade */
+.cf-sheet-enter-active,
+.cf-sheet-leave-active { transition: opacity var(--dur-base) var(--ease-out); }
+.cf-sheet-enter-from,
+.cf-sheet-leave-to     { opacity: 0; }
+.cf-sheet-enter-active .cf-sheet__panel,
+.cf-sheet-leave-active .cf-sheet__panel {
+  transition: transform var(--dur-base) var(--ease-out), height var(--dur-base) var(--ease-out);
+}
+.cf-sheet-enter-from .cf-sheet__panel,
+.cf-sheet-leave-to .cf-sheet__panel { transform: translateY(100%); }
