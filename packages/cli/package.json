@@ -1,6 +1,6 @@
 {
   "name": "@chufix-design/cli",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "ChuFix UI CLI · 一键拉取 blocks 源码到本地项目",
   "license": "MIT",
   "author": "chenqi92",
