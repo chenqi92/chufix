@@ -17,7 +17,7 @@ import BasicVueSource from '~/components/demos/mapscale/BasicVue.vue?raw';
   reactCode={`<CfMapScale inline lat={40} zoom={8} />
 <CfMapScale inline lat={40} zoom={14} unit="imperial" />`}
   vueSource={BasicVueSource}>
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## API

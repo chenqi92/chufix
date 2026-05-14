@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMapMiniMap } from '@chufix-design/vue';
+import { CfMapMiniMap } from '@chufix-design/maps-vue';
 import { sampleGeo } from '../_shared/sample-geo';
 
 const viewport = { north: 60, south: 20, east: 60, west: 0 };

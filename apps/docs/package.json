@@ -24,6 +24,8 @@
     "sharp": "^0.33.5",
     "vue": "^3.5.12",
     "@chufix-design/icons": "workspace:*",
+    "@chufix-design/maps-react": "workspace:*",
+    "@chufix-design/maps-vue": "workspace:*",
     "@chufix-design/react": "workspace:*",
     "@chufix-design/tokens": "workspace:*",
     "@chufix-design/vue": "workspace:*"

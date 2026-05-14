@@ -21,7 +21,7 @@ import BasicVueSource from '~/components/demos/maplegend/BasicVue.vue?raw';
 <CfMapLegend inline gradient={grad} domain={[0, 2500]} />
 <CfMapLegend inline kind="size" domain={[100, 2000]} />`}
   vueSource={BasicVueSource}>
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## API

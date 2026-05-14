@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfFlowMap } from '@chufix-design/vue';
+import { CfFlowMap } from '@chufix-design/maps-vue';
 import { sampleGeo, samplePoints } from '../_shared/sample-geo';
 
 const edges = [

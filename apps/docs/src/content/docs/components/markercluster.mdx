@@ -15,7 +15,7 @@ import BasicVueSource from '~/components/demos/markercluster/BasicVue.vue?raw';
   vueCode={`<CfMarkerCluster :data="points" :geojson="geo" :cellSize="50" @clusterClick="onClick" />`}
   reactCode={`<CfMarkerCluster data={points} geojson={geo} cellSize={50} onClusterClick={onClick} />`}
   vueSource={BasicVueSource}>
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## 工具函数

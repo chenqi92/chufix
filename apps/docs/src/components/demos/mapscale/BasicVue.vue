@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { CfMapScale } from '@chufix-design/vue';
+import { CfMapTile, CfMapScale } from '@chufix-design/maps-vue';
 </script>
 
 <template>
-  <div class="demo-scope">
-    <CfMapScale inline :lat="0" :zoom="2" unit="metric" />
-    <CfMapScale inline :lat="40" :zoom="8" unit="metric" />
-    <CfMapScale inline :lat="40" :zoom="14" unit="metric" />
-    <CfMapScale inline :lat="40" :zoom="14" unit="imperial" />
-  </div>
+  <CfMapTile
+    :center="{ lng: 116.4, lat: 39.9 }"
+    :zoom="6"
+    :width="560"
+    :height="320"
+  >
+    <CfMapScale position="bottom-left" unit="metric" />
+    <CfMapScale position="bottom-right" unit="imperial" />
+  </CfMapTile>
 </template>
-
-<style scoped>
-.demo-scope { display: flex; flex-wrap: wrap; gap: 24px; }
-</style>

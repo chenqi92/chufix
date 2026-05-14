@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMapTile, CfBubbleMap, CfMapLegend, CfMapScale } from '@chufix-design/vue';
+import { CfMapTile, CfBubbleMap, CfMapLegend, CfMapScale } from '@chufix-design/maps-vue';
 
 const cities = [
   { id: 'BJ', name: '北京', lng: 116.4, lat: 39.9, value: 2154 },

@@ -15,7 +15,7 @@ import BasicVueSource from '~/components/demos/bubblemap/BasicVue.vue?raw';
   vueCode={`<CfBubbleMap :data="data" :geojson="geo" unit=" 万" />`}
   reactCode={`<CfBubbleMap data={data} geojson={geo} unit=" 万" />`}
   vueSource={BasicVueSource}>
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## API

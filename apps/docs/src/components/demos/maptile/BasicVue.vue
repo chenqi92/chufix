@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfMapTile, CfMapScale } from '@chufix-design/vue';
+import { CfMapTile, CfMapScale } from '@chufix-design/maps-vue';
 </script>
 
 <template>
@@ -7,7 +7,7 @@ import { CfMapTile, CfMapScale } from '@chufix-design/vue';
     :center="{ lng: 116.4, lat: 39.9 }"
     :zoom="4"
     :width="560"
-    :height="320"
+    :height="340"
   >
     <CfMapScale position="bottom-left" />
   </CfMapTile>

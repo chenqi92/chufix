@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CfChoroplethMap } from '@chufix-design/vue';
+import { CfChoroplethMap } from '@chufix-design/maps-vue';
 import { sampleGeo } from '../_shared/sample-geo';
 
 const data = [

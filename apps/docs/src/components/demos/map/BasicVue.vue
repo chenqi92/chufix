@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { CfBadge } from '@chufix-design/vue';
 import {
-  CfBadge,
   CfMap,
   type MapCanvasEvent,
   type MapMarkerEvent,
   type MapOverlayEvent,
   type MapViewport,
-} from '@chufix-design/vue';
+} from '@chufix-design/maps-vue';
 
 const activeId = ref('edge-a');
 const lastEvent = ref('点击地图、标记或区域后，这里会显示事件 payload。');

@@ -15,7 +15,7 @@ import BasicVueSource from '~/components/demos/heatmap/BasicVue.vue?raw';
   vueCode={`<CfHeatMap :data="points" :geojson="geo" :radius="28" />`}
   reactCode={`<CfHeatMap data={points} geojson={geo} radius={28} />`}
   vueSource={BasicVueSource}>
-  <BasicVue client:load />
+  <BasicVue client:only="vue" />
 </DemoFrame>
 
 ## 与 CalendarHeatmap 的区别

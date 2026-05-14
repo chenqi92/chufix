@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { CfMarkerCluster } from '@chufix-design/vue';
-import { sampleGeo } from '../_shared/sample-geo';
+import { CfMapTile, CfMarkerCluster } from '@chufix-design/maps-vue';
 
-// Sprinkle 200 markers across the sample world.
-const data = Array.from({ length: 200 }, (_, i) => ({
+// Random markers across China.
+const data = Array.from({ length: 300 }, (_, i) => ({
   id: i,
-  lng: -50 + Math.random() * 160,
-  lat: 5 + Math.random() * 70,
+  name: `点位 ${i}`,
+  lng: 80 + Math.random() * 50,
+  lat: 18 + Math.random() * 32,
 }));
 
 function onClusterClick(c: { count: number }) {
@@ -15,12 +15,16 @@ function onClusterClick(c: { count: number }) {
 </script>
 
 <template>
-  <CfMarkerCluster
-    :data="data"
-    :geojson="sampleGeo"
-    :cellSize="50"
-    :width="480"
-    :height="280"
-    @clusterClick="onClusterClick"
-  />
+  <CfMapTile
+    :center="{ lng: 105, lat: 35 }"
+    :zoom="3"
+    :width="560"
+    :height="340"
+  >
+    <CfMarkerCluster
+      :data="data"
+      :cellSize="60"
+      @clusterClick="onClusterClick"
+    />
+  </CfMapTile>
 </template>

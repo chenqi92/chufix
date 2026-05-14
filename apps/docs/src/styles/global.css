@@ -3,6 +3,7 @@
 
 @import '@chufix-design/tokens/tokens.css';
 @import '@chufix-design/vue/style.css';
+@import '@chufix-design/maps-vue/style.css';
 @import './blocks.css';
 
 * { box-sizing: border-box; }
