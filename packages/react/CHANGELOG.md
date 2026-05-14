@@ -1,5 +1,25 @@
 # @chufix-design/react
 
+## 0.8.0
+
+### Minor Changes
+
+- [`d1f95e3`](https://github.com/chenqi92/chufix/commit/d1f95e39ca1ce1d28be8cd5717fb10fdc48c9fc2) Thanks [@chenqi92](https://github.com/chenqi92)! - add interactive map family
+
+  - CfMapTile: XYZ tile map with pointer pan + wheel zoom; OSM default + dark CartoDB; Web Mercator projection injected to layer children via provide/inject (Vue) and context (React)
+  - CfBubbleMap: proportional symbol map with sqrt radius scaling; standalone or as MapTile child layer
+  - CfHeatMap: canvas KDE density heatmap with gradient LUT; geographic, distinct from CalendarHeatmap
+  - CfMarkerCluster: grid clustering with click-to-drill-down; exports gridCluster utility
+  - CfMapLegend: color / size legend in continuous and stepped modes; corner overlay or inline
+  - CfMapScale: scale bar computing meters-per-pixel from lat + zoom; metric / imperial; auto-tracks parent MapTile viewport
+  - CfChoroplethMap / CfFlowMap: add `projection` prop and auto-detect MapTile context to render as overlay layers
+  - maptile/mercator helpers (lngLatToTile, tileToLngLat, makeProjection, makeUnproject, metersPerPixel) exported for custom layers
+
+### Patch Changes
+
+- Updated dependencies [[`d1f95e3`](https://github.com/chenqi92/chufix/commit/d1f95e39ca1ce1d28be8cd5717fb10fdc48c9fc2)]:
+  - @chufix-design/tokens@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes
