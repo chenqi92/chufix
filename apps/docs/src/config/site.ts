@@ -246,6 +246,21 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('AI 对话', 'AI chat'),
+    items: [
+      c('ChatList', '对话列表', 'chatlist'),
+      c('ChatBubble', '对话气泡', 'chatbubble'),
+      c('PromptComposer', '提示输入', 'promptcomposer'),
+      c('StreamingText', '流式文本', 'streamingtext'),
+      c('ThinkingTrace', '推理过程', 'thinkingtrace'),
+      c('ToolCallCard', '工具调用', 'toolcallcard'),
+      c('ArtifactCard', '产物卡片', 'artifactcard'),
+      c('CitationMark', '引用标记', 'citationmark'),
+      c('ModelPicker', '模型选择', 'modelpicker'),
+      c('TokenMeter', '上下文用量', 'tokenmeter'),
+    ],
+  },
+  {
     label: L('移动端 / 触控', 'Mobile & touch'),
     items: [
       c('BottomSheet', '底部弹层', 'bottomsheet'),

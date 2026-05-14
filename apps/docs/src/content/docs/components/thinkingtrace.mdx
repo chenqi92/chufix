@@ -1,0 +1,36 @@
+---
+title: ThinkingTrace 推理过程
+description: 展示模型推理 trace 的折叠区域，标题显示 "Thought for X.Xs"。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/thinkingtrace/BasicVue.vue';
+import BasicVueSource from '~/components/demos/thinkingtrace/BasicVue.vue?raw';
+
+## 基础用法
+
+`status="thinking"` 时左边框是 accent，图标转圈；`status="done"` 时变成成功色 + 对勾。默认关闭，点击头部展开看 dim 文字推理内容。`status` 从 `thinking → done` 时（非受控）自动收起。
+
+<DemoFrame
+  vueCode={`<CfThinkingTrace status="thinking" :duration="3200">...</CfThinkingTrace>
+<CfThinkingTrace status="done" :duration="12400" default-open>...</CfThinkingTrace>`}
+  reactCode={`<CfThinkingTrace status="thinking" duration={3200}>...</CfThinkingTrace>
+<CfThinkingTrace status="done" duration={12400} defaultOpen>...</CfThinkingTrace>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `open` / `defaultOpen` | `boolean` | — / `false` | 受控 / 非受控展开 |
+| `status` | `'thinking' \| 'done'` | `'thinking'` | 状态 |
+| `duration` | `number` | `—` | 思考毫秒数，渲染为 `X.Xs` |
+| `label` | `string` | `—` | 覆盖头部文案 |
+
+### Events
+
+| Vue | React | 说明 |
+|---|---|---|
+| `update:open` | `onOpenChange` | 展开 / 折叠变化 |

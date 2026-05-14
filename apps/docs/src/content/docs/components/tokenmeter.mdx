@@ -1,0 +1,37 @@
+---
+title: TokenMeter 上下文用量
+description: LLM 上下文窗口使用进度条，支持 cached / fresh / prompt / completion 多段拆解，自动切换 warning / error tone。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/tokenmeter/BasicVue.vue';
+import BasicVueSource from '~/components/demos/tokenmeter/BasicVue.vue?raw';
+
+## 基础用法
+
+传 `used` 与 `limit` 即可。比例 ≥ 80% 自动变 warning，≥ 95% 变 error。传 `segments` 数组可分段展示（system prompt / 历史消息 / 当前回复，或 cached vs fresh 等）。
+
+<DemoFrame
+  vueCode={`<CfTokenMeter :used="48230" :limit="200000" />
+<CfTokenMeter :used="156000" :limit="200000" :segments="[
+  { label: '系统提示', value: 8400,  tone: 'info' },
+  { label: '历史消息', value: 92000, tone: 'accent' },
+  { label: '当前回复', value: 55600, tone: 'success' },
+]" />`}
+  reactCode={`<CfTokenMeter used={48230} limit={200000} />
+<CfTokenMeter used={156000} limit={200000} segments={[...]} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `used` | `number` | `—` | 已用 token 数 |
+| `limit` | `number` | `—` | 上下文窗口大小 |
+| `segments` | `TokenMeterSegment[]` | `—` | `{ label, value, tone? }` 分段；总和应 ≤ used |
+| `showLabel` | `boolean` | `true` | 显示 "12k / 200k" 头部 |
+| `showLegend` | `boolean` | `true` | 显示分段图例（有 segments 时） |
+| `autoTone` | `boolean` | `true` | 按比例自动 warning/error |
+| `compact` | `boolean` | `false` | 紧凑模式（4px 高、无 legend） |

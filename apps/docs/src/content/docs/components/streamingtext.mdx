@@ -1,0 +1,28 @@
+---
+title: StreamingText 流式文本
+description: SSE / token-by-token 文本逐字渲染，光标动画，可选轻量 markdown 解析。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/streamingtext/BasicVue.vue';
+import BasicVueSource from '~/components/demos/streamingtext/BasicVue.vue?raw';
+
+## 基础用法
+
+接收累计 `text` 字符串和 `done` 标志：父组件每次拼接新 token 后传入完整字符串，组件负责渲染并显示闪烁光标。完成后 `done={true}` 隐藏光标。`format="markdown"` 启用轻量解析（段落、`code`、**bold**、_italic_、换行），不引入 markdown-it / remark。
+
+<DemoFrame
+  vueCode={`<CfStreamingText :text="accumulated" :done="finished" format="markdown" />`}
+  reactCode={`<CfStreamingText text={accumulated} done={finished} format="markdown" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `text` | `string` | `—` | 当前累计文本 |
+| `done` | `boolean` | `false` | 完成则隐藏光标 |
+| `format` | `'text' \| 'markdown'` | `'text'` | 渲染模式 |
+| `cursor` | `'blink' \| 'block' \| 'none'` | `'blink'` | 光标样式 |

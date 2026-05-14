@@ -1,0 +1,44 @@
+---
+title: ToolCallCard 工具调用
+description: 展示一次工具调用：name / input / output / status / duration / 错误消息；可折叠。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/toolcallcard/BasicVue.vue';
+import BasicVueSource from '~/components/demos/toolcallcard/BasicVue.vue?raw';
+
+## 基础用法
+
+四种 status：`pending`（环形虚线）、`running`（转圈、accent 边框）、`success`（绿勾）、`error`（红 X、红边框 + 红色 output 框）。`input` / `output` 接收任意值，组件自动 `JSON.stringify` 漂亮打印；字符串直接显示。
+
+<DemoFrame
+  vueCode={`<CfToolCallCard
+  name="web_search"
+  :input="{ query: '...', limit: 5 }"
+  :output="{ results: [...] }"
+  status="success"
+  :duration="820"
+/>`}
+  reactCode={`<CfToolCallCard
+  name="web_search"
+  input={{ query: '...', limit: 5 }}
+  output={{ results: [...] }}
+  status="success"
+  duration={820}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `name` | `string` | `—` | 工具名（mono 字体显示） |
+| `input` | `unknown` | `—` | 参数；非字符串会 JSON 化 |
+| `output` | `unknown` | `—` | 结果；非字符串会 JSON 化 |
+| `status` | `'pending' \| 'running' \| 'success' \| 'error'` | `'success'` | 状态 |
+| `duration` | `number` | `—` | 毫秒，渲染为 `X.Xs` |
+| `collapsible` | `boolean` | `true` | 可折叠 |
+| `defaultOpen` | `boolean` | `false` | 初始展开 |
+| `errorMessage` | `string` | `—` | error 状态下覆盖 output 文本 |

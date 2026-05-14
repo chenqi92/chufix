@@ -1,0 +1,84 @@
+---
+title: PromptComposer 提示输入器
+description: 多行 chat 输入：附件、slash 命令、@ mention、submitKey、loading 时 stop 按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/promptcomposer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/promptcomposer/BasicVue.vue?raw';
+
+## 基础用法
+
+输入 `/` 在行首或空格后弹出 slash 命令，输入 `@` 弹出 mention 列表，键盘 ↑/↓ 选择，Enter / Tab 选中。默认 Enter 提交、Shift+Enter 换行；想用 IDE 风格的 Cmd/Ctrl+Enter 提交，传 `submitKey="mod-enter"`。`loading=true` 时发送按钮变成红色 stop 按钮，触发 `stop` 事件。
+
+<DemoFrame
+  vueCode={`<CfPromptComposer
+  v-model="value"
+  :loading="loading"
+  :attachments="attachments"
+  :slash-commands="slashCommands"
+  :mentions="mentions"
+  @submit="onSubmit"
+  @stop="loading = false"
+  @attach-add="onAttachAdd"
+  @attach-remove="onAttachRemove"
+/>`}
+  reactCode={`<CfPromptComposer
+  value={value}
+  onChange={setValue}
+  loading={loading}
+  attachments={attachments}
+  slashCommands={slashCommands}
+  mentions={mentions}
+  onSubmit={onSubmit}
+  onStop={() => setLoading(false)}
+  onAttachAdd={onAttachAdd}
+  onAttachRemove={onAttachRemove}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `modelValue` / `value` | `string` | `''` | 输入内容 |
+| `placeholder` | `string` | `'输入消息...'` | 占位 |
+| `disabled` | `boolean` | `false` | 禁用 |
+| `loading` | `boolean` | `false` | 显示 stop；禁用 Enter 提交 |
+| `maxLength` | `number` | `—` | 字符上限 |
+| `maxRows` | `number` | `8` | 自动高度上限 |
+| `submitKey` | `'enter' \| 'mod-enter'` | `'enter'` | 提交快捷键 |
+| `attachments` | `PromptAttachment[]` | `[]` | 附件预览（受控） |
+| `slashCommands` | `SlashCommand[]` | `[]` | `/` 弹出列表 |
+| `mentions` | `MentionItem[]` | `[]` | `@` 弹出列表 |
+
+### Events / callbacks
+
+| Vue | React | payload |
+|---|---|---|
+| `submit` | `onSubmit` | `(text: string)` |
+| `stop` | `onStop` | — |
+| `attach-add` | `onAttachAdd` | `(file: File)` |
+| `attach-remove` | `onAttachRemove` | `(id: string)` |
+| `mention` | `onMention` | `MentionItem` |
+| `slash` | `onSlash` | `SlashCommand` |
+
+### Slash 与 mention 数据形状
+
+```ts
+interface SlashCommand {
+  id: string;
+  label: string;
+  description?: string;
+  match?: string[];   // 别名匹配
+}
+
+interface MentionItem {
+  id: string;
+  label: string;
+  description?: string;
+  avatar?: string;
+}
+```

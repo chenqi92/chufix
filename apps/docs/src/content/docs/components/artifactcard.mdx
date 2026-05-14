@@ -1,0 +1,50 @@
+---
+title: ArtifactCard 产物卡片
+description: AI 生成的代码 / 文档 / 图片 / SVG / CSV / JSON 等"产物"的统一展示卡，含 copy / download / open 操作。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/artifactcard/BasicVue.vue';
+import BasicVueSource from '~/components/demos/artifactcard/BasicVue.vue?raw';
+
+## 基础用法
+
+`kind` 决定头部 icon 与 mime 推断。`content` 是原始字符串，传入则启用 copy + download 按钮；预览内容通过 default slot / children 给（可以放 `<CfCode>` / `<svg>` / `<img>` / 自定义渲染）。
+
+<DemoFrame
+  vueCode={`<CfArtifactCard kind="code" title="top.sql" language="sql" :content="sql">
+  <pre>{{ sql }}</pre>
+</CfArtifactCard>
+
+<CfArtifactCard kind="svg" title="logo.svg" :content="rawSvg">
+  <svg viewBox="0 0 32 32" width="80" height="80">...</svg>
+</CfArtifactCard>`}
+  reactCode={`<CfArtifactCard kind="code" title="top.sql" language="sql" content={sql}>
+  <pre>{sql}</pre>
+</CfArtifactCard>
+
+<CfArtifactCard kind="svg" title="logo.svg" content={rawSvg}>
+  <svg viewBox="0 0 32 32" width={80} height={80}>...</svg>
+</CfArtifactCard>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `kind` | `'code' \| 'doc' \| 'svg' \| 'html' \| 'image' \| 'csv' \| 'json'` | `—` | 决定 icon 与 download mime |
+| `title` | `string` | `—` | 标题 |
+| `language` | `string` | `—` | 语言 / 文件扩展 |
+| `meta` | `string` | `—` | 附加描述（行数 / token 数） |
+| `content` | `string` | `—` | 原始字符串；启用 copy / download |
+| `filename` | `string` | `—` | 下载文件名（默认 `{title}.{ext}`） |
+| `actions` | `{ copy?, download?, open? }` | `{ copy:true, download:true, open:true }` | 显示哪些操作 |
+| `kindLabel` | `string` | `—` | 覆盖 kind 标签 |
+
+### Events
+
+| Vue | React | 说明 |
+|---|---|---|
+| `copy` / `download` / `open` | `onCopy` / `onDownload` / `onOpen` | 按钮回调 |

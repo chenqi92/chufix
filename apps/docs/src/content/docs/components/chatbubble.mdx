@@ -1,0 +1,45 @@
+---
+title: ChatBubble 对话气泡
+description: 单条对话消息：role / state / timestamp / author / hover 工具条（复制 / 重试 / 编辑 / 分支）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/chatbubble/BasicVue.vue';
+import BasicVueSource from '~/components/demos/chatbubble/BasicVue.vue?raw';
+
+## 基础用法
+
+`role` 决定颜色与对齐：`user` 默认右对齐 accent 实色背景，`assistant` 左对齐 surface 背景，`system` 居左 dashed 边框。`state` 控制状态：`sending` 半透明、`streaming` 显示闪烁光标、`error` 出红色错误条。hover 显示复制 / 重试 / 编辑 / 分支按钮。
+
+<DemoFrame
+  vueCode={`<CfChatBubble role="user" content="..." :author="{ name: 'Yifan' }" />
+<CfChatBubble role="assistant" :author="{ name: 'Claude' }">...</CfChatBubble>
+<CfChatBubble role="assistant" state="streaming">正在生成…</CfChatBubble>
+<CfChatBubble role="assistant" state="error" />`}
+  reactCode={`<CfChatBubble role="user" content="..." author={{ name: 'Yifan' }} />
+<CfChatBubble role="assistant" author={{ name: 'Claude' }}>...</CfChatBubble>
+<CfChatBubble role="assistant" state="streaming">正在生成…</CfChatBubble>
+<CfChatBubble role="assistant" state="error" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `role` | `'user' \| 'assistant' \| 'system'` | `—` | 决定颜色与默认对齐 |
+| `content` | `string` | `—` | 纯文本快路径；slot/children 覆盖 |
+| `timestamp` | `Date \| string` | `—` | 时间，显示 HH:mm |
+| `author` | `{ name?, avatar?, initials? }` | `—` | 作者信息 |
+| `state` | `'sending' \| 'sent' \| 'error' \| 'streaming'` | `'sent'` | 消息状态 |
+| `showCopy` | `boolean` | `true` | 显示 hover 复制 |
+| `showActions` | `boolean` | `true` | 显示 hover 工具条 |
+| `align` | `'auto' \| 'start' \| 'end'` | `'auto'` | 覆盖自动对齐 |
+
+### Events
+
+| Vue | React | 说明 |
+|---|---|---|
+| `copy` / `retry` / `edit` / `branch` | `onCopy` / `onRetry` / `onEdit` / `onBranch` | 工具条按钮 |
+| `action` | `onAction` | 统一回调，payload 为 action 名 |

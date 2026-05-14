@@ -1,0 +1,41 @@
+---
+title: ModelPicker 模型选择
+description: LLM 模型选择器，含 provider 分组、capability badge、context window 显示。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/modelpicker/BasicVue.vue';
+import BasicVueSource from '~/components/demos/modelpicker/BasicVue.vue?raw';
+
+## 基础用法
+
+每个 option 至少有 `id` 与 `label`；可选 `provider`（自动分组）、`capabilities`（badge 列表）、`contextWindow`（pill 上显示 `200k` / `1.0M`）、`description`、`disabled`。
+
+<DemoFrame
+  vueCode={`<CfModelPicker v-model="value" :options="options" />`}
+  reactCode={`<CfModelPicker value={value} onChange={setValue} options={options} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `options` | `ModelOption[]` | `—` | 模型列表 |
+| `modelValue` / `value` | `string` | `—` | 当前选中 id |
+| `placeholder` | `string` | `'选择模型'` | 空值占位 |
+| `groupByProvider` | `boolean` | `true` | 按 provider 分组 |
+| `disabled` | `boolean` | `false` | 禁用 |
+
+### ModelOption
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `id` | `string` | 唯一 id |
+| `label` | `string` | 显示名 |
+| `provider` | `string?` | 分组用 |
+| `capabilities` | `string[]?` | 短标签，如 `['vision', 'thinking']` |
+| `contextWindow` | `number?` | 上下文 token 数，自动 `k / M` 格式化 |
+| `description` | `string?` | 副文本 |
+| `disabled` | `boolean?` | 不可选 |

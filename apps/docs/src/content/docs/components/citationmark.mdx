@@ -1,0 +1,27 @@
+---
+title: CitationMark 引用标记
+description: 行内引用 chip，hover 弹出来源卡片；用于 AI 回复里的参考标注。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/citationmark/BasicVue.vue';
+import BasicVueSource from '~/components/demos/citationmark/BasicVue.vue?raw';
+
+## 基础用法
+
+放在正文 inline 位置，显示编号 chip；hover/focus 弹出来源卡（标题 + 域名 + snippet + 打开链接）。点击 chip 直接跳到 `source.url`（新标签页）。
+
+<DemoFrame
+  vueCode={`<CfCitationMark :index="1" :source="{ title: 'OKLCH in CSS', domain: 'evilmartians.com', url: '...' }" />`}
+  reactCode={`<CfCitationMark index={1} source={{ title: 'OKLCH in CSS', domain: 'evilmartians.com', url: '...' }} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `index` | `number` | `—` | chip 上显示的数字 |
+| `source` | `CitationSource` | `—` | `{ title, url?, snippet?, favicon?, domain? }` |
+| `disableHover` | `boolean` | `false` | 禁用 hover 卡（适合打印态） |

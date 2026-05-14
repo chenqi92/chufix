@@ -1,0 +1,38 @@
+---
+title: ChatList 对话列表
+description: 对话容器，支持自动滚到底部、stickToBottom（用户手动滚开时停止自动滚）、按 role / date 分组、"回到最新" 浮动按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/chatlist/BasicVue.vue';
+import BasicVueSource from '~/components/demos/chatlist/BasicVue.vue?raw';
+
+## 基础用法
+
+把 `CfChatBubble`（或任意子组件）放在默认 slot 里。新内容到来时，组件用 `useResizeObserver` 监听内层高度变化，自动滚到底部；若 `stickToBottom=true` 且用户向上滚开，会暂停自动滚直到用户回到底部。右下角的"回到最新"按钮在脱离底部时自动出现。
+
+<DemoFrame
+  vueCode={`<CfChatList style="height: 320px;">
+  <CfChatBubble v-for="m in messages" :key="m.id" :role="m.role" :content="m.content" />
+</CfChatList>`}
+  reactCode={`<CfChatList style={{ height: 320 }}>
+  {messages.map(m => <CfChatBubble key={m.id} role={m.role} content={m.content} />)}
+</CfChatList>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `autoScroll` | `boolean` | `true` | 内容增长时自动滚到底部 |
+| `stickToBottom` | `boolean` | `true` | 仅在用户已在底部时自动滚 |
+| `stickThreshold` | `number` | `64` | "已在底部" 的距离阈值（px） |
+| `groupBy` | `'role' \| 'date' \| 'none'` | `'role'` | 视觉分组（目前主要用于间距） |
+
+### Imperative API
+
+| 方法 | 说明 |
+|---|---|
+| `scrollToBottom(behavior?)` | 手动滚到底部 — Vue 通过模板 ref，React 通过 forwardRef 暴露 |
