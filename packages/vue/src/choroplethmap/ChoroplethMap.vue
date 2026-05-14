@@ -1,15 +1,17 @@
 <script setup lang="ts" generic="T extends ChoroplethDatum">
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import {
   computeDomain,
   computeExtent,
   polygonToFitPath,
+  polygonToProjectedPath,
   projectFit,
   resolveColorScale,
   type ChoroplethDatum,
   type ChoroplethMapProps,
 } from './variants';
 import type { GeoJsonFeature } from '../mapminimap/variants';
+import { MAPTILE_CONTEXT_KEY } from '../maptile/variants';
 
 const props = withDefaults(defineProps<ChoroplethMapProps>(), {
   width: 480,
@@ -20,10 +22,23 @@ const props = withDefaults(defineProps<ChoroplethMapProps>(), {
   legend: true,
 });
 
+const ctx = inject(MAPTILE_CONTEXT_KEY, null);
+const liveViewport = computed(() => ctx?.());
+const insideTile = computed(() => !!liveViewport.value);
+
 const features = computed(() => props.geojson?.features ?? []);
 const extent = computed(() => props.extent ?? computeExtent(features.value));
 const domain = computed(() => props.domain ?? computeDomain(props.data));
 const scaleFn = computed(() => resolveColorScale(props.colorScale));
+
+const w = computed(() => (insideTile.value ? liveViewport.value!.viewport.width : props.width));
+const h = computed(() => (insideTile.value ? liveViewport.value!.viewport.height : props.height));
+
+const customProject = computed<((lng: number, lat: number) => { x: number; y: number }) | null>(() => {
+  if (props.projection) return props.projection;
+  if (liveViewport.value) return liveViewport.value.project;
+  return null;
+});
 
 const dataIndex = computed(() => {
   const m = new Map<string, ChoroplethDatum>();
@@ -35,13 +50,15 @@ const regions = computed(() => {
   return features.value.map((f, i) => {
     const geom = (f as GeoJsonFeature).geometry;
     const multi = geom.type === 'MultiPolygon';
-    const d = polygonToFitPath(
-      geom.coordinates as never,
-      multi,
-      extent.value,
-      props.width,
-      props.height,
-    );
+    const d = customProject.value
+      ? polygonToProjectedPath(geom.coordinates as never, multi, customProject.value)
+      : polygonToFitPath(
+          geom.coordinates as never,
+          multi,
+          extent.value,
+          w.value,
+          h.value,
+        );
     const propsObj = (f as GeoJsonFeature).properties ?? {};
     const idVal = propsObj[props.idField];
     const datum = idVal != null ? dataIndex.value.get(String(idVal)) : undefined;
@@ -96,12 +113,15 @@ function fmt(v: number | undefined) {
 </script>
 
 <template>
-  <div class="cf-choroplethmap">
+  <div
+    class="cf-choroplethmap"
+    :class="insideTile ? 'cf-choroplethmap--layer' : 'cf-choroplethmap--standalone'"
+  >
     <svg
       class="cf-choroplethmap__svg"
-      :viewBox="`0 0 ${width} ${height}`"
-      :width="width"
-      :height="height"
+      :viewBox="`0 0 ${w} ${h}`"
+      :width="insideTile ? undefined : w"
+      :height="insideTile ? undefined : h"
       role="img"
       aria-label="分级填色地图"
       @pointerleave="onLeave"

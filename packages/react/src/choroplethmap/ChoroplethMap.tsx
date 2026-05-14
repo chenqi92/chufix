@@ -1,13 +1,15 @@
-import { useMemo, useState, type PointerEvent } from 'react';
+import { useContext, useMemo, useState, type PointerEvent } from 'react';
 import {
   computeDomain,
   computeExtent,
   polygonToFitPath,
+  polygonToProjectedPath,
   resolveColorScale,
   type ChoroplethDatum,
   type ChoroplethMapProps,
 } from './variants';
 import type { GeoJsonFeature } from '../mapminimap/variants';
+import { MapTileCtx } from '../maptile/variants';
 
 export function ChoroplethMap(props: ChoroplethMapProps) {
   const {
@@ -18,6 +20,7 @@ export function ChoroplethMap(props: ChoroplethMapProps) {
     domain: domainProp,
     colorScale,
     extent: extentProp,
+    projection,
     width = 480,
     height = 280,
     tooltip = true,
@@ -25,10 +28,21 @@ export function ChoroplethMap(props: ChoroplethMapProps) {
     unit,
   } = props;
 
+  const ctx = useContext(MapTileCtx);
+  const insideTile = !!ctx;
+  const w = insideTile ? ctx!.viewport.width : width;
+  const h = insideTile ? ctx!.viewport.height : height;
+
   const features = geojson?.features ?? [];
   const extent = useMemo(() => extentProp ?? computeExtent(features), [extentProp, geojson]);
   const domain = useMemo(() => domainProp ?? computeDomain(data), [domainProp, data]);
   const scaleFn = useMemo(() => resolveColorScale(colorScale), [colorScale]);
+
+  const customProject = useMemo(() => {
+    if (projection) return projection;
+    if (ctx) return ctx.project;
+    return null;
+  }, [projection, ctx]);
 
   const dataIndex = useMemo(() => {
     const m = new Map<string, ChoroplethDatum>();
@@ -40,13 +54,15 @@ export function ChoroplethMap(props: ChoroplethMapProps) {
     return features.map((f, i) => {
       const geom = (f as GeoJsonFeature).geometry;
       const multi = geom.type === 'MultiPolygon';
-      const d = polygonToFitPath(
-        geom.coordinates as never,
-        multi,
-        extent,
-        width,
-        height,
-      );
+      const d = customProject
+        ? polygonToProjectedPath(geom.coordinates as never, multi, customProject)
+        : polygonToFitPath(
+            geom.coordinates as never,
+            multi,
+            extent,
+            w,
+            h,
+          );
       const propsObj = (f as GeoJsonFeature).properties ?? {};
       const idVal = propsObj[idField];
       const datum = idVal != null ? dataIndex.get(String(idVal)) : undefined;
@@ -56,7 +72,7 @@ export function ChoroplethMap(props: ChoroplethMapProps) {
       const name = (datum?.name ?? propsObj[nameField] ?? idVal ?? '') as string | number;
       return { id: i, d, fill, name: String(name), value: datum?.value };
     });
-  }, [features, extent, width, height, idField, nameField, dataIndex, scaleFn, domain]);
+  }, [features, extent, w, h, customProject, idField, nameField, dataIndex, scaleFn, domain]);
 
   const [hover, setHover] = useState<{ x: number; y: number; name: string; value?: number } | null>(null);
 
@@ -97,12 +113,12 @@ export function ChoroplethMap(props: ChoroplethMapProps) {
   }, [scaleFn, domain]);
 
   return (
-    <div className="cf-choroplethmap">
+    <div className={`cf-choroplethmap ${insideTile ? 'cf-choroplethmap--layer' : 'cf-choroplethmap--standalone'}`}>
       <svg
         className="cf-choroplethmap__svg"
-        viewBox={`0 0 ${width} ${height}`}
-        width={width}
-        height={height}
+        viewBox={`0 0 ${w} ${h}`}
+        width={insideTile ? undefined : w}
+        height={insideTile ? undefined : h}
         role="img"
         aria-label="分级填色地图"
         onPointerLeave={() => setHover(null)}

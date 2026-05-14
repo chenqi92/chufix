@@ -1,0 +1,39 @@
+/* ChuFix MapScale — geographic scale bar. */
+
+.cf-mapscale {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--font-sans);
+  font-size: var(--t-11);
+  color: var(--fg-2);
+  background: oklch(from var(--bg-1) l c h / 0.85);
+  padding: 4px 8px;
+  border-radius: var(--r-2);
+  pointer-events: auto;
+}
+
+.cf-mapscale--corner { position: absolute; z-index: 1; }
+.cf-mapscale--top-left { top: 12px; left: 12px; }
+.cf-mapscale--top-right { top: 12px; right: 12px; }
+.cf-mapscale--bottom-left { bottom: 12px; left: 12px; }
+.cf-mapscale--bottom-right { bottom: 12px; right: 12px; }
+
+.cf-mapscale__bar {
+  height: 6px;
+  border: 1px solid var(--fg-2);
+  border-top: none;
+  background: linear-gradient(
+    to right,
+    var(--bg-0) 0,
+    var(--bg-0) 50%,
+    var(--fg-2) 50%,
+    var(--fg-2) 100%
+  );
+  transition: width var(--dur-fast) var(--ease-out);
+}
+
+.cf-mapscale__label {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}

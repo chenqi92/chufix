@@ -176,6 +176,12 @@ import './styles/formschema.css';
 import './styles/mapminimap.css';
 import './styles/choroplethmap.css';
 import './styles/flowmap.css';
+import './styles/maptile.css';
+import './styles/maplegend.css';
+import './styles/mapscale.css';
+import './styles/bubblemap.css';
+import './styles/heatmap.css';
+import './styles/markercluster.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1357,6 +1363,38 @@ export type {
 } from './choroplethmap/variants';
 export { default as CfFlowMap } from './flowmap/FlowMap.vue';
 export type { FlowMapProps, FlowPoint, FlowEdge } from './flowmap/variants';
+
+// Interactive map family (tile-based + overlay layers)
+export { default as CfMapTile } from './maptile/MapTile.vue';
+export type { MapTileProps, TileSource, LngLat, Viewport, MapTileContext } from './maptile/variants';
+export { OSM_TILES, CARTO_DARK_TILES } from './maptile/variants';
+export {
+  lngLatToTile,
+  tileToLngLat,
+  makeProjection,
+  makeUnproject,
+  metersPerPixel,
+} from './maptile/mercator';
+export { default as CfMapLegend } from './maplegend/MapLegend.vue';
+export type {
+  MapLegendProps,
+  MapLegendStop,
+  MapLegendKind,
+  MapLegendPosition,
+} from './maplegend/variants';
+export { default as CfMapScale } from './mapscale/MapScale.vue';
+export type { MapScaleProps, MapScaleUnit, MapScalePosition } from './mapscale/variants';
+export { default as CfBubbleMap } from './bubblemap/BubbleMap.vue';
+export type { BubbleMapProps, BubbleDatum } from './bubblemap/variants';
+export { default as CfHeatMap } from './heatmap/HeatMap.vue';
+export type { HeatMapProps, HeatPoint } from './heatmap/variants';
+export { default as CfMarkerCluster } from './markercluster/MarkerCluster.vue';
+export type {
+  MarkerClusterProps,
+  MarkerDatum,
+  ClusterGroup,
+  ClusterResult,
+} from './markercluster/variants';
 
 // Composables (Vue 3 composition-API utilities, no UI).
 export * from './composables';

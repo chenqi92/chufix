@@ -1,0 +1,61 @@
+/* ChuFix MarkerCluster — grid-clustered marker layer. */
+
+.cf-markercluster {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-sans);
+}
+
+.cf-markercluster--standalone {
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+}
+
+.cf-markercluster--layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cf-markercluster--layer .cf-markercluster__svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cf-markercluster--layer .cf-markercluster__dot,
+.cf-markercluster--layer .cf-markercluster__cluster { pointer-events: auto; }
+
+.cf-markercluster__dot {
+  fill: var(--accent-2);
+  stroke: var(--bg-0);
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: r var(--dur-fast) var(--ease-out), fill var(--dur-fast) var(--ease-out);
+}
+
+.cf-markercluster__dot:hover { fill: var(--accent-1); }
+
+.cf-markercluster__cluster { cursor: pointer; }
+
+.cf-markercluster__cluster-halo {
+  fill: oklch(from var(--accent-1) l c h / 0.18);
+}
+
+.cf-markercluster__cluster-bg {
+  fill: oklch(from var(--accent-1) l c h / 0.75);
+  stroke: var(--bg-0);
+  stroke-width: 1.5;
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+
+.cf-markercluster__cluster:hover .cf-markercluster__cluster-bg {
+  filter: brightness(1.08);
+}
+
+.cf-markercluster__cluster-text {
+  font-size: var(--t-12);
+  font-weight: 600;
+  fill: var(--fg-on-accent);
+  pointer-events: none;
+}

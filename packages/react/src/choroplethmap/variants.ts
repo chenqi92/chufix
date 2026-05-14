@@ -25,6 +25,12 @@ export interface ChoroplethMapProps {
   colorScale?: ColorScaleKind | ColorScaleFn;
   /** Geographic extent used for projection. Auto from features when omitted. */
   extent?: MapBounds;
+  /**
+   * Override projection (used inside `CfMapTile`). When omitted the component
+   * falls back to its own equirectangular fit projection, or the projection
+   * provided by an enclosing `CfMapTile`.
+   */
+  projection?: (lng: number, lat: number) => { x: number; y: number };
   /** SVG width in px. Default 480. */
   width?: number;
   /** SVG height in px. Default 280. */
@@ -137,6 +143,28 @@ export function polygonToFitPath(
       for (let i = 0; i < ring.length; i++) {
         const [lng, lat] = ring[i];
         const p = projectFit(lng, lat, bounds, width, height);
+        d += (i === 0 ? 'M' : 'L') + p.x.toFixed(2) + ',' + p.y.toFixed(2);
+      }
+      return d + 'Z';
+    })
+    .join(' ');
+}
+
+/** Like polygonToFitPath but using a caller-supplied projection (lng,lat) → (x,y). */
+export function polygonToProjectedPath(
+  coords: number[][][] | number[][][][],
+  multi: boolean,
+  project: (lng: number, lat: number) => { x: number; y: number },
+): string {
+  const rings = (multi
+    ? (coords as number[][][][]).flat()
+    : (coords as number[][][])) as number[][][];
+  return rings
+    .map((ring) => {
+      let d = '';
+      for (let i = 0; i < ring.length; i++) {
+        const [lng, lat] = ring[i];
+        const p = project(lng, lat);
         d += (i === 0 ? 'M' : 'L') + p.x.toFixed(2) + ',' + p.y.toFixed(2);
       }
       return d + 'Z';

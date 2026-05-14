@@ -176,6 +176,12 @@ import './styles/formschema.css';
 import './styles/mapminimap.css';
 import './styles/choroplethmap.css';
 import './styles/flowmap.css';
+import './styles/maptile.css';
+import './styles/maplegend.css';
+import './styles/mapscale.css';
+import './styles/bubblemap.css';
+import './styles/heatmap.css';
+import './styles/markercluster.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1395,6 +1401,38 @@ export type {
 } from './choroplethmap/variants';
 export { FlowMap as CfFlowMap } from './flowmap/FlowMap';
 export type { FlowMapProps, FlowPoint, FlowEdge } from './flowmap/variants';
+
+// Interactive map family (tile-based + overlay layers)
+export { MapTile as CfMapTile, type MapTileHandle } from './maptile/MapTile';
+export type { MapTileProps, TileSource, LngLat, Viewport, MapTileContext } from './maptile/variants';
+export { OSM_TILES, CARTO_DARK_TILES, MapTileCtx } from './maptile/variants';
+export {
+  lngLatToTile,
+  tileToLngLat,
+  makeProjection,
+  makeUnproject,
+  metersPerPixel,
+} from './maptile/mercator';
+export { MapLegend as CfMapLegend } from './maplegend/MapLegend';
+export type {
+  MapLegendProps,
+  MapLegendStop,
+  MapLegendKind,
+  MapLegendPosition,
+} from './maplegend/variants';
+export { MapScale as CfMapScale } from './mapscale/MapScale';
+export type { MapScaleProps, MapScaleUnit, MapScalePosition } from './mapscale/variants';
+export { BubbleMap as CfBubbleMap } from './bubblemap/BubbleMap';
+export type { BubbleMapProps, BubbleDatum } from './bubblemap/variants';
+export { HeatMap as CfHeatMap } from './heatmap/HeatMap';
+export type { HeatMapProps, HeatPoint } from './heatmap/variants';
+export { MarkerCluster as CfMarkerCluster } from './markercluster/MarkerCluster';
+export type {
+  MarkerClusterProps,
+  MarkerDatum,
+  ClusterGroup,
+  ClusterResult,
+} from './markercluster/variants';
 
 // Hooks (React utility hooks, no UI).
 export * from './hooks';

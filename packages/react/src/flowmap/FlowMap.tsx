@@ -1,14 +1,16 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import {
   computeExtent,
   curvedArc,
   pointBoundsExtent,
   polygonToFitPath,
+  polygonToProjectedPath,
   projectFit,
   valueToWidth,
   type FlowMapProps,
 } from './variants';
 import type { GeoJsonFeature } from '../mapminimap/variants';
+import { MapTileCtx } from '../maptile/variants';
 
 export function FlowMap(props: FlowMapProps) {
   const {
@@ -16,6 +18,7 @@ export function FlowMap(props: FlowMapProps) {
     points,
     edges,
     extent: extentProp,
+    projection,
     width = 480,
     height = 280,
     widthRange,
@@ -24,6 +27,17 @@ export function FlowMap(props: FlowMapProps) {
     showNodes = true,
     showLabels = false,
   } = props;
+
+  const ctx = useContext(MapTileCtx);
+  const insideTile = !!ctx;
+  const w = insideTile ? ctx!.viewport.width : width;
+  const h = insideTile ? ctx!.viewport.height : height;
+
+  const customProject = useMemo(() => {
+    if (projection) return projection;
+    if (ctx) return ctx.project;
+    return null;
+  }, [projection, ctx]);
 
   const extent = useMemo(
     () =>
@@ -37,11 +51,11 @@ export function FlowMap(props: FlowMapProps) {
   const pointIndex = useMemo(() => {
     const m = new Map<string, { x: number; y: number; name: string }>();
     for (const p of points) {
-      const { x, y } = projectFit(p.lng, p.lat, extent, width, height);
-      m.set(String(p.id), { x, y, name: p.name ?? String(p.id) });
+      const xy = customProject ? customProject(p.lng, p.lat) : projectFit(p.lng, p.lat, extent, w, h);
+      m.set(String(p.id), { x: xy.x, y: xy.y, name: p.name ?? String(p.id) });
     }
     return m;
-  }, [points, extent, width, height]);
+  }, [points, extent, w, h, customProject]);
 
   const valueRange = useMemo<[number, number]>(() => {
     let min = Infinity;
@@ -58,15 +72,18 @@ export function FlowMap(props: FlowMapProps) {
 
   const basePaths = useMemo(() => {
     const features = geojson?.features ?? [];
+    if (insideTile) return [];
     return features.map((f, i) => {
       const geom = (f as GeoJsonFeature).geometry;
       const multi = geom.type === 'MultiPolygon';
       return {
         id: i,
-        d: polygonToFitPath(geom.coordinates as never, multi, extent, width, height),
+        d: customProject
+          ? polygonToProjectedPath(geom.coordinates as never, multi, customProject)
+          : polygonToFitPath(geom.coordinates as never, multi, extent, w, h),
       };
     });
-  }, [geojson, extent, width, height]);
+  }, [geojson, extent, w, h, customProject, insideTile]);
 
   const arcs = useMemo(() => {
     const out: { id: number; d: string; width: number; label?: string }[] = [];
@@ -76,8 +93,8 @@ export function FlowMap(props: FlowMapProps) {
       const a = pointIndex.get(String(e.from));
       const b = pointIndex.get(String(e.to));
       if (!a || !b) continue;
-      const w = valueToWidth(e.value, vmin, vmax, range);
-      out.push({ id: i, d: curvedArc(a.x, a.y, b.x, b.y, curvature), width: w, label: e.label });
+      const aw = valueToWidth(e.value, vmin, vmax, range);
+      out.push({ id: i, d: curvedArc(a.x, a.y, b.x, b.y, curvature), width: aw, label: e.label });
     }
     return out;
   }, [edges, pointIndex, valueRange, range, curvature]);
@@ -89,10 +106,10 @@ export function FlowMap(props: FlowMapProps) {
 
   return (
     <svg
-      className="cf-flowmap"
-      viewBox={`0 0 ${width} ${height}`}
-      width={width}
-      height={height}
+      className={`cf-flowmap ${insideTile ? 'cf-flowmap--layer' : 'cf-flowmap--standalone'}`}
+      viewBox={`0 0 ${w} ${h}`}
+      width={insideTile ? undefined : w}
+      height={insideTile ? undefined : h}
       role="img"
       aria-label="迁徙地图"
     >
@@ -112,7 +129,7 @@ export function FlowMap(props: FlowMapProps) {
           </marker>
         )}
       </defs>
-      <rect className="cf-flowmap__bg" x={0} y={0} width={width} height={height} />
+      {!insideTile && <rect className="cf-flowmap__bg" x={0} y={0} width={w} height={h} />}
       {basePaths.map((bp) => (
         <path key={`base-${bp.id}`} className="cf-flowmap__land" d={bp.d} />
       ))}

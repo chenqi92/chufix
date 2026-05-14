@@ -1,5 +1,10 @@
 import type { GeoJsonFeature, MapBounds } from '../mapminimap/variants';
-import { computeExtent, projectFit, polygonToFitPath } from '../choroplethmap/variants';
+import {
+  computeExtent,
+  polygonToFitPath,
+  polygonToProjectedPath,
+  projectFit,
+} from '../choroplethmap/variants';
 
 export interface FlowPoint {
   id: string | number;
@@ -24,6 +29,8 @@ export interface FlowMapProps {
   edges: FlowEdge[];
   /** Geographic extent for projection. Auto-fit when omitted. */
   extent?: MapBounds;
+  /** Override projection (used inside CfMapTile). */
+  projection?: (lng: number, lat: number) => { x: number; y: number };
   /** SVG width in px. Default 480. */
   width?: number;
   /** SVG height in px. Default 280. */
@@ -84,4 +91,4 @@ export function valueToWidth(
   return range[0] + t * (range[1] - range[0]);
 }
 
-export { computeExtent, projectFit, polygonToFitPath };
+export { computeExtent, projectFit, polygonToFitPath, polygonToProjectedPath };

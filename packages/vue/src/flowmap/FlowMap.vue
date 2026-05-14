@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import {
   computeExtent,
   curvedArc,
   pointBoundsExtent,
   polygonToFitPath,
+  polygonToProjectedPath,
   projectFit,
   valueToWidth,
   type FlowMapProps,
 } from './variants';
 import type { GeoJsonFeature } from '../mapminimap/variants';
+import { MAPTILE_CONTEXT_KEY } from '../maptile/variants';
 
 const props = withDefaults(defineProps<FlowMapProps>(), {
   width: 480,
@@ -18,6 +20,19 @@ const props = withDefaults(defineProps<FlowMapProps>(), {
   showArrow: true,
   showNodes: true,
   showLabels: false,
+});
+
+const ctx = inject(MAPTILE_CONTEXT_KEY, null);
+const liveViewport = computed(() => ctx?.());
+const insideTile = computed(() => !!liveViewport.value);
+
+const w = computed(() => (insideTile.value ? liveViewport.value!.viewport.width : props.width));
+const h = computed(() => (insideTile.value ? liveViewport.value!.viewport.height : props.height));
+
+const customProject = computed<((lng: number, lat: number) => { x: number; y: number }) | null>(() => {
+  if (props.projection) return props.projection;
+  if (liveViewport.value) return liveViewport.value.project;
+  return null;
 });
 
 const extent = computed(() =>
@@ -32,8 +47,10 @@ const range = computed<[number, number]>(() => props.widthRange ?? [0.6, 3]);
 const pointIndex = computed(() => {
   const m = new Map<string, { x: number; y: number; name: string }>();
   for (const p of props.points) {
-    const { x, y } = projectFit(p.lng, p.lat, extent.value, props.width, props.height);
-    m.set(String(p.id), { x, y, name: p.name ?? String(p.id) });
+    const xy = customProject.value
+      ? customProject.value(p.lng, p.lat)
+      : projectFit(p.lng, p.lat, extent.value, w.value, h.value);
+    m.set(String(p.id), { x: xy.x, y: xy.y, name: p.name ?? String(p.id) });
   }
   return m;
 });
@@ -53,18 +70,21 @@ const valueRange = computed<[number, number]>(() => {
 
 const basePaths = computed(() => {
   const features = props.geojson?.features ?? [];
+  if (insideTile.value) return [];
   return features.map((f, i) => {
     const geom = (f as GeoJsonFeature).geometry;
     const multi = geom.type === 'MultiPolygon';
     return {
       id: i,
-      d: polygonToFitPath(
-        geom.coordinates as never,
-        multi,
-        extent.value,
-        props.width,
-        props.height,
-      ),
+      d: customProject.value
+        ? polygonToProjectedPath(geom.coordinates as never, multi, customProject.value)
+        : polygonToFitPath(
+            geom.coordinates as never,
+            multi,
+            extent.value,
+            w.value,
+            h.value,
+          ),
     };
   });
 });
@@ -91,9 +111,10 @@ const nodes = computed(() => {
 <template>
   <svg
     class="cf-flowmap"
-    :viewBox="`0 0 ${width} ${height}`"
-    :width="width"
-    :height="height"
+    :class="insideTile ? 'cf-flowmap--layer' : 'cf-flowmap--standalone'"
+    :viewBox="`0 0 ${w} ${h}`"
+    :width="insideTile ? undefined : w"
+    :height="insideTile ? undefined : h"
     role="img"
     aria-label="迁徙地图"
   >
@@ -112,7 +133,7 @@ const nodes = computed(() => {
         <path class="cf-flowmap__arrow-head" d="M0,0 L10,5 L0,10 z" />
       </marker>
     </defs>
-    <rect class="cf-flowmap__bg" x="0" y="0" :width="width" :height="height" />
+    <rect v-if="!insideTile" class="cf-flowmap__bg" x="0" y="0" :width="w" :height="h" />
     <path
       v-for="bp in basePaths"
       :key="`base-${bp.id}`"
