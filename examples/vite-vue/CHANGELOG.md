@@ -1,5 +1,12 @@
 # @chufix-design/example-vite-vue
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`62c8195`](https://github.com/chenqi92/chufix/commit/62c81954b1ea5aace4d8a4ad113c48380cc65633)]:
+  - @chufix-design/vue@0.10.0
+
 ## 0.0.11
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # docs
 
+## 0.3.11
+
+### Patch Changes
+
+- Updated dependencies [[`62c8195`](https://github.com/chenqi92/chufix/commit/62c81954b1ea5aace4d8a4ad113c48380cc65633)]:
+  - @chufix-design/vue@0.10.0
+  - @chufix-design/react@0.10.0
+  - @chufix-design/maps-vue@0.10.0
+  - @chufix-design/maps-react@0.10.0
+  - @chufix-design/tokens@0.10.0
+
 ## 0.3.10
 
 ### Patch Changes
