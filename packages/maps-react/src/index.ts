@@ -9,6 +9,7 @@ import './styles/mapscale.css';
 import './styles/bubblemap.css';
 import './styles/heatmap.css';
 import './styles/markercluster.css';
+import './styles/terrain3d.css';
 
 /* All exports use the Cf prefix to match @chufix-design/react. */
 
@@ -85,3 +86,16 @@ export type {
   ClusterGroup,
   ClusterResult,
 } from './markercluster/variants';
+
+// 3D Terrain (requires `three` peer dependency)
+export { Terrain3D as CfTerrain3D } from './terrain3d/Terrain3D';
+export type {
+  Terrain3DProps,
+  Terrain3DPickPayload,
+} from './terrain3d/Terrain3D';
+export type {
+  Terrain3DBounds,
+  Terrain3DCamera,
+  Terrain3DColorScale,
+} from './terrain3d/variants';
+export { COLOR_SCALES, resolveColorScale, normalizeHeights } from './terrain3d/variants';

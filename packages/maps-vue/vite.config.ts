@@ -17,9 +17,9 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'three', /^three\//],
       output: {
-        globals: { vue: 'Vue' },
+        globals: { vue: 'Vue', three: 'THREE' },
         assetFileNames: (info) =>
           info.name === 'style.css' ? 'style.css' : info.name ?? '[name][extname]',
       },
