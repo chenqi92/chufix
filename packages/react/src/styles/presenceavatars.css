@@ -1,0 +1,49 @@
+.cf-presence {
+  display: inline-flex;
+  align-items: center;
+}
+.cf-presence__avatar,
+.cf-presence__overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cf-presence-size, 28px);
+  height: var(--cf-presence-size, 28px);
+  border-radius: 50%;
+  border: 2px solid var(--bg-1);
+  margin-left: -8px;
+  background: var(--bg-2);
+  color: var(--fg-1);
+  font-size: var(--t-11);
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+.cf-presence__avatar:first-child,
+.cf-presence__overflow:first-child {
+  margin-left: 0;
+}
+.cf-presence__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cf-presence__avatar {
+  outline: 2px solid var(--cf-presence-color, var(--accent-1));
+  outline-offset: -2px;
+}
+.cf-presence__avatar.is-self {
+  outline-width: 3px;
+}
+.cf-presence__avatar.is-away {
+  opacity: 0.5;
+}
+.cf-presence__overflow {
+  background: var(--bg-3);
+  color: var(--fg-2);
+  font-size: var(--t-11);
+}
+.cf-presence--sm { --cf-presence-size: 22px; }
+.cf-presence--md { --cf-presence-size: 28px; }
+.cf-presence--lg { --cf-presence-size: 36px; }

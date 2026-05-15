@@ -189,6 +189,13 @@ import './styles/terminal.css';
 import './styles/querybuilder.css';
 import './styles/networkinspector.css';
 import './styles/requesttimeline.css';
+import './styles/presenceavatars.css';
+import './styles/remotecursor.css';
+import './styles/typingindicator.css';
+import './styles/pulsedot.css';
+import './styles/plancard.css';
+import './styles/reasoningtree.css';
+import './styles/agenttimeline.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1467,6 +1474,27 @@ export type {
   TimingPhase as RequestTimingPhase,
   PhaseType,
 } from './requesttimeline/variants';
+
+// Collaboration / Realtime / Agent visualization family
+export { PresenceAvatars as CfPresenceAvatars } from './presenceavatars/PresenceAvatars';
+export type { PresenceAvatarsProps } from './presenceavatars/PresenceAvatars';
+export type { PresenceUser } from './presenceavatars/variants';
+export { RemoteCursor as CfRemoteCursor } from './remotecursor/RemoteCursor';
+export type { RemoteCursorProps } from './remotecursor/RemoteCursor';
+export type { RemoteCursorItem } from './remotecursor/variants';
+export { TypingIndicator as CfTypingIndicator } from './typingindicator/TypingIndicator';
+export type { TypingIndicatorProps } from './typingindicator/TypingIndicator';
+export { PulseDot as CfPulseDot } from './pulsedot/PulseDot';
+export type { PulseDotProps } from './pulsedot/PulseDot';
+export { PlanCard as CfPlanCard } from './plancard/PlanCard';
+export type { PlanCardProps } from './plancard/PlanCard';
+export type { PlanStep, PlanStepStatus } from './plancard/variants';
+export { ReasoningTree as CfReasoningTree } from './reasoningtree/ReasoningTree';
+export type { ReasoningTreeProps } from './reasoningtree/ReasoningTree';
+export type { ReasoningNode } from './reasoningtree/variants';
+export { AgentTimeline as CfAgentTimeline } from './agenttimeline/AgentTimeline';
+export type { AgentTimelineProps } from './agenttimeline/AgentTimeline';
+export type { AgentEvent, AgentEventType } from './agenttimeline/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was

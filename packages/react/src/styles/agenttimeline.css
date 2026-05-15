@@ -1,0 +1,123 @@
+.cf-agentt {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--t-12);
+  color: var(--fg-1);
+}
+.cf-agentt__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 6px 0;
+}
+.cf-agentt__item::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 30px;
+  bottom: -6px;
+  width: 1px;
+  background: var(--line-2);
+}
+.cf-agentt__item:last-child::before {
+  display: none;
+}
+.cf-agentt__bullet {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-2);
+  position: relative;
+  z-index: 1;
+}
+.cf-agentt__item--thought .cf-agentt__bullet {
+  background: var(--bg-2);
+  color: var(--fg-2);
+}
+.cf-agentt__item--tool .cf-agentt__bullet {
+  background: var(--accent-soft);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+.cf-agentt__item--action .cf-agentt__bullet {
+  background: var(--status-info-soft);
+  border-color: var(--status-info);
+  color: var(--status-info);
+}
+.cf-agentt__item--observation .cf-agentt__bullet {
+  background: var(--status-success-soft);
+  border-color: var(--status-success);
+  color: var(--status-success);
+}
+.cf-agentt__item--message .cf-agentt__bullet {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-agentt__item--error .cf-agentt__bullet {
+  background: var(--status-error-soft);
+  border-color: var(--status-error);
+  color: var(--status-error);
+}
+.cf-agentt__header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cf-agentt__type {
+  display: inline-block;
+  padding: 0 6px;
+  background: var(--bg-2);
+  color: var(--fg-3);
+  border-radius: var(--r-2);
+  font-size: var(--t-11);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cf-agentt__item--tool .cf-agentt__type { color: var(--accent-1); background: var(--accent-soft); }
+.cf-agentt__item--action .cf-agentt__type { color: var(--status-info); background: var(--status-info-soft); }
+.cf-agentt__item--observation .cf-agentt__type { color: var(--status-success); background: var(--status-success-soft); }
+.cf-agentt__item--error .cf-agentt__type { color: var(--status-error); background: var(--status-error-soft); }
+.cf-agentt__duration,
+.cf-agentt__stamp {
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-11);
+}
+.cf-agentt__content {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  background: var(--bg-inset);
+  border-radius: var(--r-2);
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  color: var(--fg-1);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.cf-agentt__meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 10px;
+  row-gap: 2px;
+  margin: 6px 0 0;
+  padding: 0;
+  font-size: var(--t-11);
+  color: var(--fg-2);
+}
+.cf-agentt__meta dt {
+  color: var(--accent-1);
+  font-family: var(--font-mono);
+}
+.cf-agentt__meta dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  word-break: break-all;
+}

@@ -189,6 +189,13 @@ import './styles/terminal.css';
 import './styles/querybuilder.css';
 import './styles/networkinspector.css';
 import './styles/requesttimeline.css';
+import './styles/presenceavatars.css';
+import './styles/remotecursor.css';
+import './styles/typingindicator.css';
+import './styles/pulsedot.css';
+import './styles/plancard.css';
+import './styles/reasoningtree.css';
+import './styles/agenttimeline.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1403,6 +1410,20 @@ export type {
   TimingPhase as RequestTimingPhase,
   PhaseType,
 } from './requesttimeline/variants';
+
+// Collaboration / Realtime / Agent visualization family
+export { default as CfPresenceAvatars } from './presenceavatars/PresenceAvatars.vue';
+export type { PresenceUser } from './presenceavatars/variants';
+export { default as CfRemoteCursor } from './remotecursor/RemoteCursor.vue';
+export type { RemoteCursorItem } from './remotecursor/variants';
+export { default as CfTypingIndicator } from './typingindicator/TypingIndicator.vue';
+export { default as CfPulseDot } from './pulsedot/PulseDot.vue';
+export { default as CfPlanCard } from './plancard/PlanCard.vue';
+export type { PlanStep, PlanStepStatus } from './plancard/variants';
+export { default as CfReasoningTree } from './reasoningtree/ReasoningTree.vue';
+export type { ReasoningNode } from './reasoningtree/variants';
+export { default as CfAgentTimeline } from './agenttimeline/AgentTimeline.vue';
+export type { AgentEvent, AgentEventType } from './agenttimeline/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was

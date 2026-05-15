@@ -1,0 +1,69 @@
+.cf-rtree {
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  padding: 8px 12px;
+  font-size: var(--t-13);
+  color: var(--fg-1);
+}
+.cf-rtree__root,
+.cf-rtree__children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cf-rtree__children {
+  margin-left: 14px;
+  padding-left: 8px;
+  border-left: 1px solid var(--line-1);
+}
+.cf-rtree__node {
+  padding: 2px 0;
+}
+.cf-rtree__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  border-radius: var(--r-2);
+}
+.cf-rtree__row:hover {
+  background: var(--bg-2);
+}
+.cf-rtree__node.is-selected > .cf-rtree__row {
+  color: var(--accent-1);
+  font-weight: 600;
+}
+.cf-rtree__toggle,
+.cf-rtree__leaf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 0;
+  color: var(--fg-3);
+  cursor: pointer;
+  border-radius: var(--r-2);
+  font-size: var(--t-13);
+  flex-shrink: 0;
+}
+.cf-rtree__toggle {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cf-rtree__toggle:not(.is-collapsed) {
+  transform: rotate(90deg);
+}
+.cf-rtree__leaf {
+  cursor: default;
+}
+.cf-rtree__thought {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.cf-rtree__score {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-11);
+  font-weight: 600;
+}
