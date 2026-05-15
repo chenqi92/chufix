@@ -1,5 +1,16 @@
 # docs
 
+## 0.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`82c9c41`](https://github.com/chenqi92/chufix/commit/82c9c418659c681160d6a4b78473435a34010e93), [`a34dc09`](https://github.com/chenqi92/chufix/commit/a34dc09c927f4c48387f940554950bac584a9e9a), [`0fc4876`](https://github.com/chenqi92/chufix/commit/0fc48768d41a4ce60ea0298a0f779af67c27b8c6), [`f63e395`](https://github.com/chenqi92/chufix/commit/f63e395b42f40dc0f0e5d2f13a09525c9ec6ec47)]:
+  - @chufix-design/vue@0.9.0
+  - @chufix-design/react@0.9.0
+  - @chufix-design/maps-vue@0.9.0
+  - @chufix-design/maps-react@0.9.0
+  - @chufix-design/tokens@0.9.0
+
 ## 0.3.7
 
 ### Patch Changes
