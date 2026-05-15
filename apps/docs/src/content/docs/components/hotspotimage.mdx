@@ -1,0 +1,62 @@
+---
+title: HotspotImage 图像热区
+description: 图像 + 预定义可点击区域（矩形 / 圆形）。SVG overlay 渲染、归一化坐标、悬停高亮 + label tooltip。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/hotspotimage/BasicVue.vue';
+import BasicVueSource from '~/components/demos/hotspotimage/BasicVue.vue?raw';
+
+## 基础用法
+
+`hotspots` 数组定义可点击区域；`shape: 'rect'` 配 `rect: { x, y, w, h }`，`shape: 'circle'` 配 `circle: { cx, cy, r }`，全部归一化到图像 0–1 坐标。设 `show-outlines` 强制描边可见，否则仅 hover 时显示。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfHotspotImage } from '@chufix-design/vue';
+
+const hotspots = [
+  { id: 'cpu', shape: 'rect', rect: { x: 0.13, y: 0.22, w: 0.3, h: 0.5 }, label: 'CPU 区', tone: 'success' },
+  { id: 'fan', shape: 'circle', circle: { cx: 0.75, cy: 0.22, r: 0.08 }, label: '机箱风扇', tone: 'warning' },
+];
+
+function onClick(h) {
+  console.log('clicked', h.id);
+}
+</script>
+
+<template>
+  <CfHotspotImage src="/board.png" :hotspots="hotspots" show-outlines @hotspot-click="onClick" />
+</template>`}
+  reactCode={`const hotspots: HotspotItem[] = [
+  { id: 'cpu', shape: 'rect', rect: { x: 0.13, y: 0.22, w: 0.3, h: 0.5 }, label: 'CPU 区', tone: 'success' },
+  { id: 'fan', shape: 'circle', circle: { cx: 0.75, cy: 0.22, r: 0.08 }, label: '机箱风扇', tone: 'warning' },
+];
+
+<CfHotspotImage
+  src="/board.png"
+  hotspots={hotspots}
+  showOutlines
+  onHotspotClick={(h) => console.log('clicked', h.id)}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `src` | `string` | — | 图片 URL |
+| `alt` | `string` | `''` | alt |
+| `hotspots` | `HotspotItem[]` | — | 区域定义 |
+| `showOutlines` | `boolean` | `false` | 静态显示描边 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `hotspot-click` | `(hotspot, ev)` | 点击区域 |
+| `hotspot-hover` | `hotspot \| null` | 悬停 |

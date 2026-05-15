@@ -1,0 +1,57 @@
+---
+title: DrawingCanvas 画板
+description: SignaturePad 之上的画板：调色板、笔刷尺寸、橡皮擦、撤销 / 重做 / 清空 / 导出。笔画按 stroke 数组持久化，undo/redo 重放即可。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/drawingcanvas/BasicVue.vue';
+import BasicVueSource from '~/components/demos/drawingcanvas/BasicVue.vue?raw';
+
+## 基础用法
+
+画笔栈与橡皮栈都按 `DrawingStroke[]` 形式存储；undo/redo 通过重放整组笔画实现，因此可序列化保存到后端。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfDrawingCanvas } from '@chufix-design/vue';
+
+const strokes = ref([]);
+</script>
+
+<template>
+  <CfDrawingCanvas :height="280" @change="(s) => (strokes = s)" />
+</template>`}
+  reactCode={`const [strokes, setStrokes] = useState([]);
+
+<CfDrawingCanvas height={280} onChange={setStrokes} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `width` | `number \| string` | `'100%'` | |
+| `height` | `number \| string` | `320` | |
+| `initialStrokes` | `DrawingStroke[]` | `[]` | 初始笔画（可从后端拉） |
+| `colors` | `string[]` | 6 色默认 | 调色板 |
+| `sizes` | `number[]` | `[2, 4, 8, 16]` | 笔刷尺寸 |
+| `background` | `string` | `'transparent'` | |
+| `toolbar` | `boolean` | `true` | 是否显示工具栏 |
+| `disabled` | `boolean` | `false` | |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `change` | `strokes: DrawingStroke[]` | 笔画 / 工具变更后 |
+
+### Exposed methods
+
+- `clear()` / `undo()` / `redo()`
+- `getStrokes() / setStrokes(strokes)`
+- `toDataURL(type?, quality?)` / `toBlob(type?, quality?)`

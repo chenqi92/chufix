@@ -1,0 +1,56 @@
+---
+title: VideoPlayer 视频播放器
+description: HTML5 video 之上的自定义控件栏：播放 / 进度 / 时长 / 音量 / 倍速 / 全屏；2 秒空闲自动隐藏；overlay 插槽放章节 / 水印。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/videoplayer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/videoplayer/BasicVue.vue?raw';
+
+## 基础用法
+
+控件栏在播放后 2 秒无 pointer 移动自动淡出；任意 pointer 移动重新出现。点击视频本体切换 播放 / 暂停。`captions` 传 `{ src, label, srclang?, default? }[]` 自动生成 WebVTT `<track>`。
+
+<DemoFrame
+  vueCode={`<CfVideoPlayer
+  src="/clip.mp4"
+  poster="/poster.jpg"
+  aspect-ratio="16 / 9"
+  :captions="[{ src: '/zh.vtt', label: '中文', srclang: 'zh', default: true }]"
+/>`}
+  reactCode={`<CfVideoPlayer
+  src="/clip.mp4"
+  poster="/poster.jpg"
+  aspectRatio="16 / 9"
+  captions={[{ src: '/zh.vtt', label: '中文', srclang: 'zh', default: true }]}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `src` | `string` | — | 视频源 |
+| `poster` | `string` | — | 封面 |
+| `aspectRatio` | `string` | `'16 / 9'` | CSS aspect-ratio |
+| `autoplay` / `loop` / `muted` | `boolean` | `false` | 原生属性 |
+| `preload` | `'auto' \| 'metadata' \| 'none'` | `'metadata'` | |
+| `captions` | `VideoCaption[]` | — | 字幕轨 |
+| `playbackRates` | `number[]` | `[0.5, 0.75, 1, 1.25, 1.5, 2]` | 倍速菜单 |
+
+### Slots / overlay
+
+Vue: `<template #overlay>` 渲染章节标题 / 水印 / 直播提示等；React: `overlay` prop。
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `play` / `pause` / `ended` | — | |
+| `timeupdate` | `(time, duration)` | |
+| `volumechange` | `(volume, muted)` | |
+| `ratechange` | `rate` | 倍速变更 |

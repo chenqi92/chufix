@@ -322,6 +322,17 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('媒体 / 标注', 'Media & Annotation'),
+    items: [
+      c('SignaturePad', '签名板', 'signaturepad'),
+      c('DrawingCanvas', '画板', 'drawingcanvas'),
+      c('ImageAnnotator', '图像标注', 'imageannotator'),
+      c('HotspotImage', '图像热区', 'hotspotimage'),
+      c('AudioPlayer', '音频播放器', 'audioplayer'),
+      c('VideoPlayer', '视频播放器', 'videoplayer'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

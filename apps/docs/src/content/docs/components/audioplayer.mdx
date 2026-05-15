@@ -1,0 +1,47 @@
+---
+title: AudioPlayer 音频播放器
+description: 紧凑的音频播放器；传 peaks 数组渲染波形条，省略时退化为简单进度条。点击进度区即可 seek。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/audioplayer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/audioplayer/BasicVue.vue?raw';
+
+## 基础用法
+
+预先用后端 / 离线流程计算波形 peaks（绝对幅度归一化到 0–1 的数组），传入 `peaks` 即可获得 SoundCloud 风格的波形进度条。不传则退化为细横条。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfAudioPlayer } from '@chufix-design/vue';
+const peaks = Array.from({ length: 160 }, () => Math.random());
+</script>
+
+<template>
+  <CfAudioPlayer src="/track.mp3" :peaks="peaks" />
+</template>`}
+  reactCode={`const peaks = Array.from({ length: 160 }, () => Math.random());
+
+<CfAudioPlayer src="/track.mp3" peaks={peaks} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `src` | `string` | — | 音频源 |
+| `peaks` | `number[]` | — | 归一化波形 |
+| `autoplay` / `loop` / `muted` | `boolean` | `false` | 原生属性 |
+| `preload` | `'auto' \| 'metadata' \| 'none'` | `'metadata'` | |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `play` / `pause` / `ended` | — | |
+| `timeupdate` | `(time, duration)` | 当前播放进度 |
+| `volumechange` | `(volume, muted)` | |

@@ -1,0 +1,72 @@
+---
+title: ImageAnnotator 图像标注
+description: 图像 + 钉点标注。点击空白添加、拖动钉点修改坐标、点选弹出删除按钮。坐标用 0–1 归一化以便不同尺寸下复用。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/imageannotator/BasicVue.vue';
+import BasicVueSource from '~/components/demos/imageannotator/BasicVue.vue?raw';
+
+## 基础用法
+
+`annotations` 数组用 `{ id, x, y, label?, tone? }`，`x` / `y` 是图片归一化坐标（0–1）。点击图片空白处自动添加新钉；拖动钉更新坐标；选中后可点 `×` 删除。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfImageAnnotator } from '@chufix-design/vue';
+
+const annotations = ref([
+  { id: 'cpu', x: 0.22, y: 0.34, label: 'CPU 散热片', tone: 'success' },
+]);
+const selectedId = ref('cpu');
+</script>
+
+<template>
+  <CfImageAnnotator
+    src="/board.png"
+    :annotations="annotations"
+    :selected-id="selectedId"
+    @update:annotations="annotations = $event"
+    @select="(id) => (selectedId = id)"
+  />
+</template>`}
+  reactCode={`const [annotations, setAnnotations] = useState([
+  { id: 'cpu', x: 0.22, y: 0.34, label: 'CPU 散热片', tone: 'success' },
+]);
+const [selectedId, setSelectedId] = useState<string>('cpu');
+
+<CfImageAnnotator
+  src="/board.png"
+  annotations={annotations}
+  selectedId={selectedId}
+  onChange={setAnnotations}
+  onSelect={setSelectedId}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `src` | `string` | — | 图片 URL |
+| `alt` | `string` | `''` | alt 文本 |
+| `annotations` | `ImageAnnotation[]` | — | 钉点数组 |
+| `readonly` | `boolean` | `false` | 只读：禁止添加 / 拖动 / 删除 |
+| `addMode` | `'click' \| 'manual'` | `'click'` | 点击空白处是否自动加钉 |
+| `selectedId` | `string` | — | 当前选中的钉 id |
+| `defaultTone` | `AnnotationTone` | `'info'` | 新加钉默认 tone |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `update:annotations` | `ImageAnnotation[]` | 列表变更（增 / 改 / 删） |
+| `add` | `ImageAnnotation` | 新加钉 |
+| `update` | `ImageAnnotation` | 钉坐标更新 |
+| `delete` | `id: string` | 删钉 |
+| `select` | `id: string` | 选中 |

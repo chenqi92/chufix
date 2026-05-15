@@ -1,0 +1,67 @@
+---
+title: SignaturePad 签名板
+description: pointer events + canvas 平滑笔画签名板。quadratic-bezier 平滑、DPR 自动缩放、暴露 clear/toDataURL/toBlob/isEmpty 方法。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/signaturepad/BasicVue.vue';
+import BasicVueSource from '~/components/demos/signaturepad/BasicVue.vue?raw';
+
+## 基础用法
+
+通过 ref 暴露 `clear / toDataURL / toBlob / isEmpty`。绘制平滑度用 quadratic-bezier 中点平均；DPR 自动缩放保证 retina 屏锐利。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfSignaturePad } from '@chufix-design/vue';
+
+const pad = ref();
+function save() {
+  console.log(pad.value.toDataURL());
+}
+</script>
+
+<template>
+  <CfSignaturePad ref="pad" :height="160" stroke-color="#fff" />
+  <button @click="pad?.clear()">清空</button>
+  <button @click="save">导出</button>
+</template>`}
+  reactCode={`const padRef = useRef<SignaturePadHandle>(null);
+
+<CfSignaturePad ref={padRef} height={160} strokeColor="#fff" />
+<button onClick={() => padRef.current?.clear()}>清空</button>
+<button onClick={() => console.log(padRef.current?.toDataURL())}>导出</button>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `width` | `number \| string` | `'100%'` | 画板宽 |
+| `height` | `number \| string` | `180` | 画板高 |
+| `strokeWidth` | `number` | `2` | 笔画粗细 |
+| `strokeColor` | `string` | 当前 `color` | 颜色（默认读 CSS `color`） |
+| `background` | `string` | `'transparent'` | 背景；导出时会作为画板底色 |
+| `disabled` | `boolean` | `false` | 禁用 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `change` | `empty: boolean` | 笔画结束 / 清空后 |
+| `start` | — | 一笔开始 |
+| `end` | — | 一笔结束 |
+
+### Exposed methods
+
+通过 ref / forwardRef 暴露：
+
+- `clear()`
+- `toDataURL(type?, quality?)`
+- `toBlob(type?, quality?): Promise<Blob \| null>`
+- `isEmpty(): boolean`
