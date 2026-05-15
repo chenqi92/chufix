@@ -1,0 +1,66 @@
+---
+title: DragLayer 拖拽预览层
+description: Teleport 到 body 的浮层，跟随 pointer。订阅 useDragDrop 全局 store，配合 CfDraggable preview="none" 实现自定义 ghost。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/draglayer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/draglayer/BasicVue.vue?raw';
+
+## 基础用法
+
+放一个 `<CfDragLayer>` 在页面任意位置（推荐根布局或路由顶层）。它 Teleport 到 body，`position: fixed`，按 pointer 位置实时更新。默认插槽参数：`{ payload, over, canDrop }`。
+
+把 `CfDraggable` 的 `preview="none"` 打开后，源元素拖动时不变形，所有视觉都跑在 DragLayer 上。
+
+<DemoFrame
+  vueCode={`<CfDraggable type="file" :data="f" preview="none">
+  {{ f.name }}
+</CfDraggable>
+
+<CfDragLayer>
+  <template #default="{ payload, canDrop }">
+    <div :class="['preview', { 'is-accepting': canDrop }]">
+      <strong>{{ payload.data.name }}</strong>
+      <span>{{ canDrop ? '放下以上传' : '拖拽中…' }}</span>
+    </div>
+  </template>
+</CfDragLayer>`}
+  reactCode={`<CfDraggable type="file" data={f} preview="none">
+  {f.name}
+</CfDraggable>
+
+<CfDragLayer>
+  {({ payload, canDrop }) => (
+    <div className={['preview', canDrop && 'is-accepting'].filter(Boolean).join(' ')}>
+      <strong>{(payload.data as FileLike).name}</strong>
+      <span>{canDrop ? '放下以上传' : '拖拽中…'}</span>
+    </div>
+  )}
+</CfDragLayer>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## Teleport 注意事项
+
+`CfDragLayer` 内部用 `<Teleport to="body">` (Vue) / `createPortal(document.body)` (React)。在 Astro 中嵌入 demo 时**必须**用 `client:only="vue"`，不能用 `client:load`，否则 SSR/hydrate 时机不一致会导致 layer 不出现（同 Tooltip / Modal / Toaster）。
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `offsetX` | `number` | `12` | 预览相对 pointer 的水平偏移 (px) |
+| `offsetY` | `number` | `12` | 预览相对 pointer 的垂直偏移 (px) |
+
+### 默认插槽
+
+`{ payload, over, canDrop }`：
+
+- `payload: { type, data }` — 当前拖拽的数据
+- `over: HTMLElement \| null` — pointer 下当前的 Droppable
+- `canDrop: boolean` — 该 over 是否接受这个 type
+
+不传插槽时渲染默认小 chip 显示 type。

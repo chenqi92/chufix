@@ -137,6 +137,43 @@ useSwipe(viewportRef, {
 });
 ```
 
+## 拖拽 / Drag & Drop
+
+`CfDraggable` / `CfDroppable` / `CfDragLayer` 共享一个 module-singleton store；下面这三个 composable / hook 暴露同一个底座，便于自己装组件。**必须 barrel import** —— deep `src/` import 会创建第二份 store 实例导致 drop 静默失败。
+
+### `useDraggable` —— 把元素装成拖拽源
+
+```ts
+const el = ref<HTMLElement | null>(null);
+useDraggable(el, {
+  payload: () => ({ type: 'metric', data: { id: 'cpu' } }),
+  handle: '.grip',
+  onStart: () => console.log('drag start'),
+  onEnd: (dropped) => console.log('dropped?', dropped),
+});
+```
+
+### `useDroppable` —— 注册放置目标
+
+```ts
+const target = ref<HTMLElement | null>(null);
+const { isOver, canDrop } = useDroppable(target, {
+  accept: ['metric', 'task'],
+  onDrop(payload, pointer) { /* ... */ },
+});
+```
+
+### `useDragDrop` —— 订阅全局拖拽状态
+
+返回响应式 / hook-state 快照：`active / payload / source / pointer / origin / over / canDrop`，用来画自己的拖拽预览 / 状态条 / 多重 drop 提示。
+
+```ts
+const dnd = useDragDrop();
+watchEffect(() => {
+  if (dnd.active) console.log('pointer at', dnd.pointer);
+});
+```
+
 ## 表单
 
 ### `useFormValidation` —— Schema 表单状态

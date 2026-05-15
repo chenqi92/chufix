@@ -1,0 +1,58 @@
+---
+title: Droppable 放置目标
+description: 接收来自 CfDraggable 的拖放，按 type 字符串过滤。暴露 isOver / canDrop 给作用域插槽用于视觉反馈。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/droppable/BasicVue.vue';
+import BasicVueSource from '~/components/demos/droppable/BasicVue.vue?raw';
+
+## 基础用法
+
+`accept` 接受单字符串或字符串数组。多个 Droppable 同时覆盖于 pointer 下时，命中的是最上层那一个（用 `document.elementsFromPoint` 判定）。看板列、收藏区、删除区、上传区都是常见用法。
+
+<DemoFrame
+  vueCode={`<CfDroppable accept="task" @drop="onMove">
+  <template #default="{ isOver }">
+    <div :class="{ over: isOver }">
+      <strong>To do</strong>
+      <CfDraggable v-for="t in items" :key="t" type="task" :data="t">
+        {{ t }}
+      </CfDraggable>
+    </div>
+  </template>
+</CfDroppable>`}
+  reactCode={`<CfDroppable accept="task" onDrop={onMove}>
+  {({ isOver }) => (
+    <div className={isOver ? 'over' : ''}>
+      <strong>To do</strong>
+      {items.map((t) => (
+        <CfDraggable key={t} type="task" data={t}>{t}</CfDraggable>
+      ))}
+    </div>
+  )}
+</CfDroppable>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `accept` | `string \| string[]` | — | 允许的 type；不传则接受所有 |
+| `disabled` | `boolean` | `false` | 禁用 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `drop` | `(payload, pointer)` | 释放时触发，仅 type 匹配时 |
+| `enter` | `payload` | 拖入边界 |
+| `leave` | `payload` | 离开边界或松手 |
+
+### 默认插槽
+
+`{ isOver, canDrop }` — `isOver` 表示 pointer 当前在边界内；`canDrop` 表示 type 匹配且未禁用，可用于高亮目标。

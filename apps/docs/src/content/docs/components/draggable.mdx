@@ -1,0 +1,82 @@
+---
+title: Draggable 可拖拽容器
+description: 把任意内容包成拖拽源，配合 CfDroppable 实现跨区域拖放。payload 自带类型与数据，模块单例 store 协调 Draggable / Droppable / DragLayer 状态。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/draggable/BasicVue.vue';
+import BasicVueSource from '~/components/demos/draggable/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfDraggable` 把 children 包成拖拽源；`CfDroppable` 是放置区。`type` 字符串用于匹配 — `Droppable accept` 不匹配时该组合不接受 drop。整套基于 Pointer Events，触屏 / 笔 / 鼠标统一行为，不依赖 HTML5 DnD API。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfDraggable, CfDroppable } from '@chufix-design/vue';
+
+const bin = ref([]);
+function onDrop(payload) {
+  bin.value.push(payload.data.id);
+}
+</script>
+
+<template>
+  <CfDraggable type="metric" :data="{ id: 'cpu', label: 'CPU' }">
+    CPU 使用率
+  </CfDraggable>
+  <CfDroppable accept="metric" @drop="onDrop">
+    <template #default="{ isOver }">
+      <div :class="{ active: isOver }">仪表盘</div>
+    </template>
+  </CfDroppable>
+</template>`}
+  reactCode={`function Demo() {
+  const [bin, setBin] = useState([]);
+  return (
+    <>
+      <CfDraggable type="metric" data={{ id: 'cpu', label: 'CPU' }}>
+        CPU 使用率
+      </CfDraggable>
+      <CfDroppable accept="metric" onDrop={(p) => setBin([...bin, p.data.id])}>
+        {({ isOver }) => <div className={isOver ? 'active' : ''}>仪表盘</div>}
+      </CfDroppable>
+    </>
+  );
+}`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 模块单例 store · ⚠ 必须 barrel import
+
+`CfDraggable` / `CfDroppable` / `CfDragLayer` 共享一个 module-level store（`dndStore`）。如果用 deep import（`from '@chufix-design/vue/src/...'`）会拿到第二份 store 实例，导致 drop 静默失败。**总是用 barrel：**
+
+```ts
+// ✅ 正确
+import { CfDraggable, CfDroppable, CfDragLayer } from '@chufix-design/vue';
+
+// ❌ 错误 — 第二份 store
+import CfDraggable from '@chufix-design/vue/src/draggable/Draggable.vue';
+```
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `type` | `string` | `'default'` | 拖拽类型，用于匹配 `Droppable.accept` |
+| `data` | `unknown` | — | 任意数据载荷 |
+| `payload` | `{ type, data }` | — | 整体 payload（覆盖 type/data） |
+| `handle` | `string` | — | 限制启动拖拽的子元素选择器 |
+| `preview` | `'self' \| 'ghost' \| 'none'` | `'ghost'` | 源元素拖拽时的视觉：原样 / 半透明 / 隐藏（搭配 DragLayer） |
+| `disabled` | `boolean` | `false` | 禁用 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `drag-start` | — | 越过 threshold 后 |
+| `drag-end` | `dropped: boolean` | 是否落在合法 Droppable |

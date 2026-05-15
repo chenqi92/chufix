@@ -1,0 +1,122 @@
+---
+title: Sortable 排序列表
+description: 通用拖拽重排序容器。Pointer Events + setPointerCapture 实现，跨桌面/移动端一致；列表、网格、横向 chip 行都可用。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/sortable/BasicVue.vue';
+import BasicVueSource from '~/components/demos/sortable/BasicVue.vue?raw';
+import HandleVue from '~/components/demos/sortable/HandleVue.vue';
+import HandleVueSource from '~/components/demos/sortable/HandleVue.vue?raw';
+import HorizontalVue from '~/components/demos/sortable/HorizontalVue.vue';
+import HorizontalVueSource from '~/components/demos/sortable/HorizontalVue.vue?raw';
+
+## 基础用法
+
+传 `items` 数组 + `itemKey`（取唯一 id），通过默认插槽渲染每一项。拖动项目时邻居自动让位，松手提交新顺序。组件会 `emit('update:items', next)`，所以可以直接用 `v-model:items` 双向绑定。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfSortable } from '@chufix-design/vue';
+
+const items = ref([
+  { id: 'a', label: '需求分析' },
+  { id: 'b', label: '设计稿评审' },
+  { id: 'c', label: '前后端拉齐' },
+]);
+</script>
+
+<template>
+  <CfSortable v-model:items="items" item-key="id">
+    <template #default="{ item }">
+      <div class="row">{{ item.label }}</div>
+    </template>
+  </CfSortable>
+</template>`}
+  reactCode={`const [items, setItems] = useState([
+  { id: 'a', label: '需求分析' },
+  { id: 'b', label: '设计稿评审' },
+  { id: 'c', label: '前后端拉齐' },
+]);
+
+<CfSortable
+  items={items}
+  itemKey="id"
+  onChange={setItems}
+>
+  {({ item }) => <div className="row">{item.label}</div>}
+</CfSortable>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## 拖拽手柄
+
+传 `handle` 选择器，只有命中手柄的 pointerdown 才会启动拖拽。其余区域可正常点击 / 选中。
+
+<DemoFrame
+  vueCode={`<CfSortable v-model:items="tracks" item-key="id" handle=".track-grip">
+  <template #default="{ item }">
+    <div class="track">
+      <button class="track-grip">⋮⋮</button>
+      <span>{{ item.title }}</span>
+    </div>
+  </template>
+</CfSortable>`}
+  reactCode={`<CfSortable items={tracks} itemKey="id" handle=".track-grip" onChange={setTracks}>
+  {({ item }) => (
+    <div className="track">
+      <button className="track-grip">⋮⋮</button>
+      <span>{item.title}</span>
+    </div>
+  )}
+</CfSortable>`}
+  vueSource={HandleVueSource}>
+  <HandleVue client:only="vue" />
+</DemoFrame>
+
+## 横向轴
+
+传 `axis="x"` 让排序方向变为水平。Chip 行、Tab 行、画廊缩略图常用。
+
+<DemoFrame
+  vueCode={`<CfSortable v-model:items="tabs" item-key="id" axis="x">
+  <template #default="{ item }">
+    <div class="chip">{{ item.label }}</div>
+  </template>
+</CfSortable>`}
+  reactCode={`<CfSortable items={tabs} itemKey="id" axis="x" onChange={setTabs}>
+  {({ item }) => <div className="chip">{item.label}</div>}
+</CfSortable>`}
+  vueSource={HorizontalVueSource}>
+  <HorizontalVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `items` | `T[]` | — | 数据数组（必传） |
+| `itemKey` | `keyof T \| ((item, index) => string \| number)` | — | 唯一 key |
+| `axis` | `'x' \| 'y'` | `'y'` | 排序轴 |
+| `handle` | `string` | — | 拖拽手柄 CSS 选择器；不传则整行可拖 |
+| `disabled` | `boolean` | `false` | 禁用拖拽 |
+| `threshold` | `number` | `4` | 起拖位移阈值 (px) |
+| `animation` | `number` | `180` | 邻居复位过渡时长 (ms) |
+| `tag` | `string` | `'div'` | 根标签 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `update:items` | `T[]` | 新顺序，配合 `v-model:items` |
+| `reorder` | `{ from, to, items }` | 提交后触发 |
+| `drag-start` | `{ item, index }` | 越过 threshold 时 |
+| `drag-end` | `{ item, index, cancelled }` | 松手 / Esc 取消 |
+
+### 默认插槽
+
+`{ item, index, isDragging }` — 渲染单条数据；`isDragging` 用于显示当前拖动项的悬浮态。

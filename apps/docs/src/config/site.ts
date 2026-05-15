@@ -312,6 +312,16 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('拖拽 / Drag & Drop', 'Drag & Drop'),
+    items: [
+      c('Sortable', '排序列表', 'sortable'),
+      c('Draggable', '可拖拽容器', 'draggable'),
+      c('Droppable', '放置目标', 'droppable'),
+      c('DragLayer', '拖拽预览层', 'draglayer'),
+      c('ReorderTable', '重排表格', 'reordertable'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

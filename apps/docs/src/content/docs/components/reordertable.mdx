@@ -1,0 +1,92 @@
+---
+title: ReorderTable 重排表格
+description: 行拖拽重排的轻量表格。grid 布局、首列固定拖拽手柄、邻居行 CSS transform 让位、Esc 取消。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/reordertable/BasicVue.vue';
+import BasicVueSource from '~/components/demos/reordertable/BasicVue.vue?raw';
+
+## 基础用法
+
+`CfReorderTable` 是行拖拽重排的独立组件，**不是** `CfTable` 的子类。它用 CSS Grid 布局而非 `<table>` 标签 — 因为 `<tr>` 上做 transform 不稳，grid 行就没有这个限制。需要功能更全的表格（排序 / 筛选 / 列冻结 / 分组）请用 `CfTable` 或 `CfDataGrid`，需要可重排行的简洁场景用这一个。
+
+`columns` 数组定义列；首列自动是拖拽手柄，无需在 columns 里声明。富文本单元格用 `cell-<key>` 作用域插槽（Vue）或 `column.render` (React)。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfReorderTable } from '@chufix-design/vue';
+
+const rows = ref([
+  { id: 'auth', name: 'auth-service', region: 'us-east-1', p99: '38 ms', status: 'healthy' },
+  { id: 'order', name: 'order-service', region: 'us-east-1', p99: '92 ms', status: 'degraded' },
+]);
+
+const columns = [
+  { key: 'name', label: '服务' },
+  { key: 'region', label: '区域', width: '120px' },
+  { key: 'p99', label: 'P99', width: '90px', align: 'end' },
+  { key: 'status', label: '状态', width: '110px' },
+];
+</script>
+
+<template>
+  <CfReorderTable v-model:rows="rows" :columns="columns" row-key="id" striped>
+    <template #cell-status="{ value }">
+      <span :class="['pill', value]">{{ value }}</span>
+    </template>
+  </CfReorderTable>
+</template>`}
+  reactCode={`const [rows, setRows] = useState([
+  { id: 'auth', name: 'auth-service', region: 'us-east-1', p99: '38 ms', status: 'healthy' },
+]);
+
+const columns: ReorderColumn<Row>[] = [
+  { key: 'name', label: '服务' },
+  { key: 'region', label: '区域', width: '120px' },
+  { key: 'p99', label: 'P99', width: '90px', align: 'end' },
+  {
+    key: 'status',
+    label: '状态',
+    width: '110px',
+    render: (row) => <span className={['pill', row.status].join(' ')}>{row.status}</span>,
+  },
+];
+
+<CfReorderTable rows={rows} columns={columns} rowKey="id" striped onChange={setRows} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `rows` | `T[]` | — | 数据行 |
+| `columns` | `ReorderColumn<T>[]` | — | 列定义 |
+| `rowKey` | `keyof T \| ((row, index) => string \| number)` | — | 行 key |
+| `disabled` | `boolean` | `false` | 禁用拖拽 |
+| `handleWidth` | `string` | `'36px'` | 首列手柄宽度 |
+| `striped` | `boolean` | `false` | 隔行变色 |
+| `animation` | `number` | `180` | 邻居复位过渡 ms |
+| `threshold` | `number` | `4` | 起拖位移 px |
+
+### ReorderColumn
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `key` | `string` | 列名 / 取值键 |
+| `label` | `string` | 表头文字 |
+| `width` | `string` | grid-template 值，如 `'120px'` / `'1fr'` |
+| `align` | `'start' \| 'center' \| 'end'` | 单元格水平对齐 |
+| `render` | `(row, index) => ReactNode` | React 自定义渲染；Vue 用 `cell-<key>` 插槽 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `update:rows` | `T[]` | 新顺序 |
+| `reorder` | `{ from, to, rows }` | 提交后触发 |
