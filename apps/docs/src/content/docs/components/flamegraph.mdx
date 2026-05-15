@@ -1,0 +1,61 @@
+---
+title: Flamegraph 性能火焰图
+description: 层级矩形渲染的性能 flame chart。点击矩形 zoom-in，左上角按钮重置；hover 显示自身 value 与占比；颜色按 category 或函数名哈希。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/flamegraph/BasicVue.vue';
+import BasicVueSource from '~/components/demos/flamegraph/BasicVue.vue?raw';
+
+## 基础用法
+
+输入一颗 `FlameNode` 树：`{ name, value, children?, category? }`。组件递归把每个节点按 `value / parent.value` 切成宽度比例。点击某一帧把它视作新 root 重新铺满；点击「重置缩放」恢复。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfFlamegraph } from '@chufix-design/vue';
+
+const data = {
+  name: 'request handler',
+  value: 240,
+  children: [
+    { name: 'auth middleware', value: 28, category: 'auth', children: [...] },
+    { name: 'controller', value: 180, children: [...] },
+  ],
+};
+</script>
+
+<template>
+  <CfFlamegraph :data="data" />
+</template>`}
+  reactCode={`const data: FlameNode = {
+  name: 'request handler',
+  value: 240,
+  children: [
+    { name: 'auth middleware', value: 28, category: 'auth' },
+    { name: 'controller', value: 180 },
+  ],
+};
+
+<CfFlamegraph data={data} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `data` | `FlameNode` | — | 根节点 |
+| `rowHeight` | `number` | `18` | 每层像素高 |
+| `minWidth` | `number` | `2` | 最小矩形宽（避免极窄帧消失） |
+| `unit` | `string` | `'ms'` | tooltip 中显示的单位 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `frame-click` | `(node, path)` | 点击某帧（已 zoom 进去） |
+| `frame-hover` | `node \| null` | hover |

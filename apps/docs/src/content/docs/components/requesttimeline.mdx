@@ -1,0 +1,72 @@
+---
+title: RequestTimeline 请求时序图
+description: 瀑布式请求时序图：每行一个请求，按 start..end 渲染色条；phases 数组里 queued/dns/connect/wait/receive 分段着色，可看出耗时构成。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/requesttimeline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/requesttimeline/BasicVue.vue?raw';
+
+## 基础用法
+
+适合放在故障复盘 / 性能分析页：传入一批 `{ id, label, start, end, phases? }`，按时间轴并排显示。`phases` 是可选的耗时分段，每段一种颜色（queued / blocked / dns / connect / ssl / wait / receive）。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfRequestTimeline } from '@chufix-design/vue';
+
+const requests = [
+  {
+    id: 'r1',
+    label: 'GET /api/users/me',
+    start: 0,
+    end: 80,
+    phases: [
+      { type: 'dns', duration: 6 },
+      { type: 'connect', duration: 12 },
+      { type: 'wait', duration: 50 },
+      { type: 'receive', duration: 8 },
+    ],
+  },
+  { id: 'r2', label: 'GET /orders', start: 70, end: 320, tone: 'warning' },
+];
+</script>
+
+<template>
+  <CfRequestTimeline :requests="requests" />
+</template>`}
+  reactCode={`const requests: RequestTiming[] = [
+  {
+    id: 'r1', label: 'GET /api/users/me', start: 0, end: 80,
+    phases: [
+      { type: 'dns', duration: 6 },
+      { type: 'connect', duration: 12 },
+      { type: 'wait', duration: 50 },
+      { type: 'receive', duration: 8 },
+    ],
+  },
+  { id: 'r2', label: 'GET /orders', start: 70, end: 320, tone: 'warning' },
+];
+
+<CfRequestTimeline requests={requests} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `requests` | `RequestTiming[]` | — | 请求时序 |
+| `unit` | `'ms' \| 's'` | `'ms'` | 刻度单位 |
+| `rowHeight` | `number` | `22` | 每行高 |
+| `labelWidth` | `number` | `220` | 左侧 label 列宽 |
+| `showGrid` | `boolean` | `true` | 显示刻度与网格线 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `select` | `RequestTiming` | 点击某行 |

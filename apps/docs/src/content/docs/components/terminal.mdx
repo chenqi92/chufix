@@ -1,0 +1,49 @@
+---
+title: Terminal 终端显示
+description: macOS 风格的只读终端展示。三个红 / 黄 / 绿圆点 + 标题 + 等宽内容；行可分 output / command / error / warning / success / info 着色。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/terminal/BasicVue.vue';
+import BasicVueSource from '~/components/demos/terminal/BasicVue.vue?raw';
+
+## 基础用法
+
+`lines` 接收字符串数组或 `{ text, type }[]`。`type='command'` 时行首加 `prompt`（默认 `$`），并把文字加亮。终端不接收输入；仅作为构建日志 / oncall 操作记录 / CI 输出展示。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfTerminal } from '@chufix-design/vue';
+const lines = [
+  { type: 'command', text: 'pnpm build' },
+  { type: 'output', text: 'building...' },
+  { type: 'success', text: '✓ built in 4.30s' },
+];
+</script>
+
+<template>
+  <CfTerminal :lines="lines" title="build.log" :height="320" />
+</template>`}
+  reactCode={`const lines: TerminalLine[] = [
+  { type: 'command', text: 'pnpm build' },
+  { type: 'output', text: 'building...' },
+  { type: 'success', text: '✓ built in 4.30s' },
+];
+
+<CfTerminal lines={lines} title="build.log" height={320} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `lines` | `(TerminalLine \| string)[]` | — | 行数据 |
+| `prompt` | `string` | `'$'` | command 行前缀 |
+| `title` | `string` | — | 顶部标题（右侧） |
+| `height` | `number \| string` | — | 高度（不传跟内容） |
+| `follow` | `boolean` | `true` | 新增行后自动滚底 |
+| `showHeader` | `boolean` | `true` | 顶部三圆点条 |

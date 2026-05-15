@@ -1,0 +1,57 @@
+---
+title: NetworkInspector 网络面板
+description: 类 DevTools Network 面板：method/url/status/type/size/time 列；点击行展开右侧详情（headers + body）。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/networkinspector/BasicVue.vue';
+import BasicVueSource from '~/components/demos/networkinspector/BasicVue.vue?raw';
+
+## 基础用法
+
+`requests` 数组每项就是一条请求记录。method 字段会自动用 protocol 调色板上色（GET/POST/PUT/PATCH/DELETE）；status 按 2xx/3xx/4xx/5xx 着色。`requestHeaders` / `responseHeaders` 接受数组 (`{ name, value }[]`) 或对象 (`Record<string, string>`)。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfNetworkInspector } from '@chufix-design/vue';
+
+const requests = [
+  {
+    id: '1', method: 'GET', url: '/api/users/me', status: 200, type: 'fetch',
+    size: 1248, duration: 42,
+    responseBody: '{"id":"u1","name":"alice"}',
+  },
+];
+</script>
+
+<template>
+  <CfNetworkInspector :requests="requests" :height="320" />
+</template>`}
+  reactCode={`const requests: NetworkRequest[] = [
+  {
+    id: '1', method: 'GET', url: '/api/users/me', status: 200, type: 'fetch',
+    size: 1248, duration: 42,
+    responseBody: '{"id":"u1","name":"alice"}',
+  },
+];
+
+<CfNetworkInspector requests={requests} height={320} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `requests` | `NetworkRequest[]` | — | 请求记录 |
+| `height` | `number \| string` | `400` | 面板高 |
+| `initialSelectedId` | `string` | — | 默认展开的请求 id |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `select` | `request \| null` | 选中（再次点同一行 → null） |

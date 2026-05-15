@@ -333,6 +333,17 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('开发者工具', 'Developer Tools'),
+    items: [
+      c('Flamegraph', '火焰图', 'flamegraph'),
+      c('LogViewer', '日志面板', 'logviewer'),
+      c('Terminal', '终端展示', 'terminal'),
+      c('QueryBuilder', '查询构造器', 'querybuilder'),
+      c('NetworkInspector', '网络面板', 'networkinspector'),
+      c('RequestTimeline', '请求时序', 'requesttimeline'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

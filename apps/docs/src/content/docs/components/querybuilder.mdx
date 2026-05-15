@@ -1,0 +1,100 @@
+---
+title: QueryBuilder 查询构造器
+description: 可视化过滤条件构造器：字段 + 操作符 + 值。导出可序列化的 AND/OR 组合 AST，业务侧自由转换成 SQL / API query / GraphQL 过滤参数。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/querybuilder/BasicVue.vue';
+import BasicVueSource from '~/components/demos/querybuilder/BasicVue.vue?raw';
+
+## 基础用法
+
+`fields` 定义可查询字段；`modelValue` 是当前 query 树。每个 condition 形如 `{ id, field, operator, value }`；operator 依字段类型动态切换（string 给 contains / startsWith，number 给 >= 等）。当前版本是单层 AND/OR 组（无嵌套子组）。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfQueryBuilder } from '@chufix-design/vue';
+
+const fields = [
+  { key: 'name', label: '姓名', type: 'string' },
+  { key: 'age', label: '年龄', type: 'number' },
+  { key: 'role', label: '角色', type: 'enum', options: [
+    { value: 'admin', label: '管理员' },
+    { value: 'editor', label: '编辑' },
+  ] },
+];
+
+const query = ref({
+  combinator: 'AND',
+  conditions: [
+    { id: 'c1', field: 'name', operator: 'contains', value: 'ali' },
+  ],
+});
+</script>
+
+<template>
+  <CfQueryBuilder
+    :fields="fields"
+    :model-value="query"
+    @update:model-value="query = $event"
+  />
+</template>`}
+  reactCode={`const fields: QueryField[] = [
+  { key: 'name', label: '姓名', type: 'string' },
+  { key: 'age', label: '年龄', type: 'number' },
+];
+
+const [query, setQuery] = useState<QueryGroup>({
+  combinator: 'AND',
+  conditions: [{ id: 'c1', field: 'name', operator: 'contains', value: 'ali' }],
+});
+
+<CfQueryBuilder fields={fields} value={query} onChange={setQuery} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+### Props (Vue)
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `fields` | `QueryField[]` | — | 可查询字段 |
+| `modelValue` | `QueryGroup` | — | 当前 query（用 `v-model`） |
+
+### Props (React)
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `fields` | `QueryField[]` | — | |
+| `value` | `QueryGroup` | — | |
+| `onChange` | `(value) => void` | — | |
+
+### Types
+
+```ts
+type QueryFieldType = 'string' | 'number' | 'date' | 'boolean' | 'enum';
+type QueryOperator =
+  | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte'
+  | 'contains' | 'startsWith' | 'endsWith' | 'in'
+  | 'isnull' | 'notnull';
+
+interface QueryField {
+  key: string;
+  label: string;
+  type: QueryFieldType;
+  options?: { value: string | number; label: string }[];
+}
+interface QueryCondition {
+  id: string;
+  field: string;
+  operator: QueryOperator;
+  value?: unknown;
+}
+interface QueryGroup {
+  combinator: 'AND' | 'OR';
+  conditions: QueryCondition[];
+}
+```

@@ -1,0 +1,53 @@
+---
+title: LogViewer 日志面板
+description: 终端风格的日志流面板：等宽字体、行级 level 着色、自动跟随底部、search 高亮、levels 过滤、用户滚开后出现「跳到底部」按钮。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/logviewer/BasicVue.vue';
+import BasicVueSource from '~/components/demos/logviewer/BasicVue.vue?raw';
+
+## 基础用法
+
+`logs` 是 `LogEntry[]`：`{ id?, timestamp?, level?, message, source? }`。当 follow=true 且当前已经在底部时，新 log push 后自动滚到底；用户主动滚到上面就会停止跟随，并在右下角显示「跳到底部」按钮，点击恢复跟随。`search` 字符串会在 message 中高亮。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { ref } from 'vue';
+import { CfLogViewer } from '@chufix-design/vue';
+
+const logs = ref([
+  { id: 1, timestamp: Date.now(), level: 'info', message: 'service started' },
+]);
+const search = ref('');
+</script>
+
+<template>
+  <input v-model="search" placeholder="搜索…" />
+  <CfLogViewer :logs="logs" :search="search" :height="300" />
+</template>`}
+  reactCode={`const [logs, setLogs] = useState<LogEntry[]>([
+  { id: 1, timestamp: Date.now(), level: 'info', message: 'service started' },
+]);
+const [search, setSearch] = useState('');
+
+<input value={search} onChange={(e) => setSearch(e.target.value)} />
+<CfLogViewer logs={logs} search={search} height={300} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `logs` | `LogEntry[]` | — | 日志数组 |
+| `follow` | `boolean` | `true` | 自动跟随底部 |
+| `search` | `string` | — | 高亮关键字 |
+| `height` | `number \| string` | `320` | 面板高 |
+| `showTimestamp` | `boolean` | `true` | 显示时间戳 |
+| `showLevel` | `boolean` | `true` | 显示 level 标签 |
+| `showSource` | `boolean` | `false` | 显示 source 字段 |
+| `levels` | `LogLevel[]` | — | 过滤；不传显示全部 |
