@@ -1,6 +1,6 @@
 {
   "name": "@chufix-design/maps-vue",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "ChuFix UI Maps for Vue 3 —— 地图组件族（瓦片 / 区域 / 流向 / 聚合 / 热力）",
   "license": "MIT",
   "author": "chenqi92",
