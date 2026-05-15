@@ -137,10 +137,12 @@
   margin: 6px 0 4px;
   padding: 8px 10px;
   background: var(--bg-inset);
+  border: 0;
   border-radius: var(--r-2);
   font-family: var(--font-mono);
   font-size: var(--t-11);
   color: var(--fg-2);
   white-space: pre-wrap;
   word-break: break-word;
+  overflow-x: auto;
 }

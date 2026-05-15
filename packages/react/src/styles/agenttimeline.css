@@ -95,12 +95,14 @@
   margin: 6px 0 0;
   padding: 8px 10px;
   background: var(--bg-inset);
+  border: 0;
   border-radius: var(--r-2);
   font-family: var(--font-mono);
   font-size: var(--t-11);
   color: var(--fg-1);
   white-space: pre-wrap;
   word-break: break-word;
+  overflow-x: auto;
 }
 .cf-agentt__meta {
   display: grid;

@@ -116,11 +116,15 @@
 }
 .cf-net__detail header code {
   flex: 1 1 auto;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
   font-size: var(--t-11);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: var(--font-mono);
+  color: var(--fg-2);
 }
 .cf-net__close {
   width: 22px;
@@ -167,7 +171,9 @@
   margin: 0;
   padding: 8px;
   background: var(--bg-inset);
+  border: 0;
   border-radius: var(--r-2);
+  font-family: var(--font-mono);
   font-size: var(--t-11);
   white-space: pre-wrap;
   word-break: break-word;

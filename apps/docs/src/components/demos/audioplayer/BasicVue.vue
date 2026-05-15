@@ -10,7 +10,7 @@ const peaks: number[] = Array.from({ length: 160 }, (_, i) => {
 
 <template>
   <CfAudioPlayer
-    src="https://cdn.jsdelivr.net/npm/sample-audio-file@1.0.0/sample.mp3"
+    src="https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3"
     :peaks="peaks"
   />
 </template>

@@ -2,11 +2,23 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { CfRemoteCursor, type RemoteCursorItem } from '@chufix-design/vue';
 
-const cursors = ref<RemoteCursorItem[]>([
-  { id: 'alice', name: 'Alice', x: 80, y: 60 },
-  { id: 'bo', name: 'Bo', x: 220, y: 120 },
-  { id: 'chen', name: 'Chen', x: 380, y: 90 },
-]);
+interface CursorBase {
+  id: string;
+  name: string;
+  baseX: number;
+  baseY: number;
+  phase: number;
+}
+
+const base: CursorBase[] = [
+  { id: 'alice', name: 'Alice', baseX: 80, baseY: 60, phase: 0 },
+  { id: 'bo', name: 'Bo', baseX: 220, baseY: 120, phase: 1.7 },
+  { id: 'chen', name: 'Chen', baseX: 380, baseY: 90, phase: 3.1 },
+];
+
+const cursors = ref<RemoteCursorItem[]>(
+  base.map(({ id, name, baseX, baseY }) => ({ id, name, x: baseX, y: baseY })),
+);
 
 let raf: number | null = null;
 const start = performance.now();
@@ -14,10 +26,11 @@ const start = performance.now();
 onMounted(() => {
   function tick(t: number) {
     const dt = (t - start) / 1000;
-    cursors.value = cursors.value.map((c, i) => ({
-      ...c,
-      x: c.x + Math.sin(dt + i) * 0.6,
-      y: c.y + Math.cos(dt * 1.2 + i) * 0.4,
+    cursors.value = base.map(({ id, name, baseX, baseY, phase }) => ({
+      id,
+      name,
+      x: baseX + Math.sin(dt * 0.9 + phase) * 36,
+      y: baseY + Math.cos(dt * 0.7 + phase) * 24,
     }));
     raf = requestAnimationFrame(tick);
   }
@@ -44,7 +57,7 @@ onBeforeUnmount(() => {
 }
 .rc-demo__surface {
   position: relative;
-  min-height: 200px;
+  min-height: 240px;
   padding: 16px;
   background: var(--bg-1);
   border: 1px solid var(--line-1);
