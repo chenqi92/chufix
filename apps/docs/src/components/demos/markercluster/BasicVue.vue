@@ -18,8 +18,8 @@ function onClusterClick(c: { count: number }) {
   <CfMapTile
     :center="{ lng: 105, lat: 35 }"
     :zoom="3"
-    :width="560"
-    :height="340"
+    :width="720"
+    :height="520"
   >
     <CfMarkerCluster
       :data="data"

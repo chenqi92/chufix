@@ -1,0 +1,104 @@
+---
+title: Terrain3D 3D 地形
+description: three.js 实现的高程网格 3D 地形渲染。water-depth 蓝色色阶 / 陆地 elevation / 冲淤 delta 三套内置色阶；OrbitControls + 光照 + 点击拾取；three 作为 optional peerDependency 按需安装。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/terrain3d/BasicVue.vue';
+import BasicVueSource from '~/components/demos/terrain3d/BasicVue.vue?raw';
+
+## 基础用法
+
+传 `heightData`（行序展开的 `number[]` 或 `Float32Array`）+ `width` × `height` 网格尺寸。组件自动求范围、把高度映射到颜色与垂直挤压。Cesium / 复杂 GIS 平台可以输出符合这个格式的高程网格直接灌进来。
+
+```bash
+# 用 3D 组件前必须安装 three（peerDep，可选）
+pnpm add three
+```
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfTerrain3D } from '@chufix-design/maps-vue';
+
+// 96 × 72 的高程网格，比如河床水深 (负值 = 水下)
+const data = generateRiverbed();
+</script>
+
+<template>
+  <CfTerrain3D
+    :height-data="data"
+    :width="96"
+    :height="72"
+    color-scale="depth"
+    :exaggeration="1.4"
+    :renderer-height="540"
+    auto-rotate
+    show-grid
+    @pick="(p) => console.log('水深采样', p)"
+  />
+</template>`}
+  reactCode={`import { CfTerrain3D } from '@chufix-design/maps-react';
+
+<CfTerrain3D
+  heightData={data}
+  width={96}
+  height={72}
+  colorScale="depth"
+  exaggeration={1.4}
+  rendererHeight={540}
+  autoRotate
+  showGrid
+  onPick={(p) => console.log('水深采样', p)}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## ⚠ Astro 中必须用 `client:only="vue"`
+
+`CfTerrain3D` 在 mount 阶段动态 `import('three')` 并创建 WebGL 上下文，无法在 SSR 时执行；和 Tooltip / Modal / Toaster 一样，docs / 静态站点里嵌入演示必须用 `client:only="vue"`（React 端 `client:only="react"`），不能用 `client:load`。
+
+## 内置色阶
+
+| 色阶 | 适用场景 |
+|---|---|
+| `depth` | 水深 / 海底 — 深蓝→浅蓝→白 |
+| `elevation` | 陆地高程 — 绿→黄褐→灰白雪线 |
+| `delta` | 变化量（冲淤）— 红色下降、蓝色上升（围绕中点 0.5 反对称） |
+| `viridis` | 通用感知线性 |
+
+也可以传函数 `(t: number) => { r, g, b }` 全自定义；`t ∈ [0, 1]` 按 height 归一化后传入。
+
+## API
+
+### Props
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `heightData` | `number[] \| Float32Array` | — | 行序展开的高程数据，长度 `width × height` |
+| `width` | `number` | — | 网格列数 |
+| `height` | `number` | — | 网格行数 |
+| `bounds` | `{ minX, maxX, minY, maxY }` | — | 坐标边界（可选，用于业务侧反算实际经纬度） |
+| `minHeight` / `maxHeight` | `number` | 自动 | 强制色阶上下限；不传时从数据求 min/max |
+| `exaggeration` | `number` | `1` | 垂直夸张倍数 |
+| `colorScale` | `'depth' \| 'elevation' \| 'delta' \| 'viridis' \| Fn` | `'depth'` | 内置色阶或自定义函数 |
+| `wireframe` | `boolean` | `false` | 叠加线框 |
+| `camera` | `{ pitch?, yaw?, zoom? }` | — | 初始相机角度（degrees）与距离倍数 |
+| `autoRotate` | `boolean` | `false` | 自动绕场景旋转 |
+| `showGrid` | `boolean` | `false` | 底部网格辅助 |
+| `background` | `string` | `oklch(13%)` | canvas 容器背景色 |
+| `rendererWidth` / `rendererHeight` | `number \| string` | `100% × 480` | 容器尺寸 |
+
+### Events
+
+| 事件 | 载荷 | 说明 |
+|---|---|---|
+| `ready` | — | 渲染器就绪 |
+| `pick` | `{ x, y, z, row, col }` | 点击地形拾取，坐标 + 网格行列 |
+
+## 与 Cesium / Mapbox GL 的关系
+
+- **Cesium**: 完整地球级 GIS 平台（瓦片 / 地形 / 影像 / 时间轴 / 坐标变换），bundle ~10 MB。适合做完整 GIS 应用。
+- **CfTerrain3D**: 单一关注「一块高程网格的 3D 可视化」，不做地图投影 / 瓦片 / 时间轴，~60 KB（不含 three peerDep）。适合做仪表盘里的水深 / 冲淤 / DEM 单卡视图。
+
+需要完整 Cesium 集成请直接 `npm i cesium` 自用；CfTerrain3D 只在你已有 height 网格数据时用。

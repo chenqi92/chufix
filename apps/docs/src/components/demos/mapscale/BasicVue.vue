@@ -6,8 +6,8 @@ import { CfMapTile, CfMapScale } from '@chufix-design/maps-vue';
   <CfMapTile
     :center="{ lng: 116.4, lat: 39.9 }"
     :zoom="6"
-    :width="560"
-    :height="320"
+    :width="720"
+    :height="500"
   >
     <CfMapScale position="bottom-left" unit="metric" />
     <CfMapScale position="bottom-right" unit="imperial" />

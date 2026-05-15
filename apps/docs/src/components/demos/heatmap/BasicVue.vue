@@ -24,8 +24,8 @@ for (const c of centers) {
   <CfMapTile
     :center="{ lng: 112, lat: 32 }"
     :zoom="4"
-    :width="560"
-    :height="340"
+    :width="720"
+    :height="520"
   >
     <CfHeatMap :data="data" :radius="22" :opacity="0.75" />
   </CfMapTile>

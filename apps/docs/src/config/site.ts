@@ -309,6 +309,7 @@ export const sidebar: SidebarGroup[] = [
       c('MarkerCluster', '标记聚合', 'markercluster'),
       c('MapLegend', '图例', 'maplegend'),
       c('MapScale', '比例尺', 'mapscale'),
+      c('Terrain3D', '3D 地形', 'terrain3d'),
     ],
   },
   {

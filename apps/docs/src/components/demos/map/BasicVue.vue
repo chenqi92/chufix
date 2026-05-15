@@ -94,7 +94,7 @@ function onViewportChange(viewport: MapViewport) {
       :overlays="overlays"
       :routes="routes"
       :active-id="activeId"
-      :height="420"
+      :height="540"
       @marker-click="onMarkerClick"
       @overlay-click="onOverlayClick"
       @map-click="onMapClick"

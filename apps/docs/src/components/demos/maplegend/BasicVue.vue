@@ -21,8 +21,8 @@ const cities = [
     <CfMapTile
       :center="{ lng: 112, lat: 32 }"
       :zoom="4"
-      :width="560"
-      :height="320"
+      :width="720"
+      :height="500"
     >
       <CfBubbleMap :data="cities" unit=" 万" />
       <CfMapLegend
