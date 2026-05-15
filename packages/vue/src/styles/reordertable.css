@@ -1,0 +1,97 @@
+.cf-rtable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  font-size: var(--t-13);
+  color: var(--fg-1);
+}
+
+.cf-rtable__head,
+.cf-rtable__row {
+  display: grid;
+  align-items: center;
+}
+.cf-rtable__head {
+  background: var(--bg-2);
+  color: var(--fg-2);
+  font-weight: 500;
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--t-12);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.cf-rtable__body {
+  position: relative;
+}
+.cf-rtable__row {
+  border-top: 1px solid var(--line-1);
+  background: var(--bg-1);
+  will-change: transform;
+}
+.cf-rtable__body > .cf-rtable__row:first-child {
+  border-top: 0;
+}
+.cf-rtable.is-striped .cf-rtable__row:nth-child(even) {
+  background: var(--bg-0);
+}
+.cf-rtable__row.is-dragging {
+  z-index: 2;
+  box-shadow: var(--shadow-3);
+  background: var(--bg-2);
+}
+.cf-rtable.is-dragging .cf-rtable__row:not(.is-dragging) {
+  pointer-events: none;
+}
+
+.cf-rtable__cell {
+  padding: var(--s-2) var(--s-3);
+  min-width: 0;
+  text-align: start;
+}
+.cf-rtable__cell--center {
+  text-align: center;
+}
+.cf-rtable__cell--end {
+  text-align: end;
+}
+.cf-rtable__cell--handle {
+  padding: 0;
+}
+
+.cf-rtable__handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--fg-3);
+  cursor: grab;
+  padding: 0;
+  touch-action: none;
+}
+.cf-rtable__handle:hover:not(:disabled) {
+  color: var(--fg-1);
+  background: var(--bg-2);
+}
+.cf-rtable__handle:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.cf-rtable__row.is-dragging .cf-rtable__handle {
+  cursor: grabbing;
+  color: var(--accent-1);
+}
+.cf-rtable__handle svg {
+  width: 14px;
+  height: 14px;
+}
+.cf-rtable.is-disabled .cf-rtable__handle {
+  cursor: default;
+  pointer-events: none;
+}

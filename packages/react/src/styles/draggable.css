@@ -1,0 +1,18 @@
+.cf-draggable {
+  position: relative;
+  touch-action: none;
+  cursor: grab;
+}
+.cf-draggable.is-disabled {
+  cursor: default;
+  touch-action: auto;
+}
+.cf-draggable.is-dragging {
+  cursor: grabbing;
+}
+.cf-draggable--ghost.is-dragging {
+  opacity: 0.4;
+}
+.cf-draggable--hidden.is-dragging {
+  visibility: hidden;
+}

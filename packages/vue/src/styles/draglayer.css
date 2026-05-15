@@ -1,0 +1,25 @@
+.cf-draglayer {
+  position: fixed;
+  z-index: var(--z-drag-preview);
+  pointer-events: none;
+  transform: translateZ(0);
+  will-change: left, top;
+}
+.cf-draglayer__default {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-3);
+  font-size: var(--t-13);
+  line-height: 1;
+}
+.cf-draglayer.can-drop .cf-draglayer__default {
+  border-color: var(--accent-1);
+  background: var(--accent-soft);
+  color: var(--fg-1);
+}

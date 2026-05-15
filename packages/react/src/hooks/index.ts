@@ -18,6 +18,12 @@ export { useThrottledFn, type ThrottledFn, type ThrottleOptions } from './useThr
 export { useDrag, type DragOptions, type DragState, type DragAxis } from './useDrag';
 export { useSwipe, type SwipeOptions, type SwipeDirection } from './useSwipe';
 
+// Drag & Drop coordinator
+export { useDraggable, type UseDraggableOptions } from './useDraggable';
+export { useDroppable, type UseDroppableOptions } from './useDroppable';
+export { useDragDrop } from './useDragDrop';
+export { dndStore, type DragPayload, type DragSnapshot, type DroppableEntry } from './dndStore';
+
 // Form validation
 export {
   useFormValidation,

@@ -172,6 +172,11 @@ import './styles/fieldrow.css';
 import './styles/formgrid.css';
 import './styles/formsection.css';
 import './styles/formschema.css';
+import './styles/sortable.css';
+import './styles/draggable.css';
+import './styles/droppable.css';
+import './styles/draglayer.css';
+import './styles/reordertable.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1329,6 +1334,15 @@ export type {
   FormFieldType,
   FormFieldOption,
 } from './formschema/variants';
+
+// Drag & Drop family
+export { default as CfSortable } from './sortable/Sortable.vue';
+export type { SortableAxis } from './sortable/variants';
+export { default as CfDraggable } from './draggable/Draggable.vue';
+export { default as CfDroppable } from './droppable/Droppable.vue';
+export { default as CfDragLayer } from './draglayer/DragLayer.vue';
+export { default as CfReorderTable } from './reordertable/ReorderTable.vue';
+export type { ReorderColumn } from './reordertable/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was

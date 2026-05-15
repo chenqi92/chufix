@@ -1,0 +1,31 @@
+.cf-sortable {
+  display: flex;
+  width: 100%;
+}
+.cf-sortable--y {
+  flex-direction: column;
+}
+.cf-sortable--x {
+  flex-direction: row;
+}
+
+.cf-sortable__item {
+  position: relative;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+  will-change: transform;
+}
+.cf-sortable.is-disabled .cf-sortable__item {
+  cursor: default;
+  touch-action: auto;
+}
+.cf-sortable__item.is-dragging {
+  z-index: var(--z-drag-preview);
+  cursor: grabbing;
+  box-shadow: var(--shadow-3);
+  border-radius: var(--r-3);
+}
+.cf-sortable.is-dragging .cf-sortable__item:not(.is-dragging) {
+  pointer-events: none;
+}

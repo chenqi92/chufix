@@ -172,6 +172,11 @@ import './styles/fieldrow.css';
 import './styles/formgrid.css';
 import './styles/formsection.css';
 import './styles/formschema.css';
+import './styles/sortable.css';
+import './styles/draggable.css';
+import './styles/droppable.css';
+import './styles/draglayer.css';
+import './styles/reordertable.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1367,6 +1372,27 @@ export type {
   FormFieldType,
   FormFieldOption,
 } from './formschema/variants';
+// Drag & Drop family
+export { Sortable as CfSortable } from './sortable/Sortable';
+export type {
+  SortableProps,
+  SortableReorderEvent,
+  SortableRenderProps,
+} from './sortable/Sortable';
+export type { SortableAxis } from './sortable/variants';
+export { Draggable as CfDraggable } from './draggable/Draggable';
+export type { DraggableProps } from './draggable/Draggable';
+export { Droppable as CfDroppable } from './droppable/Droppable';
+export type { DroppableProps } from './droppable/Droppable';
+export { DragLayer as CfDragLayer } from './draglayer/DragLayer';
+export type { DragLayerProps } from './draglayer/DragLayer';
+export { ReorderTable as CfReorderTable } from './reordertable/ReorderTable';
+export type {
+  ReorderTableProps,
+  ReorderTableReorderEvent,
+} from './reordertable/ReorderTable';
+export type { ReorderColumn } from './reordertable/variants';
+
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was
 // moved to `@chufix-design/maps-react`. Install separately:
