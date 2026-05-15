@@ -6,12 +6,18 @@
   border-radius: var(--r-3);
   overflow: hidden;
   padding: 8px;
+  font-family: var(--font-sans);
   font-size: var(--t-12);
+  color: var(--fg-1);
+}
+.cf-flame button {
+  font: inherit;
+  color: inherit;
 }
 .cf-flame__reset {
   display: inline-flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 4px 10px;
   margin-bottom: 6px;
   border: 1px solid var(--line-2);
   background: var(--bg-2);
@@ -20,16 +26,40 @@
   font-size: var(--t-12);
   cursor: pointer;
 }
-.cf-flame__svg {
-  display: block;
+.cf-flame__reset:hover {
+  background: var(--bg-3);
+}
+.cf-flame__viewport {
+  position: relative;
   width: 100%;
 }
 .cf-flame__rect {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--bg-0);
+  text-align: left;
   cursor: pointer;
-  transition: opacity var(--dur-fast) var(--ease-out);
+  overflow: hidden;
+  font-size: var(--t-11);
+  font-weight: 500;
+  transition: filter var(--dur-fast) var(--ease-out);
 }
-.cf-flame__rect:hover {
-  opacity: 0.85;
+.cf-flame__rect:hover,
+.cf-flame__rect.is-hovered {
+  filter: brightness(1.1);
+  border-color: var(--fg-1);
+}
+.cf-flame__label {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
 }
 .cf-flame__tooltip {
   position: absolute;
@@ -50,6 +80,7 @@
 .cf-flame__tooltip strong {
   font-family: var(--font-mono);
   word-break: break-all;
+  font-weight: 600;
 }
 .cf-flame__tooltip span {
   color: var(--fg-3);

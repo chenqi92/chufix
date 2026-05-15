@@ -59,11 +59,6 @@ function onLeave() {
   hovered.value = null;
   emit('frame-hover', null);
 }
-
-function labelFits(widthPct: number, name: string, totalWidth: number): boolean {
-  const px = widthPct * totalWidth;
-  return px > Math.max(40, name.length * 6);
-}
 </script>
 
 <template>
@@ -74,39 +69,30 @@ function labelFits(widthPct: number, name: string, totalWidth: number): boolean 
       class="cf-flame__reset"
       @click="reset"
     >← 重置缩放</button>
-    <svg
-      class="cf-flame__svg"
-      :viewBox="`0 0 1000 ${totalHeight}`"
-      preserveAspectRatio="none"
+    <div
+      class="cf-flame__viewport"
       :style="{ height: `${totalHeight}px` }"
       @mouseleave="onLeave"
     >
-      <g
+      <button
         v-for="(f, i) in frames"
         :key="i"
-        :transform="`translate(${f.x * 1000}, ${f.depth * rowHeight})`"
+        type="button"
+        class="cf-flame__rect"
+        :class="{ 'is-hovered': hovered === f }"
+        :style="{
+          left: `${f.x * 100}%`,
+          width: `max(${minWidth}px, ${f.width * 100}%)`,
+          top: `${f.depth * rowHeight}px`,
+          height: `${rowHeight - 1}px`,
+          background: colorFor(f.node),
+        }"
         @click="onFrameClick(f)"
         @mousemove="(e) => onHover(f, e)"
       >
-        <rect
-          :width="Math.max(minWidth, f.width * 1000)"
-          :height="rowHeight - 1"
-          :fill="colorFor(f.node)"
-          :stroke="hovered === f ? 'var(--fg-1)' : 'transparent'"
-          stroke-width="1"
-          rx="1"
-          class="cf-flame__rect"
-        />
-        <text
-          v-if="labelFits(f.width, f.node.name, 1000)"
-          :x="6"
-          :y="rowHeight - 6"
-          fill="var(--bg-0)"
-          font-size="11"
-          font-family="var(--font-mono)"
-        >{{ f.node.name }}</text>
-      </g>
-    </svg>
+        <span class="cf-flame__label">{{ f.node.name }}</span>
+      </button>
+    </div>
     <div
       v-if="hovered"
       class="cf-flame__tooltip"

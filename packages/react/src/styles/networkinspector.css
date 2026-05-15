@@ -4,7 +4,13 @@
   border: 1px solid var(--line-1);
   border-radius: var(--r-3);
   overflow: hidden;
+  font-family: var(--font-sans);
   font-size: var(--t-12);
+  color: var(--fg-1);
+}
+.cf-net button {
+  font: inherit;
+  color: inherit;
 }
 .cf-net__list {
   flex: 1 1 0;

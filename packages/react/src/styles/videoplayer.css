@@ -6,6 +6,12 @@
   border-radius: var(--r-3);
   overflow: hidden;
   color: #fff;
+  font-family: var(--font-sans);
+}
+.cf-video button,
+.cf-video input {
+  font: inherit;
+  color: inherit;
 }
 .cf-video__el {
   display: block;

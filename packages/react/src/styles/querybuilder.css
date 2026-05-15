@@ -6,6 +6,15 @@
   background: var(--bg-1);
   border: 1px solid var(--line-1);
   border-radius: var(--r-3);
+  font-family: var(--font-sans);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+}
+.cf-qb button,
+.cf-qb select,
+.cf-qb input {
+  font: inherit;
+  color: inherit;
 }
 .cf-qb__combinator {
   display: flex;

@@ -7,7 +7,12 @@
   border: 1px solid var(--line-1);
   border-radius: var(--r-3);
   color: var(--accent-1);
+  font-family: var(--font-sans);
   font-size: var(--t-12);
+}
+.cf-audio button,
+.cf-audio input {
+  font: inherit;
 }
 .cf-audio__play,
 .cf-audio__mute {

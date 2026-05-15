@@ -6,8 +6,13 @@
   border: 1px solid var(--line-1);
   border-radius: var(--r-3);
   overflow: hidden;
+  font-family: var(--font-sans);
   font-size: var(--t-13);
   color: var(--fg-1);
+}
+.cf-rtable button {
+  font: inherit;
+  color: inherit;
 }
 
 .cf-rtable__head,

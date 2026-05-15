@@ -18,11 +18,6 @@ export interface FlamegraphProps {
   onFrameHover?: (node: FlameNode | null) => void;
 }
 
-function labelFits(widthPct: number, name: string, totalWidth: number): boolean {
-  const px = widthPct * totalWidth;
-  return px > Math.max(40, name.length * 6);
-}
-
 export function Flamegraph({
   data,
   rowHeight = 18,
@@ -61,10 +56,7 @@ export function Flamegraph({
   }
 
   return (
-    <div
-      ref={rootRef}
-      className={['cf-flame', className].filter(Boolean).join(' ')}
-    >
+    <div ref={rootRef} className={['cf-flame', className].filter(Boolean).join(' ')}>
       {zoomPath.length > 0 && (
         <button
           type="button"
@@ -74,43 +66,30 @@ export function Flamegraph({
           ← 重置缩放
         </button>
       )}
-      <svg
-        className="cf-flame__svg"
-        viewBox={`0 0 1000 ${totalHeight}`}
-        preserveAspectRatio="none"
+      <div
+        className="cf-flame__viewport"
         style={{ height: `${totalHeight}px` }}
         onMouseLeave={onLeave}
       >
         {frames.map((f, i) => (
-          <g
+          <button
             key={i}
-            transform={`translate(${f.x * 1000}, ${f.depth * rowHeight})`}
+            type="button"
+            className={['cf-flame__rect', hovered === f && 'is-hovered'].filter(Boolean).join(' ')}
+            style={{
+              left: `${f.x * 100}%`,
+              width: `max(${minWidth}px, ${f.width * 100}%)`,
+              top: `${f.depth * rowHeight}px`,
+              height: `${rowHeight - 1}px`,
+              background: colorFor(f.node),
+            }}
             onClick={() => onClick(f)}
             onMouseMove={(ev) => onHover(f, ev)}
           >
-            <rect
-              width={Math.max(minWidth, f.width * 1000)}
-              height={rowHeight - 1}
-              fill={colorFor(f.node)}
-              stroke={hovered === f ? 'var(--fg-1)' : 'transparent'}
-              strokeWidth={1}
-              rx={1}
-              className="cf-flame__rect"
-            />
-            {labelFits(f.width, f.node.name, 1000) && (
-              <text
-                x={6}
-                y={rowHeight - 6}
-                fill="var(--bg-0)"
-                fontSize={11}
-                fontFamily="var(--font-mono)"
-              >
-                {f.node.name}
-              </text>
-            )}
-          </g>
+            <span className="cf-flame__label">{f.node.name}</span>
+          </button>
         ))}
-      </svg>
+      </div>
       {hovered && (
         <div
           className="cf-flame__tooltip"

@@ -3,8 +3,13 @@
   border: 1px solid var(--line-1);
   border-radius: var(--r-3);
   padding: 8px 12px;
+  font-family: var(--font-sans);
   font-size: var(--t-13);
   color: var(--fg-1);
+}
+.cf-rtree button {
+  font: inherit;
+  color: inherit;
 }
 .cf-rtree__root,
 .cf-rtree__children {

@@ -10,6 +10,10 @@
   font-size: var(--t-12);
   color: var(--fg-1);
 }
+.cf-logv button {
+  font-family: var(--font-sans);
+  font-size: var(--t-12);
+}
 .cf-logv__scroller {
   flex: 1 1 auto;
   overflow-y: auto;
