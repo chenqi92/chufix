@@ -183,6 +183,12 @@ import './styles/imageannotator.css';
 import './styles/hotspotimage.css';
 import './styles/audioplayer.css';
 import './styles/videoplayer.css';
+import './styles/flamegraph.css';
+import './styles/logviewer.css';
+import './styles/terminal.css';
+import './styles/querybuilder.css';
+import './styles/networkinspector.css';
+import './styles/requesttimeline.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1372,6 +1378,31 @@ export type {
 export { default as CfAudioPlayer } from './audioplayer/AudioPlayer.vue';
 export { default as CfVideoPlayer } from './videoplayer/VideoPlayer.vue';
 export type { VideoCaption } from './videoplayer/variants';
+
+// Developer tools family
+export { default as CfFlamegraph } from './flamegraph/Flamegraph.vue';
+export type { FlameNode, FlameFrame } from './flamegraph/variants';
+export { default as CfLogViewer } from './logviewer/LogViewer.vue';
+export type { LogEntry, LogLevel } from './logviewer/variants';
+export { default as CfTerminal } from './terminal/Terminal.vue';
+export type { TerminalLine, TerminalLineType } from './terminal/variants';
+export { default as CfQueryBuilder } from './querybuilder/QueryBuilder.vue';
+export type {
+  QueryField,
+  QueryFieldType,
+  QueryFieldOption,
+  QueryCondition,
+  QueryGroup,
+  QueryOperator,
+} from './querybuilder/variants';
+export { default as CfNetworkInspector } from './networkinspector/NetworkInspector.vue';
+export type { NetworkRequest, NetworkHeader } from './networkinspector/variants';
+export { default as CfRequestTimeline } from './requesttimeline/RequestTimeline.vue';
+export type {
+  RequestTiming,
+  TimingPhase as RequestTimingPhase,
+  PhaseType,
+} from './requesttimeline/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was

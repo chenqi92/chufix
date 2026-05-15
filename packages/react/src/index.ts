@@ -183,6 +183,12 @@ import './styles/imageannotator.css';
 import './styles/hotspotimage.css';
 import './styles/audioplayer.css';
 import './styles/videoplayer.css';
+import './styles/flamegraph.css';
+import './styles/logviewer.css';
+import './styles/terminal.css';
+import './styles/querybuilder.css';
+import './styles/networkinspector.css';
+import './styles/requesttimeline.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1430,6 +1436,37 @@ export type { AudioPlayerProps } from './audioplayer/AudioPlayer';
 export { VideoPlayer as CfVideoPlayer } from './videoplayer/VideoPlayer';
 export type { VideoPlayerProps } from './videoplayer/VideoPlayer';
 export type { VideoCaption } from './videoplayer/variants';
+
+// Developer tools family
+export { Flamegraph as CfFlamegraph } from './flamegraph/Flamegraph';
+export type { FlamegraphProps } from './flamegraph/Flamegraph';
+export type { FlameNode, FlameFrame } from './flamegraph/variants';
+export { LogViewer as CfLogViewer } from './logviewer/LogViewer';
+export type { LogViewerProps } from './logviewer/LogViewer';
+export type { LogEntry, LogLevel } from './logviewer/variants';
+export { Terminal as CfTerminal } from './terminal/Terminal';
+export type { TerminalProps } from './terminal/Terminal';
+export type { TerminalLine, TerminalLineType } from './terminal/variants';
+export { QueryBuilder as CfQueryBuilder } from './querybuilder/QueryBuilder';
+export type { QueryBuilderProps } from './querybuilder/QueryBuilder';
+export type {
+  QueryField,
+  QueryFieldType,
+  QueryFieldOption,
+  QueryCondition,
+  QueryGroup,
+  QueryOperator,
+} from './querybuilder/variants';
+export { NetworkInspector as CfNetworkInspector } from './networkinspector/NetworkInspector';
+export type { NetworkInspectorProps } from './networkinspector/NetworkInspector';
+export type { NetworkRequest, NetworkHeader } from './networkinspector/variants';
+export { RequestTimeline as CfRequestTimeline } from './requesttimeline/RequestTimeline';
+export type { RequestTimelineProps } from './requesttimeline/RequestTimeline';
+export type {
+  RequestTiming,
+  TimingPhase as RequestTimingPhase,
+  PhaseType,
+} from './requesttimeline/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was

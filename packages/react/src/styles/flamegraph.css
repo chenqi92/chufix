@@ -1,0 +1,56 @@
+.cf-flame {
+  position: relative;
+  width: 100%;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  padding: 8px;
+  font-size: var(--t-12);
+}
+.cf-flame__reset {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  margin-bottom: 6px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border-radius: var(--r-2);
+  font-size: var(--t-12);
+  cursor: pointer;
+}
+.cf-flame__svg {
+  display: block;
+  width: 100%;
+}
+.cf-flame__rect {
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.cf-flame__rect:hover {
+  opacity: 0.85;
+}
+.cf-flame__tooltip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-3);
+  pointer-events: none;
+  font-size: var(--t-12);
+  z-index: 2;
+  max-width: 260px;
+}
+.cf-flame__tooltip strong {
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+.cf-flame__tooltip span {
+  color: var(--fg-3);
+}

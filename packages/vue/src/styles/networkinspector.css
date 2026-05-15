@@ -1,0 +1,170 @@
+.cf-net {
+  display: flex;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  font-size: var(--t-12);
+}
+.cf-net__list {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cf-net__head,
+.cf-net__row {
+  display: grid;
+  grid-template-columns: 70px 1fr 60px 80px 80px 80px;
+  align-items: center;
+  gap: 8px;
+}
+.cf-net__head {
+  padding: 8px 10px;
+  background: var(--bg-2);
+  color: var(--fg-2);
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--t-11);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.cf-net__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+.cf-net__row {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line-1);
+  cursor: pointer;
+  color: var(--fg-1);
+  font-family: var(--font-mono);
+}
+.cf-net__row:hover {
+  background: var(--bg-2);
+}
+.cf-net__row.is-selected {
+  background: var(--accent-soft);
+}
+.cf-net__cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.cf-net__cell--time,
+.cf-net__cell--size {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cf-net__method {
+  display: inline-flex;
+  justify-content: center;
+  padding: 1px 6px;
+  font-size: var(--t-11);
+  font-weight: 600;
+  border-radius: var(--r-2);
+  background: var(--bg-2);
+  color: var(--fg-2);
+}
+.cf-net__method[data-method='GET'] { color: var(--proto-get); }
+.cf-net__method[data-method='POST'] { color: var(--proto-post); }
+.cf-net__method[data-method='PUT'] { color: var(--proto-put); }
+.cf-net__method[data-method='PATCH'] { color: var(--proto-patch); }
+.cf-net__method[data-method='DELETE'] { color: var(--proto-del); }
+.cf-net__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: var(--r-2);
+  background: var(--bg-2);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.cf-net__status[data-tone='success'] { background: var(--status-success-soft); color: var(--status-success); }
+.cf-net__status[data-tone='info'] { background: var(--status-info-soft); color: var(--status-info); }
+.cf-net__status[data-tone='warning'] { background: var(--status-warning-soft); color: var(--status-warning); }
+.cf-net__status[data-tone='error'] { background: var(--status-error-soft); color: var(--status-error); }
+
+.cf-net__detail {
+  flex: 0 0 40%;
+  max-width: 50%;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line-1);
+  background: var(--bg-0);
+  overflow: hidden;
+}
+.cf-net__detail header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+  flex-shrink: 0;
+}
+.cf-net__detail header strong {
+  color: var(--accent-1);
+}
+.cf-net__detail header code {
+  flex: 1 1 auto;
+  font-size: var(--t-11);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+.cf-net__close {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: 0;
+  color: var(--fg-3);
+  cursor: pointer;
+  border-radius: var(--r-2);
+}
+.cf-net__close:hover {
+  background: var(--bg-3);
+  color: var(--fg-1);
+}
+.cf-net__detail section {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-1);
+  overflow-x: auto;
+}
+.cf-net__detail h4 {
+  margin: 0 0 6px;
+  color: var(--fg-2);
+  font-size: var(--t-11);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+.cf-net__detail table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+}
+.cf-net__detail td {
+  padding: 2px 4px;
+  vertical-align: top;
+  word-break: break-all;
+}
+.cf-net__detail td:first-child {
+  color: var(--accent-1);
+  width: 35%;
+}
+.cf-net__detail pre {
+  margin: 0;
+  padding: 8px;
+  background: var(--bg-inset);
+  border-radius: var(--r-2);
+  font-size: var(--t-11);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow: auto;
+}

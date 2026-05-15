@@ -1,0 +1,98 @@
+.cf-reqt {
+  --cf-reqt-label-width: 220px;
+  --cf-reqt-row-height: 22px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  font-size: var(--t-12);
+}
+.cf-reqt__axis {
+  display: grid;
+  grid-template-columns: var(--cf-reqt-label-width) 1fr;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+  font-size: var(--t-11);
+  color: var(--fg-3);
+}
+.cf-reqt__axis-label {
+  padding: 6px 10px;
+}
+.cf-reqt__axis-grid {
+  position: relative;
+  height: 26px;
+}
+.cf-reqt__tick {
+  position: absolute;
+  top: 6px;
+  transform: translateX(-50%);
+  font-variant-numeric: tabular-nums;
+}
+.cf-reqt__rows {
+  display: flex;
+  flex-direction: column;
+}
+.cf-reqt__row {
+  display: grid;
+  grid-template-columns: var(--cf-reqt-label-width) 1fr;
+  align-items: center;
+  height: var(--cf-reqt-row-height);
+  border-bottom: 1px solid var(--line-1);
+  cursor: pointer;
+}
+.cf-reqt__row:hover {
+  background: var(--bg-2);
+}
+.cf-reqt__row:last-child {
+  border-bottom: 0;
+}
+.cf-reqt__label {
+  padding: 0 10px;
+  color: var(--fg-1);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cf-reqt__track {
+  position: relative;
+  height: 100%;
+  padding-right: 60px;
+}
+.cf-reqt__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+.cf-reqt__bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 10px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+.cf-reqt__seg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+.cf-reqt__bar--error {
+  outline: 1px solid var(--status-error);
+}
+.cf-reqt__bar--warning {
+  outline: 1px solid var(--status-warning);
+}
+.cf-reqt__duration {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-11);
+}

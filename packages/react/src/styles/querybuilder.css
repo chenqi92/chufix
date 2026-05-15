@@ -1,0 +1,108 @@
+.cf-qb {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+}
+.cf-qb__combinator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-1);
+}
+.cf-qb__chip {
+  padding: 4px 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  color: var(--fg-2);
+  border-radius: var(--r-pill);
+  font-size: var(--t-12);
+  font-weight: 600;
+  cursor: pointer;
+}
+.cf-qb__chip.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+.cf-qb__count {
+  margin-left: auto;
+  color: var(--fg-3);
+  font-size: var(--t-12);
+}
+.cf-qb__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cf-qb__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-2);
+}
+.cf-qb__select,
+.cf-qb__input {
+  height: 28px;
+  padding: 0 8px;
+  background: var(--bg-0);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  color: var(--fg-1);
+  font-size: var(--t-12);
+  font-family: inherit;
+  min-width: 0;
+}
+.cf-qb__select {
+  appearance: none;
+  padding-right: 24px;
+}
+.cf-qb__select--op {
+  flex-shrink: 0;
+}
+.cf-qb__input {
+  flex: 1 1 80px;
+}
+.cf-qb__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--fg-3);
+  border-radius: var(--r-2);
+  font-size: var(--t-13);
+  cursor: pointer;
+}
+.cf-qb__remove:hover {
+  background: var(--status-error-soft);
+  color: var(--status-error);
+}
+.cf-qb__add {
+  align-self: flex-start;
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px dashed var(--line-2);
+  color: var(--fg-2);
+  border-radius: var(--r-2);
+  font-size: var(--t-12);
+  cursor: pointer;
+}
+.cf-qb__add:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
