@@ -1,0 +1,70 @@
+---
+title: ReasoningTree 思考树
+description: 树状 AI 思路可视化：每节点一个思考分支，可带 score；selected 节点加粗（最佳路径）；子树可折叠。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/reasoningtree/BasicVue.vue';
+import BasicVueSource from '~/components/demos/reasoningtree/BasicVue.vue?raw';
+
+## 基础用法
+
+适合展示 Tree-of-Thoughts / MCTS-style 推理过程。`score` 0–1 自动按区间上色（红/黄/蓝/绿）。`selected: true` 高亮（最佳路径）。子树点击 caret 折叠。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfReasoningTree } from '@chufix-design/vue';
+
+const root = {
+  id: 'root',
+  thought: '用户请求：「修复 P99 慢」',
+  children: [
+    {
+      id: 'h1',
+      thought: '假设 A：数据库慢查询',
+      score: 0.72,
+      selected: true,
+      children: [
+        { id: 'h1-1', thought: '缺索引', score: 0.81, selected: true },
+      ],
+    },
+    { id: 'h2', thought: '假设 B：N+1', score: 0.4 },
+  ],
+};
+</script>
+
+<template>
+  <CfReasoningTree :root="root" />
+</template>`}
+  reactCode={`const root: ReasoningNode = {
+  id: 'root',
+  thought: '用户请求：「修复 P99 慢」',
+  children: [
+    { id: 'h1', thought: '假设 A：DB 慢', score: 0.72, selected: true },
+  ],
+};
+
+<CfReasoningTree root={root} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `root` | `ReasoningNode` | — | 根节点 |
+| `showScores` | `boolean` | `true` | 每节点右侧显示百分比 |
+| `initialCollapsedDepth` | `number` | — | 大于等于该深度的子树默认收起 |
+
+### ReasoningNode
+
+```ts
+interface ReasoningNode {
+  id: string;
+  thought: string;
+  score?: number;          // 0-1
+  selected?: boolean;       // 最佳路径
+  children?: ReasoningNode[];
+}
+```

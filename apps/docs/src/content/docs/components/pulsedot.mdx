@@ -1,0 +1,30 @@
+---
+title: PulseDot 脉冲指示点
+description: 圆点 + 外圈扩散动画，用于在线 / live / 健康状态指示；tone 选语义色，size 选大小，pulse=false 时静态。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pulsedot/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pulsedot/BasicVue.vue?raw';
+
+## 基础用法
+
+<DemoFrame
+  vueCode={`<CfPulseDot tone="success" label="健康" />
+<CfPulseDot tone="error" label="不可达" />
+<CfPulseDot tone="accent" label="LIVE" size="lg" />`}
+  reactCode={`<CfPulseDot tone="success" label="健康" />
+<CfPulseDot tone="error" label="不可达" />
+<CfPulseDot tone="accent" label="LIVE" size="lg" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `tone` | `'success' \| 'warning' \| 'error' \| 'info' \| 'accent' \| 'default'` | `'success'` | |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `pulse` | `boolean` | `true` | 关闭后只显示静态点 |
+| `label` | `string` | — | 文字标签 |

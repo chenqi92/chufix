@@ -1,0 +1,29 @@
+---
+title: TypingIndicator 输入中
+description: 三圆点 bouncing 动画 + 可选名字 prefix；prefers-reduced-motion 时退化为静态。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/typingindicator/BasicVue.vue';
+import BasicVueSource from '~/components/demos/typingindicator/BasicVue.vue?raw';
+
+## 基础用法
+
+<DemoFrame
+  vueCode={`<CfTypingIndicator />
+<CfTypingIndicator name="Alice" />
+<CfTypingIndicator name="Bo" tone="accent" />`}
+  reactCode={`<CfTypingIndicator />
+<CfTypingIndicator name="Alice" />
+<CfTypingIndicator name="Bo" tone="accent" />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `name` | `string` | — | 名字前缀 |
+| `size` | `'sm' \| 'md'` | `'md'` | |
+| `tone` | `'default' \| 'accent'` | `'default'` | |

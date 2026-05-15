@@ -1,0 +1,36 @@
+---
+title: RemoteCursor 远端光标
+description: 把远端用户的光标 + 名字标签叠加到当前界面。位置接 WebSocket / WebRTC，颜色按 user id 哈希。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/remotecursor/BasicVue.vue';
+import BasicVueSource from '~/components/demos/remotecursor/BasicVue.vue?raw';
+
+## 基础用法
+
+`cursors` 数组每项 `{ id, x, y, name?, color? }`，坐标是相对于父容器（`positioning='absolute'`，默认）或视口（`'fixed'`）的像素值。CSS 用 `transition` 平滑插值，业务端只需以 60 Hz 推送数据。
+
+<DemoFrame
+  vueCode={`<CfRemoteCursor
+  :cursors="[
+    { id: 'alice', name: 'Alice', x: 80, y: 60 },
+    { id: 'bo', name: 'Bo', x: 220, y: 120 },
+  ]"
+/>`}
+  reactCode={`<CfRemoteCursor
+  cursors={[
+    { id: 'alice', name: 'Alice', x: 80, y: 60 },
+    { id: 'bo', name: 'Bo', x: 220, y: 120 },
+  ]}
+/>`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `cursors` | `RemoteCursorItem[]` | — | |
+| `positioning` | `'absolute' \| 'fixed'` | `'absolute'` | 容器内 / 视口内 |

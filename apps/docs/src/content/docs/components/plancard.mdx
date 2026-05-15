@@ -1,0 +1,57 @@
+---
+title: PlanCard 计划卡片
+description: 多步骤计划卡片，每步带 status (pending / active / done / failed / skipped) + 时长 + 可折叠详情；适合 Agent 行动计划或运维 runbook。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/plancard/BasicVue.vue';
+import BasicVueSource from '~/components/demos/plancard/BasicVue.vue?raw';
+
+## 基础用法
+
+`steps` 数组每项 `{ id, title, status, description?, duration?, detail? }`。`active` 步骤显示 spinner；`done` 打勾；`failed` 显示 ×；`skipped` 半透明删除线。`detail` 非空时整个 title 行可点开 / 收起。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfPlanCard } from '@chufix-design/vue';
+
+const steps = [
+  { id: 's1', title: '解析用户请求', status: 'done', duration: 32 },
+  { id: 's2', title: '搜索相关代码', status: 'done', duration: 420, detail: 'grep result...' },
+  { id: 's3', title: '分析 trace', status: 'active' },
+  { id: 's4', title: '提议修改', status: 'pending' },
+];
+</script>
+
+<template>
+  <CfPlanCard title="oncall · dashboard 慢" :steps="steps" />
+</template>`}
+  reactCode={`const steps: PlanStep[] = [
+  { id: 's1', title: '解析用户请求', status: 'done', duration: 32 },
+  { id: 's2', title: '搜索相关代码', status: 'done', duration: 420, detail: 'grep result...' },
+  { id: 's3', title: '分析 trace', status: 'active' },
+];
+
+<CfPlanCard title="oncall · dashboard 慢" steps={steps} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `title` | `string` | — | 卡片标题 |
+| `steps` | `PlanStep[]` | — | 步骤数组 |
+| `initialOpenIds` | `string[]` | `[]` | 初始展开的 step id 集合 |
+
+### PlanStep
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `id` | `string` | 唯一 |
+| `title` | `string` | 步骤标题 |
+| `description` | `string` | 副标题文字 |
+| `status` | `'pending' \| 'active' \| 'done' \| 'failed' \| 'skipped'` | |
+| `duration` | `number` | 耗时 ms |
+| `detail` | `string` | 折叠详情（mono 字体展示） |

@@ -1,0 +1,45 @@
+---
+title: PresenceAvatars 在线用户行
+description: 多人协作场景下显示在线用户的头像行；头像 ring 颜色按 id 哈希，自己有更粗 ring，away 半透明，溢出 +N 折叠。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/presenceavatars/BasicVue.vue';
+import BasicVueSource from '~/components/demos/presenceavatars/BasicVue.vue?raw';
+
+## 基础用法
+
+`users` 数组每项 `{ id, name, avatar?, color?, self?, away? }`。超过 `max` 的合并成 +N。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfPresenceAvatars } from '@chufix-design/vue';
+
+const users = [
+  { id: 'me', name: '我', self: true },
+  { id: 'u1', name: 'Alice' },
+  { id: 'u2', name: 'Bo' },
+];
+</script>
+
+<template>
+  <CfPresenceAvatars :users="users" :max="5" />
+</template>`}
+  reactCode={`const users: PresenceUser[] = [
+  { id: 'me', name: '我', self: true },
+  { id: 'u1', name: 'Alice' },
+];
+
+<CfPresenceAvatars users={users} max={5} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `users` | `PresenceUser[]` | — | |
+| `max` | `number` | `5` | 超出折叠为 +N |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | |
+| `showSelfFirst` | `boolean` | `true` | 把 self 排在前 |

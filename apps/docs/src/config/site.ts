@@ -344,6 +344,18 @@ export const sidebar: SidebarGroup[] = [
     ],
   },
   {
+    label: L('协作 / Agent 可视化', 'Collaboration & Agent'),
+    items: [
+      c('PresenceAvatars', '在线用户行', 'presenceavatars'),
+      c('RemoteCursor', '远端光标', 'remotecursor'),
+      c('TypingIndicator', '输入中', 'typingindicator'),
+      c('PulseDot', '脉冲指示', 'pulsedot'),
+      c('PlanCard', '计划卡片', 'plancard'),
+      c('ReasoningTree', '思考树', 'reasoningtree'),
+      c('AgentTimeline', '代理时间线', 'agenttimeline'),
+    ],
+  },
+  {
     label: L('数据可视化 · 时序', 'Charts · Time series'),
     items: [
       c('LineChart', '折线图', 'linechart'),

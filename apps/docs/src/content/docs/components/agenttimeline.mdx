@@ -1,0 +1,63 @@
+---
+title: AgentTimeline 代理时间线
+description: 单个 agent 的行动时间线：thought / tool / action / observation / message / error 节点，纵向流式展开，每节点带 timestamp + duration + meta。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/agenttimeline/BasicVue.vue';
+import BasicVueSource from '~/components/demos/agenttimeline/BasicVue.vue?raw';
+
+## 基础用法
+
+适合记录 / 回放一个 agent 的完整执行过程。事件按数组顺序渲染，每条都展示 type 徽章 + 标题 + 耗时 + 时间戳，可选 mono 字体的 content 和 meta key/value 表格。
+
+<DemoFrame
+  vueCode={`<script setup>
+import { CfAgentTimeline } from '@chufix-design/vue';
+
+const events = [
+  { id: 'e1', type: 'thought', title: '理解意图', content: '修复 dashboard P99 慢' },
+  { id: 'e2', type: 'tool', title: 'jaeger.search', duration: 850, meta: { spans: 142 } },
+  { id: 'e3', type: 'observation', title: 'DB 查询占 76%' },
+  { id: 'e4', type: 'action', title: '创建迁移文件', duration: 50 },
+  { id: 'e5', type: 'message', title: '已开 PR #1042' },
+];
+</script>
+
+<template>
+  <CfAgentTimeline :events="events" />
+</template>`}
+  reactCode={`const events: AgentEvent[] = [
+  { id: 'e1', type: 'thought', title: '理解意图', content: '修复 P99 慢' },
+  { id: 'e2', type: 'tool', title: 'jaeger.search', duration: 850 },
+  { id: 'e3', type: 'observation', title: 'DB 占 76%' },
+];
+
+<CfAgentTimeline events={events} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `events` | `AgentEvent[]` | — | 时间线事件 |
+| `showTimestamp` | `boolean` | `true` | 显示时间戳 |
+
+### AgentEvent
+
+```ts
+type AgentEventType =
+  | 'thought' | 'tool' | 'action' | 'observation' | 'message' | 'error';
+
+interface AgentEvent {
+  id: string;
+  type: AgentEventType;
+  title?: string;
+  content?: string;
+  timestamp?: number | string;
+  duration?: number;
+  meta?: Record<string, string | number>;
+}
+```
