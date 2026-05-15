@@ -1,0 +1,92 @@
+.cf-annot {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--bg-1);
+}
+.cf-annot__surface {
+  position: relative;
+  display: block;
+  width: 100%;
+  cursor: crosshair;
+  user-select: none;
+}
+.cf-annot.is-readonly .cf-annot__surface {
+  cursor: default;
+}
+.cf-annot__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.cf-annot__pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px 2px 4px;
+  background: var(--bg-2);
+  color: var(--fg-1);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  font-size: var(--t-12);
+  cursor: grab;
+  touch-action: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-2);
+}
+.cf-annot__pin.is-dragging {
+  cursor: grabbing;
+  z-index: 2;
+}
+.cf-annot.is-readonly .cf-annot__pin {
+  cursor: default;
+}
+.cf-annot__pin.is-selected {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 2px var(--accent-soft), var(--shadow-3);
+}
+.cf-annot__dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-1);
+  flex-shrink: 0;
+}
+.cf-annot__pin--success .cf-annot__dot { background: var(--status-success); }
+.cf-annot__pin--warning .cf-annot__dot { background: var(--status-warning); }
+.cf-annot__pin--error .cf-annot__dot { background: var(--status-error); }
+.cf-annot__pin--info .cf-annot__dot { background: var(--status-info); }
+.cf-annot__pin--default .cf-annot__dot { background: var(--fg-2); }
+.cf-annot__label {
+  color: var(--fg-1);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cf-annot__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  border: 0;
+  background: var(--bg-1);
+  color: var(--fg-3);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: var(--t-12);
+  line-height: 1;
+}
+.cf-annot__remove:hover {
+  color: var(--status-error);
+  background: var(--status-error-soft);
+}

@@ -1,0 +1,90 @@
+.cf-draw {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+.cf-draw__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-1);
+}
+.cf-draw__tools,
+.cf-draw__colors,
+.cf-draw__sizes {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.cf-draw__tool,
+.cf-draw__action,
+.cf-draw__size {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--line-1);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-size: var(--t-12);
+  border-radius: var(--r-2);
+  cursor: pointer;
+}
+.cf-draw__tool {
+  width: 28px;
+  padding: 0;
+}
+.cf-draw__tool.is-active,
+.cf-draw__size.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+.cf-draw__tool:disabled,
+.cf-draw__action:disabled,
+.cf-draw__size:disabled,
+.cf-draw__color:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.cf-draw__color {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 2px solid var(--line-1);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.cf-draw__color.is-active {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.cf-draw__size {
+  width: 28px;
+  padding: 0;
+}
+.cf-draw__size span {
+  display: block;
+  background: currentColor;
+  border-radius: 50%;
+}
+.cf-draw__spacer {
+  flex: 1 1 auto;
+}
+.cf-draw__canvas {
+  display: block;
+  width: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+.cf-draw.is-disabled .cf-draw__canvas {
+  cursor: not-allowed;
+}

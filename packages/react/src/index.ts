@@ -177,6 +177,12 @@ import './styles/draggable.css';
 import './styles/droppable.css';
 import './styles/draglayer.css';
 import './styles/reordertable.css';
+import './styles/signaturepad.css';
+import './styles/drawingcanvas.css';
+import './styles/imageannotator.css';
+import './styles/hotspotimage.css';
+import './styles/audioplayer.css';
+import './styles/videoplayer.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1392,6 +1398,38 @@ export type {
   ReorderTableReorderEvent,
 } from './reordertable/ReorderTable';
 export type { ReorderColumn } from './reordertable/variants';
+
+// Media / Annotation family
+export { SignaturePad as CfSignaturePad } from './signaturepad/SignaturePad';
+export type {
+  SignaturePadProps,
+  SignaturePadHandle,
+  SignaturePoint,
+} from './signaturepad/SignaturePad';
+export { DrawingCanvas as CfDrawingCanvas } from './drawingcanvas/DrawingCanvas';
+export type { DrawingCanvasProps } from './drawingcanvas/DrawingCanvas';
+export type {
+  DrawingPoint,
+  DrawingStroke,
+  DrawingTool,
+  DrawingCanvasHandle,
+} from './drawingcanvas/variants';
+export { ImageAnnotator as CfImageAnnotator } from './imageannotator/ImageAnnotator';
+export type { ImageAnnotatorProps } from './imageannotator/ImageAnnotator';
+export type { ImageAnnotation, AnnotationTone } from './imageannotator/variants';
+export { HotspotImage as CfHotspotImage } from './hotspotimage/HotspotImage';
+export type { HotspotImageProps } from './hotspotimage/HotspotImage';
+export type {
+  HotspotItem,
+  HotspotRect,
+  HotspotCircle,
+  HotspotTone,
+} from './hotspotimage/variants';
+export { AudioPlayer as CfAudioPlayer } from './audioplayer/AudioPlayer';
+export type { AudioPlayerProps } from './audioplayer/AudioPlayer';
+export { VideoPlayer as CfVideoPlayer } from './videoplayer/VideoPlayer';
+export type { VideoPlayerProps } from './videoplayer/VideoPlayer';
+export type { VideoCaption } from './videoplayer/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was

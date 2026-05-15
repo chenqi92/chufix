@@ -1,0 +1,60 @@
+.cf-hotspot {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--bg-1);
+}
+.cf-hotspot__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.cf-hotspot__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.cf-hotspot__group {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.cf-hotspot__group rect,
+.cf-hotspot__group circle {
+  stroke-width: 0.4;
+  fill-opacity: 0;
+  stroke-opacity: 0;
+  vector-effect: non-scaling-stroke;
+  transition: fill-opacity var(--dur-fast) var(--ease-out),
+    stroke-opacity var(--dur-fast) var(--ease-out);
+}
+.cf-hotspot__group.is-outlined rect,
+.cf-hotspot__group.is-outlined circle {
+  fill-opacity: 0.15;
+  stroke-opacity: 0.7;
+}
+.cf-hotspot__group.is-hovered rect,
+.cf-hotspot__group.is-hovered circle {
+  fill-opacity: 0.35;
+  stroke-opacity: 1;
+}
+.cf-hotspot__label {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 8px));
+  padding: 4px 8px;
+  background: var(--bg-3);
+  color: var(--fg-1);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  font-size: var(--t-12);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-3);
+  z-index: 2;
+}

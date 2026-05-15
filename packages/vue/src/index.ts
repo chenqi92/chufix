@@ -177,6 +177,12 @@ import './styles/draggable.css';
 import './styles/droppable.css';
 import './styles/draglayer.css';
 import './styles/reordertable.css';
+import './styles/signaturepad.css';
+import './styles/drawingcanvas.css';
+import './styles/imageannotator.css';
+import './styles/hotspotimage.css';
+import './styles/audioplayer.css';
+import './styles/videoplayer.css';
 
 /* All component exports use the Cf prefix (matching the CSS `cf-` class
  * prefix; `cf` from chufix) so consumers can keep the imported name in
@@ -1343,6 +1349,29 @@ export { default as CfDroppable } from './droppable/Droppable.vue';
 export { default as CfDragLayer } from './draglayer/DragLayer.vue';
 export { default as CfReorderTable } from './reordertable/ReorderTable.vue';
 export type { ReorderColumn } from './reordertable/variants';
+
+// Media / Annotation family
+export { default as CfSignaturePad } from './signaturepad/SignaturePad.vue';
+export type { SignaturePoint, SignaturePadHandle } from './signaturepad/variants';
+export { default as CfDrawingCanvas } from './drawingcanvas/DrawingCanvas.vue';
+export type {
+  DrawingPoint,
+  DrawingStroke,
+  DrawingTool,
+  DrawingCanvasHandle,
+} from './drawingcanvas/variants';
+export { default as CfImageAnnotator } from './imageannotator/ImageAnnotator.vue';
+export type { ImageAnnotation, AnnotationTone } from './imageannotator/variants';
+export { default as CfHotspotImage } from './hotspotimage/HotspotImage.vue';
+export type {
+  HotspotItem,
+  HotspotRect,
+  HotspotCircle,
+  HotspotTone,
+} from './hotspotimage/variants';
+export { default as CfAudioPlayer } from './audioplayer/AudioPlayer.vue';
+export { default as CfVideoPlayer } from './videoplayer/VideoPlayer.vue';
+export type { VideoCaption } from './videoplayer/variants';
 
 // Map family (CfMap / CfMapMiniMap / CfChoroplethMap / CfFlowMap / CfMapTile /
 // CfMapLegend / CfMapScale / CfBubbleMap / CfHeatMap / CfMarkerCluster) was
