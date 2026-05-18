@@ -1,5 +1,13 @@
 # docs
 
+## 0.3.12
+
+### Patch Changes
+
+- Updated dependencies [[`6d24b60`](https://github.com/chenqi92/chufix/commit/6d24b602d9a1eef16c2c25478a42e40929e8f257)]:
+  - @chufix-design/vue@0.11.0
+  - @chufix-design/react@0.11.0
+
 ## 0.3.11
 
 ### Patch Changes
