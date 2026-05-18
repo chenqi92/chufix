@@ -1,0 +1,10 @@
+/* Hexbin density */
+.cf-hexbin__cell {
+  fill: var(--viz-1);
+  stroke: var(--bg-0);
+  stroke-width: 1;
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+.cf-hexbin__cell:hover {
+  filter: brightness(1.15);
+}

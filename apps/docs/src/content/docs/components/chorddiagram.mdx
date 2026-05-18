@@ -1,0 +1,41 @@
+---
+title: ChordDiagram 弦图
+description: 环形多节点关系/流量可视化，节点占弧长 = 总流量，弦 = 双向流量。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/chorddiagram/BasicVue.vue';
+import BasicVueSource from '~/components/demos/chorddiagram/BasicVue.vue?raw';
+
+## 基础用法
+
+传入 N×N 的方阵：`matrix[i][j]` 表示 i → j 的流量。每个节点的弧长按它的总流量（出 + 入）分配，弦的弧长按 i↔j 双向流量分配。
+
+<DemoFrame
+  vueCode={`<CfChordDiagram :matrix="matrix" :labels="labels" />`}
+  reactCode={`<CfChordDiagram matrix={matrix} labels={labels} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 适用场景
+
+- 国际贸易、人口迁徙、跨服务调用矩阵
+- 与 [SankeyDiagram](/components/sankeydiagram) 的对比：Sankey 适合分层有向流（A → B → C），Chord 适合两两双向关系。
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `matrix` | `number[][]` | `—` | N×N 方阵，row-major |
+| `labels` | `string[]` | `—` | 节点标签 |
+| `width` / `height` | `number` | `460` | — |
+| `padAngle` | `number` | `2` | 节点之间的角度间距（度） |
+| `innerRadius` | `number` | 自动 | 弦内圈半径 |
+| `outerRadius` | `number` | 自动 | 节点弧外圈半径 |
+
+### Events
+
+| Vue | React | 载荷 |
+|---|---|---|
+| `ribbon-enter` / `ribbon-leave` | `onRibbonEnter` / `onRibbonLeave` | `{ source, target, value }` |

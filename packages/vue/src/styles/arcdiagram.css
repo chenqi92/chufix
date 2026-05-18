@@ -1,0 +1,16 @@
+/* Arc diagram */
+.cf-arcdiagram__arc {
+  fill: none;
+  stroke-width: 1.5;
+  transition: stroke-width var(--dur-fast) var(--ease-out);
+}
+.cf-arcdiagram__arc:hover {
+  stroke-width: 3;
+}
+.cf-arcdiagram__node {
+  stroke: var(--bg-0);
+  stroke-width: 1;
+}
+.cf-arcdiagram__label {
+  fill: var(--fg-2);
+}

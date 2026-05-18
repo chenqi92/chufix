@@ -1,0 +1,35 @@
+---
+title: CorrelationMatrix 相关性矩阵
+description: 变量两两相关系数热图，正相关蓝、负相关橙，强度由饱和度表达。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/correlationmatrix/BasicVue.vue';
+import BasicVueSource from '~/components/demos/correlationmatrix/BasicVue.vue?raw';
+
+## 基础用法
+
+输入 N×N 相关系数矩阵（值域 −1..1）+ 标签数组。组件按强度自动选择文本对比色，单元格 ≥ 24×14 时显示数值文本。
+
+<DemoFrame
+  vueCode={`<CfCorrelationMatrix :matrix="matrix" :labels="labels" />`}
+  reactCode={`<CfCorrelationMatrix matrix={matrix} labels={labels} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `matrix` | `number[][]` | `—` | N×N，值域 −1..1 |
+| `labels` | `string[]` | `—` | 变量名 |
+| `width` / `height` | `number` | `480` | — |
+| `cellGap` | `number` | `2` | 单元格间隙 |
+| `showText` | `boolean` | `true` | 显示数值文本 |
+
+### Events
+
+| Vue | React | 载荷 |
+|---|---|---|
+| `cell-enter` / `cell-leave` | `onCellEnter` / `onCellLeave` | `{ row, col, value, rowLabel, colLabel }` |

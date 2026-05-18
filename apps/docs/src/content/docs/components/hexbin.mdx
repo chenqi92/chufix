@@ -1,0 +1,39 @@
+---
+title: Hexbin 六边形热图
+description: 大量散点的 2D 密度聚合，每个六边形按区域内点数加权填色。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/hexbin/BasicVue.vue';
+import BasicVueSource from '~/components/demos/hexbin/BasicVue.vue?raw';
+
+## 基础用法
+
+数据点用 `{ x, y, weight? }[]` 传入。组件根据 `radius` 把平面切成六边形网格，落到同一格的点累加 weight，最终按权重最大值映射不透明度。
+
+<DemoFrame
+  vueCode={`<CfHexbin :data="data" :width="580" :height="360" :radius="14" />`}
+  reactCode={`<CfHexbin data={data} width={580} height={360} radius={14} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 何时用 hexbin
+
+普通散点图在 N > 10k 时会被「过度绘制」掩盖密度结构，Hexbin 把每个点变成「网格内的一份贡献」，能正确反映高密度区域。
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `HexbinPoint[]` | `—` | `{ x, y, weight? }[]` |
+| `width` / `height` | `number` | `560/360` | — |
+| `radius` | `number` | `14` | 六边形外接圆半径，越小密度越细 |
+| `xDomain` / `yDomain` | `[number, number]` | 自动 | 强制坐标域 |
+| `showAxis` | `boolean` | `true` | 是否绘制极简轴 |
+
+### Events
+
+| Vue | React | 载荷 |
+|---|---|---|
+| `cell-enter` / `cell-leave` | `onCellEnter` / `onCellLeave` | `{ cell: { cx, cy, count, weight } }` |

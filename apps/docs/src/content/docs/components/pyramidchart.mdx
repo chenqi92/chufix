@@ -1,0 +1,35 @@
+---
+title: PyramidChart 金字塔图
+description: 左右对称条形图，常用于人口年龄结构、性别对比、资金来源/用途等场景。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/pyramidchart/BasicVue.vue';
+import BasicVueSource from '~/components/demos/pyramidchart/BasicVue.vue?raw';
+
+## 基础用法
+
+数据使用 `{ label, left, right }[]`，每一行的 left 向左侧绘制条，right 向右侧绘制条，共享同一比例尺。
+
+<DemoFrame
+  vueCode={`<CfPyramidChart :data="data" left-label="男性" right-label="女性" :format="fmt" />`}
+  reactCode={`<CfPyramidChart data={data} leftLabel="男性" rightLabel="女性" format={fmt} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `data` | `PyramidRow[]` | `—` | `{ label, left, right }[]` |
+| `width` / `height` | `number` | `520/320` | — |
+| `leftLabel` / `rightLabel` | `string` | `左侧 / 右侧` | 顶部表头 |
+| `gap` | `number` | `72` | 中间标签区宽度 |
+| `format` | `(v) => string` | `Math.round` | 数值格式化 |
+
+### Events
+
+| Vue | React | 载荷 |
+|---|---|---|
+| `bar-enter` / `bar-leave` | `onBarEnter` / `onBarLeave` | `{ row, side: 'left' \| 'right', dataIndex }` |

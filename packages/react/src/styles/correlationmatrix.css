@@ -1,0 +1,16 @@
+/* Correlation matrix heatmap */
+.cf-corrmatrix__cell {
+  transition: filter var(--dur-fast) var(--ease-out);
+  cursor: pointer;
+}
+.cf-corrmatrix__cell:hover {
+  filter: brightness(1.1);
+}
+.cf-corrmatrix__row-labels text,
+.cf-corrmatrix__col-labels text {
+  fill: var(--fg-2);
+}
+.cf-corrmatrix__text {
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}

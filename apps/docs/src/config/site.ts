@@ -398,6 +398,7 @@ export const sidebar: SidebarGroup[] = [
       c('Treemap', '矩形树图', 'treemap'),
       c('SankeyDiagram', '流向图', 'sankeydiagram'),
       c('SunburstChart', '旭日图', 'sunburstchart'),
+      c('ChordDiagram', '弦图', 'chorddiagram'),
     ],
   },
   {
@@ -405,19 +406,25 @@ export const sidebar: SidebarGroup[] = [
     items: [
       c('ScatterPlot', '散点图', 'scatterplot'),
       c('BoxPlot', '箱线图', 'boxplot'),
+      c('ViolinPlot', '小提琴图', 'violinplot'),
       c('RadarChart', '雷达图', 'radarchart'),
       c('RidgePlot', '密度脊图', 'ridgeplot'),
+      c('Hexbin', '六边形热图', 'hexbin'),
+      c('CorrelationMatrix', '相关性矩阵', 'correlationmatrix'),
+      c('PyramidChart', '金字塔图', 'pyramidchart'),
     ],
   },
   {
     label: L('数据可视化 · 单值与性能', 'Charts · Single & perf'),
     items: [
       c('Gauge', '仪表盘', 'gauge'),
+      c('LiquidFill', '液体填充', 'liquidfill'),
       c('MetricCard', '指标卡', 'metriccard'),
       c('TimingBar', '请求瀑布', 'timingbar'),
       c('LatencyHeatmap', '延迟热力', 'latencyheatmap'),
       c('HeatmapChart', '通用热力', 'heatmapchart'),
       c('ConnectionGraph', '连接图', 'connectiongraph'),
+      c('ArcDiagram', '弧线图', 'arcdiagram'),
     ],
   },
   {

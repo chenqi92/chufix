@@ -52,6 +52,11 @@ import './styles/wordcloud.css';
 import './styles/venndiagram.css';
 import './styles/streamgraph.css';
 import './styles/parallelcoordinates.css';
+import './styles/hexbin.css';
+import './styles/pyramidchart.css';
+import './styles/correlationmatrix.css';
+import './styles/arcdiagram.css';
+import './styles/liquidfill.css';
 import './styles/input.css';
 import './styles/flex.css';
 import './styles/grid.css';
@@ -558,6 +563,48 @@ export type { ScatterPlotProps, ScatterPoint } from './scatterplot/variants';
 
 export { BoxPlot as CfBoxPlot } from './boxplot/BoxPlot';
 export type { BoxPlotProps, BoxStat } from './boxplot/variants';
+
+export { ViolinPlot as CfViolinPlot } from './violinplot/ViolinPlot';
+export type {
+  ViolinPlotProps,
+  ViolinSeries,
+  ViolinPlotInteractionPayload,
+} from './violinplot/variants';
+
+export { ChordDiagram as CfChordDiagram } from './chorddiagram/ChordDiagram';
+export type { ChordDiagramProps, ChordInteractionPayload } from './chorddiagram/variants';
+
+export { Hexbin as CfHexbin } from './hexbin/Hexbin';
+export type {
+  HexbinProps,
+  HexbinPoint,
+  HexbinCell,
+  HexbinInteractionPayload,
+} from './hexbin/variants';
+
+export { PyramidChart as CfPyramidChart } from './pyramidchart/PyramidChart';
+export type {
+  PyramidChartProps,
+  PyramidRow,
+  PyramidInteractionPayload,
+} from './pyramidchart/variants';
+
+export { CorrelationMatrix as CfCorrelationMatrix } from './correlationmatrix/CorrelationMatrix';
+export type {
+  CorrelationMatrixProps,
+  CorrelationCellPayload,
+} from './correlationmatrix/variants';
+
+export { ArcDiagram as CfArcDiagram } from './arcdiagram/ArcDiagram';
+export type {
+  ArcDiagramProps,
+  ArcNode,
+  ArcEdge,
+  ArcInteractionPayload,
+} from './arcdiagram/variants';
+
+export { LiquidFill as CfLiquidFill } from './liquidfill/LiquidFill';
+export type { LiquidFillProps } from './liquidfill/variants';
 
 export { RadarChart as CfRadarChart } from './radarchart/RadarChart';
 export type { RadarChartProps, RadarSeries } from './radarchart/variants';

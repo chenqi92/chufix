@@ -1,0 +1,39 @@
+---
+title: ArcDiagram 弧线图
+description: 节点排在一条轴上，边由半圆弧连接；适合显示线性序列的依赖关系。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/arcdiagram/BasicVue.vue';
+import BasicVueSource from '~/components/demos/arcdiagram/BasicVue.vue?raw';
+
+## 基础用法
+
+`nodes` 沿水平轴等距排列，`group` 控制节点颜色，`size` 控制节点半径。`edges` 的权重映射到弧线透明度。
+
+<DemoFrame
+  vueCode={`<CfArcDiagram :nodes="nodes" :edges="edges" :width="660" :height="280" />`}
+  reactCode={`<CfArcDiagram nodes={nodes} edges={edges} width={660} height={280} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:load />
+</DemoFrame>
+
+## 适用场景
+
+- 服务依赖图、词义共现网络、社交关系链
+- 与 [ConnectionGraph](/components/connectiongraph) 的对比：ConnectionGraph 是力导向自由布局；ArcDiagram 强制 1D 排列以避免遮挡。
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `nodes` | `ArcNode[]` | `—` | `{ id, label?, group?, size? }[]` |
+| `edges` | `ArcEdge[]` | `—` | `{ source, target, weight? }[]` |
+| `width` / `height` | `number` | `640/280` | — |
+| `arcSide` | `'top' \| 'bottom'` | `'top'` | 弧线在轴的上方还是下方 |
+
+### Events
+
+| Vue | React | 载荷 |
+|---|---|---|
+| `edge-enter` / `edge-leave` | `onEdgeEnter` / `onEdgeLeave` | `{ edge }` |

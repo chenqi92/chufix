@@ -1,0 +1,36 @@
+---
+title: LiquidFill 液体填充
+description: 圆形/方形容器中的动态水位，多层叠加的正弦波动画，KPI 与进度场景的走心动效。
+---
+
+import DemoFrame from '~/components/DemoFrame.astro';
+import BasicVue from '~/components/demos/liquidfill/BasicVue.vue';
+import BasicVueSource from '~/components/demos/liquidfill/BasicVue.vue?raw';
+
+## 基础用法
+
+`value` 是 0..1 的填充比，自动按 `Math.round(value * 100)%` 显示中央文字（也可用 `label` 自定义）。`speed=0` 关闭动画；`prefers-reduced-motion: reduce` 自动停止波动以保持静态画面。
+
+<DemoFrame
+  vueCode={`<CfLiquidFill :value="0.62" :width="220" :height="220" :speed="0.6" />`}
+  reactCode={`<CfLiquidFill value={0.62} width={220} height={220} speed={0.6} />`}
+  vueSource={BasicVueSource}>
+  <BasicVue client:only="vue" />
+</DemoFrame>
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `value` | `number` | `—` | 0..1 的填充比 |
+| `width` / `height` | `number` | `240` | — |
+| `amplitude` | `number` | `6` | 波幅 |
+| `wavelength` | `number` | `0.6` | 波长相对宽度 |
+| `speed` | `number` | `0.4` | 周期/秒，0 关闭动画 |
+| `waves` | `number` | `2` | 波层数 (1–3) |
+| `shape` | `'circle' \| 'rect'` | `'circle'` | 容器形状 |
+| `label` | `string` | 自动百分比 | 中央文字 |
+
+## 注意
+
+LiquidFill 使用 `requestAnimationFrame` 持续重绘，**必须 `client:only="vue"`**（或 React 的 `client:only="react"`）。

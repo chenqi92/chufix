@@ -1,0 +1,17 @@
+/* Pyramid (population) chart */
+.cf-pyramid__left {
+  fill: var(--viz-1);
+}
+.cf-pyramid__right {
+  fill: var(--viz-3);
+}
+.cf-pyramid__legend {
+  fill: var(--fg-2);
+  font-weight: 500;
+}
+.cf-pyramid__axis {
+  fill: var(--fg-3);
+}
+.cf-pyramid__value {
+  fill: var(--fg-2);
+}

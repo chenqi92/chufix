@@ -52,6 +52,11 @@ import './styles/wordcloud.css';
 import './styles/venndiagram.css';
 import './styles/streamgraph.css';
 import './styles/parallelcoordinates.css';
+import './styles/hexbin.css';
+import './styles/pyramidchart.css';
+import './styles/correlationmatrix.css';
+import './styles/arcdiagram.css';
+import './styles/liquidfill.css';
 import './styles/input.css';
 import './styles/flex.css';
 import './styles/grid.css';
@@ -548,6 +553,48 @@ export type { ScatterPlotProps, ScatterPoint } from './scatterplot/variants';
 
 export { default as CfBoxPlot } from './boxplot/BoxPlot.vue';
 export type { BoxPlotProps, BoxStat } from './boxplot/variants';
+
+export { default as CfViolinPlot } from './violinplot/ViolinPlot.vue';
+export type {
+  ViolinPlotProps,
+  ViolinSeries,
+  ViolinPlotInteractionPayload,
+} from './violinplot/variants';
+
+export { default as CfChordDiagram } from './chorddiagram/ChordDiagram.vue';
+export type { ChordDiagramProps, ChordInteractionPayload } from './chorddiagram/variants';
+
+export { default as CfHexbin } from './hexbin/Hexbin.vue';
+export type {
+  HexbinProps,
+  HexbinPoint,
+  HexbinCell,
+  HexbinInteractionPayload,
+} from './hexbin/variants';
+
+export { default as CfPyramidChart } from './pyramidchart/PyramidChart.vue';
+export type {
+  PyramidChartProps,
+  PyramidRow,
+  PyramidInteractionPayload,
+} from './pyramidchart/variants';
+
+export { default as CfCorrelationMatrix } from './correlationmatrix/CorrelationMatrix.vue';
+export type {
+  CorrelationMatrixProps,
+  CorrelationCellPayload,
+} from './correlationmatrix/variants';
+
+export { default as CfArcDiagram } from './arcdiagram/ArcDiagram.vue';
+export type {
+  ArcDiagramProps,
+  ArcNode,
+  ArcEdge,
+  ArcInteractionPayload,
+} from './arcdiagram/variants';
+
+export { default as CfLiquidFill } from './liquidfill/LiquidFill.vue';
+export type { LiquidFillProps } from './liquidfill/variants';
 
 export { default as CfRadarChart } from './radarchart/RadarChart.vue';
 export type { RadarChartProps, RadarSeries } from './radarchart/variants';
